@@ -52,7 +52,7 @@ FORECAST_URL = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVila
 ASOS_DIR = os.path.join("weather", "asos")
 FORECAST_DIR = os.path.join("weather", "forecast")
 
-BACKFILL_START = datetime(2025, 1, 1)
+BACKFILL_START = datetime(2023, 1, 1)
 REQUEST_DELAY_SEC = 0.5
 
 
