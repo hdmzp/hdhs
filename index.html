@@ -363,6 +363,16 @@ function timeToMinutes(t) {
   return h * 60 + m;
 }
 
+// Date 객체를 로컬 시간대 기준 'YYYY-MM-DD'로 변환.
+// toISOString()은 UTC로 환산하기 때문에 한국(UTC+9) 등에서
+// 날짜가 하루 밀리거나 안 바뀌는 버그가 생겨 사용하지 않음.
+function toLocalDateStr(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
 function formatDateLabel(dateStr) {
   const d = new Date(dateStr + 'T00:00:00');
   const days = ['일','월','화','수','목','금','토'];
@@ -371,7 +381,7 @@ function formatDateLabel(dateStr) {
 
 function isToday(dateStr) {
   const today = new Date();
-  const ds = today.toISOString().slice(0,10);
+  const ds = toLocalDateStr(today);
   return dateStr === ds;
 }
 
@@ -478,7 +488,7 @@ async function refresh(dateStr) {
 function shiftDate(dateStr, delta) {
   const d = new Date(dateStr + 'T00:00:00');
   d.setDate(d.getDate() + delta);
-  return d.toISOString().slice(0,10);
+  return toLocalDateStr(d);
 }
 
 // ============ 초기화 ============
@@ -506,7 +516,7 @@ function shiftDate(dateStr, delta) {
 
   // 오늘로 이동도 즉시 조회
   document.getElementById('gotoToday').addEventListener('click', () => {
-    const today = new Date().toISOString().slice(0,10);
+    const today = toLocalDateStr(new Date());
     picker.value = today;
     refresh(today);
   });
