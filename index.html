@@ -1000,6 +1000,8 @@ let pickerPanelYear;
 let _weatherTabLoaded = false;
 
 const MONTH_NAMES = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+const DATA_MIN_YEAR = 2023;
+const DATA_MIN_MONTH = 1;
 
 function renderMonthPickerPanel() {
   document.getElementById('mppYearLabel').textContent = pickerPanelYear;
@@ -1011,11 +1013,15 @@ function renderMonthPickerPanel() {
   let html = '';
   for (let m = 1; m <= 12; m++) {
     const isFuture = pickerPanelYear > maxYear || (pickerPanelYear === maxYear && m > maxMonth);
+    const isPast = pickerPanelYear < DATA_MIN_YEAR || (pickerPanelYear === DATA_MIN_YEAR && m < DATA_MIN_MONTH);
     const isCurrent = pickerPanelYear === currentYear && m === currentMonth;
     html += `<button type="button" class="${isCurrent ? 'current' : ''}" ` +
-            `${isFuture ? 'disabled' : ''} data-month="${m}">${MONTH_NAMES[m - 1]}</button>`;
+            `${(isFuture || isPast) ? 'disabled' : ''} data-month="${m}">${MONTH_NAMES[m - 1]}</button>`;
   }
   document.getElementById('mppMonthGrid').innerHTML = html;
+
+  document.getElementById('mppPrevYear').disabled = pickerPanelYear <= DATA_MIN_YEAR;
+  document.getElementById('mppNextYear').disabled = pickerPanelYear >= maxYear;
 
   document.getElementById('mppMonthGrid').querySelectorAll('button[data-month]').forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -1087,11 +1093,14 @@ function switchTab(tab) {
 
   // 날씨 탭 내 월 이동
   document.getElementById('prevMonth').addEventListener('click', () => {
+    if (currentYear === DATA_MIN_YEAR && currentMonth === DATA_MIN_MONTH) return; // 하한선
     currentMonth -= 1;
     if (currentMonth < 1) { currentMonth = 12; currentYear -= 1; }
     renderMonth(currentYear, currentMonth);
   });
   document.getElementById('nextMonth').addEventListener('click', () => {
+    const now = new Date();
+    if (currentYear === now.getFullYear() && currentMonth === now.getMonth() + 1) return; // 상한선
     currentMonth += 1;
     if (currentMonth > 12) { currentMonth = 1; currentYear += 1; }
     renderMonth(currentYear, currentMonth);
