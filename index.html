@@ -179,6 +179,28 @@
   .dot.terrestrial { background: var(--terrestrial); }
   .dot.comprehensive { background: var(--comprehensive); }
 
+  .weather-bar {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 8px 24px 10px;
+    text-align: center;
+    font-family: 'Pretendard', -apple-system, sans-serif;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    border-bottom: 1px solid var(--rule);
+  }
+  .weather-bar a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px dotted var(--ink-soft);
+  }
+  .weather-bar a:hover { color: var(--ink); border-bottom-color: var(--ink); }
+  .weather-bar .w-temp-max { color: var(--comprehensive); font-weight: 700; }
+  .weather-bar .w-temp-min { color: var(--terrestrial); font-weight: 700; }
+  .weather-bar .w-rain { color: var(--now-accent); font-weight: 600; }
+  .weather-bar .w-sep { margin: 0 8px; opacity: 0.4; }
+  .weather-bar .w-empty { font-style: italic; opacity: 0.6; }
+
   .grid-wrap {
     max-width: 1080px;
     margin: 0 auto;
@@ -304,14 +326,177 @@
     .controls { gap: 10px; }
     table.schedule { min-width: 760px; }
   }
+
+  /* ============ 탭 전환 ============ */
+  .main-tabs {
+    display: flex;
+    gap: 2px;
+    margin-left: 4px;
+  }
+  .main-tabs button {
+    font-family: 'Pretendard', -apple-system, sans-serif;
+    font-size: 12.5px;
+    font-weight: 600;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 6px 10px 5px;
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+  .main-tabs button.active {
+    color: var(--ink);
+    border-bottom-color: var(--now-accent);
+  }
+  .main-tabs button:hover { color: var(--ink); }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ============ 날씨 탭(달력) ============ */
+  #tabWeather {
+    --cold: #1F3A5F;
+    --hot: #C8511B;
+    --rain: #2E6B7E;
+    --rain-bg: #E9F1F3;
+    --today-bg: #FFF1E6;
+    --today-border: #C8511B;
+    --future-bg: #FAFAF6;
+    font-family: 'Pretendard', -apple-system, sans-serif;
+  }
+
+  .month-nav {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 16px 24px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+  }
+  .month-nav button {
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+  .month-nav button:hover { background: var(--rule); }
+  .month-nav .month-label {
+    font-size: 19px;
+    font-weight: 700;
+    min-width: 130px;
+    text-align: center;
+    font-family: 'Noto Serif KR', Georgia, serif;
+  }
+
+  .legend-row {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 0 24px 14px;
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    font-size: 11px;
+    color: var(--ink-soft);
+  }
+  .legend-row span { display: inline-flex; align-items: center; gap: 5px; }
+  .legend-row .sw { width: 9px; height: 9px; border-radius: 2px; display: inline-block; }
+  .sw.min { background: var(--cold); }
+  .sw.max { background: var(--hot); }
+  .sw.rain { background: var(--rain); }
+
+  .cal-wrap {
+    max-width: 880px;
+    margin: 0 auto 50px;
+    padding: 0 24px;
+  }
+
+  table.calendar {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+
+  table.calendar th {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    padding: 8px 4px;
+    border-bottom: 2px solid var(--ink);
+    text-align: center;
+  }
+  table.calendar th.sun { color: var(--hot); }
+  table.calendar th.sat { color: var(--cold); }
+
+  table.calendar td {
+    border: 1px solid var(--rule);
+    vertical-align: top;
+    height: 92px;
+    padding: 6px 7px;
+    background: #fff;
+  }
+  table.calendar td.empty { background: var(--paper); border: none; }
+  table.calendar td.future-cell { background: var(--future-bg); }
+  table.calendar td.today-cell {
+    background: var(--today-bg);
+    border: 2px solid var(--today-border);
+  }
+
+  .day-num {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .day-num.sun { color: var(--hot); }
+  .day-num.sat { color: var(--cold); }
+
+  .day-stats { font-size: 11px; line-height: 1.5; }
+  .day-stats .row { display: flex; justify-content: space-between; gap: 4px; }
+  .day-stats .min { color: var(--cold); font-weight: 600; }
+  .day-stats .max { color: var(--hot); font-weight: 600; }
+  .day-stats .rain { color: var(--rain); }
+  .day-stats .rain.has-rain {
+    background: var(--rain-bg);
+    border-radius: 3px;
+    padding: 0 3px;
+  }
+  .day-stats .ly {
+    margin-top: 3px;
+    color: var(--ink-soft);
+    font-size: 9.5px;
+    border-top: 1px dotted var(--rule);
+    padding-top: 2px;
+  }
+  .no-data-cell {
+    font-size: 10px;
+    color: var(--rule);
+    font-style: italic;
+    margin-top: 8px;
+  }
+
+  @media (max-width: 700px) {
+    table.calendar td { height: 72px; padding: 4px; font-size: 10px; }
+    .day-stats { font-size: 9.5px; }
+    .day-num { font-size: 11px; }
+  }
 </style>
 </head>
 <body>
 
 <header class="masthead">
-  <h1>방송 편성표</h1>
-  <span class="sub">지상파 4 · 종합편성 4</span>
+  <h1>📺🌤 시청환경 조회</h1>
+  <span class="sub">방송 편성 · 날씨</span>
+  <div class="main-tabs">
+    <button id="tabBtnSchedule" class="active">편성표</button>
+    <button id="tabBtnWeather">날씨</button>
+  </div>
 </header>
+
+<div id="tabSchedule" class="tab-panel active">
 
 <div class="controls">
   <div class="date-nav">
@@ -332,10 +517,32 @@
   </div>
 </div>
 
+<div class="weather-bar" id="weatherBar"></div>
+
 <div class="grid-wrap" id="gridWrap"></div>
 <div class="no-data" id="noData" style="display:none;">
   <p class="big">이 날짜의 편성 데이터가 없습니다</p>
   <p>수집된 날짜 범위 밖이거나, 아직 갱신 전일 수 있습니다.</p>
+</div>
+
+</div>
+
+<div id="tabWeather" class="tab-panel">
+
+<div class="month-nav">
+  <button id="prevMonth" aria-label="이전 달">‹</button>
+  <span class="month-label" id="monthLabel">2026.06</span>
+  <button id="nextMonth" aria-label="다음 달">›</button>
+</div>
+
+<div class="legend-row">
+  <span><span class="sw min"></span>최저기온</span>
+  <span><span class="sw max"></span>최고기온</span>
+  <span><span class="sw rain"></span>강수(과거: mm · 미래: 확률%)</span>
+</div>
+
+<div class="cal-wrap" id="calWrap"></div>
+
 </div>
 
 <script>
@@ -377,6 +584,73 @@ function formatDateLabel(dateStr) {
   const d = new Date(dateStr + 'T00:00:00');
   const days = ['일','월','화','수','목','금','토'];
   return `${dateStr} (${days[d.getDay()]})`;
+}
+
+// ============ 날씨 한 줄 요약 ============
+// forecast/latest.json (미래, 강수확률%) -> asos/{YYYY-MM}.json (과거, 강수량mm) 순으로 조회
+const _weatherCache = { forecast: null, asosMonths: {} };
+
+async function fetchJsonSafe(path) {
+  try {
+    const resp = await fetch(path);
+    if (resp.ok) return await resp.json();
+  } catch (e) { /* 무시 */ }
+  return null;
+}
+
+async function getWeatherForDate(dateStr) {
+  if (location.protocol === 'file:') return null; // file://에서는 날씨 fetch 생략
+
+  // 1) 미래 예보 확인
+  if (_weatherCache.forecast === null) {
+    _weatherCache.forecast = await fetchJsonSafe('./weather/forecast/latest.json') || {};
+  }
+  if (_weatherCache.forecast[dateStr]) {
+    const w = _weatherCache.forecast[dateStr];
+    return { ...w, kind: 'forecast' };
+  }
+
+  // 2) 과거 관측 확인 (해당 월 파일)
+  const yearMonth = dateStr.slice(0, 7); // 'YYYY-MM'
+  if (!(yearMonth in _weatherCache.asosMonths)) {
+    _weatherCache.asosMonths[yearMonth] = await fetchJsonSafe(`./weather/asos/${yearMonth}.json`);
+  }
+  const monthData = _weatherCache.asosMonths[yearMonth];
+  if (monthData && monthData[dateStr]) {
+    const w = monthData[dateStr];
+    return { ...w, kind: 'asos' };
+  }
+
+  return null;
+}
+
+function renderWeatherBar(weather) {
+  const bar = document.getElementById('weatherBar');
+  if (!weather) {
+    bar.innerHTML = '<span class="w-empty">이 날짜의 날씨 정보가 없습니다</span>';
+    return;
+  }
+
+  const minTa = weather.minTa;
+  const maxTa = weather.maxTa;
+  const minStr = (minTa === null || minTa === undefined) ? '–' : `${minTa.toFixed(0)}°`;
+  const maxStr = (maxTa === null || maxTa === undefined) ? '–' : `${maxTa.toFixed(0)}°`;
+
+  let rainStr;
+  if (weather.kind === 'forecast') {
+    rainStr = `비 ${Math.round(weather.pop_max)}%`;
+  } else {
+    rainStr = `비 ${weather.sumRn.toFixed(1)}mm`;
+  }
+
+  bar.innerHTML =
+    `<a href="#" onclick="switchTab('weather'); return false;" title="날씨 탭으로 이동">` +
+    `최저 <span class="w-temp-min">${minStr}</span>` +
+    `<span class="w-sep">·</span>` +
+    `최고 <span class="w-temp-max">${maxStr}</span>` +
+    `<span class="w-sep">·</span>` +
+    `<span class="w-rain">${rainStr}</span>` +
+    `</a>`;
 }
 
 function isToday(dateStr) {
@@ -483,6 +757,9 @@ async function refresh(dateStr) {
   document.getElementById('todayBadge').style.display = isToday(dateStr) ? 'inline-block' : 'none';
   const data = await getDataForDate(dateStr);
   renderGrid(data, dateStr);
+
+  const weather = await getWeatherForDate(dateStr);
+  renderWeatherBar(weather);
 }
 
 function shiftDate(dateStr, delta) {
@@ -491,8 +768,156 @@ function shiftDate(dateStr, delta) {
   return toLocalDateStr(d);
 }
 
+// ============ 날씨 탭: 월간 달력 ============
+const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
+
+function todayStr() { return toLocalDateStr(new Date()); }
+
+async function loadMonthData(year, month) {
+  const ym = `${year}-${String(month).padStart(2, '0')}`;
+  const lastYearYm = `${year - 1}-${String(month).padStart(2, '0')}`;
+
+  const [asos, forecast, lastYearAsos] = await Promise.all([
+    fetchJsonSafe(`./weather/asos/${ym}.json`),
+    fetchJsonSafe('./weather/forecast/latest.json'),
+    fetchJsonSafe(`./weather/asos/${lastYearYm}.json`),
+  ]);
+
+  return {
+    asos: asos || {},
+    forecast: forecast || {},
+    lastYearAsos: lastYearAsos || {},
+  };
+}
+
+function getDayData(dateStr, monthData) {
+  if (monthData.forecast[dateStr]) {
+    return { ...monthData.forecast[dateStr], kind: 'forecast' };
+  }
+  if (monthData.asos[dateStr]) {
+    return { ...monthData.asos[dateStr], kind: 'asos' };
+  }
+  return null;
+}
+
+function getLastYearData(dateStr, monthData) {
+  const d = new Date(dateStr + 'T00:00:00');
+  const lyDateStr = `${d.getFullYear() - 1}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  return monthData.lastYearAsos[lyDateStr] || null;
+}
+
+function renderDayCell(year, month, day, monthData, today) {
+  const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+  const dow = new Date(dateStr + 'T00:00:00').getDay();
+  const isToday = dateStr === today;
+  const isFuture = dateStr > today;
+
+  const cellClasses = ['cal-cell'];
+  if (isToday) cellClasses.push('today-cell');
+  else if (isFuture) cellClasses.push('future-cell');
+
+  const dowClass = dow === 0 ? 'sun' : (dow === 6 ? 'sat' : '');
+
+  const data = getDayData(dateStr, monthData);
+
+  let statsHtml;
+  if (!data) {
+    statsHtml = '<div class="no-data-cell">정보없음</div>';
+  } else {
+    const minStr = (data.minTa === null || data.minTa === undefined) ? '–' : `${data.minTa.toFixed(0)}°`;
+    const maxStr = (data.maxTa === null || data.maxTa === undefined) ? '–' : `${data.maxTa.toFixed(0)}°`;
+
+    let rainStr, hasRain;
+    if (data.kind === 'forecast') {
+      rainStr = `${Math.round(data.pop_max)}%`;
+      hasRain = data.pop_max >= 30;
+    } else {
+      rainStr = `${data.sumRn.toFixed(1)}mm`;
+      hasRain = data.sumRn > 0;
+    }
+
+    let lyHtml = '';
+    if (year >= 2026) {
+      const ly = getLastYearData(dateStr, monthData);
+      if (ly) {
+        lyHtml = `<div class="ly">작년 ${ly.minTa.toFixed(0)}°/${ly.maxTa.toFixed(0)}°</div>`;
+      }
+    }
+
+    statsHtml =
+      `<div class="day-stats">` +
+      `<div class="row"><span class="min">최저 ${minStr}</span></div>` +
+      `<div class="row"><span class="max">최고 ${maxStr}</span></div>` +
+      `<div class="row"><span class="rain${hasRain ? ' has-rain' : ''}">비 ${rainStr}</span></div>` +
+      lyHtml +
+      `</div>`;
+  }
+
+  return `<td class="${cellClasses.join(' ')}">` +
+         `<div class="day-num ${dowClass}">${day}</div>` +
+         statsHtml +
+         `</td>`;
+}
+
+async function renderMonth(year, month) {
+  document.getElementById('monthLabel').textContent = `${year}.${String(month).padStart(2, '0')}`;
+
+  const monthData = await loadMonthData(year, month);
+  const today = todayStr();
+
+  const firstDow = new Date(year, month - 1, 1).getDay();
+  const daysInMonth = new Date(year, month, 0).getDate();
+
+  let html = '<table class="calendar"><thead><tr>';
+  WEEKDAYS.forEach((w, i) => {
+    const cls = i === 0 ? 'sun' : (i === 6 ? 'sat' : '');
+    html += `<th class="${cls}">${w}</th>`;
+  });
+  html += '</tr></thead><tbody><tr>';
+
+  for (let i = 0; i < firstDow; i++) html += '<td class="empty"></td>';
+
+  let dow = firstDow;
+  for (let day = 1; day <= daysInMonth; day++) {
+    html += renderDayCell(year, month, day, monthData, today);
+    dow++;
+    if (dow === 7) {
+      html += '</tr><tr>';
+      dow = 0;
+    }
+  }
+  while (dow !== 0 && dow !== 7) {
+    html += '<td class="empty"></td>';
+    dow++;
+  }
+
+  html += '</tr></tbody></table>';
+  document.getElementById('calWrap').innerHTML = html;
+}
+
+// ============ 탭 전환 ============
+let currentYear, currentMonth;
+let _weatherTabLoaded = false;
+
+function switchTab(tab) {
+  const isSchedule = tab === 'schedule';
+  document.getElementById('tabSchedule').classList.toggle('active', isSchedule);
+  document.getElementById('tabWeather').classList.toggle('active', !isSchedule);
+  document.getElementById('tabBtnSchedule').classList.toggle('active', isSchedule);
+  document.getElementById('tabBtnWeather').classList.toggle('active', !isSchedule);
+
+  if (!isSchedule && !_weatherTabLoaded) {
+    _weatherTabLoaded = true;
+    renderMonth(currentYear, currentMonth);
+  }
+}
+
 // ============ 초기화 ============
 (async function init() {
+  const now = new Date();
+  currentYear = now.getFullYear();
+  currentMonth = now.getMonth() + 1;
+
   const picker = document.getElementById('datePicker');
   picker.value = "2026-06-21"; // 초기 표시 날짜
 
@@ -524,6 +949,22 @@ function shiftDate(dateStr, delta) {
   // 엔터키로도 조회 가능하게
   picker.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') refresh(picker.value);
+  });
+
+  // 탭 버튼
+  document.getElementById('tabBtnSchedule').addEventListener('click', () => switchTab('schedule'));
+  document.getElementById('tabBtnWeather').addEventListener('click', () => switchTab('weather'));
+
+  // 날씨 탭 내 월 이동
+  document.getElementById('prevMonth').addEventListener('click', () => {
+    currentMonth -= 1;
+    if (currentMonth < 1) { currentMonth = 12; currentYear -= 1; }
+    renderMonth(currentYear, currentMonth);
+  });
+  document.getElementById('nextMonth').addEventListener('click', () => {
+    currentMonth += 1;
+    if (currentMonth > 12) { currentMonth = 1; currentYear += 1; }
+    renderMonth(currentYear, currentMonth);
   });
 })();
 </script>
