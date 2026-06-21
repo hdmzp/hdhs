@@ -407,17 +407,78 @@
     font-size: 14px;
     opacity: 0.55;
   }
-  .month-nav input[type="month"] {
+
+  .month-picker-panel {
     position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    cursor: pointer;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(27,26,23,0.12);
+    padding: 10px;
+    z-index: 20;
+    display: none;
+    width: 260px;
+    max-height: 320px;
+    overflow-y: auto;
+  }
+  .month-picker-panel.open { display: block; }
+
+  .mpp-year-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2px 4px 6px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .mpp-year-row .mpp-year-label {
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'Noto Serif KR', Georgia, serif;
+  }
+  .mpp-year-row button {
+    background: none;
     border: none;
+    font-size: 14px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    width: 22px;
+    height: 22px;
+    border-radius: 5px;
+  }
+  .mpp-year-row button:hover { background: var(--rule); }
+
+  .mpp-month-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+  }
+  .mpp-month-grid button {
+    font-family: 'Pretendard', -apple-system, sans-serif;
+    font-size: 12px;
+    padding: 7px 0;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    background: var(--paper);
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .mpp-month-grid button:hover { background: var(--rule); }
+  .mpp-month-grid button.current {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+  .mpp-month-grid button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
   }
 
   .legend-row {
+    width: 100%;
     max-width: 880px;
     margin: 0 auto;
     padding: 0 24px 14px;
@@ -426,6 +487,7 @@
     gap: 18px;
     font-size: 11px;
     color: var(--ink-soft);
+    box-sizing: border-box;
   }
   .legend-row span { display: inline-flex; align-items: center; gap: 5px; }
   .legend-row .sw { width: 9px; height: 9px; border-radius: 2px; display: inline-block; }
@@ -558,7 +620,14 @@
   <div class="month-label-wrap" id="monthLabelWrap">
     <span class="month-label" id="monthLabel">2026.06</span>
     <i class="month-cal-icon">📅</i>
-    <input type="month" id="monthPicker">
+    <div class="month-picker-panel" id="monthPickerPanel">
+      <div class="mpp-year-row">
+        <button id="mppPrevYear" aria-label="이전 연도">‹</button>
+        <span class="mpp-year-label" id="mppYearLabel">2026</span>
+        <button id="mppNextYear" aria-label="다음 연도">›</button>
+      </div>
+      <div class="mpp-month-grid" id="mppMonthGrid"></div>
+    </div>
   </div>
   <button id="nextMonth" aria-label="다음 달">›</button>
 </div>
@@ -888,7 +957,9 @@ function renderDayCell(year, month, day, monthData, today) {
 async function renderMonth(year, month) {
   const ym = `${year}-${String(month).padStart(2, '0')}`;
   document.getElementById('monthLabel').textContent = `${year}.${String(month).padStart(2, '0')}`;
-  document.getElementById('monthPicker').value = ym;
+  if (document.getElementById('monthPickerPanel').classList.contains('open')) {
+    renderMonthPickerPanel();
+  }
 
   const monthData = await loadMonthData(year, month);
   const today = todayStr();
@@ -925,7 +996,38 @@ async function renderMonth(year, month) {
 
 // ============ 탭 전환 ============
 let currentYear, currentMonth;
+let pickerPanelYear;
 let _weatherTabLoaded = false;
+
+const MONTH_NAMES = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+
+function renderMonthPickerPanel() {
+  document.getElementById('mppYearLabel').textContent = pickerPanelYear;
+
+  const now = new Date();
+  const maxYear = now.getFullYear();
+  const maxMonth = now.getMonth() + 1;
+
+  let html = '';
+  for (let m = 1; m <= 12; m++) {
+    const isFuture = pickerPanelYear > maxYear || (pickerPanelYear === maxYear && m > maxMonth);
+    const isCurrent = pickerPanelYear === currentYear && m === currentMonth;
+    html += `<button type="button" class="${isCurrent ? 'current' : ''}" ` +
+            `${isFuture ? 'disabled' : ''} data-month="${m}">${MONTH_NAMES[m - 1]}</button>`;
+  }
+  document.getElementById('mppMonthGrid').innerHTML = html;
+
+  document.getElementById('mppMonthGrid').querySelectorAll('button[data-month]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const m = parseInt(btn.dataset.month, 10);
+      currentYear = pickerPanelYear;
+      currentMonth = m;
+      renderMonth(currentYear, currentMonth);
+      document.getElementById('monthPickerPanel').classList.remove('open');
+    });
+  });
+}
 
 function switchTab(tab) {
   const isSchedule = tab === 'schedule';
@@ -995,13 +1097,37 @@ function switchTab(tab) {
     renderMonth(currentYear, currentMonth);
   });
 
-  // 월 직접 조회 (라벨 클릭 -> 네이티브 월 선택기)
-  document.getElementById('monthPicker').addEventListener('change', (e) => {
-    const [y, m] = e.target.value.split('-').map(Number);
-    if (!y || !m) return;
-    currentYear = y;
-    currentMonth = m;
-    renderMonth(currentYear, currentMonth);
+  // 월 직접 조회: 라벨 클릭 -> 연도별 월 목록 드롭다운 패널 토글
+  document.getElementById('monthLabelWrap').addEventListener('click', (e) => {
+    const panel = document.getElementById('monthPickerPanel');
+    const isOpen = panel.classList.contains('open');
+    if (isOpen) {
+      panel.classList.remove('open');
+    } else {
+      pickerPanelYear = currentYear;
+      renderMonthPickerPanel();
+      panel.classList.add('open');
+    }
+    e.stopPropagation();
+  });
+
+  // 패널 바깥 클릭 시 닫기
+  document.addEventListener('click', (e) => {
+    const wrap = document.getElementById('monthLabelWrap');
+    if (!wrap.contains(e.target)) {
+      document.getElementById('monthPickerPanel').classList.remove('open');
+    }
+  });
+
+  document.getElementById('mppPrevYear').addEventListener('click', (e) => {
+    e.stopPropagation();
+    pickerPanelYear -= 1;
+    renderMonthPickerPanel();
+  });
+  document.getElementById('mppNextYear').addEventListener('click', (e) => {
+    e.stopPropagation();
+    pickerPanelYear += 1;
+    renderMonthPickerPanel();
   });
 })();
 </script>
