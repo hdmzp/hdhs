@@ -6,31 +6,40 @@
 <title>편성표 — 지상파·종편</title>
 <style>
   :root {
-    --paper: #F7F4ED;
-    --paper-dim: #EFEAE0;
-    --ink: #1B1A17;
-    --ink-soft: #5A5650;
-    --rule: #D8D2C2;
-    --terrestrial: #1F3A5F;
-    --terrestrial-soft: #E7EDF4;
-    --comprehensive: #6B2737;
-    --comprehensive-soft: #F3E6E9;
-    --now-accent: #C8511B;
-    --now-bg: #FFF1E6;
+    --paper: #FFFFFF;
+    --paper-dim: #F5F6F8;
+    --paper-dim2: #EEF0F3;
+    --ink: #1A1D24;
+    --ink-soft: #6B7280;
+    --ink-faint: #9CA3AF;
+    --rule: #E5E7EB;
+    --terrestrial: #2563EB;
+    --terrestrial-soft: #EFF4FF;
+    --comprehensive: #7C3AED;
+    --comprehensive-soft: #F5F0FE;
+    --now-accent: #2563EB;
+    --now-bg: #EFF4FF;
+    --brand-blue: #2563EB;
+    --brand-blue-hover: #1D4ED8;
+    --brand-blue-soft: #EFF4FF;
+    --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.05);
+    --shadow-md: 0 4px 10px rgba(16, 24, 40, 0.08);
+    --radius: 10px;
   }
 
   * { box-sizing: border-box; }
 
   body {
     margin: 0;
-    background: var(--paper);
+    background: var(--paper-dim);
     color: var(--ink);
-    font-family: 'Noto Serif KR', Georgia, 'Nanum Myeongjo', serif;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     -webkit-font-smoothing: antialiased;
   }
 
   .masthead {
-    border-bottom: 3px double var(--ink);
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
     padding: 14px 24px;
     display: flex;
     align-items: baseline;
@@ -43,15 +52,16 @@
     font-size: 9.5px;
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: var(--ink-soft);
+    color: var(--ink-faint);
     margin: 0;
   }
 
   .masthead h1 {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 700;
     margin: 0;
     letter-spacing: -0.01em;
+    color: var(--ink);
   }
 
   .masthead .sub {
@@ -86,6 +96,7 @@
     border: 1px solid var(--rule);
     border-radius: 8px;
     padding: 6px 8px;
+    box-shadow: var(--shadow-sm);
   }
 
   .date-nav button.arrow {
@@ -134,7 +145,7 @@
 
   .today-badge {
     font-size: 10px;
-    background: var(--now-accent);
+    background: var(--brand-blue);
     color: #fff;
     padding: 2px 7px;
     border-radius: 20px;
@@ -144,29 +155,31 @@
   .today-btn {
     font-family: 'Pretendard', -apple-system, sans-serif;
     font-size: 12.5px;
-    background: var(--ink);
-    color: var(--paper);
-    border: none;
+    font-weight: 600;
+    background: var(--paper-dim);
+    color: var(--ink);
+    border: 1px solid var(--rule);
     border-radius: 7px;
-    padding: 9px 14px;
+    padding: 8px 14px;
     cursor: pointer;
-    transition: opacity 0.15s;
+    transition: background 0.15s;
   }
-  .today-btn:hover { opacity: 0.82; }
+  .today-btn:hover { background: var(--paper-dim2); }
 
   .search-btn {
     font-family: 'Pretendard', -apple-system, sans-serif;
     font-size: 12.5px;
     font-weight: 600;
-    background: var(--now-accent);
+    background: var(--brand-blue);
     color: #fff;
     border: none;
     border-radius: 7px;
     padding: 9px 16px;
     cursor: pointer;
-    transition: opacity 0.15s;
+    transition: background 0.15s;
+    box-shadow: var(--shadow-sm);
   }
-  .search-btn:hover { opacity: 0.85; }
+  .search-btn:hover { background: var(--brand-blue-hover); }
 
   .legend {
     display: flex;
@@ -210,7 +223,7 @@
   .scroll-x {
     overflow: auto;
     max-height: calc(100vh - 130px);
-    border-bottom: 1px solid var(--rule);
+    background: var(--paper);
   }
 
   table.schedule {
@@ -225,12 +238,13 @@
     top: 0;
     background: var(--paper);
     z-index: 3;
-    padding: 10px 6px 12px;
-    border-bottom: 2px solid var(--ink);
+    padding: 12px 6px 13px;
+    border-bottom: 1px solid var(--rule);
     font-size: 13.5px;
     font-weight: 700;
     text-align: center;
     white-space: nowrap;
+    color: var(--ink);
   }
 
   table.schedule thead th.time-col {
@@ -239,7 +253,7 @@
     padding-left: 0;
     font-family: 'Pretendard', -apple-system, sans-serif;
     font-size: 10.5px;
-    color: var(--ink-soft);
+    color: var(--ink-faint);
     font-weight: 600;
     letter-spacing: 0.06em;
   }
@@ -248,7 +262,7 @@
     display: block;
     height: 3px;
     border-radius: 2px;
-    margin-top: 6px;
+    margin-top: 7px;
   }
   th.terrestrial .ch-band { background: var(--terrestrial); }
   th.comprehensive .ch-band { background: var(--comprehensive); }
@@ -261,17 +275,18 @@
 
   td.time-col {
     font-size: 11px;
-    color: var(--ink-soft);
+    color: var(--ink-faint);
     text-align: center;
     padding: 6px 0 0;
     white-space: nowrap;
     font-weight: 600;
     border-right: 1px solid var(--rule);
+    background: var(--paper-dim);
   }
 
   td.time-col .hh {
     font-size: 13px;
-    color: var(--ink);
+    color: var(--ink-soft);
   }
 
   .prog-cell {
@@ -280,16 +295,18 @@
   }
 
   .prog-block {
-    padding: 7px 9px;
+    padding: 8px 10px;
     font-size: 12.5px;
-    line-height: 1.38;
-    border-bottom: 1px dashed var(--rule);
+    line-height: 1.4;
+    border-bottom: 1px solid var(--rule);
     min-height: 16px;
+    transition: background 0.12s;
   }
+  .prog-block:hover { background: var(--paper-dim); }
 
   .prog-block .ptime {
     font-size: 10px;
-    color: var(--ink-soft);
+    color: var(--ink-faint);
     display: block;
     margin-bottom: 2px;
     font-weight: 600;
@@ -298,8 +315,9 @@
   .prog-block.now {
     background: var(--now-bg);
     border-left: 3px solid var(--now-accent);
-    padding-left: 7px;
+    padding-left: 8px;
   }
+  .prog-block.now:hover { background: var(--now-bg); }
   .prog-block.now .ptime { color: var(--now-accent); }
   .prog-block.now .ptime::before {
     content: "● ON AIR  ";
@@ -307,8 +325,8 @@
   }
 
   .prog-block.empty {
-    color: var(--rule);
-    font-style: italic;
+    color: var(--ink-faint);
+    font-style: normal;
     font-size: 11px;
   }
 
@@ -335,33 +353,37 @@
   }
   .main-tabs button {
     font-family: 'Pretendard', -apple-system, sans-serif;
-    font-size: 12.5px;
+    font-size: 13px;
     font-weight: 600;
     background: none;
     border: none;
+    border-radius: 6px;
     border-bottom: 2px solid transparent;
-    padding: 6px 10px 5px;
+    padding: 7px 12px 6px;
     color: var(--ink-soft);
     cursor: pointer;
+    transition: background 0.15s, color 0.15s;
   }
   .main-tabs button.active {
-    color: var(--ink);
-    border-bottom-color: var(--now-accent);
+    color: var(--brand-blue);
+    background: var(--brand-blue-soft);
+    border-bottom-color: transparent;
   }
-  .main-tabs button:hover { color: var(--ink); }
+  .main-tabs button:hover { color: var(--ink); background: var(--paper-dim); }
+  .main-tabs button.active:hover { color: var(--brand-blue); background: var(--brand-blue-soft); }
 
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
 
   /* ============ 날씨 탭(달력) ============ */
   #tabWeather {
-    --cold: #1F3A5F;
-    --hot: #C8511B;
-    --rain: #2E6B7E;
-    --rain-bg: #E9F1F3;
-    --today-bg: #FFF1E6;
-    --today-border: #C8511B;
-    --future-bg: #FAFAF6;
+    --cold: #2563EB;
+    --hot: #DC2626;
+    --rain: #0891B2;
+    --rain-bg: #ECFEFF;
+    --today-bg: #EFF4FF;
+    --today-border: #2563EB;
+    --future-bg: #FAFAFB;
     font-family: 'Pretendard', -apple-system, sans-serif;
   }
 
@@ -401,7 +423,7 @@
     font-size: 19px;
     font-weight: 700;
     text-align: center;
-    font-family: 'Noto Serif KR', Georgia, serif;
+    font-family: 'Pretendard', -apple-system, sans-serif;
   }
   .month-nav .month-cal-icon {
     font-size: 14px;
@@ -437,7 +459,7 @@
   .mpp-year-row .mpp-year-label {
     font-size: 14px;
     font-weight: 700;
-    font-family: 'Noto Serif KR', Georgia, serif;
+    font-family: 'Pretendard', -apple-system, sans-serif;
   }
   .mpp-year-row button {
     background: none;
@@ -468,9 +490,9 @@
   }
   .mpp-month-grid button:hover { background: var(--rule); }
   .mpp-month-grid button.current {
-    background: var(--ink);
-    color: var(--paper);
-    border-color: var(--ink);
+    background: var(--brand-blue);
+    color: #fff;
+    border-color: var(--brand-blue);
   }
   .mpp-month-grid button:disabled {
     opacity: 0.3;
@@ -512,7 +534,7 @@
     font-weight: 700;
     color: var(--ink-soft);
     padding: 8px 4px;
-    border-bottom: 2px solid var(--ink);
+    border-bottom: 1px solid var(--rule);
     text-align: center;
   }
   table.calendar th.sun { color: var(--hot); }
@@ -525,11 +547,11 @@
     padding: 6px 7px;
     background: #fff;
   }
-  table.calendar td.empty { background: var(--paper); border: none; }
+  table.calendar td.empty { background: var(--paper-dim); border: none; }
   table.calendar td.future-cell { background: var(--future-bg); }
   table.calendar td.today-cell {
     background: var(--today-bg);
-    border: 2px solid var(--today-border);
+    border: 1.5px solid var(--today-border);
   }
 
   .day-num {
@@ -610,8 +632,8 @@
     cursor: pointer;
   }
   .hs-toggle-btn.active {
-    background: var(--ink);
-    color: var(--paper);
+    background: var(--brand-blue);
+    color: #fff;
   }
 
   .hs-grid-wrap {
@@ -637,22 +659,28 @@
     top: 0;
     background: var(--paper);
     z-index: 3;
-    font-size: 14px;
-    font-weight: 800;
-    padding: 10px 4px 11px;
-    border-bottom: 2px solid var(--ink);
+    padding: 10px 4px 12px;
+    border-bottom: 1px solid var(--rule);
     text-align: center;
   }
   table.hs-table thead th.hs-time-col {
     width: 52px;
     font-size: 10.5px;
-    color: var(--ink-soft);
+    color: var(--ink-faint);
     font-weight: 600;
   }
-  table.hs-table thead th.hd { color: var(--hd); border-bottom-color: var(--hd); }
-  table.hs-table thead th.lt { color: var(--lt); border-bottom-color: var(--lt); }
-  table.hs-table thead th.cj { color: var(--cj); border-bottom-color: var(--cj); }
-  table.hs-table thead th.gs { color: var(--gs); border-bottom-color: var(--gs); }
+  table.hs-table thead th .hs-co-tag {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 800;
+    padding: 4px 14px;
+    border-radius: 20px;
+    color: #fff;
+  }
+  table.hs-table thead th.hd .hs-co-tag { background: var(--hd); }
+  table.hs-table thead th.lt .hs-co-tag { background: var(--lt); }
+  table.hs-table thead th.cj .hs-co-tag { background: var(--cj); }
+  table.hs-table thead th.gs .hs-co-tag { background: var(--gs); }
 
   table.hs-table td {
     border: 1px solid var(--rule);
@@ -663,12 +691,18 @@
     text-align: center;
     font-size: 11px;
     font-weight: 700;
-    color: var(--ink-soft);
-    background: var(--paper);
+    color: var(--ink-faint);
+    background: var(--paper-dim);
     vertical-align: top;
     padding: 6px 0 0;
     border-right: 1px solid var(--rule);
   }
+
+  /* 회사별 컬럼에 옅은 배경색을 깔아 시각적 구분을 강화 */
+  table.hs-table td.hs-co-cell.hd { background: color-mix(in srgb, var(--hd) 4%, white); }
+  table.hs-table td.hs-co-cell.lt { background: color-mix(in srgb, var(--lt) 4%, white); }
+  table.hs-table td.hs-co-cell.cj { background: color-mix(in srgb, var(--cj) 4%, white); }
+  table.hs-table td.hs-co-cell.gs { background: color-mix(in srgb, var(--gs) 4%, white); }
 
   .hs-cell-inner { display: flex; flex-direction: column; }
 
@@ -757,19 +791,19 @@
   .hs-cat-chip:hover { background: var(--paper-dim); }
   .hs-cat-chip i { width: 8px; height: 8px; border-radius: 2px; display: inline-block; }
   .hs-cat-chip.active {
-    background: var(--ink);
-    color: var(--paper);
-    border-color: var(--ink);
+    background: var(--brand-blue);
+    color: #fff;
+    border-color: var(--brand-blue);
   }
   .hs-cat-chip.hs-cat-reset {
     font-weight: 700;
-    border-color: var(--now-accent);
-    color: var(--now-accent);
+    border-color: var(--brand-blue);
+    color: var(--brand-blue);
   }
   .hs-cat-chip.hs-cat-reset.active {
-    background: var(--now-accent);
+    background: var(--brand-blue);
     color: #fff;
-    border-color: var(--now-accent);
+    border-color: var(--brand-blue);
   }
 
   /* 카테고리 필터링된 리스트뷰: 카드 사이 간격 없이 빈틈없이 쌓기 */
@@ -794,13 +828,13 @@
   <h1>📺🌤 시청환경 조회</h1>
   <span class="sub">방송 편성 · 날씨 · 홈쇼핑</span>
   <div class="main-tabs">
-    <button id="tabBtnHomeshop">홈쇼핑</button>
-    <button id="tabBtnSchedule" class="active">편성표</button>
+    <button id="tabBtnHomeshop" class="active">홈쇼핑</button>
+    <button id="tabBtnSchedule">편성표</button>
     <button id="tabBtnWeather">날씨</button>
   </div>
 </header>
 
-<div id="tabSchedule" class="tab-panel active">
+<div id="tabSchedule" class="tab-panel">
 
 <div class="controls">
   <div class="date-nav">
@@ -860,7 +894,7 @@
 
 </div>
 
-<div id="tabHomeshop" class="tab-panel">
+<div id="tabHomeshop" class="tab-panel active">
 
 <div class="hs-controls">
   <div class="date-nav">
@@ -1422,8 +1456,22 @@ function hsRenderBody() {
 
   if (hsCategoryFilter === null) {
     wrap.innerHTML = hsRenderGridView(datasets, nowMin);
+    hsScrollToCurrentHour(wrap, nowMin);
   } else {
     wrap.innerHTML = hsRenderListView(datasets, nowMin);
+  }
+}
+
+// 오늘 날짜이고 현재 시각 정보가 있으면, 그 시간대 행으로 자동 스크롤
+function hsScrollToCurrentHour(wrap, nowMin) {
+  if (nowMin === null) return;
+  const hour = Math.floor(nowMin / 60);
+  const rows = wrap.querySelectorAll('table.hs-table tbody tr');
+  const targetRow = rows[hour];
+  const scrollContainer = wrap.querySelector('.hs-scroll');
+  if (targetRow && scrollContainer) {
+    const offset = targetRow.offsetTop - 40;
+    scrollContainer.scrollTop = Math.max(0, offset);
   }
 }
 
@@ -1444,7 +1492,7 @@ function hsRenderGridView(datasets, nowMin) {
   let html = '<div class="hs-scroll"><table class="hs-table"><thead><tr>';
   html += '<th class="hs-time-col">시간</th>';
   HS_COMPANIES.forEach(c => {
-    html += `<th class="${c.cls}">${c.name}</th>`;
+    html += `<th class="${c.cls}"><span class="hs-co-tag">${c.name}</span></th>`;
   });
   html += '</tr></thead><tbody>';
 
@@ -1454,9 +1502,9 @@ function hsRenderGridView(datasets, nowMin) {
     HS_COMPANIES.forEach((c, ci) => {
       const progs = buckets[h][ci];
       if (progs.length === 0) {
-        html += '<td class="hs-empty-cell"></td>';
+        html += `<td class="hs-empty-cell hs-co-cell ${c.cls}"></td>`;
       } else {
-        let cell = '<td><div class="hs-cell-inner">';
+        let cell = `<td class="hs-co-cell ${c.cls}"><div class="hs-cell-inner">`;
         for (const p of progs) cell += hsRenderProgram(p, nowMin);
         cell += '</div></td>';
         html += cell;
@@ -1484,16 +1532,16 @@ function hsRenderListView(datasets, nowMin) {
   let html = '<div class="hs-scroll"><table class="hs-table hs-table-list"><thead><tr>';
   html += '<th class="hs-time-col"></th>';
   HS_COMPANIES.forEach(c => {
-    html += `<th class="${c.cls}">${c.name}</th>`;
+    html += `<th class="${c.cls}"><span class="hs-co-tag">${c.name}</span></th>`;
   });
   html += '</tr></thead><tbody><tr>';
   html += '<td class="hs-time-cell"></td>';
   HS_COMPANIES.forEach((c, ci) => {
     const progs = filtered[ci];
     if (progs.length === 0) {
-      html += '<td class="hs-empty-cell"></td>';
+      html += `<td class="hs-empty-cell hs-co-cell ${c.cls}"></td>`;
     } else {
-      let cell = '<td><div class="hs-cell-inner hs-cell-list">';
+      let cell = `<td class="hs-co-cell ${c.cls}"><div class="hs-cell-inner hs-cell-list">`;
       for (const p of progs) cell += hsRenderProgram(p, nowMin);
       cell += '</div></td>';
       html += cell;
@@ -1567,6 +1615,10 @@ function switchTab(tab) {
 
   const picker = document.getElementById('datePicker');
   picker.value = toLocalDateStr(now); // 초기 표시 날짜 = 오늘
+
+  // 홈쇼핑 탭이 첫 화면이므로 즉시 로드
+  _homeshopTabLoaded = true;
+  await hsRefresh(hsCurrentDate);
 
   // 최초 1회는 바로 조회
   await refresh(picker.value);
