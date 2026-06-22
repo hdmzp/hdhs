@@ -40,6 +40,7 @@ import time
 import requests
 from datetime import datetime, timedelta, timezone
 from categorize import classify_batch
+from clean_product import clean_product_name
 
 KST = timezone(timedelta(hours=9))
 OUTPUT_DIR = "homeshopping"
@@ -69,14 +70,17 @@ def fmt_time(raw: str) -> str:
 
 
 def add_categories(programs):
-    """programs 리스트에 학습 모델 기반 category를 일괄 채워서(덮어써서) 반환.
-    GS는 브랜드 정보가 없어 상품명만으로 분류한다."""
+    """
+    1) 원본 상품명으로 카테고리 분류 (GS는 브랜드 정보가 없어 상품명만으로 분류)
+    2) 분류가 끝난 뒤 product 필드를 화면 표시용으로 정제
+    """
     if not programs:
         return programs
     pairs = [(p["brand"], p["product"]) for p in programs]
     categories = classify_batch(pairs)
     for p, cat in zip(programs, categories):
         p["category"] = cat
+        p["product"] = clean_product_name(p["product"])
     return programs
 
 
