@@ -114,6 +114,15 @@ def fetch_hyundai(date_compact, broad_param):
         time.sleep(0.15)
 
     programs = sorted(seen.values(), key=lambda x: x["start"])
+
+    # 데이터방송(dtv)은 API가 종료시각을 "다음 방송 시작 1분 전"으로 줘서
+    # 끊김이 생긴다(예: 01:00-01:19, 01:20-01:39). 다음 방송의 시작시각을
+    # 현재 방송의 종료시각으로 보정해 시간이 끊김없이 이어지게 한다.
+    # (라이브방송 etv는 원본부터 이미 끊김없이 맞아 있어 보정 불필요)
+    if broad_param == "dtv":
+        for i in range(len(programs) - 1):
+            programs[i]["end"] = programs[i + 1]["start"]
+
     return programs
 
 
