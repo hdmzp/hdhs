@@ -39,6 +39,7 @@ import json
 import time
 import requests
 from datetime import datetime, timedelta, timezone
+from categorize import classify_batch
 
 KST = timezone(timedelta(hours=9))
 OUTPUT_DIR = "homeshopping"
@@ -65,6 +66,18 @@ def fmt_time(raw: str) -> str:
     if not raw or len(raw) < 12:
         return ""
     return f"{raw[8:10]}:{raw[10:12]}"
+
+
+def add_categories(programs):
+    """programs 리스트에 학습 모델 기반 category를 일괄 채워서(덮어써서) 반환.
+    GS는 브랜드 정보가 없어 상품명만으로 분류한다."""
+    if not programs:
+        return programs
+    pairs = [(p["brand"], p["product"]) for p in programs]
+    categories = classify_batch(pairs)
+    for p, cat in zip(programs, categories):
+        p["category"] = cat
+    return programs
 
 
 def fetch_gs(date_obj: datetime, broadcast: str) -> list:
@@ -96,7 +109,6 @@ def fetch_gs(date_obj: datetime, broadcast: str) -> list:
             end = fmt_time(item.get("hsshow_datetime_end", ""))
             if not start or not end:
                 continue
-            category = (item.get("cat") or {}).get("cat_name", "") or ""
             programs.append({
                 "start": start,
                 "end": end,
@@ -104,7 +116,7 @@ def fetch_gs(date_obj: datetime, broadcast: str) -> list:
                 "product": item.get("hsshow_title", "") or "",
                 "price": 0,                                # 라방바는 가격 미제공
                 "link": "",                                # 라방바는 링크 미제공
-                "category": category,
+                "category": "",                            # add_categories에서 채움
             })
 
         programs.sort(key=lambda x: x["start"])
@@ -149,6 +161,7 @@ def main():
 
             print(f"[GS_{broadcast}] {date_dash} 수집 중...")
             programs = fetch_gs(d, broadcast)
+            programs = add_categories(programs)
 
             if is_past and not programs:
                 print(f"  -> 0개 (과거, 기존값 유지)")

@@ -34,6 +34,7 @@ import json
 import time
 import requests
 from datetime import datetime, timedelta, timezone
+from categorize import classify_batch
 
 KST = timezone(timedelta(hours=9))
 OUTPUT_DIR = "homeshopping"
@@ -61,6 +62,17 @@ def parse_price(v):
         return int(float(s))
     except ValueError:
         return 0
+
+
+def add_categories(programs):
+    """programs 리스트에 category 필드를 일괄 채워서 반환."""
+    if not programs:
+        return programs
+    pairs = [(p["brand"], p["product"]) for p in programs]
+    categories = classify_batch(pairs)
+    for p, cat in zip(programs, categories):
+        p["category"] = cat
+    return programs
 
 
 def fetch_hyundai(date_compact, broad_param):
@@ -141,6 +153,7 @@ def main():
 
             print(f"[HD_{broadcast}] {date_dash} 수집 중...")
             programs = fetch_hyundai(date_compact, broad_param)
+            programs = add_categories(programs)
 
             if is_past and not programs:
                 print(f"  -> 0개 (과거, 기존값 유지)")
