@@ -12,13 +12,14 @@ from datetime import datetime, timedelta, timezone
 
 from playwright.sync_api import sync_playwright
 
-# 실행 경로 문제 방지
+# 실행 경로 문제 방지 (현재 파일 디렉토리와 작업 디렉토리 우선 탐색)
 sys.path.insert(0, os.getcwd())
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from naver_parser import parse_cards_from_html, dedupe_programs
 
-# ⚠️ [핵심 수정] 네이버 내장 API 렌더러 pkid와 os=1(전체) 옵션을 명시하여 요일 잠금을 해제합니다.
+# ⚠️ [핵심 수정] 드라마와 예능 모두 pkid=57 위젯 엔진에 &os=1(전체 탭) 파라미터를 주입하여 
+# 실행하는 요일과 무관하게 '전체 요일' 데이터를 강제로 불러옵니다.
 DRAMA_URL = (
     "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&pkid=57&os=1"
     "&query=%EB%B0%A9%EC%98%81%EC%A4%91%ED%95%9C%EA%B5%AD%EB%93%9C%EB%9D%BC%EB%A7%88"
@@ -28,7 +29,7 @@ VARIETY_URL = (
     "&query=%EB%B0%A9%EC%98%81%EC%A4%91%ED%95%9C%EA%B5%AD%EC%98%88%EB%8A%A5"
 )
 
-# 시청률 커트라인 기준 1.0%
+# 시청률 커트라인 기준 (드라마 5.0%, 예능 1.0%)
 MIN_RATING_DRAMA = 5.0
 MIN_RATING_VARIETY = 1.0
 KST = timezone(timedelta(hours=9))
@@ -91,6 +92,7 @@ def parse_current_total(paging_text):
 # ---------- 드라마 ----------
 
 def fetch_drama(page):
+    """드라마 위젯: 한 번 로드로 전체(보이는+숨김 ul.list_info) 카드 수집"""
     page.goto(DRAMA_URL, wait_until="networkidle", timeout=30000)
     page.wait_for_selector("li.info_box", timeout=15000)
     html = page.content()
@@ -106,6 +108,7 @@ def fetch_drama(page):
 # ---------- 예능 ----------
 
 def click_next_and_wait(page, before_paging_text, before_visible_sig, timeout_s=12):
+    """'다음' 버튼을 클릭하고 페이지가 실제로 넘어갔는지 확인"""
     next_btn = page.query_selector("a.pg_next._next")
     if not next_btn:
         return False
@@ -122,7 +125,7 @@ def click_next_and_wait(page, before_paging_text, before_visible_sig, timeout_s=
 
     try:
         next_btn.click(timeout=5000)
-    except Exception as e:
+    except Exception:
         try:
             next_btn.click(force=True, timeout=5000)
         except Exception:
@@ -146,6 +149,7 @@ def click_next_and_wait(page, before_paging_text, before_visible_sig, timeout_s=
 
 
 def fetch_variety(page, max_pages: int = 30):
+    """예능 위젯: '다음' 버튼을 끝까지 클릭하며 각 페이지 카드 수집"""
     page.goto(VARIETY_URL, wait_until="networkidle", timeout=30000)
     page.wait_for_selector("li.info_box", timeout=15000)
 
