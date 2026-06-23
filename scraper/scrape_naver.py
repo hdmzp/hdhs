@@ -13,6 +13,7 @@ scrape_naver.py
   - 현재/전체 페이지 번호 (네이버 페이지네이션 텍스트에서 직접 추출)
   - 화면에 보이는 카드 수, 그중 시청률 기준 통과한 카드 수
   - "다음" 버튼 클릭 후 실제로 페이지가 넘어갔는지 여부
+  - 각 카드의 파싱 결과 (제목, 채널, 시청률, 요일, 시간)
 이 로그를 보면 어느 페이지에서/왜 멈췄는지 바로 알 수 있다.
 
 동작 개요:
@@ -27,7 +28,7 @@ scrape_naver.py
        b) 화면에 실제로 보이는(visible, offsetParent!==null) 카드 내용 변화
           -> a)를 못 찾았을 때의 보조 판단 기준
      클릭 후 한 번에 못 넘어가도 즉시 포기하지 않고 재시도(최대 3회)한다.
-  3. 시청률 기준: 드라마 5% 이상, 예능 1% 이상만 필터링.
+  3. 시청률 기준: 드라마 5% 이상, 예능 1.6% 이상만 필터링.
   4. 결과를 weekStart(해당 주 월요일, YYYY-MM-DD) 기준 JSON 파일로 저장.
      기존 파일이 있으면 동일 weekStart 내에서 program id로 병합(merge)한다.
 """
@@ -53,7 +54,7 @@ VARIETY_URL = (
 )
 
 MIN_RATING_DRAMA = 5.0
-MIN_RATING_VARIETY = 1.0
+MIN_RATING_VARIETY = 1.6
 KST = timezone(timedelta(hours=9))
 
 DEBUG = False
@@ -121,7 +122,7 @@ def fetch_drama(page):
     except Exception:
         raw_card_count = "?"
     print(f"  [drama] 전체카드(보이는+숨김 포함)={raw_card_count}개")
-    programs = parse_cards_from_html(html, "drama", min_rating=MIN_RATING_DRAMA, base_url=DRAMA_URL)
+    programs = parse_cards_from_html(html, "drama", min_rating=MIN_RATING_DRAMA, base_url=DRAMA_URL, debug=DEBUG)
     return dedupe_programs(programs)
 
 
@@ -198,7 +199,7 @@ def fetch_variety(page, max_pages: int = 30):
         except Exception:
             raw_card_count = "?"
 
-        programs = parse_cards_from_html(html, "variety", min_rating=MIN_RATING_VARIETY, base_url=VARIETY_URL)
+        programs = parse_cards_from_html(html, "variety", min_rating=MIN_RATING_VARIETY, base_url=VARIETY_URL, debug=DEBUG)
         all_programs.extend(programs)
 
         print(
@@ -262,7 +263,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--out-dir", default="../data/dramavariety")
     parser.add_argument("--max-pages", type=int, default=30, help="예능 위젯 최대 순회 페이지 수 (안전장치)")
-    parser.add_argument("--debug", action="store_true", help="진행 상황을 자세히 출력")
+    parser.add_argument("--debug", action="store_true", help="진행 상황을 자세히 출력 (파싱 결과 포함)")
     parser.add_argument("--headful", action="store_true", help="브라우저 창을 띄워서 눈으로 확인 (로컬 디버그용)")
     args = parser.parse_args()
     DEBUG = args.debug
