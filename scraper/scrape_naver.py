@@ -12,7 +12,7 @@ scrape_naver.py
   2. 예능 위젯: 페이지가 다수(확인 시점 기준 24p)이며 "다음" 버튼이 AJAX로
      동작하므로, Playwright로 다음 버튼을 끝까지 클릭하며 각 페이지의
      li.info_box를 누적 수집한다.
-  3. 시청률 5% 이상만 필터링.
+  3. 시청률 기준: 드라마 5% 이상, 예능 1.6% 이상만 필터링.
   4. 결과를 weekStart(해당 주 월요일, YYYY-MM-DD) 기준 JSON 파일로 저장.
      기존 파일이 있으면 동일 weekStart 내에서 program id로 병합(merge)한다.
 """
@@ -37,7 +37,8 @@ VARIETY_URL = (
     "&query=%EB%B0%A9%EC%98%81%EC%A4%91%ED%95%9C%EA%B5%AD%EC%98%88%EB%8A%A5"
 )
 
-MIN_RATING = 5.0
+MIN_RATING_DRAMA = 5.0
+MIN_RATING_VARIETY = 1.6
 KST = timezone(timedelta(hours=9))
 
 
@@ -50,7 +51,7 @@ def fetch_drama(page):
     page.goto(DRAMA_URL, wait_until="networkidle", timeout=30000)
     page.wait_for_selector("li.info_box", timeout=15000)
     html = page.content()
-    programs = parse_cards_from_html(html, "drama", min_rating=MIN_RATING)
+    programs = parse_cards_from_html(html, "drama", min_rating=MIN_RATING_DRAMA)
     return dedupe_programs(programs)
 
 
@@ -60,13 +61,17 @@ def fetch_variety(page, max_pages: int = 30):
     page.wait_for_selector("li.info_box", timeout=15000)
 
     all_programs = []
-    seen_page_signatures = set()
+
+    def first_card_signature():
+        """현재 페이지 1번째 카드의 식별 텍스트 (페이지 전환 감지용)"""
+        first = page.query_selector("li.info_box")
+        return first.inner_text() if first else None
 
     for page_num in range(1, max_pages + 1):
         html = page.content()
-        programs = parse_cards_from_html(html, "variety", min_rating=MIN_RATING)
+        programs = parse_cards_from_html(html, "variety", min_rating=MIN_RATING_VARIETY)
         all_programs.extend(programs)
-        print(f"  [variety] page {page_num}: {len(programs)} programs >= {MIN_RATING}%")
+        print(f"  [variety] page {page_num}: {len(programs)} programs >= {MIN_RATING_VARIETY}%")
 
         next_btn = page.query_selector("a.pg_next._next")
         if not next_btn:
@@ -78,10 +83,20 @@ def fetch_variety(page, max_pages: int = 30):
             print(f"  [variety] reached last page at page {page_num}")
             break
 
+        before_sig = first_card_signature()
         next_btn.click()
-        # 다음 페이지 카드가 갱신될 때까지 대기 (li.info_box 내용이 바뀔 시간 확보)
-        page.wait_for_timeout(800)
-        page.wait_for_selector("li.info_box", timeout=15000)
+
+        # 1번째 카드 내용이 실제로 바뀔 때까지 polling (최대 10초)
+        changed = False
+        for _ in range(20):
+            page.wait_for_timeout(500)
+            after_sig = first_card_signature()
+            if after_sig is not None and after_sig != before_sig:
+                changed = True
+                break
+        if not changed:
+            print(f"  [variety] page did not change after clicking next at page {page_num}, stopping")
+            break
 
     return dedupe_programs(all_programs)
 
@@ -135,11 +150,11 @@ def main():
 
         print("collecting drama...")
         drama_programs = fetch_drama(page)
-        print(f"  drama total: {len(drama_programs)} programs >= {MIN_RATING}%")
+        print(f"  drama total: {len(drama_programs)} programs >= {MIN_RATING_DRAMA}%")
 
         print("collecting variety...")
         variety_programs = fetch_variety(page, max_pages=args.max_pages)
-        print(f"  variety total: {len(variety_programs)} programs >= {MIN_RATING}%")
+        print(f"  variety total: {len(variety_programs)} programs >= {MIN_RATING_VARIETY}%")
 
         browser.close()
 
@@ -152,4 +167,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
