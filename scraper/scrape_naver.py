@@ -12,22 +12,23 @@ from datetime import datetime, timedelta, timezone
 
 from playwright.sync_api import sync_playwright
 
-# 실행 경로 문제 방지 (현재 파일 디렉토리와 작업 디렉토리 우선 탐색)
+# 실행 경로 문제 방지
 sys.path.insert(0, os.getcwd())
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from naver_parser import parse_cards_from_html, dedupe_programs
 
+# ⚠️ [핵심 수정] 네이버 내장 API 렌더러 pkid와 os=1(전체) 옵션을 명시하여 요일 잠금을 해제합니다.
 DRAMA_URL = (
-    "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&qvt=0"
+    "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&pkid=57&os=1"
     "&query=%EB%B0%A9%EC%98%81%EC%A4%91%ED%95%9C%EA%B5%AD%EB%93%9C%EB%9D%BC%EB%A7%88"
 )
 VARIETY_URL = (
-    "https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&ssc=tab.nx.all"
+    "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&pkid=57&os=1"
     "&query=%EB%B0%A9%EC%98%81%EC%A4%91%ED%95%9C%EA%B5%AD%EC%98%88%EB%8A%A5"
 )
 
-# ⚠️ [수정] 시청률 커트라인 기준을 1.0%로 조정!
+# 시청률 커트라인 기준 1.0%
 MIN_RATING_DRAMA = 5.0
 MIN_RATING_VARIETY = 1.0
 KST = timezone(timedelta(hours=9))
