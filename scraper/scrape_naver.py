@@ -62,10 +62,19 @@ def fetch_variety(page, max_pages: int = 30):
 
     all_programs = []
 
-    def first_card_signature():
-        """현재 페이지 1번째 카드의 식별 텍스트 (페이지 전환 감지용)"""
-        first = page.query_selector("li.info_box")
-        return first.inner_text() if first else None
+    # 드라마 위젯에서 확인됐듯, 페이지 전환 시 이전 페이지의 ul.list_info가
+    # display:none 상태로 DOM에 남아있을 수 있다. 따라서 변경 감지는
+    # "화면에 실제로 보이는(visible) 카드들"만 기준으로 해야 한다.
+    # (offsetParent !== null 은 display:none 여부를 판별하는 표준적인 방법)
+    VISIBLE_SIG_JS = """
+        () => Array.from(document.querySelectorAll('li.info_box'))
+            .filter(el => el.offsetParent !== null)
+            .map(el => el.innerText)
+            .join('|')
+    """
+
+    def visible_signature():
+        return page.evaluate(VISIBLE_SIG_JS)
 
     for page_num in range(1, max_pages + 1):
         html = page.content()
@@ -83,15 +92,15 @@ def fetch_variety(page, max_pages: int = 30):
             print(f"  [variety] reached last page at page {page_num}")
             break
 
-        before_sig = first_card_signature()
+        before_sig = visible_signature()
         next_btn.click()
 
-        # 1번째 카드 내용이 실제로 바뀔 때까지 polling (최대 10초)
+        # 화면에 보이는 카드 내용이 실제로 바뀔 때까지 polling (최대 10초)
         changed = False
         for _ in range(20):
             page.wait_for_timeout(500)
-            after_sig = first_card_signature()
-            if after_sig is not None and after_sig != before_sig:
+            after_sig = visible_signature()
+            if after_sig and after_sig != before_sig:
                 changed = True
                 break
         if not changed:
