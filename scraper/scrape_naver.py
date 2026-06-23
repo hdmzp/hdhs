@@ -2,12 +2,6 @@
 scrape_naver.py
 네이버 "방영중한국드라마" / "방영중한국예능" 검색 위젯을 수집해
 주차별(월~일) JSON 스냅샷으로 저장한다.
-
-로컬 테스트 방법 (GitHub Actions 없이 직접 실행):
-    pip install playwright beautifulsoup4 lxml
-    python -m playwright install chromium   # 최초 1회, requirements.txt만으론 안 됨
-    cd scraper
-    python scrape_naver.py --out-dir ../data/dramavariety --debug
 """
 import argparse
 import json
@@ -18,7 +12,10 @@ from datetime import datetime, timedelta, timezone
 
 from playwright.sync_api import sync_playwright
 
+# 실행 경로 문제 방지 (현재 파일 디렉토리와 작업 디렉토리 우선 탐색)
+sys.path.insert(0, os.getcwd())
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
 from naver_parser import parse_cards_from_html, dedupe_programs
 
 DRAMA_URL = (
@@ -30,8 +27,9 @@ VARIETY_URL = (
     "&query=%EB%B0%A9%EC%98%81%EC%A4%91%ED%95%9C%EA%B5%AD%EC%98%88%EB%8A%A5"
 )
 
+# ⚠️ [수정] 시청률 커트라인 기준을 1.0%로 조정!
 MIN_RATING_DRAMA = 5.0
-MIN_RATING_VARIETY = 1.6
+MIN_RATING_VARIETY = 1.0
 KST = timezone(timedelta(hours=9))
 
 DEBUG = False
@@ -48,8 +46,6 @@ def monday_of(date_obj):
 
 # ---------- 페이지 전환 감지 헬퍼 ----------
 
-# 단순히 전체 text를 합치면 요일/시간이 겹칠 때 오작동할 수 있으므로, 
-# 각 카드의 '제목(strong.title)' 리스트를 서명으로 사용합니다.
 VISIBLE_SIG_JS = """
     () => Array.from(document.querySelectorAll('li.info_box'))
         .filter(el => el.offsetParent !== null)
@@ -76,7 +72,6 @@ def visible_signature(page):
 
 
 def read_paging_text(page):
-    """'이전 현재 2 전체 24 다음' 같은 텍스트를 읽어온다. 없으면 None."""
     try:
         return page.evaluate(PAGING_TEXT_JS)
     except Exception:
@@ -84,7 +79,6 @@ def read_paging_text(page):
 
 
 def parse_current_total(paging_text):
-    """'현재 2 전체 24' -> (2, 24). 못 찾으면 (None, None)"""
     if not paging_text:
         return None, None
     m = re.search(r'현재\s*(\d+)\s*전체\s*(\d+)', paging_text)
@@ -96,7 +90,6 @@ def parse_current_total(paging_text):
 # ---------- 드라마 ----------
 
 def fetch_drama(page):
-    """드라마 위젯: 한 번 로드로 전체(보이는+숨김 ul.list_info) 카드 수집"""
     page.goto(DRAMA_URL, wait_until="networkidle", timeout=30000)
     page.wait_for_selector("li.info_box", timeout=15000)
     html = page.content()
@@ -112,19 +105,13 @@ def fetch_drama(page):
 # ---------- 예능 ----------
 
 def click_next_and_wait(page, before_paging_text, before_visible_sig, timeout_s=12):
-    """
-    '다음' 버튼을 클릭하고 페이지가 실제로 넘어갔는지 확인한다.
-    반환값: True(넘어감) / False(안 넘어감, 마지막페이지 등)
-    """
     next_btn = page.query_selector("a.pg_next._next")
     if not next_btn:
-        dprint("다음 버튼 자체를 못 찾음")
         return False
 
     aria_disabled = next_btn.get_attribute("aria-disabled")
     classes = next_btn.get_attribute("class") or ""
     if aria_disabled == "true" or "on" not in classes.split():
-        dprint(f"다음 버튼 비활성 상태 (aria-disabled={aria_disabled}, class={classes})")
         return False
 
     try:
@@ -135,11 +122,9 @@ def click_next_and_wait(page, before_paging_text, before_visible_sig, timeout_s=
     try:
         next_btn.click(timeout=5000)
     except Exception as e:
-        dprint(f"클릭 자체가 실패함: {e}")
         try:
             next_btn.click(force=True, timeout=5000)
-        except Exception as e2:
-            dprint(f"force 클릭도 실패: {e2}")
+        except Exception:
             return False
 
     steps = int(timeout_s / 0.5)
@@ -150,20 +135,16 @@ def click_next_and_wait(page, before_paging_text, before_visible_sig, timeout_s=
         cur, tot = parse_current_total(after_paging_text)
         before_cur, before_tot = parse_current_total(before_paging_text)
         if cur is not None and before_cur is not None and cur != before_cur:
-            dprint(f"페이지카운터로 전환 확인: {before_cur} -> {cur} (전체 {tot})")
             return True
 
         after_visible_sig = visible_signature(page)
         if after_visible_sig and before_visible_sig and after_visible_sig != before_visible_sig:
-            dprint("페이지카운터는 못 읽었지만 화면 카드 내용 변화로 전환 확인")
             return True
 
-    dprint("타임아웃까지 전환 신호를 못 찾음")
     return False
 
 
 def fetch_variety(page, max_pages: int = 30):
-    """예능 위젯: '다음' 버튼을 끝까지 클릭하며 각 페이지 카드 수집"""
     page.goto(VARIETY_URL, wait_until="networkidle", timeout=30000)
     page.wait_for_selector("li.info_box", timeout=15000)
 
@@ -172,7 +153,6 @@ def fetch_variety(page, max_pages: int = 30):
     max_retries_per_page = 3
 
     while page_num <= max_pages:
-        # AJAX 로딩 후 DOM 안정화를 위해 잠깐 대기
         page.wait_for_timeout(500)
         
         paging_text = read_paging_text(page)
@@ -204,7 +184,6 @@ def fetch_variety(page, max_pages: int = 30):
             advanced = click_next_and_wait(page, before_paging_text, before_visible_sig)
             if advanced:
                 break
-            dprint(f"page {page_num}: 다음 클릭 시도 {attempt}/{max_retries_per_page} 실패, 재시도")
             page.wait_for_timeout(1000)
 
         if not advanced:
@@ -246,9 +225,9 @@ def main():
     global DEBUG
     parser = argparse.ArgumentParser()
     parser.add_argument("--out-dir", default="../data/dramavariety")
-    parser.add_argument("--max-pages", type=int, default=30, help="예능 위젯 최대 순회 페이지 수 (안전장치)")
-    parser.add_argument("--debug", action="store_true", help="진행 상황을 자세히 출력 (파싱 결과 포함)")
-    parser.add_argument("--headful", action="store_true", help="브라우저 창을 띄워서 눈으로 확인 (로컬 디버그용)")
+    parser.add_argument("--max-pages", type=int, default=30, help="예능 위젯 최대 순회 페이지 수")
+    parser.add_argument("--debug", action="store_true", help="진행 상황 출력")
+    parser.add_argument("--headful", action="store_true", help="브라우저 활성화 실행")
     args = parser.parse_args()
     DEBUG = args.debug
 
