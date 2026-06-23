@@ -31,17 +31,18 @@ DAY_INDEX = {d: i for i, d in enumerate(DAY_ORDER)}
 
 def expand_days(day_token: str):
     """'월~목' -> ['월','화','수','목'] / '월, 화' -> ['월','화'] / '월~수, 금' -> ['월','화','수','금']"""
-    days = []
+    day_set = set()  # 중복 방지
     for part in [p.strip() for p in day_token.split(",")]:
         if not part:
             continue
         if "~" in part:
             start, end = [p.strip() for p in part.split("~")]
             si, ei = DAY_INDEX[start], DAY_INDEX[end]
-            days.extend(DAY_ORDER[si:ei + 1])
+            day_set.update(DAY_ORDER[si:ei + 1])
         else:
-            days.append(part)
-    return days
+            day_set.add(part)
+    # DAY_ORDER 순서대로 정렬해서 반환 (월-일 순서 보장)
+    return [d for d in DAY_ORDER if d in day_set]
 
 
 def parse_schedule_text(schedule_text: str):
