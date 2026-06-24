@@ -667,6 +667,20 @@
   }
   .dv-slicer button:hover:not(.active) { background: var(--paper-dim); color: var(--ink); }
 
+  .dv-basis {
+    width: 100%;
+    text-align: center;
+    font-size: 11px;
+    color: var(--ink-soft);
+    padding: 10px 0 4px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 8px;
+  }
+  .dv-basis strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
   .dv-updated {
     text-align: center;
     font-size: 11px;
@@ -694,30 +708,39 @@
     background: var(--paper);
     z-index: 3;
     padding: 12px 6px 13px;
-    border-bottom: 1px solid var(--rule);
+    border-bottom: 2px solid var(--rule);
     font-size: 13.5px;
     font-weight: 700;
     text-align: center;
     white-space: nowrap;
     color: var(--ink);
   }
-  table.dv-table thead th.dv-genre-col { width: 64px; }
+  table.dv-table thead th.dv-genre-col { width: 72px; }
 
   table.dv-table td.dv-genre-label {
-    background: var(--paper-dim);
     font-weight: 700;
     font-size: 13px;
-    color: var(--ink);
+    color: #fff;
     text-align: center;
     vertical-align: top;
-    padding: 14px 4px;
-    border-right: 1px solid var(--rule);
-    border-bottom: 1px solid var(--rule);
+    padding: 18px 4px;
+    border-right: 2px solid var(--rule);
+    border-bottom: 2px solid var(--rule);
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  table.dv-table td.dv-genre-label.dv-genre-drama {
+    background: linear-gradient(135deg, #7C3AED 0%, #9333EA 100%);
+  }
+  table.dv-table td.dv-genre-label.dv-genre-variety {
+    background: linear-gradient(135deg, #2563EB 0%, #3B82F6 100%);
   }
 
   table.dv-table td.dv-day-cell {
     border-right: 1px solid var(--rule);
-    border-bottom: 1px solid var(--rule);
+    border-bottom: 2px solid var(--rule);
     vertical-align: top;
     padding: 0;
     min-width: 122px;
@@ -728,14 +751,24 @@
     display: block;
     text-decoration: none;
     color: var(--ink);
-    padding: 7px 9px 7px 11px;
-    border-bottom: 1px dotted var(--rule);
-    border-left: 4px solid var(--brand-blue);
+    padding: 8px 10px 8px 12px;
+    border-bottom: 1px solid var(--paper-dim2);
+    border-left: 4px solid #D1D5DB;
     transition: background 0.12s;
   }
   .dv-card:last-child { border-bottom: none; }
-  .dv-card:hover { background: var(--now-bg); }
-  .dv-card.dv-cat-variety { border-left-color: var(--terrestrial); }
+  .dv-card:hover { background: var(--paper-dim); }
+  .dv-card.dv-cat-drama { border-left-color: #7C3AED; }
+  .dv-card.dv-cat-variety { border-left-color: #2563EB; }
+  
+  /* 고시청률 강조: 드라마 10%+, 예능 3%+ */
+  .dv-card.dv-high-rating {
+    background: #FEFCE8;
+    border-left-color: #FBBF24;
+  }
+  .dv-card.dv-high-rating:hover {
+    background: #FEF3C7;
+  }
 
   .dv-card .dv-title {
     font-size: 12px;
@@ -760,13 +793,22 @@
     font-weight: 700;
     font-size: 11px;
   }
+  .dv-card.dv-high-rating .dv-rating {
+    color: #D97706;
+    font-weight: 800;
+  }
   .dv-card .dv-rating-date {
     color: var(--ink-faint);
     font-weight: 500;
     font-size: 10px;
   }
 
-  td.dv-empty-cell { background: var(--paper-dim); opacity: 0.4; }
+  td.dv-empty-cell { 
+    background: #F9FAFB; 
+    opacity: 0.6;
+    border-right: 1px solid var(--rule);
+    border-bottom: 2px solid var(--rule);
+  }
 
   .dv-empty-row td {
     text-align: center;
@@ -1144,8 +1186,6 @@ const CHANNELS = [
 ];
 
 // ============ 내장 데이터 (file://로 직접 열어도 동작하도록) ============
-// 배포 시 data/ 폴더에 날짜별 JSON을 추가하면, 서버 환경(http://)에서는
-// 아래 INLINE_DATA에 없는 날짜도 fetch로 자동 조회됩니다.
 const INLINE_DATA = {
   "2026-06-21": {"KBS1": [{"start": "00:00", "end": "00:10", "title": "KBS 뉴스"}, {"start": "00:10", "end": "01:05", "title": "가요무대"}, {"start": "01:05", "end": "01:55", "title": "역사스페셜 시간여행자"}, {"start": "01:55", "end": "02:45", "title": "KBS걸작 다큐멘터리"}, {"start": "02:45", "end": "03:40", "title": "걸어서 세계속으로 트래블홀릭"}, {"start": "03:40", "end": "03:45", "title": "불편해도 괜찮아 8(10회)"}, {"start": "03:45", "end": "05:00", "title": "아침마당"}, {"start": "05:00", "end": "05:10", "title": "KBS 재난방송센터"}, {"start": "05:10", "end": "06:10", "title": "시니어 토크쇼 황금연못"}, {"start": "06:10", "end": "07:00", "title": "KBS 네트워크 특선 우리 동네"}, {"start": "07:00", "end": "07:10", "title": "KBS 뉴스"}, {"start": "07:10", "end": "07:15", "title": "숨터 스페셜"}, {"start": "07:15", "end": "08:00", "title": "2026 FIFA 북중미 월드컵 기획 특파원 보고 세계는 지금"}, {"start": "08:00", "end": "09:00", "title": "일요진단 라이브"}, {"start": "09:00", "end": "09:55", "title": "동네 한 바퀴"}, {"start": "09:55", "end": "10:10", "title": "팔도밥상 스페셜"}, {"start": "10:10", "end": "11:10", "title": "TV 비평 시청자 데스크"}, {"start": "11:10", "end": "12:00", "title": "TV쇼 진품명품"}, {"start": "12:00", "end": "12:10", "title": "KBS 뉴스"}, {"start": "12:10", "end": "13:30", "title": "전국노래자랑"}, {"start": "13:30", "end": "14:20", "title": "황신혜의 같이 삽시다"}, {"start": "14:20", "end": "15:10", "title": "한국인의 밥상"}, {"start": "15:10", "end": "16:00", "title": "지역소멸 특집 다큐 2부 지키는 사람들"}, {"start": "16:00", "end": "16:10", "title": "걸어서 세계속으로 트래블홀릭"}, {"start": "16:10", "end": "17:00", "title": "이웃집 찰스"}, {"start": "17:00", "end": "17:15", "title": "KBS 뉴스"}, {"start": "17:15", "end": "17:40", "title": "동물의 왕국"}, {"start": "17:40", "end": "19:00", "title": "열린음악회"}, {"start": "19:00", "end": "19:10", "title": "KBS 뉴스"}, {"start": "19:10", "end": "20:10", "title": "이슈 픽 쌤과 함께"}, {"start": "20:10", "end": "21:00", "title": "시사기획 창"}, {"start": "21:00", "end": "21:40", "title": "KBS 뉴스 9"}, {"start": "21:40", "end": "22:30", "title": "6.25 기획 역사스페셜 시간여행자"}, {"start": "22:30", "end": "23:10", "title": "더 보다"}, {"start": "23:10", "end": "24:00", "title": "백투더뮤직 시즌 2"}], "KBS2": [{"start": "00:10", "end": "01:10", "title": "스모킹 건"}, {"start": "01:10", "end": "04:10", "title": "2026 FIFA 북중미 월드컵"}, {"start": "04:10", "end": "07:20", "title": "2026 FIFA 북중미 월드컵"}, {"start": "07:20", "end": "07:30", "title": "KBS 재난방송센터"}, {"start": "07:30", "end": "08:00", "title": "영상앨범 산"}, {"start": "08:00", "end": "11:10", "title": "2026 FIFA 북중미 월드컵"}, {"start": "11:10", "end": "12:10", "title": "2026 FIFA 북중미 월드컵 하이라이트"}, {"start": "12:10", "end": "15:20", "title": "2026 FIFA 북중미 월드컵"}, {"start": "15:20", "end": "16:40", "title": "2026 FIFA 북중미 월드컵 하이라이트"}, {"start": "16:40", "end": "18:10", "title": "사장님 귀는 당나귀 귀"}, {"start": "18:10", "end": "20:00", "title": "1박 2일"}, {"start": "20:00", "end": "21:20", "title": "주말드라마 사랑을 처방해 드립니다(42회)"}, {"start": "21:20", "end": "23:00", "title": "우리동네 야구대장(11회)"}, {"start": "23:00", "end": "24:00", "title": "개그 콘서트"}], "MBC": [{"start": "01:00", "end": "02:15", "title": "오십프로(10회)"}, {"start": "02:15", "end": "05:00", "title": "방송 시간이 아닙니다(5시부터 방송 예정)"}, {"start": "05:00", "end": "06:00", "title": "다문화 활력 프로젝트 다정다감"}, {"start": "06:00", "end": "07:00", "title": "기분 좋은 날"}, {"start": "07:00", "end": "07:10", "title": "MBC 뉴스"}, {"start": "07:10", "end": "07:25", "title": "베베핀"}, {"start": "07:25", "end": "07:40", "title": "쥬라기캅스 4"}, {"start": "07:40", "end": "08:35", "title": "특집 MBC 다큐프라임"}, {"start": "08:35", "end": "09:30", "title": "엄마를 부탁해"}, {"start": "09:30", "end": "10:40", "title": "구해줘! 홈즈 스페셜"}, {"start": "10:40", "end": "11:55", "title": "서프라이즈 미스터리 살롱"}, {"start": "11:55", "end": "12:05", "title": "MBC 뉴스"}, {"start": "12:05", "end": "13:20", "title": "출발! 비디오 여행"}, {"start": "13:20", "end": "15:10", "title": "전지적 참견 시점 스페셜"}, {"start": "15:10", "end": "16:40", "title": "놀면 뭐하니? 스페셜"}, {"start": "16:40", "end": "19:55", "title": "MBC 선데이 베이스볼 2026 KBO 리그"}, {"start": "19:55", "end": "20:30", "title": "MBC 뉴스데스크"}, {"start": "20:30", "end": "21:10", "title": "오십프로 하이라이트"}, {"start": "21:10", "end": "23:30", "title": "놀러코스터"}, {"start": "23:30", "end": "24:00", "title": "오십프로(10회)"}], "SBS": [{"start": "00:30", "end": "00:45", "title": "<김부장> 리포트 : 전설의 부활"}, {"start": "00:45", "end": "02:15", "title": "꼬리에 꼬리를 무는 그날 이야기"}, {"start": "02:15", "end": "03:15", "title": "문화가중계"}, {"start": "03:15", "end": "05:00", "title": "방송 시간이 아닙니다(5시부터 방송 예정)"}, {"start": "05:00", "end": "06:00", "title": "세 개의 시선"}, {"start": "06:00", "end": "07:00", "title": "지적인 잡담"}, {"start": "07:00", "end": "07:10", "title": "SBS 뉴스"}, {"start": "07:10", "end": "07:25", "title": "아기상어"}, {"start": "07:25", "end": "07:40", "title": "위시캣 매직카드"}, {"start": "07:40", "end": "08:35", "title": "일요특선 다큐멘터리"}, {"start": "08:35", "end": "09:30", "title": "세 개의 시선"}, {"start": "09:30", "end": "10:55", "title": "TV 동물농장"}, {"start": "10:55", "end": "12:25", "title": "법륜로드 : 스님과 손님"}, {"start": "12:25", "end": "12:35", "title": "SBS 뉴스"}, {"start": "12:35", "end": "13:50", "title": "SBS 인기가요"}, {"start": "13:50", "end": "16:50", "title": "2026 프로야구"}, {"start": "16:50", "end": "18:10", "title": "미운 우리 새끼"}, {"start": "18:10", "end": "20:00", "title": "런닝맨"}, {"start": "20:00", "end": "20:45", "title": "SBS 8 뉴스"}, {"start": "20:45", "end": "21:00", "title": "<김부장> 리포트 : 전설의 부활"}, {"start": "21:00", "end": "23:05", "title": "미운 우리 새끼"}, {"start": "23:05", "end": "24:00", "title": "멋진 신세계(14회)"}], "JTBC": [{"start": "00:10", "end": "01:30", "title": "오늘의 월드컵"}, {"start": "01:30", "end": "04:10", "title": "2026 FIFA 북중미 월드컵"}, {"start": "04:10", "end": "04:30", "title": "매치하이라이트"}, {"start": "04:30", "end": "07:10", "title": "2026 FIFA 북중미 월드컵"}, {"start": "07:10", "end": "08:30", "title": "신입사원 강회장(7회)"}, {"start": "08:30", "end": "11:10", "title": "2026 FIFA 북중미 월드컵"}, {"start": "11:10", "end": "11:30", "title": "매치하이라이트"}, {"start": "11:30", "end": "12:00", "title": "이 시각 월드컵"}, {"start": "12:00", "end": "15:10", "title": "2026 FIFA 북중미 월드컵"}, {"start": "15:10", "end": "15:30", "title": "매치하이라이트"}, {"start": "15:30", "end": "17:00", "title": "신입사원 강회장(7회)"}, {"start": "17:00", "end": "18:20", "title": "오늘의 월드컵"}, {"start": "18:20", "end": "19:10", "title": "JTBC 뉴스룸"}, {"start": "19:10", "end": "20:50", "title": "신입사원 강회장(7회)"}, {"start": "20:50", "end": "22:30", "title": "냉장고를 부탁해 since 2014(76회)"}, {"start": "22:30", "end": "24:00", "title": "신입사원 강회장(8회)"}], "MBN": [{"start": "00:05", "end": "00:40", "title": "속풀이쇼 동치미 2부(706회)"}, {"start": "00:40", "end": "01:40", "title": "엄지의 제왕 스페셜(672회)"}, {"start": "01:40", "end": "02:40", "title": "[MBN 스페셜 다큐] 눈에 띄는 그녀들 시즌2(3회)"}, {"start": "02:40", "end": "03:40", "title": "[MBN 스페셜 다큐] 눈에 띄는 그녀들 시즌2(4회)"}, {"start": "03:40", "end": "05:20", "title": "엄지의 제왕 스페셜(450회)"}, {"start": "05:20", "end": "05:40", "title": "재난 대비 이렇게!(74회)"}, {"start": "05:40", "end": "06:30", "title": "매일아침 스페셜(128회)"}, {"start": "06:30", "end": "07:30", "title": "건강히어로(35회)"}, {"start": "07:30", "end": "08:30", "title": "건강 동창회 괜찮아? 괜찮아!(7회)"}, {"start": "08:30", "end": "09:30", "title": "당신이 아픈 사이(23회)"}, {"start": "09:30", "end": "10:30", "title": "나는 자연인이다(711회)"}, {"start": "10:30", "end": "11:50", "title": "기적의 시작 함께 ON(2회)"}, {"start": "11:50", "end": "13:00", "title": "특종세상(743회)"}, {"start": "13:00", "end": "14:10", "title": "전설의 탄생(2회)"}, {"start": "14:10", "end": "15:30", "title": "남의 집 귀한 가족(3회)"}, {"start": "15:30", "end": "17:00", "title": "시사스페셜"}, {"start": "17:00", "end": "18:20", "title": "알토란(598회)"}, {"start": "18:20", "end": "19:30", "title": "특종세상(744회)"}, {"start": "19:30", "end": "20:20", "title": "MBN 뉴스센터"}, {"start": "20:20", "end": "21:30", "title": "휴먼다큐 사노라면(745회)"}, {"start": "21:30", "end": "24:00", "title": "전설의 탄생 스페셜(1회)"}], "TV조선": [{"start": "00:00", "end": "01:00", "title": "열린비평 TV를 말하다(900회)"}, {"start": "01:00", "end": "01:40", "title": "한 컷의 비밀(38회)"}, {"start": "01:40", "end": "02:40", "title": "신 성공시대 마이웨이(9회)"}, {"start": "02:40", "end": "03:40", "title": "굿모닝 세계여행(23회)"}, {"start": "03:40", "end": "04:40", "title": "싱싱! 고향별곡(290회)"}, {"start": "04:40", "end": "05:00", "title": "TV CHOSUN 재난특집"}, {"start": "05:00", "end": "06:00", "title": "질병의 법칙(106회)"}, {"start": "06:00", "end": "07:00", "title": "메디컬 스토리 주어진 시간(17회)"}, {"start": "07:00", "end": "07:30", "title": "코코비(20회)"}, {"start": "07:30", "end": "08:30", "title": "내 몸을 살리는 발견 유레카(239회)"}, {"start": "08:30", "end": "09:40", "title": "어떻게 살 것인가?(78회)"}, {"start": "09:40", "end": "10:50", "title": "하희라의 몸몸몸(13회)"}, {"start": "10:50", "end": "12:00", "title": "엄마의 봄날(562회)"}, {"start": "12:00", "end": "13:00", "title": "케이-에브리띵 (K-Everything)(2회)"}, {"start": "13:00", "end": "14:00", "title": "강적들(645회)"}, {"start": "14:00", "end": "14:40", "title": "TV CHOSUN 뉴스현장"}, {"start": "14:40", "end": "16:00", "title": "시사팩트 플러스"}, {"start": "16:00", "end": "17:30", "title": "생존왕2(4회)"}, {"start": "17:30", "end": "19:00", "title": "금타는 금요일(26회)"}, {"start": "19:00", "end": "19:50", "title": "TV CHOSUN 뉴스7"}, {"start": "19:50", "end": "21:00", "title": "식객 허영만의 백반기행(353회)"}, {"start": "21:00", "end": "23:00", "title": "미스트롯 포유(6회)"}, {"start": "23:00", "end": "24:00", "title": "신 성공시대 마이웨이(10회)"}], "채널A": [{"start": "00:30", "end": "01:30", "title": "우리동네 셀럽 1%의 비밀(6회)"}, {"start": "01:30", "end": "02:20", "title": "채널A 스페셜 하늘에서 쉼 플러스(70회)"}, {"start": "02:20", "end": "03:10", "title": "채널A 스페셜 거장 감독을 만나다 시즌2(5회)"}, {"start": "03:10", "end": "04:00", "title": "채널A 스페셜 탐사 미스터리: 얼음 속의 비밀(14회)"}, {"start": "04:00", "end": "04:10", "title": "채널A 지진 대응 방송"}, {"start": "04:10", "end": "05:30", "title": "채널A 스페셜 그랜드디자인-집 호주 시즌12(2회)"}, {"start": "05:30", "end": "06:30", "title": "몸신의 탄생(80회)"}, {"start": "06:30", "end": "07:30", "title": "알아야산다(47회)"}, {"start": "07:30", "end": "08:30", "title": "알아야산다(62회)"}, {"start": "08:30", "end": "09:30", "title": "아이엠닥터(63회)"}, {"start": "09:30", "end": "10:30", "title": "알아야산다(59회)"}, {"start": "10:30", "end": "11:30", "title": "개와 늑대의 시간 2 스페셜(19회)"}, {"start": "11:30", "end": "12:00", "title": "브랜딩 코리아(11회)"}, {"start": "12:00", "end": "14:00", "title": "2026 DIMF 뮤지컬스타"}, {"start": "14:00", "end": "15:10", "title": "강철지구(83회)"}, {"start": "15:10", "end": "16:10", "title": "개와 늑대의 시간 2 스페셜(22회)"}, {"start": "16:10", "end": "17:10", "title": "우리동네 셀럽 1%의 비밀(7회)"}, {"start": "17:10", "end": "18:30", "title": "뉴스 TOP10"}, {"start": "18:30", "end": "19:10", "title": "뉴스A"}, {"start": "19:10", "end": "20:50", "title": "신랑수업 2(14회)"}, {"start": "20:50", "end": "22:30", "title": "이제 만나러 갑니다(754회)"}, {"start": "22:30", "end": "24:00", "title": "탐정들의 영업비밀(115회)"}]}
 };
@@ -1155,9 +1195,6 @@ function timeToMinutes(t) {
   return h * 60 + m;
 }
 
-// Date 객체를 로컬 시간대 기준 'YYYY-MM-DD'로 변환.
-// toISOString()은 UTC로 환산하기 때문에 한국(UTC+9) 등에서
-// 날짜가 하루 밀리거나 안 바뀌는 버그가 생겨 사용하지 않음.
 function toLocalDateStr(d) {
   const y = d.getFullYear();
   const m = String(d.getMonth() + 1).padStart(2, '0');
@@ -1171,22 +1208,19 @@ function formatDateLabel(dateStr) {
   return `${dateStr} (${days[d.getDay()]})`;
 }
 
-// ============ 날씨 한 줄 요약 ============
-// forecast/latest.json (미래, 강수확률%) -> asos/{YYYY-MM}.json (과거, 강수량mm) 순으로 조회
 const _weatherCache = { forecast: null, asosMonths: {} };
 
 async function fetchJsonSafe(path) {
   try {
     const resp = await fetch(path);
     if (resp.ok) return await resp.json();
-  } catch (e) { /* 무시 */ }
+  } catch (e) { }
   return null;
 }
 
 async function getWeatherForDate(dateStr) {
-  if (location.protocol === 'file:') return null; // file://에서는 날씨 fetch 생략
+  if (location.protocol === 'file:') return null;
 
-  // 1) 미래 예보 확인
   if (_weatherCache.forecast === null) {
     _weatherCache.forecast = await fetchJsonSafe('./weather/forecast/latest.json') || {};
   }
@@ -1195,8 +1229,7 @@ async function getWeatherForDate(dateStr) {
     return { ...w, kind: 'forecast' };
   }
 
-  // 2) 과거 관측 확인 (해당 월 파일)
-  const yearMonth = dateStr.slice(0, 7); // 'YYYY-MM'
+  const yearMonth = dateStr.slice(0, 7);
   if (!(yearMonth in _weatherCache.asosMonths)) {
     _weatherCache.asosMonths[yearMonth] = await fetchJsonSafe(`./weather/asos/${yearMonth}.json`);
   }
@@ -1245,15 +1278,13 @@ function isToday(dateStr) {
 }
 
 async function getDataForDate(dateStr) {
-  // 1순위: 내장 데이터 (file://에서도 항상 동작)
   if (INLINE_DATA[dateStr]) return INLINE_DATA[dateStr];
 
-  // 2순위: 서버 환경(http://)이면 data/ 폴더에서 추가 날짜 fetch 시도
   if (location.protocol !== 'file:') {
     try {
       const resp = await fetch(`./data/${dateStr}.json`);
       if (resp.ok) return await resp.json();
-    } catch (e) { /* 무시 */ }
+    } catch (e) { }
   }
   return null;
 }
@@ -1284,7 +1315,6 @@ function renderGrid(data, dateStr) {
   const nowMin = nowWithinDay(dateStr);
   const hours = buildHourMarks();
 
-  // 채널별 프로그램을 분 단위로 정렬해두기
   const channelPrograms = {};
   CHANNELS.forEach(ch => {
     const list = (data[ch.key] || []).slice().sort((a,b) => timeToMinutes(a.start) - timeToMinutes(b.start));
@@ -1304,7 +1334,6 @@ function renderGrid(data, dateStr) {
 
     CHANNELS.forEach(ch => {
       const progs = channelPrograms[ch.key];
-      // 이 시(hour) 안에서 "시작하는" 프로그램만 모음
       const inThisHour = progs.filter(p => Math.floor(timeToMinutes(p.start) / 60) === h);
 
       html += '<td class="prog-cell">';
@@ -1330,14 +1359,12 @@ function renderGrid(data, dateStr) {
   html += '</tbody></table></div>';
   wrap.innerHTML = html;
 
-  // 오늘 날짜이고 ON-AIR 중인 방송이 있으면 그 시간대로 자동 스크롤
   if (nowMin !== null) {
     const nowBlock = wrap.querySelector('.prog-block.now');
     if (nowBlock) {
       const scrollContainer = wrap.querySelector('.scroll-x');
       const row = nowBlock.closest('tr');
       if (scrollContainer && row) {
-        // 현재 시간대가 화면 위쪽에서 적당히 보이도록 약간 위 여백을 두고 스크롤
         const offset = row.offsetTop - 40;
         scrollContainer.scrollTop = Math.max(0, offset);
       }
@@ -1504,20 +1531,9 @@ let _homeshopTabLoaded = false;
 let _dramaVarietyTabLoaded = false;
 
 // ============ 드라마/예능 탭 ============
-// 데이터 스키마 (주차 단위 스냅샷):
-// {
-//   "weekStart": "2026-06-22", "weekEnd": "2026-06-28",
-//   "collectedAt": "2026-06-22T09:00:00+09:00",
-//   "programs": [
-//     { "id": "...", "category": "drama"|"variety", "channel": "tvN",
-//       "title": "내일도 출근!", "days": ["월","화"], "time": "오후 08:50",
-//       "rating": 4.8, "ratingDate": "2026-06-22",
-//       "link": "https://search.naver.com/..." }
-//   ]
-// }
-let dvWeekStart = "2026-06-22";  // 항상 해당 주의 월요일 날짜
-let dvFilter = "all";            // 'all' | 'drama' | 'variety'
-let dvCache = {};                 // weekStart -> data
+let dvWeekStart = "2026-06-22";
+let dvFilter = "all";
+let dvCache = {};
 const DV_DAYS = ["월", "화", "수", "목", "금", "토", "일"];
 const DV_GENRES = [
   { key: "drama", label: "드라마" },
@@ -1525,9 +1541,8 @@ const DV_GENRES = [
 ];
 
 function dvMondayOf(dateStr) {
-  // dateStr 기준 그 주의 월요일(YYYY-MM-DD)을 구한다
   const d = new Date(dateStr + "T00:00:00");
-  const dow = d.getDay(); // 0=일 ... 6=토
+  const dow = d.getDay();
   const diff = (dow === 0) ? -6 : (1 - dow);
   d.setDate(d.getDate() + diff);
   return toLocalDateStr(d);
@@ -1595,14 +1610,17 @@ function dvRenderGrid(data) {
   } else {
     for (const genre of genres) {
       const genrePrograms = programs.filter(p => p.category === genre.key);
-      html += `<tr><td class="dv-genre-label">${genre.label}</td>`;
+      const genreClass = genre.key === 'drama' ? 'dv-genre-drama' : 'dv-genre-variety';
+      html += `<tr><td class="dv-genre-label ${genreClass}">${genre.label}</td>`;
       for (const day of DV_DAYS) {
         const dayPrograms = genrePrograms.filter(p => p.days.includes(day));
         const cellClass = dayPrograms.length ? 'dv-day-cell' : 'dv-day-cell dv-empty-cell';
         html += `<td class="${cellClass}">`;
         for (const p of dayPrograms) {
+          const isHighRating = (p.category === 'drama' && p.rating >= 10) || 
+                               (p.category === 'variety' && p.rating >= 3);
           const safeLink = dvEscapeHtml(p.link || '#');
-          const cardCls = p.category === 'variety' ? 'dv-card dv-cat-variety' : 'dv-card';
+          const cardCls = `dv-card dv-cat-${p.category}${isHighRating ? ' dv-high-rating' : ''}`;
           html += `<a class="${cardCls}" href="${safeLink}" target="_blank" rel="noopener">`;
           html += `<span class="dv-title"><span class="dv-channel">[${dvEscapeHtml(p.channel)}]</span> ${dvEscapeHtml(p.title)}</span>`;
           html += `<span class="dv-meta">(${dvEscapeHtml(p.days.join(', '))}) ${dvEscapeHtml(p.time)}</span>`;
@@ -1619,27 +1637,42 @@ function dvRenderGrid(data) {
   wrap.innerHTML = html;
 }
 
+function dvRenderBasis() {
+  const wrap = document.getElementById('dvGridWrap');
+  let basis = wrap.previousElementSibling;
+  if (!basis || !basis.classList.contains('dv-basis')) {
+    basis = document.createElement('div');
+    basis.className = 'dv-basis';
+    wrap.parentNode.insertBefore(basis, wrap);
+  }
+  basis.innerHTML = '※ 크롤링 기준: <strong>[드라마]</strong> 시청률 5% 이상 · ' +
+                    '<strong>[예능]</strong> 시청률 1% 이상 | ' +
+                    '<strong style="color:#D97706;">■</strong> 노란색: 고시청률 ' +
+                    '(<strong>[드라마]</strong> 10%+ · <strong>[예능]</strong> 3%+)';
+}
+
 async function dvRefresh(weekStart) {
   document.getElementById('dvWeekLabel').textContent = dvFormatWeekLabel(weekStart);
   const data = await dvLoadWeek(weekStart);
   dvRenderUpdated(data);
+  dvRenderBasis();
   dvRenderGrid(data);
 }
 
 // ============ 홈쇼핑 탭 ============
 let hsCurrentDate = "2026-06-21";
-let hsCurrentBc = "live";  // 'live' | 'data'
-let hsCategoryFilter = null;  // null = 전체보기, 문자열 = 해당 카테고리만
+let hsCurrentBc = "live";
+let hsCategoryFilter = null;
 const HS_COMPANIES = [
   { code: 'HD', name: 'HD', cls: 'hd' },
   { code: 'GS', name: 'GS', cls: 'gs' },
   { code: 'CJ', name: 'CJ', cls: 'cj' },
   { code: 'LT', name: 'LT', cls: 'lt' },
 ];
-const _hsCache = {};  // key: "HD_live_2026-06" -> month data
+const _hsCache = {};
 
 async function hsLoadCompanyDate(code, bc, dateStr) {
-  const ym = dateStr.slice(0, 7);  // 'YYYY-MM'
+  const ym = dateStr.slice(0, 7);
   const key = `${code}_${bc}_${ym}`;
   if (!(key in _hsCache)) {
     _hsCache[key] = await fetchJsonSafe(`./homeshopping/${code}_${bc}/${ym}.json`);
@@ -1663,21 +1696,19 @@ function hsTimeToMin(t) {
   return h * 60 + m;
 }
 
-// 판매가를 한국식 축약 표기로: 39000 -> "39천원", 1200000 -> "120만원"
 function hsFormatPrice(won) {
   if (!won || won <= 0) return '';
   if (won >= 1000000) {
-    const man = Math.floor(won / 10000);  // 100만원 이상: 만원 단위 버림
+    const man = Math.floor(won / 10000);
     return `<span class="hs-price">${man}만<span class="won">원</span></span>`;
   }
   if (won >= 1000) {
-    const cheon = Math.floor(won / 1000);  // 100만원 미만: 천원 단위 버림 (89,900원 -> 89천원)
+    const cheon = Math.floor(won / 1000);
     return `<span class="hs-price">${cheon}천<span class="won">원</span></span>`;
   }
   return `<span class="hs-price">${won}<span class="won">원</span></span>`;
 }
 
-// 카테고리별 좌측 컬러 바 (학습 모델의 22개 클래스 기준)
 const HS_CATEGORY_COLORS = {
   '의류': '#E07A5F', '잡화/주얼리': '#D88C9A', '언더웨어': '#F4A8B8',
   '미용': '#C9ADA7', '건강식품': '#84A98C', '일반식품': '#A3B18A',
@@ -1685,7 +1716,7 @@ const HS_CATEGORY_COLORS = {
   '보험': '#6C757D', '일반렌탈': '#8D99AE', '문화/스포츠': '#F3722C',
 };
 function hsCategoryColor(category) {
-  return HS_CATEGORY_COLORS[category] || '#9C9486';  // 매핑 없는 기타 카테고리(GA 등)는 중립색
+  return HS_CATEGORY_COLORS[category] || '#9C9486';
 }
 
 function hsRenderCategoryLegend() {
@@ -1723,7 +1754,6 @@ function hsRenderProgram(p, nowMin) {
     if (nowMin >= s && nowMin < e) onair = true;
   }
 
-  // 방송 소요분 계산 (예: 60분 -> "60'")
   let durationMin = null;
   if (p.start && p.end) {
     let s = hsTimeToMin(p.start);
@@ -1733,7 +1763,6 @@ function hsRenderProgram(p, nowMin) {
   }
   const durationStr = durationMin !== null ? ` (${durationMin}')` : '';
 
-  // 브랜드와 상품명을 분리해서 각각 다른 색으로 표시
   const brandHtml = p.brand ? `<span class="hs-brand">${escapeHtml(p.brand)}</span> ` : '';
   const productText = p.product || (p.brand ? '' : '(정보 없음)');
 
@@ -1752,7 +1781,7 @@ function hsRenderProgram(p, nowMin) {
          `</div>`;
 }
 
-let _hsLastDatasets = null;  // 최근 로드된 4사 데이터 (필터만 바뀔 때 재사용)
+let _hsLastDatasets = null;
 let _hsLastDateStr = null;
 
 async function hsRefresh(dateStr) {
@@ -1761,7 +1790,6 @@ async function hsRefresh(dateStr) {
   const wrap = document.getElementById('hsGridWrap');
   wrap.innerHTML = '<div style="text-align:center;padding:30px;color:var(--ink-soft);font-size:12px;">불러오는 중…</div>';
 
-  // 4사 데이터 동시 로드
   const datasets = await Promise.all(
     HS_COMPANIES.map(c => hsLoadCompanyDate(c.code, hsCurrentBc, dateStr))
   );
@@ -1797,7 +1825,6 @@ function hsRenderBody() {
   }
 }
 
-// 오늘 날짜이고 현재 시각 정보가 있으면, 그 시간대 행으로 자동 스크롤
 function hsScrollToCurrentHour(wrap, nowMin) {
   if (nowMin === null) return;
   const hour = Math.floor(nowMin / 60);
@@ -1810,7 +1837,6 @@ function hsScrollToCurrentHour(wrap, nowMin) {
   }
 }
 
-// 전체보기: 24시간 × 회사 그리드
 function hsRenderGridView(datasets, nowMin) {
   const buckets = {};
   for (let h = 0; h < 24; h++) buckets[h] = HS_COMPANIES.map(() => []);
@@ -1852,7 +1878,6 @@ function hsRenderGridView(datasets, nowMin) {
   return html;
 }
 
-// 카테고리 필터링: 시간 컬럼 공란, 회사별로 카드만 빈틈없이 쌓기
 function hsRenderListView(datasets, nowMin) {
   const filtered = HS_COMPANIES.map((c, ci) => {
     const programs = (datasets[ci] && datasets[ci].programs) ? datasets[ci].programs : [];
@@ -1950,25 +1975,21 @@ function switchTab(tab) {
   const now = new Date();
   currentYear = now.getFullYear();
   currentMonth = now.getMonth() + 1;
-  hsCurrentDate = toLocalDateStr(now);  // 홈쇼핑 탭 초기 날짜 = 오늘
-  dvWeekStart = dvMondayOf(toLocalDateStr(now));  // 드라마/예능 탭 초기 주차
+  hsCurrentDate = toLocalDateStr(now);
+  dvWeekStart = dvMondayOf(toLocalDateStr(now));
 
   const picker = document.getElementById('datePicker');
-  picker.value = toLocalDateStr(now); // 초기 표시 날짜 = 오늘
+  picker.value = toLocalDateStr(now);
 
-  // 홈쇼핑 탭이 첫 화면이므로 즉시 로드
   _homeshopTabLoaded = true;
   await hsRefresh(hsCurrentDate);
 
-  // 최초 1회는 바로 조회
   await refresh(picker.value);
 
-  // 날짜 입력란 변경 시에는 즉시 조회하지 않음 — "조회" 버튼을 눌러야 반영됨
   document.getElementById('searchBtn').addEventListener('click', () => {
     refresh(picker.value);
   });
 
-  // 이전/다음 화살표는 날짜 이동과 동시에 즉시 조회
   document.getElementById('prevDay').addEventListener('click', () => {
     picker.value = shiftDate(picker.value, -1);
     refresh(picker.value);
@@ -1978,25 +1999,21 @@ function switchTab(tab) {
     refresh(picker.value);
   });
 
-  // 오늘로 이동도 즉시 조회
   document.getElementById('gotoToday').addEventListener('click', () => {
     const today = toLocalDateStr(new Date());
     picker.value = today;
     refresh(today);
   });
 
-  // 엔터키로도 조회 가능하게
   picker.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') refresh(picker.value);
   });
 
-  // 탭 버튼
   document.getElementById('tabBtnSchedule').addEventListener('click', () => switchTab('schedule'));
   document.getElementById('tabBtnWeather').addEventListener('click', () => switchTab('weather'));
   document.getElementById('tabBtnHomeshop').addEventListener('click', () => switchTab('homeshop'));
   document.getElementById('tabBtnDramaVariety').addEventListener('click', () => switchTab('dramavariety'));
 
-  // 홈쇼핑 탭: 날짜 이동
   const hsPicker = document.getElementById('hsDatePicker');
   hsPicker.value = hsCurrentDate;
   document.getElementById('hsPrevDay').addEventListener('click', () => {
@@ -2014,7 +2031,6 @@ function switchTab(tab) {
     hsRefresh(hsCurrentDate);
   });
 
-  // 홈쇼핑 탭: 라이브/데이터 토글
   document.querySelectorAll('#hsToggle .hs-toggle-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       hsCurrentBc = btn.dataset.bc;
@@ -2024,22 +2040,20 @@ function switchTab(tab) {
     });
   });
 
-  // 날씨 탭 내 월 이동
   document.getElementById('prevMonth').addEventListener('click', () => {
-    if (currentYear === DATA_MIN_YEAR && currentMonth === DATA_MIN_MONTH) return; // 하한선
+    if (currentYear === DATA_MIN_YEAR && currentMonth === DATA_MIN_MONTH) return;
     currentMonth -= 1;
     if (currentMonth < 1) { currentMonth = 12; currentYear -= 1; }
     renderMonth(currentYear, currentMonth);
   });
   document.getElementById('nextMonth').addEventListener('click', () => {
     const now = new Date();
-    if (currentYear === now.getFullYear() && currentMonth === now.getMonth() + 1) return; // 상한선
+    if (currentYear === now.getFullYear() && currentMonth === now.getMonth() + 1) return;
     currentMonth += 1;
     if (currentMonth > 12) { currentMonth = 1; currentYear += 1; }
     renderMonth(currentYear, currentMonth);
   });
 
-  // 월 직접 조회: 라벨 클릭 -> 연도별 월 목록 드롭다운 패널 토글
   document.getElementById('monthLabelWrap').addEventListener('click', (e) => {
     const panel = document.getElementById('monthPickerPanel');
     const isOpen = panel.classList.contains('open');
@@ -2053,7 +2067,6 @@ function switchTab(tab) {
     e.stopPropagation();
   });
 
-  // 패널 바깥 클릭 시 닫기
   document.addEventListener('click', (e) => {
     const wrap = document.getElementById('monthLabelWrap');
     if (!wrap.contains(e.target)) {
@@ -2072,7 +2085,6 @@ function switchTab(tab) {
     renderMonthPickerPanel();
   });
 
-  // 드라마/예능 탭: 주차 이동
   document.getElementById('dvPrevWeek').addEventListener('click', () => {
     dvWeekStart = dvShiftWeek(dvWeekStart, -1);
     dvRefresh(dvWeekStart);
@@ -2082,7 +2094,6 @@ function switchTab(tab) {
     dvRefresh(dvWeekStart);
   });
 
-  // 드라마/예능 탭: 슬라이서 (전체/드라마/예능)
   document.querySelectorAll('.dv-slicer-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       dvFilter = btn.dataset.filter;
