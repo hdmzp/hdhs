@@ -667,20 +667,6 @@
   }
   .dv-slicer button:hover:not(.active) { background: var(--paper-dim); color: var(--ink); }
 
-  .dv-basis {
-    width: 100%;
-    text-align: center;
-    font-size: 11px;
-    color: var(--ink-soft);
-    padding: 10px 0 4px;
-    border-bottom: 1px solid var(--rule);
-    margin-bottom: 8px;
-  }
-  .dv-basis strong {
-    color: var(--ink);
-    font-weight: 600;
-  }
-
   .dv-updated {
     text-align: center;
     font-size: 11px;
@@ -708,42 +694,33 @@
     background: var(--paper);
     z-index: 3;
     padding: 12px 6px 13px;
-    border-bottom: 2px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
     font-size: 13.5px;
     font-weight: 700;
     text-align: center;
     white-space: nowrap;
     color: var(--ink);
   }
-  table.dv-table thead th.dv-genre-col { width: 72px; }
+  table.dv-table thead th.dv-genre-col { width: 64px; }
 
   table.dv-table td.dv-genre-label {
+    background: var(--paper-dim);
     font-weight: 700;
     font-size: 13px;
-    color: #fff;
+    color: var(--ink);
     text-align: center;
     vertical-align: top;
-    padding: 18px 4px;
-    border-right: 2px solid var(--rule);
-    border-bottom: 2px solid var(--rule);
-    min-height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  table.dv-table td.dv-genre-label.dv-genre-drama {
-    background: linear-gradient(135deg, #7C3AED 0%, #9333EA 100%);
-  }
-  table.dv-table td.dv-genre-label.dv-genre-variety {
-    background: linear-gradient(135deg, #2563EB 0%, #3B82F6 100%);
+    padding: 14px 4px;
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
   }
 
   table.dv-table td.dv-day-cell {
     border-right: 1px solid var(--rule);
-    border-bottom: 2px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
     vertical-align: top;
     padding: 0;
-    min-width: 122px;
+    min-width: 146px; /* 1.2배 확장 */
     background: var(--paper);
   }
 
@@ -751,24 +728,14 @@
     display: block;
     text-decoration: none;
     color: var(--ink);
-    padding: 8px 10px 8px 12px;
-    border-bottom: 1px solid var(--paper-dim2);
-    border-left: 4px solid #D1D5DB;
+    padding: 7px 9px 7px 11px;
+    border-bottom: 1px dotted var(--rule);
+    border-left: 4px solid var(--brand-blue);
     transition: background 0.12s;
   }
   .dv-card:last-child { border-bottom: none; }
-  .dv-card:hover { background: var(--paper-dim); }
-  .dv-card.dv-cat-drama { border-left-color: #7C3AED; }
-  .dv-card.dv-cat-variety { border-left-color: #2563EB; }
-  
-  /* 고시청률 강조: 드라마 10%+, 예능 3%+ */
-  .dv-card.dv-high-rating {
-    background: #FEFCE8;
-    border-left-color: #FBBF24;
-  }
-  .dv-card.dv-high-rating:hover {
-    background: #FEF3C7;
-  }
+  .dv-card:hover { background: var(--now-bg); }
+  .dv-card.dv-cat-variety { border-left-color: var(--terrestrial); }
 
   .dv-card .dv-title {
     font-size: 12px;
@@ -793,22 +760,13 @@
     font-weight: 700;
     font-size: 11px;
   }
-  .dv-card.dv-high-rating .dv-rating {
-    color: #D97706;
-    font-weight: 800;
-  }
   .dv-card .dv-rating-date {
     color: var(--ink-faint);
     font-weight: 500;
     font-size: 10px;
   }
 
-  td.dv-empty-cell { 
-    background: #F9FAFB; 
-    opacity: 0.6;
-    border-right: 1px solid var(--rule);
-    border-bottom: 2px solid var(--rule);
-  }
+  td.dv-empty-cell { background: var(--paper-dim); opacity: 0.4; }
 
   .dv-empty-row td {
     text-align: center;
@@ -1109,6 +1067,7 @@
     <button class="dv-slicer-btn active" data-filter="all">전체</button>
     <button class="dv-slicer-btn" data-filter="drama">드라마</button>
     <button class="dv-slicer-btn" data-filter="variety">예능</button>
+    <button class="dv-slicer-btn" data-filter="high_eff">고효율</button>
   </div>
 </div>
 
@@ -1186,6 +1145,8 @@ const CHANNELS = [
 ];
 
 // ============ 내장 데이터 (file://로 직접 열어도 동작하도록) ============
+// 배포 시 data/ 폴더에 날짜별 JSON을 추가하면, 서버 환경(http://)에서는
+// 아래 INLINE_DATA에 없는 날짜도 fetch로 자동 조회됩니다.
 const INLINE_DATA = {
   "2026-06-21": {"KBS1": [{"start": "00:00", "end": "00:10", "title": "KBS 뉴스"}, {"start": "00:10", "end": "01:05", "title": "가요무대"}, {"start": "01:05", "end": "01:55", "title": "역사스페셜 시간여행자"}, {"start": "01:55", "end": "02:45", "title": "KBS걸작 다큐멘터리"}, {"start": "02:45", "end": "03:40", "title": "걸어서 세계속으로 트래블홀릭"}, {"start": "03:40", "end": "03:45", "title": "불편해도 괜찮아 8(10회)"}, {"start": "03:45", "end": "05:00", "title": "아침마당"}, {"start": "05:00", "end": "05:10", "title": "KBS 재난방송센터"}, {"start": "05:10", "end": "06:10", "title": "시니어 토크쇼 황금연못"}, {"start": "06:10", "end": "07:00", "title": "KBS 네트워크 특선 우리 동네"}, {"start": "07:00", "end": "07:10", "title": "KBS 뉴스"}, {"start": "07:10", "end": "07:15", "title": "숨터 스페셜"}, {"start": "07:15", "end": "08:00", "title": "2026 FIFA 북중미 월드컵 기획 특파원 보고 세계는 지금"}, {"start": "08:00", "end": "09:00", "title": "일요진단 라이브"}, {"start": "09:00", "end": "09:55", "title": "동네 한 바퀴"}, {"start": "09:55", "end": "10:10", "title": "팔도밥상 스페셜"}, {"start": "10:10", "end": "11:10", "title": "TV 비평 시청자 데스크"}, {"start": "11:10", "end": "12:00", "title": "TV쇼 진품명품"}, {"start": "12:00", "end": "12:10", "title": "KBS 뉴스"}, {"start": "12:10", "end": "13:30", "title": "전국노래자랑"}, {"start": "13:30", "end": "14:20", "title": "황신혜의 같이 삽시다"}, {"start": "14:20", "end": "15:10", "title": "한국인의 밥상"}, {"start": "15:10", "end": "16:00", "title": "지역소멸 특집 다큐 2부 지키는 사람들"}, {"start": "16:00", "end": "16:10", "title": "걸어서 세계속으로 트래블홀릭"}, {"start": "16:10", "end": "17:00", "title": "이웃집 찰스"}, {"start": "17:00", "end": "17:15", "title": "KBS 뉴스"}, {"start": "17:15", "end": "17:40", "title": "동물의 왕국"}, {"start": "17:40", "end": "19:00", "title": "열린음악회"}, {"start": "19:00", "end": "19:10", "title": "KBS 뉴스"}, {"start": "19:10", "end": "20:10", "title": "이슈 픽 쌤과 함께"}, {"start": "20:10", "end": "21:00", "title": "시사기획 창"}, {"start": "21:00", "end": "21:40", "title": "KBS 뉴스 9"}, {"start": "21:40", "end": "22:30", "title": "6.25 기획 역사스페셜 시간여행자"}, {"start": "22:30", "end": "23:10", "title": "더 보다"}, {"start": "23:10", "end": "24:00", "title": "백투더뮤직 시즌 2"}], "KBS2": [{"start": "00:10", "end": "01:10", "title": "스모킹 건"}, {"start": "01:10", "end": "04:10", "title": "2026 FIFA 북중미 월드컵"}, {"start": "04:10", "end": "07:20", "title": "2026 FIFA 북중미 월드컵"}, {"start": "07:20", "end": "07:30", "title": "KBS 재난방송센터"}, {"start": "07:30", "end": "08:00", "title": "영상앨범 산"}, {"start": "08:00", "end": "11:10", "title": "2026 FIFA 북중미 월드컵"}, {"start": "11:10", "end": "12:10", "title": "2026 FIFA 북중미 월드컵 하이라이트"}, {"start": "12:10", "end": "15:20", "title": "2026 FIFA 북중미 월드컵"}, {"start": "15:20", "end": "16:40", "title": "2026 FIFA 북중미 월드컵 하이라이트"}, {"start": "16:40", "end": "18:10", "title": "사장님 귀는 당나귀 귀"}, {"start": "18:10", "end": "20:00", "title": "1박 2일"}, {"start": "20:00", "end": "21:20", "title": "주말드라마 사랑을 처방해 드립니다(42회)"}, {"start": "21:20", "end": "23:00", "title": "우리동네 야구대장(11회)"}, {"start": "23:00", "end": "24:00", "title": "개그 콘서트"}], "MBC": [{"start": "01:00", "end": "02:15", "title": "오십프로(10회)"}, {"start": "02:15", "end": "05:00", "title": "방송 시간이 아닙니다(5시부터 방송 예정)"}, {"start": "05:00", "end": "06:00", "title": "다문화 활력 프로젝트 다정다감"}, {"start": "06:00", "end": "07:00", "title": "기분 좋은 날"}, {"start": "07:00", "end": "07:10", "title": "MBC 뉴스"}, {"start": "07:10", "end": "07:25", "title": "베베핀"}, {"start": "07:25", "end": "07:40", "title": "쥬라기캅스 4"}, {"start": "07:40", "end": "08:35", "title": "특집 MBC 다큐프라임"}, {"start": "08:35", "end": "09:30", "title": "엄마를 부탁해"}, {"start": "09:30", "end": "10:40", "title": "구해줘! 홈즈 스페셜"}, {"start": "10:40", "end": "11:55", "title": "서프라이즈 미스터리 살롱"}, {"start": "11:55", "end": "12:05", "title": "MBC 뉴스"}, {"start": "12:05", "end": "13:20", "title": "출발! 비디오 여행"}, {"start": "13:20", "end": "15:10", "title": "전지적 참견 시점 스페셜"}, {"start": "15:10", "end": "16:40", "title": "놀면 뭐하니? 스페셜"}, {"start": "16:40", "end": "19:55", "title": "MBC 선데이 베이스볼 2026 KBO 리그"}, {"start": "19:55", "end": "20:30", "title": "MBC 뉴스데스크"}, {"start": "20:30", "end": "21:10", "title": "오십프로 하이라이트"}, {"start": "21:10", "end": "23:30", "title": "놀러코스터"}, {"start": "23:30", "end": "24:00", "title": "오십프로(10회)"}], "SBS": [{"start": "00:30", "end": "00:45", "title": "<김부장> 리포트 : 전설의 부활"}, {"start": "00:45", "end": "02:15", "title": "꼬리에 꼬리를 무는 그날 이야기"}, {"start": "02:15", "end": "03:15", "title": "문화가중계"}, {"start": "03:15", "end": "05:00", "title": "방송 시간이 아닙니다(5시부터 방송 예정)"}, {"start": "05:00", "end": "06:00", "title": "세 개의 시선"}, {"start": "06:00", "end": "07:00", "title": "지적인 잡담"}, {"start": "07:00", "end": "07:10", "title": "SBS 뉴스"}, {"start": "07:10", "end": "07:25", "title": "아기상어"}, {"start": "07:25", "end": "07:40", "title": "위시캣 매직카드"}, {"start": "07:40", "end": "08:35", "title": "일요특선 다큐멘터리"}, {"start": "08:35", "end": "09:30", "title": "세 개의 시선"}, {"start": "09:30", "end": "10:55", "title": "TV 동물농장"}, {"start": "10:55", "end": "12:25", "title": "법륜로드 : 스님과 손님"}, {"start": "12:25", "end": "12:35", "title": "SBS 뉴스"}, {"start": "12:35", "end": "13:50", "title": "SBS 인기가요"}, {"start": "13:50", "end": "16:50", "title": "2026 프로야구"}, {"start": "16:50", "end": "18:10", "title": "미운 우리 새끼"}, {"start": "18:10", "end": "20:00", "title": "런닝맨"}, {"start": "20:00", "end": "20:45", "title": "SBS 8 뉴스"}, {"start": "20:45", "end": "21:00", "title": "<김부장> 리포트 : 전설의 부활"}, {"start": "21:00", "end": "23:05", "title": "미운 우리 새끼"}, {"start": "23:05", "end": "24:00", "title": "멋진 신세계(14회)"}], "JTBC": [{"start": "00:10", "end": "01:30", "title": "오늘의 월드컵"}, {"start": "01:30", "end": "04:10", "title": "2026 FIFA 북중미 월드컵"}, {"start": "04:10", "end": "04:30", "title": "매치하이라이트"}, {"start": "04:30", "end": "07:10", "title": "2026 FIFA 북중미 월드컵"}, {"start": "07:10", "end": "08:30", "title": "신입사원 강회장(7회)"}, {"start": "08:30", "end": "11:10", "title": "2026 FIFA 북중미 월드컵"}, {"start": "11:10", "end": "11:30", "title": "매치하이라이트"}, {"start": "11:30", "end": "12:00", "title": "이 시각 월드컵"}, {"start": "12:00", "end": "15:10", "title": "2026 FIFA 북중미 월드컵"}, {"start": "15:10", "end": "15:30", "title": "매치하이라이트"}, {"start": "15:30", "end": "17:00", "title": "신입사원 강회장(7회)"}, {"start": "17:00", "end": "18:20", "title": "오늘의 월드컵"}, {"start": "18:20", "end": "19:10", "title": "JTBC 뉴스룸"}, {"start": "19:10", "end": "20:50", "title": "신입사원 강회장(7회)"}, {"start": "20:50", "end": "22:30", "title": "냉장고를 부탁해 since 2014(76회)"}, {"start": "22:30", "end": "24:00", "title": "신입사원 강회장(8회)"}], "MBN": [{"start": "00:05", "end": "00:40", "title": "속풀이쇼 동치미 2부(706회)"}, {"start": "00:40", "end": "01:40", "title": "엄지의 제왕 스페셜(672회)"}, {"start": "01:40", "end": "02:40", "title": "[MBN 스페셜 다큐] 눈에 띄는 그녀들 시즌2(3회)"}, {"start": "02:40", "end": "03:40", "title": "[MBN 스페셜 다큐] 눈에 띄는 그녀들 시즌2(4회)"}, {"start": "03:40", "end": "05:20", "title": "엄지의 제왕 스페셜(450회)"}, {"start": "05:20", "end": "05:40", "title": "재난 대비 이렇게!(74회)"}, {"start": "05:40", "end": "06:30", "title": "매일아침 스페셜(128회)"}, {"start": "06:30", "end": "07:30", "title": "건강히어로(35회)"}, {"start": "07:30", "end": "08:30", "title": "건강 동창회 괜찮아? 괜찮아!(7회)"}, {"start": "08:30", "end": "09:30", "title": "당신이 아픈 사이(23회)"}, {"start": "09:30", "end": "10:30", "title": "나는 자연인이다(711회)"}, {"start": "10:30", "end": "11:50", "title": "기적의 시작 함께 ON(2회)"}, {"start": "11:50", "end": "13:00", "title": "특종세상(743회)"}, {"start": "13:00", "end": "14:10", "title": "전설의 탄생(2회)"}, {"start": "14:10", "end": "15:30", "title": "남의 집 귀한 가족(3회)"}, {"start": "15:30", "end": "17:00", "title": "시사스페셜"}, {"start": "17:00", "end": "18:20", "title": "알토란(598회)"}, {"start": "18:20", "end": "19:30", "title": "특종세상(744회)"}, {"start": "19:30", "end": "20:20", "title": "MBN 뉴스센터"}, {"start": "20:20", "end": "21:30", "title": "휴먼다큐 사노라면(745회)"}, {"start": "21:30", "end": "24:00", "title": "전설의 탄생 스페셜(1회)"}], "TV조선": [{"start": "00:00", "end": "01:00", "title": "열린비평 TV를 말하다(900회)"}, {"start": "01:00", "end": "01:40", "title": "한 컷의 비밀(38회)"}, {"start": "01:40", "end": "02:40", "title": "신 성공시대 마이웨이(9회)"}, {"start": "02:40", "end": "03:40", "title": "굿모닝 세계여행(23회)"}, {"start": "03:40", "end": "04:40", "title": "싱싱! 고향별곡(290회)"}, {"start": "04:40", "end": "05:00", "title": "TV CHOSUN 재난특집"}, {"start": "05:00", "end": "06:00", "title": "질병의 법칙(106회)"}, {"start": "06:00", "end": "07:00", "title": "메디컬 스토리 주어진 시간(17회)"}, {"start": "07:00", "end": "07:30", "title": "코코비(20회)"}, {"start": "07:30", "end": "08:30", "title": "내 몸을 살리는 발견 유레카(239회)"}, {"start": "08:30", "end": "09:40", "title": "어떻게 살 것인가?(78회)"}, {"start": "09:40", "end": "10:50", "title": "하희라의 몸몸몸(13회)"}, {"start": "10:50", "end": "12:00", "title": "엄마의 봄날(562회)"}, {"start": "12:00", "end": "13:00", "title": "케이-에브리띵 (K-Everything)(2회)"}, {"start": "13:00", "end": "14:00", "title": "강적들(645회)"}, {"start": "14:00", "end": "14:40", "title": "TV CHOSUN 뉴스현장"}, {"start": "14:40", "end": "16:00", "title": "시사팩트 플러스"}, {"start": "16:00", "end": "17:30", "title": "생존왕2(4회)"}, {"start": "17:30", "end": "19:00", "title": "금타는 금요일(26회)"}, {"start": "19:00", "end": "19:50", "title": "TV CHOSUN 뉴스7"}, {"start": "19:50", "end": "21:00", "title": "식객 허영만의 백반기행(353회)"}, {"start": "21:00", "end": "23:00", "title": "미스트롯 포유(6회)"}, {"start": "23:00", "end": "24:00", "title": "신 성공시대 마이웨이(10회)"}], "채널A": [{"start": "00:30", "end": "01:30", "title": "우리동네 셀럽 1%의 비밀(6회)"}, {"start": "01:30", "end": "02:20", "title": "채널A 스페셜 하늘에서 쉼 플러스(70회)"}, {"start": "02:20", "end": "03:10", "title": "채널A 스페셜 거장 감독을 만나다 시즌2(5회)"}, {"start": "03:10", "end": "04:00", "title": "채널A 스페셜 탐사 미스터리: 얼음 속의 비밀(14회)"}, {"start": "04:00", "end": "04:10", "title": "채널A 지진 대응 방송"}, {"start": "04:10", "end": "05:30", "title": "채널A 스페셜 그랜드디자인-집 호주 시즌12(2회)"}, {"start": "05:30", "end": "06:30", "title": "몸신의 탄생(80회)"}, {"start": "06:30", "end": "07:30", "title": "알아야산다(47회)"}, {"start": "07:30", "end": "08:30", "title": "알아야산다(62회)"}, {"start": "08:30", "end": "09:30", "title": "아이엠닥터(63회)"}, {"start": "09:30", "end": "10:30", "title": "알아야산다(59회)"}, {"start": "10:30", "end": "11:30", "title": "개와 늑대의 시간 2 스페셜(19회)"}, {"start": "11:30", "end": "12:00", "title": "브랜딩 코리아(11회)"}, {"start": "12:00", "end": "14:00", "title": "2026 DIMF 뮤지컬스타"}, {"start": "14:00", "end": "15:10", "title": "강철지구(83회)"}, {"start": "15:10", "end": "16:10", "title": "개와 늑대의 시간 2 스페셜(22회)"}, {"start": "16:10", "end": "17:10", "title": "우리동네 셀럽 1%의 비밀(7회)"}, {"start": "17:10", "end": "18:30", "title": "뉴스 TOP10"}, {"start": "18:30", "end": "19:10", "title": "뉴스A"}, {"start": "19:10", "end": "20:50", "title": "신랑수업 2(14회)"}, {"start": "20:50", "end": "22:30", "title": "이제 만나러 갑니다(754회)"}, {"start": "22:30", "end": "24:00", "title": "탐정들의 영업비밀(115회)"}]}
 };
@@ -1195,6 +1156,9 @@ function timeToMinutes(t) {
   return h * 60 + m;
 }
 
+// Date 객체를 로컬 시간대 기준 'YYYY-MM-DD'로 변환.
+// toISOString()은 UTC로 환산하기 때문에 한국(UTC+9) 등에서
+// 날짜가 하루 밀리거나 안 바뀌는 버그가 생겨 사용하지 않음.
 function toLocalDateStr(d) {
   const y = d.getFullYear();
   const m = String(d.getMonth() + 1).padStart(2, '0');
@@ -1208,19 +1172,22 @@ function formatDateLabel(dateStr) {
   return `${dateStr} (${days[d.getDay()]})`;
 }
 
+// ============ 날씨 한 줄 요약 ============
+// forecast/latest.json (미래, 강수확률%) -> asos/{YYYY-MM}.json (과거, 강수량mm) 순으로 조회
 const _weatherCache = { forecast: null, asosMonths: {} };
 
 async function fetchJsonSafe(path) {
   try {
     const resp = await fetch(path);
     if (resp.ok) return await resp.json();
-  } catch (e) { }
+  } catch (e) { /* 무시 */ }
   return null;
 }
 
 async function getWeatherForDate(dateStr) {
-  if (location.protocol === 'file:') return null;
+  if (location.protocol === 'file:') return null; // file://에서는 날씨 fetch 생략
 
+  // 1) 미래 예보 확인
   if (_weatherCache.forecast === null) {
     _weatherCache.forecast = await fetchJsonSafe('./weather/forecast/latest.json') || {};
   }
@@ -1229,7 +1196,8 @@ async function getWeatherForDate(dateStr) {
     return { ...w, kind: 'forecast' };
   }
 
-  const yearMonth = dateStr.slice(0, 7);
+  // 2) 과거 관측 확인 (해당 월 파일)
+  const yearMonth = dateStr.slice(0, 7); // 'YYYY-MM'
   if (!(yearMonth in _weatherCache.asosMonths)) {
     _weatherCache.asosMonths[yearMonth] = await fetchJsonSafe(`./weather/asos/${yearMonth}.json`);
   }
@@ -1278,13 +1246,15 @@ function isToday(dateStr) {
 }
 
 async function getDataForDate(dateStr) {
+  // 1순위: 내장 데이터 (file://에서도 항상 동작)
   if (INLINE_DATA[dateStr]) return INLINE_DATA[dateStr];
 
+  // 2순위: 서버 환경(http://)이면 data/ 폴더에서 추가 날짜 fetch 시도
   if (location.protocol !== 'file:') {
     try {
       const resp = await fetch(`./data/${dateStr}.json`);
       if (resp.ok) return await resp.json();
-    } catch (e) { }
+    } catch (e) { /* 무시 */ }
   }
   return null;
 }
@@ -1302,808 +1272,4 @@ function nowWithinDay(dateStr) {
 }
 
 function renderGrid(data, dateStr) {
-  const wrap = document.getElementById('gridWrap');
-  const noData = document.getElementById('noData');
-
-  if (!data) {
-    wrap.innerHTML = '';
-    noData.style.display = 'block';
-    return;
-  }
-  noData.style.display = 'none';
-
-  const nowMin = nowWithinDay(dateStr);
-  const hours = buildHourMarks();
-
-  const channelPrograms = {};
-  CHANNELS.forEach(ch => {
-    const list = (data[ch.key] || []).slice().sort((a,b) => timeToMinutes(a.start) - timeToMinutes(b.start));
-    channelPrograms[ch.key] = list;
-  });
-
-  let html = '<div class="scroll-x"><table class="schedule"><thead><tr>';
-  html += '<th class="time-col">시간</th>';
-  CHANNELS.forEach(ch => {
-    html += `<th class="${ch.group}">${ch.key}<span class="ch-band"></span></th>`;
-  });
-  html += '</tr></thead><tbody>';
-
-  hours.forEach(h => {
-    html += '<tr>';
-    html += `<td class="time-col"><span class="hh">${String(h).padStart(2,'0')}</span>:00</td>`;
-
-    CHANNELS.forEach(ch => {
-      const progs = channelPrograms[ch.key];
-      const inThisHour = progs.filter(p => Math.floor(timeToMinutes(p.start) / 60) === h);
-
-      html += '<td class="prog-cell">';
-      if (inThisHour.length === 0) {
-        html += '<div class="prog-block empty">—</div>';
-      } else {
-        inThisHour.forEach(p => {
-          const startMin = timeToMinutes(p.start);
-          const endMin = p.end === '24:00' ? 24*60 : timeToMinutes(p.end);
-          const isNow = nowMin !== null && nowMin >= startMin && nowMin < endMin;
-          html += `<div class="prog-block${isNow ? ' now' : ''}">`;
-          html += `<span class="ptime">${p.start}–${p.end === '24:00' ? '24:00' : p.end}</span>`;
-          html += escapeHtml(p.title);
-          html += '</div>';
-        });
-      }
-      html += '</td>';
-    });
-
-    html += '</tr>';
-  });
-
-  html += '</tbody></table></div>';
-  wrap.innerHTML = html;
-
-  if (nowMin !== null) {
-    const nowBlock = wrap.querySelector('.prog-block.now');
-    if (nowBlock) {
-      const scrollContainer = wrap.querySelector('.scroll-x');
-      const row = nowBlock.closest('tr');
-      if (scrollContainer && row) {
-        const offset = row.offsetTop - 40;
-        scrollContainer.scrollTop = Math.max(0, offset);
-      }
-    }
-  }
-}
-
-function escapeHtml(str) {
-  const div = document.createElement('div');
-  div.textContent = str;
-  return div.innerHTML;
-}
-
-async function refresh(dateStr) {
-  document.getElementById('dateText').textContent = formatDateLabel(dateStr);
-  document.getElementById('todayBadge').style.display = isToday(dateStr) ? 'inline-block' : 'none';
-  const data = await getDataForDate(dateStr);
-  renderGrid(data, dateStr);
-
-  const weather = await getWeatherForDate(dateStr);
-  renderWeatherBar(weather);
-}
-
-function shiftDate(dateStr, delta) {
-  const d = new Date(dateStr + 'T00:00:00');
-  d.setDate(d.getDate() + delta);
-  return toLocalDateStr(d);
-}
-
-// ============ 날씨 탭: 월간 달력 ============
-const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
-
-function todayStr() { return toLocalDateStr(new Date()); }
-
-async function loadMonthData(year, month) {
-  const ym = `${year}-${String(month).padStart(2, '0')}`;
-  const lastYearYm = `${year - 1}-${String(month).padStart(2, '0')}`;
-
-  const [asos, forecast, lastYearAsos] = await Promise.all([
-    fetchJsonSafe(`./weather/asos/${ym}.json`),
-    fetchJsonSafe('./weather/forecast/latest.json'),
-    fetchJsonSafe(`./weather/asos/${lastYearYm}.json`),
-  ]);
-
-  return {
-    asos: asos || {},
-    forecast: forecast || {},
-    lastYearAsos: lastYearAsos || {},
-  };
-}
-
-function getDayData(dateStr, monthData) {
-  if (monthData.forecast[dateStr]) {
-    return { ...monthData.forecast[dateStr], kind: 'forecast' };
-  }
-  if (monthData.asos[dateStr]) {
-    return { ...monthData.asos[dateStr], kind: 'asos' };
-  }
-  return null;
-}
-
-function getLastYearData(dateStr, monthData) {
-  const d = new Date(dateStr + 'T00:00:00');
-  const lyDateStr = `${d.getFullYear() - 1}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-  return monthData.lastYearAsos[lyDateStr] || null;
-}
-
-function renderDayCell(year, month, day, monthData, today) {
-  const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-  const dow = new Date(dateStr + 'T00:00:00').getDay();
-  const isToday = dateStr === today;
-  const isFuture = dateStr > today;
-
-  const cellClasses = ['cal-cell'];
-  if (isToday) cellClasses.push('today-cell');
-  else if (isFuture) cellClasses.push('future-cell');
-
-  const dowClass = dow === 0 ? 'sun' : (dow === 6 ? 'sat' : '');
-
-  const data = getDayData(dateStr, monthData);
-
-  let statsHtml;
-  if (!data) {
-    statsHtml = '<div class="no-data-cell">정보없음</div>';
-  } else {
-    const minStr = (data.minTa === null || data.minTa === undefined) ? '–' : `${data.minTa.toFixed(0)}°`;
-    const maxStr = (data.maxTa === null || data.maxTa === undefined) ? '–' : `${data.maxTa.toFixed(0)}°`;
-
-    let rainStr, hasRain;
-    if (data.kind === 'forecast') {
-      rainStr = `${Math.round(data.pop_max)}%`;
-      hasRain = data.pop_max >= 30;
-    } else {
-      rainStr = `${data.sumRn.toFixed(1)}mm`;
-      hasRain = data.sumRn > 0;
-    }
-
-    let lyHtml = '';
-    const ly = getLastYearData(dateStr, monthData);
-    if (ly && ly.minTa !== null && ly.maxTa !== null) {
-      lyHtml = `<div class="ly">작년 ${ly.minTa.toFixed(0)}°/${ly.maxTa.toFixed(0)}°</div>`;
-    }
-
-    statsHtml =
-      `<div class="day-stats">` +
-      `<div class="row"><span class="min">최저 ${minStr}</span></div>` +
-      `<div class="row"><span class="max">최고 ${maxStr}</span></div>` +
-      `<div class="row"><span class="rain${hasRain ? ' has-rain' : ''}">비 ${rainStr}</span></div>` +
-      lyHtml +
-      `</div>`;
-  }
-
-  return `<td class="${cellClasses.join(' ')}">` +
-         `<div class="day-num ${dowClass}">${day}</div>` +
-         statsHtml +
-         `</td>`;
-}
-
-async function renderMonth(year, month) {
-  const ym = `${year}-${String(month).padStart(2, '0')}`;
-  document.getElementById('monthLabel').textContent = `${year}.${String(month).padStart(2, '0')}`;
-  if (document.getElementById('monthPickerPanel').classList.contains('open')) {
-    renderMonthPickerPanel();
-  }
-
-  const monthData = await loadMonthData(year, month);
-  const today = todayStr();
-
-  const firstDow = new Date(year, month - 1, 1).getDay();
-  const daysInMonth = new Date(year, month, 0).getDate();
-
-  let html = '<table class="calendar"><thead><tr>';
-  WEEKDAYS.forEach((w, i) => {
-    const cls = i === 0 ? 'sun' : (i === 6 ? 'sat' : '');
-    html += `<th class="${cls}">${w}</th>`;
-  });
-  html += '</tr></thead><tbody><tr>';
-
-  for (let i = 0; i < firstDow; i++) html += '<td class="empty"></td>';
-
-  let dow = firstDow;
-  for (let day = 1; day <= daysInMonth; day++) {
-    html += renderDayCell(year, month, day, monthData, today);
-    dow++;
-    if (dow === 7) {
-      html += '</tr><tr>';
-      dow = 0;
-    }
-  }
-  while (dow !== 0 && dow !== 7) {
-    html += '<td class="empty"></td>';
-    dow++;
-  }
-
-  html += '</tr></tbody></table>';
-  document.getElementById('calWrap').innerHTML = html;
-}
-
-// ============ 탭 전환 ============
-let currentYear, currentMonth;
-let pickerPanelYear;
-let _weatherTabLoaded = false;
-let _homeshopTabLoaded = false;
-let _dramaVarietyTabLoaded = false;
-
-// ============ 드라마/예능 탭 ============
-let dvWeekStart = "2026-06-22";
-let dvFilter = "all";
-let dvCache = {};
-const DV_DAYS = ["월", "화", "수", "목", "금", "토", "일"];
-const DV_GENRES = [
-  { key: "drama", label: "드라마" },
-  { key: "variety", label: "예능" }
-];
-
-function dvMondayOf(dateStr) {
-  const d = new Date(dateStr + "T00:00:00");
-  const dow = d.getDay();
-  const diff = (dow === 0) ? -6 : (1 - dow);
-  d.setDate(d.getDate() + diff);
-  return toLocalDateStr(d);
-}
-
-function dvShiftWeek(weekStart, deltaWeeks) {
-  const d = new Date(weekStart + "T00:00:00");
-  d.setDate(d.getDate() + deltaWeeks * 7);
-  return toLocalDateStr(d);
-}
-
-function dvWeekEnd(weekStart) {
-  const d = new Date(weekStart + "T00:00:00");
-  d.setDate(d.getDate() + 6);
-  return toLocalDateStr(d);
-}
-
-function dvFormatWeekLabel(weekStart) {
-  const fmt = (s) => s.replace(/-/g, ".");
-  return `${fmt(weekStart)} ~ ${fmt(dvWeekEnd(weekStart))}`;
-}
-
-async function dvLoadWeek(weekStart) {
-  if (dvCache[weekStart]) return dvCache[weekStart];
-  try {
-    const resp = await fetch(`./data/dramavariety/${weekStart}.json`);
-    if (!resp.ok) throw new Error("not found");
-    const data = await resp.json();
-    dvCache[weekStart] = data;
-    return data;
-  } catch (e) {
-    return null;
-  }
-}
-
-function dvRenderUpdated(data) {
-  const el = document.getElementById('dvUpdated');
-  if (!data || !data.collectedAt) { el.textContent = ""; return; }
-  const d = new Date(data.collectedAt);
-  const pad = (n) => String(n).padStart(2, "0");
-  el.textContent = `최종 수집: ${d.getFullYear()}.${pad(d.getMonth()+1)}.${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
-}
-
-function dvEscapeHtml(s) {
-  if (s == null) return '';
-  return String(s)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
-
-function dvRenderGrid(data) {
-  const wrap = document.getElementById('dvGridWrap');
-  const genres = dvFilter === "all" ? DV_GENRES : DV_GENRES.filter(g => g.key === dvFilter);
-  const programs = (data && data.programs) ? data.programs : [];
-
-  let html = '<table class="dv-table"><thead><tr><th class="dv-genre-col"></th>';
-  for (const day of DV_DAYS) html += `<th>${day}</th>`;
-  html += '</tr></thead><tbody>';
-
-  if (!programs.length) {
-    html += `<tr class="dv-empty-row"><td colspan="${DV_DAYS.length + 1}">이 주차의 수집 데이터가 없습니다</td></tr>`;
-  } else {
-    for (const genre of genres) {
-      const genrePrograms = programs.filter(p => p.category === genre.key);
-      const genreClass = genre.key === 'drama' ? 'dv-genre-drama' : 'dv-genre-variety';
-      html += `<tr><td class="dv-genre-label ${genreClass}">${genre.label}</td>`;
-      for (const day of DV_DAYS) {
-        const dayPrograms = genrePrograms.filter(p => p.days.includes(day));
-        const cellClass = dayPrograms.length ? 'dv-day-cell' : 'dv-day-cell dv-empty-cell';
-        html += `<td class="${cellClass}">`;
-        for (const p of dayPrograms) {
-          const isHighRating = (p.category === 'drama' && p.rating >= 10) || 
-                               (p.category === 'variety' && p.rating >= 3);
-          const safeLink = dvEscapeHtml(p.link || '#');
-          const cardCls = `dv-card dv-cat-${p.category}${isHighRating ? ' dv-high-rating' : ''}`;
-          html += `<a class="${cardCls}" href="${safeLink}" target="_blank" rel="noopener">`;
-          html += `<span class="dv-title"><span class="dv-channel">[${dvEscapeHtml(p.channel)}]</span> ${dvEscapeHtml(p.title)}</span>`;
-          html += `<span class="dv-meta">(${dvEscapeHtml(p.days.join(', '))}) ${dvEscapeHtml(p.time)}</span>`;
-          html += `<span class="dv-rating">${dvEscapeHtml(p.rating)}%</span> <span class="dv-rating-date">${p.ratingDate ? '(' + dvEscapeHtml(p.ratingDate) + ')' : ''}</span>`;
-          html += `</a>`;
-        }
-        html += `</td>`;
-      }
-      html += `</tr>`;
-    }
-  }
-
-  html += '</tbody></table>';
-  wrap.innerHTML = html;
-}
-
-function dvRenderBasis() {
-  const wrap = document.getElementById('dvGridWrap');
-  let basis = wrap.previousElementSibling;
-  if (!basis || !basis.classList.contains('dv-basis')) {
-    basis = document.createElement('div');
-    basis.className = 'dv-basis';
-    wrap.parentNode.insertBefore(basis, wrap);
-  }
-  basis.innerHTML = '※ 크롤링 기준: <strong>[드라마]</strong> 시청률 5% 이상 · ' +
-                    '<strong>[예능]</strong> 시청률 1% 이상 | ' +
-                    '<strong style="color:#D97706;">■</strong> 노란색: 고시청률 ' +
-                    '(<strong>[드라마]</strong> 10%+ · <strong>[예능]</strong> 3%+)';
-}
-
-async function dvRefresh(weekStart) {
-  document.getElementById('dvWeekLabel').textContent = dvFormatWeekLabel(weekStart);
-  const data = await dvLoadWeek(weekStart);
-  dvRenderUpdated(data);
-  dvRenderBasis();
-  dvRenderGrid(data);
-}
-
-// ============ 홈쇼핑 탭 ============
-let hsCurrentDate = "2026-06-21";
-let hsCurrentBc = "live";
-let hsCategoryFilter = null;
-const HS_COMPANIES = [
-  { code: 'HD', name: 'HD', cls: 'hd' },
-  { code: 'GS', name: 'GS', cls: 'gs' },
-  { code: 'CJ', name: 'CJ', cls: 'cj' },
-  { code: 'LT', name: 'LT', cls: 'lt' },
-];
-const _hsCache = {};
-
-async function hsLoadCompanyDate(code, bc, dateStr) {
-  const ym = dateStr.slice(0, 7);
-  const key = `${code}_${bc}_${ym}`;
-  if (!(key in _hsCache)) {
-    _hsCache[key] = await fetchJsonSafe(`./homeshopping/${code}_${bc}/${ym}.json`);
-  }
-  const monthData = _hsCache[key];
-  if (monthData && monthData.days && monthData.days[dateStr]) {
-    return { programs: monthData.days[dateStr] };
-  }
-  return null;
-}
-
-function hsNowMinutes(dateStr) {
-  const today = toLocalDateStr(new Date());
-  if (dateStr !== today) return null;
-  const now = new Date();
-  return now.getHours() * 60 + now.getMinutes();
-}
-
-function hsTimeToMin(t) {
-  const [h, m] = t.split(':').map(Number);
-  return h * 60 + m;
-}
-
-function hsFormatPrice(won) {
-  if (!won || won <= 0) return '';
-  if (won >= 1000000) {
-    const man = Math.floor(won / 10000);
-    return `<span class="hs-price">${man}만<span class="won">원</span></span>`;
-  }
-  if (won >= 1000) {
-    const cheon = Math.floor(won / 1000);
-    return `<span class="hs-price">${cheon}천<span class="won">원</span></span>`;
-  }
-  return `<span class="hs-price">${won}<span class="won">원</span></span>`;
-}
-
-const HS_CATEGORY_COLORS = {
-  '의류': '#E07A5F', '잡화/주얼리': '#D88C9A', '언더웨어': '#F4A8B8',
-  '미용': '#C9ADA7', '건강식품': '#84A98C', '일반식품': '#A3B18A',
-  '가전': '#457B9D', '리빙/주방': '#BC6C25', '여행': '#4895EF',
-  '보험': '#6C757D', '일반렌탈': '#8D99AE', '문화/스포츠': '#F3722C',
-};
-function hsCategoryColor(category) {
-  return HS_CATEGORY_COLORS[category] || '#9C9486';
-}
-
-function hsRenderCategoryLegend() {
-  const el = document.getElementById('hsCatLegend');
-  if (!el) return;
-
-  let html = `<button type="button" class="hs-cat-chip hs-cat-reset${hsCategoryFilter === null ? ' active' : ''}" data-cat="">전체보기</button>`;
-  for (const [cat, color] of Object.entries(HS_CATEGORY_COLORS)) {
-    const active = hsCategoryFilter === cat ? ' active' : '';
-    html += `<button type="button" class="hs-cat-chip${active}" data-cat="${escapeHtml(cat)}">` +
-            `<i style="background:${color};"></i>${escapeHtml(cat)}</button>`;
-  }
-
-  el.innerHTML = html;
-
-  if (!el.dataset.bound) {
-    el.addEventListener('click', (e) => {
-      const btn = e.target.closest('.hs-cat-chip');
-      if (!btn) return;
-      const cat = btn.dataset.cat;
-      hsCategoryFilter = cat === '' ? null : cat;
-      hsRenderCategoryLegend();
-      hsRenderBody();
-    });
-    el.dataset.bound = '1';
-  }
-}
-
-function hsRenderProgram(p, nowMin) {
-  let onair = false;
-  if (nowMin !== null && p.start && p.end) {
-    let s = hsTimeToMin(p.start);
-    let e = hsTimeToMin(p.end);
-    if (e <= s) e += 24 * 60;
-    if (nowMin >= s && nowMin < e) onair = true;
-  }
-
-  let durationMin = null;
-  if (p.start && p.end) {
-    let s = hsTimeToMin(p.start);
-    let e = hsTimeToMin(p.end);
-    if (e <= s) e += 24 * 60;
-    durationMin = e - s;
-  }
-  const durationStr = durationMin !== null ? ` (${durationMin}')` : '';
-
-  const brandHtml = p.brand ? `<span class="hs-brand">${escapeHtml(p.brand)}</span> ` : '';
-  const productText = p.product || (p.brand ? '' : '(정보 없음)');
-
-  const priceHtml = hsFormatPrice(p.price);
-  const color = hsCategoryColor(p.category);
-  const gotoHtml = p.link
-    ? `<a class="hs-goto" href="${p.link}" target="_blank" rel="noopener">바로가기</a>`
-    : '';
-
-  return `<div class="hs-prog" style="border-left-color:${color};">` +
-         `<div class="hs-time${onair ? ' onair' : ''}">${p.start}–${p.end}${durationStr}` +
-         (onair ? '<span class="hs-onair-badge">방송중</span>' : '') +
-         `</div>` +
-         `<div class="hs-title">${brandHtml}${escapeHtml(productText)}</div>` +
-         `<div class="hs-bottom-row">${priceHtml}${gotoHtml}</div>` +
-         `</div>`;
-}
-
-let _hsLastDatasets = null;
-let _hsLastDateStr = null;
-
-async function hsRefresh(dateStr) {
-  hsRenderCategoryLegend();
-  document.getElementById('hsDateText').textContent = formatDateLabel(dateStr);
-  const wrap = document.getElementById('hsGridWrap');
-  wrap.innerHTML = '<div style="text-align:center;padding:30px;color:var(--ink-soft);font-size:12px;">불러오는 중…</div>';
-
-  const datasets = await Promise.all(
-    HS_COMPANIES.map(c => hsLoadCompanyDate(c.code, hsCurrentBc, dateStr))
-  );
-  _hsLastDatasets = datasets;
-  _hsLastDateStr = dateStr;
-
-  hsRenderBody();
-}
-
-function hsMatchesFilter(p) {
-  if (hsCategoryFilter === null) return true;
-  return p.category === hsCategoryFilter;
-}
-
-function hsRenderBody() {
-  const wrap = document.getElementById('hsGridWrap');
-  const datasets = _hsLastDatasets;
-  const dateStr = _hsLastDateStr;
-  if (!datasets) return;
-
-  const nowMin = hsNowMinutes(dateStr);
-  const hasAny = datasets.some(d => d && d.programs && d.programs.length > 0);
-  if (!hasAny) {
-    wrap.innerHTML = '<div style="text-align:center;padding:40px;color:var(--ink-soft);font-size:13px;">이 날짜의 홈쇼핑 편성 데이터가 없습니다.</div>';
-    return;
-  }
-
-  if (hsCategoryFilter === null) {
-    wrap.innerHTML = hsRenderGridView(datasets, nowMin);
-    hsScrollToCurrentHour(wrap, nowMin);
-  } else {
-    wrap.innerHTML = hsRenderListView(datasets, nowMin);
-  }
-}
-
-function hsScrollToCurrentHour(wrap, nowMin) {
-  if (nowMin === null) return;
-  const hour = Math.floor(nowMin / 60);
-  const rows = wrap.querySelectorAll('table.hs-table tbody tr');
-  const targetRow = rows[hour];
-  const scrollContainer = wrap.querySelector('.hs-scroll');
-  if (targetRow && scrollContainer) {
-    const offset = targetRow.offsetTop - 40;
-    scrollContainer.scrollTop = Math.max(0, offset);
-  }
-}
-
-function hsRenderGridView(datasets, nowMin) {
-  const buckets = {};
-  for (let h = 0; h < 24; h++) buckets[h] = HS_COMPANIES.map(() => []);
-
-  datasets.forEach((data, ci) => {
-    const programs = (data && data.programs) ? data.programs : [];
-    for (const p of programs) {
-      if (!p.start) continue;
-      const hour = parseInt(p.start.split(':')[0], 10);
-      if (hour >= 0 && hour < 24) buckets[hour][ci].push(p);
-    }
-  });
-
-  let html = '<div class="hs-scroll"><table class="hs-table"><thead><tr>';
-  html += '<th class="hs-time-col">시간</th>';
-  HS_COMPANIES.forEach(c => {
-    html += `<th class="${c.cls}"><span class="hs-co-tag">${c.name}</span></th>`;
-  });
-  html += '</tr></thead><tbody>';
-
-  for (let h = 0; h < 24; h++) {
-    html += '<tr>';
-    html += `<td class="hs-time-cell">${String(h).padStart(2, '0')}시</td>`;
-    HS_COMPANIES.forEach((c, ci) => {
-      const progs = buckets[h][ci];
-      if (progs.length === 0) {
-        html += `<td class="hs-empty-cell hs-co-cell ${c.cls}"></td>`;
-      } else {
-        let cell = `<td class="hs-co-cell ${c.cls}"><div class="hs-cell-inner">`;
-        for (const p of progs) cell += hsRenderProgram(p, nowMin);
-        cell += '</div></td>';
-        html += cell;
-      }
-    });
-    html += '</tr>';
-  }
-
-  html += '</tbody></table></div>';
-  return html;
-}
-
-function hsRenderListView(datasets, nowMin) {
-  const filtered = HS_COMPANIES.map((c, ci) => {
-    const programs = (datasets[ci] && datasets[ci].programs) ? datasets[ci].programs : [];
-    return programs.filter(hsMatchesFilter);
-  });
-
-  const anyMatch = filtered.some(arr => arr.length > 0);
-  if (!anyMatch) {
-    return '<div style="text-align:center;padding:40px;color:var(--ink-soft);font-size:13px;">해당 카테고리의 편성이 없습니다.</div>';
-  }
-
-  let html = '<div class="hs-scroll"><table class="hs-table hs-table-list"><thead><tr>';
-  html += '<th class="hs-time-col"></th>';
-  HS_COMPANIES.forEach(c => {
-    html += `<th class="${c.cls}"><span class="hs-co-tag">${c.name}</span></th>`;
-  });
-  html += '</tr></thead><tbody><tr>';
-  html += '<td class="hs-time-cell"></td>';
-  HS_COMPANIES.forEach((c, ci) => {
-    const progs = filtered[ci];
-    if (progs.length === 0) {
-      html += `<td class="hs-empty-cell hs-co-cell ${c.cls}"></td>`;
-    } else {
-      let cell = `<td class="hs-co-cell ${c.cls}"><div class="hs-cell-inner hs-cell-list">`;
-      for (const p of progs) cell += hsRenderProgram(p, nowMin);
-      cell += '</div></td>';
-      html += cell;
-    }
-  });
-  html += '</tr></tbody></table></div>';
-  return html;
-}
-
-const MONTH_NAMES = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
-const DATA_MIN_YEAR = 2023;
-const DATA_MIN_MONTH = 1;
-
-function renderMonthPickerPanel() {
-  document.getElementById('mppYearLabel').textContent = pickerPanelYear;
-
-  const now = new Date();
-  const maxYear = now.getFullYear();
-  const maxMonth = now.getMonth() + 1;
-
-  let html = '';
-  for (let m = 1; m <= 12; m++) {
-    const isFuture = pickerPanelYear > maxYear || (pickerPanelYear === maxYear && m > maxMonth);
-    const isPast = pickerPanelYear < DATA_MIN_YEAR || (pickerPanelYear === DATA_MIN_YEAR && m < DATA_MIN_MONTH);
-    const isCurrent = pickerPanelYear === currentYear && m === currentMonth;
-    html += `<button type="button" class="${isCurrent ? 'current' : ''}" ` +
-            `${(isFuture || isPast) ? 'disabled' : ''} data-month="${m}">${MONTH_NAMES[m - 1]}</button>`;
-  }
-  document.getElementById('mppMonthGrid').innerHTML = html;
-
-  document.getElementById('mppPrevYear').disabled = pickerPanelYear <= DATA_MIN_YEAR;
-  document.getElementById('mppNextYear').disabled = pickerPanelYear >= maxYear;
-
-  document.getElementById('mppMonthGrid').querySelectorAll('button[data-month]').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const m = parseInt(btn.dataset.month, 10);
-      currentYear = pickerPanelYear;
-      currentMonth = m;
-      renderMonth(currentYear, currentMonth);
-      document.getElementById('monthPickerPanel').classList.remove('open');
-    });
-  });
-}
-
-function switchTab(tab) {
-  const panels = { schedule: 'tabSchedule', weather: 'tabWeather', homeshop: 'tabHomeshop', dramavariety: 'tabDramaVariety' };
-  const btns = { schedule: 'tabBtnSchedule', weather: 'tabBtnWeather', homeshop: 'tabBtnHomeshop', dramavariety: 'tabBtnDramaVariety' };
-
-  for (const key in panels) {
-    document.getElementById(panels[key]).classList.toggle('active', key === tab);
-    document.getElementById(btns[key]).classList.toggle('active', key === tab);
-  }
-
-  if (tab === 'weather' && !_weatherTabLoaded) {
-    _weatherTabLoaded = true;
-    renderMonth(currentYear, currentMonth);
-  }
-  if (tab === 'homeshop' && !_homeshopTabLoaded) {
-    _homeshopTabLoaded = true;
-    hsRefresh(hsCurrentDate);
-  }
-  if (tab === 'dramavariety' && !_dramaVarietyTabLoaded) {
-    _dramaVarietyTabLoaded = true;
-    dvRefresh(dvWeekStart);
-  }
-}
-
-// ============ 초기화 ============
-(async function init() {
-  const now = new Date();
-  currentYear = now.getFullYear();
-  currentMonth = now.getMonth() + 1;
-  hsCurrentDate = toLocalDateStr(now);
-  dvWeekStart = dvMondayOf(toLocalDateStr(now));
-
-  const picker = document.getElementById('datePicker');
-  picker.value = toLocalDateStr(now);
-
-  _homeshopTabLoaded = true;
-  await hsRefresh(hsCurrentDate);
-
-  await refresh(picker.value);
-
-  document.getElementById('searchBtn').addEventListener('click', () => {
-    refresh(picker.value);
-  });
-
-  document.getElementById('prevDay').addEventListener('click', () => {
-    picker.value = shiftDate(picker.value, -1);
-    refresh(picker.value);
-  });
-  document.getElementById('nextDay').addEventListener('click', () => {
-    picker.value = shiftDate(picker.value, 1);
-    refresh(picker.value);
-  });
-
-  document.getElementById('gotoToday').addEventListener('click', () => {
-    const today = toLocalDateStr(new Date());
-    picker.value = today;
-    refresh(today);
-  });
-
-  picker.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') refresh(picker.value);
-  });
-
-  document.getElementById('tabBtnSchedule').addEventListener('click', () => switchTab('schedule'));
-  document.getElementById('tabBtnWeather').addEventListener('click', () => switchTab('weather'));
-  document.getElementById('tabBtnHomeshop').addEventListener('click', () => switchTab('homeshop'));
-  document.getElementById('tabBtnDramaVariety').addEventListener('click', () => switchTab('dramavariety'));
-
-  const hsPicker = document.getElementById('hsDatePicker');
-  hsPicker.value = hsCurrentDate;
-  document.getElementById('hsPrevDay').addEventListener('click', () => {
-    hsCurrentDate = shiftDate(hsCurrentDate, -1);
-    hsPicker.value = hsCurrentDate;
-    hsRefresh(hsCurrentDate);
-  });
-  document.getElementById('hsNextDay').addEventListener('click', () => {
-    hsCurrentDate = shiftDate(hsCurrentDate, 1);
-    hsPicker.value = hsCurrentDate;
-    hsRefresh(hsCurrentDate);
-  });
-  hsPicker.addEventListener('change', () => {
-    hsCurrentDate = hsPicker.value;
-    hsRefresh(hsCurrentDate);
-  });
-
-  document.querySelectorAll('#hsToggle .hs-toggle-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      hsCurrentBc = btn.dataset.bc;
-      document.querySelectorAll('#hsToggle .hs-toggle-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      hsRefresh(hsCurrentDate);
-    });
-  });
-
-  document.getElementById('prevMonth').addEventListener('click', () => {
-    if (currentYear === DATA_MIN_YEAR && currentMonth === DATA_MIN_MONTH) return;
-    currentMonth -= 1;
-    if (currentMonth < 1) { currentMonth = 12; currentYear -= 1; }
-    renderMonth(currentYear, currentMonth);
-  });
-  document.getElementById('nextMonth').addEventListener('click', () => {
-    const now = new Date();
-    if (currentYear === now.getFullYear() && currentMonth === now.getMonth() + 1) return;
-    currentMonth += 1;
-    if (currentMonth > 12) { currentMonth = 1; currentYear += 1; }
-    renderMonth(currentYear, currentMonth);
-  });
-
-  document.getElementById('monthLabelWrap').addEventListener('click', (e) => {
-    const panel = document.getElementById('monthPickerPanel');
-    const isOpen = panel.classList.contains('open');
-    if (isOpen) {
-      panel.classList.remove('open');
-    } else {
-      pickerPanelYear = currentYear;
-      renderMonthPickerPanel();
-      panel.classList.add('open');
-    }
-    e.stopPropagation();
-  });
-
-  document.addEventListener('click', (e) => {
-    const wrap = document.getElementById('monthLabelWrap');
-    if (!wrap.contains(e.target)) {
-      document.getElementById('monthPickerPanel').classList.remove('open');
-    }
-  });
-
-  document.getElementById('mppPrevYear').addEventListener('click', (e) => {
-    e.stopPropagation();
-    pickerPanelYear -= 1;
-    renderMonthPickerPanel();
-  });
-  document.getElementById('mppNextYear').addEventListener('click', (e) => {
-    e.stopPropagation();
-    pickerPanelYear += 1;
-    renderMonthPickerPanel();
-  });
-
-  document.getElementById('dvPrevWeek').addEventListener('click', () => {
-    dvWeekStart = dvShiftWeek(dvWeekStart, -1);
-    dvRefresh(dvWeekStart);
-  });
-  document.getElementById('dvNextWeek').addEventListener('click', () => {
-    dvWeekStart = dvShiftWeek(dvWeekStart, 1);
-    dvRefresh(dvWeekStart);
-  });
-
-  document.querySelectorAll('.dv-slicer-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      dvFilter = btn.dataset.filter;
-      document.querySelectorAll('.dv-slicer-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      dvRenderGrid(dvCache[dvWeekStart]);
-    });
-  });
-})();
-</script>
-
-</body>
-</html>
+  const wrap = document.getElementById('grid
