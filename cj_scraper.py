@@ -25,13 +25,17 @@ homeshopping/
 과거(오늘 이전) 날짜가 이미 기록돼 있으면 다시 안 건드리고 보존, 오늘+미래만 갱신.
 
 == 브랜드 추출 ==
-CJ API의 brandName은 거의 항상 비어있고(None), 상품 상세페이지(/p/item/{itemCd})는
-JS로 렌더링되는 SPA라 requests로는 브랜드를 가져올 수 없다(별도 상세 REST API 미확인,
-HTML에 데이터 없음 - require.js 로더만 내려옴). 그래서 상세페이지 파싱은 포기하고,
-HD/LT처럼 brand 필드를 화면에 분리해서 보여주기 위해 categorize.resolve_display_brand()로
-상품명(itemNm)에서 학습 데이터 브랜드 사전과 매칭해 브랜드를 추론한다.
-추론에 실패하면(사전에 없는 브랜드, 또는 진짜 노브랜드 상품) brand는 빈 문자열로
-저장되고, 프론트엔드는 빈 브랜드를 표시하지 않는다(HD/LT와 동일 처리 방식).
+CJ API(tvSchedule)의 brandName은 거의 항상 비어있고(None), 상품 상세페이지(/p/item/{itemCd})는
+JS로 렌더링되는 SPA라 requests로는 화면에 보이는 브랜드를 직접 파싱할 수 없다.
+대신 itemCd 기준으로 대표 브랜드를 조회하는 별도 REST API가 있다:
+  GET https://display-frontapi.cjonstyle.com/itemDetails/{itemCd}/repBrandTag
+  -> {"result": {"repBrandCd": "00009621", "repBrandNm": "데이즈온", ...}, "status": 200}
+브랜드가 없는(노브랜드) 상품은 result가 null로 내려온다(정상 동작, 화면에도 브랜드 미표시).
+fetch_cj()에서 itemCd가 있을 때마다 이 API를 호출해 repBrandNm을 brand로 채우고,
+호출 실패/null/조회 안 됨인 경우에만 add_categories()의 상품명(itemNm) 기반 추론
+(categorize.resolve_display_brand_batch)으로 백업 추정한다.
+두 방식 모두 실패하면 brand는 빈 문자열로 저장되고, 프론트엔드는 빈 브랜드를
+표시하지 않는다(HD/LT와 동일 처리 방식).
 
 == 사용법 ==
   pip install requests
@@ -94,6 +98,30 @@ def add_categories(programs):
         p["product"] = clean_product_name(p["product"])
     return programs
 
+def fetch_repbrand_batch(item_cds):
+    """
+    itemCd 목록에 대해 대표 브랜드명을 조회한다.
+    GET https://display-frontapi.cjonstyle.com/itemDetails/{itemCd}/repBrandTag
+    -> {"result": {"repBrandNm": "데이즈온", ...}} 또는 {"result": null} (노브랜드 상품, 정상)
+    실패/타임아웃 시 해당 itemCd는 결과에서 빠지며, 호출부에서 빈 문자열로 처리한다
+    (add_categories()의 상품명 기반 추론이 백업으로 작동).
+    중복 itemCd는 한 번만 조회(같은 상품이 같은 날 여러 회 편성되는 경우 대비).
+    """
+    headers = {"User-Agent": UA, "Referer": "https://item.cjonstyle.com/nfront/item/"}
+    brand_map = {}
+    for item_cd in dict.fromkeys(c for c in item_cds if c):  # 중복 제거, 순서 유지
+        url = f"https://display-frontapi.cjonstyle.com/itemDetails/{item_cd}/repBrandTag"
+        try:
+            r = requests.get(url, headers=headers, timeout=8)
+            r.raise_for_status()
+            result = r.json().get("result")
+            if result and result.get("repBrandNm"):
+                brand_map[item_cd] = result["repBrandNm"]
+        except Exception as e:
+            print(f"    [CJ] repBrandTag 오류 (itemCd={item_cd}): {e}")
+        time.sleep(0.3)  # tvSchedule(REQUEST_DELAY=0.8)보다 짧게 - 가벼운 단건 조회라 부담 적음
+    return brand_map
+
 def fetch_cj(date_compact, broad_param):
     headers = {"User-Agent": UA, "Referer": "https://display.cjonstyle.com/p/tv/tvSchedule"}
     url = (f"https://display.cjonstyle.com/c/rest/tv/tvSchedule"
@@ -116,10 +144,8 @@ def fetch_cj(date_compact, broad_param):
             item_cd = first.get("itemCd", "")
             chn_cd = first.get("chnCd", "")
 
-            # API가 제공하는 brandName이 있으면 그대로 쓰고, 없으면 빈 문자열로 둔다.
-            # (상세페이지는 JS SPA라 requests로 파싱 불가하고, pgmNm/itemNm을
-            #  brand로 대신 쓰면 실제 브랜드가 아닌 값이 들어가 오히려 부정확함.
-            #  빈 문자열로 두면 add_categories()가 상품명에서 브랜드를 추론해 채운다.)
+            # tvSchedule API의 brandName은 거의 항상 비어있음. 일단 빈 문자열로 두고
+            # 루프 종료 후 repBrandTag 일괄 조회로 채운다(_item_cd는 그때 쓰고 최종 결과에서 제거).
             brand_name = first.get("brandName") or ""
 
             link = (f"https://display.cjonstyle.com/p/item/{item_cd}?channelCode={chn_cd}"
@@ -132,9 +158,22 @@ def fetch_cj(date_compact, broad_param):
                 "product": first.get("itemNm", "") or "",
                 "price": parse_price(first.get("salePrice")),
                 "link": link,
+                "_item_cd": item_cd,  # repBrandTag 조회용 임시 필드, 아래에서 제거
             })
     except Exception as e:
         print(f"    [CJ] 오류: {e}")
+
+    # itemCd 기준 대표 브랜드 일괄 조회 → brand가 비어있는 편성에 채워줌
+    if programs:
+        brand_map = fetch_repbrand_batch(p["_item_cd"] for p in programs)
+        for p in programs:
+            if not p["brand"]:
+                rep_brand = brand_map.get(p.pop("_item_cd"), "")
+                if rep_brand:
+                    p["brand"] = rep_brand
+            else:
+                p.pop("_item_cd", None)
+
     programs.sort(key=lambda x: x["start"])
     return programs
 
