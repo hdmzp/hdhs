@@ -31,50 +31,51 @@ CJ는 brandName 필드가 대부분 비어있어, 비어있을 경우 방송 프
   pip install requests
   python cj_scraper.py
 """
-
+# -*- coding: utf-8 -*-
 import os
 import json
 import time
 import requests
+from bs4 import BeautifulSoup
 from datetime import datetime, timedelta, timezone
 from categorize import classify_batch
 from clean_product import clean_product_name
 
+# 설정값
 KST = timezone(timedelta(hours=9))
 OUTPUT_DIR = "homeshopping"
-REQUEST_DELAY = 0.4
-DAYS_RANGE = range(-1, 6)  # 어제 ~ +5일
+REQUEST_DELAY = 0.8 
+DAYS_RANGE = range(-1, 6)
 
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36")
 
-
 def today_kst():
     return datetime.now(KST)
 
-
 def parse_price(v):
-    """가격을 원 단위 정수로 정규화. '69,900' / 69900 / None 등 처리."""
-    if v is None:
-        return 0
-    if isinstance(v, (int, float)):
-        return int(v)
+    if v is None: return 0
+    if isinstance(v, (int, float)): return int(v)
     s = str(v).replace(",", "").strip()
-    if not s:
-        return 0
-    try:
-        return int(float(s))
-    except ValueError:
-        return 0
+    if not s: return 0
+    try: return int(float(s))
+    except ValueError: return 0
 
+def get_brand_from_detail(item_cd, chn_cd):
+    """상세 페이지에 접속하여 브랜드명을 추출"""
+    if not item_cd: return ""
+    url = f"https://display.cjonstyle.com/p/item/{item_cd}?channelCode={chn_cd}"
+    headers = {"User-Agent": UA}
+    try:
+        r = requests.get(url, headers=headers, timeout=5)
+        soup = BeautifulSoup(r.text, 'html.parser')
+        brand_el = soup.select_one("#_itemBrandNameArea")
+        return brand_el.text.strip() if brand_el else ""
+    except:
+        return ""
 
 def add_categories(programs):
-    """
-    1) 원본 상품명으로 카테고리 분류 (분류 모델은 원본 패턴으로 학습됨)
-    2) 분류가 끝난 뒤 product 필드를 화면 표시용으로 정제
-    """
-    if not programs:
-        return programs
+    if not programs: return programs
     pairs = [(p["brand"], p["product"]) for p in programs]
     categories = classify_batch(pairs)
     for p, cat in zip(programs, categories):
@@ -82,13 +83,7 @@ def add_categories(programs):
         p["product"] = clean_product_name(p["product"])
     return programs
 
-
 def fetch_cj(date_compact, broad_param):
-    """
-    broad_param: 'live'(TV LIVE) | 'plus'(TV+/데이터방송)
-    하나의 프로그램(pgmCd)에 여러 상품이 있어 첫 상품을 대표로 사용.
-    시간은 밀리초 Unix timestamp -> KST 변환.
-    """
     headers = {"User-Agent": UA, "Referer": "https://display.cjonstyle.com/p/tv/tvSchedule"}
     url = (f"https://display.cjonstyle.com/c/rest/tv/tvSchedule"
            f"?bdDt={date_compact}&isMobile=false&broadType={broad_param}&isEmployee=false")
@@ -100,8 +95,8 @@ def fetch_cj(date_compact, broad_param):
         for pg in prog_list:
             start_ms = pg.get("bdStrDtm")
             end_ms = pg.get("bdEndDtm")
-            if not start_ms or not end_ms:
-                continue
+            if not start_ms or not end_ms: continue
+            
             start_str = datetime.fromtimestamp(start_ms / 1000, tz=KST).strftime("%H:%M")
             end_str = datetime.fromtimestamp(end_ms / 1000, tz=KST).strftime("%H:%M")
 
@@ -109,13 +104,24 @@ def fetch_cj(date_compact, broad_param):
             first = items[0] if items else {}
             item_cd = first.get("itemCd", "")
             chn_cd = first.get("chnCd", "")
+            
+            # [브랜드 추출 로직]
+            # 1. API 기본값 -> 2. 상세페이지 파싱 -> 3. 프로그램명 -> 4. 상품명
+            brand_name = first.get("brandName")
+            if not brand_name:
+                brand_name = get_brand_from_detail(item_cd, chn_cd)
+            if not brand_name:
+                brand_name = pg.get("pgmNm", "")
+            if not brand_name:
+                brand_name = first.get("itemNm", "상품명 미정")
+
             link = (f"https://display.cjonstyle.com/p/item/{item_cd}?channelCode={chn_cd}"
                     if item_cd else "")
-            # CJ는 brandName이 대부분 비어있어 상품명을 대표로 사용
+            
             programs.append({
                 "start": start_str,
                 "end": end_str,
-                "brand": first.get("brandName") or pg.get("pgmNm", "") or "",
+                "brand": brand_name,
                 "product": first.get("itemNm", "") or "",
                 "price": parse_price(first.get("salePrice")),
                 "link": link,
@@ -125,22 +131,14 @@ def fetch_cj(date_compact, broad_param):
     programs.sort(key=lambda x: x["start"])
     return programs
 
-
-BROADCASTS = [
-    ("live", "live"),
-    ("data", "plus"),
-]
-
+BROADCASTS = [("live", "live"), ("data", "plus")]
 
 def load_month(sub_dir, ym):
     path = os.path.join(sub_dir, f"{ym}.json")
     if os.path.exists(path):
-        try:
-            return json.load(open(path, encoding="utf-8")).get("days", {})
-        except Exception:
-            return {}
+        try: return json.load(open(path, encoding="utf-8")).get("days", {})
+        except: return {}
     return {}
-
 
 def main():
     base = today_kst()
@@ -179,19 +177,14 @@ def main():
             time.sleep(REQUEST_DELAY)
 
         for ym, days in month_data.items():
-            if not days:
-                continue
+            if not days: continue
             out_path = os.path.join(sub_dir, f"{ym}.json")
             sorted_days = {k: days[k] for k in sorted(days)}
             with open(out_path, "w", encoding="utf-8") as f:
-                json.dump({
-                    "company": "CJ", "broadcast": broadcast,
-                    "month": ym, "days": sorted_days,
-                }, f, ensure_ascii=False, indent=2)
-            print(f"  저장: {out_path} ({len(sorted_days)}일)")
-
+                json.dump({"company": "CJ", "broadcast": broadcast, "month": ym, "days": sorted_days}, 
+                          f, ensure_ascii=False, indent=2)
+            print(f"  저장: {out_path}")
     print("\n완료.")
-
 
 if __name__ == "__main__":
     main()
