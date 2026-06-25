@@ -392,6 +392,32 @@
     font-family: 'Pretendard', -apple-system, sans-serif;
   }
 
+  .weather-region-toggle {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 14px 24px 0;
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .weather-region-toggle .hs-toggle-btn {
+    font-family: 'Pretendard', -apple-system, sans-serif;
+    font-size: 12.5px;
+    font-weight: 600;
+    border: 1px solid var(--rule);
+    background: var(--paper);
+    color: var(--ink-soft);
+    padding: 6px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .weather-region-toggle .hs-toggle-btn.active {
+    background: var(--brand-blue);
+    border-color: var(--brand-blue);
+    color: #fff;
+  }
+
   .month-nav {
     max-width: 880px;
     margin: 0 auto;
@@ -1116,6 +1142,17 @@
 
 <div id="tabWeather" class="tab-panel">
 
+<div class="weather-region-toggle" id="weatherRegionToggle">
+  <button class="hs-toggle-btn active" data-region="seoul">서울</button>
+  <button class="hs-toggle-btn" data-region="busan">부산</button>
+  <button class="hs-toggle-btn" data-region="daegu">대구</button>
+  <button class="hs-toggle-btn" data-region="incheon">인천</button>
+  <button class="hs-toggle-btn" data-region="gwangju">광주</button>
+  <button class="hs-toggle-btn" data-region="daejeon">대전</button>
+  <button class="hs-toggle-btn" data-region="ulsan">울산</button>
+  <button class="hs-toggle-btn" data-region="sejong">세종</button>
+</div>
+
 <div class="month-nav">
   <button id="prevMonth" aria-label="이전 달">‹</button>
   <div class="month-label-wrap" id="monthLabelWrap">
@@ -1411,14 +1448,14 @@ const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
 
 function todayStr() { return toLocalDateStr(new Date()); }
 
-async function loadMonthData(year, month) {
+async function loadMonthData(year, month, region) {
   const ym = `${year}-${String(month).padStart(2, '0')}`;
   const lastYearYm = `${year - 1}-${String(month).padStart(2, '0')}`;
 
   const [asos, forecast, lastYearAsos] = await Promise.all([
-    fetchJsonSafe(`./weather/asos/${ym}.json`),
-    fetchJsonSafe('./weather/forecast/latest.json'),
-    fetchJsonSafe(`./weather/asos/${lastYearYm}.json`),
+    fetchJsonSafe(`./weather/asos/${region}/${ym}.json`),
+    fetchJsonSafe(`./weather/forecast/${region}/latest.json`),
+    fetchJsonSafe(`./weather/asos/${region}/${lastYearYm}.json`),
   ]);
 
   return {
@@ -1502,7 +1539,7 @@ async function renderMonth(year, month) {
     renderMonthPickerPanel();
   }
 
-  const monthData = await loadMonthData(year, month);
+  const monthData = await loadMonthData(year, month, weatherCurrentRegion);
   const today = todayStr();
 
   const firstDow = new Date(year, month - 1, 1).getDay();
@@ -1537,6 +1574,7 @@ async function renderMonth(year, month) {
 
 let currentYear, currentMonth;
 let pickerPanelYear;
+let weatherCurrentRegion = "seoul";
 let _weatherTabLoaded = false;
 let _homeshopTabLoaded = false;
 let _dramaVarietyTabLoaded = false;
@@ -2100,6 +2138,15 @@ function switchTab(tab) {
       document.querySelectorAll('#hsTimeToggle .hs-toggle-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       hsRenderBody();
+    });
+  });
+
+  document.querySelectorAll('#weatherRegionToggle .hs-toggle-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      weatherCurrentRegion = btn.dataset.region;
+      document.querySelectorAll('#weatherRegionToggle .hs-toggle-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderMonth(currentYear, currentMonth);
     });
   });
 
