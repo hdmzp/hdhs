@@ -1129,13 +1129,32 @@
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
+    table-layout: fixed;
+  }
+
+  /* 헤더 테이블을 감싸는 sticky wrapper. 본문(tbody) 테이블과 분리된
+     별도 <table>이라서, 크로미움에서 table-layout:fixed + thead의
+     position:sticky가 서로 충돌해 sticky가 무시되는 버그를 피해간다.
+     두 테이블 모두 동일한 width(고정 시간대 컬럼 60px + 나머지 균등)를
+     쓰므로 컬럼이 어긋나지 않는다. */
+  .fp-sticky-head {
+    position: sticky;
+    top: 110px;
+    z-index: 4;
+    background: var(--paper);
+  }
+  .fp-sticky-head table.fp-table {
+    margin-bottom: 0;
+  }
+  /* 헤더 테이블 바로 아래 본문 테이블이 위쪽 테두리를 또 그리면
+     헤더와 본문 사이에 선이 두 줄로 겹쳐 보이므로, 본문 테이블의
+     맨 위 행에서만 위쪽 테두리를 생략한다. */
+  .fp-sticky-head + table.fp-table tr:first-child td {
+    border-top: none;
   }
 
   table.fp-table thead th {
-    position: sticky;
-    top: 110px;
     background: var(--paper);
-    z-index: 3;
     padding: 10px 4px 12px;
     border-bottom: 1px solid var(--rule);
     text-align: center;
@@ -1309,7 +1328,7 @@
     .fp-day-tabs { width: 100%; justify-content: space-between; }
     .fp-day-btn { padding: 7px 8px; font-size: 12px; flex: 1; }
     .fp-scroll { padding: 0 8px 40px; }
-    table.fp-table thead th { top: 95px; }
+    .fp-sticky-head { top: 95px; }
     table.fp-table thead th.fp-time-col { width: 40px; font-size: 9.5px; white-space: nowrap; }
     table.fp-table thead th .hs-co-tag { font-size: 11px; padding: 3px 8px; }
     .fp-card .fp-title { font-size: 11.5px; }
@@ -2415,31 +2434,39 @@ function fpBuildTableHtml(daySlots, compact) {
     cellMap[key].push(s);
   }
 
-  let html = `<table class="fp-table ${compact ? 'fp-table-compact' : ''}"><thead><tr>`;
-  html += '<th class="fp-time-col">시간대</th>';
-  for (const co of FP_COMPANIES) {
-    html += `<th class="${co.toLowerCase()}"><span class="hs-co-tag" style="background:var(--${co.toLowerCase()})">${co}</span></th>`;
-  }
-  html += '</tr></thead><tbody>';
+  // 헤더와 본문을 별도의 <table>로 분리한다. 같은 <table> 안에서
+  // thead에 position:sticky를 걸면(table-layout:fixed와 함께 쓸 때)
+  // 크로미움에서 sticky가 동작하지 않는 버그가 있어, 헤더 테이블을
+  // 별도의 sticky wrapper(div)에 넣고 본문 테이블과 컬럼 너비만
+  // table-layout:fixed로 동일하게 맞춘다.
+  const tableCls = `fp-table ${compact ? 'fp-table-compact' : ''}`;
 
+  let headerHtml = `<table class="${tableCls}"><thead><tr>`;
+  headerHtml += '<th class="fp-time-col">시간대</th>';
+  for (const co of FP_COMPANIES) {
+    headerHtml += `<th class="${co.toLowerCase()}"><span class="hs-co-tag" style="background:var(--${co.toLowerCase()})">${co}</span></th>`;
+  }
+  headerHtml += '</tr></thead></table>';
+
+  let bodyHtml = `<table class="${tableCls}"><tbody>`;
   for (const time of times) {
-    html += `<tr><td class="fp-time-cell">${fpEscapeHtml(time)}</td>`;
+    bodyHtml += `<tr><td class="fp-time-cell">${fpEscapeHtml(time)}</td>`;
     for (const co of FP_COMPANIES) {
       const key = `${time}__${co}`;
       const cellSlots = cellMap[key];
       if (cellSlots && cellSlots.length) {
-        html += `<td class="fp-co-cell ${co.toLowerCase()}">` +
+        bodyHtml += `<td class="fp-co-cell ${co.toLowerCase()}">` +
           cellSlots.map(s => fpRenderCard(s, compact)).join('') +
           `</td>`;
       } else {
-        html += `<td class="fp-empty-cell"></td>`;
+        bodyHtml += `<td class="fp-empty-cell"></td>`;
       }
     }
-    html += '</tr>';
+    bodyHtml += '</tr>';
   }
+  bodyHtml += '</tbody></table>';
 
-  html += '</tbody></table>';
-  return html;
+  return `<div class="fp-sticky-head">${headerHtml}</div>${bodyHtml}`;
 }
 
 function fpBuildAllDaysTableHtml(allSlots) {
@@ -2458,33 +2485,34 @@ function fpBuildAllDaysTableHtml(allSlots) {
     cellMap[key].push(s);
   }
 
-  let html = '<table class="fp-table fp-table-allday"><thead><tr>';
-  html += '<th class="fp-time-col">시간대</th>';
+  let headerHtml = '<table class="fp-table fp-table-allday"><thead><tr>';
+  headerHtml += '<th class="fp-time-col">시간대</th>';
   for (const day of FP_DAYS) {
-    html += `<th>${fpEscapeHtml(day)}</th>`;
+    headerHtml += `<th>${fpEscapeHtml(day)}</th>`;
   }
-  html += '</tr></thead><tbody>';
+  headerHtml += '</tr></thead></table>';
 
+  let bodyHtml = '<table class="fp-table fp-table-allday"><tbody>';
   for (const time of times) {
-    html += `<tr><td class="fp-time-cell">${fpEscapeHtml(time)}</td>`;
+    bodyHtml += `<tr><td class="fp-time-cell">${fpEscapeHtml(time)}</td>`;
     for (const day of FP_DAYS) {
       const key = `${time}__${day}`;
       const cellSlots = cellMap[key];
       if (cellSlots && cellSlots.length) {
-        html += `<td class="fp-co-cell">` +
+        bodyHtml += `<td class="fp-co-cell">` +
           `<div class="fp-cell-row">` +
           cellSlots.map(s => fpRenderCard(s, true)).join('') +
           `</div>` +
           `</td>`;
       } else {
-        html += `<td class="fp-empty-cell"></td>`;
+        bodyHtml += `<td class="fp-empty-cell"></td>`;
       }
     }
-    html += '</tr>';
+    bodyHtml += '</tr>';
   }
+  bodyHtml += '</tbody></table>';
 
-  html += '</tbody></table>';
-  return html;
+  return `<div class="fp-sticky-head">${headerHtml}</div>${bodyHtml}`;
 }
 
 function fpRenderGrid(data) {
