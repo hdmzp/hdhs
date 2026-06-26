@@ -1199,7 +1199,7 @@
   .fp-card .fp-thumb-wrap {
     position: relative;
     width: 100%;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 16 / 5;
     background: var(--paper-dim2);
     overflow: hidden;
   }
@@ -1246,6 +1246,55 @@
     padding: 60px 0;
   }
 
+  /* "전체" 보기: 요일별 섹션을 세로로 나열 */
+  .fp-day-section {
+    margin-bottom: 28px;
+  }
+  .fp-day-section-title {
+    font-family: 'Pretendard', -apple-system, sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--ink);
+    background: var(--paper-dim);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 8px 14px;
+    margin-bottom: 8px;
+  }
+
+  /* "전체" 보기에서는 썸네일 없이 텍스트만 있는 가벼운 카드 + 더 낮은 행 */
+  table.fp-table-compact td {
+    padding: 5px;
+  }
+  td.fp-time-cell.fp-time-cell-compact,
+  table.fp-table-compact td.fp-time-cell {
+    font-size: 11px;
+  }
+  .fp-card-compact {
+    padding: 6px 8px;
+  }
+  .fp-card-compact .fp-body { padding: 0; }
+  .fp-card-compact .fp-title {
+    font-size: 11.5px;
+    -webkit-line-clamp: 1;
+    margin-bottom: 2px;
+  }
+  .fp-card-compact .fp-schedule { font-size: 10px; }
+  .fp-co-badge-inline {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 800;
+    color: #fff;
+    padding: 1px 6px;
+    border-radius: 20px;
+    vertical-align: middle;
+    margin-bottom: 2px;
+  }
+  .fp-co-badge-inline.hd { background: var(--hd); }
+  .fp-co-badge-inline.lt { background: var(--lt); }
+  .fp-co-badge-inline.cj { background: var(--cj); }
+  .fp-co-badge-inline.gs { background: var(--gs); }
+
   @media (max-width: 700px) {
     .fp-controls { padding: 10px 8px 0; top: 45px; }
     .fp-day-tabs { width: 100%; justify-content: space-between; }
@@ -1254,6 +1303,8 @@
     table.fp-table thead th.fp-time-col { width: 40px; font-size: 9.5px; white-space: nowrap; }
     table.fp-table thead th .hs-co-tag { font-size: 11px; padding: 3px 8px; }
     .fp-card .fp-title { font-size: 11.5px; }
+    .fp-day-section-title { font-size: 12.5px; padding: 6px 10px; }
+    .fp-card-compact .fp-title { -webkit-line-clamp: 2; }
   }
 </style>
 </head>
@@ -1408,6 +1459,7 @@
 
 <div class="fp-controls">
   <div class="fp-day-tabs" id="fpDayTabs">
+    <button class="fp-day-btn" data-day="전체">전체</button>
     <button class="fp-day-btn" data-day="월">월</button>
     <button class="fp-day-btn" data-day="화">화</button>
     <button class="fp-day-btn" data-day="수">수</button>
@@ -2299,20 +2351,27 @@ function fpEscapeHtml(s) {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-function fpRenderCard(slot) {
+function fpRenderCard(slot, compact) {
   const co = slot.company.toLowerCase();
   const link = slot.detail_link || '#';
-  const thumb = slot.thumbnail
+  const thumb = (!compact && slot.thumbnail)
     ? `<img src="${fpEscapeHtml(slot.thumbnail)}" alt="${fpEscapeHtml(slot.title)}" loading="lazy" onerror="this.parentElement.style.display='none'">`
     : '';
 
+  const thumbBlock = compact
+    ? '' // 전체 보기에서는 공간이 부족하므로 썸네일 영역 자체를 생략한다.
+    : (
+        `<div class="fp-thumb-wrap">` +
+          thumb +
+          `<span class="fp-co-badge ${co}">${fpEscapeHtml(slot.company)}</span>` +
+        `</div>`
+      );
+
   return (
-    `<a class="fp-card" href="${fpEscapeHtml(link)}" target="_blank" rel="noopener">` +
-      `<div class="fp-thumb-wrap">` +
-        thumb +
-        `<span class="fp-co-badge ${co}">${fpEscapeHtml(slot.company)}</span>` +
-      `</div>` +
+    `<a class="fp-card ${compact ? 'fp-card-compact' : ''}" href="${fpEscapeHtml(link)}" target="_blank" rel="noopener">` +
+      thumbBlock +
       `<div class="fp-body">` +
+        (compact ? `<span class="fp-co-badge-inline ${co}">${fpEscapeHtml(slot.company)}</span> ` : '') +
         `<div class="fp-title">${fpEscapeHtml(slot.title)}</div>` +
         `<div class="fp-schedule">${fpEscapeHtml(slot.schedule_raw)}</div>` +
       `</div>` +
@@ -2320,20 +2379,9 @@ function fpRenderCard(slot) {
   );
 }
 
-function fpRenderGrid(data) {
-  const wrap = document.getElementById('fpGridWrap');
-  if (!wrap) return;
-
-  if (!data || !Array.isArray(data.slots)) {
-    wrap.innerHTML = '<div class="fp-empty-note">고정 프로그램 데이터를 불러오지 못했습니다.</div>';
-    return;
-  }
-
-  const daySlots = data.slots.filter(s => s.day === fpCurrentDay);
-
+function fpBuildTableHtml(daySlots, compact) {
   if (daySlots.length === 0) {
-    wrap.innerHTML = `<div class="fp-empty-note">${fpEscapeHtml(fpCurrentDay)}요일에 표시할 고정 프로그램이 없습니다.</div>`;
-    return;
+    return '<div class="fp-empty-note">표시할 고정 프로그램이 없습니다.</div>';
   }
 
   // 시간대(행) 목록은 그 요일에 실제로 편성이 있는 시각만 동적으로 만든다.
@@ -2347,7 +2395,7 @@ function fpRenderGrid(data) {
     cellMap[key].push(s);
   }
 
-  let html = '<table class="fp-table"><thead><tr>';
+  let html = `<table class="fp-table ${compact ? 'fp-table-compact' : ''}"><thead><tr>`;
   html += '<th class="fp-time-col">시간대</th>';
   for (const co of FP_COMPANIES) {
     html += `<th class="${co.toLowerCase()}"><span class="hs-co-tag" style="background:var(--${co.toLowerCase()})">${co}</span></th>`;
@@ -2361,7 +2409,7 @@ function fpRenderGrid(data) {
       const cellSlots = cellMap[key];
       if (cellSlots && cellSlots.length) {
         html += `<td class="fp-co-cell ${co.toLowerCase()}">` +
-          cellSlots.map(fpRenderCard).join('') +
+          cellSlots.map(s => fpRenderCard(s, compact)).join('') +
           `</td>`;
       } else {
         html += `<td class="fp-empty-cell"></td>`;
@@ -2371,7 +2419,40 @@ function fpRenderGrid(data) {
   }
 
   html += '</tbody></table>';
-  wrap.innerHTML = html;
+  return html;
+}
+
+function fpRenderGrid(data) {
+  const wrap = document.getElementById('fpGridWrap');
+  if (!wrap) return;
+
+  if (!data || !Array.isArray(data.slots)) {
+    wrap.innerHTML = '<div class="fp-empty-note">고정 프로그램 데이터를 불러오지 못했습니다.</div>';
+    return;
+  }
+
+  if (fpCurrentDay === '전체') {
+    // 월~일 7개 섹션을 세로로 나열, 각 섹션 안에 회사×시간 그리드 (이미지는 생략해 가볍게).
+    let html = '';
+    for (const day of FP_DAYS) {
+      const daySlots = data.slots.filter(s => s.day === day);
+      html += `<div class="fp-day-section">` +
+        `<div class="fp-day-section-title">${fpEscapeHtml(day)}</div>` +
+        fpBuildTableHtml(daySlots, true) +
+        `</div>`;
+    }
+    wrap.innerHTML = html;
+    return;
+  }
+
+  const daySlots = data.slots.filter(s => s.day === fpCurrentDay);
+
+  if (daySlots.length === 0) {
+    wrap.innerHTML = `<div class="fp-empty-note">${fpEscapeHtml(fpCurrentDay)}요일에 표시할 고정 프로그램이 없습니다.</div>`;
+    return;
+  }
+
+  wrap.innerHTML = fpBuildTableHtml(daySlots, false);
 }
 
 async function fpRefresh() {
