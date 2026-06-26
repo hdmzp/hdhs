@@ -1,41 +1,37 @@
 # -*- coding: utf-8 -*-
 """
 cj_fixed_programs.py
-CJ온스타일 모바일 메인페이지의 "CJ온스타일 대표프로그램" 13개 슬롯과,
-CJ의 일별 편성표 API(schedule)를 결합해 각 고정 프로그램의 진짜 채널
-프로그램코드(pgmCd)를 자동으로 역매칭한다.
+CJ온스타일 모바일 메인페이지의 "대표프로그램" 13개 슬롯을 Playwright로 직접
+클릭하며 각 슬롯의 (이름/편성텍스트/썸네일/pgmShop 링크)를 전부 수집하고,
+schedule API에서 모은 pgmCd별 (요일,시각) 출현 패턴과 대조해 pgmCd까지
+역으로 매칭한다.
 
-== 왜 두 데이터를 합쳐야 하는가 ==
-1) 메인페이지(homeTab/main)는 13개 고정 프로그램의 "이름/이미지/대략적인
-   편성 텍스트"만 알 수 있다. 그중 현재 선택된(보통 1번째) 슬라이드만
-   펼쳐져서 pgmShop 링크(=pgmCd)가 노출되고, 나머지 12개는 사람이 직접
-   클릭해야만 pgmCd를 알 수 있는 구조라 자동화가 막힌다.
+(업데이트 - 2026-06)
+CJ온스타일 사이트가 리뉴얼되어 메인페이지가 완전 SPA(__cjos_config__ +
+page.cjmall.mobile.homeTab.min.js)로 바뀌었다. 정적 HTML에는
+".pgm_tab_section" 같은 마크업이 더 이상 없고, 콘텐츠 영역
+(<div id="moduleArea"></div>)이 비어 있는 채로 내려온 뒤 JS가 내부 API를
+호출해 채운다. 따라서 requests로는 더 이상 데이터를 가져올 수 없어
+Playwright로 실제 렌더링한 뒤 DOM을 읽는 방식으로 전환한다.
 
-2) 반면 CJ의 schedule API
-     https://display-frontapi.cjonstyle.com/polling/broadcast/schedule?bdDt=YYYYMMDD
-   는 그날 방영되는 모든 pgmCd와 시작/종료시각을 빠짐없이 알려주지만,
-   pgmCd가 무슨 프로그램인지 이름은 알려주지 않는다.
+== 동작 전략 ==
+1. Playwright(headless Chromium, 모바일 에뮬레이션)로 메인페이지 접속.
+   페이지가 호출하는 모든 네트워크 응답을 가로채서, JSON이면서
+   URL에 후보 키워드(pgm/tab/home/major 등)가 포함된 것들을 모두 기록한다.
+   -> 이 중에서 실제로 13개 슬롯 데이터를 담고 있는 응답을 자동으로 찾아
+      "메인페이지 슬롯 정보"로 우선 사용한다 (마크업이 또 바뀌어도 견고).
+2. 위 방식으로 못 찾으면, 화면에 렌더링된 DOM에서 대표프로그램 슬롯으로
+   추정되는 탭/슬라이드 요소들을 후보 셀렉터 목록으로 순차 시도해 찾고,
+   하나씩 클릭해 펼쳐지는 패널의 텍스트와 링크를 직접 긁는다 (폴백).
+3. 메인페이지에서 얻은 슬롯별 "이름 + 편성텍스트(요일/시각 패턴)"를
+   schedule API(최근 N일치)에서 모은 pgmCd별 (요일,시각) 출현 패턴과
+   대조해, 정확히 일치하거나 가장 가까운 pgmCd를 매칭한다.
 
-이 둘을 합치면: 메인페이지에서 얻은 "프로그램명 + 편성 텍스트(예:
-'목20:45 / 토10:20')"를 요일·시각 집합으로 변환하고, 여러 날짜의 schedule
-데이터에서 정확히 그 요일·시각 패턴으로 반복 등장하는 pgmCd를 찾아 역으로
-매칭한다. 사람이 12개를 일일이 클릭할 필요가 없어진다.
-
-== 동작 순서 ==
-1. 메인페이지를 가져와 13개 슬롯의 (slotId, 이름, 썸네일) 추출
-   + 첫 번째로 펼쳐진 슬롯의 (편성텍스트, pgmShop 링크)를 시드 정보로 확보
-2. SCHEDULE_LOOKBACK_DAYS 만큼 과거~오늘 schedule API를 호출해
-   pgmCd별 (요일, HH:MM) 등장 패턴을 누적
-3. 메인페이지 각 슬롯을 클릭했을 때 보이는 편성텍스트를 알아야 매칭할 수
-   있는데, 정적 메인페이지는 1개 슬롯만 펼쳐져 있다. 따라서 이 스크립트는
-   "이미 펼쳐진 슬롯(보통 매주 바뀌는 1번 슬롯)"을 schedule 데이터와
-   대조해 매칭 로직이 맞는지 검증하는 한편, 같은 요일/시각 패턴이 schedule
-   상에서 '반복되는 고정 슬롯'으로 보이는 pgmCd 후보 전체를 추출해
-   candidate_fixed_programs로 함께 저장한다.
-   (각 슬롯의 정확한 편성텍스트까지 완전히 무인 자동화하려면, 메인페이지가
-    슬롯 전환 시 호출하는 내부 API를 추가로 특정해 SLOT_DETAIL_URL에
-    연결해야 한다. 그 전까지는 schedule 기반 후보 목록 + 시드 매칭 결과를
-    함께 제공해, 사람이 후보 목록만 보고 빠르게 확정할 수 있게 한다.)
+DOM 구조나 모듈 클래스명이 또 바뀌면 SLOT_SELECTOR_CANDIDATES /
+PANEL_SELECTOR_CANDIDATES 목록에 새 셀렉터를 추가하면 된다. 이 스크립트는
+"못 찾으면 빈 배열을 반환"하는 식으로 동작하므로, 실패해도 워크플로
+전체가 죽지 않고(continue-on-error) candidate_fixed_pgm_codes(스케줄 기반
+추정치)는 항상 함께 저장된다.
 
 == 출력 ==
 homeshopping/fixed_programs/CJ.json
@@ -48,19 +44,22 @@ homeshopping/fixed_programs/CJ.json
       "pgm_cd": "563049",
       "schedule_text": "목20:45 / 토10:20",
       "occurrences": ["목 20:45", "토 10:20"],
-      "pgmshop_link": "https://display.cjonstyle.com/m/pgmShop/100013"
-    }
+      "thumbnail": "https://...",
+      "pgmshop_link": "https://display.cjonstyle.com/m/pgmShop/100013",
+      "match_type": "exact" | "partial" | "unmatched"
+    },
+    ...
   ],
-  "slot_titles": ["동가게", "더 지완스 1부", "탑쇼", ...],   # 13개 슬롯 이름 (참고용)
-  "candidate_fixed_pgm_codes": {                              # schedule만으로 추정한 고정 편성 후보
+  "slot_titles": ["동가게", "더 지완스 1부", "탑쇼", ...],
+  "candidate_fixed_pgm_codes": {
     "563049": ["목 20:45", "토 10:20"],
-    "563677": ["토 17:30"],
     ...
   }
 }
 
 == 사용법 ==
-  pip install requests beautifulsoup4
+  pip install playwright requests
+  python -m playwright install --with-deps chromium
   python cj_fixed_programs.py
 """
 
@@ -71,7 +70,8 @@ import time
 import requests
 from collections import defaultdict
 from datetime import datetime, timezone, timedelta
-from bs4 import BeautifulSoup
+
+from playwright.sync_api import sync_playwright
 
 KST = timezone(timedelta(hours=9))
 WEEKDAYS_KR = ["월", "화", "수", "목", "금", "토", "일"]
@@ -87,46 +87,23 @@ MOBILE_UA = (
     "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1"
 )
 
-# 최근 며칠치 schedule을 모아야 "고정 프로그램(매주 반복)" 패턴을 확신할 수 있는지.
-# 최소 8일(약 1주+1일) 이상이어야 매주 반복 여부를 한 번이라도 검증할 수 있다.
 SCHEDULE_LOOKBACK_DAYS = 14
 REQUEST_DELAY_SEC = 0.4
-
-# 짧은 상품 방송(보통 몇 분~수십 분짜리 일반 판매 슬롯)과 구분하기 위한
-# 최소 방송 길이(분). 고정 진행자 프로그램은 대체로 60분 이상인 경우가 많다.
 MIN_DURATION_MIN_FOR_CANDIDATE = 30
 
+# 네트워크 응답 중 "이게 대표프로그램 슬롯 데이터일 것 같다" 판단용 키워드.
+# URL이나 JSON 키 이름에 이 중 하나라도 포함되면 후보로 수집한다.
+API_URL_HINTS = ["pgm", "major", "homeTab", "representative", "tab"]
 
-def fetch_main_page() -> str:
-    headers = {"User-Agent": MOBILE_UA, "Referer": "https://display.cjonstyle.com/"}
-    resp = requests.get(MAIN_PAGE_URL, headers=headers, timeout=15)
-    resp.raise_for_status()
-    return resp.text
+# DOM 폴백용 셀렉터 후보들 (사이트가 또 바뀌면 여기에 추가).
+# (탭/슬라이드 컨테이너 선택자, 그 안의 클릭 가능한 개별 슬롯 선택자)
+SLOT_SELECTOR_CANDIDATES = [
+    ("ul.tab_pgm", "img[id^='majorPgm']"),
+    ("[class*='pgm_tab']", "[class*='tab_item'], img"),
+    ("[class*='major']", "[class*='item'], img"),
+]
 
-
-def extract_slots(html: str) -> dict:
-    """메인페이지에서 13개 슬롯 정보와, 펼쳐진 첫 슬롯의 편성텍스트/pgmShop 링크를 추출."""
-    soup = BeautifulSoup(html, "html.parser")
-
-    tab_section = soup.select_one(".pgm_tab_section")
-    slot_titles = {}
-    if tab_section:
-        for img in tab_section.select("ul.tab_pgm img[id^='majorPgm']"):
-            slot_id = img.get("id")
-            slot_titles[slot_id] = img.get("alt", "")
-
-    panel = soup.select_one(".pgm_content_section")
-    seed = {"slot_id": None, "schedule_text": None, "pgmshop_link": None}
-    if panel:
-        seed["slot_id"] = panel.get("aria-labelledby")
-        time_tag = panel.select_one(".pgm_schedule .txt")
-        if time_tag:
-            seed["schedule_text"] = time_tag.get_text(strip=True)
-        link_tag = panel.select_one("a.btn_banner")
-        if link_tag and link_tag.get("href"):
-            seed["pgmshop_link"] = link_tag["href"]
-
-    return {"slot_titles": slot_titles, "seed": seed}
+EXPECTED_SLOT_COUNT = 13
 
 
 def fetch_schedule(bd_dt: str) -> list:
@@ -160,7 +137,7 @@ def collect_schedule_occurrences(days: int) -> dict:
 
         for b in broadcasts:
             if b.get("broadType") != "TV":
-                continue  # PLUS/CABLE은 TV와 동시송출되는 중복 채널이라 제외
+                continue
             try:
                 start_dt = datetime.fromisoformat(b["bdStrDtm"])
                 end_dt = datetime.fromisoformat(b["bdEndDtm"])
@@ -194,48 +171,283 @@ def parse_schedule_text(text: str) -> set:
     return result
 
 
-def match_seed_to_pgm_cd(seed: dict, occurrences: dict) -> str:
-    """메인페이지 시드 슬롯의 편성텍스트와 정확히 같은 (요일,시각) 집합을
-    갖는 pgmCd를 schedule 데이터에서 찾는다."""
-    target = parse_schedule_text(seed.get("schedule_text") or "")
-    if not target:
+def looks_like_slot_payload(obj) -> bool:
+    """JSON 응답이 13개 안팎의 프로그램 슬롯 리스트처럼 생겼는지 휴리스틱 판정."""
+    candidates = []
+    if isinstance(obj, list):
+        candidates = obj
+    elif isinstance(obj, dict):
+        for v in obj.values():
+            if isinstance(v, list) and 3 <= len(v) <= 30:
+                candidates = v
+                break
+    if not (3 <= len(candidates) <= 30):
+        return False
+
+    sample = [c for c in candidates if isinstance(c, dict)][:5]
+    if not sample:
+        return False
+
+    key_hint_hits = 0
+    for item in sample:
+        keys = " ".join(item.keys()).lower()
+        if any(h in keys for h in ["pgm", "title", "nm", "schedule", "sect"]):
+            key_hint_hits += 1
+    return key_hint_hits >= len(sample) // 2 + 1
+
+
+def collect_main_page_slots_via_network(playwright) -> tuple:
+    """Playwright로 메인페이지를 열고, 네트워크 응답 중 슬롯 데이터로 보이는
+    JSON을 자동으로 찾는다. 못 찾으면 DOM 폴백을 시도한다.
+    반환: (slots: list[dict(title, schedule_text, thumbnail, link)], debug_info: dict)
+    """
+    captured_payloads = []
+
+    browser = playwright.chromium.launch(headless=True)
+    context = browser.new_context(
+        user_agent=MOBILE_UA,
+        viewport={"width": 390, "height": 844},
+        locale="ko-KR",
+    )
+    page = context.new_page()
+
+    def on_response(response):
+        try:
+            url = response.url
+            if not any(h.lower() in url.lower() for h in API_URL_HINTS):
+                return
+            ctype = response.headers.get("content-type", "")
+            if "json" not in ctype:
+                return
+            body = response.json()
+            captured_payloads.append({"url": url, "body": body})
+        except Exception:
+            pass
+
+    page.on("response", on_response)
+
+    print(f"  [CJ] Playwright로 메인페이지 접속: {MAIN_PAGE_URL}")
+    page.goto(MAIN_PAGE_URL, wait_until="networkidle", timeout=30000)
+    page.wait_for_timeout(2000)
+
+    slots = []
+
+    # 1) 네트워크 응답에서 슬롯 데이터 자동 탐지
+    for payload in captured_payloads:
+        body = payload["body"]
+        targets = []
+        if isinstance(body, dict):
+            for v in body.values():
+                if isinstance(v, list):
+                    targets.append(v)
+                elif isinstance(v, dict):
+                    for v2 in v.values():
+                        if isinstance(v2, list):
+                            targets.append(v2)
+        elif isinstance(body, list):
+            targets.append(body)
+
+        for t in targets:
+            if looks_like_slot_payload(t):
+                print(f"  [CJ] 후보 슬롯 응답 발견: {payload['url']} ({len(t)}개 항목)")
+                slots = t
+                break
+        if slots:
+            break
+
+    browser.close()
+    return slots, {"captured_count": len(captured_payloads)}
+
+
+def collect_main_page_slots_via_dom(playwright) -> list:
+    """DOM 폴백: 화면에 렌더링된 슬롯 탭들을 순서대로 클릭하며
+    펼쳐지는 패널에서 (제목, 편성텍스트, 썸네일, 링크)를 긁는다."""
+    slots = []
+
+    browser = playwright.chromium.launch(headless=True)
+    context = browser.new_context(
+        user_agent=MOBILE_UA,
+        viewport={"width": 390, "height": 844},
+        locale="ko-KR",
+    )
+    page = context.new_page()
+
+    print(f"  [CJ] (DOM 폴백) 메인페이지 접속: {MAIN_PAGE_URL}")
+    page.goto(MAIN_PAGE_URL, wait_until="networkidle", timeout=30000)
+    page.wait_for_timeout(2000)
+
+    tab_locator = None
+    item_selector = None
+    for tab_sel, item_sel in SLOT_SELECTOR_CANDIDATES:
+        loc = page.locator(f"{tab_sel} {item_sel}")
+        try:
+            count = loc.count()
+        except Exception:
+            count = 0
+        if count >= 3:
+            tab_locator = loc
+            item_selector = item_sel
+            print(f"  [CJ] DOM 셀렉터 매칭: '{tab_sel} {item_sel}' ({count}개)")
+            break
+
+    if not tab_locator:
+        print("  [CJ] [경고] DOM에서 슬롯 탭을 찾지 못했습니다. 셀렉터 후보를 갱신해야 합니다.")
+        browser.close()
+        return slots
+
+    count = min(tab_locator.count(), EXPECTED_SLOT_COUNT + 5)
+    for i in range(count):
+        try:
+            item = tab_locator.nth(i)
+            title = (item.get_attribute("alt") or item.inner_text() or "").strip()
+            item.click(timeout=3000)
+            page.wait_for_timeout(800)
+
+            # 펼쳐진 패널에서 편성텍스트/링크/썸네일을 최대한 일반적인 방식으로 탐색
+            schedule_text = ""
+            thumbnail = ""
+            link = ""
+
+            for sel in ["[class*='schedule']", "[class*='time']", "sup", ".txt"]:
+                loc2 = page.locator(sel).first
+                if loc2.count() and loc2.is_visible():
+                    txt = loc2.inner_text().strip()
+                    if re.search(r'[월화수목금토일]', txt):
+                        schedule_text = txt
+                        break
+
+            for sel in ["a[href*='pgmShop']", "a.btn_banner", "a[class*='link']"]:
+                loc2 = page.locator(sel).first
+                if loc2.count():
+                    href = loc2.get_attribute("href")
+                    if href:
+                        link = href
+                        break
+
+            for sel in ["figure img", "[class*='ban'] img", "img"]:
+                loc2 = page.locator(sel).first
+                if loc2.count():
+                    src = loc2.get_attribute("src")
+                    if src:
+                        thumbnail = src
+                        break
+
+            if title:
+                slots.append({
+                    "title": title,
+                    "schedule_text": schedule_text,
+                    "thumbnail": thumbnail,
+                    "link": link,
+                })
+        except Exception as e:
+            print(f"    [경고] 슬롯 {i} 처리 실패: {e}")
+            continue
+
+    browser.close()
+    return slots
+
+
+def normalize_slot(raw_slot) -> dict:
+    """네트워크 캡처 슬롯(키 이름 불확실)을 표준 형태로 정규화."""
+    if not isinstance(raw_slot, dict):
         return None
-    for pgm_cd, times in occurrences.items():
-        if set(times) == target:
-            return pgm_cd
-    return None
+
+    def pick(*keys):
+        for k in keys:
+            if k in raw_slot and raw_slot[k]:
+                return raw_slot[k]
+        return ""
+
+    title = pick("title", "pgmNm", "sectNm", "name", "alt")
+    schedule_text = pick("scheduleText", "sectLbl", "broadcastTime", "timeText")
+    thumbnail = pick("thumbnail", "imgUrl", "bannerImgUrl", "imageUrl")
+    link = pick("link", "linkUrl", "pgmShopUrl", "href")
+
+    if not title:
+        return None
+
+    return {
+        "title": str(title).strip(),
+        "schedule_text": str(schedule_text).strip(),
+        "thumbnail": str(thumbnail).strip(),
+        "link": str(link).strip(),
+    }
+
+
+def match_slots_to_pgm_cd(slots: list, occurrences: dict) -> list:
+    """각 슬롯의 편성텍스트(요일/시각 집합)를 schedule occurrences와 대조해
+    pgmCd를 매칭한다. 정확히 같은 집합이면 exact, 부분집합/교집합이 있으면
+    partial, 없으면 unmatched."""
+    matched = []
+
+    for slot in slots:
+        target = parse_schedule_text(slot.get("schedule_text") or "")
+        result = {
+            "slot_title": slot.get("title"),
+            "pgm_cd": None,
+            "schedule_text": slot.get("schedule_text"),
+            "occurrences": [],
+            "thumbnail": slot.get("thumbnail"),
+            "pgmshop_link": slot.get("link"),
+            "match_type": "unmatched",
+        }
+
+        if not target:
+            matched.append(result)
+            continue
+
+        exact_match = None
+        best_partial = None
+        best_overlap = 0
+
+        for pgm_cd, times in occurrences.items():
+            times_set = set(times)
+            if times_set == target:
+                exact_match = pgm_cd
+                break
+            overlap = len(times_set & target)
+            if overlap > best_overlap:
+                best_overlap = overlap
+                best_partial = pgm_cd
+
+        if exact_match:
+            result["pgm_cd"] = exact_match
+            result["occurrences"] = occurrences.get(exact_match, [])
+            result["match_type"] = "exact"
+        elif best_partial and best_overlap > 0:
+            result["pgm_cd"] = best_partial
+            result["occurrences"] = occurrences.get(best_partial, [])
+            result["match_type"] = "partial"
+
+        matched.append(result)
+
+    return matched
 
 
 def main():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-    print("[CJ] 메인페이지에서 고정 프로그램 슬롯 정보 수집...")
+    print("[CJ] 메인페이지에서 대표프로그램 슬롯 13개 수집 (Playwright)...")
+    raw_slots = []
+    debug_info = {}
     try:
-        main_html = fetch_main_page()
-        slot_info = extract_slots(main_html)
+        with sync_playwright() as p:
+            raw_slots, debug_info = collect_main_page_slots_via_network(p)
+            if not raw_slots:
+                print("  [CJ] 네트워크 응답에서 슬롯을 찾지 못해 DOM 폴백을 시도합니다...")
+                with sync_playwright() as p2:
+                    raw_slots = collect_main_page_slots_via_dom(p2)
     except Exception as e:
-        print(f"  [실패] 메인페이지 수집: {e}")
-        slot_info = {"slot_titles": {}, "seed": {}}
+        print(f"  [실패] Playwright 슬롯 수집: {e}")
+
+    slots = [s for s in (normalize_slot(rs) for rs in raw_slots) if s]
+    print(f"  [CJ] 정규화된 슬롯 {len(slots)}개 (기대값 {EXPECTED_SLOT_COUNT}개)")
 
     print(f"\n[CJ] 최근 {SCHEDULE_LOOKBACK_DAYS}일치 편성표 수집 (고정 프로그램 패턴 추출용)...")
     occurrences = collect_schedule_occurrences(SCHEDULE_LOOKBACK_DAYS)
 
-    seed = slot_info.get("seed", {})
-    matched_pgm_cd = match_seed_to_pgm_cd(seed, occurrences)
+    matched_programs = match_slots_to_pgm_cd(slots, occurrences)
 
-    matched_programs = []
-    if matched_pgm_cd and seed.get("slot_id"):
-        slot_title = slot_info["slot_titles"].get(seed["slot_id"], "")
-        matched_programs.append({
-            "slot_title": slot_title,
-            "pgm_cd": matched_pgm_cd,
-            "schedule_text": seed.get("schedule_text"),
-            "occurrences": occurrences.get(matched_pgm_cd, []),
-            "pgmshop_link": seed.get("pgmshop_link"),
-        })
-
-    # 60분 이상 방송이 매주 같은 요일/시각에 2회 이상 반복되는 pgmCd만
-    # "고정 프로그램일 가능성이 높은 후보"로 남긴다.
     candidate_fixed = {
         pgm_cd: times for pgm_cd, times in occurrences.items() if len(times) >= 2
     }
@@ -244,7 +456,7 @@ def main():
         "company": "CJ",
         "collectedAt": datetime.now(KST).isoformat(),
         "matched_programs": matched_programs,
-        "slot_titles": list(slot_info.get("slot_titles", {}).values()),
+        "slot_titles": [s["title"] for s in slots],
         "candidate_fixed_pgm_codes": candidate_fixed,
     }
 
@@ -252,8 +464,10 @@ def main():
         json.dump(payload, f, ensure_ascii=False, indent=2)
 
     print(f"\n저장 완료: {OUTPUT_PATH}")
-    print(f"  메인페이지 슬롯 13개 이름: {payload['slot_titles']}")
-    print(f"  시드 매칭 결과: {matched_programs}")
+    print(f"  슬롯 {len(slots)}개 이름: {payload['slot_titles']}")
+    exact = sum(1 for m in matched_programs if m["match_type"] == "exact")
+    partial = sum(1 for m in matched_programs if m["match_type"] == "partial")
+    print(f"  매칭 결과: exact={exact}, partial={partial}, unmatched={len(matched_programs)-exact-partial}")
     print(f"  고정 편성 후보 pgmCd {len(candidate_fixed)}개 발견")
 
 
