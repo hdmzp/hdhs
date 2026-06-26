@@ -1123,18 +1123,17 @@
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 24px 60px;
-    overflow: auto;
   }
 
   table.fp-table {
     width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 0;
   }
 
   table.fp-table thead th {
     position: sticky;
-    top: 0;
+    top: 110px;
     background: var(--paper);
     z-index: 3;
     padding: 10px 4px 12px;
@@ -1199,7 +1198,7 @@
   .fp-card .fp-thumb-wrap {
     position: relative;
     width: 100%;
-    aspect-ratio: 16 / 5;
+    aspect-ratio: 16 / 7;
     background: var(--paper-dim2);
     overflow: hidden;
   }
@@ -1210,9 +1209,11 @@
     object-position: center;
     display: block;
   }
-  /* HD는 인물 세로컷 썸네일이 많아 16:5로 크롭하면 얼굴이 잘리기 쉬우므로,
-     크롭 기준점을 위쪽(얼굴이 보통 위치하는 지점)으로 둔다. */
-  .fp-card .fp-thumb-wrap.hd img {
+  /* HD/GS는 인물 세로컷 썸네일이 많아 가로로 눌린 비율로 크롭하면
+     얼굴이 잘리기 쉬우므로, 크롭 기준점을 위쪽(얼굴이 보통 위치하는
+     지점)으로 둔다. */
+  .fp-card .fp-thumb-wrap.hd img,
+  .fp-card .fp-thumb-wrap.gs img {
     object-position: top;
   }
   .fp-card .fp-co-badge {
@@ -1308,6 +1309,7 @@
     .fp-day-tabs { width: 100%; justify-content: space-between; }
     .fp-day-btn { padding: 7px 8px; font-size: 12px; flex: 1; }
     .fp-scroll { padding: 0 8px 40px; }
+    table.fp-table thead th { top: 95px; }
     table.fp-table thead th.fp-time-col { width: 40px; font-size: 9.5px; white-space: nowrap; }
     table.fp-table thead th .hs-co-tag { font-size: 11px; padding: 3px 8px; }
     .fp-card .fp-title { font-size: 11.5px; }
@@ -2337,7 +2339,7 @@ function switchTab(tab) {
 // ============ 고정PGM 탭 ============
 const FP_COMPANIES = ["HD", "GS", "CJ", "LT"];
 const FP_DAYS = ["월", "화", "수", "목", "금", "토", "일"];
-let fpCurrentDay = FP_DAYS[(new Date().getDay() + 6) % 7]; // 오늘 요일 기본 선택 (일=0 -> 인덱스 6)
+let fpCurrentDay = '전체'; // 고정PGM 탭 기본 화면은 '전체' 보기
 let fpData = null; // merged.json 캐시
 
 async function fpLoadData() {
