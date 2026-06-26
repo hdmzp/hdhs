@@ -36,16 +36,20 @@ homeshopping/
 ├── GS_live/{YYYY-MM}.json   GS SHOP (라이브)
 └── GS_data/{YYYY-MM}.json   GS MY SHOP (데이터방송)
 
-== 공통 스키마 (3사와 동일) ==
+== 공통 스키마 (3사와 동일 + lavangba_category 추가) ==
 {
   "company": "GS", "broadcast": "live", "month": "2026-06",
   "days": {
     "2026-06-22": [
       {"start":"...","end":"...","brand":"","product":"...",
-       "price":0,"link":"","category":"..."}
+       "price":0,"link":"","category":"...","lavangba_category":"..."}
     ]
   }
 }
+- category: 자체 분류 모델(TF-IDF+로지스틱회귀) 결과 (기존 기준, 변경 없음)
+- lavangba_category: 라방바 list_hs 응답의 item["cat"]["cat_name"]을
+  그대로 저장 (라방바 화면에 보이는 "분류" 컬럼과 동일 값). 자체 모델을
+  대체하는 게 아니라 검증/비교용으로 별도 보관한다. 없으면 빈 문자열.
 
 == 사용법 ==
   pip install requests
@@ -204,7 +208,8 @@ def fetch_gs(date_obj: datetime, broadcast: str) -> list:
                 "product": item.get("hsshow_title", "") or "",
                 "price": 0,                                # 2단계에서 보강
                 "link": "",                                # 2단계에서 보강
-                "category": "",                            # add_categories에서 채움
+                "category": "",                            # add_categories에서 채움 (자체 모델)
+                "lavangba_category": (item.get("cat") or {}).get("cat_name", "") or "",  # 라방바 자체 제공 분류 (참고/검증용, 별도 보관)
                 "_hsshow_id": item.get("hsshow_id", ""),    # 2단계 호출용 (저장 전 제거됨)
             })
 
