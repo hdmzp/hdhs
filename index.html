@@ -1998,7 +1998,7 @@ async function dvRefresh(weekStart) {
 
 let hsCurrentDate = "2026-06-21";
 let hsCurrentBc = "live";
-let hsCategoryFilter = null;
+let hsCategoryFilters = new Set(); // 비어있으면 "전체보기" 상태, 여러 카테고리 동시 선택 가능
 let hsTimeFilter = "all"; // 'all' | 'normal' | 'night'
 
 function hsIsNightHour(hour) {
@@ -2071,9 +2071,9 @@ function hsRenderCategoryLegend() {
   const el = document.getElementById('hsCatLegend');
   if (!el) return;
 
-  let html = `<button type="button" class="hs-cat-chip hs-cat-reset${hsCategoryFilter === null ? ' active' : ''}" data-cat="">전체보기</button>`;
+  let html = `<button type="button" class="hs-cat-chip hs-cat-reset${hsCategoryFilters.size === 0 ? ' active' : ''}" data-cat="">전체보기</button>`;
   for (const [cat, color] of Object.entries(HS_CATEGORY_COLORS)) {
-    const active = hsCategoryFilter === cat ? ' active' : '';
+    const active = hsCategoryFilters.has(cat) ? ' active' : '';
     html += `<button type="button" class="hs-cat-chip${active}" data-cat="${escapeHtml(cat)}">` +
             `<i style="background:${color};"></i>${escapeHtml(cat)}</button>`;
   }
@@ -2085,7 +2085,13 @@ function hsRenderCategoryLegend() {
       const btn = e.target.closest('.hs-cat-chip');
       if (!btn) return;
       const cat = btn.dataset.cat;
-      hsCategoryFilter = cat === '' ? null : cat;
+      if (cat === '') {
+        hsCategoryFilters.clear();
+      } else if (hsCategoryFilters.has(cat)) {
+        hsCategoryFilters.delete(cat);
+      } else {
+        hsCategoryFilters.add(cat);
+      }
       hsRenderCategoryLegend();
       hsRenderBody();
     });
@@ -2149,7 +2155,7 @@ async function hsRefresh(dateStr) {
 }
 
 function hsMatchesFilter(p) {
-  if (hsCategoryFilter !== null && p.category !== hsCategoryFilter) return false;
+  if (hsCategoryFilters.size > 0 && !hsCategoryFilters.has(p.category)) return false;
   if (p.start) {
     const hour = parseInt(p.start.split(':')[0], 10);
     if (!hsHourMatchesTimeFilter(hour)) return false;
@@ -2170,7 +2176,7 @@ function hsRenderBody() {
     return;
   }
 
-  if (hsCategoryFilter === null) {
+  if (hsCategoryFilters.size === 0) {
     wrap.innerHTML = hsRenderGridView(datasets, nowMin);
     if (hsTimeFilter === 'all') hsScrollToCurrentHour(wrap, nowMin);
   } else {
