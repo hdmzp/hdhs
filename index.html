@@ -760,7 +760,7 @@
   .dv-card.dv-cat-drama { border-left-color: var(--comprehensive); }
   .dv-card.dv-cat-variety { border-left-color: var(--terrestrial); }
 
-  /* 고시청률 강조: 드라마 10%+, 예능 3%+ 일 때 노란색 배경으로 눈에 띄게 표시 */
+  /* 고시청률 강조: 드라마 8%+, 예능 3%+ 일 때 노란색 배경으로 눈에 띄게 표시 */
   .dv-card.dv-high-rating {
     background: #FFF7D6;
     border-left-color: #F5B700;
@@ -1977,9 +1977,9 @@ function dvRenderBasis() {
   if (!el) return;
 
   if (dvFilter === "high") {
-    el.innerHTML = '● 고시청률 기준: <strong>[드라마]</strong> 시청률 10% 이상 · <strong>[예능]</strong> 시청률 3% 이상';
+    el.innerHTML = '● 고시청률 기준: <strong>[드라마]</strong> 시청률 8% 이상 · <strong>[예능]</strong> 시청률 3% 이상';
   } else {
-    el.innerHTML = '● 조회 기준: <strong>[드라마]</strong> 시청률 5%+ · <strong>[예능]</strong> 시청률 1%+ /● 고시청률: <strong>[드라마]</strong> 10%+ · <strong>[예능]</strong> 3%+';
+    el.innerHTML = '● 조회 기준: <strong>[드라마]</strong> 시청률 5%+ · <strong>[예능]</strong> 시청률 1%+ /● 고시청률: <strong>[드라마]</strong> 8%+ · <strong>[예능]</strong> 3%+';
   }
 }
 
@@ -2004,7 +2004,7 @@ function dvRenderGrid(data) {
     filteredPrograms = programs.filter(p => p.category === "variety");
   } else if (dvFilter === "high") {
     filteredPrograms = programs.filter(p =>
-      (p.category === "drama" && p.rating >= 10) ||
+      (p.category === "drama" && p.rating >= 8) ||
       (p.category === "variety" && p.rating >= 3)
     );
   }
@@ -2032,7 +2032,7 @@ function dvRenderGrid(data) {
         html += `<td class="${cellClass}">`;
         for (const p of dayPrograms) {
           const isHighRating = dvFilter !== "high" && (
-            (p.category === 'drama' && p.rating >= 10) ||
+            (p.category === 'drama' && p.rating >= 8) ||
             (p.category === 'variety' && p.rating >= 3)
           );
           const safeLink = dvEscapeHtml(p.link || '#');
