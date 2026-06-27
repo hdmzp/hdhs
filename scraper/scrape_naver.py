@@ -104,9 +104,11 @@ def parse_card(li, category: str, base_url: str = ""):
 
     programs = []
     for slot in slots:
-        # 식별자(ID)에서 요일을 빼서 중복 카드를 찾아냅니다.
+        # 식별자(ID)는 요일만 제외하고 시간까지 포함합니다.
+        # (title+channel만 쓰면 같은 프로그램의 재방송 등 '다른 시간대' 편성이
+        #  같은 id로 묶여 시간 정보가 사라지거나 중복 표시되는 문제가 있었음)
         programs.append({
-            "id": f"{category}_{title}_{channel}",
+            "id": f"{category}_{title}_{channel}_{slot['time']}",
             "category": category,
             "channel": channel,
             "title": title,
@@ -201,16 +203,28 @@ def click_next_and_wait(page, before_paging_text, before_visible_sig, timeout_s=
     except Exception:
         return False
 
+    before_cur, before_tot = parse_current_total(before_paging_text)
+
     steps = int(timeout_s / 0.5)
     for _ in range(steps):
         page.wait_for_timeout(500)
         after_paging_text = read_paging_text(page)
         cur, tot = parse_current_total(after_paging_text)
-        before_cur, before_tot = parse_current_total(before_paging_text)
-        if cur is not None and before_cur is not None and cur != before_cur:
-            return True
+
+        # 페이지 번호(현재/전체)를 읽을 수 있으면 이걸 최우선 판정 기준으로 삼습니다.
+        # 시그니처(카드 제목 목록)는 일부만 갱신된 과渡 상태에서도 "달라짐"으로
+        # 오판해 페이지 전환이 끝나기 전에 HTML을 읽어버리는 원인이었습니다.
+        if before_cur is not None:
+            if cur is not None and cur != before_cur:
+                # 전환 확인 후에도 잠깐 더 기다려 렌더링이 끝난 뒤 읽도록 합니다.
+                page.wait_for_timeout(400)
+                return True
+            # 숫자를 신뢰할 수 있는 상황이면 시그니처만으로는 전환 완료로 보지 않습니다.
+            continue
+
         after_visible_sig = visible_signature(page)
         if after_visible_sig and before_visible_sig and after_visible_sig != before_visible_sig:
+            page.wait_for_timeout(400)
             return True
     return False
 
