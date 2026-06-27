@@ -1,4 +1,4 @@
-name: 홈쇼핑 편성 수집 (HD/LT/CJ/GS/기타7개사)
+name: 홈쇼핑 편성 수집 (HD/LT/CJ/GS)
 
 on:
   schedule:
@@ -12,7 +12,7 @@ permissions:
 jobs:
   scrape:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 30
     steps:
       - name: 저장소 체크아웃
         uses: actions/checkout@v4
@@ -41,10 +41,6 @@ jobs:
         continue-on-error: true
         run: python gs_scraper.py
 
-      - name: 홈쇼핑 스크래퍼 실행 - 기타7개사(공영/홈앤/K쇼핑/신세계/NS/쇼핑엔티/SK스토아, 라방바 경유)
-        continue-on-error: true
-        run: python etc_scraper.py
-
       - name: 결과 커밋 & 푸시
         run: |
           git config user.name "github-actions[bot]"
@@ -56,28 +52,12 @@ jobs:
           mkdir -p homeshopping/HD_live homeshopping/HD_data \
                    homeshopping/LT_live homeshopping/LT_data \
                    homeshopping/CJ_live homeshopping/CJ_data \
-                   homeshopping/GS_live homeshopping/GS_data \
-                   homeshopping/PUBLIC_live \
-                   homeshopping/HNS_live \
-                   homeshopping/KTALPHA_live \
-                   homeshopping/SHINSEGAE_live \
-                   homeshopping/NS_live \
-                   homeshopping/NS_plus \
-                   homeshopping/SHOPPINGNT_live \
-                   homeshopping/SKSTOA_live
+                   homeshopping/GS_live homeshopping/GS_data
           git add -A -- \
                   homeshopping/HD_live homeshopping/HD_data \
                   homeshopping/LT_live homeshopping/LT_data \
                   homeshopping/CJ_live homeshopping/CJ_data \
-                  homeshopping/GS_live homeshopping/GS_data \
-                  homeshopping/PUBLIC_live \
-                  homeshopping/HNS_live \
-                  homeshopping/KTALPHA_live \
-                  homeshopping/SHINSEGAE_live \
-                  homeshopping/NS_live \
-                  homeshopping/NS_plus \
-                  homeshopping/SHOPPINGNT_live \
-                  homeshopping/SKSTOA_live
+                  homeshopping/GS_live homeshopping/GS_data
           git diff --staged --quiet || git commit -m "chore: 홈쇼핑 편성 자동 갱신 $(date -u +%Y-%m-%d)"
           git pull --rebase --autostash origin main
           git push
