@@ -1317,52 +1317,55 @@
     padding: 60px 0;
   }
 
-  /* "전체" 보기: 요일별 섹션 → 그 안에 회사(HD-GS-CJ-LT) 4컬럼 →
-     각 컬럼에 시간순 세로형 카드 나열. 텍스트는 회전 없이 가로로 정상 표기. */
-  .fp-allday-wrap {
-    display: flex;
-    flex-direction: column;
-    gap: 22px;
+  /* "전체" 보기: 행=시간대, 큰열=요일, 작은열=회사(HD-GS-CJ-LT) 4개인
+     하나의 큰 지도형 테이블. 텍스트는 회전 없이 가로로 정상 표기.
+     29개 컬럼(시간대+7일×4사)으로 폭이 길어지므로 자체 가로 스크롤을 둔다. */
+  .fp-allday-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
-  .fp-day-section-title {
-    font-size: 15px;
+  table.fp-table-allday {
+    table-layout: fixed;
+  }
+  table.fp-table-allday col.fp-time-col-g { width: 56px; }
+  table.fp-table-allday col { width: 96px; }
+  table.fp-table-allday thead th.fp-day-group-head {
+    font-size: 14px;
     font-weight: 800;
-    color: var(--ink);
-    margin: 0 0 8px;
-    padding-bottom: 6px;
-    border-bottom: 2px solid var(--rule);
+    border-left: 2px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding: 8px 4px;
   }
-  .fp-day-co-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-  }
-  .fp-day-co-col {
-    background: var(--paper-dim);
-    border-radius: var(--radius);
-    overflow: hidden;
-    min-width: 0;
-  }
-  .fp-day-co-head {
-    display: flex;
-    justify-content: center;
-    padding: 7px 0;
-    background: #fff;
+  table.fp-table-allday thead th.fp-co-subhead {
+    padding: 6px 2px 8px;
     border-bottom: 1px solid var(--rule);
   }
-  .fp-day-co-cards {
+  table.fp-table-allday thead th.fp-co-subhead:first-child {
+    border-left: 2px solid var(--rule);
+  }
+  table.fp-table-allday thead th.fp-co-subhead .hs-co-tag {
+    font-size: 10px;
+    padding: 2px 8px;
+  }
+  table.fp-table-allday td.fp-co-cell,
+  table.fp-table-allday td.fp-empty-cell {
+    min-width: 96px;
+    padding: 6px;
+  }
+  .fp-cell-stack {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    padding: 8px 6px;
-    min-height: 40px;
+    gap: 5px;
   }
-  .fp-day-co-empty {
-    text-align: center;
-    font-size: 11px;
-    color: var(--ink-faint);
-    padding: 10px 0;
+  table.fp-table-allday td.fp-co-cell:first-child,
+  table.fp-table-allday td.fp-empty-cell:first-child {
+    border-left: 2px solid var(--rule);
   }
+  /* 요일 그룹 사이 구분을 위해 각 요일의 첫 회사(HD) 칸 왼쪽에 굵은 경계선 */
+  table.fp-table-allday tr td:nth-child(4n + 2) {
+    border-left: 2px solid var(--rule);
+  }
+
   .fp-card-vert {
     display: flex;
     flex-direction: column;
@@ -1428,8 +1431,8 @@
     td.fp-time-cell { width: 40px; }
     table.fp-table thead th .hs-co-tag { font-size: 11px; padding: 3px 8px; }
     .fp-card .fp-title { font-size: 11.5px; }
-    .fp-day-co-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
-    .fp-day-section-title { font-size: 14px; }
+    table.fp-table-allday col.fp-time-col-g { width: 44px; }
+    table.fp-table-allday col { width: 78px; }
     .fp-vert-title { font-size: 11px; }
   }
 </style>
@@ -2643,43 +2646,65 @@ function fpBuildAllDaysTableHtml(allSlots) {
     return '<div class="fp-empty-note">표시할 고정 프로그램이 없습니다.</div>';
   }
 
-  // day -> company -> [slot, ...] (시간순 정렬)
-  const byDay = {};
-  for (const day of FP_DAYS) {
-    byDay[day] = {};
-    for (const co of FP_COMPANIES) byDay[day][co] = [];
-  }
+  // 행(시간대)은 7일 전체를 통틀어 실제 편성이 있는 시각만 동적으로 만든다.
+  const times = [...new Set(allSlots.map(s => s.time))].sort();
+
+  // (time, day, company) -> [slot, ...] (같은 시간/요일/회사에 겹치는 경우도 배열로 보관)
+  const cellMap = {};
   for (const s of allSlots) {
-    if (!byDay[s.day] || !byDay[s.day][s.company]) continue;
-    byDay[s.day][s.company].push(s);
-  }
-  for (const day of FP_DAYS) {
-    for (const co of FP_COMPANIES) {
-      byDay[day][co].sort((a, b) => a.time.localeCompare(b.time));
-    }
+    const key = `${s.time}__${s.day}__${s.company}`;
+    if (!cellMap[key]) cellMap[key] = [];
+    cellMap[key].push(s);
   }
 
-  let html = '<div class="fp-allday-wrap">';
-  for (const day of FP_DAYS) {
-    html += `<section class="fp-day-section">`;
-    html += `<h3 class="fp-day-section-title">${fpEscapeHtml(day)}</h3>`;
-    html += `<div class="fp-day-co-grid">`;
-    for (const co of FP_COMPANIES) {
-      const slots = byDay[day][co];
-      html += `<div class="fp-day-co-col">`;
-      html += `<div class="fp-day-co-head ${co.toLowerCase()}"><span class="hs-co-tag" style="background:var(--${co.toLowerCase()})">${co}</span></div>`;
-      html += `<div class="fp-day-co-cards">`;
-      if (slots.length) {
-        html += slots.map(s => fpRenderCardVertical(s)).join('');
-      } else {
-        html += `<div class="fp-day-co-empty">편성 없음</div>`;
-      }
-      html += `</div></div>`;
-    }
-    html += `</div></section>`;
+  // 헤더와 본문을 별도의 <table>로 분리한다(개별 요일 탭과 동일한 이유 -
+  // table-layout:fixed + thead sticky 크로미움 버그 회피). 헤더가 2행
+  // (1행: 요일 큰 그룹 colspan=4, 2행: 회사 4개)이라 table-layout:fixed의
+  // 컬럼 폭 분배가 두 테이블에서 어긋날 수 있으므로, 동일한 <colgroup>을
+  // 양쪽에 그대로 복제해 컬럼 폭을 강제로 동기화한다.
+  let colgroupHtml = `<colgroup><col class="fp-time-col-g">`;
+  for (let i = 0; i < FP_DAYS.length * FP_COMPANIES.length; i++) {
+    colgroupHtml += `<col>`;
   }
-  html += '</div>';
-  return html;
+  colgroupHtml += `</colgroup>`;
+
+  let headerHtml = `<table class="fp-table fp-table-allday">${colgroupHtml}<thead>`;
+  headerHtml += '<tr><th class="fp-time-col" rowspan="2">시간대</th>';
+  for (const day of FP_DAYS) {
+    headerHtml += `<th class="fp-day-group-head" colspan="${FP_COMPANIES.length}">${fpEscapeHtml(day)}</th>`;
+  }
+  headerHtml += '</tr><tr>';
+  for (const day of FP_DAYS) {
+    for (const co of FP_COMPANIES) {
+      headerHtml += `<th class="fp-co-subhead ${co.toLowerCase()}"><span class="hs-co-tag" style="background:var(--${co.toLowerCase()})">${co}</span></th>`;
+    }
+  }
+  headerHtml += '</tr></thead></table>';
+
+  // 본문: 시간대마다 한 행, 각 요일×회사 칸에 세로카드.
+  let bodyHtml = `<table class="fp-table fp-table-allday">${colgroupHtml}<tbody>`;
+  for (const time of times) {
+    bodyHtml += `<tr><td class="fp-time-cell">${fpEscapeHtml(time)}</td>`;
+    for (const day of FP_DAYS) {
+      for (const co of FP_COMPANIES) {
+        const key = `${time}__${day}__${co}`;
+        const cellSlots = cellMap[key];
+        if (cellSlots && cellSlots.length) {
+          bodyHtml += `<td class="fp-co-cell ${co.toLowerCase()}">` +
+            `<div class="fp-cell-stack">` +
+            cellSlots.map(s => fpRenderCardVertical(s)).join('') +
+            `</div>` +
+            `</td>`;
+        } else {
+          bodyHtml += `<td class="fp-empty-cell"></td>`;
+        }
+      }
+    }
+    bodyHtml += '</tr>';
+  }
+  bodyHtml += '</tbody></table>';
+
+  return `<div class="fp-allday-scroll"><div class="fp-sticky-head">${headerHtml}</div>${bodyHtml}</div>`;
 }
 
 function fpRenderGrid(data) {
@@ -2692,7 +2717,8 @@ function fpRenderGrid(data) {
   }
 
   if (fpCurrentDay === '전체') {
-    // 요일별 섹션 안에 회사(HD-GS-CJ-LT) 4컬럼, 각 컬럼에 시간순 세로카드 나열.
+    // 행=시간대, 큰열=요일, 작은열=회사(HD-GS-CJ-LT) 4개. 실제 편성이
+    // 있는 시각만 행으로 동적 생성해 큰 지도 형태로 한눈에 보여준다.
     wrap.innerHTML = fpBuildAllDaysTableHtml(data.slots);
     return;
   }
