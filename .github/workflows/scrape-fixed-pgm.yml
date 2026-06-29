@@ -2,9 +2,9 @@ name: 고정PGM 편성 수집
 
 on:
   schedule:
-    # 매일 한국시간(KST) 05:00 = UTC 20:00(전날). daily-scrape(06:00 KST)와
-    # 겹치지 않도록 1시간 앞선 가벼운 시간대에 단독으로 실행한다.
-    - cron: "0 20 * * *"
+    # 매일 한국시간(KST) 04:30 = UTC 19:30(전날). 편성표(05:00)와 겹치지 않도록
+    # 30분 앞선 가벼운 시간대에 단독으로 실행한다.
+    - cron: "30 19 * * *"
   workflow_dispatch: {}  # 수동 실행 버튼
 
 permissions:
@@ -52,4 +52,8 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add homeshopping/fixed_programs/*.json
           git diff --cached --quiet || git commit -m "chore: 고정PGM 편성 데이터 갱신 ($(date -u +%Y-%m-%d))"
-          git push
+          for i in 1 2 3 4 5; do
+            git pull --rebase origin main && git push && break
+            echo "push 실패, 재시도 ($i)"
+            sleep $((RANDOM % 10 + 1))
+          done
