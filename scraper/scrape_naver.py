@@ -191,21 +191,37 @@ def normalize_truncated_titles(programs: list):
 
 
 def dedupe_programs(programs: list):
-    """동일한 프로그램의 쪼개진 요일 카드들을 하나로 합칩니다."""
+    """동일한 프로그램의 쪼개진 요일 카드들을 하나로 합칩니다.
+
+    주의: 네이버 위젯이 페이징 도중 같은 (category,title,channel,time) 조합의
+    카드를 ratingDate가 다른 채로 중복 노출하는 경우가 있다(예: 갱신 중인
+    스냅샷 차이). 단순히 "먼저 만난 카드"를 채택하면 더 오래된 ratingDate가
+    살아남아 최신 시청률이 영구히 반영되지 않는 문제가 생긴다. 그래서 같은
+    id가 다시 나타나면 ratingDate를 비교해 더 최신(과거가 아닌) 쪽을 채택한다."""
     normalize_truncated_titles(programs)
     # 제목을 정규화했으므로 id도 그에 맞춰 다시 계산한다.
     for p in programs:
         p["id"] = f"{p['category']}_{p['title']}_{p['channel']}_{p['time']}"
 
+    today = datetime.now(KST).date()
     merged = {}
     for p in programs:
         key = p["id"]
         if key not in merged:
             merged[key] = p
-        else:
-            existing_days = set(merged[key]["days"])
-            existing_days.update(p["days"])
-            merged[key]["days"] = [d for d in DAY_ORDER if d in existing_days]
+            continue
+
+        existing_days = set(merged[key]["days"])
+        existing_days.update(p["days"])
+        merged[key]["days"] = [d for d in DAY_ORDER if d in existing_days]
+
+        # ratingDate가 더 최신인 카드로 rating/ratingDate를 교체한다.
+        existing_resolved = resolve_rating_date(merged[key].get("ratingDate"), today)
+        new_resolved = resolve_rating_date(p.get("ratingDate"), today)
+        if new_resolved and (existing_resolved is None or new_resolved > existing_resolved):
+            merged[key]["rating"] = p["rating"]
+            merged[key]["ratingDate"] = p["ratingDate"]
+
     return list(merged.values())
 
 
