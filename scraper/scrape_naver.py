@@ -456,12 +456,33 @@ def fetch_variety(page, max_pages: int = 30):
 
 # ---------- 저장 로직 (ratingDate 기준으로 해당 주차 파일에 분배) ----------
 
+def _validate_week_membership(monday_date, programs, today):
+    """programs 중 ratingDate가 monday_date 주차(월~일) 범위 밖인 항목을 걸러낸다.
+    weekStart/weekEnd와 안 맞는 program은 잘못된 경로(과거 로직의 잔존 오염,
+    수동 편집 실수 등)로 그 파일에 끼어든 것이므로 보관하지 않는다.
+    반환값: (정상 program 리스트, 제외된 program 리스트)"""
+    week_start = monday_date
+    week_end = monday_date + timedelta(days=6)
+
+    valid, invalid = [], []
+    for p in programs:
+        resolved = resolve_rating_date(p.get("ratingDate"), today)
+        if resolved is None or (week_start <= resolved <= week_end):
+            # ratingDate가 없거나 파싱 불가하면 보수적으로 그대로 유지
+            # (잘못 지우는 것보다 안전하게 두는 쪽을 택함)
+            valid.append(p)
+        else:
+            invalid.append(p)
+    return valid, invalid
+
+
 def _merge_programs_into_file(out_dir: str, monday_date, programs: list):
     """programs를 monday_date가 속한 주차 파일에 머지 저장한다.
     (기존 dispatch_to_current_week의 병합 로직을 그대로 사용, 대상 주차만 인자로 받음)"""
     file_date = monday_date.isoformat()
     week_end = (monday_date + timedelta(days=6)).isoformat()
     file_path = os.path.join(out_dir, f"{file_date}.json")
+    today = datetime.now(KST).date()
 
     if os.path.exists(file_path):
         try:
@@ -472,6 +493,15 @@ def _merge_programs_into_file(out_dir: str, monday_date, programs: list):
             existing_programs = []
     else:
         existing_programs = []
+
+    # 정합성 체크: 기존에 저장돼있던 program 중 이 주차(weekStart~weekEnd)에
+    # 속하지 않는 ratingDate를 가진 게 있으면 제거한다. 과거 로직(오늘 날짜
+    # 기준으로 무조건 같은 파일에 쓰던 시절)의 잔존 오염이나, 다른 경로로
+    # 잘못 들어온 데이터가 영구히 박혀있는 것을 막기 위함이다.
+    existing_programs, contaminated = _validate_week_membership(monday_date, existing_programs, today)
+    for p in contaminated:
+        print(f"  [정합성 정리] {file_date}.json 에서 '{p['title']}'"
+              f" ({p['channel']}, ratingDate={p.get('ratingDate')}) 제거 — 이 주차 범위 밖의 날짜")
 
     by_id = {p["id"]: p for p in existing_programs}
     for p in programs:
