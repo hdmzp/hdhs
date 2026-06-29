@@ -542,6 +542,48 @@ def dispatch_by_rating_date(out_dir: str, programs: list):
 
 
 
+def prune_dropped_programs(out_dir: str, collected_ids: set, today):
+    """이번 스크래핑에서 더 이상 안 보이는(=시청률이 컷오프 미달로 떨어진)
+    프로그램을 '직전 주차' 파일에서만 찾아 제거한다.
+
+    범위를 직전 주 하나로 한정하는 이유:
+    - 이번 주(진행 중인 주)는 아직 데이터가 다 안 모인 상태라 대상에서 뺀다
+      (괜히 진행 중인 주 데이터를 흔들 위험을 없앤다).
+    - 그보다 오래된 주차는 네이버 위젯이 시간이 지나 더 이상 보여주지 않는
+      게 정상이라("방영종료" 탭으로 넘어갔거나 화면에서 자연스럽게 빠짐),
+      그런 정상적인 경우까지 "컷오프로 사라졌다"고 착각해서 지우면 과거
+      데이터가 통째로 날아간다.
+    토/일 시청률이 막 갱신되는 시점인 '바로 직전 주'만 이 정리 대상으로
+    삼아야 안전하다."""
+    today_monday = monday_of(today)
+    target_monday = today_monday - timedelta(days=7)
+
+    file_path = os.path.join(out_dir, f"{target_monday.isoformat()}.json")
+    if not os.path.exists(file_path):
+        return
+    try:
+        with open(file_path, encoding="utf-8") as f:
+            data = json.load(f)
+    except Exception:
+        return
+
+    existing_programs = data.get("programs", [])
+    kept = [p for p in existing_programs if p["id"] in collected_ids]
+    dropped = [p for p in existing_programs if p["id"] not in collected_ids]
+
+    if not dropped:
+        return
+
+    for p in dropped:
+        print(f"  [컷오프 제거] {target_monday.isoformat()} 주차에서 '{p['title']}'"
+              f" ({p['channel']}, {p.get('ratingDate')}, {p['rating']}%) 제거 — 이번 수집에서 더 이상 확인되지 않음")
+
+    data["programs"] = kept
+    data["collectedAt"] = datetime.now(KST).isoformat()
+    with open(file_path, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+
 def main():
     global DEBUG
     parser = argparse.ArgumentParser()
@@ -574,6 +616,12 @@ def main():
 
     all_raw_programs = drama_programs + variety_programs
     dispatch_by_rating_date(final_out_dir, all_raw_programs)
+
+    # 이번에 수집된 전체 program id 집합을 기준으로, 직전 주차 파일에서
+    # 컷오프 미달로 더 이상 안 보이는 항목을 정리한다.
+    collected_ids = {p["id"] for p in all_raw_programs}
+    today = datetime.now(KST).date()
+    prune_dropped_programs(final_out_dir, collected_ids, today)
 
 
 if __name__ == "__main__":
