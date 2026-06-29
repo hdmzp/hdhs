@@ -2,8 +2,9 @@ name: 홈쇼핑 편성 수집 (기타7개사)
 
 on:
   schedule:
-    # 매일 한국시간(KST) 06:30 = UTC 21:30 (전날). homeshopping.yml(06:20)과 겹치지 않게 10분 뒤.
-    - cron: "30 21 * * *"
+    # 하루 2회: KST 06:10 = UTC 21:10 (전날), KST 12:40 = UTC 03:40
+    - cron: "10 21 * * *"
+    - cron: "40 3 * * *"
   workflow_dispatch: {}  # 수동 실행 버튼
 
 permissions:
