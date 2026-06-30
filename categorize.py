@@ -59,9 +59,15 @@ train_model.py를 다시 실행해 category_model.pkl을 교체한다.
 import os
 import re
 import joblib
+import pandas as pd
 from infer_brand import infer_brand, extract_core_brand
 
 MODEL_PATH = os.path.join(os.path.dirname(__file__), "category_model.pkl")
+
+_TRAINING_XLSX_CANDIDATES = [
+    os.path.join(os.path.dirname(__file__), "training_data.xlsx"),
+    "training_data.xlsx",
+]
 
 # 세분류(모델 예측 클래스) -> 통합 그룹명
 GROUP_MAP = {
@@ -82,8 +88,65 @@ KEYWORD_RULES = [
     (re.compile(r"에어컨|세탁기|냉장고|비스포크|오브제\b|TV\b|티브이|건조기|스타일러|청소기|공기청정기|제습기|인덕션|식기세척기"), "가전"),
 ]
 
+# 브랜드명에 이 패턴이 포함되면 상품명/모델 판단과 무관하게 무조건 가전으로 확정.
+# (live brand 필드가 학습데이터 표기("삼성(SAMSUNG)")와 다른 plain 텍스트("삼성")로
+#  들어올 때 모델이 영문 부기 신호 부재로 오분류하는 문제를 우회하기 위한 규칙)
+BRAND_FORCE_RULES = [
+    (re.compile(r"삼성|LG|SAMSUNG|엘지|스타일리스"), "가전"),
+]
+
 
 _model = None
+_brand_group_map = None  # {브랜드명: 통합그룹명 or None(모호한 브랜드)}
+
+
+def _load_brand_group_map():
+    """
+    학습데이터(training_data.xlsx)를 브랜드명 기준으로 묶어서,
+    그 브랜드가 단 하나의 카테고리 그룹에서만 등장하면 {브랜드명: 그룹명},
+    여러 그룹에 걸쳐 있으면(예: 동인비/라비앙처럼 미용+건강식품 겸업) {브랜드명: None}으로 표시한다.
+    None인 브랜드는 브랜드명만으로 확정할 수 없으므로 호출부에서 상품명까지 같이 봐야 한다.
+    """
+    global _brand_group_map
+    if _brand_group_map is not None:
+        return _brand_group_map
+
+    xlsx_path = None
+    for cand in _TRAINING_XLSX_CANDIDATES:
+        if os.path.exists(cand):
+            xlsx_path = cand
+            break
+
+    if xlsx_path is None:
+        _brand_group_map = {}
+        return _brand_group_map
+
+    df = pd.read_excel(xlsx_path, sheet_name=0)
+    mapping = {}
+    for brand, sub in df.dropna(subset=["브랜드명", "상품중분류명"]).groupby("브랜드명"):
+        groups = {_to_group(c) for c in sub["상품중분류명"].unique()}
+        mapping[str(brand)] = groups.pop() if len(groups) == 1 else None
+        # 원본 표기뿐 아니라 괄호 제거한 핵심 브랜드명으로도 같이 찾을 수 있게 등록
+        core = extract_core_brand(str(brand))
+        if core and core not in mapping:
+            mapping[core] = mapping[str(brand)]
+
+    _brand_group_map = mapping
+    return _brand_group_map
+
+
+def _brand_direct_category(brand: str) -> str:
+    """
+    브랜드명이 주어졌을 때, 학습데이터 상 그 브랜드가 단일 카테고리에서만
+    운영돼 왔다면 그 카테고리를 바로 반환. 모호한 브랜드(미용/건강식품 겸업 등)이거나
+    학습데이터에 없는 브랜드면 빈 문자열을 반환해 호출부가 상품명까지 보게 한다.
+    """
+    mapping = _load_brand_group_map()
+    group = mapping.get(brand)
+    if group is None:
+        core = extract_core_brand(brand)
+        group = mapping.get(core)
+    return group or ""
 
 
 def _load_model():
@@ -161,21 +224,49 @@ def classify(brand: str, product: str) -> str:
     """
     브랜드명 + 상품명으로 카테고리(통합 그룹)를 예측.
     빈 입력이 아니면 항상 가장 가능성 높은 카테고리를 반환한다 (미분류 없음).
+
+    분류 순서:
+    0) 브랜드명에 "삼성"/"LG"가 포함되면 상품명/모델 판단과 무관하게 무조건 "가전"
+    1) 키워드 규칙 (보험/여행/가전 확정 키워드)
+    2) 브랜드명이 제공된 경우: 학습데이터 상 그 브랜드가 단일 카테고리에서만 운영돼
+       왔다면 상품명을 볼 것도 없이 그 카테고리로 바로 확정.
+       단, 동인비/라비앙처럼 미용+건강식품을 같은 브랜드명으로 같이 운영하는 등
+       브랜드 하나가 여러 카테고리에 걸쳐 있으면(모호) 이 단계를 건너뛰고
+       상품명까지 같이 보는 모델 판단(4)으로 넘어간다.
+    3) 브랜드가 비어있으면 상품명에서 브랜드 추론해서 보강
+    4) 모델 분류 (브랜드+상품명 텍스트 기반)
     """
     if not brand and not product:
         return ""
 
-    # 1) 명확한 키워드 규칙 우선 적용 (사은품 구성품 텍스트는 제외하고 본품만 검사)
+    # 0) 삼성/LG는 무조건 가전 (브랜드명 기준, 최우선)
+    if brand:
+        for pattern, category in BRAND_FORCE_RULES:
+            if pattern.search(brand):
+                return category
+
+    # 1) 명확한 키워드 규칙 (사은품 구성품 텍스트는 제외하고 본품만 검사)
     rule_hit = _rule_match(_main_item_text(brand, product))
     if rule_hit:
         return rule_hit
 
-    # 2) 브랜드가 비어있으면 상품명에서 브랜드 추론해서 보강
+    # 2) 브랜드명이 학습데이터에서 단일 카테고리로만 운영돼 왔다면 바로 그 카테고리로 확정
+    if brand:
+        direct = _brand_direct_category(brand)
+        if direct:
+            return direct
+
+    # 3) 브랜드가 비어있으면 상품명에서 브랜드 추론해서 보강
     effective_brand = brand
     if not effective_brand:
         effective_brand = infer_brand(product)
+        # 추론된 브랜드가 삼성/LG면 마찬가지로 무조건 가전 (모델 추론에 기대지 않는 보장)
+        if effective_brand:
+            for pattern, category in BRAND_FORCE_RULES:
+                if pattern.search(effective_brand):
+                    return category
 
-    # 3) 모델 분류
+    # 4) 모델 분류
     return _predict_with_model(effective_brand, product)
 
 
@@ -183,8 +274,9 @@ def classify_batch(items: list) -> list:
     """
     [(brand, product), ...] 리스트를 한 번에 분류 (개별 호출보다 빠름).
     반환: 통합 그룹명 문자열 리스트.
+    classify()와 동일한 우선순위(삼성/LG 강제 -> 키워드 규칙 -> 브랜드 단일카테고리
+    직접매핑 -> 모델)를 적용하되, 모델까지 가야 하는 항목만 모아서 한 번에 예측한다.
     """
-    # 키워드 규칙으로 먼저 걸러내고, 나머지만 모델에 보낸다
     results = [None] * len(items)
     model_indices = []
     model_texts = []
@@ -193,11 +285,44 @@ def classify_batch(items: list) -> list:
         if not brand and not product:
             results[i] = ""
             continue
+
+        # 0) 삼성/LG는 무조건 가전
+        forced = ""
+        if brand:
+            for pattern, category in BRAND_FORCE_RULES:
+                if pattern.search(brand):
+                    forced = category
+                    break
+        if forced:
+            results[i] = forced
+            continue
+
+        # 1) 키워드 규칙
         rule_hit = _rule_match(_main_item_text(brand, product))
         if rule_hit:
             results[i] = rule_hit
             continue
-        effective_brand = brand or infer_brand(product)
+
+        # 2) 브랜드명이 단일 카테고리로만 운영돼 왔다면 바로 확정
+        if brand:
+            direct = _brand_direct_category(brand)
+            if direct:
+                results[i] = direct
+                continue
+
+        # 3)+4) 그 외에는 모델로 (브랜드 비어있으면 상품명에서 추론해 보강)
+        effective_brand = brand
+        if not effective_brand:
+            effective_brand = infer_brand(product)
+            if effective_brand:
+                inferred_forced = ""
+                for pattern, category in BRAND_FORCE_RULES:
+                    if pattern.search(effective_brand):
+                        inferred_forced = category
+                        break
+                if inferred_forced:
+                    results[i] = inferred_forced
+                    continue
         model_indices.append(i)
         model_texts.append(f"{effective_brand or ''} {product or ''}".strip())
 
