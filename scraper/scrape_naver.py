@@ -16,8 +16,12 @@ from bs4 import BeautifulSoup
 from playwright.sync_api import sync_playwright
 
 DRAMA_URL = "https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query=%EB%B0%A9%EC%98%81%EC%A4%91%ED%95%9C%EA%B5%AD%EB%93%9C%EB%9D%BC%EB%A7%88"
-# 유저가 제공한 '방영예능' URL 적용 완료
-VARIETY_URL = "https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&ssc=tab.nx.all&query=%EB%B0%A9%EC%98%81%EC%98%88%EB%8A%A5&oquery=&tqi=jBq1rlqpvCwssOj2YZG-498675&ackey=kwoadl9c"
+# 기존 URL에는 1회성 세션 토큰(tqi, ackey)이 하드코딩돼 있어, 매 실행마다
+# 만료된/낯선 세션으로 요청하게 되는 문제가 있었다. 이 경우 네이버가 풀
+# 위젯('전체' 탭 포함) 대신 "오늘의 예능"류의 축약 스냅샷만 내려줘서,
+# 실행한 요일의 프로그램만 수집되는 증상(예: 매번 그날 하루치만 잡힘)으로
+# 이어졌다. DRAMA_URL과 동일하게 세션 토큰 없는 깨끗한 쿼리로 통일한다.
+VARIETY_URL = "https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query=%EB%B0%A9%EC%98%81%EC%98%88%EB%8A%A5"
 
 MIN_RATING_DRAMA = 5.0
 MIN_RATING_VARIETY = 1.0
@@ -444,10 +448,8 @@ def fetch_drama(page, max_pages: int = 30):
     return dedupe_programs(all_programs)
 
 
-def fetch_variety(page, max_pages: int = 30):
-    safe_goto(page, VARIETY_URL)
-    click_all_days_tab(page, "variety")
-
+def _collect_variety_pages(page, max_pages: int):
+    """현재 로드된 variety 페이지에서 페이징을 끝까지 따라가며 카드를 수집한다."""
     all_programs = []
     page_num = 1
     max_retries_per_page = 3
@@ -482,6 +484,37 @@ def fetch_variety(page, max_pages: int = 30):
         if not advanced:
             break
         page_num += 1
+
+    return all_programs
+
+
+def fetch_variety(page, max_pages: int = 30):
+    safe_goto(page, VARIETY_URL)
+    click_all_days_tab(page, "variety")
+    all_programs = _collect_variety_pages(page, max_pages)
+
+    # 클릭 성공 여부(return값)만으로는 실제 데이터가 정상인지 알 수 없다
+    # (클릭은 '성공'으로 찍혀도 위젯이 그날 하루치 축약 스냅샷을 보여주는
+    # 경우가 있었다). 그래서 실제로 모인 데이터의 요일 분포를 직접
+    # 점검한다 — variety는 정상이어도 프로그램별로 보통 1~2개 요일에만
+    # 편성되지만, 정상 수집이라면 한 주 전체에 걸쳐 다양한 요일이 섞여
+    # 나와야 한다. 거의 모든 카드가 단 하루(혹은 이틀 이하)에 몰려있으면
+    # '전체' 탭이 아니라 '오늘' 스냅샷만 긁힌 것으로 간주하고 재시도한다.
+    distinct_days = {d for p in all_programs for d in p["days"]}
+    if len(all_programs) >= 5 and len(distinct_days) <= 2:
+        print(f"  [variety] ⚠️ 수집된 {len(all_programs)}건이 요일 {sorted(distinct_days)}에만 몰려있음 "
+              f"— '오늘' 스냅샷만 잡힌 것으로 의심됨. 페이지를 다시 로드해 재시도합니다.")
+        safe_goto(page, VARIETY_URL)
+        page.wait_for_timeout(1500)
+        click_all_days_tab(page, "variety")
+        retry_programs = _collect_variety_pages(page, max_pages)
+        retry_days = {d for p in retry_programs for d in p["days"]}
+        if len(retry_days) > len(distinct_days):
+            print(f"  [variety] ✅ 재시도 후 요일 {sorted(retry_days)}로 확대 — 재시도 결과를 채택합니다.")
+            all_programs = retry_programs
+        else:
+            print(f"  [variety] ⚠️ 재시도해도 요일 {sorted(retry_days)}로 동일/더 좁음 — "
+                  f"원래 결과를 그대로 사용하되 데이터가 불완전할 수 있음에 유의.")
 
     return dedupe_programs(all_programs)
 
