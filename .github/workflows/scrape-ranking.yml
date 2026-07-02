@@ -1,0 +1,41 @@
+name: 홈쇼핑 랭킹(매일) 수집
+
+on:
+  schedule:
+    # 매일 KST 07:00 = UTC 22:00(전날)
+    - cron: "0 22 * * *"
+  workflow_dispatch: {}  # 수동 실행 버튼
+
+permissions:
+  contents: write
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Python 설치
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 패키지 설치
+        run: pip install requests
+
+      - name: 홈쇼핑 랭킹 스크래퍼 실행
+        run: python ranking_scraper.py
+
+      - name: 변경사항 커밋
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/ranking/*.json
+          git diff --cached --quiet || git commit -m "chore: 홈쇼핑 랭킹 데이터 갱신 ($(date -u +%Y-%m-%d))"
+          for i in 1 2 3 4 5; do
+            git pull --rebase origin main && git push && break
+            echo "push 실패, 재시도 ($i)"
+            sleep $((RANDOM % 10 + 1))
+          done
