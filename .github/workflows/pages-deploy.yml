@@ -15,10 +15,11 @@ permissions:
   pages: write
   id-token: write
 
-# 배포가 겹쳐 들어와도 순서대로 처리하고, 진행 중인 배포는 취소하지 않는다.
+# 이전에 걸려있는(멈춰있는) 배포가 있으면 새 배포가 이를 자동으로 취소하고
+# 진행한다. false로 두면 멈춘 배포 하나가 이후 모든 배포를 영원히 막을 수 있다.
 concurrency:
   group: "pages"
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   deploy:
