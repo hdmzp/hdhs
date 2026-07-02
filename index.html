@@ -377,15 +377,6 @@
   .main-tabs button:hover { color: var(--ink); background: var(--paper-dim); }
   .main-tabs button.active:hover { color: var(--brand-blue); background: var(--brand-blue-soft); }
 
-  @media (max-width: 700px) {
-    .main-tabs { gap: 0; }
-    .main-tabs button {
-      font-size: 10.4px; /* 13px 기준 0.8배 */
-      padding: 6px 7px 5px;
-      white-space: nowrap;
-    }
-  }
-
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
 
@@ -1112,6 +1103,24 @@
     font-size: 10.5px;
     color: var(--ink-faint);
     font-weight: 600;
+  }
+
+  /* 기타(7개사+NS샵플러스=8열) 탭은 회사 수가 많아 균등분할하면 열이
+     너무 좁아진다. 시간대 열은 그대로 두고 나머지 열만 넉넉한 고정폭을
+     줘서(기존 대비 약 2배) 가로 스크롤(.hs-scroll)로 보게 한다. */
+  table.hs-table.hs-table-etc {
+    width: max-content;
+    min-width: 100%;
+  }
+  table.hs-table.hs-table-etc th:not(.hs-time-col),
+  table.hs-table.hs-table-etc td:not(.hs-time-cell) {
+    width: 190px;
+  }
+  @media (max-width: 700px) {
+    table.hs-table.hs-table-etc th:not(.hs-time-col),
+    table.hs-table.hs-table-etc td:not(.hs-time-cell) {
+      width: 140px;
+    }
   }
   table.hs-table thead th .hs-co-tag {
     display: inline-block;
@@ -2673,7 +2682,8 @@ function hsRenderGridView(datasets, nowMin) {
     }
   });
 
-  let html = '<div class="hs-scroll"><table class="hs-table"><thead><tr>';
+  const tableCls = `hs-table${hsCurrentBc === 'etc' ? ' hs-table-etc' : ''}`;
+  let html = `<div class="hs-scroll"><table class="${tableCls}"><thead><tr>`;
   html += '<th class="hs-time-col">시간</th>';
   companies.forEach(c => {
     html += `<th class="${c.cls}"><span class="hs-co-tag">${c.name}</span></th>`;
@@ -2718,7 +2728,8 @@ function hsRenderListView(datasets, nowMin) {
     return '<div style="text-align:center;padding:40px;color:var(--ink-soft);font-size:13px;">해당 카테고리의 편성이 없습니다.</div>';
   }
 
-  let html = '<div class="hs-scroll"><table class="hs-table hs-table-list"><thead><tr>';
+  const tableCls = `hs-table hs-table-list${hsCurrentBc === 'etc' ? ' hs-table-etc' : ''}`;
+  let html = `<div class="hs-scroll"><table class="${tableCls}"><thead><tr>`;
   html += '<th class="hs-time-col"></th>';
   companies.forEach(c => {
     html += `<th class="${c.cls}"><span class="hs-co-tag">${c.name}</span></th>`;
