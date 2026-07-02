@@ -819,6 +819,188 @@
     .dv-card .dv-title { font-size: 10.5px; }
   }
 
+  /* ============ 홈쇼핑랭킹 탭 ============ */
+  #tabRanking {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px 30px;
+  }
+
+  .rk-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 0 14px;
+    background: var(--paper);
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .rk-week-label-wrap .date-text { font-size: 13.5px; }
+
+  .rk-cat-chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+  }
+  .rk-cat-chip {
+    font-family: 'Pretendard', -apple-system, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    background: var(--paper-dim);
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 6px 13px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .rk-cat-chip.active {
+    background: var(--brand-blue);
+    border-color: var(--brand-blue);
+    color: #fff;
+  }
+  .rk-cat-chip:hover:not(.active) { background: var(--now-bg); color: var(--ink); }
+
+  .rk-updated {
+    text-align: center;
+    font-size: 11px;
+    color: var(--ink-faint);
+    padding: 8px 0 4px;
+  }
+
+  .rk-list {
+    display: flex;
+    flex-direction: column;
+    background: var(--paper);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+
+  .rk-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    text-decoration: none;
+    color: var(--ink);
+    border-bottom: 1px solid var(--rule);
+    transition: background 0.12s;
+  }
+  .rk-card:last-child { border-bottom: none; }
+  .rk-card:hover { background: var(--now-bg); }
+  .rk-card.rk-nolink { cursor: default; }
+
+  .rk-rank {
+    width: 30px;
+    flex-shrink: 0;
+    text-align: center;
+    font-weight: 800;
+    font-size: 15px;
+    color: var(--ink-faint);
+  }
+  .rk-card.rk-tier-fire .rk-rank { color: #DC2626; }
+  .rk-card.rk-tier-hot .rk-rank { color: #EA580C; }
+
+  .rk-change {
+    display: block;
+    text-align: center;
+    font-size: 9.5px;
+    font-weight: 700;
+    margin-top: 1px;
+  }
+  .rk-change.rk-change-up { color: #DC2626; }
+  .rk-change.rk-change-down { color: #2563EB; }
+  .rk-change.rk-change-same { color: var(--ink-faint); }
+  .rk-change.rk-change-new { color: #059669; }
+
+  .rk-thumb {
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    object-fit: cover;
+    background: var(--paper-dim);
+  }
+
+  .rk-info { flex: 1; min-width: 0; }
+  .rk-badge-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 2px;
+  }
+  .rk-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 1px 7px;
+    border-radius: 999px;
+    color: #fff;
+    white-space: nowrap;
+  }
+  .rk-badge.rk-tier-fire { background: #DC2626; }
+  .rk-badge.rk-tier-hot { background: #EA580C; }
+  .rk-badge.rk-tier-popular { background: #6B7280; }
+
+  .rk-channel {
+    font-size: 10.5px;
+    font-weight: 700;
+    color: #1B5E5A;
+  }
+  .rk-time {
+    font-size: 10px;
+    color: var(--ink-faint);
+  }
+
+  .rk-name {
+    font-size: 12.5px;
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .rk-brand {
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin-right: 4px;
+  }
+
+  .rk-price {
+    flex-shrink: 0;
+    text-align: right;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  .rk-price .rk-orig {
+    display: block;
+    font-size: 10.5px;
+    font-weight: 500;
+    color: var(--ink-faint);
+    text-decoration: line-through;
+  }
+
+  .rk-empty-row {
+    text-align: center;
+    color: var(--ink-faint);
+    font-size: 12.5px;
+    padding: 40px 0;
+  }
+
+  @media (max-width: 700px) {
+    .rk-thumb { width: 42px; height: 42px; }
+    .rk-name { font-size: 11.5px; }
+    .rk-price { font-size: 12px; }
+  }
+
   /* ============ 홈쇼핑 탭 ============ */
   #tabHomeshop {
     --hd: #003C82;
@@ -1170,8 +1352,20 @@
     padding: 0 24px 60px;
   }
 
+  /* 모바일 등 좁은 화면에서 컬럼이 찌그러지지 않도록, 표는 최소 너비를
+     유지하고 대신 이 래퍼가 가로 스크롤을 담당한다 (지상파·종편 탭과
+     동일한 방식). overflow-y는 명시적으로 visible로 둬서 세로 방향은
+     그대로 페이지 스크롤을 따르게 하고(= 헤더 sticky가 계속 페이지
+     기준으로 동작), 가로만 이 컨테이너 안에서 스크롤되게 한다. */
+  .fp-hscroll {
+    overflow-x: auto;
+    overflow-y: visible;
+    -webkit-overflow-scrolling: touch;
+  }
+
   table.fp-table {
     width: 100%;
+    min-width: 640px;
     border-collapse: separate;
     border-spacing: 0;
     table-layout: fixed;
@@ -1323,6 +1517,9 @@
   table.fp-table-allday thead th {
     font-size: 13px;
   }
+  table.fp-table-allday {
+    min-width: 980px;
+  }
   table.fp-table-allday td.fp-co-cell {
     padding: 6px;
   }
@@ -1395,6 +1592,7 @@
     <button id="tabBtnSchedule">지상파·종편</button>
     <button id="tabBtnDramaVariety">드라마·예능</button>
     <button id="tabBtnWeather">날씨</button>
+    <button id="tabBtnRanking">랭킹</button>
   </div>
 </header>
 
@@ -1551,6 +1749,27 @@
 <div class="fp-updated" id="fpUpdated"></div>
 
 <div class="fp-scroll" id="fpGridWrap"></div>
+
+</div>
+
+<div id="tabRanking" class="tab-panel">
+
+<div class="rk-controls">
+  <div class="date-nav dv-week-nav">
+    <button class="arrow" id="rkPrevWeek" aria-label="이전 주">‹</button>
+    <div class="date-display rk-week-label-wrap" id="rkWeekDisplay">
+      <span class="date-text" id="rkWeekLabel">2026-06-29 (월) ~ 2026-07-05 (일)</span>
+      <i class="cal-icon">📅</i>
+      <input type="date" id="rkWeekPicker">
+    </div>
+    <button class="arrow" id="rkNextWeek" aria-label="다음 주">›</button>
+  </div>
+  <div class="rk-cat-chips" id="rkCatChips"></div>
+</div>
+
+<div class="rk-updated" id="rkUpdated"></div>
+
+<div class="rk-list" id="rkListWrap"></div>
 
 </div>
 
@@ -1918,6 +2137,7 @@ let _weatherTabLoaded = false;
 let _homeshopTabLoaded = false;
 let _dramaVarietyTabLoaded = false;
 let _fixedPgmTabLoaded = false;
+let _rankingTabLoaded = false;
 
 let dvWeekStart = "2026-06-22";
 let dvFilter = "all";
@@ -2063,6 +2283,125 @@ async function dvRefresh(weekStart) {
   dvRenderUpdated(data);
   dvRenderBasis();
   dvRenderGrid(data);
+}
+
+// ============ 홈쇼핑랭킹 탭 ============
+// 주간 탐색(이전/다음 주, 날짜 피커)은 드라마·예능 탭과 동일한 방식을 그대로
+// 재사용한다 (dvMondayOf / dvShiftWeek / dvWeekEnd / dvFormatWeekLabel).
+const RK_MIN_WEEK_START = "2026-06-29"; // 첫 수집 주 - 실제 첫 데이터 파일 날짜에 맞게 조정
+const RK_CATEGORIES = [
+  "전체", "의류", "식품", "잡화", "뷰티", "스포츠/레저", "생필품/주방",
+  "가구/인테리어", "가전", "건강", "서비스/금융", "반려동물", "출산/육아",
+  "자동차/공구", "취미", "문화/컨텐츠", "디지털", "컴퓨터",
+];
+
+let rkWeekStart = "2026-06-29";
+let rkCategory = "전체";
+let rkCache = {};
+
+async function rkLoadWeek(weekStart) {
+  if (rkCache[weekStart]) return rkCache[weekStart];
+  try {
+    const resp = await fetch(`./data/ranking/${weekStart}.json?t=${Date.now()}`);
+    if (!resp.ok) throw new Error("not found");
+    const data = await resp.json();
+    rkCache[weekStart] = data;
+    return data;
+  } catch (e) {
+    return null;
+  }
+}
+
+function rkRenderUpdated(data) {
+  const el = document.getElementById('rkUpdated');
+  if (!data || !data.collectedAt) { el.textContent = ""; return; }
+  const d = new Date(data.collectedAt);
+  const pad = (n) => String(n).padStart(2, "0");
+  el.textContent = `최종 수집: ${d.getFullYear()}.${pad(d.getMonth()+1)}.${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+function rkRenderCatChips() {
+  const el = document.getElementById('rkCatChips');
+  let html = '';
+  for (const cat of RK_CATEGORIES) {
+    const active = (cat === rkCategory) ? ' active' : '';
+    html += `<button type="button" class="rk-cat-chip${active}" data-cat="${escapeHtml(cat)}">${escapeHtml(cat)}</button>`;
+  }
+  el.innerHTML = html;
+
+  if (!el.dataset.bound) {
+    el.addEventListener('click', (e) => {
+      const btn = e.target.closest('.rk-cat-chip');
+      if (!btn) return;
+      rkCategory = btn.dataset.cat;
+      rkRenderCatChips();
+      rkRenderList(rkCache[rkWeekStart]);
+    });
+    el.dataset.bound = '1';
+  }
+}
+
+function rkFormatPrice(won) {
+  if (won === null || won === undefined) return '';
+  return Number(won).toLocaleString('ko-KR') + '원';
+}
+
+function rkRenderRankChange(rc) {
+  if (rc === null || rc === undefined) return '<span class="rk-change rk-change-new">NEW</span>';
+  if (rc > 0) return `<span class="rk-change rk-change-up">▲${rc}</span>`;
+  if (rc < 0) return `<span class="rk-change rk-change-down">▼${Math.abs(rc)}</span>`;
+  return '<span class="rk-change rk-change-same">-</span>';
+}
+
+function rkRenderList(data) {
+  const wrap = document.getElementById('rkListWrap');
+  const items = (data && data.categories && data.categories[rkCategory]) ? data.categories[rkCategory] : [];
+
+  if (!items.length) {
+    wrap.innerHTML = '<div class="rk-empty-row">이 주차/카테고리의 수집 데이터가 없습니다</div>';
+    return;
+  }
+
+  let html = '';
+  for (const it of items) {
+    const p = it.product || {};
+    const b = it.broadcast || {};
+    const hasLink = !!it.link;
+    const tag = hasLink ? 'a' : 'div';
+    const linkAttrs = hasLink ? `href="${escapeHtml(it.link)}" target="_blank" rel="noopener noreferrer"` : '';
+    const tierClass = it.tier ? ` rk-tier-${escapeHtml(it.tier)}` : '';
+    const cardClass = `rk-card${tierClass}${hasLink ? '' : ' rk-nolink'}`;
+
+    const badgeHtml = it.badge
+      ? `<span class="rk-badge rk-tier-${escapeHtml(it.tier || '')}">${escapeHtml(it.badge)}</span>`
+      : '';
+    const priceHtml = (p.sale_price && p.price && p.sale_price < p.price)
+      ? `${rkFormatPrice(p.sale_price)}<span class="rk-orig">${rkFormatPrice(p.price)}</span>`
+      : rkFormatPrice(p.sale_price ?? p.price);
+
+    html += `<${tag} class="${cardClass}" ${linkAttrs}>`;
+    html += `<span class="rk-rank">${it.rank ?? ''}${rkRenderRankChange(it.rank_change)}</span>`;
+    html += `<img class="rk-thumb" src="${escapeHtml(p.image || '')}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">`;
+    html += `<span class="rk-info">`;
+    html += `<span class="rk-badge-row">${badgeHtml}<span class="rk-channel">${escapeHtml(b.channel_name || '')}</span><span class="rk-time">${escapeHtml(b.start_time || '')}~${escapeHtml(b.end_time || '')}</span></span>`;
+    html += `<span class="rk-name">${p.brand ? `<span class="rk-brand">[${escapeHtml(p.brand)}]</span>` : ''}${escapeHtml(p.name || '')}</span>`;
+    html += `</span>`;
+    html += `<span class="rk-price">${priceHtml}</span>`;
+    html += `</${tag}>`;
+  }
+
+  wrap.innerHTML = html;
+}
+
+async function rkRefresh(weekStart) {
+  document.getElementById('rkWeekLabel').textContent = dvFormatWeekLabel(weekStart);
+  const rkPickerEl = document.getElementById('rkWeekPicker');
+  if (rkPickerEl) rkPickerEl.value = weekStart;
+  document.getElementById('rkPrevWeek').disabled = (weekStart <= RK_MIN_WEEK_START);
+  rkRenderCatChips();
+  const data = await rkLoadWeek(weekStart);
+  rkRenderUpdated(data);
+  rkRenderList(data);
 }
 
 let hsCurrentDate = "2026-06-21";
@@ -2438,8 +2777,8 @@ function renderMonthPickerPanel() {
 }
 
 function switchTab(tab) {
-  const panels = { schedule: 'tabSchedule', weather: 'tabWeather', homeshop: 'tabHomeshop', dramavariety: 'tabDramaVariety', fixedpgm: 'tabFixedPgm' };
-  const btns = { schedule: 'tabBtnSchedule', weather: 'tabBtnWeather', homeshop: 'tabBtnHomeshop', dramavariety: 'tabBtnDramaVariety', fixedpgm: 'tabBtnFixedPgm' };
+  const panels = { schedule: 'tabSchedule', weather: 'tabWeather', homeshop: 'tabHomeshop', dramavariety: 'tabDramaVariety', fixedpgm: 'tabFixedPgm', ranking: 'tabRanking' };
+  const btns = { schedule: 'tabBtnSchedule', weather: 'tabBtnWeather', homeshop: 'tabBtnHomeshop', dramavariety: 'tabBtnDramaVariety', fixedpgm: 'tabBtnFixedPgm', ranking: 'tabBtnRanking' };
 
   for (const key in panels) {
     document.getElementById(panels[key]).classList.toggle('active', key === tab);
@@ -2461,6 +2800,10 @@ function switchTab(tab) {
   if (tab === 'fixedpgm' && !_fixedPgmTabLoaded) {
     _fixedPgmTabLoaded = true;
     fpRefresh();
+  }
+  if (tab === 'ranking' && !_rankingTabLoaded) {
+    _rankingTabLoaded = true;
+    rkRefresh(rkWeekStart);
   }
 }
 
@@ -2575,7 +2918,7 @@ function fpBuildTableHtml(daySlots, compact) {
   }
   bodyHtml += '</tbody></table>';
 
-  return `<div class="fp-sticky-head">${headerHtml}</div>${bodyHtml}`;
+  return `<div class="fp-hscroll"><div class="fp-sticky-head">${headerHtml}</div>${bodyHtml}</div>`;
 }
 
 function fpBuildAllDaysTableHtml(allSlots) {
@@ -2621,7 +2964,7 @@ function fpBuildAllDaysTableHtml(allSlots) {
   }
   bodyHtml += '</tbody></table>';
 
-  return `<div class="fp-sticky-head">${headerHtml}</div>${bodyHtml}`;
+  return `<div class="fp-hscroll"><div class="fp-sticky-head">${headerHtml}</div>${bodyHtml}</div>`;
 }
 
 function fpRenderGrid(data) {
@@ -2678,6 +3021,8 @@ document.querySelectorAll('.fp-day-btn').forEach(btn => {
   currentMonth = now.getMonth() + 1;
   hsCurrentDate = toLocalDateStr(now);
   dvWeekStart = dvMondayOf(toLocalDateStr(now));
+  rkWeekStart = dvMondayOf(toLocalDateStr(now));
+  if (rkWeekStart < RK_MIN_WEEK_START) rkWeekStart = RK_MIN_WEEK_START;
 
   const picker = document.getElementById('datePicker');
   picker.value = toLocalDateStr(now);
@@ -2722,6 +3067,7 @@ document.querySelectorAll('.fp-day-btn').forEach(btn => {
   document.getElementById('tabBtnHomeshop').addEventListener('click', () => switchTab('homeshop'));
   document.getElementById('tabBtnDramaVariety').addEventListener('click', () => switchTab('dramavariety'));
   document.getElementById('tabBtnFixedPgm').addEventListener('click', () => switchTab('fixedpgm'));
+  document.getElementById('tabBtnRanking').addEventListener('click', () => switchTab('ranking'));
 
   const hsPicker = document.getElementById('hsDatePicker');
   hsPicker.value = hsCurrentDate;
@@ -2844,6 +3190,28 @@ document.querySelectorAll('.fp-day-btn').forEach(btn => {
       btn.classList.add('active');
       dvRenderGrid(dvCache[dvWeekStart]);
     });
+  });
+
+  document.getElementById('rkPrevWeek').addEventListener('click', () => {
+    if (rkWeekStart <= RK_MIN_WEEK_START) return;
+    rkWeekStart = dvShiftWeek(rkWeekStart, -1);
+    rkRefresh(rkWeekStart);
+  });
+  document.getElementById('rkNextWeek').addEventListener('click', () => {
+    rkWeekStart = dvShiftWeek(rkWeekStart, 1);
+    rkRefresh(rkWeekStart);
+  });
+
+  const rkPicker = document.getElementById('rkWeekPicker');
+  rkPicker.min = RK_MIN_WEEK_START;
+  rkPicker.value = rkWeekStart;
+  rkPicker.addEventListener('change', () => {
+    let picked = rkPicker.value;
+    if (picked < RK_MIN_WEEK_START) picked = RK_MIN_WEEK_START;
+    let monday = dvMondayOf(picked);
+    if (monday < RK_MIN_WEEK_START) monday = RK_MIN_WEEK_START;
+    rkWeekStart = monday;
+    rkRefresh(rkWeekStart);
   });
 })();
 </script>
