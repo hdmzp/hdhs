@@ -1,6 +1,6 @@
 {
   "company": "HD",
-  "collectedAt": "2026-07-03T05:42:11.860508+09:00",
+  "collectedAt": "2026-07-04T05:39:47.277584+09:00",
   "programs": [
     {
       "title": "왕영은의 톡투게더",
@@ -70,7 +70,20 @@
       "desc": "#들리는 쇼핑 방송 #이목집중 쇼핑라디오",
       "thumbnail": "https://image.hmall.com/MH/HM005_SL/20250529/162645/disp3109281161906.jpg",
       "detail_link": "https://www.hmall.com/md/dpa/pgmComm?sectId=3094173",
-      "upcoming_products": []
+      "upcoming_products": [
+        {
+          "name": "[김정문알로에] 큐어 하이드라 수딩 스킨+로션 기초세트 (1세트)",
+          "price": 19800,
+          "image": "https://image.hmall.com/2251596683_0.jpg",
+          "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2251596683"
+        },
+        {
+          "name": "김정문알로에 큐어 2X 크림 1+1+1 (총 3개)",
+          "price": 33900,
+          "image": "https://image.hmall.com/2251599410_0.jpeg",
+          "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2251599410"
+        }
+      ]
     },
     {
       "title": "오감쇼",
@@ -105,20 +118,7 @@
       "desc": "#평범하지만 특별한 #우리들의 패션 이야기",
       "thumbnail": "https://image.hmall.com/MH/HM005_SL/20260313/094245/disp3131034093700.jpg",
       "detail_link": "https://www.hmall.com/md/dpa/pgmComm?sectId=3131034",
-      "upcoming_products": [
-        {
-          "name": "[JAPAN FABRIC][살안타템] 머티리얼랩 26SS 다이이치 Cubetex® 웨더 롱 자켓",
-          "price": 189000,
-          "image": "https://image.hmall.com/2248763709_0.jpg",
-          "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2248763709"
-        },
-        {
-          "name": "[3종] 머티리얼랩 26SS 스터드 슬리브리스",
-          "price": 79000,
-          "image": "https://image.hmall.com/2246270261_0.jpg",
-          "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2246270261"
-        }
-      ]
+      "upcoming_products": []
     }
   ]
 }
