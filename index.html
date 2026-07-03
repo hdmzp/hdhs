@@ -353,6 +353,7 @@
   /* ============ 탭 전환 ============ */
   .main-tabs {
     display: flex;
+    flex-wrap: wrap;
     gap: 2px;
     margin-left: 4px;
   }
@@ -367,6 +368,7 @@
     padding: 7px 12px 6px;
     color: var(--ink-soft);
     cursor: pointer;
+    white-space: nowrap;
     transition: background 0.15s, color 0.15s;
   }
   .main-tabs button.active {
@@ -376,6 +378,13 @@
   }
   .main-tabs button:hover { color: var(--ink); background: var(--paper-dim); }
   .main-tabs button.active:hover { color: var(--brand-blue); background: var(--brand-blue-soft); }
+
+  @media (max-width: 700px) {
+    .main-tabs button { font-size: 11px; padding: 6px 8px 5px; }
+  }
+  @media (max-width: 400px) {
+    .main-tabs button { font-size: 10px; padding: 5px 6px 4px; }
+  }
 
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
@@ -1017,11 +1026,18 @@
 
   .rk-price {
     flex-shrink: 0;
+    width: 86px;
     text-align: right;
-    font-size: 13px;
     font-weight: 800;
     color: var(--ink);
+    overflow: hidden;
+  }
+  .rk-price .rk-sale {
+    display: block;
+    font-size: 13px;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .rk-price .rk-orig {
     display: block;
@@ -1029,6 +1045,9 @@
     font-weight: 500;
     color: var(--ink-faint);
     text-decoration: line-through;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .rk-empty-row {
@@ -1041,7 +1060,9 @@
   @media (max-width: 700px) {
     .rk-thumb { width: 42px; height: 42px; }
     .rk-name { font-size: 11.5px; }
-    .rk-price { font-size: 12px; }
+    .rk-price { width: 70px; }
+    .rk-price .rk-sale { font-size: 11.5px; }
+    .rk-price .rk-orig { font-size: 9px; }
   }
 
   /* ============ 홈쇼핑 탭 ============ */
@@ -2341,7 +2362,7 @@ const RK_CATEGORIES = [
 ];
 
 let rkCategory = "전체";
-let rkSubCategory = null;  // null = 세부카테고리 전체(필터 없음)
+let rkSubCategories = new Set();  // 빈 Set = 세부카테고리 전체(필터 없음), 여러 개 동시 선택 가능
 let rkCache = null;
 
 // 채널(회사)별 색상 - 같은 회사 계열(본채널/+ 채널/MY샵 등)은 같은 색을 쓴다.
@@ -2415,7 +2436,7 @@ function rkRenderCatChips() {
       const btn = e.target.closest('.rk-cat-chip');
       if (!btn) return;
       rkCategory = btn.dataset.cat;
-      rkSubCategory = null;
+      rkSubCategories = new Set();
       rkRenderCatChips();
       rkRenderSubCatChips();
       rkRenderList(rkCache);
@@ -2447,9 +2468,9 @@ function rkRenderSubCatChips() {
   }
   el.style.display = 'flex';
 
-  let html = `<button type="button" class="rk-subcat-chip${rkSubCategory === null ? ' active' : ''}" data-sub="">전체</button>`;
+  let html = `<button type="button" class="rk-subcat-chip${rkSubCategories.size === 0 ? ' active' : ''}" data-sub="">전체</button>`;
   for (const sub of subs) {
-    const active = (sub === rkSubCategory) ? ' active' : '';
+    const active = rkSubCategories.has(sub) ? ' active' : '';
     html += `<button type="button" class="rk-subcat-chip${active}" data-sub="${escapeHtml(sub)}">${escapeHtml(sub)}</button>`;
   }
   el.innerHTML = html;
@@ -2458,7 +2479,15 @@ function rkRenderSubCatChips() {
     el.addEventListener('click', (e) => {
       const btn = e.target.closest('.rk-subcat-chip');
       if (!btn) return;
-      rkSubCategory = btn.dataset.sub || null;
+      const sub = btn.dataset.sub;
+      if (!sub) {
+        // "전체" 클릭 -> 선택 전부 해제
+        rkSubCategories = new Set();
+      } else if (rkSubCategories.has(sub)) {
+        rkSubCategories.delete(sub);
+      } else {
+        rkSubCategories.add(sub);
+      }
       rkRenderSubCatChips();
       rkRenderList(rkCache);
     });
@@ -2481,8 +2510,8 @@ function rkRenderRankChange(rc) {
 function rkRenderList(data) {
   const wrap = document.getElementById('rkListWrap');
   let items = (data && data.categories && data.categories[rkCategory]) ? data.categories[rkCategory] : [];
-  if (rkSubCategory) {
-    items = items.filter(it => (it.product && it.product.category2) === rkSubCategory);
+  if (rkSubCategories.size > 0) {
+    items = items.filter(it => rkSubCategories.has(it.product && it.product.category2));
   }
 
   if (!items.length) {
@@ -2505,8 +2534,8 @@ function rkRenderList(data) {
       : '';
     const channelColor = rkChannelColor(p.channel || b.channel);
     const priceHtml = (p.sale_price && p.price && p.sale_price < p.price)
-      ? `${rkFormatPrice(p.sale_price)}<span class="rk-orig">${rkFormatPrice(p.price)}</span>`
-      : rkFormatPrice(p.sale_price ?? p.price);
+      ? `<span class="rk-sale">${rkFormatPrice(p.sale_price)}</span><span class="rk-orig">${rkFormatPrice(p.price)}</span>`
+      : `<span class="rk-sale">${rkFormatPrice(p.sale_price ?? p.price)}</span>`;
 
     html += `<${tag} class="${cardClass}" ${linkAttrs}>`;
     html += `<span class="rk-rank">${it.rank ?? ''}${rkRenderRankChange(it.rank_change)}</span>`;
