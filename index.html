@@ -840,6 +840,12 @@
   }
 
   .rk-week-label-wrap .date-text { font-size: 13.5px; }
+  .rk-week-static {
+    font-family: 'Pretendard', -apple-system, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+  }
 
   .rk-cat-chips {
     display: flex;
@@ -1764,15 +1770,7 @@
 <div id="tabRanking" class="tab-panel">
 
 <div class="rk-controls">
-  <div class="date-nav dv-week-nav">
-    <button class="arrow" id="rkPrevWeek" aria-label="이전 주">‹</button>
-    <div class="date-display rk-week-label-wrap" id="rkWeekDisplay">
-      <span class="date-text" id="rkWeekLabel">2026-06-29 (월) ~ 2026-07-05 (일)</span>
-      <i class="cal-icon">📅</i>
-      <input type="date" id="rkWeekPicker">
-    </div>
-    <button class="arrow" id="rkNextWeek" aria-label="다음 주">›</button>
-  </div>
+  <span class="rk-week-static">📊 주간 랭킹</span>
   <div class="rk-cat-chips" id="rkCatChips"></div>
 </div>
 
@@ -2295,26 +2293,27 @@ async function dvRefresh(weekStart) {
 }
 
 // ============ 홈쇼핑랭킹 탭 ============
-// 주간 탐색(이전/다음 주, 날짜 피커)은 드라마·예능 탭과 동일한 방식을 그대로
-// 재사용한다 (dvMondayOf / dvShiftWeek / dvWeekEnd / dvFormatWeekLabel).
-const RK_MIN_WEEK_START = "2026-06-29"; // 첫 수집 주 - 실제 첫 데이터 파일 날짜에 맞게 조정
+// 예전에는 주(월요일) 단위 스냅샷 파일(data/ranking/{weekStart}.json)을
+// 누적 보관하며 주차를 넘겨보는 방식이었으나, 파일이 계속 쌓이는 걸
+// 막기 위해 스크래퍼가 매번 같은 파일(data/ranking/latest.json)에
+// 덮어쓰는 방식으로 바꿨다. 그래서 프론트도 주차 탐색 없이 "현재
+// 랭킹"만 보여준다.
 const RK_CATEGORIES = [
   "전체", "의류", "식품", "잡화", "뷰티", "스포츠/레저", "생필품/주방",
   "가구/인테리어", "가전", "건강", "서비스/금융", "반려동물", "출산/육아",
   "자동차/공구", "취미", "문화/컨텐츠", "디지털", "컴퓨터",
 ];
 
-let rkWeekStart = "2026-06-29";
 let rkCategory = "전체";
-let rkCache = {};
+let rkCache = null;
 
-async function rkLoadWeek(weekStart) {
-  if (rkCache[weekStart]) return rkCache[weekStart];
+async function rkLoadLatest() {
+  if (rkCache) return rkCache;
   try {
-    const resp = await fetch(`./data/ranking/${weekStart}.json?t=${Date.now()}`);
+    const resp = await fetch(`./data/ranking/latest.json?t=${Date.now()}`);
     if (!resp.ok) throw new Error("not found");
     const data = await resp.json();
-    rkCache[weekStart] = data;
+    rkCache = data;
     return data;
   } catch (e) {
     return null;
@@ -2344,7 +2343,7 @@ function rkRenderCatChips() {
       if (!btn) return;
       rkCategory = btn.dataset.cat;
       rkRenderCatChips();
-      rkRenderList(rkCache[rkWeekStart]);
+      rkRenderList(rkCache);
     });
     el.dataset.bound = '1';
   }
@@ -2367,7 +2366,7 @@ function rkRenderList(data) {
   const items = (data && data.categories && data.categories[rkCategory]) ? data.categories[rkCategory] : [];
 
   if (!items.length) {
-    wrap.innerHTML = '<div class="rk-empty-row">이 주차/카테고리의 수집 데이터가 없습니다</div>';
+    wrap.innerHTML = '<div class="rk-empty-row">이 카테고리의 수집 데이터가 없습니다</div>';
     return;
   }
 
@@ -2402,13 +2401,9 @@ function rkRenderList(data) {
   wrap.innerHTML = html;
 }
 
-async function rkRefresh(weekStart) {
-  document.getElementById('rkWeekLabel').textContent = dvFormatWeekLabel(weekStart);
-  const rkPickerEl = document.getElementById('rkWeekPicker');
-  if (rkPickerEl) rkPickerEl.value = weekStart;
-  document.getElementById('rkPrevWeek').disabled = (weekStart <= RK_MIN_WEEK_START);
+async function rkRefresh() {
   rkRenderCatChips();
-  const data = await rkLoadWeek(weekStart);
+  const data = await rkLoadLatest();
   rkRenderUpdated(data);
   rkRenderList(data);
 }
@@ -2814,7 +2809,7 @@ function switchTab(tab) {
   }
   if (tab === 'ranking' && !_rankingTabLoaded) {
     _rankingTabLoaded = true;
-    rkRefresh(rkWeekStart);
+    rkRefresh();
   }
 }
 
@@ -3025,8 +3020,6 @@ document.querySelectorAll('.fp-day-btn').forEach(btn => {
   currentMonth = now.getMonth() + 1;
   hsCurrentDate = toLocalDateStr(now);
   dvWeekStart = dvMondayOf(toLocalDateStr(now));
-  rkWeekStart = dvMondayOf(toLocalDateStr(now));
-  if (rkWeekStart < RK_MIN_WEEK_START) rkWeekStart = RK_MIN_WEEK_START;
 
   const picker = document.getElementById('datePicker');
   picker.value = toLocalDateStr(now);
@@ -3196,29 +3189,8 @@ document.querySelectorAll('.fp-day-btn').forEach(btn => {
     });
   });
 
-  document.getElementById('rkPrevWeek').addEventListener('click', () => {
-    if (rkWeekStart <= RK_MIN_WEEK_START) return;
-    rkWeekStart = dvShiftWeek(rkWeekStart, -1);
-    rkRefresh(rkWeekStart);
-  });
-  document.getElementById('rkNextWeek').addEventListener('click', () => {
-    rkWeekStart = dvShiftWeek(rkWeekStart, 1);
-    rkRefresh(rkWeekStart);
-  });
-
-  const rkPicker = document.getElementById('rkWeekPicker');
-  rkPicker.min = RK_MIN_WEEK_START;
-  rkPicker.value = rkWeekStart;
-  rkPicker.addEventListener('change', () => {
-    let picked = rkPicker.value;
-    if (picked < RK_MIN_WEEK_START) picked = RK_MIN_WEEK_START;
-    let monday = dvMondayOf(picked);
-    if (monday < RK_MIN_WEEK_START) monday = RK_MIN_WEEK_START;
-    rkWeekStart = monday;
-    rkRefresh(rkWeekStart);
-  });
 })();
 </script>
    
 </body>
-</html>  
+</html>
