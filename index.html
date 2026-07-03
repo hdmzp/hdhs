@@ -872,6 +872,32 @@
   }
   .rk-cat-chip:hover:not(.active) { background: var(--now-bg); color: var(--ink); }
 
+  .rk-subcat-chips {
+    display: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 2px;
+  }
+  .rk-subcat-chip {
+    font-family: 'Pretendard', -apple-system, sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    background: none;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 2px 8px;
+    color: var(--ink-faint);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .rk-subcat-chip.active {
+    background: var(--comprehensive-soft);
+    border-color: var(--comprehensive);
+    color: var(--comprehensive);
+  }
+  .rk-subcat-chip:hover:not(.active) { background: var(--now-bg); color: var(--ink-soft); }
+
   .rk-updated {
     text-align: center;
     font-size: 11px;
@@ -949,14 +975,25 @@
     color: #fff;
     white-space: nowrap;
   }
-  .rk-badge.rk-tier-fire { background: #DC2626; }
-  .rk-badge.rk-tier-hot { background: #EA580C; }
-  .rk-badge.rk-tier-popular { background: #6B7280; }
+  /* 인기 1~3위: 기존 그대로 빨강 */
+  .rk-badge.rk-badge-rank { background: #DC2626; }
+  /* 지금 핫해요 -> "HOT" 텍스트 + 주황, 더 눈에 띄게 살짝 키움 */
+  .rk-badge.rk-badge-hot {
+    background: linear-gradient(135deg, #FF8A00, #FF5C00);
+    font-size: 10.5px;
+    font-weight: 800;
+    padding: 2px 8px;
+    letter-spacing: 0.3px;
+    box-shadow: 0 0 0 1px rgba(255, 92, 0, 0.25), 0 1px 3px rgba(255, 92, 0, 0.4);
+  }
+  /* 인기 급상승 -> 노랑(어두운 텍스트로 대비 확보) */
+  .rk-badge.rk-badge-rising { background: #FACC15; color: #78350F; }
+  /* 많이 찾아요: 기존 그대로 회색 */
+  .rk-badge.rk-badge-popular { background: #6B7280; }
 
   .rk-channel {
     font-size: 10.5px;
     font-weight: 700;
-    color: #1B5E5A;
   }
   .rk-time {
     font-size: 10px;
@@ -1770,6 +1807,7 @@
 <div class="rk-controls">
   <span class="rk-week-static">📊 주간 랭킹</span>
   <div class="rk-cat-chips" id="rkCatChips"></div>
+  <div class="rk-subcat-chips" id="rkSubCatChips"></div>
 </div>
 
 <div class="rk-updated" id="rkUpdated"></div>
@@ -2303,7 +2341,44 @@ const RK_CATEGORIES = [
 ];
 
 let rkCategory = "전체";
+let rkSubCategory = null;  // null = 세부카테고리 전체(필터 없음)
 let rkCache = null;
+
+// 채널(회사)별 색상 - 같은 회사 계열(본채널/+ 채널/MY샵 등)은 같은 색을 쓴다.
+// HD/GS/CJ/LT 4사는 고정PGM 탭 등 다른 곳에서 이미 쓰는 브랜드 컬러(--hd/--gs/--cj/--lt)를 그대로 재사용.
+const RK_CHANNEL_COLORS = {
+  hmall: "#003C82", hmallplus: "#003C82",
+  gsshop: "#1AA663", gsmyshop: "#1AA663",
+  cjmall: "#4B286D", cjmallplus: "#4B286D",
+  lotteimall: "#DA291C", lotteonetv: "#DA291C",
+  nsmall: "#F2711C", nsmallplus: "#F2711C",
+  hnsmall: "#0E9488",
+  kshop: "#DB2777", kshopplus: "#DB2777",
+  ssgshop: "#B8860B",
+  bshop: "#FF6B00",
+  shopnt: "#64748B",
+  immall: "#0F9D58",
+  wshop: "#7C3AED",
+};
+const RK_CHANNEL_DEFAULT_COLOR = "#1B5E5A";
+
+function rkChannelColor(channelCode) {
+  return RK_CHANNEL_COLORS[channelCode] || RK_CHANNEL_DEFAULT_COLOR;
+}
+
+// 배지 텍스트별로 다르게 스타일링한다(같은 tier="fire"라도 "인기 1위"와
+// "지금 핫해요"는 다르게 보여줘야 해서 tier가 아니라 배지 문구 기준으로 분기).
+function rkBadgeClass(badge) {
+  if (!badge) return '';
+  if (/^인기\s*\d+위$/.test(badge)) return 'rk-badge-rank';
+  if (badge === '지금 핫해요') return 'rk-badge-hot';
+  if (badge === '인기 급상승') return 'rk-badge-rising';
+  if (badge === '많이 찾아요') return 'rk-badge-popular';
+  return 'rk-badge-rank';
+}
+function rkBadgeLabel(badge) {
+  return (badge === '지금 핫해요') ? 'HOT' : badge;
+}
 
 async function rkLoadLatest() {
   if (rkCache) return rkCache;
@@ -2340,7 +2415,51 @@ function rkRenderCatChips() {
       const btn = e.target.closest('.rk-cat-chip');
       if (!btn) return;
       rkCategory = btn.dataset.cat;
+      rkSubCategory = null;
       rkRenderCatChips();
+      rkRenderSubCatChips();
+      rkRenderList(rkCache);
+    });
+    el.dataset.bound = '1';
+  }
+}
+
+function rkComputeSubCategories() {
+  if (!rkCache || rkCategory === '전체') return [];
+  const items = (rkCache.categories && rkCache.categories[rkCategory]) || [];
+  const counts = {};
+  for (const it of items) {
+    const c2 = (it.product && it.product.category2) || '';
+    if (!c2) continue;
+    counts[c2] = (counts[c2] || 0) + 1;
+  }
+  return Object.keys(counts).sort((a, b) => counts[b] - counts[a]);
+}
+
+function rkRenderSubCatChips() {
+  const el = document.getElementById('rkSubCatChips');
+  const subs = rkComputeSubCategories();
+
+  if (!subs.length) {
+    el.innerHTML = '';
+    el.style.display = 'none';
+    return;
+  }
+  el.style.display = 'flex';
+
+  let html = `<button type="button" class="rk-subcat-chip${rkSubCategory === null ? ' active' : ''}" data-sub="">전체</button>`;
+  for (const sub of subs) {
+    const active = (sub === rkSubCategory) ? ' active' : '';
+    html += `<button type="button" class="rk-subcat-chip${active}" data-sub="${escapeHtml(sub)}">${escapeHtml(sub)}</button>`;
+  }
+  el.innerHTML = html;
+
+  if (!el.dataset.bound) {
+    el.addEventListener('click', (e) => {
+      const btn = e.target.closest('.rk-subcat-chip');
+      if (!btn) return;
+      rkSubCategory = btn.dataset.sub || null;
+      rkRenderSubCatChips();
       rkRenderList(rkCache);
     });
     el.dataset.bound = '1';
@@ -2361,7 +2480,10 @@ function rkRenderRankChange(rc) {
 
 function rkRenderList(data) {
   const wrap = document.getElementById('rkListWrap');
-  const items = (data && data.categories && data.categories[rkCategory]) ? data.categories[rkCategory] : [];
+  let items = (data && data.categories && data.categories[rkCategory]) ? data.categories[rkCategory] : [];
+  if (rkSubCategory) {
+    items = items.filter(it => (it.product && it.product.category2) === rkSubCategory);
+  }
 
   if (!items.length) {
     wrap.innerHTML = '<div class="rk-empty-row">이 카테고리의 수집 데이터가 없습니다</div>';
@@ -2379,8 +2501,9 @@ function rkRenderList(data) {
     const cardClass = `rk-card${tierClass}${hasLink ? '' : ' rk-nolink'}`;
 
     const badgeHtml = it.badge
-      ? `<span class="rk-badge rk-tier-${escapeHtml(it.tier || '')}">${escapeHtml(it.badge)}</span>`
+      ? `<span class="rk-badge ${rkBadgeClass(it.badge)}">${escapeHtml(rkBadgeLabel(it.badge))}</span>`
       : '';
+    const channelColor = rkChannelColor(p.channel || b.channel);
     const priceHtml = (p.sale_price && p.price && p.sale_price < p.price)
       ? `${rkFormatPrice(p.sale_price)}<span class="rk-orig">${rkFormatPrice(p.price)}</span>`
       : rkFormatPrice(p.sale_price ?? p.price);
@@ -2389,7 +2512,7 @@ function rkRenderList(data) {
     html += `<span class="rk-rank">${it.rank ?? ''}${rkRenderRankChange(it.rank_change)}</span>`;
     html += `<img class="rk-thumb" src="${escapeHtml(p.image || '')}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">`;
     html += `<span class="rk-info">`;
-    html += `<span class="rk-badge-row">${badgeHtml}<span class="rk-channel">${escapeHtml(b.channel_name || '')}</span></span>`;
+    html += `<span class="rk-badge-row">${badgeHtml}<span class="rk-channel" style="color:${channelColor}">${escapeHtml(b.channel_name || '')}</span></span>`;
     html += `<span class="rk-name">${p.brand ? `<span class="rk-brand">[${escapeHtml(p.brand)}]</span>` : ''}${escapeHtml(p.name || '')}</span>`;
     html += `</span>`;
     html += `<span class="rk-price">${priceHtml}</span>`;
@@ -2403,6 +2526,7 @@ async function rkRefresh() {
   rkRenderCatChips();
   const data = await rkLoadLatest();
   rkRenderUpdated(data);
+  rkRenderSubCatChips();
   rkRenderList(data);
 }
 
