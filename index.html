@@ -1396,18 +1396,16 @@
     table-layout: fixed;
   }
 
-  /* 헤더(thead)와 본문(tbody)을 하나의 <table> 안에 두고, thead th에
-     직접 position:sticky를 건다 (홈쇼핑 탭 table.hs-table과 동일한 방식).
-     예전에 헤더/본문을 별도 <table> + sticky wrapper(.fp-sticky-head)로
-     분리했던 적이 있는데, 그 wrapper가 가로 스크롤 컨테이너
-     (.fp-hscroll, overflow-x:auto) 안에 있다 보니 sticky 기준점이
-     페이지가 아니라 그 컨테이너로 잡혀 헤더가 본문 위에 겹쳐 보이는
-     버그가 있었다. thead th에 직접 sticky를 걸면 같은 스크롤 컨테이너
-     안에서도 표준적으로 잘 동작해 이 문제를 피한다. */
+  /* 이 헤더는 더 이상 sticky가 아니다(=페이지 스크롤을 따라 같이
+     흘러간다). 예전엔 thead th에 position:sticky를 걸어서 스크롤해도
+     회사명 헤더가 화면 위에 계속 떠 있게 했는데, 이 탭의 각 시간대
+     행에는 세로로 큰 카드(이미지+텍스트)가 들어가다 보니, 스크롤
+     중 카드 한가운데 높이에 sticky 헤더의 불투명한 배경이 걸치면서
+     카드가 위아래로 잘려 보이는 현상이 계속 발생했다. 이건 CSS 버그가
+     아니라 "행이 헤더보다 큰 경우" sticky 헤더의 근본적인 특성이라
+     top 값을 아무리 조정해도 해결되지 않는다. 그래서 아예 sticky를
+     빼서(=고정 안 함) 이 문제 자체를 없앤다. */
   table.fp-table thead th {
-    position: sticky;
-    top: 110px;
-    z-index: 4;
     background: var(--paper);
     padding: 10px 4px 12px;
     border-bottom: 1px solid var(--rule);
@@ -1586,7 +1584,7 @@
     .fp-day-tabs { width: 100%; justify-content: space-between; }
     .fp-day-btn { padding: 7px 8px; font-size: 12px; flex: 1; }
     .fp-scroll { padding: 0 8px 40px; }
-    table.fp-table thead th { top: 95px; }
+    /* table.fp-table thead th는 더 이상 sticky가 아니라 top 값 불필요 */
     table.fp-table thead th.fp-time-col { width: 40px; font-size: 9.5px; white-space: nowrap; }
     td.fp-time-cell { width: 40px; }
     table.fp-table thead th .hs-co-tag { font-size: 11px; padding: 3px 8px; }
