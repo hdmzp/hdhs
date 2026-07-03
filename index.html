@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>홈쇼핑-시청환경조회</title></title>
+<title>홈쇼핑-시청환경조회</title>
 <style>
   :root {
     --paper: #FFFFFF;
@@ -1010,7 +1010,6 @@
   }
 
   .rk-name {
-    display: block;
     font-size: 12.5px;
     font-weight: 600;
     line-height: 1.35;
@@ -1059,13 +1058,11 @@
   }
 
   @media (max-width: 700px) {
-    .rk-card { gap: 6px; padding: 9px 6px; }
-    .rk-rank { width: 18px; font-size: 13.5px; }
-    .rk-thumb { width: 40px; height: 40px; }
+    .rk-thumb { width: 42px; height: 42px; }
     .rk-name { font-size: 11.5px; }
-    .rk-price { width: 64px; }
+    .rk-price { width: 70px; }
     .rk-price .rk-sale { font-size: 11.5px; }
-    .rk-price .rk-orig { font-size: 8.5px; }
+    .rk-price .rk-orig { font-size: 9px; }
   }
 
   /* ============ 홈쇼핑 탭 ============ */
@@ -1102,7 +1099,7 @@
     grid-column: 2;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-width: center;
     gap: 20px;
     flex-wrap: wrap;
   }
@@ -1297,8 +1294,6 @@
   }
   .hs-prog:hover .hs-goto { color: var(--now-accent); }
 
-  /* 카테고리별 좌측 컬러 바는 JS에서 인라인 style로 적용 (border-left-color) */
-
   td.hs-empty-cell { background: var(--paper-dim); opacity: 0.4; }
 
   .hs-hitbest {
@@ -1362,7 +1357,6 @@
     border-color: var(--brand-blue);
   }
 
-  /* 카테고리 필터링된 리스트뷰: 카드 사이 간격 없이 빈틈없이 쌓기 */
   .hs-cell-list { gap: 0; }
   .hs-cell-list .hs-prog { border-bottom: 1px solid var(--rule); }
   table.hs-table-list td { vertical-align: top; }
@@ -1438,11 +1432,6 @@
     padding: 0 24px 60px;
   }
 
-  /* 모바일 등 좁은 화면에서 컬럼이 찌그러지지 않도록, 표는 최소 너비를
-     유지하고 대신 이 래퍼가 가로 스크롤을 담당한다 (지상파·종편 탭과
-     동일한 방식). overflow-y는 명시적으로 visible로 둬서 세로 방향은
-     그대로 페이지 스크롤을 따르게 하고(= 헤더 sticky가 계속 페이지
-     기준으로 동작), 가로만 이 컨테이너 안에서 스크롤되게 한다. */
   .fp-hscroll {
     overflow-x: auto;
     overflow-y: visible;
@@ -1457,15 +1446,6 @@
     table-layout: fixed;
   }
 
-  /* 이 헤더는 더 이상 sticky가 아니다(=페이지 스크롤을 따라 같이
-     흘러간다). 예전엔 thead th에 position:sticky를 걸어서 스크롤해도
-     회사명 헤더가 화면 위에 계속 떠 있게 했는데, 이 탭의 각 시간대
-     행에는 세로로 큰 카드(이미지+텍스트)가 들어가다 보니, 스크롤
-     중 카드 한가운데 높이에 sticky 헤더의 불투명한 배경이 걸치면서
-     카드가 위아래로 잘려 보이는 현상이 계속 발생했다. 이건 CSS 버그가
-     아니라 "행이 헤더보다 큰 경우" sticky 헤더의 근본적인 특성이라
-     top 값을 아무리 조정해도 해결되지 않는다. 그래서 아예 sticky를
-     빼서(=고정 안 함) 이 문제 자체를 없앤다. */
   table.fp-table thead th {
     background: var(--paper);
     padding: 10px 4px 12px;
@@ -1542,9 +1522,6 @@
     object-position: center;
     display: block;
   }
-  /* HD/GS는 인물 세로컷 썸네일이 많아 가로로 눌린 비율로 크롭하면
-     얼굴이 잘리기 쉬우므로, 크롭 기준점을 위쪽(얼굴이 보통 위치하는
-     지점)으로 둔다. */
   .fp-card .fp-thumb-wrap.hd img,
   .fp-card .fp-thumb-wrap.gs img {
     object-position: top;
@@ -1586,8 +1563,6 @@
     padding: 60px 0;
   }
 
-  /* "전체" 보기: 시간대(행) x 요일(열) 그리드. 요일 칸 안에는 그 시간대
-     모든 회사 카드가 가로로 나란히 들어간다 (썸네일 생략, 텍스트만). */
   table.fp-table-allday thead th {
     font-size: 13px;
   }
@@ -1607,7 +1582,6 @@
     min-width: 120px;
   }
 
-  /* 회사축 그리드에서도 재사용하는 compact 카드 + 더 낮은 행 */
   table.fp-table-compact td {
     padding: 5px;
   }
@@ -1645,7 +1619,6 @@
     .fp-day-tabs { width: 100%; justify-content: space-between; }
     .fp-day-btn { padding: 7px 8px; font-size: 12px; flex: 1; }
     .fp-scroll { padding: 0 8px 40px; }
-    /* table.fp-table thead th는 더 이상 sticky가 아니라 top 값 불필요 */
     table.fp-table thead th.fp-time-col { width: 40px; font-size: 9.5px; white-space: nowrap; }
     td.fp-time-cell { width: 40px; }
     table.fp-table thead th .hs-co-tag { font-size: 11px; padding: 3px 8px; }
@@ -1653,6 +1626,192 @@
     .fp-card-compact .fp-title { -webkit-line-clamp: 2; }
     .fp-cell-row { flex-direction: column; }
     .fp-cell-row .fp-card-compact { flex: none; min-width: 0; }
+  }
+
+  /* ============ 셀럽PGM 탭 전용 스타일 추가 ============ */
+  #tabCelebrity {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px 60px;
+  }
+
+  .cel-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 0;
+    background: var(--paper);
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 20px;
+  }
+
+  .cel-slicer {
+    display: flex;
+    gap: 6px;
+    background: var(--paper-dim);
+    border: 1px solid var(--rule);
+    border-radius: 9px;
+    padding: 4px;
+    box-shadow: var(--shadow-sm);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .cel-slicer button {
+    font-family: 'Pretendard', -apple-system, sans-serif;
+    font-size: 12.5px;
+    font-weight: 600;
+    background: none;
+    border: none;
+    border-radius: 6px;
+    padding: 7px 14px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .cel-slicer button.active {
+    background: var(--brand-blue);
+    color: #fff;
+  }
+
+  .cel-slicer button:hover:not(.active) {
+    background: #fff;
+    color: var(--ink);
+  }
+
+  .cel-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  .cel-card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: var(--ink);
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.15s, box-shadow 0.15s;
+    position: relative;
+  }
+
+  .cel-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .cel-thumb-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: var(--paper-dim2);
+    overflow: hidden;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .cel-thumb-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .cel-co-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 10.5px;
+    font-weight: 800;
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  .cel-co-badge.gs { background: #1AA663; }
+  .cel-co-badge.cj { background: #4B286D; }
+  .cel-co-badge.hd { background: #003C82; }
+  .cel-co-badge.lt { background: #DA291C; }
+
+  .cel-pgm-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 10px;
+    font-weight: 600;
+    background: rgba(26, 29, 36, 0.75);
+    color: #fff;
+    padding: 3px 9px;
+    border-radius: 6px;
+    backdrop-filter: blur(2px);
+  }
+
+  .cel-body {
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .cel-date-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--brand-blue);
+    margin-bottom: 6px;
+    background: var(--brand-blue-soft);
+    padding: 2px 6px;
+    border-radius: 4px;
+    align-self: flex-start;
+  }
+
+  .cel-title {
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 36px;
+  }
+
+  .cel-brand {
+    color: #1B5E5A;
+    font-weight: 800;
+    margin-right: 4px;
+  }
+
+  .cel-price-row {
+    margin-top: auto;
+    font-size: 15px;
+    font-weight: 800;
+    text-align: right;
+    color: var(--ink);
+  }
+
+  .cel-empty {
+    text-align: center;
+    color: var(--ink-faint);
+    font-size: 14px;
+    padding: 80px 0;
+    grid-column: 1 / -1;
+  }
+
+  @media (max-width: 720px) {
+    #tabCelebrity { padding: 0 12px 40px; }
+    .cel-controls { padding: 10px 0; }
+    .cel-slicer button { font-size: 11.5px; padding: 6px 10px; }
+    .cel-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+    .cel-title { font-size: 11.5px; height: 32px; -webkit-line-clamp: 2; }
+    .cel-price-row { font-size: 13px; }
   }
 </style>
 </head>
@@ -1663,6 +1822,7 @@
   <div class="main-tabs">
     <button id="tabBtnHomeshop" class="active">홈쇼핑</button>
     <button id="tabBtnFixedPgm">고정PGM</button>
+    <button id="tabBtnCelebrity">셀럽PGM</button>
     <button id="tabBtnSchedule">지상파·종편</button>
     <button id="tabBtnDramaVariety">드라마·예능</button>
     <button id="tabBtnWeather">날씨</button>
@@ -1824,6 +1984,22 @@
 
 <div class="fp-scroll" id="fpGridWrap"></div>
 
+</div>
+
+<div id="tabCelebrity" class="tab-panel">
+  <div class="cel-controls">
+    <div class="cel-slicer" id="celProgramSlicer">
+      <button class="active" data-file="all">전체</button>
+      <button data-file="GS_BJY.json">지금 백지연</button>
+      <button data-file="CJ_KJE.json">강주은 굿라이프</button>
+      <button data-file="CJ_CHJ.json">최화정쇼</button>
+      <button data-file="CJ_KCO.json">더 김창옥 라이브</button>
+      <button data-file="HD_HJM.json">황정민쇼</button>
+      <button data-file="HD_OGS.json">오감쇼</button>
+      <button data-file="LT_CYR.json">최유라쇼</button>
+    </div>
+  </div>
+  <div class="cel-grid" id="celGridWrap"></div>
 </div>
 
 <div id="tabRanking" class="tab-panel">
@@ -2124,8 +2300,10 @@ function renderDayCell(year, month, day, monthData, today) {
   if (!data) {
     statsHtml = '<div class="no-data-cell">정보없음</div>';
   } else {
-    const minStr = (data.minTa === null || data.minTa === undefined) ? '–' : `${data.minTa.toFixed(0)}°`;
-    const maxStr = (data.maxTa === null || data.maxTa === undefined) ? '–' : `${data.maxTa.toFixed(0)}°`;
+    const minTa = data.minTa;
+    const maxTa = data.maxTa;
+    const minStr = (minTa === null || minTa === undefined) ? '–' : `${minTa.toFixed(0)}°`;
+    const maxStr = (maxTa === null || maxTa === undefined) ? '–' : `${maxTa.toFixed(0)}°`;
 
     let rainStr, hasRain;
     if (data.kind === 'forecast') {
@@ -2205,6 +2383,7 @@ let _homeshopTabLoaded = false;
 let _dramaVarietyTabLoaded = false;
 let _fixedPgmTabLoaded = false;
 let _rankingTabLoaded = false;
+let _celebrityTabLoaded = false; // 셀럽PGM 탭 전용 캐시
 
 let dvWeekStart = "2026-06-22";
 let dvFilter = "all";
@@ -2353,11 +2532,6 @@ async function dvRefresh(weekStart) {
 }
 
 // ============ 홈쇼핑랭킹 탭 ============
-// 예전에는 주(월요일) 단위 스냅샷 파일(data/ranking/{weekStart}.json)을
-// 누적 보관하며 주차를 넘겨보는 방식이었으나, 파일이 계속 쌓이는 걸
-// 막기 위해 스크래퍼가 매번 같은 파일(data/ranking/latest.json)에
-// 덮어쓰는 방식으로 바꿨다. 그래서 프론트도 주차 탐색 없이 "현재
-// 랭킹"만 보여준다.
 const RK_CATEGORIES = [
   "전체", "의류", "식품", "잡화", "뷰티", "스포츠/레저", "생필품/주방",
   "가구/인테리어", "가전", "건강", "서비스/금융", "반려동물", "출산/육아",
@@ -2365,11 +2539,9 @@ const RK_CATEGORIES = [
 ];
 
 let rkCategory = "전체";
-let rkSubCategories = new Set();  // 빈 Set = 세부카테고리 전체(필터 없음), 여러 개 동시 선택 가능
+let rkSubCategories = new Set();
 let rkCache = null;
 
-// 채널(회사)별 색상 - 같은 회사 계열(본채널/+ 채널/MY샵 등)은 같은 색을 쓴다.
-// HD/GS/CJ/LT 4사는 고정PGM 탭 등 다른 곳에서 이미 쓰는 브랜드 컬러(--hd/--gs/--cj/--lt)를 그대로 재사용.
 const RK_CHANNEL_COLORS = {
   hmall: "#003C82", hmallplus: "#003C82",
   gsshop: "#1AA663", gsmyshop: "#1AA663",
@@ -2390,8 +2562,6 @@ function rkChannelColor(channelCode) {
   return RK_CHANNEL_COLORS[channelCode] || RK_CHANNEL_DEFAULT_COLOR;
 }
 
-// 배지 텍스트별로 다르게 스타일링한다(같은 tier="fire"라도 "인기 1위"와
-// "지금 핫해요"는 다르게 보여줘야 해서 tier가 아니라 배지 문구 기준으로 분기).
 function rkBadgeClass(badge) {
   if (!badge) return '';
   if (/^인기\s*\d+위$/.test(badge)) return 'rk-badge-rank';
@@ -2484,7 +2654,6 @@ function rkRenderSubCatChips() {
       if (!btn) return;
       const sub = btn.dataset.sub;
       if (!sub) {
-        // "전체" 클릭 -> 선택 전부 해제
         rkSubCategories = new Set();
       } else if (rkSubCategories.has(sub)) {
         rkSubCategories.delete(sub);
@@ -2564,18 +2733,17 @@ async function rkRefresh() {
 
 let hsCurrentDate = "2026-06-21";
 let hsCurrentBc = "live";
-let hsCategoryFilters = new Set(); // 비어있으면 "전체보기" 상태, 여러 카테고리 동시 선택 가능
-let hsTimeFilter = "all"; // 'all' | 'normal' | 'night'
+let hsCategoryFilters = new Set();
+let hsTimeFilter = "all";
 
 function hsIsNightHour(hour) {
-  // 심야: 방송시작시각 01:00:00 이후 ~ 05:00:00 이전 → 1,2,3,4시
   return hour >= 1 && hour < 5;
 }
 
 function hsHourMatchesTimeFilter(hour) {
   if (hsTimeFilter === 'all') return true;
   if (hsTimeFilter === 'night') return hsIsNightHour(hour);
-  return !hsIsNightHour(hour); // normal
+  return !hsIsNightHour(hour);
 }
 const HS_COMPANIES_MAIN = [
   { code: 'HD', name: 'HD', cls: 'hd', bc: null },
@@ -2583,10 +2751,6 @@ const HS_COMPANIES_MAIN = [
   { code: 'CJ', name: 'CJ', cls: 'cj', bc: null },
   { code: 'LT', name: 'LT', cls: 'lt', bc: null },
 ];
-// 기타 7개사 (NS는 라이브 본채널/샵플러스 두 서브채널을 각각 별도 열로 표시).
-// bc를 명시한 항목은 hsCurrentBc(라이브/데이터 토글)와 무관하게 항상 그
-// broadcast 값으로 로드한다 - 기타 채널은 라이브/데이터 구분이 없어
-// etc_scraper.py가 항상 "live"로만 저장하기 때문.
 const HS_COMPANIES_ETC = [
   { code: 'PUBLIC',     name: '공영',     cls: 'public',     bc: 'live' },
   { code: 'HNS',        name: '홈앤',     cls: 'hns',         bc: 'live' },
@@ -2786,23 +2950,20 @@ function hsScrollToCurrentHour(wrap, nowMin) {
 }
 
 function hsBuildTimelineWithGaps(programs) {
-  // programs: 같은 날 같은 회사의 방송 목록 (start/end는 'HH:MM' 문자열,
-  // 자정을 넘기는 경우 end <= start 일 수 있음)
   const items = programs
     .filter(p => p.start && p.end)
     .map(p => {
       let s = hsTimeToMin(p.start);
       let e = hsTimeToMin(p.end);
-      if (e <= s) e += 24 * 60; // 자정 넘김 보정
+      if (e <= s) e += 24 * 60;
       return { s, e, p };
     })
     .sort((a, b) => a.s - b.s);
 
   const timeline = [];
-  let cursor = null; // 지금까지 채워진 시각(분), null이면 아직 시작 전
+  let cursor = null;
   for (const item of items) {
     if (cursor !== null && item.s > cursor) {
-      // cursor ~ item.s 사이가 진짜 빈 시간(Hit & Best 구간)
       timeline.push({ isGap: true, s: cursor, e: item.s });
     }
     timeline.push({ isGap: false, s: item.s, e: item.e, p: item.p });
@@ -2820,10 +2981,6 @@ function hsRenderGridView(datasets, nowMin) {
     const programs = (data && data.programs) ? data.programs : [];
     const timeline = hsBuildTimelineWithGaps(programs);
     for (const item of timeline) {
-      // 방송/갭 항목은 "시작 시각이 속한 hour 행"에만 1번 넣는다.
-      // (예: 22:45~23:50 방송을 22시·23시 두 줄 모두에 넣으면 같은
-      //  카드가 중복으로 보인다 - 카드 안에 시작~종료 시각이 이미
-      //  표시되므로, 시작 시각 행에서만 보여주는 것으로 충분하다.)
       const startHour = Math.floor(item.s / 60);
       if (startHour >= 0 && startHour < 24) {
         buckets[startHour][ci].push(item);
@@ -2846,8 +3003,6 @@ function hsRenderGridView(datasets, nowMin) {
     companies.forEach((c, ci) => {
       const items = buckets[h][ci];
       if (items.length === 0) {
-        // 그 시간대에 데이터 자체가 전혀 없는 경우(타임라인이 비어있어 gap도 못 만든 경우,
-        // 예: 그날 편성 정보를 통째로 못 가져온 경우) -> 표시 없는 빈 칸으로 둔다.
         html += `<td class="hs-empty-cell hs-co-cell ${c.cls}"></td>`;
       } else {
         let cell = `<td class="hs-co-cell ${c.cls}"><div class="hs-cell-inner">`;
@@ -2937,8 +3092,8 @@ function renderMonthPickerPanel() {
 }
 
 function switchTab(tab) {
-  const panels = { schedule: 'tabSchedule', weather: 'tabWeather', homeshop: 'tabHomeshop', dramavariety: 'tabDramaVariety', fixedpgm: 'tabFixedPgm', ranking: 'tabRanking' };
-  const btns = { schedule: 'tabBtnSchedule', weather: 'tabBtnWeather', homeshop: 'tabBtnHomeshop', dramavariety: 'tabBtnDramaVariety', fixedpgm: 'tabBtnFixedPgm', ranking: 'tabBtnRanking' };
+  const panels = { schedule: 'tabSchedule', weather: 'tabWeather', homeshop: 'tabHomeshop', dramavariety: 'tabDramaVariety', fixedpgm: 'tabFixedPgm', celebrity: 'tabCelebrity', ranking: 'tabRanking' };
+  const btns = { schedule: 'tabBtnSchedule', weather: 'tabBtnWeather', homeshop: 'tabBtnHomeshop', dramavariety: 'tabBtnDramaVariety', fixedpgm: 'tabBtnFixedPgm', celebrity: 'tabBtnCelebrity', ranking: 'tabBtnRanking' };
 
   for (const key in panels) {
     document.getElementById(panels[key]).classList.toggle('active', key === tab);
@@ -2961,6 +3116,10 @@ function switchTab(tab) {
     _fixedPgmTabLoaded = true;
     fpRefresh();
   }
+  if (tab === 'celebrity' && !_celebrityTabLoaded) {
+    _celebrityTabLoaded = true;
+    celInitLoad();
+  }
   if (tab === 'ranking' && !_rankingTabLoaded) {
     _rankingTabLoaded = true;
     rkRefresh();
@@ -2970,8 +3129,8 @@ function switchTab(tab) {
 // ============ 고정PGM 탭 ============
 const FP_COMPANIES = ["HD", "GS", "CJ", "LT"];
 const FP_DAYS = ["월", "화", "수", "목", "금", "토", "일"];
-let fpCurrentDay = '전체'; // 고정PGM 탭 기본 화면은 '전체' 보기
-let fpData = null; // merged.json 캐시
+let fpCurrentDay = '전체';
+let fpData = null;
 
 async function fpLoadData() {
   if (fpData) return fpData;
@@ -3002,15 +3161,12 @@ function fpEscapeHtml(s) {
 function fpRenderCard(slot, compact) {
   const co = slot.company.toLowerCase();
   const link = slot.detail_link || '#';
-  // 이미지가 없거나 로드에 실패해도 카드 자체(회사 배지, 제목, 편성시각)는
-  // 항상 그대로 보여야 한다. onerror는 img 태그 자신만 숨기고, 부모인
-  // thumb-wrap은 빈 배경(placeholder) 상태로 남아 카드 레이아웃을 유지한다.
   const thumb = (!compact && slot.thumbnail)
     ? `<img src="${fpEscapeHtml(slot.thumbnail)}" alt="${fpEscapeHtml(slot.title)}" loading="lazy" onerror="this.style.display='none'">`
     : '';
 
   const thumbBlock = compact
-    ? '' // 전체 보기에서는 공간이 부족하므로 썸네일 영역 자체를 생략한다.
+    ? ''
     : (
         `<div class="fp-thumb-wrap ${co}">` +
           thumb +
@@ -3035,10 +3191,8 @@ function fpBuildTableHtml(daySlots, compact) {
     return '<div class="fp-empty-note">표시할 고정 프로그램이 없습니다.</div>';
   }
 
-  // 시간대(행) 목록은 그 요일에 실제로 편성이 있는 시각만 동적으로 만든다.
   const times = [...new Set(daySlots.map(s => s.time))].sort();
 
-  // (time, company) -> [slot, ...] (같은 시간/회사에 두 개 이상 겹치는 경우도 배열로 보관)
   const cellMap = {};
   for (const s of daySlots) {
     const key = `${s.time}__${s.company}`;
@@ -3046,8 +3200,6 @@ function fpBuildTableHtml(daySlots, compact) {
     cellMap[key].push(s);
   }
 
-  // 헤더(thead)와 본문(tbody)을 하나의 <table>에 두고, thead th에 직접
-  // position:sticky를 건다 (홈쇼핑 탭과 동일한 검증된 방식).
   const tableCls = `fp-table ${compact ? 'fp-table-compact' : ''}`;
 
   let html = `<table class="${tableCls}"><thead><tr>`;
@@ -3081,10 +3233,8 @@ function fpBuildAllDaysTableHtml(allSlots) {
     return '<div class="fp-empty-note">표시할 고정 프로그램이 없습니다.</div>';
   }
 
-  // 시간대(행) 목록은 7일 전체를 통틀어 실제 편성이 있는 시각만 동적으로 만든다.
   const times = [...new Set(allSlots.map(s => s.time))].sort();
 
-  // (time, day) -> [slot, ...] (같은 시간/요일에 여러 회사가 겹치면 배열로 보관)
   const cellMap = {};
   for (const s of allSlots) {
     const key = `${s.time}__${s.day}`;
@@ -3130,8 +3280,6 @@ function fpRenderGrid(data) {
   }
 
   if (fpCurrentDay === '전체') {
-    // 시간대(행) x 요일(열) 그리드. 각 요일 칸 안에 그 시간대 모든 회사..
-    // 카드를 가로로 나란히 배치한다 (이미지는 생략해 가볍게).
     wrap.innerHTML = fpBuildAllDaysTableHtml(data.slots);
     return;
   }
@@ -3167,6 +3315,79 @@ document.querySelectorAll('.fp-day-btn').forEach(btn => {
     fpRenderGrid(fpData);
   });
 });
+
+// ============ 셀럽PGM 탭 연동 로직 ============
+const CEL_FILES = [
+  "GS_BJY.json", "CJ_KJE.json", "CJ_CHJ.json", "CJ_KCO.json", 
+  "HD_HJM.json", "HD_OGS.json", "LT_CYR.json"
+];
+let celRawDataFull = [];
+
+async function celInitLoad() {
+  const wrap = document.getElementById('celGridWrap');
+  wrap.innerHTML = '<div class="cel-empty">데이터를 동기화 중입니다...</div>';
+  
+  celRawDataFull = [];
+  
+  const fetchPromises = CEL_FILES.map(async (file) => {
+    const data = await fetchJsonSafe(`./homeshopping/representative_programs/${file}`);
+    if (data && data.products) {
+      data.products.forEach(p => {
+        p._programTitle = data.program_title;
+        p._company = data.company;
+        p._originFile = file;
+      });
+      return data.products;
+    }
+    return [];
+  });
+
+  const results = await Promise.all(fetchPromises);
+  results.forEach(products => {
+    celRawDataFull = celRawDataFull.concat(products);
+  });
+
+  celRenderGrid("all");
+}
+
+function celRenderGrid(filterFile) {
+  const wrap = document.getElementById('celGridWrap');
+  
+  const displayList = filterFile === "all" 
+    ? celRawDataFull 
+    : celRawDataFull.filter(p => p._originFile === filterFile);
+
+  if (displayList.length === 0) {
+    wrap.innerHTML = '<div class="cel-empty">이번 주 편성예정 상품이 없거나 수집 전입니다.</div>';
+    return;
+  }
+
+  let html = '';
+  displayList.forEach(p => {
+    const coCls = p._company.toLowerCase();
+    const fallbackImg = 'data:image/svg+xml;utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100%" height="100%" fill="%23EEF0F3"/><text x="50%" y="55%" font-size="10" text-anchor="middle" fill="%239CA3AF">No Image</text></svg>';
+    const imgSrc = p.image ? p.image : fallbackImg;
+    const priceText = p.price ? Number(p.price).toLocaleString() + '원' : '가격 정보 없음';
+    const brandTag = p.brand ? `<span class="cel-brand">[${p.brand}]</span>` : '';
+
+    html += `
+      <a class="cel-card" href="${p.link || '#'}" target="_blank" rel="noopener noreferrer">
+        <div class="cel-thumb-wrap">
+          <img src="${imgSrc}" alt="" loading="lazy" onerror="this.src='${fallbackImg}'">
+          <span class="cel-co-badge ${coCls}">${p._company}</span>
+          <span class="cel-pgm-badge">${p._programTitle}</span>
+        </div>
+        <div class="cel-body">
+          <span class="cel-date-label">📅 ${p.broadcast_date_label}</span>
+          <div class="cel-title">${brandTag}${p.name}</div>
+          <div class="cel-price-row">${priceText}</div>
+        </div>
+      </a>
+    `;
+  });
+
+  wrap.innerHTML = html;
+}
 
 (async function init() {
   const now = new Date();
@@ -3218,6 +3439,7 @@ document.querySelectorAll('.fp-day-btn').forEach(btn => {
   document.getElementById('tabBtnHomeshop').addEventListener('click', () => switchTab('homeshop'));
   document.getElementById('tabBtnDramaVariety').addEventListener('click', () => switchTab('dramavariety'));
   document.getElementById('tabBtnFixedPgm').addEventListener('click', () => switchTab('fixedpgm'));
+  document.getElementById('tabBtnCelebrity').addEventListener('click', () => switchTab('celebrity'));
   document.getElementById('tabBtnRanking').addEventListener('click', () => switchTab('ranking'));
 
   const hsPicker = document.getElementById('hsDatePicker');
@@ -3342,6 +3564,18 @@ document.querySelectorAll('.fp-day-btn').forEach(btn => {
       dvRenderGrid(dvCache[dvWeekStart]);
     });
   });
+
+  // 셀럽PGM 슬라이서 동작 연결
+  const celSlicer = document.getElementById('celProgramSlicer');
+  if (celSlicer) {
+    celSlicer.addEventListener('click', (e) => {
+      const btn = e.target.closest('button');
+      if (!btn) return;
+      celSlicer.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      celRenderGrid(btn.dataset.file);
+    });
+  }
 
 })();
 </script>
