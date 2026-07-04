@@ -121,7 +121,9 @@ def parse_price(value):
 
 
 def compute_this_week_date_label(schedule_raw: str) -> str:
-    """정확한 brodDispNm이 없을 때(=searchSpexSectItem 쪽 아이템)의 폴백용."""
+    """정확한 brodDispNm이 없을 때(=searchSpexSectItem 쪽 아이템)의 폴백용.
+    '이번주 해당 요일'이 아니라 '오늘 이후 가장 가까운 해당 요일'을 계산한다
+    (예: 오늘이 토요일이면 이번주 화요일은 이미 지났으므로 다음주 화요일)."""
     today = datetime.now(KST).date()
     matched_abbr, matched_weekday = None, None
     for kr, (abbr, weekday) in DAY_MAP.items():
@@ -130,8 +132,8 @@ def compute_this_week_date_label(schedule_raw: str) -> str:
             break
     if matched_weekday is None:
         return "방송상품"
-    monday = today - timedelta(days=today.weekday())
-    target_date = monday + timedelta(days=matched_weekday)
+    days_ahead = (matched_weekday - today.weekday()) % 7
+    target_date = today + timedelta(days=days_ahead)
     return f"{target_date.month}/{target_date.day}({matched_abbr}) 방송상품"
 
 
@@ -184,6 +186,7 @@ def normalize_item(item: dict, date_label: str) -> dict:
         "price": parse_price(first_present(PRICE_FIELD_CANDIDATES)),
         "image": to_image_url(image_raw) if image_raw else None,
         "link": link,
+        "_code": code,  # 중복제거용, 최종 출력 전에 제거됨
     }
 
 
@@ -259,6 +262,7 @@ def parse_swiper_items_from_html(html: str, date_label: str) -> list:
             "price": None,  # 이 카드엔 가격이 없음 (알리미 캐러셀로 추정)
             "image": image if (image and image.startswith("http")) else to_image_url(image),
             "link": link,
+            "_code": code,
         })
     return items
 
@@ -332,61 +336,6 @@ def crawl_hd_program(page, config: dict, list_map: dict):
         print(f"    -> [디버그] pgm-comm 원본 응답 저장: {debug_path}")
 
         resp_data = (captured["data"] or {}).get("respData") or {}
-        print(f"    -> [디버그] respData 최상위 키 전체: {list(resp_data.keys())}")
-
-        # "선일금고" 처럼 slitmNm/sellPrc가 아예 없는 '알리미' 계열 캐러셀로
-        # 추정됨 -> 필드명 짐작 그만하고, respData 전체에서 비어있지 않은
-        # 리스트를 몽땅 찾아서 경로/길이/첫 원소를 보여준다.
-        def dump_all_lists(obj, path="respData"):
-            if isinstance(obj, dict):
-                for k, v in obj.items():
-                    dump_all_lists(v, f"{path}.{k}")
-            elif isinstance(obj, list):
-                if obj:
-                    print(f"    -> [디버그] 리스트 발견: {path} (원소 {len(obj)}개)")
-                    first = obj[0]
-                    if isinstance(first, dict):
-                        print(f"         [0] keys={list(first.keys())}")
-                        print(f"         [0] 값 예시: { {k: first[k] for k in list(first.keys())[:10]} }")
-                    else:
-                        print(f"         [0] = {first!r}")
-                    for i, elem in enumerate(obj[1:], start=1):
-                        if isinstance(elem, dict):
-                            name_hint = (elem.get("slitmNm") or elem.get("dispNm")
-                                         or elem.get("titl") or elem.get("brodDispNm"))
-                            print(f"         [{i}] 이름후보: {name_hint}")
-
-        dump_all_lists(resp_data)
-
-        # dispTopBnnrList / dispBottomBnnrList / coinbannerList 만
-        # 실제로 이름이 List인 필드들. 캐러셀 3개의 진짜 소스일 가능성이 높음.
-        for list_key in ("dispTopBnnrList", "dispBottomBnnrList", "coinbannerList"):
-            val = resp_data.get(list_key)
-            if isinstance(val, list):
-                print(f"    -> [디버그] {list_key}: 리스트, 원소 {len(val)}개")
-                for i, elem in enumerate(val):
-                    if isinstance(elem, dict):
-                        slitm_nm = elem.get("slitmNm") or elem.get("dispNm") or elem.get("brodDispNm")
-                        print(f"         [{i}] keys={list(elem.keys())[:15]}")
-                        print(f"         [{i}] slitmNm/dispNm 등: {slitm_nm}")
-                    else:
-                        print(f"         [{i}] (dict 아님) {type(elem)}: {elem!r}")
-            else:
-                print(f"    -> [디버그] {list_key}: {type(val).__name__} = {val!r}")
-
-        mbd = resp_data.get("mainBnnrDtl")
-        if isinstance(mbd, dict):
-            print(f"    -> [디버그] mainBnnrDtl 키: {list(mbd.keys())[:20]}")
-            # DOM에서 스와이프 3번째 슬라이드(선일금고 등 완전히 다른 상품)가
-            # 확인됐는데 스와이프해도 새 네트워크 요청이 없었음 -> 이미 로드된
-            # 데이터 안에 있다는 뜻. 다른 Dtl류 dict들은 pgmItemList가 항상
-            # None이었는데, mainBnnrDtl은 "이 프로그램의 메인 배너"라 여기엔
-            # 실제로 채워져 있을 가능성이 커서 콕 집어 확인한다.
-            for k in ("pgmItemList", "pgmImgList", "lbnnrImgNm", "sbnnrImgNm",
-                      "dispBnnrCntn", "connUrl"):
-                print(f"       mainBnnrDtl.{k} = {mbd.get(k)!r}")
-        else:
-            print(f"    -> [디버그] mainBnnrDtl: {type(mbd).__name__} = {mbd!r}")
 
         pgm_view_item = resp_data.get("pgmViewItem")
         if isinstance(pgm_view_item, dict) and pgm_view_item.get("slitmNm"):
@@ -396,7 +345,20 @@ def crawl_hd_program(page, config: dict, list_map: dict):
         else:
             print(f"    -> [경고] pgm-comm 응답에 pgmViewItem이 없음")
 
-    print(f"    -> 최종 상품 {len(products)}개 (중복제거 없음)")
+    # itemList와 pgmViewItem이 같은 상품(같은 slitmCd)을 중복으로 줄 때가 있어서
+    # slitmCd 기준으로 중복 제거한다. slitmCd가 없는 항목은 이름 기준으로.
+    seen = set()
+    deduped = []
+    for p in products:
+        key = p.get("_code") or p.get("name")
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(p)
+    for p in deduped:
+        p.pop("_code", None)
+
+    print(f"    -> 최종 상품 {len(deduped)}개 (중복 제거 후)")
 
     return {
         "company": "HD",
@@ -404,7 +366,7 @@ def crawl_hd_program(page, config: dict, list_map: dict):
         "program_title": config["spex_sect_nm"],
         "schedule_raw": schedule_raw,
         "detail_link": detail_link,
-        "products": products,
+        "products": deduped,
     }
 
 
