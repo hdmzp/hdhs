@@ -1099,7 +1099,7 @@
     grid-column: 2;
     display: flex;
     align-items: center;
-    justify-width: center;
+    justify-content: center;
     gap: 20px;
     flex-wrap: wrap;
   }
@@ -2028,6 +2028,38 @@
 </div>
 
 <script>
+// ============ GA4 이벤트 헬퍼 ============
+function gaEvent(name, params) {
+  if (typeof gtag === 'function') {
+    gtag('event', name, params || {});
+  }
+}
+
+// 외부 링크(바로가기, 상품, 프로그램 등) 클릭을 한 곳에서 위임 처리.
+// 클릭된 <a target="_blank">를 감지해 어떤 영역(랭킹/고정PGM/셀럽PGM/홈쇼핑/드라마예능)에서
+// 어떤 링크를 눌렀는지 GA4로 전송한다.
+document.addEventListener('click', function (e) {
+  const link = e.target.closest('a[target="_blank"]');
+  if (!link || !link.href) return;
+
+  let area = 'unknown';
+  if (link.closest('#tabRanking')) area = 'ranking';
+  else if (link.closest('#tabFixedPgm')) area = 'fixedpgm';
+  else if (link.closest('#tabCelebrity')) area = 'celebrity';
+  else if (link.closest('#tabHomeshop')) area = 'homeshop';
+  else if (link.closest('#tabDramaVariety')) area = 'dramavariety';
+
+  let label = '';
+  const nameEl = link.querySelector('.rk-name, .fp-title, .cel-prod-name, .hs-title, .dv-title');
+  if (nameEl) label = nameEl.textContent.trim().slice(0, 80);
+
+  gaEvent('outbound_click', {
+    area: area,
+    link_label: label,
+    link_url: link.href
+  });
+}, true);
+
 // ============ 설정 ============
 const CHANNELS = [
   { key: "KBS1", group: "terrestrial" },
@@ -2624,6 +2656,7 @@ function rkRenderCatChips() {
       rkRenderCatChips();
       rkRenderSubCatChips();
       rkRenderList(rkCache);
+      gaEvent('filter_click', { filter_group: 'ranking_category', filter_value: rkCategory });
     });
     el.dataset.bound = '1';
   }
@@ -2673,6 +2706,7 @@ function rkRenderSubCatChips() {
       }
       rkRenderSubCatChips();
       rkRenderList(rkCache);
+      gaEvent('filter_click', { filter_group: 'ranking_subcategory', filter_value: sub || '전체' });
     });
     el.dataset.bound = '1';
   }
@@ -2853,6 +2887,7 @@ function hsRenderCategoryLegend() {
       }
       hsRenderCategoryLegend();
       hsRenderBody();
+      gaEvent('filter_click', { filter_group: 'homeshop_category', filter_value: cat || '전체보기' });
     });
     el.dataset.bound = '1';
   }
@@ -3135,6 +3170,8 @@ function switchTab(tab) {
     _rankingTabLoaded = true;
     rkRefresh();
   }
+
+  gaEvent('tab_view', { tab_name: tab });
 }
 
 // ============ 고정PGM 탭 ============
@@ -3324,6 +3361,7 @@ document.querySelectorAll('.fp-day-btn').forEach(btn => {
     document.querySelectorAll('.fp-day-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     fpRenderGrid(fpData);
+    gaEvent('filter_click', { filter_group: 'fixedpgm_day', filter_value: fpCurrentDay });
   });
 });
 
@@ -3510,6 +3548,7 @@ function celRenderCompare() {
 
   _homeshopTabLoaded = true;
   await hsRefresh(hsCurrentDate);
+  gaEvent('tab_view', { tab_name: 'homeshop' });
 
   await refresh(picker.value);
 
@@ -3576,6 +3615,7 @@ function celRenderCompare() {
       document.querySelectorAll('#hsToggle .hs-toggle-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       hsRefresh(hsCurrentDate);
+      gaEvent('filter_click', { filter_group: 'homeshop_broadcast_type', filter_value: hsCurrentBc });
     });
   });
 
@@ -3585,6 +3625,7 @@ function celRenderCompare() {
       document.querySelectorAll('#hsTimeToggle .hs-toggle-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       hsRenderBody();
+      gaEvent('filter_click', { filter_group: 'homeshop_time_slot', filter_value: hsTimeFilter });
     });
   });
 
@@ -3594,6 +3635,7 @@ function celRenderCompare() {
       document.querySelectorAll('#weatherRegionToggle .hs-toggle-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       renderMonth(currentYear, currentMonth);
+      gaEvent('filter_click', { filter_group: 'weather_region', filter_value: weatherCurrentRegion });
     });
   });
 
@@ -3670,6 +3712,7 @@ function celRenderCompare() {
       document.querySelectorAll('.dv-slicer-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       dvRenderGrid(dvCache[dvWeekStart]);
+      gaEvent('filter_click', { filter_group: 'dramavariety_filter', filter_value: dvFilter });
     });
   });
 
@@ -3704,6 +3747,7 @@ function celRenderCompare() {
       });
 
       celRenderCompare();
+      gaEvent('filter_click', { filter_group: 'celebrity_program', filter_value: file });
     });
   }
 
