@@ -61,14 +61,17 @@ def parse_broaddate(raw: str) -> dict:
 
 def fetch_gs_product_details_fixed(prd_id):
     """
-    PC 버전의 상품 상세 페이지 정적 마크업(og:title)을 파싱하여
-    브랜드명과 상품명을 확실하게 가져옵니다.
-    (브랜드 오인식 문제는 별도 과제로 보류 - 지금은 손대지 않음)
+    PC 버전(www.gsshop.com/prd/prd.gs)은 JSESSIONID 없이 접근하면 무조건
+    "세션 만료" 에러 페이지로 리다이렉트되는 게 확인됨 (홈페이지를 먼저 들러도
+    세션 쿠키가 안 잡힘 - JS로 세션을 만드는 방식이라 requests로는 통과 불가).
+    반면 목록 자체는 m.gsshop.com에서 이미 잘 긁히고 있으므로, 상세페이지도
+    PC 대신 모바일(m.gsshop.com)로 바꿔서 시도한다.
     """
-    url = f"https://www.gsshop.com/prd/prd.gs?prdid={prd_id}"
+    url = f"https://m.gsshop.com/prd/prd.gs?prdid={prd_id}"
     headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-        "Referer": "https://www.gsshop.com/"
+        "User-Agent": "Mozilla/5.0 (Linux; Android 13; SM-S918N) AppleWebKit/537.36 "
+                      "(KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
+        "Referer": "https://m.gsshop.com/index.gs",
     }
     try:
         res = requests.get(url, headers=headers, timeout=5)
@@ -86,29 +89,44 @@ def fetch_gs_product_details_fixed(prd_id):
                     name = full_title
                 return brand, name
 
-            name_tag = soup.select_one("p.prd-name, h2.prd-nm, .product_title")
-            name = name_tag.get_text(strip=True) if name_tag else "상품명 정보 없음"
+            name_tag = soup.select_one("p.prd-name, h2.prd-nm, .product_title, .pdp-tit, .prd-tit")
+            name = name_tag.get_text(strip=True) if name_tag else None
             brand_tag = soup.select_one(".brand-name, .brand, .bnd-nm")
             brand = brand_tag.get_text(strip=True) if brand_tag else "GS SHOP"
-            return brand, name
-    except Exception:
-        pass
+
+            if name:
+                return brand, name
+
+            # og:title도, 백업 셀렉터도 다 실패한 경우 -> 실제로 뭐가 왔는지
+            # <title> 태그를 그대로 출력해서 바로 원인을 알 수 있게 한다.
+            title_tag = soup.find("title")
+            actual_title = title_tag.get_text(strip=True) if title_tag else "(title 태그도 없음)"
+            print(f"       [디버그] prdid={prd_id}: og:title/백업셀렉터 다 실패. "
+                  f"실제 페이지 title='{actual_title}' (status={res.status_code}, len={len(res.text)})")
+            return "GS SHOP", "상품명 정보 없음"
+        else:
+            print(f"       [디버그] prdid={prd_id}: HTTP {res.status_code}")
+    except Exception as e:
+        print(f"       [디버그] prdid={prd_id}: 예외 발생 {e}")
     return "GS SHOP", "상품 상세 조회 실패"
 
 
-def crawl_gs_bjy_representative():
-    url = "https://m.gsshop.com/section/broad/specialPgm/13437?mseq=W00618-TV_PRO_BB-1"
+def crawl_gs_program(config: dict):
+    tab_name = config["tab_name"]
+    url = config["url"]
     headers = {
         "User-Agent": "Mozilla/5.0 (Linux; Android 13; SM-S918N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
         "Referer": "https://m.gsshop.com/index.gs"
     }
+
+    print(f"\n===== [{tab_name}] 수집 시작 =====")
 
     try:
         res = requests.get(url, headers=headers, timeout=10)
         res.raise_for_status()
         html = res.text
     except Exception as e:
-        print(f"[실패] GS 메인 페이지 접근 불가: {e}")
+        print(f"[실패] [{tab_name}] 페이지 접근 불가: {e}")
         return None
 
     soup = BeautifulSoup(html, "html.parser")
@@ -174,7 +192,7 @@ def crawl_gs_bjy_representative():
     # --- 진짜 상품명/브랜드 매핑 진행 ---
     final_products = []
     total_count = len(raw_target_products)
-    print(f"[GS 지금 백지연] 스캔 완료. 방송예정 타겟 상품 총 {total_count}개 상세 수집 시작...")
+    print(f"[{tab_name}] 스캔 완료. 방송예정 타겟 상품 총 {total_count}개 상세 수집 시작...")
 
     for idx, item in enumerate(raw_target_products, 1):
         prd_id = item["prd_id"]
@@ -193,28 +211,50 @@ def crawl_gs_bjy_representative():
             "link": f"https://m.gsshop.com/prd/prd.gs?prdid={prd_id}"
         })
 
-    representative_data = {
+    return {
         "company": "GS",
+        "tab_name": tab_name,
+        "program_title": config["program_title"],
+        "schedule_raw": config["schedule_raw"],
+        "products": final_products,
+    }
+
+
+# ============ 여기에 프로그램 추가 ============
+# homeshopping/fixed_programs/GS.json 에서 detail_link 확인 가능
+PROGRAMS = [
+    {
         "tab_name": "백지연",
         "program_title": "지금 백지연",
         "schedule_raw": "매주 목요일 저녁 8시 45분",
-        "products": final_products
-    }
-
-    return representative_data
+        "url": "https://m.gsshop.com/section/broad/specialPgm/13437?mseq=W00618-TV_PRO_BB-1",
+        "output_file": "GS_BJY.json",
+    },
+    {
+        "tab_name": "소유진",
+        "program_title": "소유진쇼",
+        "schedule_raw": "매주 금요일 저녁 8시 35분",
+        "url": "https://m.gsshop.com/section/broad/specialPgm/13401?mseq=W00618-TV_PRO_BB-2",
+        "output_file": "GS_SYJ.json",
+    },
+    # TODO: 더컬렉션/쇼미더트렌드 등 추가하려면 GS.json의 detail_link 참고
+]
+# ==============================================
 
 
 def main():
     output_dir = os.path.join("homeshopping", "representative_programs")
     os.makedirs(output_dir, exist_ok=True)
-    output_path = os.path.join(output_dir, "GS_BJY.json")
 
-    result = crawl_gs_bjy_representative()
+    for config in PROGRAMS:
+        result = crawl_gs_program(config)
+        if not result:
+            continue
 
-    if result:
+        output_path = os.path.join(output_dir, config["output_file"])
         with open(output_path, "w", encoding="utf-8") as f:
             json.dump(result, f, ensure_ascii=False, indent=2)
-        print(f"\n[성공] 수집 및 저장 완료: {output_path}")
+        print(f"[성공] [{config['tab_name']}] 수집 및 저장 완료: {output_path}")
         print(f"  - 총 수집된 예고 상품 수: {len(result['products'])}개")
 
 
