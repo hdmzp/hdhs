@@ -148,6 +148,7 @@ def crawl_cj_program(session: requests.Session, config: dict):
             "tab_name": tab_name,
             "program_title": program_title or config["program_title"],
             "schedule_raw": schedule_raw,
+            "detail_link": f"https://display.cjonstyle.com/m/pgmShop/{pgm_cd}",
             "products": [],
         }
 
@@ -185,6 +186,7 @@ def crawl_cj_program(session: requests.Session, config: dict):
         "tab_name": tab_name,
         "program_title": program_title or config["program_title"],
         "schedule_raw": schedule_raw,
+        "detail_link": f"https://display.cjonstyle.com/m/pgmShop/{pgm_cd}",
         "products": products,
     }
 

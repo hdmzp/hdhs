@@ -45,6 +45,70 @@ WEEKDAY_KR = ["월", "화", "수", "목", "금", "토", "일"]
 # 지난(놓친) 방송 섹션 백업 감지 키워드 (id="LAST" 제거가 실패했을 때만 작동)
 PAST_SECTION_STOP_WORDS = ("지난", "놓친")
 
+# 가격 텍스트 근처에서 흔히 쓰이는 라벨 (정규식 fallback용)
+PRICE_LABEL_KEYWORDS = ("혜택가", "방송가", "판매가", "정상가")
+
+
+def extract_gs_price(soup: BeautifulSoup, html: str):
+    """상품 상세 페이지에서 가격을 여러 방식으로 시도해서 뽑아낸다.
+    (brand/name과 마찬가지로 사이트 구조가 안 맞으면 실패할 수 있어서
+    여러 단계로 폴백한다. 전부 실패하면 None을 반환하고 상위에서
+    디버그 로그를 남긴다.)"""
+
+    # 1) JSON-LD 구조화 데이터 (schema.org Product/offers.price) - 있으면 가장 정확
+    for script in soup.find_all("script", type="application/ld+json"):
+        try:
+            data = json.loads(script.string or "")
+        except (TypeError, ValueError):
+            continue
+        candidates = data if isinstance(data, list) else [data]
+        for item in candidates:
+            if not isinstance(item, dict):
+                continue
+            offers = item.get("offers")
+            offers_list = offers if isinstance(offers, list) else [offers]
+            for offer in offers_list:
+                if isinstance(offer, dict) and offer.get("price"):
+                    try:
+                        return int(float(str(offer["price"]).replace(",", "")))
+                    except (TypeError, ValueError):
+                        pass
+
+    # 2) 메타 태그(product:price:amount / itemprop=price)
+    meta_price = (
+        soup.find("meta", attrs={"property": "product:price:amount"})
+        or soup.find("meta", attrs={"itemprop": "price"})
+    )
+    if meta_price and meta_price.get("content"):
+        try:
+            return int(float(meta_price["content"].replace(",", "")))
+        except (TypeError, ValueError):
+            pass
+
+    # 3) 흔히 쓰이는 가격 표시 셀렉터 후보들 (실측 전 추정치라 사이트 구조가
+    #    바뀌면 안 맞을 수 있음 - 안 맞으면 아래 디버그 로그로 원인 확인)
+    for sel in (".prd-price .num", ".price-area .num", "strong.price", ".sale-price",
+                ".benefit-price .num", "#prdPrice", ".prd-price-wrap .num",
+                ".price em", ".price strong"):
+        tag = soup.select_one(sel)
+        if tag:
+            digits = re.sub(r"[^\d]", "", tag.get_text())
+            if digits:
+                return int(digits)
+
+    # 4) 최후 fallback: "혜택가/판매가/정상가" 같은 라벨 주변 텍스트에서
+    #    "숫자,숫자원" 패턴을 정규식으로 찾는다.
+    for kw in PRICE_LABEL_KEYWORDS:
+        idx = html.find(kw)
+        if idx == -1:
+            continue
+        window = html[idx: idx + 200]
+        m = re.search(r"(\d{1,3}(?:,\d{3})+)(?:\s|<[^>]*>)*원", window)
+        if m:
+            return int(m.group(1).replace(",", ""))
+
+    return None
+
 
 def parse_broaddate(raw: str) -> dict:
     """'20260716204500' -> {'label': '7월 16일(목) 20:45 방송', 'iso': '2026-07-16T20:45:00'}"""
@@ -77,6 +141,10 @@ def fetch_gs_product_details_fixed(prd_id):
         res = requests.get(url, headers=headers, timeout=5)
         if res.status_code == 200:
             soup = BeautifulSoup(res.text, "html.parser")
+            price = extract_gs_price(soup, res.text)
+            if price is None:
+                print(f"       [디버그] prdid={prd_id}: 가격 추출 실패 (셀렉터/패턴이 실제 페이지와 안 맞을 수 있음)")
+
             og_title = soup.find("meta", property="og:title")
 
             if og_title and og_title.get("content"):
@@ -87,7 +155,7 @@ def fetch_gs_product_details_fixed(prd_id):
                 else:
                     brand = "GS SHOP"
                     name = full_title
-                return brand, name
+                return brand, name, price
 
             name_tag = soup.select_one("p.prd-name, h2.prd-nm, .product_title, .pdp-tit, .prd-tit")
             name = name_tag.get_text(strip=True) if name_tag else None
@@ -95,7 +163,7 @@ def fetch_gs_product_details_fixed(prd_id):
             brand = brand_tag.get_text(strip=True) if brand_tag else "GS SHOP"
 
             if name:
-                return brand, name
+                return brand, name, price
 
             # og:title도, 백업 셀렉터도 다 실패한 경우 -> 실제로 뭐가 왔는지
             # <title> 태그를 그대로 출력해서 바로 원인을 알 수 있게 한다.
@@ -103,12 +171,12 @@ def fetch_gs_product_details_fixed(prd_id):
             actual_title = title_tag.get_text(strip=True) if title_tag else "(title 태그도 없음)"
             print(f"       [디버그] prdid={prd_id}: og:title/백업셀렉터 다 실패. "
                   f"실제 페이지 title='{actual_title}' (status={res.status_code}, len={len(res.text)})")
-            return "GS SHOP", "상품명 정보 없음"
+            return "GS SHOP", "상품명 정보 없음", price
         else:
             print(f"       [디버그] prdid={prd_id}: HTTP {res.status_code}")
     except Exception as e:
         print(f"       [디버그] prdid={prd_id}: 예외 발생 {e}")
-    return "GS SHOP", "상품 상세 조회 실패"
+    return "GS SHOP", "상품 상세 조회 실패", None
 
 
 def crawl_gs_program(config: dict):
@@ -198,8 +266,9 @@ def crawl_gs_program(config: dict):
         prd_id = item["prd_id"]
         date_label = item["date_label"]
 
-        brand, name = fetch_gs_product_details_fixed(prd_id)
-        print(f"  ({idx}/{total_count}) [{date_label}] ID: {prd_id} -> [{brand}] {name[:15]}...")
+        brand, name, price = fetch_gs_product_details_fixed(prd_id)
+        price_txt = f"{price:,}원" if price is not None else "가격 미확인"
+        print(f"  ({idx}/{total_count}) [{date_label}] ID: {prd_id} -> [{brand}] {name[:15]}... / {price_txt}")
 
         time.sleep(0.2)
         final_products.append({
@@ -208,6 +277,7 @@ def crawl_gs_program(config: dict):
             "broadcast_iso": item["broadcast_iso"],
             "brand": brand,
             "name": name,
+            "price": price,
             "link": f"https://m.gsshop.com/prd/prd.gs?prdid={prd_id}"
         })
 
@@ -216,6 +286,7 @@ def crawl_gs_program(config: dict):
         "tab_name": tab_name,
         "program_title": config["program_title"],
         "schedule_raw": config["schedule_raw"],
+        "detail_link": url,
         "products": final_products,
     }
 
