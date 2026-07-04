@@ -1,0 +1,76 @@
+name: Representative PGM Scrape
+
+on:
+  schedule:
+    # 매일 KST 08:10 (UTC 23:10 전날) — 고정PGM/랭킹 크론과 겹치지 않게 분산
+    - cron: '10 23 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install requests beautifulsoup4 playwright
+          playwright install --with-deps chromium
+
+      # 회사별 스크레이퍼는 각자 독립 실행: 하나가 실패(사이트 구조 변경,
+      # WAF 차단 등)해도 나머지 결과는 그대로 살아남아야 하므로
+      # continue-on-error로 격리한다.
+      - name: Scrape HD (Playwright)
+        continue-on-error: true
+        run: python fixed/rehd.py
+
+      - name: Scrape GS
+        continue-on-error: true
+        run: python fixed/regs.py
+
+      - name: Scrape LT
+        continue-on-error: true
+        run: python fixed/relt.py
+
+      - name: Scrape CJ
+        continue-on-error: true
+        run: python fixed/recj.py
+
+      - name: Build merged.json
+        run: python fixed/build_representative_programs.py
+
+      # 다른 워크플로우(랭킹/기타채널 등)와 push 타이밍이 겹치면
+      # non-fast-forward로 실패할 수 있어 pull --rebase 재시도를 둔다.
+      - name: Commit & push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add homeshopping/representative_programs/
+
+          if git diff --cached --quiet; then
+            echo "변경 사항 없음"
+            exit 0
+          fi
+
+          git commit -m "chore: update representative programs data"
+
+          for i in 1 2 3 4 5; do
+            if git push; then
+              echo "push 성공"
+              exit 0
+            fi
+            echo "push 실패, rebase 후 재시도 ($i/5)"
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            sleep $((RANDOM % 5 + 1))
+          done
+
+          echo "push 최종 실패"
+          exit 1

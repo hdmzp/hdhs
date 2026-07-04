@@ -1683,118 +1683,105 @@
     color: var(--ink);
   }
 
-  .cel-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
+  .cel-compare-wrap {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+    align-items: flex-start;
   }
 
-  .cel-card {
-    display: flex;
-    flex-direction: column;
-    text-decoration: none;
-    color: var(--ink);
+  .cel-col {
+    flex: 0 0 230px;
+    min-width: 210px;
     background: #fff;
     border: 1px solid var(--rule);
     border-radius: var(--radius);
-    overflow: hidden;
     box-shadow: var(--shadow-sm);
-    transition: transform 0.15s, box-shadow 0.15s;
-    position: relative;
-  }
-
-  .cel-card:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-md);
-  }
-
-  .cel-thumb-wrap {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    background: var(--paper-dim2);
     overflow: hidden;
+  }
+
+  .cel-col-head {
+    padding: 10px 12px 9px;
     border-bottom: 1px solid var(--rule);
+    background: var(--paper-dim);
   }
 
-  .cel-thumb-wrap img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  .cel-col-co {
+    display: inline-block;
+    font-size: 9.5px;
+    font-weight: 800;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-bottom: 5px;
+  }
+  .cel-col-co.gs { background: #1AA663; }
+  .cel-col-co.cj { background: #4B286D; }
+  .cel-col-co.hd { background: #003C82; }
+  .cel-col-co.lt { background: #DA291C; }
+
+  .cel-col-title {
+    font-size: 13.5px;
+    font-weight: 800;
+    line-height: 1.3;
+  }
+
+  .cel-col-sched {
+    font-size: 10px;
+    color: var(--ink-faint);
+    margin-top: 2px;
+  }
+
+  .cel-col-body {
+    padding: 6px 10px 10px;
+    max-height: 560px;
+    overflow-y: auto;
+  }
+
+  .cel-date-group-label {
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--brand-blue);
+    margin: 8px 0 4px;
+  }
+  .cel-date-group-label:first-child { margin-top: 4px; }
+
+  .cel-prod-row {
     display: block;
+    padding: 7px 2px;
+    border-bottom: 1px dashed var(--rule);
+    text-decoration: none;
+    color: var(--ink);
   }
+  .cel-prod-row:last-child { border-bottom: none; }
+  .cel-prod-row:hover { background: var(--paper-dim); }
 
-  .cel-co-badge {
-    position: absolute;
-    top: 10px;
-    left: 10px;
+  .cel-prod-brand {
     font-size: 10.5px;
     font-weight: 800;
-    color: #fff;
-    padding: 3px 10px;
-    border-radius: 20px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-  .cel-co-badge.gs { background: #1AA663; }
-  .cel-co-badge.cj { background: #4B286D; }
-  .cel-co-badge.hd { background: #003C82; }
-  .cel-co-badge.lt { background: #DA291C; }
-
-  .cel-pgm-badge {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 10px;
-    font-weight: 600;
-    background: rgba(26, 29, 36, 0.75);
-    color: #fff;
-    padding: 3px 9px;
-    border-radius: 6px;
-    backdrop-filter: blur(2px);
-  }
-
-  .cel-body {
-    padding: 14px;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-  }
-
-  .cel-date-label {
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--brand-blue);
-    margin-bottom: 6px;
-    background: var(--brand-blue-soft);
-    padding: 2px 6px;
-    border-radius: 4px;
-    align-self: flex-start;
-  }
-
-  .cel-title {
-    font-size: 13px;
-    font-weight: 700;
-    line-height: 1.4;
-    margin-bottom: 8px;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    height: 36px;
-  }
-
-  .cel-brand {
     color: #1B5E5A;
-    font-weight: 800;
-    margin-right: 4px;
+    margin-right: 3px;
   }
 
-  .cel-price-row {
-    margin-top: auto;
-    font-size: 15px;
-    font-weight: 800;
-    text-align: right;
-    color: var(--ink);
+  .cel-prod-name {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  .cel-prod-price {
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    margin-top: 2px;
+  }
+
+  .cel-col-empty {
+    font-size: 11px;
+    color: var(--ink-faint);
+    text-align: center;
+    padding: 20px 0;
   }
 
   .cel-empty {
@@ -1802,16 +1789,26 @@
     color: var(--ink-faint);
     font-size: 14px;
     padding: 80px 0;
-    grid-column: 1 / -1;
+  }
+
+  .cel-sample-notice {
+    margin-bottom: 14px;
+    padding: 8px 14px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: #92620a;
+    background: #fff6e0;
+    border-radius: 8px;
   }
 
   @media (max-width: 720px) {
     #tabCelebrity { padding: 0 12px 40px; }
     .cel-controls { padding: 10px 0; }
     .cel-slicer button { font-size: 11.5px; padding: 6px 10px; }
-    .cel-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
-    .cel-title { font-size: 11.5px; height: 32px; -webkit-line-clamp: 2; }
-    .cel-price-row { font-size: 13px; }
+    .cel-col { flex-basis: 190px; min-width: 180px; }
+    .cel-col-title { font-size: 12.5px; }
+    .cel-prod-name { font-size: 11px; }
   }
 </style>
 </head>
@@ -1989,17 +1986,18 @@
 <div id="tabCelebrity" class="tab-panel">
   <div class="cel-controls">
     <div class="cel-slicer" id="celProgramSlicer">
-      <button class="active" data-file="all">전체</button>
-      <button data-file="GS_BJY.json">지금 백지연</button>
-      <button data-file="CJ_KJE.json">강주은 굿라이프</button>
-      <button data-file="CJ_CHJ.json">최화정쇼</button>
-      <button data-file="CJ_KCO.json">더 김창옥 라이브</button>
-      <button data-file="HD_HJM.json">황정민쇼</button>
-      <button data-file="HD_OGS.json">오감쇼</button>
-      <button data-file="LT_CYR.json">최유라쇼</button>
+      <button class="active" data-file="all">전체선택</button>
+      <button class="active" data-file="GS_BJY.json">지금 백지연</button>
+      <button class="active" data-file="CJ_KJE.json">강주은 굿라이프</button>
+      <button class="active" data-file="CJ_CHJ.json">최화정쇼</button>
+      <button class="active" data-file="CJ_KCO.json">더 김창옥 라이브</button>
+      <button class="active" data-file="HD_HJM.json">황정민쇼</button>
+      <button class="active" data-file="HD_OGS.json">오감쇼</button>
+      <button class="active" data-file="LT_CYR.json">최유라쇼</button>
     </div>
   </div>
-  <div class="cel-grid" id="celGridWrap"></div>
+  <div class="cel-sample-notice" id="celSampleNotice" style="display:none;">⚠️ 아직 수집된 데이터가 없어 레이아웃 미리보기용 예시 데이터를 보여주고 있습니다.</div>
+  <div id="celGridWrap"></div>
 </div>
 
 <div id="tabRanking" class="tab-panel">
@@ -3317,26 +3315,74 @@ document.querySelectorAll('.fp-day-btn').forEach(btn => {
 });
 
 // ============ 셀럽PGM 탭 연동 로직 ============
+// "전체" 중 하나만 보는 게 아니라, 여러 셀럽PGM을 동시에 선택해서
+// 상품 라인업을 나란히 비교하는 화면. 이미지는 참고용일 뿐이라 굳이
+// 안 불러도 되고, 브랜드+상품명이 핵심이라 텍스트 위주 리스트로 구성한다.
 const CEL_FILES = [
   "GS_BJY.json", "CJ_KJE.json", "CJ_CHJ.json", "CJ_KCO.json", 
   "HD_HJM.json", "HD_OGS.json", "LT_CYR.json"
 ];
-let celRawDataFull = [];
+let celRawDataFull = [];       // 전체 상품(프로그램 태그 포함)
+let celProgramMeta = {};       // file -> {title, company, schedule_raw, detail_link}
+let celSelectedFiles = new Set(CEL_FILES); // 기본값: 전체 선택 상태로 시작
+let celIsSample = false; // 실제 수집 데이터가 하나도 없어 예시 데이터로 미리보기 중인지
+
+// 아직 크롤러가 아무 파일도 만들지 못했을 때(첫 배포 전) 보여줄
+// 레이아웃 미리보기용 예시 데이터. 실제 산출물과 동일한 스키마를 쓰고
+// _originFile을 CEL_FILES 값과 맞춰서 슬라이서/비교 로직이 그대로 동작하게 한다.
+function celBuildSampleData() {
+  const defs = [
+    ["GS_BJY.json", "GS", "지금 백지연", "매주 목요일 저녁 8시 45분", [
+      ["7/2(목) 방송상품", "설화수", "자음생크림 3종 세트", 158000],
+      ["7/2(목) 방송상품", "쿠쿠", "10인용 IH 압력밥솥", 279000],
+    ]],
+    ["CJ_KJE.json", "CJ", "강주은 굿라이프", "매주 수 19시 35분", [
+      ["7/8(수) 19:35", "삼성전자", "비스포크 냉장고", 2390000],
+    ]],
+    ["CJ_CHJ.json", "CJ", "최화정쇼", "매주 월 21시", [
+      ["7/6(월) 21:00", "LG전자", "스타일러 슈케이스", 890000],
+    ]],
+    ["CJ_KCO.json", "CJ", "더 김창옥 라이브", "방송일 변동 (매주 변경)", [
+      ["7/10(금) 19:00", "동서식품", "프리미엄 원두커피 세트", 45000],
+    ]],
+    ["HD_HJM.json", "HD", "황정민쇼", "매주 목요일 08시 15분", [
+      ["7/9(목) 08:15 방송", "락앤락", "프레시 밀폐용기 10종", 29900],
+    ]],
+    ["HD_OGS.json", "HD", "오감쇼", "매주 화 20시 / 목 10시", [
+      ["7/7(화) 20:00 방송", "휘슬러", "IH 냄비 세트", 189000],
+    ]],
+    ["LT_CYR.json", "LT", "최유라쇼", "매주 목 20시 45분/ 토 08시 20분", [
+      ["7/11(토) 08:20", "쿠쿠", "10인용 IH 압력밥솥", 279000],
+    ]],
+  ];
+  const products = [];
+  celProgramMeta = {};
+  for (const [file, company, title, schedule, items] of defs) {
+    celProgramMeta[file] = { title, company, schedule_raw: schedule, detail_link: '#' };
+    for (const [label, brand, name, price] of items) {
+      products.push({ broadcast_date_label: label, brand, name, price, link: '#', _originFile: file });
+    }
+  }
+  return products;
+}
 
 async function celInitLoad() {
   const wrap = document.getElementById('celGridWrap');
   wrap.innerHTML = '<div class="cel-empty">데이터를 동기화 중입니다...</div>';
-  
+
   celRawDataFull = [];
-  
+  celProgramMeta = {};
+
   const fetchPromises = CEL_FILES.map(async (file) => {
     const data = await fetchJsonSafe(`./homeshopping/representative_programs/${file}`);
     if (data && data.products) {
-      data.products.forEach(p => {
-        p._programTitle = data.program_title;
-        p._company = data.company;
-        p._originFile = file;
-      });
+      celProgramMeta[file] = {
+        title: data.program_title || data.tab_name || file,
+        company: data.company || '',
+        schedule_raw: data.schedule_raw || '',
+        detail_link: data.detail_link || '#',
+      };
+      data.products.forEach(p => { p._originFile = file; });
       return data.products;
     }
     return [];
@@ -3347,46 +3393,77 @@ async function celInitLoad() {
     celRawDataFull = celRawDataFull.concat(products);
   });
 
-  celRenderGrid("all");
+  celIsSample = celRawDataFull.length === 0;
+  if (celIsSample) {
+    celRawDataFull = celBuildSampleData();
+  }
+
+  const noticeEl = document.getElementById('celSampleNotice');
+  if (noticeEl) noticeEl.style.display = celIsSample ? '' : 'none';
+
+  celRenderCompare();
 }
 
-function celRenderGrid(filterFile) {
-  const wrap = document.getElementById('celGridWrap');
-  
-  const displayList = filterFile === "all" 
-    ? celRawDataFull 
-    : celRawDataFull.filter(p => p._originFile === filterFile);
+function celRenderProductRow(p) {
+  const priceText = p.price ? Number(p.price).toLocaleString() + '원' : '';
+  const brandTag = p.brand ? `<span class="cel-prod-brand">${p.brand}</span>` : '';
+  return (
+    `<a class="cel-prod-row" href="${p.link || '#'}" target="_blank" rel="noopener noreferrer">` +
+      `<div class="cel-prod-name">${brandTag}${p.name || ''}</div>` +
+      (priceText ? `<div class="cel-prod-price">${priceText}</div>` : '') +
+    `</a>`
+  );
+}
 
-  if (displayList.length === 0) {
-    wrap.innerHTML = '<div class="cel-empty">이번 주 편성예정 상품이 없거나 수집 전입니다.</div>';
+function celRenderColumn(file) {
+  const meta = celProgramMeta[file] || { title: file, company: '', schedule_raw: '' };
+  const products = celRawDataFull.filter(p => p._originFile === file);
+
+  let bodyHtml;
+  if (products.length === 0) {
+    bodyHtml = '<div class="cel-col-empty">이번 주 방송예정 상품이 없거나 수집 전입니다.</div>';
+  } else {
+    // 같은 프로그램 안에서도 방송일시(broadcast_date_label) 단위로 묶어서 보여준다.
+    const groups = [];
+    const groupIndex = {};
+    products.forEach(p => {
+      const label = p.broadcast_date_label || '';
+      if (!(label in groupIndex)) {
+        groupIndex[label] = groups.length;
+        groups.push({ label, items: [] });
+      }
+      groups[groupIndex[label]].items.push(p);
+    });
+    bodyHtml = groups.map(g =>
+      (g.label ? `<div class="cel-date-group-label">${g.label}</div>` : '') +
+      g.items.map(celRenderProductRow).join('')
+    ).join('');
+  }
+
+  const coCls = (meta.company || '').toLowerCase();
+  return (
+    `<div class="cel-col">` +
+      `<div class="cel-col-head">` +
+        (meta.company ? `<span class="cel-col-co ${coCls}">${meta.company}</span>` : '') +
+        `<div class="cel-col-title">${meta.title}</div>` +
+        (meta.schedule_raw ? `<div class="cel-col-sched">${meta.schedule_raw}</div>` : '') +
+      `</div>` +
+      `<div class="cel-col-body">${bodyHtml}</div>` +
+    `</div>`
+  );
+}
+
+function celRenderCompare() {
+  const wrap = document.getElementById('celGridWrap');
+  if (!wrap) return;
+
+  const selected = CEL_FILES.filter(f => celSelectedFiles.has(f));
+  if (selected.length === 0) {
+    wrap.innerHTML = '<div class="cel-empty">비교할 셀럽PGM을 선택하세요 (여러 개 중복 선택 가능)</div>';
     return;
   }
 
-  let html = '';
-  displayList.forEach(p => {
-    const coCls = p._company.toLowerCase();
-    const fallbackImg = 'data:image/svg+xml;utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100%" height="100%" fill="%23EEF0F3"/><text x="50%" y="55%" font-size="10" text-anchor="middle" fill="%239CA3AF">No Image</text></svg>';
-    const imgSrc = p.image ? p.image : fallbackImg;
-    const priceText = p.price ? Number(p.price).toLocaleString() + '원' : '가격 정보 없음';
-    const brandTag = p.brand ? `<span class="cel-brand">[${p.brand}]</span>` : '';
-
-    html += `
-      <a class="cel-card" href="${p.link || '#'}" target="_blank" rel="noopener noreferrer">
-        <div class="cel-thumb-wrap">
-          <img src="${imgSrc}" alt="" loading="lazy" onerror="this.src='${fallbackImg}'">
-          <span class="cel-co-badge ${coCls}">${p._company}</span>
-          <span class="cel-pgm-badge">${p._programTitle}</span>
-        </div>
-        <div class="cel-body">
-          <span class="cel-date-label">📅 ${p.broadcast_date_label}</span>
-          <div class="cel-title">${brandTag}${p.name}</div>
-          <div class="cel-price-row">${priceText}</div>
-        </div>
-      </a>
-    `;
-  });
-
-  wrap.innerHTML = html;
+  wrap.innerHTML = `<div class="cel-compare-wrap">${selected.map(celRenderColumn).join('')}</div>`;
 }
 
 (async function init() {
@@ -3565,15 +3642,37 @@ function celRenderGrid(filterFile) {
     });
   });
 
-  // 셀럽PGM 슬라이서 동작 연결
+  // 셀럽PGM 슬라이서 동작 연결 (중복 선택 가능한 비교 모드)
   const celSlicer = document.getElementById('celProgramSlicer');
   if (celSlicer) {
     celSlicer.addEventListener('click', (e) => {
       const btn = e.target.closest('button');
       if (!btn) return;
-      celSlicer.querySelectorAll('button').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      celRenderGrid(btn.dataset.file);
+      const file = btn.dataset.file;
+
+      if (file === 'all') {
+        if (celSelectedFiles.size === CEL_FILES.length) {
+          celSelectedFiles.clear();
+        } else {
+          celSelectedFiles = new Set(CEL_FILES);
+        }
+      } else {
+        if (celSelectedFiles.has(file)) {
+          celSelectedFiles.delete(file);
+        } else {
+          celSelectedFiles.add(file);
+        }
+      }
+
+      celSlicer.querySelectorAll('button').forEach(b => {
+        if (b.dataset.file === 'all') {
+          b.classList.toggle('active', celSelectedFiles.size === CEL_FILES.length);
+        } else {
+          b.classList.toggle('active', celSelectedFiles.has(b.dataset.file));
+        }
+      });
+
+      celRenderCompare();
     });
   }
 
