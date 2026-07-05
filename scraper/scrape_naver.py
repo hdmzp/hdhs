@@ -449,26 +449,37 @@ def _collect_drama_pages(page, max_pages: int):
 def fetch_drama(page, max_pages: int = 30):
     safe_goto(page, DRAMA_URL)
     click_all_days_tab(page, "drama")
+    # '전체' 탭 클릭 직후 실제 위젯(페이징 포함)이 완전히 다시 렌더링되기 전에
+    # 첫 페이징 텍스트를 읽으면 과도기 상태값(예: "현재1/전체1")을 그대로
+    # 믿어버려 대부분의 카드를 놓치는 문제가 있었다. 첫 수집 전 별도로
+    # 충분히 대기해 이 레이스 컨디션을 방지한다.
+    page.wait_for_timeout(2000)
     all_programs = _collect_drama_pages(page, max_pages)
 
     # variety와 동일한 이유로 drama도 부분/오늘자 스냅샷만 잡히는 경우를
     # 방어한다. drama는 보통 요일 여러 개(주 5회, 매일 등)에 걸쳐 편성되므로,
     # 카드가 어느 정도 쌓였는데도 요일이 1~2개로만 몰려있으면 '전체' 탭이
-    # 아니라 부분 스냅샷일 가능성이 높다고 보고 재시도한다.
+    # 아니라 부분 스냅샷일 가능성이 높다고 보고 재시도한다. 또한 카드 수
+    # 자체가 비정상적으로 적은 경우(예: 페이징이 "1/1"로 잘못 읽혀 1페이지만
+    # 수집된 경우)도 별도로 재시도 대상으로 잡는다 — 이 경우는 요일 조건과
+    # 무관하게 절대적인 카드 수가 너무 적다는 것 자체가 신호이기 때문이다.
     distinct_days = {d for p in all_programs for d in p["days"]}
-    if len(all_programs) >= 5 and len(distinct_days) <= 2:
-        print(f"  [drama] ⚠️ 수집된 {len(all_programs)}건이 요일 {sorted(distinct_days)}에만 몰려있음 "
-              f"— '오늘' 스냅샷만 잡힌 것으로 의심됨. 페이지를 다시 로드해 재시도합니다.")
+    too_few = len(all_programs) < 10
+    narrow_days = len(all_programs) >= 5 and len(distinct_days) <= 2
+    if too_few or narrow_days:
+        reason = "카드 수가 비정상적으로 적음" if too_few else f"요일 {sorted(distinct_days)}에만 몰려있음"
+        print(f"  [drama] ⚠️ 수집된 {len(all_programs)}건 — {reason} "
+              f"— 부분 수집으로 의심됨. 페이지를 다시 로드해 재시도합니다.")
         safe_goto(page, DRAMA_URL)
-        page.wait_for_timeout(1500)
+        page.wait_for_timeout(2500)
         click_all_days_tab(page, "drama")
+        page.wait_for_timeout(2000)
         retry_programs = _collect_drama_pages(page, max_pages)
-        retry_days = {d for p in retry_programs for d in p["days"]}
-        if len(retry_days) > len(distinct_days):
-            print(f"  [drama] ✅ 재시도 후 요일 {sorted(retry_days)}로 확대 — 재시도 결과를 채택합니다.")
+        if len(retry_programs) > len(all_programs):
+            print(f"  [drama] ✅ 재시도 후 {len(retry_programs)}건으로 증가 — 재시도 결과를 채택합니다.")
             all_programs = retry_programs
         else:
-            print(f"  [drama] ⚠️ 재시도해도 요일 {sorted(retry_days)}로 동일/더 좁음 — "
+            print(f"  [drama] ⚠️ 재시도해도 {len(retry_programs)}건으로 동일/더 적음 — "
                   f"원래 결과를 그대로 사용하되 데이터가 불완전할 수 있음에 유의.")
 
     return dedupe_programs(all_programs)
@@ -678,6 +689,18 @@ def prune_dropped_programs(out_dir: str, collected_ids: set, today):
     삼아야 안전하다."""
     today_monday = monday_of(today)
     target_monday = today_monday - timedelta(days=7)
+    target_week_end = target_monday + timedelta(days=6)
+
+    # 주말(토/일) 시청률은 네이버 집계가 며칠 늦게 올라온다(dispatch_by_rating_date
+    # 주석 참고). 그 주가 끝나자마자(월요일) 바로 정리를 돌리면, 아직 집계가
+    # 안 올라온 토/일 방영작이 "이번 수집에 안 보임"으로 오판되어 삭제될 수
+    # 있다. 그래서 그 주가 끝난 뒤 최소 며칠(유예기간)은 정리를 보류한다.
+    GRACE_DAYS = 3
+    days_since_week_end = (today - target_week_end).days
+    if days_since_week_end < GRACE_DAYS:
+        print(f"  [컷오프 정리 보류] {target_monday.isoformat()} 주차는 종료 {days_since_week_end}일 "
+              f"경과 — 주말 시청률 집계 시차를 고려해 {GRACE_DAYS}일 유예 후 정리합니다.")
+        return
 
     file_path = os.path.join(out_dir, f"{target_monday.isoformat()}.json")
     if not os.path.exists(file_path):
