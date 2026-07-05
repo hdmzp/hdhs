@@ -403,10 +403,8 @@ def safe_goto(page, url: str, retries: int = 3, timeout: int = 30000):
 
 # ---------- 데이터 수집 함수 ----------
 
-def fetch_drama(page, max_pages: int = 30):
-    safe_goto(page, DRAMA_URL)
-    click_all_days_tab(page, "drama")
-
+def _collect_drama_pages(page, max_pages: int):
+    """현재 로드된 drama 페이지에서 페이징을 끝까지 따라가며 카드를 수집한다."""
     all_programs = []
     page_num = 1
     max_retries_per_page = 3
@@ -444,6 +442,34 @@ def fetch_drama(page, max_pages: int = 30):
         if not advanced:
             break
         page_num += 1
+
+    return all_programs
+
+
+def fetch_drama(page, max_pages: int = 30):
+    safe_goto(page, DRAMA_URL)
+    click_all_days_tab(page, "drama")
+    all_programs = _collect_drama_pages(page, max_pages)
+
+    # variety와 동일한 이유로 drama도 부분/오늘자 스냅샷만 잡히는 경우를
+    # 방어한다. drama는 보통 요일 여러 개(주 5회, 매일 등)에 걸쳐 편성되므로,
+    # 카드가 어느 정도 쌓였는데도 요일이 1~2개로만 몰려있으면 '전체' 탭이
+    # 아니라 부분 스냅샷일 가능성이 높다고 보고 재시도한다.
+    distinct_days = {d for p in all_programs for d in p["days"]}
+    if len(all_programs) >= 5 and len(distinct_days) <= 2:
+        print(f"  [drama] ⚠️ 수집된 {len(all_programs)}건이 요일 {sorted(distinct_days)}에만 몰려있음 "
+              f"— '오늘' 스냅샷만 잡힌 것으로 의심됨. 페이지를 다시 로드해 재시도합니다.")
+        safe_goto(page, DRAMA_URL)
+        page.wait_for_timeout(1500)
+        click_all_days_tab(page, "drama")
+        retry_programs = _collect_drama_pages(page, max_pages)
+        retry_days = {d for p in retry_programs for d in p["days"]}
+        if len(retry_days) > len(distinct_days):
+            print(f"  [drama] ✅ 재시도 후 요일 {sorted(retry_days)}로 확대 — 재시도 결과를 채택합니다.")
+            all_programs = retry_programs
+        else:
+            print(f"  [drama] ⚠️ 재시도해도 요일 {sorted(retry_days)}로 동일/더 좁음 — "
+                  f"원래 결과를 그대로 사용하되 데이터가 불완전할 수 있음에 유의.")
 
     return dedupe_programs(all_programs)
 
@@ -667,6 +693,21 @@ def prune_dropped_programs(out_dir: str, collected_ids: set, today):
     dropped = [p for p in existing_programs if p["id"] not in collected_ids]
 
     if not dropped:
+        return
+
+    # 안전장치: 기존 데이터의 상당수가 한꺼번에 "안 보임"으로 판정되면,
+    # 실제 컷오프(시청률 하락)보다는 이번 실행의 스크래핑 자체가 부분적/
+    # 실패했을 가능성이 훨씬 높다. 이 경우 잘못 삭제하는 대신 삭제를
+    # 보류하고 로그만 남긴다. (예: 김부장 21.5%, 신입사원 강회장 11.1%처럼
+    # 고시청률 프로그램이 수집 실패로 삭제되는 사고 방지)
+    existing_count = len(existing_programs)
+    dropped_ratio = len(dropped) / existing_count if existing_count else 0
+    if dropped_ratio > 0.3:
+        print(f"  [컷오프 정리 보류] {target_monday.isoformat()} 주차에서 {len(dropped)}/{existing_count}건"
+              f"({dropped_ratio:.0%})이 이번 수집에서 안 보임 — 실제 컷오프보다 이번 실행의"
+              f" 부분/실패 수집일 가능성이 높아 삭제를 건너뜁니다.")
+        for p in dropped:
+            print(f"    - 보류: '{p['title']}' ({p['channel']}, {p.get('ratingDate')}, {p['rating']}%)")
         return
 
     for p in dropped:
