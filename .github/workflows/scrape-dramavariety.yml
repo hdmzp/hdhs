@@ -2,10 +2,11 @@ name: 드라마예능 편성 수집
 
 on:
   schedule:
-    # 하루 3회 수집: KST 02:00(=UTC 17:00 전날), KST 07:00(=UTC 22:00 전날), KST 12:10(=UTC 03:10)
+    # 하루 4회 수집: KST 02:00(=UTC 17:00 전날), KST 08:30(=UTC 23:30 전날), KST 12:10(=UTC 03:10), KST 21:00(=UTC 12:00)
     - cron: "0 17 * * *"
-    - cron: "0 22 * * *"
+    - cron: "30 23 * * *"
     - cron: "10 3 * * *"
+    - cron: "0 12 * * *"
   workflow_dispatch: {}  # 수동 실행 버튼
 
 permissions:
