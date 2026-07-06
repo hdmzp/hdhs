@@ -100,7 +100,7 @@ def parse_schedule_text(schedule_text: str):
     return results
 
 
-def parse_card(li, category: str, base_url: str = ""):
+def parse_card(li, category: str, base_url: str = "", today=None):
     title_tag = li.select_one('strong.title a')
     if not title_tag:
         return []
@@ -137,6 +137,19 @@ def parse_card(li, category: str, base_url: str = ""):
     if rating is None:
         return []
 
+    # 네이버 카드는 (월~목) 처럼 여러 요일을 한 줄로 묶어서 보여주지만,
+    # 시청률/ratingDate는 그 그룹 전체가 아니라 "가장 최근 방영된 회차"
+    # 딱 하나에 대한 값이다. 여기서 ratingDate를 실제 날짜로 환산해
+    # 요일을 역산하고, 그 요일에만 시청률을 붙인다(ratingByDay). 매일
+    # 스크래핑이 도니까 각 요일은 자기 방영일에 자연스럽게 채워지고,
+    # 아직 그 회차가 안 온 다른 요일은 이번 실행에서 건드리지 않는다
+    # (병합 단계에서 기존에 저장된 값을 그대로 보존).
+    matched_weekday = None
+    if today is not None and rating_date:
+        resolved = resolve_rating_date(rating_date, today)
+        if resolved is not None:
+            matched_weekday = DAY_ORDER[resolved.weekday()]
+
     programs = []
     for slot in slots:
         # 식별자(ID)에는 title을 포함한다. 채널+시간대만으로는 같은
@@ -145,6 +158,10 @@ def parse_card(li, category: str, base_url: str = ""):
         # 말줄임("...")으로 갈리는 제목 중복 문제는 아래 dedupe 단계에서
         # 같은 (category, channel, days, time) 그룹 내 제목을 정규화해
         # 별도로 처리한다.
+        rating_by_day = {}
+        if matched_weekday and matched_weekday in slot["days"]:
+            rating_by_day[matched_weekday] = {"rating": rating, "ratingDate": rating_date}
+
         programs.append({
             "id": f"{category}_{title}_{channel}_{slot['time']}",
             "category": category,
@@ -154,6 +171,7 @@ def parse_card(li, category: str, base_url: str = ""):
             "time": slot["time"],
             "rating": rating,
             "ratingDate": rating_date,
+            "ratingByDay": rating_by_day,
             "link": link,
         })
     return programs
@@ -213,11 +231,18 @@ def dedupe_programs(programs: list):
         key = p["id"]
         if key not in merged:
             merged[key] = p
+            merged[key].setdefault("ratingByDay", {})
             continue
 
         existing_days = set(merged[key]["days"])
         existing_days.update(p["days"])
         merged[key]["days"] = [d for d in DAY_ORDER if d in existing_days]
+
+        # 요일별 시청률(ratingByDay)은 서로 다른 요일 키를 담고 있을 뿐이니
+        # 그냥 합치면 된다(같은 요일 키가 겹치면 나중 값으로 덮어써도 무방 —
+        # 한 번의 실행 안에서는 같은 날짜 데이터라 차이가 없다).
+        merged[key].setdefault("ratingByDay", {})
+        merged[key]["ratingByDay"].update(p.get("ratingByDay", {}))
 
         # ratingDate가 더 최신인 카드로 rating/ratingDate를 교체한다.
         existing_resolved = resolve_rating_date(merged[key].get("ratingDate"), today)
@@ -229,11 +254,13 @@ def dedupe_programs(programs: list):
     return list(merged.values())
 
 
-def parse_cards_from_html(html: str, category: str, min_rating: float = 5.0, base_url: str = ""):
+def parse_cards_from_html(html: str, category: str, min_rating: float = 5.0, base_url: str = "", today=None):
+    if today is None:
+        today = datetime.now(KST).date()
     soup = BeautifulSoup(html, 'lxml')
     results = []
     for li in soup.select('li.info_box'):
-        for p in parse_card(li, category, base_url=base_url):
+        for p in parse_card(li, category, base_url=base_url, today=today):
             if p["rating"] >= min_rating:
                 results.append(p)
     return results
@@ -608,9 +635,18 @@ def _merge_programs_into_file(out_dir: str, monday_date, programs: list):
     by_id = {p["id"]: p for p in existing_programs}
     for p in programs:
         if p["id"] in by_id:
-            existing_days = set(by_id[p["id"]]["days"])
+            existing_entry = by_id[p["id"]]
+            existing_days = set(existing_entry["days"])
             existing_days.update(p["days"])
             p["days"] = [d for d in DAY_ORDER if d in existing_days]
+
+            # 요일별 시청률은 "이번에 새로 들어온 요일"만 덮어쓰고, 나머지
+            # 요일은 기존에 저장돼 있던 값을 그대로 보존한다. 이렇게 해야
+            # 월화수목 같은 그룹에서 매일 실행할 때마다 그날 요일만 갱신되고
+            # 나머지 요일이 그날 값으로 덮어써지지 않는다.
+            merged_rating_by_day = dict(existing_entry.get("ratingByDay", {}))
+            merged_rating_by_day.update(p.get("ratingByDay", {}))
+            p["ratingByDay"] = merged_rating_by_day
         by_id[p["id"]] = p
 
     # 기존에 누적 저장된 데이터(과거 회차에 말줄임으로 박혀있을 수 있음)와
@@ -623,9 +659,14 @@ def _merge_programs_into_file(out_dir: str, monday_date, programs: list):
     for p in all_merged:
         p["id"] = f"{p['category']}_{p['title']}_{p['channel']}_{p['time']}"
         if p["id"] in by_id:
-            existing_days = set(by_id[p["id"]]["days"])
+            existing_entry = by_id[p["id"]]
+            existing_days = set(existing_entry["days"])
             existing_days.update(p["days"])
             p["days"] = [d for d in DAY_ORDER if d in existing_days]
+
+            merged_rating_by_day = dict(existing_entry.get("ratingByDay", {}))
+            merged_rating_by_day.update(p.get("ratingByDay", {}))
+            p["ratingByDay"] = merged_rating_by_day
         by_id[p["id"]] = p
 
     merged_payload = {
