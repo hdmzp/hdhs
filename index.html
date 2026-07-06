@@ -389,6 +389,115 @@
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
 
+  /* ============ 의견 탭 ============ */
+  #tabFeedback {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 60px;
+    font-family: 'Pretendard', -apple-system, sans-serif;
+  }
+  .fb-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--ink);
+    margin: 0 0 8px;
+  }
+  .fb-desc {
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    margin: 0 0 28px;
+  }
+  .fb-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0 0 10px;
+  }
+  .fb-label .req { color: #DC2626; margin-left: 2px; }
+  .fb-label .opt { font-weight: 500; color: var(--ink-faint); font-size: 12px; margin-left: 4px; }
+  .fb-block { margin-bottom: 24px; }
+
+  .fb-type-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .fb-type-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 18px 8px;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    background: #fff;
+    cursor: pointer;
+    font-family: inherit;
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+  }
+  .fb-type-btn .fb-emoji { font-size: 24px; }
+  .fb-type-btn .fb-type-label { font-size: 13px; font-weight: 700; color: var(--ink); }
+  .fb-type-btn:hover { border-color: var(--brand-blue); }
+  .fb-type-btn.active {
+    background: var(--brand-blue);
+    border-color: var(--brand-blue);
+  }
+  .fb-type-btn.active .fb-type-label { color: #fff; }
+
+  @media (max-width: 480px) {
+    .fb-type-btn { padding: 14px 6px; }
+    .fb-type-btn .fb-emoji { font-size: 20px; }
+    .fb-type-btn .fb-type-label { font-size: 11.5px; }
+  }
+
+  .fb-input, .fb-textarea, .fb-email {
+    width: 100%;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    padding: 13px 14px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--ink);
+    background: #fff;
+    box-sizing: border-box;
+  }
+  .fb-input:focus, .fb-textarea:focus, .fb-email:focus {
+    outline: none;
+    border-color: var(--brand-blue);
+  }
+  .fb-textarea { resize: vertical; min-height: 160px; line-height: 1.6; }
+  .fb-count { text-align: right; font-size: 12px; color: var(--ink-faint); margin-top: 6px; }
+
+  .fb-submit {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: var(--radius);
+    background: var(--brand-blue);
+    color: #fff;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s, opacity 0.15s;
+  }
+  .fb-submit:hover { background: var(--brand-blue-hover); }
+  .fb-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .fb-status {
+    margin-top: 14px;
+    font-size: 13px;
+    text-align: center;
+    padding: 10px;
+    border-radius: 8px;
+    display: none;
+  }
+  .fb-status.show { display: block; }
+  .fb-status.ok { background: #ECFDF5; color: #047857; }
+  .fb-status.err { background: #FEF2F2; color: #B91C1C; }
+
   /* ============ 날씨 탭(달력) ============ */
   #tabWeather {
     --cold: #2563EB;
@@ -1836,6 +1945,7 @@
     <button id="tabBtnDramaVariety">드라마·예능</button>
     <button id="tabBtnWeather">날씨</button>
     <button id="tabBtnRanking">랭킹</button>
+    <button id="tabBtnFeedback">의견</button>
   </div>
 </header>
 
@@ -2024,6 +2134,45 @@
 <div class="rk-updated" id="rkUpdated"></div>
 
 <div class="rk-list" id="rkListWrap"></div>
+
+</div>
+
+<div id="tabFeedback" class="tab-panel">
+
+  <h2 class="fb-title">의견 보내기</h2>
+  <p class="fb-desc">서비스 이용 중 불편하신 점이나 개선 의견을 알려 주시면 더 나은 서비스로 보답하겠습니다.</p>
+
+  <div class="fb-block">
+    <div class="fb-label">유형 <span class="req">*</span></div>
+    <div class="fb-type-grid" id="fbTypeGrid">
+      <button type="button" class="fb-type-btn active" data-type="버그 제보">
+        <span class="fb-emoji">🐛</span><span class="fb-type-label">버그 제보</span>
+      </button>
+      <button type="button" class="fb-type-btn" data-type="기능 개선">
+        <span class="fb-emoji">💡</span><span class="fb-type-label">기능 개선</span>
+      </button>
+      <button type="button" class="fb-type-btn" data-type="기타 의견">
+        <span class="fb-emoji">💬</span><span class="fb-type-label">기타 의견</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="fb-block">
+    <div class="fb-label">제목 <span class="req">*</span></div>
+    <input type="text" class="fb-input" id="fbTitle" placeholder="제목을 입력해 주세요" maxlength="100">
+  </div>
+
+  <div class="fb-block">
+    <div class="fb-label">내용 <span class="req">*</span></div>
+    <textarea class="fb-textarea" id="fbContent" maxlength="2000" placeholder="어떤 동작을 하려다 문제가 발생했나요?
+
+예) 랭킹 탭에서 카테고리를 클릭하면 데이터가 뜨지 않습니다.
+(사용 기기·브라우저, 재현 순서를 적어 주시면 큰 도움이 됩니다.)"></textarea>
+    <div class="fb-count"><span id="fbCharCount">0</span>자 / 2000자</div>
+  </div>
+
+  <button type="button" class="fb-submit" id="fbSubmitBtn">제출하기</button>
+  <div class="fb-status" id="fbStatus"></div>
 
 </div>
 
@@ -3138,8 +3287,8 @@ function renderMonthPickerPanel() {
 }
 
 function switchTab(tab) {
-  const panels = { schedule: 'tabSchedule', weather: 'tabWeather', homeshop: 'tabHomeshop', dramavariety: 'tabDramaVariety', fixedpgm: 'tabFixedPgm', celebrity: 'tabCelebrity', ranking: 'tabRanking' };
-  const btns = { schedule: 'tabBtnSchedule', weather: 'tabBtnWeather', homeshop: 'tabBtnHomeshop', dramavariety: 'tabBtnDramaVariety', fixedpgm: 'tabBtnFixedPgm', celebrity: 'tabBtnCelebrity', ranking: 'tabBtnRanking' };
+  const panels = { schedule: 'tabSchedule', weather: 'tabWeather', homeshop: 'tabHomeshop', dramavariety: 'tabDramaVariety', fixedpgm: 'tabFixedPgm', celebrity: 'tabCelebrity', ranking: 'tabRanking', feedback: 'tabFeedback' };
+  const btns = { schedule: 'tabBtnSchedule', weather: 'tabBtnWeather', homeshop: 'tabBtnHomeshop', dramavariety: 'tabBtnDramaVariety', fixedpgm: 'tabBtnFixedPgm', celebrity: 'tabBtnCelebrity', ranking: 'tabBtnRanking', feedback: 'tabBtnFeedback' };
 
   for (const key in panels) {
     document.getElementById(panels[key]).classList.toggle('active', key === tab);
@@ -3588,6 +3737,7 @@ function celRenderCompare() {
   document.getElementById('tabBtnFixedPgm').addEventListener('click', () => switchTab('fixedpgm'));
   document.getElementById('tabBtnCelebrity').addEventListener('click', () => switchTab('celebrity'));
   document.getElementById('tabBtnRanking').addEventListener('click', () => switchTab('ranking'));
+  document.getElementById('tabBtnFeedback').addEventListener('click', () => switchTab('feedback'));
 
   const hsPicker = document.getElementById('hsDatePicker');
   hsPicker.value = hsCurrentDate;
@@ -3751,6 +3901,97 @@ function celRenderCompare() {
     });
   }
 
+})();
+
+// ============ 의견(피드백) 탭 ============
+(function () {
+  // ▼ Google Apps Script 웹앱 배포 후 발급되는 URL을 여기에 붙여넣으세요.
+  const FB_SCRIPT_URL = 'https://script.google.com/macros/s/여기에_배포_URL_붙여넣기/exec';
+
+  const typeGrid = document.getElementById('fbTypeGrid');
+  const titleInput = document.getElementById('fbTitle');
+  const contentInput = document.getElementById('fbContent');
+  const charCount = document.getElementById('fbCharCount');
+  const submitBtn = document.getElementById('fbSubmitBtn');
+  const statusEl = document.getElementById('fbStatus');
+
+  if (!typeGrid) return;
+
+  let fbSelectedType = '버그 제보';
+
+  const FB_PLACEHOLDERS = {
+    '버그 제보': `어떤 동작을 하려다 문제가 발생했나요?
+
+예) 랭킹 탭에서 카테고리를 클릭하면 데이터가 뜨지 않습니다.
+(사용 기기·브라우저, 재현 순서를 적어 주시면 큰 도움이 됩니다.)`,
+    '기능 개선': `어떤 기능이 추가되거나 개선되면 좋을까요?
+
+예) 셀럽PGM 탭에도 날짜별 필터가 있으면 좋겠습니다.
+(있으면 좋은 이유나 사용 상황을 함께 적어 주시면 검토에 도움이 됩니다.)`,
+    '기타 의견': `자유롭게 의견을 남겨 주세요.
+
+예) 홈쇼핑 탭 로딩 속도가 느립니다. / UI 색상이 눈에 부담됩니다.`
+  };
+
+  typeGrid.querySelectorAll('.fb-type-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      typeGrid.querySelectorAll('.fb-type-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      fbSelectedType = btn.dataset.type;
+      contentInput.placeholder = FB_PLACEHOLDERS[fbSelectedType] || '';
+    });
+  });
+
+  contentInput.addEventListener('input', () => {
+    charCount.textContent = contentInput.value.length;
+  });
+
+  function fbShowStatus(msg, ok) {
+    statusEl.textContent = msg;
+    statusEl.className = 'fb-status show ' + (ok ? 'ok' : 'err');
+  }
+
+  submitBtn.addEventListener('click', () => {
+    const title = titleInput.value.trim();
+    const content = contentInput.value.trim();
+
+    if (!title) { fbShowStatus('제목을 입력해 주세요.', false); titleInput.focus(); return; }
+    if (!content) { fbShowStatus('내용을 입력해 주세요.', false); contentInput.focus(); return; }
+
+    const payload = {
+      type: fbSelectedType,
+      title: title,
+      content: content,
+      page: location.href,
+      userAgent: navigator.userAgent,
+      timestamp: new Date().toISOString()
+    };
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = '제출 중...';
+    statusEl.className = 'fb-status';
+
+    fetch(FB_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors', // Apps Script는 CORS 응답 헤더를 안 주므로 no-cors로 전송(대신 응답 본문은 읽을 수 없음)
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    })
+      .then(() => {
+        fbShowStatus('소중한 의견 감사합니다! 정상적으로 제출되었습니다.', true);
+        titleInput.value = '';
+        contentInput.value = '';
+        charCount.textContent = '0';
+        gaEvent('feedback_submit', { feedback_type: fbSelectedType });
+      })
+      .catch(() => {
+        fbShowStatus('전송에 실패했습니다. 잠시 후 다시 시도해 주세요.', false);
+      })
+      .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '제출하기';
+      });
+  });
 })();
 </script>
    
