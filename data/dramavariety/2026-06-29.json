@@ -1,7 +1,7 @@
 {
   "weekStart": "2026-06-29",
   "weekEnd": "2026-07-05",
-  "collectedAt": "2026-07-06T09:01:56.089453+09:00",
+  "collectedAt": "2026-07-06T10:18:30.894545+09:00",
   "programs": [
     {
       "id": "drama_붉은 진주_KBS2_오후 07:50",
@@ -12,7 +12,8 @@
         "월",
         "화",
         "수",
-        "목"
+        "목",
+        "금"
       ],
       "time": "오후 07:50",
       "rating": 6.8,
@@ -844,6 +845,32 @@
       "rating": 13.6,
       "ratingDate": "07.05",
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=37590014&qvt=0&query=%EC%8B%A0%EC%9E%85%EC%82%AC%EC%9B%90%20%EA%B0%95%ED%9A%8C%EC%9E%A5"
+    },
+    {
+      "id": "variety_스트릿 레스토랑 파이터_tvN_오후 07:35",
+      "category": "variety",
+      "channel": "tvN",
+      "title": "스트릿 레스토랑 파이터",
+      "days": [
+        "일"
+      ],
+      "time": "오후 07:35",
+      "rating": 2.1,
+      "ratingDate": "07.05",
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=41197294&qvt=0&query=%EC%8A%A4%ED%8A%B8%EB%A6%BF%20%EB%A0%88%EC%8A%A4%ED%86%A0%EB%9E%91%20%ED%8C%8C%EC%9D%B4%ED%84%B0"
+    },
+    {
+      "id": "variety_열혈농구단2_SBS_오후 11:05",
+      "category": "variety",
+      "channel": "SBS",
+      "title": "열혈농구단2",
+      "days": [
+        "일"
+      ],
+      "time": "오후 11:05",
+      "rating": 1.2,
+      "ratingDate": "07.05",
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=41524517&qvt=0&query=%EC%97%B4%ED%98%88%EB%86%8D%EA%B5%AC%EB%8B%A82"
     }
   ]
 }
