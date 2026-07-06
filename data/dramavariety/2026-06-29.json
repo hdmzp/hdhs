@@ -1,7 +1,7 @@
 {
   "weekStart": "2026-06-29",
   "weekEnd": "2026-07-05",
-  "collectedAt": "2026-07-06T10:18:30.894545+09:00",
+  "collectedAt": "2026-07-06T16:22:50.093000+09:00",
   "programs": [
     {
       "id": "drama_붉은 진주_KBS2_오후 07:50",
@@ -871,6 +871,33 @@
       "rating": 1.2,
       "ratingDate": "07.05",
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=41524517&qvt=0&query=%EC%97%B4%ED%98%88%EB%86%8D%EA%B5%AC%EB%8B%A82"
+    },
+    {
+      "id": "variety_영화가 좋다_KBS2_오전 10:10",
+      "category": "variety",
+      "channel": "KBS2",
+      "title": "영화가 좋다",
+      "days": [
+        "토"
+      ],
+      "time": "오전 10:10",
+      "rating": 1.2,
+      "ratingDate": "07.04",
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=660621&qvt=0&query=%EC%98%81%ED%99%94%EA%B0%80%20%EC%A2%8B%EB%8B%A4"
+    },
+    {
+      "id": "variety_도깨비 10주년 여행_tvN_오후 09:10",
+      "category": "variety",
+      "channel": "tvN",
+      "title": "도깨비 10주년 여행",
+      "days": [
+        "토",
+        "일"
+      ],
+      "time": "오후 09:10",
+      "rating": 3.1,
+      "ratingDate": "07.05",
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=40985292&qvt=0&query=%EB%8F%84%EA%B9%A8%EB%B9%84%2010%EC%A3%BC%EB%85%84%20%EC%97%AC%ED%96%89"
     }
   ]
 }
