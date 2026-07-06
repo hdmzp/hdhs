@@ -1,7 +1,7 @@
 {
   "weekStart": "2026-06-22",
   "weekEnd": "2026-06-28",
-  "collectedAt": "2026-07-06T16:22:50.091379+09:00",
+  "collectedAt": "2026-07-06T19:49:54.246490+09:00",
   "programs": [
     {
       "id": "variety_톡파원 25시_JTBC_오후 08:50",
@@ -14,6 +14,12 @@
       "time": "오후 08:50",
       "rating": 2.2,
       "ratingDate": "06.22",
+      "ratingByDay": {
+        "월": {
+          "rating": 2.2,
+          "ratingDate": "06.22"
+        }
+      },
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=25674283&qvt=0&query=%ED%86%A1%ED%8C%8C%EC%9B%90%2025%EC%8B%9C"
     },
     {
@@ -274,6 +280,12 @@
       "time": "오후 10:00",
       "rating": 2.3,
       "ratingDate": "06.25",
+      "ratingByDay": {
+        "목": {
+          "rating": 2.3,
+          "ratingDate": "06.25"
+        }
+      },
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=35063971&qvt=0&query=%EC%9D%B4%ED%98%BC%EC%88%99%EB%A0%A4%EC%BA%A0%ED%94%84"
     },
     {
@@ -391,6 +403,12 @@
       "time": "오후 09:00",
       "rating": 1.4,
       "ratingDate": "06.27",
+      "ratingByDay": {
+        "토": {
+          "rating": 1.4,
+          "ratingDate": "06.27"
+        }
+      },
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=3052901&qvt=0&query=%EC%95%84%EB%8A%94%20%ED%98%95%EB%8B%98"
     },
     {
