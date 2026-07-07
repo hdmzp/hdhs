@@ -1616,9 +1616,6 @@
     padding: 14px 24px 0;
     display: flex;
     justify-content: center;
-    position: sticky;
-    top: 49px;
-    z-index: 5;
     background: var(--paper);
   }
 
@@ -1660,9 +1657,9 @@
   }
 
   .fp-hscroll {
-    overflow-x: auto;
-    overflow-y: visible;
-    -webkit-overflow-scrolling: touch;
+    overflow: auto;
+    max-height: calc(100vh - 210px);
+    border-bottom: 1px solid var(--rule);
   }
 
   table.fp-table {
@@ -1678,6 +1675,9 @@
     padding: 10px 4px 12px;
     border-bottom: 1px solid var(--rule);
     text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 4;
   }
   table.fp-table thead th.fp-time-col {
     width: 60px;
@@ -1842,7 +1842,7 @@
   .fp-co-badge-inline.gs { background: var(--gs); }
 
   @media (max-width: 700px) {
-    .fp-controls { padding: 10px 8px 0; top: 45px; }
+    .fp-controls { padding: 10px 8px 0; }
     .fp-day-tabs { width: 100%; justify-content: space-between; }
     .fp-day-btn { padding: 7px 8px; font-size: 12px; flex: 1; }
     .fp-scroll { padding: 0 8px 40px; }
