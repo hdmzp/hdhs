@@ -1490,6 +1490,12 @@
   }
   .hs-prog .hs-brand {
     color: #1B5E5A;
+    font-weight: 900;
+  }
+  .hs-prog .hs-brand-sep {
+    color: var(--ink-faint);
+    font-weight: 400;
+    margin: 0 4px;
   }
   .hs-prog .hs-bottom-row {
     display: flex;
@@ -3259,7 +3265,7 @@ function hsRenderProgram(p, nowMin) {
   }
   const durationStr = durationMin !== null ? ` (${durationMin}')` : '';
 
-  const brandHtml = p.brand ? `<span class="hs-brand">${escapeHtml(p.brand)}</span> ` : '';
+  const brandHtml = p.brand ? `<span class="hs-brand">${escapeHtml(p.brand)}</span><span class="hs-brand-sep">|</span> ` : '';
   const productText = p.product || (p.brand ? '' : '(정보 없음)');
 
   const priceHtml = hsFormatPrice(p.price);
