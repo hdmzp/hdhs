@@ -71,6 +71,113 @@
     margin: 0;
   }
 
+  /* ============ 화면 설명 툴팁 ============ */
+  .info-tip-wrap {
+    position: relative;
+    margin-left: auto;
+    align-self: center;
+  }
+
+  .info-tip-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border-radius: 50%;
+    border: 1px solid var(--rule);
+    background: linear-gradient(180deg, #fff, var(--paper-dim));
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .info-tip-btn svg { width: 15px; height: 15px; flex: none; }
+  .info-tip-btn:hover {
+    background: var(--now-bg);
+    border-color: var(--now-accent);
+    color: var(--now-accent);
+    box-shadow: 0 2px 8px rgba(37,99,235,0.15);
+  }
+  .info-tip-btn.open {
+    background: var(--now-accent);
+    border-color: var(--now-accent);
+    color: #fff;
+  }
+
+  .info-tip-wrap.no-tip { display: none; }
+
+  .info-tip-bubble {
+    display: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 320px;
+    max-width: 92vw;
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    padding: 0;
+    overflow: hidden;
+    font-size: 11.5px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    box-shadow: 0 8px 24px rgba(20,20,30,0.14);
+    z-index: 50;
+    animation: infoTipPop 0.15s ease-out;
+  }
+  @keyframes infoTipPop {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .info-tip-bubble.open { display: block; }
+  .info-tip-bubble::before {
+    content: "";
+    position: absolute;
+    top: -6px;
+    right: 14px;
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    border-left: 1px solid var(--rule);
+    border-top: 1px solid var(--rule);
+    transform: rotate(45deg);
+  }
+  .info-tip-bubble-head {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 14px;
+    background: var(--now-bg);
+    color: var(--now-accent);
+    font-weight: 700;
+    font-size: 11.5px;
+  }
+  .info-tip-bubble-head svg { width: 14px; height: 14px; }
+  .info-tip-bubble-body { padding: 12px 14px; }
+  .info-tip-bubble-body b { color: var(--ink); }
+  .info-tip-bubble-body ul { margin: 6px 0 0; padding-left: 0; list-style: none; }
+  .info-tip-bubble-body li {
+    position: relative;
+    margin-bottom: 6px;
+    padding-left: 14px;
+  }
+  .info-tip-bubble-body li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 7px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--now-accent);
+  }
+  .info-tip-bubble-body li:last-child { margin-bottom: 0; }
+
+  @media (max-width: 480px) {
+    .info-tip-bubble { right: -8px; }
+  }
+
   .controls {
     max-width: 1400px;
     margin: 0 auto;
@@ -1403,6 +1510,12 @@
   }
   .hs-prog:hover .hs-goto { color: var(--now-accent); }
 
+  .hs-prog.onair-cell {
+    background: var(--now-bg);
+    box-shadow: inset 0 0 0 1.5px var(--now-accent);
+  }
+  .hs-prog.onair-cell .hs-title { color: var(--ink); }
+
   td.hs-empty-cell { background: var(--paper-dim); opacity: 0.4; }
 
   .hs-hitbest {
@@ -1947,6 +2060,16 @@
     <button id="tabBtnRanking">랭킹</button>
     <button id="tabBtnFeedback">의견</button>
   </div>
+  <div class="info-tip-wrap" id="infoTipWrap">
+    <button type="button" class="info-tip-btn" id="infoTipBtn" aria-label="화면 설명 보기">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="9"></circle>
+        <line x1="12" y1="11" x2="12" y2="16.5"></line>
+        <circle cx="12" cy="7.7" r="0.9" fill="currentColor" stroke="none"></circle>
+      </svg>
+    </button>
+    <div class="info-tip-bubble" id="infoTipBubble"></div>
+  </div>
 </header>
 
 <div id="tabSchedule" class="tab-panel">
@@ -2178,6 +2301,83 @@
 
 <script>
 // ============ GA4 이벤트 헬퍼 ============
+const TAB_TIPS = {
+  homeshop: {
+    title: '홈쇼핑 탭은?',
+    items: [
+      '출처: (HD·CJ·LT) 공식 사이트, (그 외) 라방바',
+      '방송 편성이 제공되지 않는 경우 <b>Hit&amp;Best</b>로 표시돼요',
+      '상품명을 수집해 <b>브랜드명</b>을 추정해요',
+      '브랜드 추정이 어려운 경우 브랜드명이 비어있어요',
+      '<b>카테고리</b>는 브랜드명+상품명 조합으로 추정해요',
+    ],
+  },
+  fixedpgm: {
+    title: '고정PGM 탭은?',
+    items: ['홈쇼핑 4사의 고정 프로그램을 각 사 사이트에서 수집해요'],
+  },
+  schedule: {
+    title: '지상파·종편 탭은?',
+    items: ['네이버 편성표 검색 결과를 가져와요'],
+  },
+  dramavariety: {
+    title: '드라마·예능 탭은?',
+    items: ['네이버에서 시청률 드라마 5%·예능 1% 이상만 수집해요'],
+  },
+  weather: {
+    title: '날씨 탭은?',
+    items: ['기상청 데이터와 연동돼요', '1년 전 동일 날짜의 기온을 함께 확인할 수 있어요'],
+  },
+  ranking: {
+    title: '랭킹 탭은?',
+    items: ['홈쇼핑모아에서 제공하는 카테고리별 인기 랭킹이에요', '최근 7일의 매출액 순위예요'],
+  },
+  // celebrity, feedback: 설명 없음 → 버튼 자체를 숨김
+};
+
+const INFO_TIP_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><line x1="12" y1="11" x2="12" y2="16.5"></line><circle cx="12" cy="7.7" r="0.9" fill="currentColor" stroke="none"></circle></svg>`;
+
+function updateInfoTip(tab) {
+  const wrap = document.getElementById('infoTipWrap');
+  const btn = document.getElementById('infoTipBtn');
+  const bubble = document.getElementById('infoTipBubble');
+  const tip = TAB_TIPS[tab];
+
+  btn.classList.remove('open');
+  bubble.classList.remove('open');
+
+  if (!tip) {
+    wrap.classList.add('no-tip');
+    bubble.innerHTML = '';
+    return;
+  }
+  wrap.classList.remove('no-tip');
+  const itemsHtml = tip.items.map(t => `<li>${t}</li>`).join('');
+  bubble.innerHTML =
+    `<div class="info-tip-bubble-head">${INFO_TIP_ICON}${tip.title}</div>` +
+    `<div class="info-tip-bubble-body"><ul>${itemsHtml}</ul></div>`;
+}
+
+function initInfoTip() {
+  const btn = document.getElementById('infoTipBtn');
+  const bubble = document.getElementById('infoTipBubble');
+
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const willOpen = !bubble.classList.contains('open');
+    bubble.classList.toggle('open', willOpen);
+    btn.classList.toggle('open', willOpen);
+    if (willOpen) gaEvent('filter_click', { filter_group: 'info_tip', filter_value: currentActiveTab });
+  });
+
+  document.addEventListener('click', () => {
+    bubble.classList.remove('open');
+    btn.classList.remove('open');
+  });
+}
+
+let currentActiveTab = 'homeshop';
+
 function gaEvent(name, params) {
   if (typeof gtag === 'function') {
     gtag('event', name, params || {});
@@ -3069,7 +3269,7 @@ function hsRenderProgram(p, nowMin) {
     ? `<a class="hs-goto" href="${p.link}" target="_blank" rel="noopener">바로가기</a>`
     : '';
 
-  return `<div class="hs-prog" style="border-left-color:${color};">` +
+  return `<div class="hs-prog${onair ? ' onair-cell' : ''}" style="border-left-color:${color};">` +
          `<div class="hs-time${onair ? ' onair' : ''}">${p.start}–${p.end}${durationStr}` +
          (onair ? '<span class="hs-onair-badge">방송중</span>' : '') +
          `</div>` +
@@ -3134,11 +3334,24 @@ function hsRenderBody() {
 
 function hsScrollToCurrentHour(wrap, nowMin) {
   if (nowMin === null) return;
+  const scrollContainer = wrap.querySelector('.hs-scroll');
+  if (!scrollContainer) return;
+
+  // 방송중인 카드가 있으면 그 카드가 화면 가운데 오도록, 없으면 해당 시간대 행 상단으로
+  // (표 셀 안쪽 깊이 중첩된 요소라 offsetTop이 부정확할 수 있어 getBoundingClientRect로 계산)
+  const onairEl = wrap.querySelector('.hs-prog.onair-cell');
+  if (onairEl) {
+    const contRect = scrollContainer.getBoundingClientRect();
+    const elRect = onairEl.getBoundingClientRect();
+    const delta = (elRect.top - contRect.top) - scrollContainer.clientHeight / 2 + elRect.height / 2;
+    scrollContainer.scrollTop = Math.max(0, scrollContainer.scrollTop + delta);
+    return;
+  }
+
   const hour = Math.floor(nowMin / 60);
   const rows = wrap.querySelectorAll('table.hs-table tbody tr');
   const targetRow = rows[hour];
-  const scrollContainer = wrap.querySelector('.hs-scroll');
-  if (targetRow && scrollContainer) {
+  if (targetRow) {
     const offset = targetRow.offsetTop - 40;
     scrollContainer.scrollTop = Math.max(0, offset);
   }
@@ -3294,6 +3507,9 @@ function switchTab(tab) {
     document.getElementById(panels[key]).classList.toggle('active', key === tab);
     document.getElementById(btns[key]).classList.toggle('active', key === tab);
   }
+
+  currentActiveTab = tab;
+  updateInfoTip(tab);
 
   if (tab === 'weather' && !_weatherTabLoaded) {
     _weatherTabLoaded = true;
@@ -3630,6 +3846,54 @@ function celRenderProductRow(p) {
   );
 }
 
+// 셀럽PGM 편성 문구 표준화: 회사/스크래퍼마다 원문 표기가 제각각이라
+// ("매주 월요일 19시35분" / "화요일 19시 35분" / "매주 수요일 20:45" /
+//  "매주 목요일 저녁 8시 45분" / "매주 목 20시 45분/ 토 08시 20분" 등)
+// 화면에는 항상 "매주 O요일 hh시 mm분" 형태로 통일해 보여준다.
+// (요일이 여러 개면 " · "로 이어붙임. 파싱에 실패하면 원문을 그대로 보여줘
+//  최소한 정보가 사라지지는 않게 한다.)
+function normalizeScheduleRaw(raw) {
+  if (!raw) return '';
+  const DAY_MAP = { '월': '월요일', '화': '화요일', '수': '수요일', '목': '목요일', '금': '금요일', '토': '토요일', '일': '일요일' };
+
+  const segments = raw.replace(/매주/g, '').split(/[\/,·]/).map(s => s.trim()).filter(Boolean);
+  const parts = [];
+
+  for (const seg of segments) {
+    let day = null;
+    const fullDayMatch = seg.match(/([월화수목금토일])요일/);
+    if (fullDayMatch) {
+      day = DAY_MAP[fullDayMatch[1]];
+    } else {
+      const shortDayMatch = seg.match(/([월화수목금토일])(?=\s|\d)/);
+      if (shortDayMatch) day = DAY_MAP[shortDayMatch[1]];
+    }
+    if (!day) continue;
+
+    let hour = null, minute = null;
+    let m = seg.match(/(\d{1,2})\s*시\s*(\d{1,2})\s*분/);
+    if (m) {
+      hour = parseInt(m[1], 10);
+      minute = parseInt(m[2], 10);
+    } else {
+      m = seg.match(/(\d{1,2}):(\d{2})/);
+      if (m) {
+        hour = parseInt(m[1], 10);
+        minute = parseInt(m[2], 10);
+      }
+    }
+    if (hour === null) continue;
+
+    const isPM = /저녁|오후|밤/.test(seg);
+    if (isPM && hour < 12) hour += 12;
+
+    parts.push(`${day} ${String(hour).padStart(2, '0')}시 ${String(minute).padStart(2, '0')}분`);
+  }
+
+  if (parts.length === 0) return raw;
+  return `매주 ${parts.join(' · ')}`;
+}
+
 function celRenderColumn(file) {
   const meta = celProgramMeta[file] || { title: file, company: '', schedule_raw: '' };
   const products = celRawDataFull.filter(p => p._originFile === file);
@@ -3664,7 +3928,7 @@ function celRenderColumn(file) {
       `<div class="cel-col-head">` +
         (meta.company ? `<span class="cel-col-co ${coCls}">${meta.company}</span>` : '') +
         titleHtml +
-        (meta.schedule_raw ? `<div class="cel-col-sched">${meta.schedule_raw}</div>` : '') +
+        (meta.schedule_raw ? `<div class="cel-col-sched">${normalizeScheduleRaw(meta.schedule_raw)}</div>` : '') +
       `</div>` +
       `<div class="cel-col-body">${bodyHtml}</div>` +
     `</div>`
@@ -3685,6 +3949,9 @@ function celRenderCompare() {
 }
 
 (async function init() {
+  initInfoTip();
+  updateInfoTip('homeshop');
+
   const now = new Date();
   currentYear = now.getFullYear();
   currentMonth = now.getMonth() + 1;
