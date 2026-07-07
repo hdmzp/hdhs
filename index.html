@@ -3576,6 +3576,22 @@ function fpEscapeHtml(s) {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
+// 고정PGM 편성 표시: schedule_raw는 회사마다 표기가 제각각이라(예: "매주
+// 월요일 09:20" vs "월요일 오후 19시35분") 화면에 그대로 쓰지 않고, 이미
+// 정제돼 들어오는 slot.day / slot.time 필드로 직접 "O요일 hh:mm" 형태를
+// 만들어 통일한다. ('매주'는 생략)
+function fpFormatSchedule(slot) {
+  // '매주'는 기본값이라 생략하지만, '격주'처럼 주기 자체가 다른 의미를 가지는
+  // 표현은 원문(schedule_raw)에 남아있으면 절대 지우지 않고 그대로 앞에 붙인다.
+  const freqMatch = (slot.schedule_raw || '').match(/격주|매월|월\s*\d+회/);
+  const freqPrefix = freqMatch ? `${freqMatch[0]} ` : '';
+
+  if (slot.day && slot.time) {
+    return `${freqPrefix}${fpEscapeHtml(slot.day)}요일 ${fpEscapeHtml(slot.time)}`;
+  }
+  return fpEscapeHtml(slot.schedule_raw || '');
+}
+
 function fpRenderCard(slot, compact) {
   const co = slot.company.toLowerCase();
   const link = slot.detail_link || '#';
@@ -3598,7 +3614,7 @@ function fpRenderCard(slot, compact) {
       `<div class="fp-body">` +
         (compact ? `<span class="fp-co-badge-inline ${co}">${fpEscapeHtml(slot.company)}</span> ` : '') +
         `<div class="fp-title">${fpEscapeHtml(slot.title)}</div>` +
-        `<div class="fp-schedule">${fpEscapeHtml(slot.schedule_raw)}</div>` +
+        `<div class="fp-schedule">${fpFormatSchedule(slot)}</div>` +
       `</div>` +
     `</a>`
   );
