@@ -13,21 +13,25 @@
    오늘 진행예정인 식품 방송입니다
 
    💊 건강식품
-   49회
-   01:00 롯데 프롬바이오 위엔 매스틱 24주분
+   총 49회, (4개사) 12회
+   06:40 [현대] 하루틴 | 프리미엄 리포좀 비타민C
    ...
 
    🥩 일반식품
-   55회
+   총 55회, (4개사) 9회
    ...
 
+'총 N회'는 전체 회사·전체 시간 기준이고, 목록과 '(4개사) N회'는
+COMPANIES + 시간대(TIME_START~TIME_END) 필터를 적용한 것이다.
 카카오 텍스트 템플릿은 200자 제한이 있어 줄 단위로 쪼개 여러 건을 순서대로 보낸다.
 
 == 환경변수 ==
   KAKAO_REST_API_KEY  (필수) 카카오 개발자 앱 REST API 키
   KAKAO_REFRESH_TOKEN (필수) get_token.py 로 발급받은 리프레시 토큰
-  COMPANIES           (선택) 포함할 회사 코드, 쉼표 구분 (기본: *_live 전체)
-                      예: "CJ,GS,HD,LT,NS,HNS,PUBLIC"
+  COMPANIES           (선택) 목록에 표시할 회사 코드, 쉼표 구분 (기본: HD,GS,CJ,LT)
+                      전체 표시: "ALL"
+  TIME_START          (선택) 목록 시작 시각 (기본: 06:00)
+  TIME_END            (선택) 목록 종료 시각 (기본: 23:59)
   WEATHER_REGION      (선택) 날씨 지역 폴더명 (기본: seoul)
   LINK_URL            (선택) 메시지 하단 링크 (기본: GitHub Pages)
   TARGET_DATE         (선택) YYYY-MM-DD, 미지정 시 오늘(KST)
@@ -51,8 +55,12 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REST_API_KEY = os.environ.get("KAKAO_REST_API_KEY", "")
 REFRESH_TOKEN = os.environ.get("KAKAO_REFRESH_TOKEN", "")
 WEATHER_REGION = os.environ.get("WEATHER_REGION") or "seoul"
-LINK_URL = os.environ.get("LINK_URL", "https://hdmzp.github.io/hdhs/")
+LINK_URL = os.environ.get("LINK_URL") or "https://hdmzp.github.io/hdhs/"
 DRY_RUN = os.environ.get("DRY_RUN", "") == "1"
+
+DEFAULT_COMPANIES = "HD,GS,CJ,LT"
+TIME_START = os.environ.get("TIME_START") or "06:00"
+TIME_END = os.environ.get("TIME_END") or "23:59"
 
 # 카카오 텍스트 템플릿 text 필드 최대 길이
 TEXT_LIMIT = 200
@@ -105,7 +113,9 @@ def clean_product(name):
 
 
 def load_broadcasts(day_str, month_str, companies):
+    """rows: 필터(회사+시간대) 적용된 표시용 목록, totals: 전체 회사·전체 시간 건수"""
     rows = {cat: [] for _, cat in SECTIONS}
+    totals = {cat: 0 for _, cat in SECTIONS}
     for path in glob.glob(os.path.join(ROOT, "homeshopping", "*_live", month_str + ".json")):
         try:
             with open(path, encoding="utf-8") as f:
@@ -113,11 +123,15 @@ def load_broadcasts(day_str, month_str, companies):
         except (OSError, json.JSONDecodeError):
             continue
         company = data.get("company", "")
-        if companies and company not in companies:
-            continue
         for item in data.get("days", {}).get(day_str, []):
             cat = item.get("category")
             if cat not in rows:
+                continue
+            totals[cat] += 1
+            if companies and company not in companies:
+                continue
+            start = item.get("start", "")
+            if not (TIME_START <= start <= TIME_END):
                 continue
             brand = (item.get("brand") or "").strip()
             product = clean_product(item.get("product") or "")
@@ -125,17 +139,15 @@ def load_broadcasts(day_str, month_str, companies):
             if brand and product.startswith(brand):
                 brand = ""
             name = COMPANY_NAMES.get(company, company)
-            parts = [item.get("start", "??:??"), name]
-            if brand:
-                parts.append(brand)
-            parts.append(product)
-            rows[cat].append((item.get("start", ""), " ".join(parts)))
+            line = "%s [%s] " % (start or "??:??", name)
+            line += (brand + " | " + product) if brand else product
+            rows[cat].append((start, line))
     for cat in rows:
         rows[cat].sort(key=lambda r: r[0])
-    return rows
+    return rows, totals
 
 
-def build_message(now, weather, rows):
+def build_message(now, weather, rows, totals, n_companies):
     lines = []
     lines.append("%02d/%02d(%s)" % (now.month, now.day, WEEKDAY_KO[now.weekday()]))
     if weather:
@@ -154,7 +166,7 @@ def build_message(now, weather, rows):
         items = rows.get(cat, [])
         lines.append("")
         lines.append(header)
-        lines.append("%d회" % len(items))
+        lines.append("총 %d회, (%d개사) %d회" % (totals.get(cat, 0), n_companies, len(items)))
         for _, text in items:
             lines.append(text)
     return lines
@@ -228,19 +240,24 @@ def main():
     day_str = now.strftime("%Y-%m-%d")
     month_str = now.strftime("%Y-%m")
 
-    companies_env = os.environ.get("COMPANIES", "").strip()
-    companies = set(c.strip() for c in companies_env.split(",") if c.strip()) or None
+    companies_env = (os.environ.get("COMPANIES") or DEFAULT_COMPANIES).strip()
+    if companies_env.upper() == "ALL":
+        companies = None
+        n_companies = len(COMPANY_NAMES)
+    else:
+        companies = set(c.strip() for c in companies_env.split(",") if c.strip())
+        n_companies = len(companies)
 
     weather = load_weather(day_str)
     if weather is None:
         print("※ %s 날씨 데이터 없음 (%s)" % (day_str, WEATHER_REGION))
-    rows = load_broadcasts(day_str, month_str, companies)
-    total = sum(len(v) for v in rows.values())
+    rows, totals = load_broadcasts(day_str, month_str, companies)
+    total = sum(totals.values())
     if total == 0:
         print("%s 식품 방송 데이터가 없습니다. 발송 생략." % day_str)
         return
 
-    lines = build_message(now, weather, rows)
+    lines = build_message(now, weather, rows, totals, n_companies)
     chunks = chunk_lines(lines)
     print("방송 %d건 → 메시지 %d건으로 분할" % (total, len(chunks)))
 
