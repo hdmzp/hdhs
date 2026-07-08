@@ -65,34 +65,62 @@ def format_price(price):
 
 
 def build_lines(programs):
-    lines = ["<b>🌟 셀럽PGM 상품리스트</b>"]
+    lines = ["<b>🌟 셀럽""PGM 상품리스트</b>"]
     for pgm in programs:
         title = pgm.get("program_title", "")
         company = pgm.get("company", "")
-        lines.append("")
-        lines.append("🎤 <b>%s</b> (%s)" % (esc(title), esc(company)))
 
-        # 방송일시(라벨)별로 상품을 묶어서 표시
-        prev_label = None
+        # 방송일시(라벨)별로 상품을 묶는다 (지난방송 제외)
+        groups = {}
+        label_order = []
         for item in pgm.get("products", []):
             label = (item.get("broadcast_date_label") or "").strip()
-            if label != prev_label:
-                lines.append("<b>%s</b>" % esc(label))
-                lines.append("")
-                prev_label = label
-            brand = (item.get("brand") or "").strip()
-            name = " ".join((item.get("name") or "").split())
-            link = (item.get("link") or "").strip()
-            price = format_price(item.get("price"))
+            if "지난방송" in label:
+                continue
+            if label not in groups:
+                groups[label] = []
+                label_order.append(label)
+            groups[label].append(item)
 
-            entry = []
-            if brand:
-                entry.append("<b>[%s]</b>" % esc(brand))
-            entry.append('<a href="%s">%s</a>' % (esc(link), esc(name)) if link else esc(name))
-            if price:
-                entry.append(price)
-            lines.append("\n".join(entry))
-            lines.append("")  # 상품 사이 여백
+        block = []
+        n_items = 0
+        for label in label_order:
+            block.append("<b>%s</b>" % esc(label))
+            block.append("")
+            # 같은 라벨 안에서 동일 브랜드(또는 동일 상품군)는 첫 상품만 남긴다
+            seen = set()
+            for item in groups[label]:
+                brand = (item.get("brand") or "").strip()
+                # 'GS SHOP' 같은 쇼핑몰명은 실제 브랜드가 아니므로 무시
+                if brand.upper().replace(" ", "") in ("GSSHOP", "GS샵"):
+                    brand = ""
+                name = " ".join((item.get("name") or "").split())
+                # 중복 판정 키: 브랜드, 없으면 상품명 첫 단어(구성만 다른 변형 제거)
+                key = brand or (name.split()[0] if name.split() else name)
+                if key in seen:
+                    continue
+                seen.add(key)
+
+                link = (item.get("link") or "").strip()
+                price = format_price(item.get("price"))
+                entry = []
+                if brand:
+                    entry.append("<b>[%s]</b>" % esc(brand))
+                entry.append('<a href="%s">%s</a>' % (esc(link), esc(name)) if link else esc(name))
+                if price:
+                    entry.append(price)
+                block.append("\n".join(entry))
+                block.append("")  # 상품 사이 여백
+                n_items += 1
+            if block and block[-1] == "":
+                block.pop()
+            block.append("")
+
+        # 표시할 상품이 하나도 없으면 프로그램 자체를 생략
+        if n_items:
+            lines.append("")
+            lines.append("🎤 <b>%s</b> (%s)" % (esc(title), esc(company)))
+            lines.extend(block)
     while lines and lines[-1] == "":
         lines.pop()
     return lines
