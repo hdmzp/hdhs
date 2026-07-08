@@ -66,8 +66,8 @@ TIME_END = os.environ.get("TIME_END") or "23:59"
 COMPANY_NAMES = {
     "CJ": "CJ",
     "GS": "GS",
-    "HD": "현대",
-    "LT": "롯데",
+    "HD": "HD",
+    "LT": "LT",
     "NS": "NS",
     "HNS": "홈앤",
     "PUBLIC": "공영",
