@@ -1,0 +1,81 @@
+name: 홈쇼핑 편성 수집 (기타7개사)
+
+on:
+  schedule:
+    # 하루 2회: KST 06:10 = UTC 21:10 (전날), KST 12:40 = UTC 03:40
+    - cron: "10 21 * * *"
+    - cron: "40 3 * * *"
+  workflow_dispatch: {}  # 수동 실행 버튼
+
+permissions:
+  contents: write
+  actions: write   # pages-deploy 워크플로우를 API로 dispatch하려면 필요
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Python 설치
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 패키지 설치
+        run: pip install requests beautifulsoup4 scikit-learn joblib pandas openpyxl
+
+      - name: 홈쇼핑 스크래퍼 실행 - 기타7개사(공영/홈앤/K쇼핑/신세계/NS/쇼핑엔티/SK스토아, 라방바 경유)
+        continue-on-error: true
+        run: python etc_scraper.py
+
+      - name: 결과 커밋 & 푸시
+        id: commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # 위 스크래퍼 스텝이 continue-on-error: true라서 실패해도 여기까지 온다.
+          # 그 경우 디렉토리 자체가 안 만들어져 git add -A -- {경로}가
+          # "did not match any files"로 fatal 종료할 수 있으므로, mkdir -p로
+          # 대상 디렉토리 존재를 먼저 보장한다 (빈 디렉토리는 git add -A가 안전하게 무시).
+          mkdir -p homeshopping/PUBLIC_live \
+                   homeshopping/HNS_live \
+                   homeshopping/KTALPHA_live \
+                   homeshopping/SHINSEGAE_live \
+                   homeshopping/NS_live \
+                   homeshopping/NS_plus \
+                   homeshopping/SHOPPINGNT_live \
+                   homeshopping/SKSTOA_live
+          git add -A -- \
+                  homeshopping/PUBLIC_live \
+                  homeshopping/HNS_live \
+                  homeshopping/KTALPHA_live \
+                  homeshopping/SHINSEGAE_live \
+                  homeshopping/NS_live \
+                  homeshopping/NS_plus \
+                  homeshopping/SHOPPINGNT_live \
+                  homeshopping/SKSTOA_live
+          if git diff --staged --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "chore: 기타7개사 편성 자동 갱신 $(date -u +%Y-%m-%d)"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+          git pull --rebase --autostash origin main
+          git push
+
+      - name: Pages 재배포 트리거
+        # github-actions[bot] 계정(GITHUB_TOKEN)으로 만든 push는 GitHub이
+        # 다른 워크플로우를 재귀적으로 트리거하지 않아, 위에서 데이터를
+        # 새로 커밋해도 pages-deploy.yml이 자동으로 반응하지 않을 수 있다.
+        # workflow_dispatch를 API로 직접 호출해 배포를 강제로 큐에 넣는다.
+        if: steps.commit.outputs.changed == 'true'
+        run: |
+          curl -L -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/pages-deploy.yml/dispatches" \
+            -d '{"ref":"main"}'

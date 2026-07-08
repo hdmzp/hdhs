@@ -1,0 +1,70 @@
+name: pages-deploy
+
+on:
+  # 1) 사람이 직접 main에 푸시했을 때는 원래처럼 그냥 자동으로 돈다.
+  push:
+    branches: [main]
+  # 2) 스크래퍼 워크플로우들(github-actions[bot] 계정으로 커밋/푸시)은
+  #    push 이벤트가 다른 워크플로우를 재귀 트리거하지 않는 GitHub 정책
+  #    때문에 위 push 트리거가 안 먹는다. 그래서 각 스크래퍼 워크플로우가
+  #    커밋 후 이 workflow_dispatch를 API로 직접 호출해서 강제로 배포한다.
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 이전에 걸려있는(멈춰있는) 배포가 있으면 새 배포가 이를 자동으로 취소하고
+# 진행한다. false로 두면 멈춘 배포 하나가 이후 모든 배포를 영원히 막을 수 있다.
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy1.outputs.page_url || steps.deploy2.outputs.page_url || steps.deploy3.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Pages 설정
+        uses: actions/configure-pages@v5
+
+      - name: 사이트 아티팩트 업로드
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      # GitHub Pages 배포가 "Deployment failed, try again later." 같은
+      # 일시적 오류로 실패하는 경우가 종종 있다(레포/코드 문제가 아니라
+      # GitHub 쪽 인프라 이슈). 사람이 매번 수동으로 "Re-run" 누르지
+      # 않아도 되도록, 최대 3번까지 자동 재시도한다. 한 번에 성공하면
+      # 2차/3차 시도는 조건(if)에 걸려 아예 실행되지 않으므로, 평소엔
+      # 추가 시간이 들지 않는다.
+      - name: Pages 배포 (1차 시도)
+        id: deploy1
+        continue-on-error: true
+        uses: actions/deploy-pages@v5
+
+      - name: 15초 대기 후 재시도 (1차 실패 시)
+        if: steps.deploy1.outcome == 'failure'
+        run: sleep 15
+
+      - name: Pages 배포 (2차 시도)
+        id: deploy2
+        if: steps.deploy1.outcome == 'failure'
+        continue-on-error: true
+        uses: actions/deploy-pages@v5
+
+      - name: 30초 대기 후 재시도 (2차 실패 시)
+        if: steps.deploy1.outcome == 'failure' && steps.deploy2.outcome == 'failure'
+        run: sleep 30
+
+      - name: Pages 배포 (3차 시도, 최종)
+        id: deploy3
+        if: steps.deploy1.outcome == 'failure' && steps.deploy2.outcome == 'failure'
+        uses: actions/deploy-pages@v5

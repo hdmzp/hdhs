@@ -1,0 +1,61 @@
+name: 날씨 수집
+
+on:
+  schedule:
+    # 매일 한국시간(KST) 05:30 = UTC 20:30 (전날). 편성표(05:00)와 겹치지 않도록 30분 뒤.
+    - cron: "30 20 * * *"
+  workflow_dispatch: {}  # 수동 실행 버튼
+
+permissions:
+  contents: write
+  actions: write   # pages-deploy 워크플로우를 API로 dispatch하려면 필요
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Python 설치
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 패키지 설치
+        run: pip install requests
+
+      - name: 날씨 스크래퍼 실행
+        env:
+          API_KEY: ${{ secrets.WEATHER_API_KEY }}
+        run: python weather.py
+
+      - name: 결과 커밋 & 푸시
+        id: commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add weather/asos/*.json weather/forecast/*.json
+          if git diff --staged --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "chore: 날씨 자동 갱신 $(date -u +%Y-%m-%d)"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+          git pull --rebase --autostash origin main
+          git push
+
+      - name: Pages 재배포 트리거
+        # github-actions[bot] 계정(GITHUB_TOKEN)으로 만든 push는 GitHub이
+        # 다른 워크플로우를 재귀적으로 트리거하지 않아, 위에서 데이터를
+        # 새로 커밋해도 pages-deploy.yml이 자동으로 반응하지 않을 수 있다.
+        # workflow_dispatch를 API로 직접 호출해 배포를 강제로 큐에 넣는다.
+        if: steps.commit.outputs.changed == 'true'
+        run: |
+          curl -L -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/pages-deploy.yml/dispatches" \
+            -d '{"ref":"main"}'

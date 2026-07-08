@@ -1,0 +1,67 @@
+name: Scrape Celebrity PGM Products
+
+on:
+  schedule:
+    # UTC 기준 18:00는 한국 시간(KST)으로 다음날 새벽 03:00입니다.
+    - cron: '0 18 * * *'
+  workflow_dispatch: # 필요할 때 깃허브에서 수동으로도 가동할 수 있는 버튼을 활성화합니다.
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. 레포지토리 코드 체크아웃
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    # 2. 파이썬 환경 설정 (3.10 버전 권장)
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip' # 패키지 설치 속도 최적화
+
+    # 3. 필수 의존성 패키지 설치
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests beautifulsoup4 playwright
+
+    # 4. Playwright 브라우저 및 시스템 필수 라이브러리 설치 (rehd.py 구동용)
+    - name: Install Playwright Browsers
+      run: |
+        playwright install chromium
+        playwright install-deps chromium
+
+    # 5. fixed 폴더 내 4개 파이썬 스크립트 가동 (오류 발생해도 다음 스크립트 계속 실행)
+    - name: Run Scrapers in fixed folder
+      run: |
+        echo "GS 지금 백지연 수집 시작..."
+        python fixed/regs.py || echo "GS 수집 중 실패 발생"
+
+        echo "CJ 대표 PGM(강주은, 최화정, 김창옥) 수집 시작..."
+        python fixed/recj.py || echo "CJ 수집 중 실패 발생"
+
+        echo "HD 대표 PGM(황정민쇼, 오감쇼) 수집 시작..."
+        python fixed/rehd.py || echo "HD 수집 중 실패 발생"
+
+        echo "LT 최유라쇼 수집 시작..."
+        python fixed/relt.py || echo "LT 수집 중 실패 발생"
+
+    # 6. 생성된 JSON 데이터를 깃허브 레포지토리에 자동으로 Commit & Push
+    - name: Commit and Push JSON Data
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        
+        # 변경되거나 새롭게 생성된 JSON 파일이 있는지 확인 후 스테이징
+        git add homeshopping/representative_programs/*.json || true
+        
+        # 변경사항이 있을 때만 커밋 및 푸시 진행
+        if ! git diff --cached --quiet; then
+          git commit -m "🤖 [Automated] 새벽 3시 셀럽 PGM 데이터 정기 업데이트"
+          git push
+        else
+          echo "업데이트된 데이터 변경 사항이 없습니다."
+        fi
