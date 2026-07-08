@@ -50,7 +50,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 REST_API_KEY = os.environ.get("KAKAO_REST_API_KEY", "")
 REFRESH_TOKEN = os.environ.get("KAKAO_REFRESH_TOKEN", "")
-WEATHER_REGION = os.environ.get("WEATHER_REGION", "seoul")
+WEATHER_REGION = os.environ.get("WEATHER_REGION") or "seoul"
 LINK_URL = os.environ.get("LINK_URL", "https://hdmzp.github.io/hdhs/")
 DRY_RUN = os.environ.get("DRY_RUN", "") == "1"
 
