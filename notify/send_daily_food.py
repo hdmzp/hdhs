@@ -30,9 +30,13 @@ COMPANIES + 시간대(TIME_START~TIME_END) 필터를 적용한 것이다.
   TELEGRAM_BOT_TOKEN  (필수) BotFather 에서 발급받은 봇 토큰
   TELEGRAM_CHAT_ID    (선택) 수신처. 쉼표로 여러 곳 지정 가능
                       예: "123456789" / "123,456" / "@channelname" (채널은 봇을
-                      관리자로 추가해야 함). 비워두면 봇이 최근에 받은
-                      메시지의 발신자를 자동 감지 (최초 1회는 봇에게
-                      아무 메시지나 먼저 보내둬야 함)
+                      관리자로 추가해야 함)
+
+== 수신자 관리 ==
+수신자 목록은 notify/recipients.txt (한 줄에 하나, # 주석 가능)로 관리한다.
+TELEGRAM_CHAT_ID 환경변수와 합쳐서 발송하며, 둘 다 비어 있으면
+봇이 최근에 받은 메시지의 발신자를 자동 감지한다 (최초 1회는 봇에게
+아무 메시지나 먼저 보내둬야 함).
   COMPANIES           (선택) 목록에 표시할 회사 코드, 쉼표 구분 (기본: HD,GS,CJ,LT)
                       전체 표시: "ALL"
   TIME_START          (선택) 목록 시작 시각 (기본: 06:00)
@@ -282,8 +286,22 @@ def main():
         print("TELEGRAM_BOT_TOKEN 환경변수가 필요합니다.")
         sys.exit(1)
 
-    # 쉼표로 여러 수신처 지정 가능: "123456789,987654321,@channelname"
-    chat_ids = [c.strip() for c in (CHAT_ID or detect_chat_id()).split(",") if c.strip()]
+    # 수신처 = notify/recipients.txt + TELEGRAM_CHAT_ID(쉼표 구분) 합집합
+    # 둘 다 비어 있으면 봇이 최근 받은 메시지에서 자동 감지
+    chat_ids = []
+    rec_path = os.path.join(ROOT, "notify", "recipients.txt")
+    if os.path.exists(rec_path):
+        with open(rec_path, encoding="utf-8") as f:
+            for raw in f:
+                entry = raw.strip()
+                if entry and not entry.startswith("#") and entry not in chat_ids:
+                    chat_ids.append(entry)
+    for c in CHAT_ID.split(","):
+        c = c.strip()
+        if c and c not in chat_ids:
+            chat_ids.append(c)
+    if not chat_ids:
+        chat_ids = [detect_chat_id()]
     sent = 0
     for chat_id in chat_ids:
         for i, chunk in enumerate(chunks, 1):
