@@ -66,8 +66,9 @@ def load_chat_ids(root):
     if os.path.exists(rec_path):
         with open(rec_path, encoding="utf-8") as f:
             for raw in f:
-                entry = raw.strip()
-                if entry and not entry.startswith("#") and entry not in chat_ids:
+                # '#' 뒤는 주석 — 줄 끝 주석("12345 #이름")도 허용
+                entry = raw.split("#")[0].strip()
+                if entry and entry not in chat_ids:
                     chat_ids.append(entry)
     for c in CHAT_ID.split(","):
         c = c.strip()
