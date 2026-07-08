@@ -1,0 +1,45 @@
+name: 카카오톡 식품방송 아침 알림
+on:
+  schedule:
+    # 매일 KST 08:30 = UTC 23:30(전날)
+    # (GitHub cron은 수 분~수십 분 지연될 수 있음)
+    - cron: "30 23 * * *"
+  workflow_dispatch: {}  # 수동 실행 버튼
+permissions:
+  contents: read
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v4
+      - name: Python 설치
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: 패키지 설치
+        run: pip install requests
+      - name: 카카오톡 발송
+        env:
+          KAKAO_REST_API_KEY: ${{ secrets.KAKAO_REST_API_KEY }}
+          KAKAO_REFRESH_TOKEN: ${{ secrets.KAKAO_REFRESH_TOKEN }}
+          # 포함할 회사를 제한하려면 저장소 Variables 에 COMPANIES 등록
+          # 예: CJ,GS,HD,LT,NS,HNS,PUBLIC
+          COMPANIES: ${{ vars.COMPANIES }}
+          WEATHER_REGION: ${{ vars.WEATHER_REGION }}
+        run: python kakao/send_daily_food.py
+      - name: 리프레시 토큰 자동 갱신 (선택)
+        # 카카오가 새 리프레시 토큰을 내려준 경우 GitHub Secret을 갱신한다.
+        # 저장소 Secrets 에 GH_PAT(repo 권한 PAT)가 있을 때만 동작.
+        if: hashFiles('kakao/.new_refresh_token') != ''
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::warning::새 리프레시 토큰이 발급되었지만 GH_PAT가 없어 Secret을 갱신하지 못했습니다."
+            echo "::warning::kakao/get_token.py 로 재발급 후 KAKAO_REFRESH_TOKEN Secret을 직접 갱신해 주세요."
+            exit 0
+          fi
+          gh secret set KAKAO_REFRESH_TOKEN --repo "${GITHUB_REPOSITORY}" < kakao/.new_refresh_token
+          echo "KAKAO_REFRESH_TOKEN Secret 갱신 완료"
