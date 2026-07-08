@@ -10,11 +10,12 @@
    mm/dd(요일)
    ☀️ 날씨: 최저 25도, 최고 27도, 비 60%
 
-   오늘 진행예정인 식품 방송입니다
+   금일 식품 방송 리스트입니다
 
    💊 건강식품
    총 49회, (4개사) 16회
-   06:40 [현대] 하루틴 | 프리미엄 리포좀 비타민C
+   06:40 [현대] 하루틴
+   프리미엄 리포좀 비타민C
    ...
 
    🥩 일반식품
@@ -136,9 +137,11 @@ def load_broadcasts(day_str, month_str, companies):
             if brand and product.startswith(brand):
                 brand = ""
             name = COMPANY_NAMES.get(company, company)
-            line = "%s [%s] " % (start or "??:??", name)
-            line += (brand + " | " + product) if brand else product
-            rows[cat].append((start, line))
+            head = "%s [%s]" % (start or "??:??", name)
+            if brand:
+                head += " " + brand
+            # '시간 [회사] 브랜드' + 다음 줄에 상품명 (두 줄이 한 묶음)
+            rows[cat].append((start, head + "\n" + product))
     for cat in rows:
         rows[cat].sort(key=lambda r: r[0])
     return rows, totals
@@ -158,7 +161,7 @@ def build_message(now, weather, rows, totals, n_companies):
         if parts:
             lines.append("☀️ 날씨: " + ", ".join(parts))
     lines.append("")
-    lines.append("오늘 진행예정인 식품 방송입니다")
+    lines.append("금일 식품 방송 리스트입니다")
     for header, cat in SECTIONS:
         items = rows.get(cat, [])
         lines.append("")
