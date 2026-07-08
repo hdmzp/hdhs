@@ -28,7 +28,9 @@ COMPANIES + 시간대(TIME_START~TIME_END) 필터를 적용한 것이다.
 
 == 환경변수 ==
   TELEGRAM_BOT_TOKEN  (필수) BotFather 에서 발급받은 봇 토큰
-  TELEGRAM_CHAT_ID    (선택) 수신 채팅 ID. 비워두면 봇이 최근에 받은
+  TELEGRAM_CHAT_ID    (선택) 수신처. 쉼표로 여러 곳 지정 가능
+                      예: "123456789" / "123,456" / "@channelname" (채널은 봇을
+                      관리자로 추가해야 함). 비워두면 봇이 최근에 받은
                       메시지의 발신자를 자동 감지 (최초 1회는 봇에게
                       아무 메시지나 먼저 보내둬야 함)
   COMPANIES           (선택) 목록에 표시할 회사 코드, 쉼표 구분 (기본: HD,GS,CJ,LT)
@@ -261,16 +263,20 @@ def main():
         print("TELEGRAM_BOT_TOKEN 환경변수가 필요합니다.")
         sys.exit(1)
 
-    chat_id = CHAT_ID or detect_chat_id()
+    # 쉼표로 여러 수신처 지정 가능: "123456789,987654321,@channelname"
+    chat_ids = [c.strip() for c in (CHAT_ID or detect_chat_id()).split(",") if c.strip()]
     sent = 0
-    for i, chunk in enumerate(chunks, 1):
-        if send_telegram(chat_id, chunk):
-            sent += 1
-        else:
-            print("[%d/%d] 발송 실패, 중단" % (i, len(chunks)))
-            sys.exit(1)
-        time.sleep(0.3)
-    print("발송 완료: %d/%d건" % (sent, len(chunks)))
+    for chat_id in chat_ids:
+        for i, chunk in enumerate(chunks, 1):
+            if send_telegram(chat_id, chunk):
+                sent += 1
+            else:
+                print("%s [%d/%d] 발송 실패" % (chat_id, i, len(chunks)))
+            time.sleep(0.3)
+    total_send = len(chat_ids) * len(chunks)
+    print("발송 완료: %d/%d건 (수신처 %d곳)" % (sent, total_send, len(chat_ids)))
+    if sent < total_send:
+        sys.exit(1)
 
 
 if __name__ == "__main__":
