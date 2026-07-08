@@ -1,4 +1,4 @@
-name: 텔레그램 식품방송 아침 알림
+name: 텔레그램 아침 알림 (식품방송+셀럽PGM)
 on:
   schedule:
     # 매일 KST 08:30 = UTC 23:30(전날)
@@ -20,7 +20,7 @@ jobs:
           python-version: "3.11"
       - name: 패키지 설치
         run: pip install requests
-      - name: 텔레그램 발송
+      - name: 텔레그램 발송 — 식품방송 리스트
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -31,3 +31,9 @@ jobs:
           TIME_END: ${{ vars.TIME_END }}
           WEATHER_REGION: ${{ vars.WEATHER_REGION }}
         run: python notify/send_daily_food.py
+      - name: 텔레그램 발송 — 셀럽PGM 상품리스트
+        if: always()  # 식품방송 발송이 실패해도 셀럽PGM은 발송
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python notify/send_celeb_pgm.py
