@@ -104,6 +104,11 @@ def load_weather(day_str):
         return None
 
 
+def esc(s):
+    """텔레그램 HTML parse_mode 용 이스케이프"""
+    return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
 def clean_product(name):
     # 'ㅣ 원산지 : ...' 같은 꼬리표 제거
     for sep in ("| 원산지", "ㅣ 원산지", "|원산지"):
@@ -139,11 +144,16 @@ def load_broadcasts(day_str, month_str, companies):
             if brand and product.startswith(brand):
                 brand = ""
             name = COMPANY_NAMES.get(company, company)
+            # '시간 [회사] 브랜드'(굵게) + 다음 줄 상품명(판매페이지 링크) — 두 줄이 한 묶음
             head = "%s [%s]" % (start or "??:??", name)
             if brand:
                 head += " " + brand
-            # '시간 [회사] 브랜드' + 다음 줄에 상품명 (두 줄이 한 묶음)
-            rows[cat].append((start, head + "\n" + product))
+            link = (item.get("link") or "").strip()
+            if link:
+                body = '<a href="%s">%s</a>' % (esc(link), esc(product))
+            else:
+                body = esc(product)
+            rows[cat].append((start, "<b>%s</b>\n%s" % (esc(head), body)))
     for cat in rows:
         rows[cat].sort(key=lambda r: r[0])
     return rows, totals
@@ -167,10 +177,14 @@ def build_message(now, weather, rows, totals, n_companies):
     for header, cat in SECTIONS:
         items = rows.get(cat, [])
         lines.append("")
-        lines.append(header)
+        lines.append("<b>%s</b>" % header)
         lines.append("총 %d회, (%d개사) %d회" % (totals.get(cat, 0), n_companies, len(items)))
+        lines.append("")
         for _, text in items:
             lines.append(text)
+            lines.append("")  # 항목 사이 여백
+        if items:
+            lines.pop()  # 마지막 항목 뒤 여백 제거
     return lines
 
 
@@ -218,7 +232,12 @@ def detect_chat_id():
 def send_telegram(chat_id, text):
     resp = requests.post(
         api("sendMessage"),
-        data={"chat_id": chat_id, "text": text, "disable_web_page_preview": True},
+        data={
+            "chat_id": chat_id,
+            "text": text,
+            "parse_mode": "HTML",
+            "disable_web_page_preview": True,
+        },
         timeout=15,
     )
     if resp.status_code != 200:
