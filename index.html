@@ -606,8 +606,23 @@
   .fb-status.err { background: #FEF2F2; color: #B91C1C; }
 
   /* ============ 보안 탭 ============ */
-  .sec-box { max-width: 340px; }
+  .sec-box { max-width: 340px; margin: 32px auto 0; }
   .sec-box .fb-block { margin-bottom: 16px; }
+  .sec-content { max-width: 100%; margin: 0; }
+  .sec-updated { font-size: 12.5px; color: var(--ink-faint); margin: 0 0 10px; }
+  .sec-table-wrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: var(--radius); }
+  .sec-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  .sec-table th, .sec-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--rule);
+    text-align: left;
+    white-space: nowrap;
+    color: var(--ink);
+  }
+  .sec-table th { background: var(--bg-soft, #F8FAFC); font-weight: 700; }
+  .sec-table tr:last-child td { border-bottom: none; }
+  .sec-logout-row { margin-top: 16px; text-align: right; }
+  .sec-logout-row .sec-logout { width: auto; padding: 10px 18px; }
   .sec-show {
     display: inline-flex;
     align-items: center;
@@ -2342,10 +2357,12 @@
     <div class="fb-status" id="secStatus"></div>
   </div>
 
-  <div id="secContentBox" class="sec-box" style="display:none;">
-    <h2 class="fb-title">✅ 접속 완료</h2>
-    <p class="fb-desc">인증되었습니다. (여기에 보호된 내용을 넣을 수 있어요.)</p>
-    <button type="button" class="fb-submit sec-logout" id="secLogoutBtn">로그아웃</button>
+  <div id="secContentBox" class="sec-content" style="display:none;">
+    <p class="sec-updated" id="secUpdated"></p>
+    <div class="sec-table-wrap" id="secTableWrap"></div>
+    <div class="sec-logout-row">
+      <button type="button" class="fb-submit sec-logout" id="secLogoutBtn">로그아웃</button>
+    </div>
   </div>
 
 </div>
@@ -4336,19 +4353,19 @@ function celRenderCompare() {
   });
 })();
 
-// ============ 보안(로그인 + 접속 기록) 탭 ============
+// ============ 보안(로그인 + 접속 기록 + 암호화 데이터) 탭 ============
 (function () {
-  // ▼ 공용 비밀번호의 SHA-256 해시.
-  //   비번을 바꾸려면 브라우저 콘솔에서 아래를 실행해 나온 값으로 교체하세요:
-  //   crypto.subtle.digest('SHA-256', new TextEncoder().encode('원하는비번'))
-  //     .then(b => console.log([...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')));
-  const SEC_PW_HASH = '135e70a1a990b1ec28097d7853e485dd3ab8b7aa7b0e712fb9925bc3b3618510';
+  // 보안 데이터는 data/secure/secure.enc 에 AES-256-GCM으로 암호화되어 있고,
+  // 입력한 비밀번호로 복호화가 성공하는 것 자체가 로그인 인증입니다.
+  // (비밀번호나 그 해시는 소스 어디에도 저장되지 않습니다)
+  // 데이터 갱신: tools/secure_encrypt.html 에서 새 파일을 만들어 교체하세요.
+  const SEC_DATA_URL = './data/secure/secure.enc';
 
   // ▼ 접속 기록을 저장할 Google Apps Script 웹앱 URL (시트 누적용).
   //   배포 후 발급되는 URL을 붙여넣으세요. 비워두면 기록 전송은 생략됩니다.
   const SEC_LOG_URL = 'https://script.google.com/macros/s/AKfycbz0uc0vBk4lJgt0-MhvSZcqAje-zb5tuLj2NF5Y_0AQ-8nJQRD5XllnOeGDKYyrj4o0/exec';
 
-  const SEC_SESSION_KEY = 'hdhs_sec_ok';
+  const SEC_SESSION_KEY = 'hdhs_sec_key'; // 새로고침 대비 세션 내 키 보관(탭 닫으면 소멸)
 
   const loginBox = document.getElementById('secLoginBox');
   const contentBox = document.getElementById('secContentBox');
@@ -4358,6 +4375,8 @@ function celRenderCompare() {
   const loginBtn = document.getElementById('secLoginBtn');
   const logoutBtn = document.getElementById('secLogoutBtn');
   const statusEl = document.getElementById('secStatus');
+  const updatedEl = document.getElementById('secUpdated');
+  const tableWrap = document.getElementById('secTableWrap');
 
   if (!loginBox) return;
 
@@ -4375,17 +4394,65 @@ function celRenderCompare() {
     loginBox.style.display = 'block';
     statusEl.className = 'fb-status';
     pwInput.value = '';
+    tableWrap.innerHTML = '';
+    updatedEl.textContent = '';
   }
 
-  // 같은 세션에서 이미 인증했으면 재입력 생략
-  try {
-    if (sessionStorage.getItem(SEC_SESSION_KEY) === '1') showLoggedIn();
-  } catch (e) {}
+  const b64ToBytes = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
 
-  async function sha256Hex(text) {
-    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
-    return [...new Uint8Array(buf)].map(x => x.toString(16).padStart(2, '0')).join('');
+  async function fetchEncFile() {
+    const r = await fetch(SEC_DATA_URL + '?t=' + Date.now());
+    if (!r.ok) throw new Error('enc file not found');
+    return r.json();
   }
+
+  async function deriveKey(pw, saltBytes, iter) {
+    const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pw), 'PBKDF2', false, ['deriveKey']);
+    return crypto.subtle.deriveKey(
+      { name: 'PBKDF2', hash: 'SHA-256', salt: saltBytes, iterations: iter },
+      base, { name: 'AES-GCM', length: 256 }, true, ['decrypt']
+    );
+  }
+
+  async function decryptWithKey(key, enc) {
+    const buf = await crypto.subtle.decrypt(
+      { name: 'AES-GCM', iv: b64ToBytes(enc.iv) }, key, b64ToBytes(enc.data)
+    );
+    return JSON.parse(new TextDecoder().decode(buf));
+  }
+
+  function renderSecure(data) {
+    updatedEl.textContent = data.updated ? '기준일: ' + data.updated : '';
+    const cols = data.columns || [];
+    const rows = data.rows || [];
+    const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    let html = '<table class="sec-table"><thead><tr>';
+    cols.forEach(c => { html += '<th>' + esc(c) + '</th>'; });
+    html += '</tr></thead><tbody>';
+    rows.forEach(row => {
+      html += '<tr>';
+      row.forEach(cell => { html += '<td>' + esc(cell) + '</td>'; });
+      html += '</tr>';
+    });
+    html += '</tbody></table>';
+    tableWrap.innerHTML = html;
+  }
+
+  // 새로고침 후에도 같은 브라우저 탭이면 세션에 보관한 키로 자동 복호화
+  (async function tryRestore() {
+    let rawHex = null;
+    try { rawHex = sessionStorage.getItem(SEC_SESSION_KEY); } catch (e) {}
+    if (!rawHex) return;
+    try {
+      const raw = new Uint8Array(rawHex.match(/.{2}/g).map(h => parseInt(h, 16)));
+      const key = await crypto.subtle.importKey('raw', raw, { name: 'AES-GCM' }, false, ['decrypt']);
+      const data = await decryptWithKey(key, await fetchEncFile());
+      renderSecure(data);
+      showLoggedIn();
+    } catch (e) {
+      try { sessionStorage.removeItem(SEC_SESSION_KEY); } catch (e2) {}
+    }
+  })();
 
   async function getClientIp() {
     try {
@@ -4427,8 +4494,13 @@ function celRenderCompare() {
     loginBtn.textContent = '확인 중...';
 
     let ok = false;
+    let data = null;
+    let key = null;
     try {
-      ok = (await sha256Hex(pw)) === SEC_PW_HASH;
+      const enc = await fetchEncFile();
+      key = await deriveKey(pw, b64ToBytes(enc.salt), enc.iter || 310000);
+      data = await decryptWithKey(key, enc); // 비번이 틀리면 여기서 예외 발생
+      ok = true;
     } catch (e) {
       ok = false;
     }
@@ -4441,8 +4513,12 @@ function celRenderCompare() {
     loginBtn.textContent = '접속하기';
 
     if (ok) {
-      try { sessionStorage.setItem(SEC_SESSION_KEY, '1'); } catch (e) {}
+      try {
+        const raw = new Uint8Array(await crypto.subtle.exportKey('raw', key));
+        sessionStorage.setItem(SEC_SESSION_KEY, [...raw].map(x => x.toString(16).padStart(2, '0')).join(''));
+      } catch (e) {}
       gaEvent('security_login', { result: 'success' });
+      renderSecure(data);
       showLoggedIn();
     } else {
       secShowStatus('사번 또는 비밀번호가 올바르지 않습니다.', false);
