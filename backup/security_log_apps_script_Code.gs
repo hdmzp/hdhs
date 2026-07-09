@@ -31,7 +31,7 @@ function doPost(e) {
     }
     // 헤더가 없으면 1행에 헤더 추가
     if (sheet.getLastRow() === 0) {
-      sheet.appendRow(['접속시각', '사번', 'IP', '결과', 'UserAgent', '페이지']);
+      sheet.appendRow(['접속시각', '사번', 'IP', '결과', 'UserAgent']);
     }
 
     sheet.appendRow([
@@ -39,8 +39,7 @@ function doPost(e) {
       data.empNo || '',
       data.ip || '',
       data.result || '',        // success | fail
-      data.userAgent || '',
-      data.page || ''
+      data.userAgent || ''
     ]);
 
     return ContentService
