@@ -2895,16 +2895,23 @@ function dvRenderGrid(data) {
         const cellClass = dayPrograms.length ? 'dv-day-cell' : 'dv-day-cell dv-empty-cell';
         html += `<td class="${cellClass}">`;
         for (const p of dayPrograms) {
+          // 주 다회 편성 프로그램은 요일마다 회차가 다르므로, 그 요일의
+          // 시청률(ratingByDay)을 우선 표시한다. 해당 요일 값이 아직 없으면
+          // (미방영 요일, ratingByDay 도입 이전의 과거 주차 데이터) 기존처럼
+          // 최신 회차 값으로 폴백한다.
+          const dayEntry = (p.ratingByDay && p.ratingByDay[day]) || null;
+          const dayRating = dayEntry ? dayEntry.rating : p.rating;
+          const dayRatingDate = dayEntry ? dayEntry.ratingDate : p.ratingDate;
           const isHighRating = dvFilter !== "high" && (
-            (p.category === 'drama' && p.rating >= 8) ||
-            (p.category === 'variety' && p.rating >= 3)
+            (p.category === 'drama' && dayRating >= 8) ||
+            (p.category === 'variety' && dayRating >= 3)
           );
           const safeLink = dvEscapeHtml(p.link || '#');
           const cardCls = `dv-card dv-cat-${p.category}${isHighRating ? ' dv-high-rating' : ''}`;
           html += `<a class="${cardCls}" href="${safeLink}" target="_blank" rel="noopener">`;
           html += `<span class="dv-title"><span class="dv-channel">[${dvEscapeHtml(p.channel)}]</span> ${dvEscapeHtml(p.title)}</span>`;
           html += `<span class="dv-meta">(${dvEscapeHtml(p.days.join(', '))}) ${dvEscapeHtml(p.time)}</span>`;
-          html += `<span class="dv-rating">${dvEscapeHtml(p.rating)}%</span> <span class="dv-rating-date">${p.ratingDate ? '(' + dvEscapeHtml(p.ratingDate) + ')' : ''}</span>`;
+          html += `<span class="dv-rating">${dvEscapeHtml(dayRating)}%</span> <span class="dv-rating-date">${dayRatingDate ? '(' + dvEscapeHtml(dayRatingDate) + ')' : ''}</span>`;
           html += `</a>`;
         }
         html += `</td>`;
