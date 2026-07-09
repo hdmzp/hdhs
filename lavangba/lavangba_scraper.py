@@ -32,6 +32,11 @@ from datetime import datetime, timedelta, timezone
 import requests
 from playwright.sync_api import sync_playwright
 
+# 콘솔/리다이렉트 인코딩이 cp949일 때 상품명의 특수문자(∙ 등)로 print가 죽는 것 방지
+for _stream in (sys.stdout, sys.stderr):
+    if _stream and hasattr(_stream, "reconfigure"):
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+
 KST = timezone(timedelta(hours=9))
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PROFILE_DIR = os.path.join(BASE_DIR, "chrome_profile")
@@ -281,24 +286,37 @@ def scrape_dates(target_dates):
 
                 is_simple = len(items) <= 1
                 cat_name = (hshow.get("cat") or {}).get("cat_name", "")
+                pgm_end_label = hshow_end.strftime("%H:%M")
+                duration_min = round((hshow_end - hshow_start).total_seconds() / 60)
+
+                def base_row():
+                    return {
+                        "channel": channel_label,
+                        "date": date_str,
+                        "broadcast_start": pgm_start_label,
+                        "broadcast_end": pgm_end_label,
+                        "duration_min": duration_min,
+                        "pgm_title": hshow.get("hsshow_title"),
+                    }
 
                 if is_simple:
                     # 하나의 상품(브랜드)만 파는 방송 -> 라방바가 이미 계산해준 매출액 그대로 사용
                     total = sum(it.get("sales_amt") or 0 for it in items)
                     best_gh = matched[0]["entry"] if matched else None
                     rows.append({
-                        "channel": channel_label, "type": "단순", "pgm_start": pgm_start_label,
-                        "pgm_title": hshow.get("hsshow_title"), "item_name": hshow.get("hsshow_title"),
+                        **base_row(),
+                        "item_name": hshow.get("hsshow_title"),
+                        "type": "단순",
+                        "item_start": pgm_start_label,
+                        "item_end": pgm_end_label,
                         "sales_amt": total,
                         "category": best_gh["category"] if best_gh else "",
-                        "lavangba_category": (best_gh.get("lavangba_category", "") if best_gh else ""),
-                        "lavangba_cat_name": cat_name, "date": date_str,
+                        "lavangba_category": (best_gh.get("lavangba_category") or cat_name) if best_gh else cat_name,
                     })
                     print(f"  단순 | {format_amt(total)}")
                 else:
                     # 여러 상품을 파는 방송 -> 시계열(sales_amt_rcd)로 상품별 비중을 계산해서 집계.
                     # GitHub 편성표 세그먼트가 없으면 방송 전체를 세그먼트 1개로 보고 그냥 합산.
-                    duration_min = round((hshow_end - hshow_start).total_seconds() / 60)
                     if len(matched) >= 2:
                         segments = [
                             {
@@ -307,14 +325,14 @@ def scrape_dates(target_dates):
                                 "to": min(duration_min, round((m["end"] - hshow_start).total_seconds() / 60)),
                                 "name": m["entry"]["product"],
                                 "category": m["entry"].get("category", ""),
-                                "lavangba_category": m["entry"].get("lavangba_category", ""),
+                                "lavangba_category": m["entry"].get("lavangba_category") or cat_name,
                             }
                             for i, m in enumerate(matched)
                         ]
                     else:
                         segments = [{
                             "idx": 0, "from": 0, "to": duration_min,
-                            "name": hshow.get("hsshow_title"), "category": "", "lavangba_category": "",
+                            "name": hshow.get("hsshow_title"), "category": "", "lavangba_category": cat_name,
                         }]
 
                     seg_totals = {}
@@ -325,12 +343,17 @@ def scrape_dates(target_dates):
 
                     for seg in segments:
                         total = round(seg_totals.get(seg["idx"], 0))
+                        seg_start = hshow_start + timedelta(minutes=seg["from"])
+                        seg_end = hshow_start + timedelta(minutes=seg["to"])
                         rows.append({
-                            "channel": channel_label, "type": "복합", "pgm_start": pgm_start_label,
-                            "pgm_title": hshow.get("hsshow_title"), "item_name": seg["name"],
+                            **base_row(),
+                            "item_name": seg["name"],
+                            "type": "복합",
+                            "item_start": seg_start.strftime("%H:%M"),
+                            "item_end": seg_end.strftime("%H:%M"),
                             "sales_amt": total,
-                            "category": seg["category"], "lavangba_category": seg["lavangba_category"],
-                            "lavangba_cat_name": cat_name, "date": date_str,
+                            "category": seg["category"],
+                            "lavangba_category": seg["lavangba_category"],
                         })
                         print(f"  복합(시계열집계) {seg['name'][:20]} | {format_amt(total)}")
 
@@ -343,23 +366,29 @@ def scrape_dates(target_dates):
     return rows
 
 
-def save_rows(rows, target_dates):
+def save_rows(rows, target_dates=None):
+    # 여러 날짜를 한 번에 돌려도 날짜별 파일로 나눠서 저장한다 (data/YYYYMMDD.json / .tsv)
     os.makedirs(DATA_DIR, exist_ok=True)
-    label = target_dates[0] if len(target_dates) == 1 else f"{target_dates[0]}_{target_dates[-1]}"
-    json_path = os.path.join(DATA_DIR, f"{label}.json")
-    tsv_path = os.path.join(DATA_DIR, f"{label}.tsv")
+    cols = ["channel", "date", "broadcast_start", "broadcast_end", "duration_min", "pgm_title",
+            "item_name", "type", "item_start", "item_end", "sales_amt", "category", "lavangba_category"]
 
-    with open(json_path, "w", encoding="utf-8") as f:
-        json.dump(rows, f, ensure_ascii=False, indent=2)
+    by_date = {}
+    for r in rows:
+        by_date.setdefault(r["date"], []).append(r)
 
-    cols = ["channel", "type", "pgm_start", "pgm_title", "item_name", "sales_amt", "category", "lavangba_category", "lavangba_cat_name", "date"]
-    with open(tsv_path, "w", encoding="utf-8-sig") as f:
-        f.write("\t".join(cols) + "\n")
-        for r in rows:
-            f.write("\t".join(str(r.get(c, "")) for c in cols) + "\n")
+    for date_str, date_rows in sorted(by_date.items()):
+        json_path = os.path.join(DATA_DIR, f"{date_str}.json")
+        tsv_path = os.path.join(DATA_DIR, f"{date_str}.tsv")
 
-    print(f"저장됨: {json_path}")
-    print(f"저장됨: {tsv_path}")
+        with open(json_path, "w", encoding="utf-8") as f:
+            json.dump(date_rows, f, ensure_ascii=False, indent=2)
+
+        with open(tsv_path, "w", encoding="utf-8-sig") as f:
+            f.write("\t".join(cols) + "\n")
+            for r in date_rows:
+                f.write("\t".join(str(r.get(c, "")) for c in cols) + "\n")
+
+        print(f"저장됨: {json_path} ({len(date_rows)}행)")
 
 
 def main():
