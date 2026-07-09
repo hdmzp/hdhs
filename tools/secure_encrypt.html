@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>보안 데이터 암호화 도구</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    max-width: 720px; margin: 0 auto; padding: 32px 16px 80px;
+    color: #1E293B; background: #fff;
+  }
+  h1 { font-size: 20px; margin: 0 0 6px; }
+  .desc { font-size: 13px; color: #64748B; line-height: 1.6; margin: 0 0 24px; }
+  .step { font-size: 14px; font-weight: 700; margin: 24px 0 8px; }
+  textarea {
+    width: 100%; min-height: 160px; border: 1px solid #E2E8F0; border-radius: 10px;
+    padding: 12px; font-family: inherit; font-size: 13px; line-height: 1.5; resize: vertical;
+  }
+  textarea:focus, input:focus { outline: none; border-color: #2563EB; }
+  input[type="password"], input[type="text"], input[type="date"] {
+    width: 100%; border: 1px solid #E2E8F0; border-radius: 10px; padding: 11px 12px;
+    font-family: inherit; font-size: 14px;
+  }
+  .row { display: flex; gap: 10px; }
+  .row > div { flex: 1; }
+  .show-pw { font-size: 12.5px; color: #64748B; display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; cursor: pointer; user-select: none; }
+  button {
+    width: 100%; margin-top: 20px; padding: 13px; border: none; border-radius: 10px;
+    background: #2563EB; color: #fff; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer;
+  }
+  button:hover { background: #1D4ED8; }
+  button:disabled { opacity: .6; cursor: not-allowed; }
+  .status { margin-top: 12px; font-size: 13px; text-align: center; padding: 10px; border-radius: 8px; display: none; }
+  .status.show { display: block; }
+  .status.ok { background: #ECFDF5; color: #047857; }
+  .status.err { background: #FEF2F2; color: #B91C1C; }
+  .preview-wrap { overflow-x: auto; border: 1px solid #E2E8F0; border-radius: 10px; margin-top: 10px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { padding: 8px 10px; border-bottom: 1px solid #E2E8F0; text-align: left; white-space: nowrap; }
+  th { background: #F8FAFC; font-weight: 700; }
+  tr:last-child td { border-bottom: none; }
+  .hint { font-size: 12px; color: #94A3B8; margin-top: 6px; line-height: 1.5; }
+  .notice {
+    background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px;
+    padding: 14px 16px; font-size: 12.5px; color: #475569; line-height: 1.7; margin-top: 28px;
+  }
+</style>
+</head>
+<body>
+
+<h1>🔐 보안 데이터 암호화 도구</h1>
+<p class="desc">
+  엑셀에서 표(머리글 포함)를 복사해 아래에 붙여넣고, 보안탭 비밀번호를 입력한 뒤 암호화하세요.<br>
+  모든 처리는 이 브라우저 안에서만 이루어지며 데이터·비밀번호는 어디로도 전송되지 않습니다.
+</p>
+
+<div class="step">1. 표 데이터 붙여넣기 (첫 줄 = 열 제목)</div>
+<textarea id="tsvInput" placeholder="엑셀에서 범위를 복사(Ctrl+C)한 뒤 여기에 붙여넣기(Ctrl+V)하세요.&#10;&#10;예)&#10;항목	담당자	연락처&#10;A업무	홍길동	010-0000-0000"></textarea>
+<div class="hint">셀 사이가 탭으로 구분된 형식(엑셀 복사-붙여넣기 기본)과 쉼표(CSV) 모두 인식합니다.</div>
+<div class="preview-wrap" id="previewWrap" style="display:none;"></div>
+
+<div class="step">2. 기준일과 비밀번호</div>
+<div class="row">
+  <div>
+    <input type="date" id="updatedInput">
+  </div>
+  <div>
+    <input type="password" id="pwInput" placeholder="보안탭 비밀번호" autocomplete="off">
+    <label class="show-pw"><input type="checkbox" id="pwShowChk"> 비밀번호 표시</label>
+  </div>
+</div>
+<div class="hint">※ 사이트 로그인에 쓰는 비밀번호와 반드시 같아야 합니다. 이 비밀번호로만 복호화할 수 있습니다.</div>
+
+<button id="encBtn">3. 암호화해서 secure.enc 다운로드</button>
+<div class="status" id="statusEl"></div>
+
+<div class="notice">
+  <b>다운로드한 파일 적용 방법</b><br>
+  1) GitHub 저장소의 <b>data/secure</b> 폴더로 이동<br>
+  2) <b>Add file &gt; Upload files</b>로 방금 받은 <b>secure.enc</b>를 업로드 (같은 이름이라 자동 덮어쓰기)<br>
+  3) Commit 하면 1~2분 뒤 사이트에 반영됩니다.<br><br>
+  <b>비밀번호를 바꾸는 경우</b>: 이 도구에서 새 비밀번호로 다시 암호화해 파일을 교체해야 합니다.
+</div>
+
+<script>
+(function () {
+  const ITER = 310000; // index.html 보안탭과 동일해야 함
+
+  const tsvInput = document.getElementById('tsvInput');
+  const previewWrap = document.getElementById('previewWrap');
+  const updatedInput = document.getElementById('updatedInput');
+  const pwInput = document.getElementById('pwInput');
+  const pwShowChk = document.getElementById('pwShowChk');
+  const encBtn = document.getElementById('encBtn');
+  const statusEl = document.getElementById('statusEl');
+
+  updatedInput.value = new Date().toISOString().slice(0, 10);
+
+  pwShowChk.addEventListener('change', () => { pwInput.type = pwShowChk.checked ? 'text' : 'password'; });
+
+  function showStatus(msg, ok) {
+    statusEl.textContent = msg;
+    statusEl.className = 'status show ' + (ok ? 'ok' : 'err');
+  }
+
+  function parseTable(text) {
+    const lines = text.replace(/\r/g, '').split('\n').filter(l => l.trim() !== '');
+    if (lines.length < 2) return null;
+    // 탭이 하나라도 있으면 TSV(엑셀 복붙), 아니면 CSV로 처리
+    const sep = text.includes('\t') ? '\t' : ',';
+    const grid = lines.map(l => l.split(sep).map(c => c.trim()));
+    return { columns: grid[0], rows: grid.slice(1) };
+  }
+
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  function renderPreview(parsed) {
+    if (!parsed) { previewWrap.style.display = 'none'; return; }
+    let html = '<table><thead><tr>';
+    parsed.columns.forEach(c => { html += '<th>' + esc(c) + '</th>'; });
+    html += '</tr></thead><tbody>';
+    parsed.rows.slice(0, 20).forEach(row => {
+      html += '<tr>';
+      row.forEach(cell => { html += '<td>' + esc(cell) + '</td>'; });
+      html += '</tr>';
+    });
+    html += '</tbody></table>';
+    previewWrap.innerHTML = html;
+    previewWrap.style.display = 'block';
+  }
+
+  tsvInput.addEventListener('input', () => renderPreview(parseTable(tsvInput.value)));
+
+  const bytesToB64 = bytes => btoa(String.fromCharCode(...bytes));
+
+  async function encrypt() {
+    const parsed = parseTable(tsvInput.value);
+    if (!parsed) { showStatus('표 데이터를 붙여넣어 주세요. (열 제목 줄 + 데이터 최소 1줄)', false); return; }
+    const pw = pwInput.value.trim().normalize('NFC');
+    if (!pw) { showStatus('비밀번호를 입력해 주세요.', false); pwInput.focus(); return; }
+
+    encBtn.disabled = true;
+    encBtn.textContent = '암호화 중...';
+    try {
+      const plaintext = JSON.stringify({
+        updated: updatedInput.value || new Date().toISOString().slice(0, 10),
+        columns: parsed.columns,
+        rows: parsed.rows
+      });
+      const salt = crypto.getRandomValues(new Uint8Array(16));
+      const iv = crypto.getRandomValues(new Uint8Array(12));
+      const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pw), 'PBKDF2', false, ['deriveKey']);
+      const key = await crypto.subtle.deriveKey(
+        { name: 'PBKDF2', hash: 'SHA-256', salt: salt, iterations: ITER },
+        base, { name: 'AES-GCM', length: 256 }, false, ['encrypt']
+      );
+      const ct = new Uint8Array(await crypto.subtle.encrypt(
+        { name: 'AES-GCM', iv: iv }, key, new TextEncoder().encode(plaintext)
+      ));
+      const out = JSON.stringify({
+        v: 1, kdf: 'PBKDF2-SHA256', iter: ITER,
+        salt: bytesToB64(salt), iv: bytesToB64(iv), data: bytesToB64(ct)
+      });
+
+      const blob = new Blob([out], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'secure.enc';
+      a.click();
+      URL.revokeObjectURL(a.href);
+      showStatus('완료! 다운로드된 secure.enc를 저장소 data/secure 폴더에 업로드하세요. (' + parsed.rows.length + '행 암호화됨)', true);
+    } catch (e) {
+      showStatus('암호화에 실패했습니다: ' + e.message, false);
+    } finally {
+      encBtn.disabled = false;
+      encBtn.textContent = '3. 암호화해서 secure.enc 다운로드';
+    }
+  }
+
+  encBtn.addEventListener('click', encrypt);
+})();
+</script>
+
+</body>
+</html>
