@@ -4328,11 +4328,11 @@ function celRenderCompare() {
 
 // ============ 보안(로그인 + 접속 기록) 탭 ============
 (function () {
-  // ▼ 공용 비밀번호의 SHA-256 해시. (기본값은 비번 "1234"의 해시)
+  // ▼ 공용 비밀번호의 SHA-256 해시.
   //   비번을 바꾸려면 브라우저 콘솔에서 아래를 실행해 나온 값으로 교체하세요:
   //   crypto.subtle.digest('SHA-256', new TextEncoder().encode('원하는비번'))
   //     .then(b => console.log([...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')));
-  const SEC_PW_HASH = '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4';
+  const SEC_PW_HASH = '135e70a1a990b1ec28097d7853e485dd3ab8b7aa7b0e712fb9925bc3b3618510';
 
   // ▼ 접속 기록을 저장할 Google Apps Script 웹앱 URL (시트 누적용).
   //   배포 후 발급되는 URL을 붙여넣으세요. 비워두면 기록 전송은 생략됩니다.
