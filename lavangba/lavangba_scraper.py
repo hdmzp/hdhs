@@ -25,6 +25,7 @@ login_setup.py로 만들어둔 chrome_profile/ 의 로그인 세션을 재사용
 
 import json
 import os
+import re
 import sys
 import time
 from datetime import datetime, timedelta, timezone
@@ -182,10 +183,17 @@ def format_amt(total):
     return f"{round(total / 10_000)}만"
 
 
-def allocate_item_to_segments(item, segments):
-    """세그먼트별로 item의 매출을 '해당 구간의 실제 판매 활동 비중'만큼 나눠서 분배한다.
-    (1등 세그먼트가 전부 가져가는 방식이 아니라 비례배분 -> 대부분 0원으로 몰리는 문제 방지)
-    활동이 전혀 없으면 구간 길이 비례로, 그것도 안 되면 균등 분배로 fallback."""
+def extract_brand(name):
+    """상품명 앞의 +, [태그], (재) 등 프리픽스를 제거하고 첫 어절을 브랜드로 간주."""
+    n = re.sub(r"^[+\s]*(?:\[[^\]]*\]|\([^)]*\))*\s*", "", (name or "").strip())
+    parts = n.split()
+    return parts[0] if parts else ""
+
+
+def classify_item_to_segment(item, segments):
+    """원본 JS의 classifyItemToSegment와 동일한 승자독식 방식:
+    SKU의 분단위 매출 시계열(sales_amt_rcd) 활동이 가장 컸던 세그먼트 하나에
+    그 SKU의 매출 전액을 배정한다."""
     rcd_raw = item.get("sales_amt_rcd") or ""
     rcd = []
     if rcd_raw:
@@ -195,25 +203,12 @@ def allocate_item_to_segments(item, segments):
                 rcd.append(int(x))
             except ValueError:
                 rcd.append(0)
-
-    sales_amt = item.get("sales_amt") or 0
-    activity = {}
-    total_activity = 0
+    best_idx, best_sum = None, -1
     for seg in segments:
-        s = sum(rcd[i] for i in range(seg["from"], min(seg["to"], len(rcd))) if i >= 0)
-        s = max(s, 0)
-        activity[seg["idx"]] = s
-        total_activity += s
-
-    if total_activity > 0:
-        return {idx: sales_amt * a / total_activity for idx, a in activity.items()}
-
-    total_duration = sum(max(0, seg["to"] - seg["from"]) for seg in segments)
-    if total_duration > 0:
-        return {seg["idx"]: sales_amt * max(0, seg["to"] - seg["from"]) / total_duration for seg in segments}
-
-    share = sales_amt / len(segments) if segments else 0
-    return {seg["idx"]: share for seg in segments}
+        s = sum(rcd[i] for i in range(max(0, seg["from"]), min(seg["to"], len(rcd))))
+        if s > best_sum:
+            best_sum, best_idx = s, seg["idx"]
+    return best_idx
 
 
 def ymd_to_hyphen(date_str):
@@ -270,10 +265,13 @@ def scrape_dates(target_dates):
                 hshow_end = hs_to_datetime(hshow["hsshow_datetime_end"])
                 pgm_start_label = hshow_start.strftime("%H:%M")
 
+                # 방송과 5분 이상 겹치는 편성 항목만 이 방송의 상품으로 인정.
+                # (앞방송 뒷콜이 1~2분 물리는 경계 케이스가 쓰레기 행을 만드는 것 방지)
                 matched = []
                 for e in day_entries:
                     s, en = gh_entry_datetimes(date_hyphen, e)
-                    if s < hshow_end and en > hshow_start:
+                    overlap_min = (min(en, hshow_end) - max(s, hshow_start)).total_seconds() / 60
+                    if overlap_min >= 5:
                         matched.append({"entry": e, "start": s, "end": en})
                 matched.sort(key=lambda m: m["start"])
 
@@ -284,7 +282,15 @@ def scrape_dates(target_dates):
                     print(f"[오류] items 조회 실패: {hshow.get('hsshow_title')} - {e}")
                     items = []
 
-                is_simple = len(items) <= 1
+                # 단순/복합 판정: 방송 내 모든 상품의 브랜드가 하나면 단순 (SKU 개수가 아님).
+                # 브랜드는 SKU 상품명 첫 어절 또는 편성표 brand 필드로 판별.
+                sku_brands = {extract_brand(it.get("item_name")) for it in items} - {""}
+                gh_brands = {(m["entry"].get("brand") or "").strip() for m in matched} - {""}
+                is_simple = (
+                    len(items) <= 1
+                    or len(sku_brands) <= 1
+                    or (len(gh_brands) == 1 and len(matched) >= 1)
+                )
                 cat_name = (hshow.get("cat") or {}).get("cat_name", "")
                 pgm_end_label = hshow_end.strftime("%H:%M")
                 duration_min = round((hshow_end - hshow_start).total_seconds() / 60)
@@ -303,12 +309,19 @@ def scrape_dates(target_dates):
                     # 하나의 상품(브랜드)만 파는 방송 -> 라방바가 이미 계산해준 매출액 그대로 사용
                     total = sum(it.get("sales_amt") or 0 for it in items)
                     best_gh = matched[0]["entry"] if matched else None
+                    brand = (
+                        next(iter(gh_brands)) if len(gh_brands) == 1
+                        else next(iter(sku_brands)) if len(sku_brands) == 1
+                        else extract_brand(hshow.get("hsshow_title"))
+                    )
                     rows.append({
                         **base_row(),
+                        "brand": brand,
                         "item_name": hshow.get("hsshow_title"),
                         "type": "단순",
                         "item_start": pgm_start_label,
                         "item_end": pgm_end_label,
+                        "item_duration_min": duration_min,
                         "sales_amt": total,
                         "category": best_gh["category"] if best_gh else "",
                         "lavangba_category": (best_gh.get("lavangba_category") or cat_name) if best_gh else cat_name,
@@ -324,6 +337,7 @@ def scrape_dates(target_dates):
                                 "from": max(0, round((m["start"] - hshow_start).total_seconds() / 60)),
                                 "to": min(duration_min, round((m["end"] - hshow_start).total_seconds() / 60)),
                                 "name": m["entry"]["product"],
+                                "brand": (m["entry"].get("brand") or "").strip() or extract_brand(m["entry"]["product"]),
                                 "category": m["entry"].get("category", ""),
                                 "lavangba_category": m["entry"].get("lavangba_category") or cat_name,
                             }
@@ -332,30 +346,44 @@ def scrape_dates(target_dates):
                     else:
                         segments = [{
                             "idx": 0, "from": 0, "to": duration_min,
-                            "name": hshow.get("hsshow_title"), "category": "", "lavangba_category": cat_name,
+                            "name": hshow.get("hsshow_title"), "brand": "",
+                            "category": "", "lavangba_category": cat_name,
                         }]
 
                     seg_totals = {}
                     for it in items:
-                        allocation = allocate_item_to_segments(it, segments)
-                        for idx, amt in allocation.items():
-                            seg_totals[idx] = seg_totals.get(idx, 0) + amt
+                        best_idx = classify_item_to_segment(it, segments)
+                        if best_idx is None:
+                            continue
+                        seg_totals[best_idx] = seg_totals.get(best_idx, 0) + (it.get("sales_amt") or 0)
 
+                    # 같은 브랜드의 세그먼트는 매출을 합쳐 1행으로.
+                    # 상품명/카테고리는 그룹 내 매출액이 가장 높은 세그먼트 기준.
+                    groups = {}
                     for seg in segments:
-                        total = round(seg_totals.get(seg["idx"], 0))
-                        seg_start = hshow_start + timedelta(minutes=seg["from"])
-                        seg_end = hshow_start + timedelta(minutes=seg["to"])
+                        key = seg["brand"] or seg["name"]  # 브랜드 미상이면 상품명별로 유지 (오병합 방지)
+                        groups.setdefault(key, []).append(seg)
+
+                    for segs in groups.values():
+                        total = round(sum(seg_totals.get(s["idx"], 0) for s in segs))
+                        rep = max(segs, key=lambda s: seg_totals.get(s["idx"], 0))
+                        g_from = min(s["from"] for s in segs)
+                        g_to = max(s["to"] for s in segs)
+                        g_start = hshow_start + timedelta(minutes=g_from)
+                        g_end = hshow_start + timedelta(minutes=g_to)
                         rows.append({
                             **base_row(),
-                            "item_name": seg["name"],
+                            "brand": rep["brand"] or extract_brand(rep["name"]),
+                            "item_name": rep["name"],
                             "type": "복합",
-                            "item_start": seg_start.strftime("%H:%M"),
-                            "item_end": seg_end.strftime("%H:%M"),
+                            "item_start": g_start.strftime("%H:%M"),
+                            "item_end": g_end.strftime("%H:%M"),
+                            "item_duration_min": g_to - g_from,
                             "sales_amt": total,
-                            "category": seg["category"],
-                            "lavangba_category": seg["lavangba_category"],
+                            "category": rep["category"],
+                            "lavangba_category": rep["lavangba_category"],
                         })
-                        print(f"  복합(시계열집계) {seg['name'][:20]} | {format_amt(total)}")
+                        print(f"  복합(브랜드합산) {rep['name'][:20]} | {format_amt(total)}")
 
                 time.sleep(0.25)
     finally:
@@ -370,7 +398,8 @@ def save_rows(rows, target_dates=None):
     # 여러 날짜를 한 번에 돌려도 날짜별 파일로 나눠서 저장한다 (data/YYYYMMDD.json / .tsv)
     os.makedirs(DATA_DIR, exist_ok=True)
     cols = ["channel", "date", "broadcast_start", "broadcast_end", "duration_min", "pgm_title",
-            "item_name", "type", "item_start", "item_end", "sales_amt", "category", "lavangba_category"]
+            "brand", "item_name", "type", "item_start", "item_end", "item_duration_min",
+            "sales_amt", "category", "lavangba_category"]
 
     by_date = {}
     for r in rows:
