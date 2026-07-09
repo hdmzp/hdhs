@@ -17,7 +17,7 @@
  *   IP는 브라우저(index.html)에서 api.ipify.org로 조회해 함께 보내온 값을 기록합니다.
  */
 
-const SPREADSHEET_ID = '여기에_스프레드시트_ID_붙여넣기';
+const SPREADSHEET_ID = '1_TwEbNyFKYiXHuFPCHx5EcqpU9EgbChQB7m3twu5QiA';
 const SHEET_NAME = 'log';
 
 function doPost(e) {
