@@ -605,6 +605,13 @@
   .fb-status.ok { background: #ECFDF5; color: #047857; }
   .fb-status.err { background: #FEF2F2; color: #B91C1C; }
 
+  /* ============ 보안 탭 ============ */
+  .fb-submit.sec-logout {
+    margin-top: 20px;
+    background: var(--ink-soft);
+  }
+  .fb-submit.sec-logout:hover { background: var(--ink); }
+
   /* ============ 날씨 탭(달력) ============ */
   #tabWeather {
     --cold: #2563EB;
@@ -2064,6 +2071,7 @@
     <button id="tabBtnWeather">날씨</button>
     <button id="tabBtnRanking">랭킹</button>
     <button id="tabBtnFeedback">의견</button>
+    <button id="tabBtnSecurity" aria-label="보안">🔒</button>
   </div>
   <div class="info-tip-wrap" id="infoTipWrap">
     <button type="button" class="info-tip-btn" id="infoTipBtn" aria-label="화면 설명 보기">
@@ -2301,6 +2309,34 @@
 
   <button type="button" class="fb-submit" id="fbSubmitBtn">제출하기</button>
   <div class="fb-status" id="fbStatus"></div>
+
+</div>
+
+<div id="tabSecurity" class="tab-panel">
+
+  <div id="secLoginBox">
+    <h2 class="fb-title">🔒 보안 접속</h2>
+    <p class="fb-desc">사번과 비밀번호를 입력해 주세요. 접속 기록이 남습니다.</p>
+
+    <div class="fb-block">
+      <div class="fb-label">사번 <span class="req">*</span></div>
+      <input type="text" inputmode="numeric" class="fb-input" id="secEmpNo" placeholder="사번을 입력해 주세요" maxlength="20" autocomplete="off">
+    </div>
+
+    <div class="fb-block">
+      <div class="fb-label">비밀번호 <span class="req">*</span></div>
+      <input type="password" class="fb-input" id="secPw" placeholder="비밀번호를 입력해 주세요" maxlength="100" autocomplete="off">
+    </div>
+
+    <button type="button" class="fb-submit" id="secLoginBtn">접속하기</button>
+    <div class="fb-status" id="secStatus"></div>
+  </div>
+
+  <div id="secContentBox" style="display:none;">
+    <h2 class="fb-title">✅ 접속 완료</h2>
+    <p class="fb-desc">인증되었습니다. (여기에 보호된 내용을 넣을 수 있어요.)</p>
+    <button type="button" class="fb-submit sec-logout" id="secLogoutBtn">로그아웃</button>
+  </div>
 
 </div>
 
@@ -3512,8 +3548,8 @@ function renderMonthPickerPanel() {
 }
 
 function switchTab(tab) {
-  const panels = { schedule: 'tabSchedule', weather: 'tabWeather', homeshop: 'tabHomeshop', dramavariety: 'tabDramaVariety', fixedpgm: 'tabFixedPgm', celebrity: 'tabCelebrity', ranking: 'tabRanking', feedback: 'tabFeedback' };
-  const btns = { schedule: 'tabBtnSchedule', weather: 'tabBtnWeather', homeshop: 'tabBtnHomeshop', dramavariety: 'tabBtnDramaVariety', fixedpgm: 'tabBtnFixedPgm', celebrity: 'tabBtnCelebrity', ranking: 'tabBtnRanking', feedback: 'tabBtnFeedback' };
+  const panels = { schedule: 'tabSchedule', weather: 'tabWeather', homeshop: 'tabHomeshop', dramavariety: 'tabDramaVariety', fixedpgm: 'tabFixedPgm', celebrity: 'tabCelebrity', ranking: 'tabRanking', feedback: 'tabFeedback', security: 'tabSecurity' };
+  const btns = { schedule: 'tabBtnSchedule', weather: 'tabBtnWeather', homeshop: 'tabBtnHomeshop', dramavariety: 'tabBtnDramaVariety', fixedpgm: 'tabBtnFixedPgm', celebrity: 'tabBtnCelebrity', ranking: 'tabBtnRanking', feedback: 'tabBtnFeedback', security: 'tabBtnSecurity' };
 
   for (const key in panels) {
     document.getElementById(panels[key]).classList.toggle('active', key === tab);
@@ -4033,6 +4069,7 @@ function celRenderCompare() {
   document.getElementById('tabBtnCelebrity').addEventListener('click', () => switchTab('celebrity'));
   document.getElementById('tabBtnRanking').addEventListener('click', () => switchTab('ranking'));
   document.getElementById('tabBtnFeedback').addEventListener('click', () => switchTab('feedback'));
+  document.getElementById('tabBtnSecurity').addEventListener('click', () => switchTab('security'));
 
   const hsPicker = document.getElementById('hsDatePicker');
   hsPicker.value = hsCurrentDate;
@@ -4288,7 +4325,133 @@ function celRenderCompare() {
       });
   });
 })();
+
+// ============ 보안(로그인 + 접속 기록) 탭 ============
+(function () {
+  // ▼ 공용 비밀번호의 SHA-256 해시.
+  //   비번을 바꾸려면 브라우저 콘솔에서 아래를 실행해 나온 값으로 교체하세요:
+  //   crypto.subtle.digest('SHA-256', new TextEncoder().encode('원하는비번'))
+  //     .then(b => console.log([...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')));
+  const SEC_PW_HASH = '135e70a1a990b1ec28097d7853e485dd3ab8b7aa7b0e712fb9925bc3b3618510';
+
+  // ▼ 접속 기록을 저장할 Google Apps Script 웹앱 URL (시트 누적용).
+  //   배포 후 발급되는 URL을 붙여넣으세요. 비워두면 기록 전송은 생략됩니다.
+  const SEC_LOG_URL = 'https://script.google.com/macros/s/AKfycbz0uc0vBk4lJgt0-MhvSZcqAje-zb5tuLj2NF5Y_0AQ-8nJQRD5XllnOeGDKYyrj4o0/exec';
+
+  const SEC_SESSION_KEY = 'hdhs_sec_ok';
+
+  const loginBox = document.getElementById('secLoginBox');
+  const contentBox = document.getElementById('secContentBox');
+  const empInput = document.getElementById('secEmpNo');
+  const pwInput = document.getElementById('secPw');
+  const loginBtn = document.getElementById('secLoginBtn');
+  const logoutBtn = document.getElementById('secLogoutBtn');
+  const statusEl = document.getElementById('secStatus');
+
+  if (!loginBox) return;
+
+  function secShowStatus(msg, ok) {
+    statusEl.textContent = msg;
+    statusEl.className = 'fb-status show ' + (ok ? 'ok' : 'err');
+  }
+
+  function showLoggedIn() {
+    loginBox.style.display = 'none';
+    contentBox.style.display = 'block';
+  }
+  function showLoggedOut() {
+    contentBox.style.display = 'none';
+    loginBox.style.display = 'block';
+    statusEl.className = 'fb-status';
+    pwInput.value = '';
+  }
+
+  // 같은 세션에서 이미 인증했으면 재입력 생략
+  try {
+    if (sessionStorage.getItem(SEC_SESSION_KEY) === '1') showLoggedIn();
+  } catch (e) {}
+
+  async function sha256Hex(text) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+    return [...new Uint8Array(buf)].map(x => x.toString(16).padStart(2, '0')).join('');
+  }
+
+  async function getClientIp() {
+    try {
+      const r = await fetch('https://api.ipify.org?format=json');
+      const j = await r.json();
+      return j.ip || '';
+    } catch (e) {
+      return '';
+    }
+  }
+
+  function sendLog(empNo, ip, result) {
+    if (!SEC_LOG_URL) return; // URL 미설정 시 전송 생략
+    const payload = {
+      empNo: empNo,
+      ip: ip,
+      result: result, // 'success' | 'fail'
+      userAgent: navigator.userAgent,
+      page: location.href,
+      timestamp: new Date().toISOString()
+    };
+    fetch(SEC_LOG_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    }).catch(() => {});
+  }
+
+  async function doLogin() {
+    const empNo = empInput.value.trim();
+    const pw = pwInput.value;
+
+    if (!empNo) { secShowStatus('사번을 입력해 주세요.', false); empInput.focus(); return; }
+    if (!/^\d+$/.test(empNo)) { secShowStatus('사번은 숫자만 입력해 주세요.', false); empInput.focus(); return; }
+    if (!pw) { secShowStatus('비밀번호를 입력해 주세요.', false); pwInput.focus(); return; }
+
+    loginBtn.disabled = true;
+    loginBtn.textContent = '확인 중...';
+
+    let ok = false;
+    try {
+      ok = (await sha256Hex(pw)) === SEC_PW_HASH;
+    } catch (e) {
+      ok = false;
+    }
+
+    // 성공/실패 모두 기록 (IP 조회 실패해도 빈 값으로 전송)
+    const ip = await getClientIp();
+    sendLog(empNo, ip, ok ? 'success' : 'fail');
+
+    loginBtn.disabled = false;
+    loginBtn.textContent = '접속하기';
+
+    if (ok) {
+      try { sessionStorage.setItem(SEC_SESSION_KEY, '1'); } catch (e) {}
+      gaEvent('security_login', { result: 'success' });
+      showLoggedIn();
+    } else {
+      secShowStatus('사번 또는 비밀번호가 올바르지 않습니다.', false);
+      pwInput.focus();
+      gaEvent('security_login', { result: 'fail' });
+    }
+  }
+
+  loginBtn.addEventListener('click', doLogin);
+  pwInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') doLogin(); });
+  empInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') pwInput.focus(); });
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      try { sessionStorage.removeItem(SEC_SESSION_KEY); } catch (e) {}
+      showLoggedOut();
+    });
+  }
+})();
 </script>
-   
+
 </body>
 </html>
