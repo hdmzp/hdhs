@@ -29,6 +29,7 @@ import re
 import sys
 import time
 from datetime import datetime, timedelta, timezone
+from difflib import SequenceMatcher
 
 import requests
 from playwright.sync_api import sync_playwright
@@ -192,16 +193,17 @@ _BRACKET_RE = re.compile(r"\[([^\[\]]*)\]|\(([^()]*)\)")
 _MULTI_SPACE_RE = re.compile(r"\s{2,}")
 
 
-def extract_brand(name):
-    """상품명에서 브랜드로 추정되는 어절을 뽑는다.
-    대괄호/소괄호 마케팅 카피("[방송에서만]", "(최초가69,900원)" 등)를 위치에
-    상관없이 제거한 본문의 첫 어절을 브랜드로 본다. 단, 본문 첫 어절이 너무
-    짧거나(1글자) 숫자뿐이면(가격/모델명 등) 브랜드로 보기 어려우므로, 오히려
-    브랜드가 괄호 안에 단독으로 들어있는 경우("[아로마티카] 스파 샴푸")를 대비해
-    괄호 안 내용의 첫 어절을 대신 사용한다."""
+def extract_brand_candidates(name):
+    """상품명에서 브랜드로 추정되는 어절 후보들을 전부 뽑는다.
+    대괄호/소괄호 마케팅 카피("[방송에서만]", "(최초가69,900원)" 등)를 제거한
+    본문의 첫 어절과, 제거했던 괄호 안 내용들의 첫 어절을 모두 후보로 반환한다.
+    ("[아로마티카] 스파 샴푸"처럼 브랜드가 오히려 괄호 안에 있는 경우, 본문 첫
+    어절("스파")만으로는 실제 브랜드("아로마티카")를 놓치므로, 최종 판단(둘 중
+    무엇이 진짜 브랜드인지)은 호출부에서 알려진 브랜드 목록과 매칭해서 정한다.)
+    본문 후보를 우선순위로 앞에 둔다."""
     raw = (name or "").strip()
     if not raw:
-        return ""
+        return []
 
     bracket_contents = [g1 or g2 for g1, g2 in _BRACKET_RE.findall(raw)]
     bracket_contents = [c.strip() for c in bracket_contents if c and c.strip()]
@@ -213,11 +215,30 @@ def extract_brand(name):
         parts = s.split()
         return parts[0] if parts else ""
 
-    brand = first_word(body)
-    if (not brand or len(brand) <= 1 or brand.isdigit()) and bracket_contents:
-        alt = first_word(bracket_contents[0])
-        if alt:
-            return alt
+    candidates = []
+    fw = first_word(body)
+    if fw:
+        candidates.append(fw)
+    for bc in bracket_contents:
+        fw2 = first_word(bc)
+        if fw2 and fw2 not in candidates:
+            candidates.append(fw2)
+    return candidates
+
+
+def extract_brand(name):
+    """상품명에서 브랜드로 추정되는 어절 하나를 뽑는다 (표시/단순분류용 단일 추정치).
+    본문 첫 어절이 너무 짧거나(1글자) 숫자뿐이면(가격/모델명 등) 브랜드로 보기
+    어려우므로 괄호 안 내용을 대신 쓴다. 여러 후보 중 어떤 게 진짜 브랜드인지
+    확실히 가려야 하는 곳(복합PGM 매칭)에서는 extract_brand_candidates를 써서
+    모든 후보를 다 시도해야 한다 - 이 함수처럼 하나만 고르면 브랜드가 괄호 안에
+    있는데 본문 첫 어절도 그럴듯한 단어인 경우를 놓칠 수 있다."""
+    candidates = extract_brand_candidates(name)
+    if not candidates:
+        return ""
+    brand = candidates[0]
+    if (not brand or len(brand) <= 1 or brand.isdigit()) and len(candidates) > 1:
+        return candidates[1]
     return brand
 
 
@@ -345,6 +366,10 @@ def scrape_dates(target_dates):
                         "pgm_title": hshow.get("hsshow_title"),
                     }
 
+                # 대표상품 가격/바로가기 링크: 편성표(GitHub) 쪽 정보를 우선 쓰고,
+                # 없으면 라방바에서 가장 많이 팔린(=order sales_amt desc 1번) 상품 기준.
+                top_item = items[0] if items else None
+
                 if is_simple:
                     # 하나의 상품(브랜드)만 파는 방송 -> 라방바가 이미 계산해준 매출액 그대로 사용
                     total = sum(it.get("sales_amt") or 0 for it in items)
@@ -354,6 +379,8 @@ def scrape_dates(target_dates):
                         else next(iter(sku_brands)) if len(sku_brands) == 1
                         else extract_brand(hshow.get("hsshow_title"))
                     )
+                    price = (best_gh.get("price") if best_gh else None) or (top_item.get("live_price") if top_item else None)
+                    link = (best_gh.get("link") if best_gh else None) or (top_item.get("item_url") if top_item else None)
                     rows.append({
                         **base_row(),
                         "brand": brand,
@@ -365,6 +392,8 @@ def scrape_dates(target_dates):
                         "sales_amt": total,
                         "category": best_gh["category"] if best_gh else "",
                         "lavangba_category": (best_gh.get("lavangba_category") or cat_name) if best_gh else cat_name,
+                        "price": price,
+                        "link": link,
                     })
                     print(f"  단순 | {format_amt(total)}")
                 else:
@@ -380,12 +409,16 @@ def scrape_dates(target_dates):
                                 "brand": (m["entry"].get("brand") or "").strip() or extract_brand(m["entry"]["product"]),
                                 "category": m["entry"].get("category", ""),
                                 "lavangba_category": m["entry"].get("lavangba_category") or cat_name,
+                                "price": m["entry"].get("price"),
+                                "link": m["entry"].get("link"),
                             }
                             for i, m in enumerate(matched)
                         ]
                     else:
                         segments = [{
                             "idx": 0, "from": 0, "to": duration_min,
+                            "price": top_item.get("live_price") if top_item else None,
+                            "link": top_item.get("item_url") if top_item else None,
                             "name": hshow.get("hsshow_title"), "brand": "",
                             "category": "", "lavangba_category": cat_name,
                         }]
@@ -408,14 +441,36 @@ def scrape_dates(target_dates):
                     # 그 SKU 자체 상품명에서 뽑은 브랜드와 세그먼트 그룹의 브랜드를 직접
                     # 매칭해서 그대로 배정한다. 시계열 승자독식 방식보다 훨씬 정확함
                     # (모든 매출이 활동 큰 구간 하나에 몰빵되는 문제 방지).
+                    # 상품명 첫 어절 후보 하나만 보지 않고(브랜드가 괄호 안에 있는 경우를
+                    # 놓칠 수 있어서) extract_brand_candidates가 뽑아준 후보를 전부
+                    # 시도한다. 편성표 브랜드 표기와 실제 상품명 표기가 한두 글자 다른
+                    # 경우(예: "비버리힐스폴로클럽" vs "비버리힐즈폴로클럽")를 대비해
+                    # 부분일치 실패 시 유사도 기반으로 한 번 더 시도한다.
                     group_totals = {key: 0 for key in groups}
                     unmatched_items = []
                     for it in items:
-                        item_brand_norm = norm_brand(extract_brand(it.get("item_name")))
-                        matched_keys = [
-                            key for key, gb in group_brand_norm.items()
-                            if gb and item_brand_norm and (gb in item_brand_norm or item_brand_norm in gb)
-                        ]
+                        cands = [norm_brand(c) for c in extract_brand_candidates(it.get("item_name"))]
+                        cands = [c for c in cands if c]
+
+                        matched_keys = set()
+                        for cand in cands:
+                            for key, gb in group_brand_norm.items():
+                                if gb and (gb in cand or cand in gb):
+                                    matched_keys.add(key)
+                        matched_keys = list(matched_keys)
+
+                        if len(matched_keys) != 1 and cands:
+                            scored = sorted(
+                                (
+                                    (SequenceMatcher(None, gb, cand).ratio(), key)
+                                    for cand in cands
+                                    for key, gb in group_brand_norm.items() if gb
+                                ),
+                                reverse=True,
+                            )
+                            if scored and scored[0][0] >= 0.75 and (len(scored) == 1 or scored[0][0] - scored[1][0] >= 0.1):
+                                matched_keys = [scored[0][1]]
+
                         if len(matched_keys) == 1:
                             group_totals[matched_keys[0]] += it.get("sales_amt") or 0
                         else:
@@ -441,6 +496,8 @@ def scrape_dates(target_dates):
                             **base_row(),
                             "brand": rep["brand"] or extract_brand(rep["name"]),
                             "item_name": rep["name"],
+                            "price": rep.get("price"),
+                            "link": rep.get("link"),
                             "type": "복합",
                             "item_start": g_start.strftime("%H:%M"),
                             "item_end": g_end.strftime("%H:%M"),
@@ -465,7 +522,7 @@ def save_rows(rows, target_dates=None):
     os.makedirs(DATA_DIR, exist_ok=True)
     cols = ["channel", "date", "broadcast_start", "broadcast_end", "duration_min", "pgm_title",
             "brand", "item_name", "type", "item_start", "item_end", "item_duration_min",
-            "sales_amt", "category", "lavangba_category"]
+            "sales_amt", "category", "lavangba_category", "price", "link"]
 
     by_date = {}
     for r in rows:

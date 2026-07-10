@@ -25,8 +25,8 @@
 
   // 결과 모달 표의 컬럼 기본 너비(px). 필요하면 여기 숫자를 직접 바꾸면 되고,
   // 모달이 뜬 뒤에는 각 헤더 오른쪽 끝을 마우스로 드래그해서도 조절할 수 있다.
-  // 컬럼 순서: 채널/유형/방송시작/방송제목/상품명/매출액/출처카테고리/라방바세부카테고리/라방바대분류
-  const COLUMN_WIDTHS = [90, 70, 70, 220, 220, 90, 90, 110, 90];
+  // 컬럼 순서: 채널/유형/방송시작/방송제목/상품명/매출액/출처카테고리/라방바세부카테고리/라방바대분류/가격/링크
+  const COLUMN_WIDTHS = [90, 70, 70, 220, 220, 90, 90, 110, 90, 80, 160];
 
   // ================= 채널 매핑 =================
   // key: 라방바 platform_id, value: GitHub(hdmzp/hdhs) homeshopping 폴더 코드
@@ -115,10 +115,14 @@
   }
 
   // ================= 브랜드 추출 =================
+  // 대괄호/소괄호 마케팅 카피를 제거한 본문 첫 어절과, 제거했던 괄호 안 내용들의
+  // 첫 어절을 모두 후보로 반환한다("[아로마티카] 스파 샴푸"처럼 브랜드가 오히려
+  // 괄호 안에 있는 경우, 본문 첫 어절("스파")만 보면 실제 브랜드를 놓치므로 어떤
+  // 후보가 진짜인지는 호출부에서 알려진 브랜드 목록과 매칭해서 가린다).
   const BRACKET_RE = /\[([^\[\]]*)\]|\(([^()]*)\)/g;
-  function extractBrand(name) {
+  function extractBrandCandidates(name) {
     const raw = (name || '').trim();
-    if (!raw) return '';
+    if (!raw) return [];
     const bracketContents = [];
     let m;
     BRACKET_RE.lastIndex = 0;
@@ -129,15 +133,45 @@
     let body = raw.replace(BRACKET_RE, ' ').replace(/\s{2,}/g, ' ').trim();
     if (body.startsWith('+')) body = body.slice(1).trim();
     const firstWord = (s) => { const parts = s.split(/\s+/).filter(Boolean); return parts[0] || ''; };
-    let brand = firstWord(body);
-    if ((!brand || brand.length <= 1 || /^\d+$/.test(brand)) && bracketContents.length) {
-      const alt = firstWord(bracketContents[0]);
-      if (alt) return alt;
-    }
+    const candidates = [];
+    const fw = firstWord(body);
+    if (fw) candidates.push(fw);
+    bracketContents.forEach((bc) => {
+      const fw2 = firstWord(bc);
+      if (fw2 && !candidates.includes(fw2)) candidates.push(fw2);
+    });
+    return candidates;
+  }
+  function extractBrand(name) {
+    const candidates = extractBrandCandidates(name);
+    if (!candidates.length) return '';
+    const brand = candidates[0];
+    if ((!brand || brand.length <= 1 || /^\d+$/.test(brand)) && candidates.length > 1) return candidates[1];
     return brand;
   }
   function normBrand(b) {
     return (b || '').replace(/\s+/g, '').toLowerCase();
+  }
+
+  // 편성표 브랜드 표기와 실제 상품명 표기가 한두 글자 다른 경우
+  // (예: "비버리힐스폴로클럽" vs "비버리힐즈폴로클럽")를 위한 유사도 계산.
+  function similarityRatio(a, b) {
+    if (!a || !b) return 0;
+    if (a === b) return 1;
+    const la = a.length, lb = b.length;
+    const dp = new Array(lb + 1);
+    for (let j = 0; j <= lb; j++) dp[j] = j;
+    for (let i = 1; i <= la; i++) {
+      let prev = dp[0];
+      dp[0] = i;
+      for (let j = 1; j <= lb; j++) {
+        const tmp = dp[j];
+        dp[j] = a[i - 1] === b[j - 1] ? prev : 1 + Math.min(prev, dp[j], dp[j - 1]);
+        prev = tmp;
+      }
+    }
+    const dist = dp[lb];
+    return (la + lb - dist) / (la + lb);
   }
 
   // ================= 세그먼트 분류 (복합PGM, 브랜드명 직접매칭 실패시 폴백) =================
@@ -207,11 +241,16 @@
         }
 
         const isComplex = items.length > 1 && matched.length >= 2;
+        // 대표상품 가격/바로가기 링크: 편성표(GitHub) 쪽 정보를 우선 쓰고,
+        // 없으면 라방바에서 가장 많이 팔린(=order sales_amt desc 1번) 상품 기준.
+        const topItem = items[0] || null;
 
         if (!isComplex) {
           // 단순: 전체 아이템 매출 합산, 상품명은 라방바 hsshow_title 기준
           const total = items.reduce((s, p) => s + (p.sales_amt || 0), 0);
           const bestGh = matched[0]; // best-effort 카테고리 참고용 (여러개면 첫 매칭)
+          const price = (bestGh && bestGh.entry.price) || (topItem && topItem.live_price) || '';
+          const link = (bestGh && bestGh.entry.link) || (topItem && topItem.item_url) || '';
           rows.push(
             [
               channelLabel,
@@ -223,6 +262,8 @@
               bestGh ? bestGh.entry.category : '',
               bestGh ? bestGh.entry.lavangba_category || '' : '',
               hshow.cat && hshow.cat.cat_name ? hshow.cat.cat_name : '',
+              price,
+              link,
             ].join('\t')
           );
           console.log('  단순 | ' + formatAmt(total));
@@ -241,6 +282,8 @@
                 '',
                 '',
                 hshow.cat && hshow.cat.cat_name ? hshow.cat.cat_name : '',
+                item.live_price || '',
+                item.item_url || '',
               ].join('\t')
             );
           });
@@ -272,11 +315,30 @@
           Object.keys(groups).forEach((key) => { groupTotals[key] = 0; });
           const unmatchedItems = [];
           items.forEach((item) => {
-            const itemBrandNorm = normBrand(extractBrand(item.item_name));
-            const matchedKeys = Object.keys(groupBrandNorm).filter((key) => {
-              const gb = groupBrandNorm[key];
-              return gb && itemBrandNorm && (gb.includes(itemBrandNorm) || itemBrandNorm.includes(gb));
-            });
+            // 상품명 첫 어절 후보 하나만 보지 않고(브랜드가 괄호 안에 있는 경우를
+            // 놓칠 수 있어서) 후보를 전부 시도하고, 실패하면 유사도로 한 번 더 시도.
+            const cands = extractBrandCandidates(item.item_name).map(normBrand).filter(Boolean);
+            let matchedKeys = [...new Set(
+              cands.flatMap((cand) =>
+                Object.keys(groupBrandNorm).filter((key) => {
+                  const gb = groupBrandNorm[key];
+                  return gb && (gb.includes(cand) || cand.includes(gb));
+                })
+              )
+            )];
+            if (matchedKeys.length !== 1 && cands.length) {
+              const scored = [];
+              cands.forEach((cand) => {
+                Object.keys(groupBrandNorm).forEach((key) => {
+                  const gb = groupBrandNorm[key];
+                  if (gb) scored.push([similarityRatio(gb, cand), key]);
+                });
+              });
+              scored.sort((a, b) => b[0] - a[0]);
+              if (scored.length && scored[0][0] >= 0.75 && (scored.length === 1 || scored[0][0] - scored[1][0] >= 0.1)) {
+                matchedKeys = [scored[0][1]];
+              }
+            }
             if (matchedKeys.length === 1) {
               groupTotals[matchedKeys[0]] += item.sales_amt || 0;
             } else {
@@ -308,6 +370,8 @@
                 rep.entry.category,
                 rep.entry.lavangba_category || '',
                 hshow.cat && hshow.cat.cat_name ? hshow.cat.cat_name : '',
+                rep.entry.price || '',
+                rep.entry.link || '',
               ].join('\t')
             );
             console.log('  복합(브랜드합산) ' + rep.entry.product.substring(0, 20) + ' | ' + formatAmt(total));
@@ -321,7 +385,7 @@
     console.log('완료! 총 ' + rows.length + '행 (' + hshowCount + '개 방송)');
 
     // ================= 결과 모달 (열너비 드래그 조절 가능한 표) =================
-    const HEADERS = ['채널', '유형', '방송시작', '방송제목', '상품명', '매출액', '출처카테고리', '라방바세부카테고리', '라방바대분류'];
+    const HEADERS = ['채널', '유형', '방송시작', '방송제목', '상품명', '매출액', '출처카테고리', '라방바세부카테고리', '라방바대분류', '가격', '링크'];
     const dataRows = rows.map((r) => r.split('\t'));
     const colWidths = COLUMN_WIDTHS.slice();
 
@@ -380,12 +444,22 @@
     table.appendChild(thead);
 
     const tbody = document.createElement('tbody');
+    const linkColIdx = HEADERS.indexOf('링크');
     dataRows.forEach((cells) => {
       const tr = document.createElement('tr');
-      cells.forEach((cellText) => {
+      cells.forEach((cellText, colIdx) => {
         const td = document.createElement('td');
         td.style.cssText = 'padding:4px 8px;border:1px solid #eee;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;';
-        td.textContent = cellText;
+        if (colIdx === linkColIdx && /^https?:\/\//.test(cellText)) {
+          const a = document.createElement('a');
+          a.href = cellText;
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+          a.textContent = '바로가기';
+          td.appendChild(a);
+        } else {
+          td.textContent = cellText;
+        }
         tr.appendChild(td);
       });
       tbody.appendChild(tr);
