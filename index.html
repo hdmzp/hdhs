@@ -692,6 +692,19 @@
   .sec-table td.lv-name a { color: var(--brand-blue); text-decoration: none; }
   .sec-table td.lv-name a:hover { text-decoration: underline; }
   .sec-table th { position: relative; }
+  .lv-date-input {
+    font-family: 'Pretendard', -apple-system, sans-serif;
+    font-size: 12.5px;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 6px 8px;
+  }
+  .lv-range-tilde { color: var(--ink-soft); font-size: 13px; }
+  /* 세로 스크롤 시 헤더 행 고정 */
+  #lvTableWrap { max-height: 72vh; overflow: auto; }
+  #lvTableWrap .sec-table th { position: sticky; top: 0; z-index: 2; }
   .lv-resizer {
     position: absolute;
     top: 0;
@@ -2441,13 +2454,11 @@
       <h3 class="lv-title">📺 홈쇼핑 방송 실적 (라방바)</h3>
       <div class="lv-controls">
         <div class="date-nav">
-          <button class="arrow" id="lvPrevDay" aria-label="이전 날짜">‹</button>
-          <div class="date-display" id="lvDateDisplay">
-            <span class="date-text" id="lvDateText">-</span>
-            <i class="cal-icon">📅</i>
-            <input type="date" id="lvDatePicker">
-          </div>
-          <button class="arrow" id="lvNextDay" aria-label="다음 날짜">›</button>
+          <button class="arrow" id="lvPrevDay" aria-label="기간 하루 이전으로">‹</button>
+          <input type="date" id="lvStartPicker" class="lv-date-input" aria-label="시작일">
+          <span class="lv-range-tilde">~</span>
+          <input type="date" id="lvEndPicker" class="lv-date-input" aria-label="종료일">
+          <button class="arrow" id="lvNextDay" aria-label="기간 하루 다음으로">›</button>
         </div>
         <div class="lv-slicer" id="lvTimeSlicer">
           <button class="active" data-time="all">전체</button>
@@ -2460,7 +2471,7 @@
       <div class="lv-slicer" id="lvChannelSlicer" style="margin-bottom:12px;"></div>
       <p class="lv-summary" id="lvSummary"></p>
       <div class="sec-table-wrap" id="lvTableWrap"></div>
-      <p class="lv-table-note">단순: 단일 브랜드 방송(방송 전체 매출) · 복합: 여러 브랜드 방송(시계열 기반 브랜드별 집계) · 매출액: 1억 이상 O.O억 / 미만 백만 단위 · 판매가: 100만원 미만 천원 / 이상 만원 단위 · 헤더 오른쪽 경계를 드래그하면 열 너비 조정</p>
+      <p class="lv-table-note">단순: 단일 브랜드 방송(방송 전체 매출) · 복합: 여러 브랜드 방송(시계열 기반 브랜드별 집계) · 매출액: 1억 이상 O.O억 / 미만 백만 단위 · 판매가: 100만원 미만 천원 / 이상 만원 단위 · 헤더 오른쪽 경계를 드래그하면 열 너비 조정 · 조회 기간 최대 31일</p>
     </div>
 
     <div class="sec-logout-row">
@@ -4687,7 +4698,8 @@ function celRenderCompare() {
   ];
   const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
 
-  let lvDate = null;                                          // 'YYYYMMDD'
+  let lvStart = null, lvEnd = null;                           // 기간 'YYYYMMDD' (시작~종료)
+  const LV_MAX_DAYS = 31;                                     // 한 번에 조회 가능한 최대 기간
   let lvActive = new Set(LV_CHANNELS.map(c => c.name));       // 선택 채널 (기본 전체)
   let lvTime = 'all';                                         // all | normal | night
   const lvCache = {};
@@ -4716,9 +4728,19 @@ function celRenderCompare() {
     const d = new Date(+d8.slice(0, 4), +d8.slice(4, 6) - 1, +d8.slice(6, 8) + n);
     return String(d.getFullYear()) + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0');
   }
-  function lvDateLabel(d8) {
+  function d8Weekday(d8) {
     const d = new Date(+d8.slice(0, 4), +d8.slice(4, 6) - 1, +d8.slice(6, 8));
-    return d8ToHyphen(d8) + ' (' + WEEKDAYS[d.getDay()] + ')';
+    return WEEKDAYS[d.getDay()];
+  }
+  function d8DiffDays(a, b) {
+    return Math.round((new Date(+b.slice(0, 4), +b.slice(4, 6) - 1, +b.slice(6, 8))
+      - new Date(+a.slice(0, 4), +a.slice(4, 6) - 1, +a.slice(6, 8))) / 86400000);
+  }
+  function lvSetRange(s, e) {
+    if (s > e) { const t = s; s = e; e = t; }
+    if (d8DiffDays(s, e) >= LV_MAX_DAYS) e = d8AddDays(s, LV_MAX_DAYS - 1);
+    lvStart = s;
+    lvEnd = e;
   }
 
   async function lvLoad(d8) {
@@ -4760,15 +4782,20 @@ function celRenderCompare() {
   }
 
   async function lvRender() {
-    const rows = await lvLoad(lvDate);
-    $('lvDateText').textContent = lvDateLabel(lvDate);
-    $('lvDatePicker').value = d8ToHyphen(lvDate);
+    $('lvStartPicker').value = d8ToHyphen(lvStart);
+    $('lvEndPicker').value = d8ToHyphen(lvEnd);
     const wrap = $('lvTableWrap');
     const summary = $('lvSummary');
 
-    if (!rows || !rows.length) {
+    let rows = [];
+    for (let d8 = lvStart, i = 0; d8 <= lvEnd && i < LV_MAX_DAYS; d8 = d8AddDays(d8, 1), i++) {
+      const day = await lvLoad(d8);
+      if (day) rows = rows.concat(day);
+    }
+
+    if (!rows.length) {
       summary.textContent = '';
-      wrap.innerHTML = '<div class="lv-empty">이 날짜의 수집 데이터가 없습니다.</div>';
+      wrap.innerHTML = '<div class="lv-empty">이 기간의 수집 데이터가 없습니다.</div>';
       return;
     }
 
@@ -4781,15 +4808,17 @@ function celRenderCompare() {
       if (lvTime === 'normal') return !lvIsNight(r.broadcast_start);
       return true;
     }).sort((a, b) =>
-      a.broadcast_start.localeCompare(b.broadcast_start)
+      String(a.date).localeCompare(String(b.date))
+      || a.broadcast_start.localeCompare(b.broadcast_start)
       || (chOrder[a.channel] ?? 99) - (chOrder[b.channel] ?? 99)
       || a.item_start.localeCompare(b.item_start)
     );
 
     lvLastFiltered = filtered;
     const totalAmt = filtered.reduce((s, r) => s + (r.sales_amt || 0), 0);
-    const shows = new Set(filtered.map(r => r.channel + '|' + r.broadcast_start)).size;
-    summary.innerHTML = '방송 <b>' + shows + '건</b> · 상품행 <b>' + filtered.length + '행</b> · 총매출 <b>' + lvFmtAmt(totalAmt) + '</b>';
+    const shows = new Set(filtered.map(r => r.channel + '|' + r.date + '|' + r.broadcast_start)).size;
+    const days = d8DiffDays(lvStart, lvEnd) + 1;
+    summary.innerHTML = '기간 <b>' + days + '일</b> · 방송 <b>' + shows + '건</b> · 상품행 <b>' + filtered.length + '행</b> · 총매출 <b>' + lvFmtAmt(totalAmt) + '</b>';
 
     if (!filtered.length) {
       wrap.innerHTML = '<div class="lv-empty">선택한 조건에 해당하는 방송이 없습니다.</div>';
@@ -4798,16 +4827,19 @@ function celRenderCompare() {
 
     const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
     let html = '<table class="sec-table"><thead><tr>'
-      + '<th>채널</th><th>방송시간</th><th>유형</th><th>브랜드</th><th>상품명</th>'
+      + '<th>채널</th><th>방송일자</th><th>요일</th><th>방송시간</th><th>유형</th><th>브랜드</th><th>상품명</th>'
       + '<th>상품시간</th><th>노출분</th><th>판매가</th><th>매출액</th><th>카테고리</th>'
       + '</tr></thead><tbody>';
     filtered.forEach(r => {
       const typeCls = r.type === '단순' ? 'simple' : 'complex';
+      const d8 = String(r.date || '');
       const nameHtml = r.link
         ? '<a href="' + esc(r.link) + '" target="_blank" rel="noopener">' + esc(r.item_name) + '</a>'
         : esc(r.item_name);
       html += '<tr>'
         + '<td>' + esc(r.channel) + '</td>'
+        + '<td class="lv-time">' + (d8.length === 8 ? d8.slice(4, 6) + '/' + d8.slice(6, 8) : esc(d8)) + '</td>'
+        + '<td class="lv-time">' + (d8.length === 8 ? d8Weekday(d8) : '-') + '</td>'
         + '<td class="lv-time">' + esc(r.broadcast_start) + '~' + esc(r.broadcast_end) + '</td>'
         + '<td><span class="lv-type-tag ' + typeCls + '">' + esc(r.type) + '</span></td>'
         + '<td>' + esc(r.brand) + '</td>'
@@ -4856,6 +4888,7 @@ function celRenderCompare() {
     if (!lvLastFiltered.length) return;
     const cols = [
       ['채널', r => r.channel], ['날짜', r => r.date],
+      ['요일', r => String(r.date || '').length === 8 ? d8Weekday(String(r.date)) : ''],
       ['방송시작', r => r.broadcast_start], ['방송종료', r => r.broadcast_end],
       ['유형', r => r.type], ['브랜드', r => r.brand], ['상품명', r => r.item_name],
       ['상품시작', r => r.item_start], ['상품종료', r => r.item_end],
@@ -4872,7 +4905,7 @@ function celRenderCompare() {
     const blob = new Blob(['\uFEFF' + lines.join('\n')], { type: 'text/csv;charset=utf-8;' }); // BOM: 엑셀 한글 깨짐 방지
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'lavangba_' + lvDate + '.csv';
+    a.download = 'lavangba_' + (lvStart === lvEnd ? lvStart : lvStart + '-' + lvEnd) + '.csv';
     a.click();
     URL.revokeObjectURL(a.href);
   }
@@ -4892,10 +4925,13 @@ function celRenderCompare() {
     if (lvInited) { lvRender(); return; }
     lvInited = true;
 
-    $('lvPrevDay').addEventListener('click', () => { lvDate = d8AddDays(lvDate, -1); lvRender(); });
-    $('lvNextDay').addEventListener('click', () => { lvDate = d8AddDays(lvDate, 1); lvRender(); });
-    $('lvDatePicker').addEventListener('change', e => {
-      if (e.target.value) { lvDate = hyphenToD8(e.target.value); lvRender(); }
+    $('lvPrevDay').addEventListener('click', () => { lvSetRange(d8AddDays(lvStart, -1), d8AddDays(lvEnd, -1)); lvRender(); });
+    $('lvNextDay').addEventListener('click', () => { lvSetRange(d8AddDays(lvStart, 1), d8AddDays(lvEnd, 1)); lvRender(); });
+    $('lvStartPicker').addEventListener('change', e => {
+      if (e.target.value) { lvSetRange(hyphenToD8(e.target.value), lvEnd); lvRender(); }
+    });
+    $('lvEndPicker').addEventListener('change', e => {
+      if (e.target.value) { lvSetRange(lvStart, hyphenToD8(e.target.value)); lvRender(); }
     });
     document.querySelectorAll('#lvTimeSlicer button').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -4908,7 +4944,8 @@ function celRenderCompare() {
     $('lvCsvBtn').addEventListener('click', lvDownloadCsv);
 
     lvRenderChannelSlicer();
-    lvDate = await lvFindLatestDate();
+    const latest = await lvFindLatestDate();
+    lvSetRange(latest, latest);
     lvRender();
   };
 })();
