@@ -689,6 +689,36 @@
   .lv-type-tag.simple { background: var(--brand-blue-soft, #EBF2FF); color: var(--brand-blue); }
   .lv-type-tag.complex { background: #FEF3E2; color: #B45309; }
   .lv-empty { text-align: center; padding: 40px 0; color: var(--ink-soft); font-size: 13px; }
+  .sec-table td.lv-name a { color: var(--brand-blue); text-decoration: none; }
+  .sec-table td.lv-name a:hover { text-decoration: underline; }
+  .sec-table th { position: relative; }
+  .lv-resizer {
+    position: absolute;
+    top: 0;
+    right: -3px;
+    width: 7px;
+    height: 100%;
+    cursor: col-resize;
+    user-select: none;
+    touch-action: none;
+    z-index: 1;
+  }
+  .lv-resizer:hover { background: var(--brand-blue); opacity: 0.4; }
+  .sec-table.lv-fixed { table-layout: fixed; width: auto; min-width: 100%; }
+  .sec-table.lv-fixed td { overflow: hidden; text-overflow: ellipsis; }
+  .lv-csv-btn {
+    font-family: 'Pretendard', -apple-system, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid var(--rule);
+    background: var(--paper);
+    color: var(--ink-soft);
+    border-radius: 8px;
+    padding: 6px 12px;
+    cursor: pointer;
+    margin-left: auto;
+  }
+  .lv-csv-btn:hover { background: var(--brand-blue); border-color: var(--brand-blue); color: #fff; }
 
   /* ============ 날씨 탭(달력) ============ */
   #tabWeather {
@@ -2430,11 +2460,12 @@
           <button data-time="night">심야</button>
         </div>
         <span class="hs-time-note">※ 심야: 01:00~05:00</span>
+        <button type="button" class="lv-csv-btn" id="lvCsvBtn">⬇ CSV</button>
       </div>
       <div class="lv-slicer" id="lvChannelSlicer" style="margin-bottom:12px;"></div>
       <p class="lv-summary" id="lvSummary"></p>
       <div class="sec-table-wrap" id="lvTableWrap"></div>
-      <p class="lv-table-note">단순: 단일 브랜드 방송(방송 전체 매출) · 복합: 여러 브랜드 방송(시계열 기반 브랜드별 집계) · 금액: 1억 이상 O.O억 / 미만 백만 단위</p>
+      <p class="lv-table-note">단순: 단일 브랜드 방송(방송 전체 매출) · 복합: 여러 브랜드 방송(시계열 기반 브랜드별 집계) · 매출액: 1억 이상 O.O억 / 미만 백만 단위 · 판매가: 100만원 미만 천원 / 이상 만원 단위 · 헤더 오른쪽 경계를 드래그하면 열 너비 조정</p>
     </div>
 
     <div class="sec-logout-row">
@@ -4624,17 +4655,22 @@ function celRenderCompare() {
 (function () {
   // 데이터: lavangba/data/YYYYMMDD.json (로컬 수집기가 매일 push)
   const LV_CHANNELS = [
-    { name: '현대홈쇼핑',  label: 'HD' },
-    { name: 'GS홈쇼핑',    label: 'GS' },
-    { name: 'CJ온스타일',  label: 'CJ' },
-    { name: '롯데홈쇼핑',  label: 'LT' },
-    { name: '공영쇼핑',    label: '공영' },
-    { name: '홈앤쇼핑',    label: '홈앤' },
-    { name: 'KT알파쇼핑',  label: 'KT' },
-    { name: '신세계쇼핑',  label: 'SSG' },
-    { name: 'NS홈쇼핑',    label: 'NS' },
-    { name: '쇼핑엔티',    label: 'NT' },
-    { name: 'SK스토아',    label: 'SK' },
+    { name: '현대홈쇼핑',        label: 'HD' },
+    { name: '현대홈쇼핑 플러스샵', label: 'HD+' },
+    { name: 'GS홈쇼핑',          label: 'GS' },
+    { name: 'GS홈쇼핑 마이샵',    label: 'GS+' },
+    { name: 'CJ온스타일',        label: 'CJ' },
+    { name: 'CJ온스타일 플러스',  label: 'CJ+' },
+    { name: '롯데홈쇼핑',        label: 'LT' },
+    { name: '롯데원티비',        label: 'LT+' },
+    { name: 'NS홈쇼핑',          label: 'NS' },
+    { name: 'NS홈쇼핑 샵플러스',  label: 'NS+' },
+    { name: '공영쇼핑',          label: '공영' },
+    { name: '홈앤쇼핑',          label: '홈앤' },
+    { name: 'KT알파쇼핑',        label: 'KT' },
+    { name: '신세계쇼핑',        label: 'SSG' },
+    { name: '쇼핑엔티',          label: 'NT' },
+    { name: 'SK스토아',          label: 'SK' },
   ];
   const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
 
@@ -4643,12 +4679,19 @@ function celRenderCompare() {
   let lvTime = 'all';                                         // all | normal | night
   const lvCache = {};
   let lvInited = false;
+  let lvLastFiltered = [];                                    // CSV 다운로드용 (현재 필터 반영)
 
   const $ = id => document.getElementById(id);
 
   function lvFmtAmt(v) {
     if (!v) return '-';
     return v >= 1e8 ? (v / 1e8).toFixed(1) + '억' : Math.round(v / 1e6) + '백만';
+  }
+  function lvFmtPrice(v) {
+    if (!v) return '-';
+    return v >= 1e6
+      ? Math.round(v / 1e4).toLocaleString() + '만원'
+      : Math.round(v / 1e3).toLocaleString() + '천원';
   }
   function lvIsNight(hhmm) {
     const h = parseInt(hhmm.slice(0, 2), 10);
@@ -4730,6 +4773,7 @@ function celRenderCompare() {
       || a.item_start.localeCompare(b.item_start)
     );
 
+    lvLastFiltered = filtered;
     const totalAmt = filtered.reduce((s, r) => s + (r.sales_amt || 0), 0);
     const shows = new Set(filtered.map(r => r.channel + '|' + r.broadcast_start)).size;
     summary.innerHTML = '방송 <b>' + shows + '건</b> · 상품행 <b>' + filtered.length + '행</b> · 총매출 <b>' + lvFmtAmt(totalAmt) + '</b>';
@@ -4742,24 +4786,82 @@ function celRenderCompare() {
     const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
     let html = '<table class="sec-table"><thead><tr>'
       + '<th>채널</th><th>방송시간</th><th>유형</th><th>브랜드</th><th>상품명</th>'
-      + '<th>상품시간</th><th>노출분</th><th>매출액</th><th>카테고리</th>'
+      + '<th>상품시간</th><th>노출분</th><th>판매가</th><th>매출액</th><th>카테고리</th>'
       + '</tr></thead><tbody>';
     filtered.forEach(r => {
       const typeCls = r.type === '단순' ? 'simple' : 'complex';
+      const nameHtml = r.link
+        ? '<a href="' + esc(r.link) + '" target="_blank" rel="noopener">' + esc(r.item_name) + '</a>'
+        : esc(r.item_name);
       html += '<tr>'
         + '<td>' + esc(r.channel) + '</td>'
         + '<td class="lv-time">' + esc(r.broadcast_start) + '~' + esc(r.broadcast_end) + '</td>'
         + '<td><span class="lv-type-tag ' + typeCls + '">' + esc(r.type) + '</span></td>'
         + '<td>' + esc(r.brand) + '</td>'
-        + '<td class="lv-name" title="' + esc(r.item_name) + '">' + esc(r.item_name) + '</td>'
+        + '<td class="lv-name" title="' + esc(r.item_name) + '">' + nameHtml + '</td>'
         + '<td class="lv-time">' + esc(r.item_start) + '~' + esc(r.item_end) + '</td>'
         + '<td class="lv-time">' + esc(r.item_duration_min) + '분</td>'
+        + '<td class="lv-amt">' + lvFmtPrice(r.price) + '</td>'
         + '<td class="lv-amt">' + lvFmtAmt(r.sales_amt) + '</td>'
         + '<td>' + esc(r.lavangba_category || r.category) + '</td>'
         + '</tr>';
     });
     html += '</tbody></table>';
     wrap.innerHTML = html;
+    lvMakeResizable(wrap.querySelector('table'));
+  }
+
+  // 열 너비 드래그 조정: 각 헤더 우측에 그립을 붙이고, 드래그 시작 시 현재 너비를 고정한다
+  function lvMakeResizable(table) {
+    if (!table) return;
+    table.querySelectorAll('th').forEach(th => {
+      const grip = document.createElement('span');
+      grip.className = 'lv-resizer';
+      th.appendChild(grip);
+      grip.addEventListener('pointerdown', e => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!table.classList.contains('lv-fixed')) {
+          table.querySelectorAll('th').forEach(h => { h.style.width = h.offsetWidth + 'px'; });
+          table.classList.add('lv-fixed');
+        }
+        const startX = e.clientX;
+        const startW = th.offsetWidth;
+        grip.setPointerCapture(e.pointerId);
+        const move = ev => { th.style.width = Math.max(48, startW + ev.clientX - startX) + 'px'; };
+        const up = () => {
+          grip.removeEventListener('pointermove', move);
+          grip.removeEventListener('pointerup', up);
+        };
+        grip.addEventListener('pointermove', move);
+        grip.addEventListener('pointerup', up);
+      });
+    });
+  }
+
+  function lvDownloadCsv() {
+    if (!lvLastFiltered.length) return;
+    const cols = [
+      ['채널', r => r.channel], ['날짜', r => r.date],
+      ['방송시작', r => r.broadcast_start], ['방송종료', r => r.broadcast_end],
+      ['유형', r => r.type], ['브랜드', r => r.brand], ['상품명', r => r.item_name],
+      ['상품시작', r => r.item_start], ['상품종료', r => r.item_end],
+      ['노출분', r => r.item_duration_min], ['판매가', r => r.price],
+      ['매출액', r => r.sales_amt], ['카테고리', r => r.lavangba_category || r.category],
+      ['링크', r => r.link],
+    ];
+    const cell = v => {
+      const s = String(v == null ? '' : v);
+      return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+    };
+    const lines = [cols.map(c => c[0]).join(',')];
+    lvLastFiltered.forEach(r => lines.push(cols.map(c => cell(c[1](r))).join(',')));
+    const blob = new Blob(['\uFEFF' + lines.join('\n')], { type: 'text/csv;charset=utf-8;' }); // BOM: 엑셀 한글 깨짐 방지
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'lavangba_' + lvDate + '.csv';
+    a.click();
+    URL.revokeObjectURL(a.href);
   }
 
   async function lvFindLatestDate() {
@@ -4790,6 +4892,7 @@ function celRenderCompare() {
         lvRender();
       });
     });
+    $('lvCsvBtn').addEventListener('click', lvDownloadCsv);
 
     lvRenderChannelSlicer();
     lvDate = await lvFindLatestDate();
