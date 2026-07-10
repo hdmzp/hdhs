@@ -2424,11 +2424,6 @@
 
   <div id="secLoginBox" class="sec-box">
     <div class="fb-block">
-      <div class="fb-label">사번 <span class="req">*</span></div>
-      <input type="text" inputmode="numeric" class="fb-input" id="secEmpNo" placeholder="사번" maxlength="20" autocomplete="off">
-    </div>
-
-    <div class="fb-block">
       <div class="fb-label">비밀번호 <span class="req">*</span></div>
       <input type="password" class="fb-input" id="secPw" placeholder="비밀번호" maxlength="100" autocomplete="off">
       <label class="sec-show"><input type="checkbox" id="secPwShow"> 비밀번호 표시</label>
@@ -4477,7 +4472,6 @@ function celRenderCompare() {
 
   const loginBox = document.getElementById('secLoginBox');
   const contentBox = document.getElementById('secContentBox');
-  const empInput = document.getElementById('secEmpNo');
   const pwInput = document.getElementById('secPw');
   const pwShow = document.getElementById('secPwShow');
   const loginBtn = document.getElementById('secLoginBtn');
@@ -4530,6 +4524,28 @@ function celRenderCompare() {
     return JSON.parse(new TextDecoder().decode(buf));
   }
 
+  // v2: 데이터는 랜덤 키로 암호화되고, 그 키가 비밀번호별로 한 번씩 감싸져(keys[])
+  // 등록된 비밀번호 중 어떤 것으로도 열 수 있다. v1(salt/iv/data 단일)도 계속 지원.
+  async function unlockWithPassword(pw, enc) {
+    if (enc.v >= 2 && Array.isArray(enc.keys)) {
+      for (const k of enc.keys) {
+        try {
+          const pwKey = await deriveKey(pw, b64ToBytes(k.salt), enc.iter || 310000);
+          const rawBuf = await crypto.subtle.decrypt(
+            { name: 'AES-GCM', iv: b64ToBytes(k.iv) }, pwKey, b64ToBytes(k.wrap)
+          );
+          const dataKey = await crypto.subtle.importKey('raw', rawBuf, { name: 'AES-GCM' }, true, ['decrypt']);
+          const data = await decryptWithKey(dataKey, enc);
+          return { data: data, key: dataKey };
+        } catch (e) { /* 이 비밀번호로 안 열리면 다음 키 시도 */ }
+      }
+      throw new Error('invalid password');
+    }
+    const key = await deriveKey(pw, b64ToBytes(enc.salt), enc.iter || 310000);
+    const data = await decryptWithKey(key, enc); // 비번이 틀리면 여기서 예외 발생
+    return { data: data, key: key };
+  }
+
   function renderSecure(data) {
     updatedEl.textContent = data.updated ? '기준일: ' + data.updated : '';
     const cols = data.columns || [];
@@ -4573,10 +4589,10 @@ function celRenderCompare() {
     }
   }
 
-  function sendLog(empNo, ip, result) {
+  function sendLog(ip, result) {
     if (!SEC_LOG_URL) return; // URL 미설정 시 전송 생략
     const payload = {
-      empNo: empNo,
+      empNo: '', // 사번 입력 제거됨 (시트 열 구조 유지용)
       ip: ip,
       result: result, // 'success' | 'fail'
       userAgent: navigator.userAgent,
@@ -4591,12 +4607,9 @@ function celRenderCompare() {
   }
 
   async function doLogin() {
-    const empNo = empInput.value.trim();
     // 앞뒤 공백 제거 + 한글 유니코드 정규화(NFC)로 보이지 않는 입력 차이 보정
     const pw = pwInput.value.trim().normalize('NFC');
 
-    if (!empNo) { secShowStatus('사번을 입력해 주세요.', false); empInput.focus(); return; }
-    if (!/^\d+$/.test(empNo)) { secShowStatus('사번은 숫자만 입력해 주세요.', false); empInput.focus(); return; }
     if (!pw) { secShowStatus('비밀번호를 입력해 주세요.', false); pwInput.focus(); return; }
 
     loginBtn.disabled = true;
@@ -4607,8 +4620,9 @@ function celRenderCompare() {
     let key = null;
     try {
       const enc = await fetchEncFile();
-      key = await deriveKey(pw, b64ToBytes(enc.salt), enc.iter || 310000);
-      data = await decryptWithKey(key, enc); // 비번이 틀리면 여기서 예외 발생
+      const res = await unlockWithPassword(pw, enc); // 등록된 비번 어느 것도 안 맞으면 예외
+      data = res.data;
+      key = res.key;
       ok = true;
     } catch (e) {
       ok = false;
@@ -4616,7 +4630,7 @@ function celRenderCompare() {
 
     // 성공/실패 모두 기록 (IP 조회 실패해도 빈 값으로 전송)
     const ip = await getClientIp();
-    sendLog(empNo, ip, ok ? 'success' : 'fail');
+    sendLog(ip, ok ? 'success' : 'fail');
 
     loginBtn.disabled = false;
     loginBtn.textContent = '접속하기';
@@ -4630,7 +4644,7 @@ function celRenderCompare() {
       renderSecure(data);
       showLoggedIn();
     } else {
-      secShowStatus('사번 또는 비밀번호가 올바르지 않습니다.', false);
+      secShowStatus('비밀번호가 올바르지 않습니다.', false);
       pwInput.focus();
       gaEvent('security_login', { result: 'fail' });
     }
@@ -4641,7 +4655,6 @@ function celRenderCompare() {
     pwShow.addEventListener('change', () => { pwInput.type = pwShow.checked ? 'text' : 'password'; });
   }
   pwInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') doLogin(); });
-  empInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') pwInput.focus(); });
 
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
@@ -4690,8 +4703,8 @@ function celRenderCompare() {
   function lvFmtPrice(v) {
     if (!v) return '-';
     return v >= 1e6
-      ? Math.round(v / 1e4).toLocaleString() + '만원'
-      : Math.round(v / 1e3).toLocaleString() + '천원';
+      ? Math.floor(v / 1e4).toLocaleString() + '만원'
+      : Math.floor(v / 1e3).toLocaleString() + '천원';
   }
   function lvIsNight(hhmm) {
     const h = parseInt(hhmm.slice(0, 2), 10);

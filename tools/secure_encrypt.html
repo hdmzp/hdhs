@@ -68,11 +68,14 @@
     <input type="date" id="updatedInput">
   </div>
   <div>
-    <input type="password" id="pwInput" placeholder="보안탭 비밀번호" autocomplete="off">
+    <input type="password" id="pwInput" placeholder="보안탭 비밀번호 1" autocomplete="off">
     <label class="show-pw"><input type="checkbox" id="pwShowChk"> 비밀번호 표시</label>
   </div>
+  <div>
+    <input type="password" id="pwInput2" placeholder="보안탭 비밀번호 2 (선택)" autocomplete="off">
+  </div>
 </div>
-<div class="hint">※ 사이트 로그인에 쓰는 비밀번호와 반드시 같아야 합니다. 이 비밀번호로만 복호화할 수 있습니다.</div>
+<div class="hint">※ 사이트 로그인에 쓰는 비밀번호와 반드시 같아야 합니다. 등록한 비밀번호 중 어느 것으로도 로그인할 수 있습니다. 비밀번호 2를 비우면 1개만 등록됩니다.</div>
 
 <button id="encBtn">3. 암호화해서 secure.enc 다운로드</button>
 <div class="status" id="statusEl"></div>
@@ -93,13 +96,18 @@
   const previewWrap = document.getElementById('previewWrap');
   const updatedInput = document.getElementById('updatedInput');
   const pwInput = document.getElementById('pwInput');
+  const pwInput2 = document.getElementById('pwInput2');
   const pwShowChk = document.getElementById('pwShowChk');
   const encBtn = document.getElementById('encBtn');
   const statusEl = document.getElementById('statusEl');
 
   updatedInput.value = new Date().toISOString().slice(0, 10);
 
-  pwShowChk.addEventListener('change', () => { pwInput.type = pwShowChk.checked ? 'text' : 'password'; });
+  pwShowChk.addEventListener('change', () => {
+    const t = pwShowChk.checked ? 'text' : 'password';
+    pwInput.type = t;
+    pwInput2.type = t;
+  });
 
   function showStatus(msg, ok) {
     statusEl.textContent = msg;
@@ -136,11 +144,21 @@
 
   const bytesToB64 = bytes => btoa(String.fromCharCode(...bytes));
 
+  async function derivePwKey(pw, salt) {
+    const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pw), 'PBKDF2', false, ['deriveKey']);
+    return crypto.subtle.deriveKey(
+      { name: 'PBKDF2', hash: 'SHA-256', salt: salt, iterations: ITER },
+      base, { name: 'AES-GCM', length: 256 }, false, ['encrypt']
+    );
+  }
+
   async function encrypt() {
     const parsed = parseTable(tsvInput.value);
     if (!parsed) { showStatus('표 데이터를 붙여넣어 주세요. (열 제목 줄 + 데이터 최소 1줄)', false); return; }
-    const pw = pwInput.value.trim().normalize('NFC');
-    if (!pw) { showStatus('비밀번호를 입력해 주세요.', false); pwInput.focus(); return; }
+    const passwords = [pwInput.value, pwInput2.value]
+      .map(p => p.trim().normalize('NFC'))
+      .filter(p => p);
+    if (!passwords.length) { showStatus('비밀번호를 입력해 주세요.', false); pwInput.focus(); return; }
 
     encBtn.disabled = true;
     encBtn.textContent = '암호화 중...';
@@ -150,19 +168,27 @@
         columns: parsed.columns,
         rows: parsed.rows
       });
-      const salt = crypto.getRandomValues(new Uint8Array(16));
+      // v2: 본문은 랜덤 데이터 키로 암호화하고, 데이터 키를 비밀번호별로 감싸서 저장.
+      //     등록된 비밀번호 중 어느 것으로도 복호화(로그인)할 수 있다.
+      const dataKeyRaw = crypto.getRandomValues(new Uint8Array(32));
+      const dataKey = await crypto.subtle.importKey('raw', dataKeyRaw, { name: 'AES-GCM' }, false, ['encrypt']);
       const iv = crypto.getRandomValues(new Uint8Array(12));
-      const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pw), 'PBKDF2', false, ['deriveKey']);
-      const key = await crypto.subtle.deriveKey(
-        { name: 'PBKDF2', hash: 'SHA-256', salt: salt, iterations: ITER },
-        base, { name: 'AES-GCM', length: 256 }, false, ['encrypt']
-      );
       const ct = new Uint8Array(await crypto.subtle.encrypt(
-        { name: 'AES-GCM', iv: iv }, key, new TextEncoder().encode(plaintext)
+        { name: 'AES-GCM', iv: iv }, dataKey, new TextEncoder().encode(plaintext)
       ));
+      const keys = [];
+      for (const pw of passwords) {
+        const salt = crypto.getRandomValues(new Uint8Array(16));
+        const wrapIv = crypto.getRandomValues(new Uint8Array(12));
+        const pwKey = await derivePwKey(pw, salt);
+        const wrapped = new Uint8Array(await crypto.subtle.encrypt(
+          { name: 'AES-GCM', iv: wrapIv }, pwKey, dataKeyRaw
+        ));
+        keys.push({ salt: bytesToB64(salt), iv: bytesToB64(wrapIv), wrap: bytesToB64(wrapped) });
+      }
       const out = JSON.stringify({
-        v: 1, kdf: 'PBKDF2-SHA256', iter: ITER,
-        salt: bytesToB64(salt), iv: bytesToB64(iv), data: bytesToB64(ct)
+        v: 2, kdf: 'PBKDF2-SHA256', iter: ITER,
+        iv: bytesToB64(iv), data: bytesToB64(ct), keys: keys
       });
 
       const blob = new Blob([out], { type: 'application/json' });
@@ -171,7 +197,7 @@
       a.download = 'secure.enc';
       a.click();
       URL.revokeObjectURL(a.href);
-      showStatus('완료! 다운로드된 secure.enc를 저장소 data/secure 폴더에 업로드하세요. (' + parsed.rows.length + '행 암호화됨)', true);
+      showStatus('완료! 다운로드된 secure.enc를 저장소 data/secure 폴더에 업로드하세요. (' + parsed.rows.length + '행, 비밀번호 ' + passwords.length + '개 등록)', true);
     } catch (e) {
       showStatus('암호화에 실패했습니다: ' + e.message, false);
     } finally {
