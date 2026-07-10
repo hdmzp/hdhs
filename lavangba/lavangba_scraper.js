@@ -23,6 +23,11 @@
   // 특정 날짜만: const TARGET_DATES = ['20260709'];
   // 기간: const TARGET_DATES = dateRange('20260701', '20260709');
 
+  // 결과 모달 표의 컬럼 기본 너비(px). 필요하면 여기 숫자를 직접 바꾸면 되고,
+  // 모달이 뜬 뒤에는 각 헤더 오른쪽 끝을 마우스로 드래그해서도 조절할 수 있다.
+  // 컬럼 순서: 채널/유형/방송시작/방송제목/상품명/매출액/출처카테고리/라방바세부카테고리/라방바대분류
+  const COLUMN_WIDTHS = [90, 70, 70, 220, 220, 90, 90, 110, 90];
+
   // ================= 채널 매핑 =================
   // key: 라방바 platform_id, value: GitHub(hdmzp/hdhs) homeshopping 폴더 코드
   const GITHUB_CODE = {
@@ -109,7 +114,33 @@
     return total >= 100000000 ? (total / 100000000).toFixed(2) + '억' : Math.round(total / 10000) + '만';
   }
 
-  // ================= 세그먼트 분류 (복합PGM) =================
+  // ================= 브랜드 추출 =================
+  const BRACKET_RE = /\[([^\[\]]*)\]|\(([^()]*)\)/g;
+  function extractBrand(name) {
+    const raw = (name || '').trim();
+    if (!raw) return '';
+    const bracketContents = [];
+    let m;
+    BRACKET_RE.lastIndex = 0;
+    while ((m = BRACKET_RE.exec(raw))) {
+      const c = (m[1] || m[2] || '').trim();
+      if (c) bracketContents.push(c);
+    }
+    let body = raw.replace(BRACKET_RE, ' ').replace(/\s{2,}/g, ' ').trim();
+    if (body.startsWith('+')) body = body.slice(1).trim();
+    const firstWord = (s) => { const parts = s.split(/\s+/).filter(Boolean); return parts[0] || ''; };
+    let brand = firstWord(body);
+    if ((!brand || brand.length <= 1 || /^\d+$/.test(brand)) && bracketContents.length) {
+      const alt = firstWord(bracketContents[0]);
+      if (alt) return alt;
+    }
+    return brand;
+  }
+  function normBrand(b) {
+    return (b || '').replace(/\s+/g, '').toLowerCase();
+  }
+
+  // ================= 세그먼트 분류 (복합PGM, 브랜드명 직접매칭 실패시 폴백) =================
   function classifyItemToSegment(item, segments) {
     const rcd = (item.sales_amt_rcd || '').split(',').map(Number);
     let bestIdx = null, bestSum = -1;
@@ -152,6 +183,17 @@
           .map((e) => ({ entry: e, ...ghEntryDates(dateHyphen, e) }))
           .filter((e) => e.start < hshowEnd && e.end > hshowStart)
           .sort((a, b) => a.start - b.start);
+
+        // 라방바 자체 종료시각이 실제 편성표보다 정확히 1분 늦게 찍히는 경우가 잦다
+        // (예: 편성표 02:10 종료인데 라방바는 02:11로 기록). 편성표 마지막 상품의
+        // 종료시각과 5분 이내로만 차이나면 편성표 쪽을 신뢰해서 보정한다.
+        let hshowEndFixed = hshowEnd;
+        if (matched.length) {
+          const ghEnd = matched.reduce((max, m) => (m.end > max ? m.end : max), matched[0].end);
+          if (ghEnd > hshowStart && Math.abs(ghEnd - hshowEnd) <= 5 * 60000) {
+            hshowEndFixed = ghEnd;
+          }
+        }
 
         console.log(
           '[' + channelLabel + ' ' + dateStr + ' ' + pgmStartLabel + '] item_cnt=' + hshow.item_cnt + ' fetching items...'
@@ -203,41 +245,72 @@
             );
           });
         } else {
-          // 복합: GitHub 세그먼트 시간대 기준으로 라방바 아이템들의 시계열을 분류/집계
-          const durationMin = Math.round((hshowEnd - hshowStart) / 60000);
+          // 복합: 같은 브랜드의 편성 항목은 1행으로 묶고, 라방바 SKU 자체 상품명에서
+          // 뽑은 브랜드를 그룹의 브랜드와 직접 매칭해서 그 SKU의 매출액(이미 라방바가
+          // 개별로 정확히 나눠줌)을 그대로 배정한다. 시계열 승자독식 방식보다 훨씬
+          // 정확함(모든 매출이 활동 큰 구간 하나에 몰빵되는 문제 방지).
+          const durationMin = Math.round((hshowEndFixed - hshowStart) / 60000);
           const segments = matched.map((m, i) => ({
             idx: i,
             from: Math.max(0, Math.round((m.start - hshowStart) / 60000)),
             to: Math.min(durationMin, Math.round((m.end - hshowStart) / 60000)),
             entry: m.entry,
+            brand: (m.entry.brand || '').trim() || extractBrand(m.entry.product),
           }));
 
-          const segTotals = {};
-          items.forEach((item) => {
-            const { idx, activity } = classifyItemToSegment(item, segments);
-            if (idx === null) return;
-            if (activity <= 0) {
-              console.warn('[경고] 시계열 활동 없는 상품(0원 판단 가능):', item.item_name);
-            }
-            segTotals[idx] = (segTotals[idx] || 0) + (item.sales_amt || 0);
+          const groups = {};
+          segments.forEach((seg) => {
+            const key = seg.brand || seg.entry.product;
+            (groups[key] = groups[key] || []).push(seg);
+          });
+          const groupBrandNorm = {};
+          Object.keys(groups).forEach((key) => {
+            groupBrandNorm[key] = normBrand(groups[key][0].brand || groups[key][0].entry.product);
           });
 
-          segments.forEach((seg) => {
-            const total = segTotals[seg.idx] || 0;
+          const groupTotals = {};
+          Object.keys(groups).forEach((key) => { groupTotals[key] = 0; });
+          const unmatchedItems = [];
+          items.forEach((item) => {
+            const itemBrandNorm = normBrand(extractBrand(item.item_name));
+            const matchedKeys = Object.keys(groupBrandNorm).filter((key) => {
+              const gb = groupBrandNorm[key];
+              return gb && itemBrandNorm && (gb.includes(itemBrandNorm) || itemBrandNorm.includes(gb));
+            });
+            if (matchedKeys.length === 1) {
+              groupTotals[matchedKeys[0]] += item.sales_amt || 0;
+            } else {
+              unmatchedItems.push(item);
+            }
+          });
+
+          // 브랜드명으로 못 찾은 SKU만 기존 시계열(승자독식) 방식으로 보조 처리
+          unmatchedItems.forEach((item) => {
+            const { idx } = classifyItemToSegment(item, segments);
+            if (idx === null) return;
+            const seg = segments.find((s) => s.idx === idx);
+            const key = seg.brand || seg.entry.product;
+            groupTotals[key] += item.sales_amt || 0;
+          });
+
+          Object.keys(groups).forEach((key) => {
+            const segs = groups[key];
+            const total = groupTotals[key] || 0;
+            const rep = segs.reduce((a, b) => (b.to - b.from > a.to - a.from ? b : a), segs[0]);
             rows.push(
               [
                 channelLabel,
                 '복합',
                 pgmStartLabel,
                 hshow.hsshow_title,
-                seg.entry.product,
+                rep.entry.product,
                 total,
-                seg.entry.category,
-                seg.entry.lavangba_category || '',
+                rep.entry.category,
+                rep.entry.lavangba_category || '',
                 hshow.cat && hshow.cat.cat_name ? hshow.cat.cat_name : '',
               ].join('\t')
             );
-            console.log('  복합(시점분류) ' + seg.entry.product.substring(0, 20) + ' | ' + formatAmt(total));
+            console.log('  복합(브랜드합산) ' + rep.entry.product.substring(0, 20) + ' | ' + formatAmt(total));
           });
         }
 
@@ -247,28 +320,92 @@
 
     console.log('완료! 총 ' + rows.length + '행 (' + hshowCount + '개 방송)');
 
-    // ================= 결과 모달 =================
+    // ================= 결과 모달 (열너비 드래그 조절 가능한 표) =================
+    const HEADERS = ['채널', '유형', '방송시작', '방송제목', '상품명', '매출액', '출처카테고리', '라방바세부카테고리', '라방바대분류'];
+    const dataRows = rows.map((r) => r.split('\t'));
+    const colWidths = COLUMN_WIDTHS.slice();
+
     const overlay = document.createElement('div');
     overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:99998;';
     const modal = document.createElement('div');
     modal.style.cssText =
-      'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:820px;background:white;border-radius:12px;padding:20px;z-index:99999;box-shadow:0 20px 60px rgba(0,0,0,0.3);';
+      'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:min(1200px,95vw);background:white;border-radius:12px;padding:20px;z-index:99999;box-shadow:0 20px 60px rgba(0,0,0,0.3);';
     const titleEl = document.createElement('div');
     titleEl.style.cssText = 'font-weight:bold;font-size:14px;margin-bottom:12px;color:#333;';
     titleEl.textContent =
-      '매출 결과 (' + rows.length + '행, ' + hshowCount + '개 방송) - 컬럼: 채널/유형/방송시작/방송제목/상품명/매출액/출처카테고리/라방바세부카테고리/라방바대분류';
-    const ta = document.createElement('textarea');
-    ta.value = rows.join('\n');
-    ta.style.cssText =
-      'width:100%;height:360px;font-size:11px;font-family:monospace;border:1px solid #ddd;border-radius:6px;padding:8px;box-sizing:border-box;resize:none;';
+      '매출 결과 (' + rows.length + '행, ' + hshowCount + '개 방송) - 헤더 오른쪽 끝을 드래그하면 열너비를 조절할 수 있습니다.';
+
+    const tableWrap = document.createElement('div');
+    tableWrap.style.cssText = 'width:100%;height:400px;overflow:auto;border:1px solid #ddd;border-radius:6px;';
+    const table = document.createElement('table');
+    table.style.cssText = 'border-collapse:collapse;font-size:12px;table-layout:fixed;';
+
+    const colgroup = document.createElement('colgroup');
+    const colEls = colWidths.map((w) => {
+      const col = document.createElement('col');
+      col.style.width = w + 'px';
+      colgroup.appendChild(col);
+      return col;
+    });
+    table.appendChild(colgroup);
+
+    const thead = document.createElement('thead');
+    const headRow = document.createElement('tr');
+    HEADERS.forEach((h, i) => {
+      const th = document.createElement('th');
+      th.style.cssText =
+        'position:sticky;top:0;background:#f5f5f5;padding:6px 8px;border:1px solid #ddd;text-align:left;overflow:hidden;white-space:nowrap;user-select:none;position:relative;';
+      th.textContent = h;
+      const resizer = document.createElement('div');
+      resizer.style.cssText = 'position:absolute;top:0;right:0;width:6px;height:100%;cursor:col-resize;';
+      resizer.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        const startX = e.clientX;
+        const startWidth = colWidths[i];
+        const onMove = (ev) => {
+          colWidths[i] = Math.max(30, startWidth + (ev.clientX - startX));
+          colEls[i].style.width = colWidths[i] + 'px';
+        };
+        const onUp = () => {
+          document.removeEventListener('mousemove', onMove);
+          document.removeEventListener('mouseup', onUp);
+        };
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+      });
+      th.appendChild(resizer);
+      headRow.appendChild(th);
+    });
+    thead.appendChild(headRow);
+    table.appendChild(thead);
+
+    const tbody = document.createElement('tbody');
+    dataRows.forEach((cells) => {
+      const tr = document.createElement('tr');
+      cells.forEach((cellText) => {
+        const td = document.createElement('td');
+        td.style.cssText = 'padding:4px 8px;border:1px solid #eee;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;';
+        td.textContent = cellText;
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    tableWrap.appendChild(table);
+
     const btnRow = document.createElement('div');
     btnRow.style.cssText = 'display:flex;gap:8px;margin-top:12px;';
     const copyBtn = document.createElement('button');
     copyBtn.textContent = '전체 복사';
     copyBtn.style.cssText = 'flex:1;padding:10px;background:#4a9eff;color:white;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:bold;';
     copyBtn.onclick = () => {
+      const ta = document.createElement('textarea');
+      ta.value = rows.join('\n');
+      ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;';
+      document.body.appendChild(ta);
       ta.select();
       document.execCommand('copy');
+      document.body.removeChild(ta);
       copyBtn.textContent = '복사됨!';
       setTimeout(() => (copyBtn.textContent = '전체 복사'), 2000);
     };
@@ -276,8 +413,7 @@
     downloadBtn.textContent = '엑셀 다운로드';
     downloadBtn.style.cssText = 'flex:1;padding:10px;background:#2ecc71;color:white;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:bold;';
     downloadBtn.onclick = () => {
-      const dataRows = ta.value.split('\n').map((row) => row.split('\t'));
-      let htmlTable = '<table border="1">';
+      let htmlTable = '<table border="1"><tr>' + HEADERS.map((h) => '<th>' + h + '</th>').join('') + '</tr>';
       dataRows.forEach((row) => {
         htmlTable += '<tr>' + row.map((cell) => '<td>' + cell + '</td>').join('') + '</tr>';
       });
@@ -300,11 +436,10 @@
     btnRow.appendChild(downloadBtn);
     btnRow.appendChild(closeBtn);
     modal.appendChild(titleEl);
-    modal.appendChild(ta);
+    modal.appendChild(tableWrap);
     modal.appendChild(btnRow);
     document.body.appendChild(overlay);
     document.body.appendChild(modal);
-    ta.select();
   }
 
   run();

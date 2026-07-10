@@ -62,6 +62,11 @@ GITHUB_CODE = {
     "hs_skstoa": "SKSTOA",
     "hs_hnsmall": "HNS",
     "hs_kshop": "KTALPHA",
+    "hs_hmallplus": "HD+",
+    "hs_gsshopmyshop":"GS+",
+    "hs_lotteimallonetv":"LT+",
+    "hs_nsmallshopplus":"NS+",
+    "hs_cjonstyleplus":"CJ+"
 }
 # 제외: hs_hmallplus / hs_gsshopmyshop / hs_lotteimallonetv / hs_nsmallshopplus / hs_cjonstyleplus
 # (TV 11개사 외 데이터홈쇼핑/플러스 채널 - 필요하면 위 맵에 추가)
@@ -183,11 +188,37 @@ def format_amt(total):
     return f"{round(total / 10_000)}만"
 
 
+_BRACKET_RE = re.compile(r"\[([^\[\]]*)\]|\(([^()]*)\)")
+_MULTI_SPACE_RE = re.compile(r"\s{2,}")
+
+
 def extract_brand(name):
-    """상품명 앞의 +, [태그], (재) 등 프리픽스를 제거하고 첫 어절을 브랜드로 간주."""
-    n = re.sub(r"^[+\s]*(?:\[[^\]]*\]|\([^)]*\))*\s*", "", (name or "").strip())
-    parts = n.split()
-    return parts[0] if parts else ""
+    """상품명에서 브랜드로 추정되는 어절을 뽑는다.
+    대괄호/소괄호 마케팅 카피("[방송에서만]", "(최초가69,900원)" 등)를 위치에
+    상관없이 제거한 본문의 첫 어절을 브랜드로 본다. 단, 본문 첫 어절이 너무
+    짧거나(1글자) 숫자뿐이면(가격/모델명 등) 브랜드로 보기 어려우므로, 오히려
+    브랜드가 괄호 안에 단독으로 들어있는 경우("[아로마티카] 스파 샴푸")를 대비해
+    괄호 안 내용의 첫 어절을 대신 사용한다."""
+    raw = (name or "").strip()
+    if not raw:
+        return ""
+
+    bracket_contents = [g1 or g2 for g1, g2 in _BRACKET_RE.findall(raw)]
+    bracket_contents = [c.strip() for c in bracket_contents if c and c.strip()]
+
+    body = _BRACKET_RE.sub(" ", raw)
+    body = _MULTI_SPACE_RE.sub(" ", body).strip().lstrip("+").strip()
+
+    def first_word(s):
+        parts = s.split()
+        return parts[0] if parts else ""
+
+    brand = first_word(body)
+    if (not brand or len(brand) <= 1 or brand.isdigit()) and bracket_contents:
+        alt = first_word(bracket_contents[0])
+        if alt:
+            return alt
+    return brand
 
 
 def classify_item_to_segment(item, segments):
@@ -275,6 +306,15 @@ def scrape_dates(target_dates):
                         matched.append({"entry": e, "start": s, "end": en})
                 matched.sort(key=lambda m: m["start"])
 
+                # 라방바 자체 종료시각(hsshow_datetime_end)이 실제 편성표보다 정확히 1분
+                # 늦게 찍히는 경우가 잦다 (예: 편성표 02:10 종료인데 라방바는 02:11로 기록).
+                # 편성표 마지막 상품의 종료시각과 5분 이내로만 차이나면 편성표 쪽을 신뢰해서
+                # 보정한다 (차이가 크면 편성 매칭 자체가 잘못됐을 수 있으니 라방바 값 유지).
+                if matched:
+                    gh_end = max(m["end"] for m in matched)
+                    if gh_end > hshow_start and abs((gh_end - hshow_end).total_seconds()) <= 5 * 60:
+                        hshow_end = gh_end
+
                 print(f"[{channel_label} {date_str} {pgm_start_label}] item_cnt={hshow.get('item_cnt')} items 조회 중...")
                 try:
                     items = fetch_items_all(page, hshow["hsshow_id"], hshow.get("item_cnt"))
@@ -350,23 +390,49 @@ def scrape_dates(target_dates):
                             "category": "", "lavangba_category": cat_name,
                         }]
 
-                    seg_totals = {}
-                    for it in items:
-                        best_idx = classify_item_to_segment(it, segments)
-                        if best_idx is None:
-                            continue
-                        seg_totals[best_idx] = seg_totals.get(best_idx, 0) + (it.get("sales_amt") or 0)
-
                     # 같은 브랜드의 세그먼트는 매출을 합쳐 1행으로.
-                    # 상품명/카테고리는 그룹 내 매출액이 가장 높은 세그먼트 기준.
                     groups = {}
                     for seg in segments:
                         key = seg["brand"] or seg["name"]  # 브랜드 미상이면 상품명별로 유지 (오병합 방지)
                         groups.setdefault(key, []).append(seg)
 
-                    for segs in groups.values():
-                        total = round(sum(seg_totals.get(s["idx"], 0) for s in segs))
-                        rep = max(segs, key=lambda s: seg_totals.get(s["idx"], 0))
+                    def norm_brand(b):
+                        return re.sub(r"\s+", "", (b or "")).lower()
+
+                    group_brand_norm = {
+                        key: norm_brand(segs[0]["brand"] or segs[0]["name"])
+                        for key, segs in groups.items()
+                    }
+
+                    # 1차: 라방바가 이미 SKU 단위로 정확히 나눠준 개별 상품의 매출액을,
+                    # 그 SKU 자체 상품명에서 뽑은 브랜드와 세그먼트 그룹의 브랜드를 직접
+                    # 매칭해서 그대로 배정한다. 시계열 승자독식 방식보다 훨씬 정확함
+                    # (모든 매출이 활동 큰 구간 하나에 몰빵되는 문제 방지).
+                    group_totals = {key: 0 for key in groups}
+                    unmatched_items = []
+                    for it in items:
+                        item_brand_norm = norm_brand(extract_brand(it.get("item_name")))
+                        matched_keys = [
+                            key for key, gb in group_brand_norm.items()
+                            if gb and item_brand_norm and (gb in item_brand_norm or item_brand_norm in gb)
+                        ]
+                        if len(matched_keys) == 1:
+                            group_totals[matched_keys[0]] += it.get("sales_amt") or 0
+                        else:
+                            unmatched_items.append(it)
+
+                    # 2차: 브랜드명으로 못 찾은 SKU만 기존 시계열(승자독식) 방식으로 보조 처리
+                    for it in unmatched_items:
+                        best_idx = classify_item_to_segment(it, segments)
+                        if best_idx is None:
+                            continue
+                        seg = next(s for s in segments if s["idx"] == best_idx)
+                        key = seg["brand"] or seg["name"]
+                        group_totals[key] += it.get("sales_amt") or 0
+
+                    for key, segs in groups.items():
+                        total = round(group_totals.get(key, 0))
+                        rep = max(segs, key=lambda s: s["to"] - s["from"])
                         g_from = min(s["from"] for s in segs)
                         g_to = max(s["to"] for s in segs)
                         g_start = hshow_start + timedelta(minutes=g_from)
