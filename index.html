@@ -4964,8 +4964,12 @@ function celRenderCompare() {
     return v == null ? null : v;
   }
 
+  // 목표/달성률은 본채널 4사에만 적용 (분당목표가 당사 기준이라 다른 채널엔 의미 없음)
+  const LV_TARGET_CHANNELS = new Set(['현대홈쇼핑', 'GS홈쇼핑', 'CJ온스타일', '롯데홈쇼핑']);
+
   // 목표: 수집기가 미리 계산해 넣어둔 값을 그대로 읽는다 (해당 월 pgmsales 데이터가 없으면 비어있음)
   function lvPgmTarget(r) {
+    if (!LV_TARGET_CHANNELS.has(r.channel)) return null;
     const v = +r.target;
     return v > 0 ? v : null;
   }
