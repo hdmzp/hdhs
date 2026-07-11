@@ -6007,9 +6007,12 @@ function celRenderCompare() {
       html += '<li>' + period + ' ' + dayName + ' ' + hh + '시대에 <b>' + inEsc(catLabel) + '</b> <b>'
         + cellCat.length + '회</b> 편성' + (bd ? ' (' + bd + ')' : '') + '</li>';
       if (cellCat.length) {
-        const pct = cellAll.length ? Math.round(cellCat.length / cellAll.length * 100) : 0;
-        html += '<li>' + dayName + ' ' + wTotal + '번 중 <b>' + kDates + '번</b> 편성 · 이 시간대 전체 방송 '
-          + cellAll.length + '회 중 <b>' + pct + '%</b></li>';
+        const datePct = wTotal ? Math.round(kDates / wTotal * 100) : 0;
+        const sharePct = cellAll.length ? Math.round(cellCat.length / cellAll.length * 100) : 0;
+        html += '<li>' + dayName + '은 조회기간 중 ' + wTotal + '번 있었는데, 그중 <b>' + kDates + '번</b>('
+          + datePct + '%) 이 시간대에 편성됐어요</li>';
+        html += '<li>이 시간대 전체 방송 ' + cellAll.length + '회 중 <b>' + inEsc(catLabel) + '</b>이(가) '
+          + cellCat.length + '회 (<b>' + sharePct + '%</b>)</li>';
       }
     } else {
       const bd = inChannelBreakdown(cellAll);
