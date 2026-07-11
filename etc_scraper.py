@@ -59,7 +59,8 @@ homeshopping/
   "days": {
     "2026-06-22": [
       {"start":"...","end":"...","brand":"","product":"...",
-       "price":0,"link":"","category":"...","lavangba_category":"..."}
+       "price":0,"link":"","category":"...","lavangba_category":"...",
+       "hsshow_id":"..."}
     ]
   }
 }
@@ -67,6 +68,10 @@ homeshopping/
 - lavangba_category: 라방바 list_hs 응답의 item["cat"]["cat_name"]을
   그대로 저장 (라방바 화면 "분류" 컬럼과 동일 값). 자체 모델을 대체하지
   않고 검증/비교용으로 별도 보관. 없으면 빈 문자열.
+- hsshow_id: 라방바 방송 고유 id. lavangba_scraper.py(매출 수집)가 편성
+  항목과 방송을 1:1로 매칭하는 키로 쓴다. SK스토아/신세계처럼 같은 시간대에
+  방송 2개가 병행 편성되는 채널에서 시간 겹침만으로는 어느 편성이 어느
+  방송인지 구분할 수 없어서 필요.
 
 == 프론트엔드 탭/표시명 매핑 (참고용, 이 스크립트가 직접 쓰진 않음) ==
 company 코드 -> 탭 내 표시 라벨
@@ -251,13 +256,16 @@ def fetch_company(date_obj: datetime, platform_id: str, log_label: str) -> list:
                 "link": "",
                 "category": "",                            # add_categories에서 채움 (자체 모델)
                 "lavangba_category": (item.get("cat") or {}).get("cat_name", "") or "",  # 라방바 자체 제공 분류 (참고/검증용)
-                "_hsshow_id": item.get("hsshow_id", ""),
+                # 라방바 방송 고유 id. 저장까지 유지한다 - lavangba_scraper.py(매출 수집)가
+                # 같은 시간대에 방송이 2개 병행 편성된 경우(SK스토아/신세계 등)에도
+                # 편성 항목과 방송을 1:1로 정확히 매칭하는 데 쓴다.
+                "hsshow_id": str(item.get("hsshow_id") or ""),
             })
 
         programs.sort(key=lambda x: x["start"])
 
         for p in programs:
-            hsshow_id = p.pop("_hsshow_id", "")
+            hsshow_id = p["hsshow_id"]
             if not hsshow_id:
                 continue
             link, price = fetch_detail(hsshow_id)
