@@ -612,6 +612,8 @@
   .sec-updated { font-size: 12.5px; color: var(--ink-faint); margin: 0 0 10px; }
   .sec-table-wrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: var(--radius); }
   .sec-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  /* 라방바 표는 데이터가 많아 한 단계 작은 글자로 */
+  #lvTableWrap .sec-table { font-size: 12.5px; }
   .sec-table th, .sec-table td {
     padding: 10px 12px;
     border-bottom: 1px solid var(--rule);
@@ -660,18 +662,20 @@
   }
   .lv-slicer button {
     font-family: 'Pretendard', -apple-system, sans-serif;
-    font-size: 12px;
+    font-size: 11.5px;
     font-weight: 600;
     background: none;
     border: none;
     border-radius: 6px;
-    padding: 6px 10px;
+    padding: 5px 9px;
     color: var(--ink-soft);
     cursor: pointer;
     transition: background 0.15s, color 0.15s;
   }
   .lv-slicer button.active { background: var(--brand-blue); color: #fff; }
   .lv-slicer button:hover:not(.active) { background: #fff; color: var(--ink); }
+  /* 카테고리 슬라이서 선택 색상은 더 연한 파란색으로 구분 */
+  #lvCatSlicer button.active { background: #A9C6F2; color: #173E7C; }
   .lv-slicer-sep { width: 1px; align-self: stretch; background: var(--rule); margin: 2px 3px; }
   .lv-summary { font-size: 12.5px; color: var(--ink-soft); margin: 0 0 8px; }
   .lv-summary b { color: var(--ink); }
@@ -750,6 +754,47 @@
     margin-left: auto;
   }
   .lv-csv-btn:hover { background: var(--brand-blue); border-color: var(--brand-blue); color: #fff; }
+  .lv-go-btn {
+    font-family: 'Pretendard', -apple-system, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    border: 1px solid var(--brand-blue);
+    background: var(--brand-blue);
+    color: #fff;
+    border-radius: 8px;
+    padding: 6px 14px;
+    cursor: pointer;
+  }
+  .lv-go-btn:hover { opacity: 0.85; }
+  .lv-search-input {
+    font-family: 'Pretendard', -apple-system, sans-serif;
+    font-size: 12.5px;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 6px 10px;
+    width: 170px;
+  }
+  /* 헤더 ? 도움말 아이콘 (hover 시 브라우저 기본 툴팁으로 안내 표시) */
+  .lv-help {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 13px;
+    height: 13px;
+    margin-left: 3px;
+    border-radius: 50%;
+    background: var(--ink-faint);
+    color: #fff;
+    font-size: 9.5px;
+    font-weight: 700;
+    cursor: help;
+    vertical-align: 1px;
+  }
+  /* 컬럼 정렬 */
+  #lvTableWrap .sec-table th { cursor: pointer; user-select: none; }
+  .lv-sort-ind { font-size: 9px; color: var(--brand-blue); margin-left: 2px; }
 
   /* ============ 날씨 탭(달력) ============ */
   #tabWeather {
@@ -2475,6 +2520,8 @@
           <input type="date" id="lvEndPicker" class="lv-date-input" aria-label="종료일">
           <button class="arrow" id="lvNextDay" aria-label="기간 하루 다음으로">›</button>
         </div>
+        <button type="button" class="lv-go-btn" id="lvQueryBtn">조회</button>
+        <input type="search" id="lvSearchInput" class="lv-search-input" placeholder="상품명 검색" aria-label="상품명 검색">
         <div class="lv-slicer" id="lvTimeSlicer">
           <button class="active" data-time="all">전체</button>
           <button data-time="normal">정규</button>
@@ -2487,7 +2534,7 @@
       <div class="lv-slicer" id="lvCatSlicer" style="margin-bottom:12px;"></div>
       <p class="lv-summary" id="lvSummary"></p>
       <div class="sec-table-wrap" id="lvTableWrap"></div>
-      <p class="lv-table-note">매출액: 1억 이상 O.O억 / 미만 백만 단위 (클릭 시 라방바 상세로 이동) · 판매가: 100만원 미만 천원 / 이상 만원 단위 · 방송시작 02:00~05:00 심야 방송은 회색 행 표시 · 헤더 오른쪽 경계를 드래그하면 열 너비 조정 · 조회 기간 최대 31일</p>
+      <p class="lv-table-note">매출액: 1억 이상 O.O억 / 미만 백만 단위 · 판매가: 100만원 미만 천원 / 이상 만원 단위 · 심야(방송시작 01:00~05:00) 방송은 회색 행 표시 · 헤더 클릭 시 정렬, 오른쪽 경계 드래그 시 열 너비 조정 · 조회 기간 최대 31일</p>
     </div>
 
     <!-- 항목/내용(안내·갱신방법) 표는 로그인 후 노출하지 않음 (복호화 성공 = 인증 용도로만 사용) -->
@@ -4727,6 +4774,8 @@ function celRenderCompare() {
   let lvActive = new Set(LV_CHANNELS.map(c => c.name));       // 선택 채널 (기본 전체)
   let lvTime = 'all';                                         // all | normal | night
   let lvCatSel = null;                                        // 선택 카테고리 (null = 전체)
+  let lvSearch = '';                                          // 상품명 검색어 (포함 일치)
+  let lvSort = null;                                          // { col, dir } 헤더 클릭 정렬 (null = 기본 정렬)
   const lvCache = {};
   let lvInited = false;
   let lvLastFiltered = [];                                    // CSV 다운로드용 (현재 필터 반영)
@@ -4734,6 +4783,30 @@ function celRenderCompare() {
   const lvEsc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   // 카테고리 값 (빈 값은 'null' 로 통일해 슬라이서에 노출)
   const lvCatOf = r => String(r.lavangba_category || r.category || '').trim() || 'null';
+
+  const LV_CH_ORDER = {};
+  LV_CHANNELS.forEach((c, i) => { LV_CH_ORDER[c.name] = i; });
+
+  // 표 컬럼 정의 (순서 = 표시 순서, key = 헤더 클릭 정렬 기준값)
+  const LV_COLS = [
+    { label: '채널',    key: r => LV_CH_ORDER[r.channel] ?? 99 },
+    { label: '방송일자', key: r => String(r.date || '') },
+    { label: '요일',    key: r => { const d8 = String(r.date || ''); return d8.length === 8 ? new Date(+d8.slice(0, 4), +d8.slice(4, 6) - 1, +d8.slice(6, 8)).getDay() : 7; } },
+    { label: '상품시간', key: r => r.item_start || '' },
+    { label: '노출분',  key: r => +r.item_duration_min || 0 },
+    { label: '카테고리', key: r => lvCatOf(r) },
+    { label: '상품명',  key: r => r.item_name || '', help: '클릭 시 상품페이지로 이동' },
+    { label: '판매가',  key: r => +r.price || 0 },
+    { label: '매출액',  key: r => +r.sales_amt || 0, help: '클릭 시 라방바로 이동' },
+  ];
+
+  // 기본 정렬: 날짜 -> 방송시작 -> 채널 -> 상품시작 (헤더 정렬 시에도 동점자 기준으로 사용)
+  function lvDefaultCmp(a, b) {
+    return String(a.date).localeCompare(String(b.date))
+      || a.broadcast_start.localeCompare(b.broadcast_start)
+      || (LV_CH_ORDER[a.channel] ?? 99) - (LV_CH_ORDER[b.channel] ?? 99)
+      || a.item_start.localeCompare(b.item_start);
+  }
 
   const $ = id => document.getElementById(id);
 
@@ -4749,11 +4822,7 @@ function celRenderCompare() {
   }
   function lvIsNight(hhmm) {
     const h = parseInt(hhmm.slice(0, 2), 10);
-    return h >= 1 && h < 5; // 홈쇼핑 탭과 동일한 심야 기준
-  }
-  function lvIsNightGray(hhmm) {
-    const h = parseInt(hhmm.slice(0, 2), 10);
-    return h >= 2 && h < 5; // 행 회색 처리 기준: 방송시작 02:00~05:00
+    return h >= 1 && h < 5; // 심야: 방송시작 01:00~05:00 (필터·행 회색 처리 공통 기준)
   }
   function d8ToHyphen(d8) { return d8.slice(0, 4) + '-' + d8.slice(4, 6) + '-' + d8.slice(6, 8); }
   function hyphenToD8(s) { return s.replace(/-/g, ''); }
@@ -4867,21 +4936,24 @@ function celRenderCompare() {
       (a === 'null') - (b === 'null') || a.localeCompare(b, 'ko'));
     lvRenderCatSlicer(cats);
 
-    const chOrder = {};
-    LV_CHANNELS.forEach((c, i) => { chOrder[c.name] = i; });
-
     const filtered = rows.filter(r => {
       if (!lvActive.has(r.channel)) return false;
       if (lvCatSel && !lvCatSel.has(lvCatOf(r))) return false;
+      if (lvSearch && !String(r.item_name || '').toLowerCase().includes(lvSearch)) return false;
       if (lvTime === 'night') return lvIsNight(r.broadcast_start);
       if (lvTime === 'normal') return !lvIsNight(r.broadcast_start);
       return true;
-    }).sort((a, b) =>
-      String(a.date).localeCompare(String(b.date))
-      || a.broadcast_start.localeCompare(b.broadcast_start)
-      || (chOrder[a.channel] ?? 99) - (chOrder[b.channel] ?? 99)
-      || a.item_start.localeCompare(b.item_start)
-    );
+    }).sort((a, b) => {
+      if (lvSort) {
+        const key = LV_COLS[lvSort.col].key;
+        const ka = key(a), kb = key(b);
+        const c = (typeof ka === 'number' && typeof kb === 'number')
+          ? ka - kb
+          : String(ka).localeCompare(String(kb), 'ko');
+        if (c) return lvSort.dir === 'desc' ? -c : c;
+      }
+      return lvDefaultCmp(a, b);
+    });
 
     lvLastFiltered = filtered;
     const totalAmt = filtered.reduce((s, r) => s + (r.sales_amt || 0), 0);
@@ -4895,10 +4967,14 @@ function celRenderCompare() {
     }
 
     const esc = lvEsc;
-    let html = '<table class="sec-table"><thead><tr>'
-      + '<th>채널</th><th>방송일자</th><th>요일</th><th>카테고리</th><th>상품시간</th><th>노출분</th>'
-      + '<th>상품명</th><th>판매가</th><th>매출액</th>'
-      + '</tr></thead><tbody>';
+    let html = '<table class="sec-table"><thead><tr>';
+    LV_COLS.forEach((c, i) => {
+      const help = c.help ? '<span class="lv-help" title="' + esc(c.help) + '">?</span>' : '';
+      const ind = lvSort && lvSort.col === i
+        ? '<span class="lv-sort-ind">' + (lvSort.dir === 'desc' ? '▼' : '▲') + '</span>' : '';
+      html += '<th data-col="' + i + '">' + c.label + help + ind + '</th>';
+    });
+    html += '</tr></thead><tbody>';
     filtered.forEach(r => {
       const d8 = String(r.date || '');
       // link 필드: 신규 데이터는 라방바 상세, 과거 데이터는 상품 페이지가 담김
@@ -4912,13 +4988,13 @@ function celRenderCompare() {
         ? '<a href="' + esc(lvLink) + '" target="_blank" rel="noopener" title="라방바 상세 보기">' + lvFmtAmt(r.sales_amt) + '</a>'
         : lvFmtAmt(r.sales_amt);
       const chColor = LV_CH_COLOR[r.channel];
-      html += '<tr' + (lvIsNightGray(r.broadcast_start) ? ' class="lv-night"' : '') + '>'
+      html += '<tr' + (lvIsNight(r.broadcast_start) ? ' class="lv-night"' : '') + '>'
         + '<td class="lv-ch"' + (chColor ? ' style="color:' + chColor + '"' : '') + '>' + esc(r.channel) + '</td>'
         + '<td class="lv-time">' + (d8.length === 8 ? d8.slice(4, 6) + '/' + d8.slice(6, 8) : esc(d8)) + '</td>'
         + '<td class="lv-time">' + (d8.length === 8 ? d8Weekday(d8) : '-') + '</td>'
-        + '<td>' + esc(lvCatOf(r)) + '</td>'
         + '<td class="lv-time">' + esc(r.item_start) + '~' + esc(r.item_end) + '</td>'
         + '<td class="lv-time">' + esc(r.item_duration_min) + '분</td>'
+        + '<td>' + esc(lvCatOf(r)) + '</td>'
         + '<td class="lv-name" title="' + esc(r.item_name) + '"><span class="lv-name-in">' + nameHtml + '</span></td>'
         + '<td class="lv-amt">' + lvFmtPrice(r.price) + '</td>'
         + '<td class="lv-amt">' + amtHtml + '</td>'
@@ -4926,6 +5002,17 @@ function celRenderCompare() {
     });
     html += '</tbody></table>';
     wrap.innerHTML = html;
+    // 헤더 클릭 정렬: 오름차순 -> 내림차순 -> 기본 정렬 순환 (? 아이콘 클릭은 제외)
+    wrap.querySelectorAll('th').forEach(th => {
+      th.addEventListener('click', e => {
+        if (e.target.closest('.lv-help') || e.target.closest('.lv-resizer')) return;
+        const col = +th.dataset.col;
+        lvSort = (lvSort && lvSort.col === col)
+          ? (lvSort.dir === 'asc' ? { col: col, dir: 'desc' } : null)
+          : { col: col, dir: 'asc' };
+        lvRender();
+      });
+    });
     lvMakeResizable(wrap.querySelector('table'));
   }
 
@@ -5000,11 +5087,23 @@ function celRenderCompare() {
 
     $('lvPrevDay').addEventListener('click', () => { lvSetRange(d8AddDays(lvStart, -1), d8AddDays(lvEnd, -1)); lvRender(); });
     $('lvNextDay').addEventListener('click', () => { lvSetRange(d8AddDays(lvStart, 1), d8AddDays(lvEnd, 1)); lvRender(); });
+    // 날짜 변경 시에는 기간만 갱신하고, [조회] 버튼을 눌러야 데이터를 불러온다
+    const syncPickers = () => { $('lvStartPicker').value = d8ToHyphen(lvStart); $('lvEndPicker').value = d8ToHyphen(lvEnd); };
     $('lvStartPicker').addEventListener('change', e => {
-      if (e.target.value) { lvSetRange(hyphenToD8(e.target.value), lvEnd); lvRender(); }
+      if (e.target.value) { lvSetRange(hyphenToD8(e.target.value), lvEnd); syncPickers(); }
     });
     $('lvEndPicker').addEventListener('change', e => {
-      if (e.target.value) { lvSetRange(lvStart, hyphenToD8(e.target.value)); lvRender(); }
+      if (e.target.value) { lvSetRange(lvStart, hyphenToD8(e.target.value)); syncPickers(); }
+    });
+    $('lvQueryBtn').addEventListener('click', () => lvRender());
+    // 상품명 검색: 검색어를 포함하는 상품명만 표시 (대소문자 무시)
+    let lvSearchTimer = null;
+    $('lvSearchInput').addEventListener('input', e => {
+      clearTimeout(lvSearchTimer);
+      lvSearchTimer = setTimeout(() => {
+        lvSearch = e.target.value.trim().toLowerCase();
+        lvRender();
+      }, 250);
     });
     document.querySelectorAll('#lvTimeSlicer button').forEach(btn => {
       btn.addEventListener('click', () => {
