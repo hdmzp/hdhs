@@ -796,7 +796,7 @@
   #lvTableWrap .sec-table th { cursor: pointer; user-select: none; }
   .lv-sort-ind { font-size: 9px; color: var(--brand-blue); margin-left: 2px; }
 
-  /* ============ 편성분석 탭 (요일×시간대 히트맵) ============ */
+  /* ============ 편성맵 탭 (요일×시간대 히트맵) ============ */
   #tabIndustry { font-family: 'Pretendard', -apple-system, sans-serif; }
   .in-wrap { max-width: 1100px; margin: 0 auto; padding: 14px 16px 40px; }
   .in-body { display: flex; gap: 24px; align-items: flex-start; flex-wrap: wrap; }
@@ -2315,11 +2315,11 @@
     <button id="tabBtnHomeshop" class="active">홈쇼핑</button>
     <button id="tabBtnFixedPgm">고정PGM</button>
     <button id="tabBtnCelebrity">셀럽PGM</button>
+    <button id="tabBtnIndustry">편성맵</button>
     <button id="tabBtnSchedule">지상파·종편</button>
     <button id="tabBtnDramaVariety">드라마·예능</button>
     <button id="tabBtnWeather">날씨</button>
     <button id="tabBtnRanking">랭킹</button>
-    <button id="tabBtnIndustry">편성분석</button>
     <button id="tabBtnFeedback">의견</button>
     <button id="tabBtnSecurity" aria-label="보안">🔒</button>
   </div>
@@ -2670,7 +2670,7 @@ const TAB_TIPS = {
     items: ['홈쇼핑모아에서 제공하는 카테고리별 인기 랭킹이에요', '최근 7일의 매출액 순위예요'],
   },
   industry: {
-    title: '편성분석 탭은?',
+    title: '편성맵 탭은?',
     items: [
       '홈쇼핑 탭 편성 데이터(자체 카테고리 분류모델 적용)를 요일×시간대로 집계해요',
       '<b>방송 시작시각</b> 기준으로 시간대를 나눠요 (09:20도 09:45도 09시대)',
@@ -5225,7 +5225,7 @@ function celRenderCompare() {
   };
 })();
 
-// ============ 편성분석 탭 - 요일×시간대 편성 히트맵 + 인사이트 ============
+// ============ 편성맵 탭 - 요일×시간대 편성 히트맵 + 인사이트 ============
 (function () {
   // 데이터: 홈쇼핑 탭과 동일한 편성 파일(자체 카테고리 분류모델 적용분)
   //   본채널 4사: *_live / 플러스(데이터방송) 4사: *_data / 기타 8사: *_live·NS_plus
