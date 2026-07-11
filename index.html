@@ -766,6 +766,7 @@
     cursor: pointer;
   }
   .lv-go-btn:hover { opacity: 0.85; }
+  .lv-go-btn:disabled { opacity: 0.55; cursor: wait; }
   .lv-search-input {
     font-family: 'Pretendard', -apple-system, sans-serif;
     font-size: 12.5px;
@@ -860,6 +861,25 @@
   .in-cross { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--rule); font-size: 12.5px; color: var(--ink-soft); }
   .in-cross b { color: var(--ink); font-size: 13px; }
   .in-cross div { margin-top: 4px; }
+
+  /* ============ 보안 탭 - 서브탭(방송 실적 조회 / 매출분석) ============ */
+  .sec-subtabs { display: flex; gap: 6px; margin-bottom: 16px; }
+  .sec-subtabs button {
+    font-family: 'Pretendard', -apple-system, sans-serif;
+    font-size: 13px; font-weight: 700;
+    border: 1px solid var(--rule); background: var(--paper);
+    color: var(--ink-soft); padding: 8px 16px; border-radius: 8px; cursor: pointer;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .sec-subtabs button.active { background: var(--brand-blue); border-color: var(--brand-blue); color: #fff; }
+  .sec-subtabs .sec-lock-icon { filter: hue-rotate(0deg); }
+  .sec-subtabs button[data-sub="revenue"] .sec-lock-icon { filter: hue-rotate(150deg) saturate(1.4); }
+  .sec-subpanel { display: none; }
+  .sec-subpanel.active { display: block; }
+
+  /* 매출분석(rv-) 히트맵: 편성맵과 동일한 그리드 룩, 색상만 다른 계열(청록) */
+  #rvHeatmap .in-cell { background: var(--paper-dim, #F5F6F8); }
+  .rv-metric-note { font-size: 11.5px; color: var(--ink-faint); margin: 6px 0 14px; }
 
   /* ============ 날씨 탭(달력) ============ */
   #tabWeather {
@@ -2598,6 +2618,12 @@
   </div>
 
   <div id="secContentBox" class="sec-content" style="display:none;">
+    <div class="sec-subtabs">
+      <button type="button" class="active" data-sub="table" id="secSubBtnTable"><span class="sec-lock-icon">🔒</span> 방송 실적 조회</button>
+      <button type="button" data-sub="revenue" id="secSubBtnRevenue"><span class="sec-lock-icon">🔒</span> 매출 분석</button>
+    </div>
+
+    <div class="sec-subpanel active" id="secSubTable">
     <div class="lv-section" id="lvSection">
       <h3 class="lv-title">📺 홈쇼핑 방송 실적 (라방바)</h3>
       <div class="lv-controls">
@@ -2623,6 +2649,38 @@
       <p class="lv-summary" id="lvSummary"></p>
       <div class="sec-table-wrap" id="lvTableWrap"></div>
       <p class="lv-table-note">매출액: 1억 이상 O.O억 / 미만 백만 단위 · 판매가: 100만원 미만 천원 / 이상 만원 단위 · 심야(방송시작 01:00~05:00) 방송은 회색 행 표시 · 헤더 클릭 시 정렬, 오른쪽 경계 드래그 시 열 너비 조정 · 조회 기간 최대 31일</p>
+    </div>
+    </div>
+
+    <div class="sec-subpanel" id="secSubRevenue">
+    <div class="lv-section" id="rvSection">
+      <h3 class="lv-title">💰 시간대×카테고리 매출 분석 (라방바)</h3>
+      <div class="lv-controls">
+        <div class="date-nav">
+          <button class="arrow" id="rvPrevWeek" aria-label="기간 1주 이전으로">‹</button>
+          <input type="date" id="rvStartPicker" class="lv-date-input" aria-label="시작일">
+          <span class="lv-range-tilde">~</span>
+          <input type="date" id="rvEndPicker" class="lv-date-input" aria-label="종료일">
+          <button class="arrow" id="rvNextWeek" aria-label="기간 1주 다음으로">›</button>
+        </div>
+        <button type="button" class="lv-go-btn" id="rvQueryBtn">조회</button>
+        <div class="lv-slicer" id="rvMetricSlicer">
+          <button class="active" data-metric="sum">매출합계</button>
+          <button data-metric="avg">방송당 평균매출</button>
+          <button data-metric="perMin">분당 매출효율</button>
+        </div>
+      </div>
+      <div class="lv-slicer" id="rvChannelSlicer" style="margin-bottom:8px;"></div>
+      <div class="lv-slicer" id="rvCatSlicer" style="margin-bottom:12px;"></div>
+      <p class="lv-summary" id="rvSummary"></p>
+      <div class="in-body">
+        <div class="in-heat-scroll">
+          <div id="rvHeatmap"></div>
+        </div>
+        <div class="in-insight" id="rvInsight"></div>
+      </div>
+      <p class="rv-metric-note">집계 기준: 방송 시작시각의 시간대 · 카테고리는 라방바 자체 분류(lavangba_category) 기준 · 색상 진하기는 현재 조회기간 내 상대값(최댓값=100%) · 셀/시간대(행) 클릭 시 카테고리·채널 상세 표시 · 조회 기간 최대 92일</p>
+    </div>
     </div>
 
     <!-- 항목/내용(안내·갱신방법) 표는 로그인 후 노출하지 않음 (복호화 성공 = 인증 용도로만 사용) -->
@@ -4663,6 +4721,30 @@ function celRenderCompare() {
 
   if (!loginBox) return;
 
+  // 보안 탭 서브탭 전환 (방송 실적 조회 / 매출 분석) - 로그인 상태와 무관하게 한 번만 바인딩
+  const secSubBtnTable = document.getElementById('secSubBtnTable');
+  const secSubBtnRevenue = document.getElementById('secSubBtnRevenue');
+  const secSubTable = document.getElementById('secSubTable');
+  const secSubRevenue = document.getElementById('secSubRevenue');
+  if (secSubBtnTable && secSubBtnRevenue) {
+    secSubBtnTable.addEventListener('click', () => {
+      secSubBtnTable.classList.add('active');
+      secSubBtnRevenue.classList.remove('active');
+      secSubTable.classList.add('active');
+      secSubRevenue.classList.remove('active');
+      gaEvent('tab_view', { tab_name: 'security_table' });
+      if (window.lvInit) window.lvInit();
+    });
+    secSubBtnRevenue.addEventListener('click', () => {
+      secSubBtnRevenue.classList.add('active');
+      secSubBtnTable.classList.remove('active');
+      secSubRevenue.classList.add('active');
+      secSubTable.classList.remove('active');
+      gaEvent('tab_view', { tab_name: 'security_revenue' });
+      if (window.rvInit) window.rvInit();
+    });
+  }
+
   function secShowStatus(msg, ok) {
     statusEl.textContent = msg;
     statusEl.className = 'fb-status show ' + (ok ? 'ok' : 'err');
@@ -5216,7 +5298,13 @@ function celRenderCompare() {
     $('lvEndPicker').addEventListener('change', e => {
       if (e.target.value) { lvSetRange(lvStart, hyphenToD8(e.target.value)); syncPickers(); }
     });
-    $('lvQueryBtn').addEventListener('click', () => lvRender());
+    $('lvQueryBtn').addEventListener('click', async () => {
+      const btn = $('lvQueryBtn');
+      btn.disabled = true;
+      btn.textContent = '조회 중...';
+      $('lvTableWrap').innerHTML = '<div class="lv-empty">불러오는 중...</div>';
+      try { await lvRender(); } finally { btn.disabled = false; btn.textContent = '조회'; }
+    });
     // 상품명 검색: 검색어를 포함하는 상품명만 표시 (대소문자 무시)
     let lvSearchTimer = null;
     $('lvSearchInput').addEventListener('input', e => {
@@ -5240,6 +5328,331 @@ function celRenderCompare() {
     const latest = await lvFindLatestDate();
     lvSetRange(latest, latest);
     lvRender();
+  };
+
+  // ============ 매출분석(rv-) 서브탭: 요일×시간대 매출 히트맵 ============
+  // 편성맵(industry) 탭과 동일한 그리드 룩을 재사용하고, 데이터는 lvLoad/lvCache를 그대로 공유한다.
+  const RV_MIN_DATE = '20260601'; // 라방바 수집 시작일
+  const RV_MAX_DAYS = 92;
+  const RV_DAYS = ['월', '화', '수', '목', '금', '토', '일'];
+  const RV_HOURS = [];
+  for (let h = 5; h < 24; h++) RV_HOURS.push(h); // 05~23시
+  RV_HOURS.push(0, 1);                           // 00~01시 (02~04시 생략, 편성맵과 동일 기준)
+
+  let rvStart = null, rvEnd = null;
+  let rvActive = new Set(LV_CHANNELS.map(c => c.name));
+  let rvCatSel = null;   // null = 전체
+  let rvMetric = 'sum';  // sum | avg | perMin
+  let rvSel = null;      // { h, w } (셀) 또는 { h, w:null } (행) 또는 null
+  let rvRows = [];       // 평탄화: { d, w, h, ch, cat, amt, dur, bkey }
+  let rvInited = false;
+
+  const rvWeekday = d8 => {
+    const d = new Date(+d8.slice(0, 4), +d8.slice(4, 6) - 1, +d8.slice(6, 8));
+    return (d.getDay() + 6) % 7; // 월=0 ... 일=6
+  };
+
+  function rvSetRange(s, e) {
+    if (s > e) { const t = s; s = e; e = t; }
+    if (s < RV_MIN_DATE) s = RV_MIN_DATE;
+    if (e < s) e = s;
+    if (d8DiffDays(s, e) >= RV_MAX_DAYS) e = d8AddDays(s, RV_MAX_DAYS - 1);
+    rvStart = s;
+    rvEnd = e;
+    $('rvStartPicker').value = d8ToHyphen(s);
+    $('rvEndPicker').value = d8ToHyphen(e);
+  }
+
+  // 조회 기간을 일 단위로 lvLoad(라방바 매출 대시보드와 캐시 공유)해서 평탄화
+  async function rvLoadRange() {
+    const rows = [];
+    for (let d8 = rvStart; d8 <= rvEnd; d8 = d8AddDays(d8, 1)) {
+      const day = await lvLoad(d8);
+      if (!day) continue;
+      const w = rvWeekday(d8);
+      day.forEach(r => {
+        const h = parseInt(String(r.broadcast_start || '').slice(0, 2), 10);
+        if (isNaN(h) || (h >= 2 && h < 5)) return; // 02~04시 생략
+        rows.push({
+          d: d8, w: w, h: h,
+          ch: r.channel, cat: lvCatOf(r),
+          amt: +r.sales_amt || 0,
+          dur: +r.item_duration_min || 0,
+          bkey: r.channel + '|' + d8 + '|' + r.broadcast_start, // 방송 단위 식별자(평균매출 계산용)
+        });
+      });
+    }
+    rvRows = rows;
+  }
+
+  function rvRenderChannelSlicer() {
+    const wrap = $('rvChannelSlicer');
+    const allActive = rvActive.size === LV_CHANNELS.length;
+    let html = '<button data-ch="__all__"' + (allActive ? ' class="active"' : '') + '>전체선택</button>';
+    LV_CHANNELS.forEach((c, i) => {
+      if (LV_GROUP_BREAKS.includes(i)) html += '<span class="lv-slicer-sep"></span>';
+      html += '<button data-ch="' + c.name + '"' + (rvActive.has(c.name) ? ' class="active"' : '') + '>' + c.label + '</button>';
+    });
+    wrap.innerHTML = html;
+    wrap.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const ch = btn.dataset.ch;
+        if (ch === '__all__') {
+          rvActive = new Set(LV_CHANNELS.map(c => c.name));
+        } else if (rvActive.size === LV_CHANNELS.length) {
+          rvActive = new Set([ch]);
+        } else if (rvActive.has(ch)) {
+          rvActive.delete(ch);
+        } else {
+          rvActive.add(ch);
+        }
+        rvRenderChannelSlicer();
+        rvRender();
+      });
+    });
+  }
+
+  function rvRenderCatSlicer(cats) {
+    const wrap = $('rvCatSlicer');
+    const allActive = !rvCatSel;
+    let html = '<button data-cat="__all__"' + (allActive ? ' class="active"' : '') + '>전체선택</button>';
+    cats.forEach(c => {
+      const on = allActive || rvCatSel.has(c);
+      html += '<button data-cat="' + lvEsc(c) + '"' + (on ? ' class="active"' : '') + '>' + lvEsc(c) + '</button>';
+    });
+    wrap.innerHTML = html;
+    wrap.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const cat = btn.dataset.cat;
+        if (cat === '__all__') {
+          rvCatSel = null;
+        } else if (!rvCatSel) {
+          rvCatSel = new Set([cat]);
+        } else if (rvCatSel.has(cat)) {
+          rvCatSel.delete(cat);
+        } else {
+          rvCatSel.add(cat);
+          if (cats.every(c => rvCatSel.has(c))) rvCatSel = null;
+        }
+        rvRender();
+      });
+    });
+  }
+
+  // 현재 필터(채널+카테고리) 반영 행
+  function rvFiltered() {
+    return rvRows.filter(r => rvActive.has(r.ch) && (!rvCatSel || rvCatSel.has(r.cat)));
+  }
+
+  // 선택된 매출 지표(매출합계/방송당 평균매출/분당 매출효율) 계산
+  function rvCellMetric(cellRows) {
+    if (!cellRows.length) return 0;
+    const sum = cellRows.reduce((s, r) => s + r.amt, 0);
+    if (rvMetric === 'sum') return sum;
+    if (rvMetric === 'avg') {
+      const bset = new Set(cellRows.map(r => r.bkey));
+      return bset.size ? sum / bset.size : 0;
+    }
+    const mins = cellRows.reduce((s, r) => s + r.dur, 0); // perMin
+    return mins ? sum / mins : 0;
+  }
+
+  function rvMetricLabel() {
+    return rvMetric === 'sum' ? '매출합계' : rvMetric === 'avg' ? '방송당 평균매출' : '분당 매출효율';
+  }
+
+  function rvFmtMetric(v) {
+    if (!v) return '';
+    if (rvMetric === 'perMin') return Math.round(v / 10000).toLocaleString() + '만'; // 분당 매출은 절대값이 작아 만원 단위로
+    return lvFmtAmt(v);
+  }
+
+  async function rvRender() {
+    $('rvStartPicker').value = d8ToHyphen(rvStart);
+    $('rvEndPicker').value = d8ToHyphen(rvEnd);
+
+    // 카테고리 슬라이서는 기간+채널 기준(카테고리 선택과 무관)으로 구성
+    const chFiltered = rvRows.filter(r => rvActive.has(r.ch));
+    const cats = [...new Set(chFiltered.map(r => r.cat))].sort((a, b) =>
+      (a === 'null') - (b === 'null') || a.localeCompare(b, 'ko'));
+    rvRenderCatSlicer(cats);
+
+    const rows = rvFiltered();
+    const grid = {}; // 'h|w' -> rows[]
+    rows.forEach(r => { const k = r.h + '|' + r.w; (grid[k] || (grid[k] = [])).push(r); });
+    const values = {};
+    let max = 0;
+    Object.keys(grid).forEach(k => { const v = rvCellMetric(grid[k]); values[k] = v; if (v > max) max = v; });
+    max = max || 1;
+
+    let html = '<div class="in-grid"><div></div>';
+    RV_DAYS.forEach((d, w) => {
+      html += '<div class="in-dhead' + (w === 5 ? ' sat' : w === 6 ? ' sun' : '') + '">' + d + '</div>';
+    });
+    RV_HOURS.forEach(h => {
+      const hSel = rvSel && rvSel.h === h && rvSel.w === null ? ' sel' : '';
+      html += '<div class="in-hlabel' + hSel + '" data-h="' + h + '">' + String(h).padStart(2, '0') + '시</div>';
+      for (let w = 0; w < 7; w++) {
+        const v = values[h + '|' + w] || 0;
+        const a = v <= 0 ? 0 : 0.08 + 0.87 * (v / max);
+        const style = v <= 0 ? '' : ' style="background:rgba(13,148,136,' + a.toFixed(3) + ');color:' + (a > 0.5 ? '#fff' : '#0F4C4A') + '"';
+        const isSel = rvSel && rvSel.h === h && (rvSel.w === w || rvSel.w === null);
+        html += '<div class="in-cell' + (isSel ? ' sel' : '') + '" data-h="' + h + '" data-w="' + w + '"' + style + '>' + rvFmtMetric(v) + '</div>';
+      }
+    });
+    html += '</div>';
+    $('rvHeatmap').innerHTML = html;
+
+    $('rvHeatmap').querySelectorAll('.in-cell').forEach(cell => {
+      cell.addEventListener('click', () => {
+        rvSel = { h: +cell.dataset.h, w: +cell.dataset.w };
+        gaEvent('filter_click', { filter_group: 'revenue_cell', filter_value: RV_DAYS[rvSel.w] + '_' + rvSel.h });
+        rvRender();
+      });
+    });
+    $('rvHeatmap').querySelectorAll('.in-hlabel').forEach(label => {
+      label.addEventListener('click', () => {
+        rvSel = { h: +label.dataset.h, w: null };
+        gaEvent('filter_click', { filter_group: 'revenue_row', filter_value: String(rvSel.h) });
+        rvRender();
+      });
+    });
+
+    const days = d8DiffDays(rvStart, rvEnd) + 1;
+    const totalAmt = rows.reduce((s, r) => s + r.amt, 0);
+    const catLabel = (!rvCatSel || rvCatSel.size === 0 || (cats.length && rvCatSel.size === cats.length)) ? '' : [...rvCatSel].join('·');
+    $('rvSummary').innerHTML = '조회기간 <b>' + d8ToHyphen(rvStart) + ' ~ ' + d8ToHyphen(rvEnd) + '</b> (' + days + '일) · 상품행 <b>'
+      + rows.length + '건</b> · 총매출 <b>' + lvFmtAmt(totalAmt) + '</b>'
+      + (catLabel ? ' · 카테고리 <b>' + lvEsc(catLabel) + '</b>' : '')
+      + (rvActive.size === 0 ? ' · <span class="in-muted">선택된 채널이 없습니다</span>' : '');
+
+    rvRenderInsight(grid);
+  }
+
+  function rvPeriodLabel() {
+    const days = d8DiffDays(rvStart, rvEnd) + 1;
+    return days % 7 === 0 ? '지난 ' + (days / 7) + '주간' : '조회기간 ' + days + '일간';
+  }
+
+  function rvChannelBreakdown(rows) {
+    const byCh = {};
+    rows.forEach(r => { byCh[r.ch] = (byCh[r.ch] || 0) + r.amt; });
+    return Object.entries(byCh).sort((a, b) => b[1] - a[1]).slice(0, 5)
+      .map(([ch, amt]) => {
+        const c = LV_CHANNELS.find(x => x.name === ch);
+        return (c ? c.label : ch) + ' ' + lvFmtAmt(amt);
+      }).join(' · ');
+  }
+
+  function rvRenderInsight(grid) {
+    const box = $('rvInsight');
+    const period = rvPeriodLabel();
+
+    if (!rvSel) {
+      const top = Object.entries(grid)
+        .map(([k, rows]) => [k, rvCellMetric(rows)])
+        .sort((a, b) => b[1] - a[1]).slice(0, 3)
+        .map(([k, v]) => { const [h, w] = k.split('|'); return RV_DAYS[w] + ' ' + String(h).padStart(2, '0') + '시 ' + rvFmtMetric(v); });
+      let html = '<h4>💡 인사이트</h4>';
+      html += top.length
+        ? '<ul><li>' + period + ' ' + rvMetricLabel() + ' 상위: ' + top.join(' · ') + '</li></ul>'
+        : '<p class="in-muted">이 조건에 해당하는 방송이 없습니다.</p>';
+      html += '<p class="in-muted">히트맵 셀 또는 시간대(행) 라벨을 클릭하면 상세 인사이트가 표시됩니다.</p>';
+      box.innerHTML = html;
+      return;
+    }
+
+    const { h, w } = rvSel;
+    if (w === null) rvRenderRowInsight(box, h, period);
+    else rvRenderCellInsight(box, h, w, period);
+  }
+
+  function rvRenderRowInsight(box, h, period) {
+    const hh = String(h).padStart(2, '0');
+    const rows = rvFiltered().filter(r => r.h === h);
+    const perDay = RV_DAYS.map((d, w) => {
+      const v = rvCellMetric(rows.filter(r => r.w === w));
+      return d + ' ' + (rvFmtMetric(v) || '-');
+    });
+
+    let html = '<h4>💡 ' + hh + '시대 요일별 인사이트</h4><ul>';
+    html += '<li>' + period + ' ' + hh + '시대 ' + rvMetricLabel() + ': ' + perDay.join(' · ') + '</li>';
+    const totalAmt = rows.reduce((s, r) => s + r.amt, 0);
+    html += '<li>합계 총매출 <b>' + lvFmtAmt(totalAmt) + '</b></li>';
+    const bd = rvChannelBreakdown(rows);
+    if (bd) html += '<li>채널별: ' + bd + '</li>';
+    const byCat = {};
+    rows.forEach(r => { byCat[r.cat] = (byCat[r.cat] || 0) + r.amt; });
+    const topCat = Object.entries(byCat).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([c, amt]) => lvEsc(c) + ' ' + lvFmtAmt(amt));
+    if (topCat.length) html += '<li>주요 카테고리: ' + topCat.join(' · ') + '</li>';
+    html += '</ul>';
+    box.innerHTML = html;
+  }
+
+  function rvRenderCellInsight(box, h, w, period) {
+    const dayName = RV_DAYS[w] + '요일';
+    const hh = String(h).padStart(2, '0');
+    const cellRows = rvFiltered().filter(r => r.h === h && r.w === w);
+
+    let html = '<h4>💡 ' + dayName + ' ' + hh + '시대 인사이트</h4><ul>';
+    if (!cellRows.length) {
+      html += '<li class="in-muted">이 시간대에 해당하는 방송이 없습니다.</li></ul>';
+      box.innerHTML = html;
+      return;
+    }
+    const totalAmt = cellRows.reduce((s, r) => s + r.amt, 0);
+    const bset = new Set(cellRows.map(r => r.bkey));
+    html += '<li>' + period + ' ' + dayName + ' ' + hh + '시대 총매출 <b>' + lvFmtAmt(totalAmt) + '</b> (방송 <b>' + bset.size + '건</b>)</li>';
+    html += '<li>' + rvMetricLabel() + ' <b>' + (rvFmtMetric(rvCellMetric(cellRows)) || '-') + '</b></li>';
+    const bd = rvChannelBreakdown(cellRows);
+    if (bd) html += '<li>채널별: ' + bd + '</li>';
+    const byCat = {};
+    cellRows.forEach(r => { byCat[r.cat] = (byCat[r.cat] || 0) + r.amt; });
+    const topCat = Object.entries(byCat).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([c, amt]) => lvEsc(c) + ' ' + lvFmtAmt(amt));
+    if (topCat.length) html += '<li>주요 카테고리: ' + topCat.join(' · ') + '</li>';
+    html += '</ul>';
+    box.innerHTML = html;
+  }
+
+  async function rvQuery() {
+    const btn = $('rvQueryBtn');
+    btn.disabled = true;
+    btn.textContent = '조회 중...';
+    $('rvHeatmap').innerHTML = '<p class="in-muted" style="font-size:13px;">불러오는 중...</p>';
+    try {
+      await rvLoadRange();
+      rvRender();
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '조회';
+    }
+  }
+
+  window.rvInit = async function () {
+    if (rvInited) { rvRender(); return; }
+    rvInited = true;
+
+    const latest = await lvFindLatestDate();
+    rvSetRange(d8AddDays(latest, -27), latest); // 기본: 최근 4주
+    $('rvStartPicker').min = d8ToHyphen(RV_MIN_DATE);
+    $('rvEndPicker').min = d8ToHyphen(RV_MIN_DATE);
+
+    $('rvPrevWeek').addEventListener('click', () => { rvSetRange(d8AddDays(rvStart, -7), d8AddDays(rvEnd, -7)); rvQuery(); });
+    $('rvNextWeek').addEventListener('click', () => { rvSetRange(d8AddDays(rvStart, 7), d8AddDays(rvEnd, 7)); rvQuery(); });
+    $('rvStartPicker').addEventListener('change', e => { if (e.target.value) rvSetRange(hyphenToD8(e.target.value), rvEnd); });
+    $('rvEndPicker').addEventListener('change', e => { if (e.target.value) rvSetRange(rvStart, hyphenToD8(e.target.value)); });
+    $('rvQueryBtn').addEventListener('click', rvQuery);
+    document.querySelectorAll('#rvMetricSlicer button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('#rvMetricSlicer button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        rvMetric = btn.dataset.metric;
+        rvRender();
+      });
+    });
+
+    rvRenderChannelSlicer();
+    rvQuery();
   };
 })();
 
@@ -5688,9 +6101,17 @@ function celRenderCompare() {
   }
 
   async function inQuery() {
+    const btn = $('inQueryBtn');
+    btn.disabled = true;
+    btn.textContent = '조회 중...';
     $('inHeatmap').innerHTML = '<p class="in-muted" style="font-size:13px;">불러오는 중...</p>';
-    await Promise.all([inLoadRange(), inLoadPgms()]);
-    inRender();
+    try {
+      await Promise.all([inLoadRange(), inLoadPgms()]);
+      inRender();
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '조회';
+    }
   }
 
   window.inInit = async function () {
