@@ -711,29 +711,36 @@ def scrape_dates(target_dates):
 
 
 def save_rows(rows, target_dates=None):
-    # 여러 날짜를 한 번에 돌려도 날짜별 파일로 나눠서 저장한다 (data/YYYYMMDD.json / .tsv)
+    # 월별 파일(data/YYYYMM.json)에 {"YYYYMMDD": [행...]} 구조로 저장한다.
+    # 기존 월 파일이 있으면 이번에 수집한 날짜만 갈아끼우고 나머지 날짜는 보존.
+    # tsv는 json과 완전 중복 + 코드베이스 어디서도 안 읽어서 저장 중단 (용량 절감)
     os.makedirs(DATA_DIR, exist_ok=True)
-    cols = ["channel", "date", "broadcast_start", "broadcast_end", "duration_min", "pgm_title",
-            "brand", "item_name", "type", "item_start", "item_end", "item_duration_min",
-            "sales_amt", "category", "lavangba_category", "price", "link", "product_link"]
 
     by_date = {}
     for r in rows:
         by_date.setdefault(r["date"], []).append(r)
 
-    for date_str, date_rows in sorted(by_date.items()):
-        json_path = os.path.join(DATA_DIR, f"{date_str}.json")
-        tsv_path = os.path.join(DATA_DIR, f"{date_str}.tsv")
+    by_month = {}
+    for date_str, date_rows in by_date.items():
+        by_month.setdefault(date_str[:6], {})[date_str] = date_rows
+
+    for month, month_updates in sorted(by_month.items()):
+        json_path = os.path.join(DATA_DIR, f"{month}.json")
+        month_data = {}
+        if os.path.exists(json_path):
+            try:
+                with open(json_path, encoding="utf-8") as f:
+                    month_data = json.load(f)
+            except Exception:
+                month_data = {}
+        month_data.update(month_updates)
+        month_data = {k: month_data[k] for k in sorted(month_data)}
 
         with open(json_path, "w", encoding="utf-8") as f:
-            json.dump(date_rows, f, ensure_ascii=False, indent=2)
+            json.dump(month_data, f, ensure_ascii=False, separators=(",", ":"))
 
-        with open(tsv_path, "w", encoding="utf-8-sig") as f:
-            f.write("\t".join(cols) + "\n")
-            for r in date_rows:
-                f.write("\t".join(str(r.get(c, "")) for c in cols) + "\n")
-
-        print(f"저장됨: {json_path} ({len(date_rows)}행)")
+        updated = ", ".join(f"{d}({len(v)}행)" for d, v in sorted(month_updates.items()))
+        print(f"저장됨: {json_path} <- {updated}")
 
 
 def main():

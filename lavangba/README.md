@@ -30,7 +30,8 @@ Register-ScheduledTask -TaskName "LavangbaScraper" -Action $action -Trigger $tri
 PC가 절전모드여도 깨워서 실행됨(`WakeToRun`). 완전 종료 상태면 못 돌고, 켜지면
 `StartWhenAvailable`로 놓친 회차를 바로 실행한다.
 
-결과는 `data/{날짜}.json` / `.tsv`, 실행 로그는 `logs/`에 쌓인다(30일 보관).
+결과는 `data/{YYYYMM}.json` (월별 1파일, `{"YYYYMMDD": [행...]}` 구조, 수집한 날짜만
+갈아끼움), 실행 로그는 `logs/`에 쌓인다(30일 보관).
 
 ## 동작 원리 / 주의사항
 
