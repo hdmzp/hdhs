@@ -466,6 +466,7 @@ def scrape_dates(target_dates):
             prepared = prepare_shows(list_hs, date_str)
             resolve_entry_matches(prepared, date_hyphen)
 
+            rows_before = len(rows)
             for prep in prepared:
                 hshow = prep["hshow"]
                 hshow_count += 1
@@ -562,7 +563,7 @@ def scrape_dates(target_dates):
                         "item_end": pgm_end_label,
                         "item_duration_min": duration_min,
                         "sales_amt": total,
-                        "category": best_gh["category"] if best_gh else "",
+                        "category": best_gh.get("category", "") if best_gh else "",
                         "lavangba_category": (best_gh.get("lavangba_category") or cat_name) if best_gh else cat_name,
                         "price": price,
                         "link": lavangba_link,
@@ -578,8 +579,8 @@ def scrape_dates(target_dates):
                                 "idx": i,
                                 "from": max(0, round((m["start"] - hshow_start).total_seconds() / 60)),
                                 "to": min(duration_min, round((m["end"] - hshow_start).total_seconds() / 60)),
-                                "name": m["entry"]["product"],
-                                "brand": (m["entry"].get("brand") or "").strip() or extract_brand(m["entry"]["product"]),
+                                "name": m["entry"].get("product") or hshow.get("hsshow_title") or "",
+                                "brand": (m["entry"].get("brand") or "").strip() or extract_brand(m["entry"].get("product") or ""),
                                 "category": m["entry"].get("category", ""),
                                 "lavangba_category": m["entry"].get("lavangba_category") or cat_name,
                                 "price": m["entry"].get("price"),
@@ -696,6 +697,11 @@ def scrape_dates(target_dates):
                         print(f"  복합(브랜드합산) {rep['name'][:20]} | {format_amt(total)}")
 
                 time.sleep(0.25)
+
+            # 날짜 하나가 끝날 때마다 그 날짜 파일을 바로 저장한다.
+            # (여러 날짜를 길게 돌리다 중간에 죽어도 완료된 날짜는 보존)
+            if len(rows) > rows_before:
+                save_rows(rows[rows_before:])
     finally:
         context.close()
         pw.stop()
