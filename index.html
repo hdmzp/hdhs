@@ -608,7 +608,7 @@
   /* ============ 보안 탭 ============ */
   .sec-box { max-width: 340px; margin: 32px auto 0; }
   .sec-box .fb-block { margin-bottom: 16px; }
-  .sec-content { max-width: 100%; margin: 0; }
+  .sec-content { max-width: 100%; margin: 0; padding: 14px 16px 28px; }
   .sec-updated { font-size: 12.5px; color: var(--ink-faint); margin: 0 0 10px; }
   .sec-table-wrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: var(--radius); }
   .sec-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
@@ -640,7 +640,7 @@
   .fb-submit.sec-logout:hover { background: var(--ink); }
 
   /* ============ 보안 탭 - 라방바 매출 대시보드 ============ */
-  .lv-section { margin-top: 30px; }
+  .lv-section { margin-top: 4px; }
   .lv-title { font-size: 15px; font-weight: 700; margin: 0 0 12px; color: var(--ink); }
   .lv-controls {
     display: flex;
@@ -672,12 +672,30 @@
   }
   .lv-slicer button.active { background: var(--brand-blue); color: #fff; }
   .lv-slicer button:hover:not(.active) { background: #fff; color: var(--ink); }
+  .lv-slicer-sep { width: 1px; align-self: stretch; background: var(--rule); margin: 2px 3px; }
   .lv-summary { font-size: 12.5px; color: var(--ink-soft); margin: 0 0 8px; }
   .lv-summary b { color: var(--ink); }
   .lv-table-note { font-size: 11.5px; color: var(--ink-faint); margin: 8px 0 0; }
   .sec-table td.lv-amt { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; white-space: nowrap; }
   .sec-table td.lv-time { white-space: nowrap; font-variant-numeric: tabular-nums; }
-  .sec-table td.lv-name { max-width: 340px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  /* 상품명은 상품시간 열(약 105px)의 2배 폭으로 제한 (넘치면 말줄임, 헤더 드래그로 조절 가능)
+     - 테이블 auto 레이아웃에서는 td max-width가 무시되므로 내부 래퍼(.lv-name-in)로 자른다
+     - 열 너비 드래그 모드(lv-fixed)에서는 래퍼 제한을 풀고 열 너비를 따르게 한다 */
+  .sec-table td.lv-name { max-width: 210px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .sec-table td.lv-name .lv-name-in {
+    display: inline-block;
+    max-width: 210px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: bottom;
+  }
+  .sec-table.lv-fixed td.lv-name .lv-name-in { display: inline; max-width: none; }
+  .sec-table td.lv-ch { font-weight: 700; white-space: nowrap; }
+  /* 심야(방송시작 02:00~05:00) 행은 옅은 회색 배경으로 구분 */
+  .sec-table tbody tr.lv-night td { background: #F1F5F9; }
+  .sec-table td.lv-amt a { color: var(--brand-blue); text-decoration: none; }
+  .sec-table td.lv-amt a:hover { text-decoration: underline; }
   .lv-type-tag {
     display: inline-block;
     font-size: 10.5px;
@@ -2447,9 +2465,6 @@
   </div>
 
   <div id="secContentBox" class="sec-content" style="display:none;">
-    <p class="sec-updated" id="secUpdated"></p>
-    <div class="sec-table-wrap" id="secTableWrap"></div>
-
     <div class="lv-section" id="lvSection">
       <h3 class="lv-title">📺 홈쇼핑 방송 실적 (라방바)</h3>
       <div class="lv-controls">
@@ -2468,11 +2483,16 @@
         <span class="hs-time-note">※ 심야: 01:00~05:00</span>
         <button type="button" class="lv-csv-btn" id="lvCsvBtn">⬇ CSV</button>
       </div>
-      <div class="lv-slicer" id="lvChannelSlicer" style="margin-bottom:12px;"></div>
+      <div class="lv-slicer" id="lvChannelSlicer" style="margin-bottom:8px;"></div>
+      <div class="lv-slicer" id="lvCatSlicer" style="margin-bottom:12px;"></div>
       <p class="lv-summary" id="lvSummary"></p>
       <div class="sec-table-wrap" id="lvTableWrap"></div>
-      <p class="lv-table-note">단순: 단일 브랜드 방송(방송 전체 매출) · 복합: 여러 브랜드 방송(시계열 기반 브랜드별 집계) · 매출액: 1억 이상 O.O억 / 미만 백만 단위 · 판매가: 100만원 미만 천원 / 이상 만원 단위 · 헤더 오른쪽 경계를 드래그하면 열 너비 조정 · 조회 기간 최대 31일</p>
+      <p class="lv-table-note">매출액: 1억 이상 O.O억 / 미만 백만 단위 (클릭 시 라방바 상세로 이동) · 판매가: 100만원 미만 천원 / 이상 만원 단위 · 방송시작 02:00~05:00 심야 방송은 회색 행 표시 · 헤더 오른쪽 경계를 드래그하면 열 너비 조정 · 조회 기간 최대 31일</p>
     </div>
+
+    <!-- 항목/내용(안내·갱신방법) 표는 로그인 후 노출하지 않음 (복호화 성공 = 인증 용도로만 사용) -->
+    <p class="sec-updated" id="secUpdated" style="display:none;"></p>
+    <div class="sec-table-wrap" id="secTableWrap" style="display:none;"></div>
 
     <div class="sec-logout-row">
       <button type="button" class="fb-submit sec-logout" id="secLogoutBtn">로그아웃</button>
@@ -4678,33 +4698,42 @@ function celRenderCompare() {
 // ============ 보안 탭 - 라방바 매출 대시보드 ============
 (function () {
   // 데이터: lavangba/data/YYYYMMDD.json (로컬 수집기가 매일 push)
+  // 순서: 본채널 4사 → 플러스 4사 → 기타 (색상은 홈쇼핑 탭과 동일 팔레트)
   const LV_CHANNELS = [
-    { name: '현대홈쇼핑',        label: 'HD' },
-    { name: '현대홈쇼핑 플러스샵', label: 'HD+' },
-    { name: 'GS홈쇼핑',          label: 'GS' },
-    { name: 'GS홈쇼핑 마이샵',    label: 'GS+' },
-    { name: 'CJ온스타일',        label: 'CJ' },
-    { name: 'CJ온스타일 플러스',  label: 'CJ+' },
-    { name: '롯데홈쇼핑',        label: 'LT' },
-    { name: '롯데원티비',        label: 'LT+' },
-    { name: 'NS홈쇼핑',          label: 'NS' },
-    { name: 'NS홈쇼핑 샵플러스',  label: 'NS+' },
-    { name: '공영쇼핑',          label: '공영' },
-    { name: '홈앤쇼핑',          label: '홈앤' },
-    { name: 'KT알파쇼핑',        label: 'KT' },
-    { name: '신세계쇼핑',        label: 'SSG' },
-    { name: '쇼핑엔티',          label: 'NT' },
-    { name: 'SK스토아',          label: 'SK' },
+    { name: '현대홈쇼핑',        label: 'HD',  color: '#003C82' },
+    { name: 'GS홈쇼핑',          label: 'GS',  color: '#1AA663' },
+    { name: 'CJ온스타일',        label: 'CJ',  color: '#4B286D' },
+    { name: '롯데홈쇼핑',        label: 'LT',  color: '#DA291C' },
+    { name: '현대홈쇼핑 플러스샵', label: 'HD+', color: '#003C82' },
+    { name: 'GS홈쇼핑 마이샵',    label: 'GS+', color: '#1AA663' },
+    { name: 'CJ온스타일 플러스',  label: 'CJ+', color: '#4B286D' },
+    { name: '롯데원티비',        label: 'LT+', color: '#DA291C' },
+    { name: 'NS홈쇼핑',          label: 'NS',  color: '#1F6FEB' },
+    { name: 'NS홈쇼핑 샵플러스',  label: 'NS+', color: '#6CA0F2' },
+    { name: '공영쇼핑',          label: '공영', color: '#0E7C7B' },
+    { name: '홈앤쇼핑',          label: '홈앤', color: '#E8590C' },
+    { name: 'KT알파쇼핑',        label: 'KT',  color: '#5C3D99' },
+    { name: '신세계쇼핑',        label: 'SSG', color: '#C8102E' },
+    { name: '쇼핑엔티',          label: 'NT',  color: '#B8860B' },
+    { name: 'SK스토아',          label: 'SK',  color: '#2E8B57' },
   ];
+  const LV_CH_COLOR = {};
+  LV_CHANNELS.forEach(c => { LV_CH_COLOR[c.name] = c.color; });
+  const LV_GROUP_BREAKS = [4, 8]; // 슬라이서 그룹 구분선 위치 (본채널 | 플러스 | 기타)
   const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
 
   let lvStart = null, lvEnd = null;                           // 기간 'YYYYMMDD' (시작~종료)
   const LV_MAX_DAYS = 31;                                     // 한 번에 조회 가능한 최대 기간
   let lvActive = new Set(LV_CHANNELS.map(c => c.name));       // 선택 채널 (기본 전체)
   let lvTime = 'all';                                         // all | normal | night
+  let lvCatSel = null;                                        // 선택 카테고리 (null = 전체)
   const lvCache = {};
   let lvInited = false;
   let lvLastFiltered = [];                                    // CSV 다운로드용 (현재 필터 반영)
+
+  const lvEsc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  // 카테고리 값 (빈 값은 'null' 로 통일해 슬라이서에 노출)
+  const lvCatOf = r => String(r.lavangba_category || r.category || '').trim() || 'null';
 
   const $ = id => document.getElementById(id);
 
@@ -4721,6 +4750,10 @@ function celRenderCompare() {
   function lvIsNight(hhmm) {
     const h = parseInt(hhmm.slice(0, 2), 10);
     return h >= 1 && h < 5; // 홈쇼핑 탭과 동일한 심야 기준
+  }
+  function lvIsNightGray(hhmm) {
+    const h = parseInt(hhmm.slice(0, 2), 10);
+    return h >= 2 && h < 5; // 행 회색 처리 기준: 방송시작 02:00~05:00
   }
   function d8ToHyphen(d8) { return d8.slice(0, 4) + '-' + d8.slice(4, 6) + '-' + d8.slice(6, 8); }
   function hyphenToD8(s) { return s.replace(/-/g, ''); }
@@ -4759,7 +4792,8 @@ function celRenderCompare() {
     const wrap = $('lvChannelSlicer');
     const allActive = lvActive.size === LV_CHANNELS.length;
     let html = '<button data-ch="__all__"' + (allActive ? ' class="active"' : '') + '>전체선택</button>';
-    LV_CHANNELS.forEach(c => {
+    LV_CHANNELS.forEach((c, i) => {
+      if (LV_GROUP_BREAKS.includes(i)) html += '<span class="lv-slicer-sep"></span>';
       html += '<button data-ch="' + c.name + '"' + (lvActive.has(c.name) ? ' class="active"' : '') + '>' + c.label + '</button>';
     });
     wrap.innerHTML = html;
@@ -4781,6 +4815,34 @@ function celRenderCompare() {
     });
   }
 
+  // 카테고리 슬라이서: 조회 기간 데이터의 카테고리 값을 중복 제거해 구성 (빈 값은 'null')
+  function lvRenderCatSlicer(cats) {
+    const wrap = $('lvCatSlicer');
+    const allActive = !lvCatSel;
+    let html = '<button data-cat="__all__"' + (allActive ? ' class="active"' : '') + '>전체선택</button>';
+    cats.forEach(c => {
+      const on = allActive || lvCatSel.has(c);
+      html += '<button data-cat="' + lvEsc(c) + '"' + (on ? ' class="active"' : '') + '>' + lvEsc(c) + '</button>';
+    });
+    wrap.innerHTML = html;
+    wrap.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const cat = btn.dataset.cat;
+        if (cat === '__all__') {
+          lvCatSel = null;
+        } else if (!lvCatSel) {
+          lvCatSel = new Set([cat]); // 전체 상태에서 하나 클릭 -> 그 카테고리만
+        } else if (lvCatSel.has(cat)) {
+          lvCatSel.delete(cat);
+        } else {
+          lvCatSel.add(cat);
+          if (cats.every(c => lvCatSel.has(c))) lvCatSel = null; // 모두 선택되면 전체 상태로
+        }
+        lvRender();
+      });
+    });
+  }
+
   async function lvRender() {
     $('lvStartPicker').value = d8ToHyphen(lvStart);
     $('lvEndPicker').value = d8ToHyphen(lvEnd);
@@ -4795,15 +4857,22 @@ function celRenderCompare() {
 
     if (!rows.length) {
       summary.textContent = '';
+      lvRenderCatSlicer([]);
       wrap.innerHTML = '<div class="lv-empty">이 기간의 수집 데이터가 없습니다.</div>';
       return;
     }
+
+    // 카테고리 슬라이서는 기간 내 전체 데이터 기준으로 구성 ('null' 은 맨 뒤)
+    const cats = [...new Set(rows.map(lvCatOf))].sort((a, b) =>
+      (a === 'null') - (b === 'null') || a.localeCompare(b, 'ko'));
+    lvRenderCatSlicer(cats);
 
     const chOrder = {};
     LV_CHANNELS.forEach((c, i) => { chOrder[c.name] = i; });
 
     const filtered = rows.filter(r => {
       if (!lvActive.has(r.channel)) return false;
+      if (lvCatSel && !lvCatSel.has(lvCatOf(r))) return false;
       if (lvTime === 'night') return lvIsNight(r.broadcast_start);
       if (lvTime === 'normal') return !lvIsNight(r.broadcast_start);
       return true;
@@ -4825,30 +4894,34 @@ function celRenderCompare() {
       return;
     }
 
-    const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const esc = lvEsc;
     let html = '<table class="sec-table"><thead><tr>'
-      + '<th>채널</th><th>방송일자</th><th>요일</th><th>방송시간</th><th>유형</th><th>브랜드</th><th>상품명</th>'
-      + '<th>상품시간</th><th>노출분</th><th>판매가</th><th>매출액</th><th>카테고리</th>'
+      + '<th>채널</th><th>방송일자</th><th>요일</th><th>카테고리</th><th>상품시간</th><th>노출분</th>'
+      + '<th>상품명</th><th>판매가</th><th>매출액</th>'
       + '</tr></thead><tbody>';
     filtered.forEach(r => {
-      const typeCls = r.type === '단순' ? 'simple' : 'complex';
       const d8 = String(r.date || '');
-      const nameHtml = r.link
-        ? '<a href="' + esc(r.link) + '" target="_blank" rel="noopener">' + esc(r.item_name) + '</a>'
+      // link 필드: 신규 데이터는 라방바 상세, 과거 데이터는 상품 페이지가 담김
+      const isLvLink = /ecomm-data\.com/.test(r.link || '');
+      const productLink = r.product_link || (!isLvLink ? r.link : '');
+      const lvLink = isLvLink ? r.link : '';
+      const nameHtml = productLink
+        ? '<a href="' + esc(productLink) + '" target="_blank" rel="noopener">' + esc(r.item_name) + '</a>'
         : esc(r.item_name);
-      html += '<tr>'
-        + '<td>' + esc(r.channel) + '</td>'
+      const amtHtml = lvLink
+        ? '<a href="' + esc(lvLink) + '" target="_blank" rel="noopener" title="라방바 상세 보기">' + lvFmtAmt(r.sales_amt) + '</a>'
+        : lvFmtAmt(r.sales_amt);
+      const chColor = LV_CH_COLOR[r.channel];
+      html += '<tr' + (lvIsNightGray(r.broadcast_start) ? ' class="lv-night"' : '') + '>'
+        + '<td class="lv-ch"' + (chColor ? ' style="color:' + chColor + '"' : '') + '>' + esc(r.channel) + '</td>'
         + '<td class="lv-time">' + (d8.length === 8 ? d8.slice(4, 6) + '/' + d8.slice(6, 8) : esc(d8)) + '</td>'
         + '<td class="lv-time">' + (d8.length === 8 ? d8Weekday(d8) : '-') + '</td>'
-        + '<td class="lv-time">' + esc(r.broadcast_start) + '~' + esc(r.broadcast_end) + '</td>'
-        + '<td><span class="lv-type-tag ' + typeCls + '">' + esc(r.type) + '</span></td>'
-        + '<td>' + esc(r.brand) + '</td>'
-        + '<td class="lv-name" title="' + esc(r.item_name) + '">' + nameHtml + '</td>'
+        + '<td>' + esc(lvCatOf(r)) + '</td>'
         + '<td class="lv-time">' + esc(r.item_start) + '~' + esc(r.item_end) + '</td>'
         + '<td class="lv-time">' + esc(r.item_duration_min) + '분</td>'
+        + '<td class="lv-name" title="' + esc(r.item_name) + '"><span class="lv-name-in">' + nameHtml + '</span></td>'
         + '<td class="lv-amt">' + lvFmtPrice(r.price) + '</td>'
-        + '<td class="lv-amt">' + lvFmtAmt(r.sales_amt) + '</td>'
-        + '<td>' + esc(r.lavangba_category || r.category) + '</td>'
+        + '<td class="lv-amt">' + amtHtml + '</td>'
         + '</tr>';
     });
     html += '</tbody></table>';
