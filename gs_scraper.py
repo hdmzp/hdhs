@@ -210,14 +210,16 @@ def fetch_gs(date_obj: datetime, broadcast: str) -> list:
                 "link": "",                                # 2단계에서 보강
                 "category": "",                            # add_categories에서 채움 (자체 모델)
                 "lavangba_category": (item.get("cat") or {}).get("cat_name", "") or "",  # 라방바 자체 제공 분류 (참고/검증용, 별도 보관)
-                "_hsshow_id": item.get("hsshow_id", ""),    # 2단계 호출용 (저장 전 제거됨)
+                # 라방바 방송 고유 id. 저장까지 유지한다 - lavangba_scraper.py(매출 수집)가
+                # 편성 항목과 방송을 1:1로 정확히 매칭하는 키로 쓴다.
+                "hsshow_id": str(item.get("hsshow_id") or ""),
             })
 
         programs.sort(key=lambda x: x["start"])
 
         # 2단계: 방송별 상세 페이지에서 link/price 보강
         for p in programs:
-            hsshow_id = p.pop("_hsshow_id", "")
+            hsshow_id = p["hsshow_id"]
             if not hsshow_id:
                 continue
             link, price = fetch_gs_detail(hsshow_id)
