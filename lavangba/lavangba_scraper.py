@@ -16,6 +16,16 @@ login_setup.py로 만들어둔 chrome_profile/ 의 로그인 세션을 재사용
   (상품별 시작/종료시각) 자동 fetch. 복합 PGM(상품 여러개)일 때 라방바 아이템들의
   시계열을 이 편성표 시간대에 매칭해서 상품별 매출을 분리한다.
 
+편성표 항목 <-> 라방바 방송(hsshow) 매칭 규칙:
+  1) 편성 항목에 hsshow_id가 저장돼 있으면(gs_scraper/etc_scraper가 라방바 기반으로
+     만든 편성표) 그 id로 1:1 정확 매칭한다.
+  2) id가 없는 항목(HD/CJ/LT 자사몰 편성표, 과거 데이터)은 기존처럼 "5분 이상
+     시간 겹침"으로 후보를 찾되, 한 항목을 여러 방송이 노리면 제목 유사도 ->
+     겹침시간 순으로 딱 한 방송에만 배정한다.
+  SK스토아/신세계처럼 같은 시간대에 방송 2개가 병행 편성되는 채널에서, 두 방송이
+  서로 상대 상품의 편성 정보(브랜드/카테고리/가격/링크)까지 가져가 오염되는 것을
+  막기 위함이다.
+
 사용법:
     venv\\Scripts\\python.exe lavangba_scraper.py
 
@@ -242,6 +252,44 @@ def extract_brand(name):
     return brand
 
 
+_NON_ALNUM_RE = re.compile(r"[^0-9a-z가-힣]+")
+
+
+def _norm_match_text(s):
+    """제목 매칭용 정규화: 소문자화 후 괄호/특수문자를 공백으로 치환."""
+    return _NON_ALNUM_RE.sub(" ", (s or "").lower()).strip()
+
+
+def title_entry_similarity(title, entry):
+    """라방바 방송 제목과 편성표 항목(product/brand)의 유사도(0~1).
+    같은 시간대에 방송 2개가 병행 편성됐을 때 어느 편성 항목이 어느 방송 것인지
+    가려내는 용도. 정규화 후 포함관계면 만점, 아니면 전체 문자열 유사도와
+    어절 자카드 유사도 중 큰 값을 쓴다 (편성표 product는 clean_product_name으로
+    정제돼 있어서 원 제목과 어절 단위로 어긋나는 경우가 있음).
+    brand 매칭은 0.8점 상한 - 같은 브랜드의 방송 2개가 병행 편성되면(예: 플리츠미
+    블라우스 방송 + 플리츠미 원피스 방송) 브랜드만으로는 구분이 안 되므로,
+    상품명이 실제로 맞는 쪽이 항상 이기게 한다."""
+    nt = _norm_match_text(title)
+    nt_ns = nt.replace(" ", "")
+    if not nt_ns:
+        return 0.0
+    best = 0.0
+    for cap, cand in ((1.0, entry.get("product") or ""), (0.8, entry.get("brand") or "")):
+        nc = _norm_match_text(cand)
+        nc_ns = nc.replace(" ", "")
+        if len(nc_ns) < 2:
+            continue
+        if nc_ns in nt_ns or nt_ns in nc_ns:
+            score = 1.0
+        else:
+            seq = SequenceMatcher(None, nt_ns, nc_ns).ratio()
+            ta, tb = set(nt.split()), set(nc.split())
+            jac = len(ta & tb) / len(ta | tb) if ta and tb else 0.0
+            score = max(seq, jac)
+        best = max(best, min(score, cap))
+    return best
+
+
 def classify_item_to_segment(item, segments):
     """원본 JS의 classifyItemToSegment와 동일한 승자독식 방식:
     SKU의 분단위 매출 시계열(sales_amt_rcd) 활동이 가장 컸던 세그먼트 하나에
@@ -281,6 +329,116 @@ def date_range(start_ymd, end_ymd):
     return out
 
 
+def prepare_shows(list_hs, date_str):
+    """방송(hsshow)별 기본 정보 + 해당 채널의 GitHub 편성표를 붙여서 반환.
+    편성 항목 배정은 resolve_entry_matches에서 한다."""
+    date_hyphen = ymd_to_hyphen(date_str)
+    yyyy_mm = f"{date_str[0:4]}-{date_str[4:6]}"
+    prepared = []
+    for hshow in list_hs:
+        code = GITHUB_CODE[hshow["platform_id"]]
+        month_data = fetch_github_month(code, yyyy_mm)
+        prepared.append({
+            "hshow": hshow,
+            "code": code,
+            "channel_label": hshow.get("platform_name") or code,
+            "day_entries": ((month_data or {}).get("days") or {}).get(date_hyphen, []),
+            "start": hs_to_datetime(hshow["hsshow_datetime_start"]),
+            "end": hs_to_datetime(hshow["hsshow_datetime_end"]),
+            "matched": [],
+        })
+    return prepared
+
+
+def resolve_entry_matches(prepared, date_hyphen):
+    """각 방송(hsshow)에 편성표 항목을 배정한다 (p["matched"]를 채움).
+
+    1) 편성 항목에 hsshow_id가 있으면(라방바 기반 편성표: GS/공영/신세계/SK스토아 등)
+       그 값으로 1:1 정확 매칭.
+    2) 나머지 항목(HD/CJ/LT 자사몰 편성표, hsshow_id 없는 과거 데이터)은 기존처럼
+       5분 이상 겹치는 방송을 후보로 하되, 한 항목을 두 방송이 동시에 가져가지
+       않도록 제목 유사도 -> 겹침시간 순으로 한 방송에만 배정한다.
+       (같은 시간대에 방송 2개가 병행 편성되는 채널에서 서로 상대 상품의
+        편성 정보를 가져가 브랜드/카테고리/가격이 오염되는 것 방지)
+    """
+    by_code = {}
+    for p in prepared:
+        by_code.setdefault(p["code"], []).append(p)
+
+    for shows in by_code.values():
+        ecs = []
+        for e in shows[0]["day_entries"]:
+            s, en = gh_entry_datetimes(date_hyphen, e)
+            ecs.append({"entry": e, "start": s, "end": en,
+                        "hsshow_id": str(e.get("hsshow_id") or "")})
+        live_ids = {str(p["hshow"].get("hsshow_id") or "") for p in shows} - {""}
+
+        # 1) hsshow_id 정확 매칭
+        for p in shows:
+            own_id = str(p["hshow"].get("hsshow_id") or "")
+            if own_id:
+                p["matched"] = [
+                    {"entry": ec["entry"], "start": ec["start"], "end": ec["end"]}
+                    for ec in ecs if ec["hsshow_id"] == own_id
+                ]
+
+        # 2) id로 매칭 안 된 방송: 겹침 기반 후보 수집 후 항목별로 승자 1명에게만 배정.
+        #    다른 방송의 id가 달린 항목은 그 방송 소유이므로 후보에서 제외.
+        claims = {}
+        fallback_shows = []
+        for p in shows:
+            if p["matched"]:
+                continue
+            p["_cands"] = []
+            fallback_shows.append(p)
+            for idx, ec in enumerate(ecs):
+                if ec["hsshow_id"] and ec["hsshow_id"] in live_ids:
+                    continue
+                overlap_min = (min(ec["end"], p["end"]) - max(ec["start"], p["start"])).total_seconds() / 60
+                if overlap_min < 5:
+                    continue
+                sim = title_entry_similarity(p["hshow"].get("hsshow_title"), ec["entry"])
+                claims.setdefault(idx, []).append((round(sim, 3), overlap_min, p))
+                p["_cands"].append((round(sim, 3), overlap_min, idx))
+
+        owner = {}
+        for idx, claimers in claims.items():
+            claimers.sort(key=lambda t: (t[0], t[1]), reverse=True)  # 동점이면 list_hs 순서 유지
+            sim, _overlap, winner = claimers[0]
+            owner[idx] = winner
+            if len(claimers) > 1:
+                print(f"  [편성매칭] '{(ecs[idx]['entry'].get('product') or '')[:24]}' -> "
+                      f"'{(winner['hshow'].get('hsshow_title') or '')[:24]}' (유사도 {sim:.2f}, 경합 {len(claimers)}건)")
+
+        # 독식 방지: 후보는 있었는데 하나도 못 받은 방송은, 항목을 2개 이상 가져간
+        # 방송에게서 자기 유사도가 가장 높은 항목 1개를 넘겨받는다.
+        # (제목이 서로 비슷한 병행 방송끼리 한쪽이 다 가져가는 경우 대비.
+        #  편성표 항목이 방송 수보다 적어서 정당하게 빈손인 경우는 못 가져감)
+        own_count = {}
+        for p in owner.values():
+            own_count[id(p)] = own_count.get(id(p), 0) + 1
+        for p in fallback_shows:
+            if own_count.get(id(p)):
+                continue
+            for sim, _overlap, idx in sorted(p["_cands"], reverse=True):
+                cur = owner[idx]
+                if own_count.get(id(cur), 0) >= 2:
+                    owner[idx] = p
+                    own_count[id(cur)] -= 1
+                    own_count[id(p)] = 1
+                    print(f"  [편성매칭] '{(ecs[idx]['entry'].get('product') or '')[:24]}' 재배정 -> "
+                          f"'{(p['hshow'].get('hsshow_title') or '')[:24]}' (유사도 {sim:.2f})")
+                    break
+
+        for idx, p in owner.items():
+            p["matched"].append({"entry": ecs[idx]["entry"], "start": ecs[idx]["start"], "end": ecs[idx]["end"]})
+        for p in fallback_shows:
+            p.pop("_cands", None)
+
+        for p in shows:
+            p["matched"].sort(key=lambda m: m["start"])
+
+
 def scrape_dates(target_dates):
     pw, context, page = launch_browser()
 
@@ -303,29 +461,20 @@ def scrape_dates(target_dates):
                 login_checked = True
 
             date_hyphen = ymd_to_hyphen(date_str)
-            yyyy_mm = f"{date_str[0:4]}-{date_str[4:6]}"
 
-            for hshow in list_hs:
+            # 1차: 방송별 편성표 로드, 2차: 편성 항목 <-> 방송 배정(id 정확 매칭 + 배타 배정)
+            prepared = prepare_shows(list_hs, date_str)
+            resolve_entry_matches(prepared, date_hyphen)
+
+            for prep in prepared:
+                hshow = prep["hshow"]
                 hshow_count += 1
-                code = GITHUB_CODE[hshow["platform_id"]]
-                channel_label = hshow.get("platform_name") or code
+                channel_label = prep["channel_label"]
+                matched = prep["matched"]
 
-                month_data = fetch_github_month(code, yyyy_mm)
-                day_entries = ((month_data or {}).get("days") or {}).get(date_hyphen, [])
-
-                hshow_start = hs_to_datetime(hshow["hsshow_datetime_start"])
-                hshow_end = hs_to_datetime(hshow["hsshow_datetime_end"])
+                hshow_start = prep["start"]
+                hshow_end = prep["end"]
                 pgm_start_label = hshow_start.strftime("%H:%M")
-
-                # 방송과 5분 이상 겹치는 편성 항목만 이 방송의 상품으로 인정.
-                # (앞방송 뒷콜이 1~2분 물리는 경계 케이스가 쓰레기 행을 만드는 것 방지)
-                matched = []
-                for e in day_entries:
-                    s, en = gh_entry_datetimes(date_hyphen, e)
-                    overlap_min = (min(en, hshow_end) - max(s, hshow_start)).total_seconds() / 60
-                    if overlap_min >= 5:
-                        matched.append({"entry": e, "start": s, "end": en})
-                matched.sort(key=lambda m: m["start"])
 
                 # 라방바 자체 종료시각(hsshow_datetime_end)이 실제 편성표보다 정확히 1분
                 # 늦게 찍히는 경우가 잦다 (예: 편성표 02:10 종료인데 라방바는 02:11로 기록).
@@ -346,11 +495,19 @@ def scrape_dates(target_dates):
                 # 단순/복합 판정: 방송 내 모든 상품의 브랜드가 하나면 단순 (SKU 개수가 아님).
                 # 브랜드는 SKU 상품명 첫 어절 또는 편성표 brand 필드로 판별.
                 sku_brands = {extract_brand(it.get("item_name")) for it in items} - {""}
-                gh_brands = {(m["entry"].get("brand") or "").strip() for m in matched} - {""}
+                gh_real_brands = {(m["entry"].get("brand") or "").strip() for m in matched} - {""}
+                # 판정용 항목별 브랜드: brand 필드가 비어있으면 상품명에서 추정해서 채운다.
+                # (편성 항목이 2개인데 한쪽만 brand가 비어있을 때 "브랜드 1개 = 단순"으로
+                #  오판해서 서로 다른 상품을 한 행으로 뭉치는 것 방지)
+                gh_entry_brands = set()
+                for m in matched:
+                    b = (m["entry"].get("brand") or "").strip() or extract_brand(m["entry"].get("product") or "")
+                    if b:
+                        gh_entry_brands.add(b)
                 is_simple = (
                     len(items) <= 1
                     or len(sku_brands) <= 1
-                    or (len(gh_brands) == 1 and len(matched) >= 1)
+                    or (len(gh_entry_brands) == 1 and len(matched) >= 1)
                 )
                 cat_name = (hshow.get("cat") or {}).get("cat_name", "")
                 pgm_end_label = hshow_end.strftime("%H:%M")
@@ -373,11 +530,22 @@ def scrape_dates(target_dates):
                 if is_simple:
                     # 하나의 상품(브랜드)만 파는 방송 -> 라방바가 이미 계산해준 매출액 그대로 사용
                     total = sum(it.get("sales_amt") or 0 for it in items)
-                    best_gh = matched[0]["entry"] if matched else None
+                    # 대표 편성 항목: 첫 항목이 아니라 방송 제목과 가장 비슷한 항목을 고른다.
+                    # (같은 시간대에 다른 방송의 항목이 섞여 매칭됐던 시절의 오염 방지 +
+                    #  동일 방송 내 항목 여러 개일 때도 제목에 맞는 쪽 선택)
+                    best_gh = None
+                    if matched:
+                        _title = hshow.get("hsshow_title") or ""
+                        best_gh = max(
+                            matched,
+                            key=lambda m: (title_entry_similarity(_title, m["entry"]), m["end"] - m["start"]),
+                        )["entry"]
+                    best_gh_brand = (best_gh.get("brand") or "").strip() if best_gh else ""
                     brand = (
-                        next(iter(gh_brands)) if len(gh_brands) == 1
-                        else next(iter(sku_brands)) if len(sku_brands) == 1
-                        else extract_brand(hshow.get("hsshow_title"))
+                        best_gh_brand
+                        or (next(iter(gh_real_brands)) if len(gh_real_brands) == 1 else "")
+                        or (next(iter(sku_brands)) if len(sku_brands) == 1 else "")
+                        or extract_brand(hshow.get("hsshow_title"))
                     )
                     price = (best_gh.get("price") if best_gh else None) or (top_item.get("live_price") if top_item else None)
                     link = (best_gh.get("link") if best_gh else None) or (top_item.get("item_url") if top_item else None)
@@ -414,6 +582,19 @@ def scrape_dates(target_dates):
                             }
                             for i, m in enumerate(matched)
                         ]
+                    elif len(matched) == 1:
+                        # 편성 항목이 1개뿐이면 시간 분할은 못 하지만, 편성표가 가진
+                        # 브랜드/카테고리/가격/링크는 그대로 쓴다.
+                        e = matched[0]["entry"]
+                        segments = [{
+                            "idx": 0, "from": 0, "to": duration_min,
+                            "price": e.get("price") or (top_item.get("live_price") if top_item else None),
+                            "link": e.get("link") or (top_item.get("item_url") if top_item else None),
+                            "name": e.get("product") or hshow.get("hsshow_title"),
+                            "brand": (e.get("brand") or "").strip(),
+                            "category": e.get("category", ""),
+                            "lavangba_category": e.get("lavangba_category") or cat_name,
+                        }]
                     else:
                         segments = [{
                             "idx": 0, "from": 0, "to": duration_min,
