@@ -4677,7 +4677,8 @@ function celRenderCompare() {
 
 // ============ 보안 탭 - 라방바 매출 대시보드 ============
 (function () {
-  // 데이터: lavangba/data/YYYYMMDD.json (로컬 수집기가 매일 push)
+  // 데이터: lavangba/data/YYYYMM.json (월별, {"YYYYMMDD":[행...]} 구조, 로컬 수집기가 매일 push)
+  //         구버전 일별 파일(YYYYMMDD.json)도 폴백으로 지원
   const LV_CHANNELS = [
     { name: '현대홈쇼핑',        label: 'HD' },
     { name: '현대홈쇼핑 플러스샵', label: 'HD+' },
@@ -4743,13 +4744,30 @@ function celRenderCompare() {
     lvEnd = e;
   }
 
+  const lvMonthCache = {};
+
   async function lvLoad(d8) {
     if (!(d8 in lvCache)) {
-      try {
-        const r = await fetch('./lavangba/data/' + d8 + '.json?t=' + Date.now());
-        lvCache[d8] = r.ok ? await r.json() : null;
-      } catch (e) {
-        lvCache[d8] = null;
+      // 월별 파일(YYYYMM.json, {"YYYYMMDD":[행...]} 구조) 우선
+      const ym = d8.slice(0, 6);
+      if (!(ym in lvMonthCache)) {
+        try {
+          const r = await fetch('./lavangba/data/' + ym + '.json?t=' + Date.now());
+          lvMonthCache[ym] = r.ok ? await r.json() : null;
+        } catch (e) {
+          lvMonthCache[ym] = null;
+        }
+      }
+      if (lvMonthCache[ym] && lvMonthCache[ym][d8]) {
+        lvCache[d8] = lvMonthCache[ym][d8];
+      } else {
+        // 월별 파일 도입 전의 일별 파일(YYYYMMDD.json) 폴백
+        try {
+          const r = await fetch('./lavangba/data/' + d8 + '.json?t=' + Date.now());
+          lvCache[d8] = r.ok ? await r.json() : null;
+        } catch (e) {
+          lvCache[d8] = null;
+        }
       }
     }
     return lvCache[d8];
