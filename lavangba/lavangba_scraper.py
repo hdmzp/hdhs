@@ -527,6 +527,10 @@ def scrape_dates(target_dates):
                 # 없으면 라방바에서 가장 많이 팔린(=order sales_amt desc 1번) 상품 기준.
                 top_item = items[0] if items else None
 
+                # link 열에는 라방바 방송 상세 페이지를 넣는다 (매출/시계열을 바로 확인하는 용도).
+                # 상품 구매 페이지는 product_link 열에 별도 보존.
+                lavangba_link = f"https://live.ecomm-data.com/report/hsshow/{hshow['hsshow_id']}"
+
                 if is_simple:
                     # 하나의 상품(브랜드)만 파는 방송 -> 라방바가 이미 계산해준 매출액 그대로 사용
                     total = sum(it.get("sales_amt") or 0 for it in items)
@@ -548,7 +552,7 @@ def scrape_dates(target_dates):
                         or extract_brand(hshow.get("hsshow_title"))
                     )
                     price = (best_gh.get("price") if best_gh else None) or (top_item.get("live_price") if top_item else None)
-                    link = (best_gh.get("link") if best_gh else None) or (top_item.get("item_url") if top_item else None)
+                    product_link = (best_gh.get("link") if best_gh else None) or (top_item.get("item_url") if top_item else None)
                     rows.append({
                         **base_row(),
                         "brand": brand,
@@ -561,7 +565,8 @@ def scrape_dates(target_dates):
                         "category": best_gh["category"] if best_gh else "",
                         "lavangba_category": (best_gh.get("lavangba_category") or cat_name) if best_gh else cat_name,
                         "price": price,
-                        "link": link,
+                        "link": lavangba_link,
+                        "product_link": product_link,
                     })
                     print(f"  단순 | {format_amt(total)}")
                 else:
@@ -678,7 +683,8 @@ def scrape_dates(target_dates):
                             "brand": rep["brand"] or extract_brand(rep["name"]),
                             "item_name": rep["name"],
                             "price": rep.get("price"),
-                            "link": rep.get("link"),
+                            "link": lavangba_link,
+                            "product_link": rep.get("link"),
                             "type": "복합",
                             "item_start": g_start.strftime("%H:%M"),
                             "item_end": g_end.strftime("%H:%M"),
@@ -703,7 +709,7 @@ def save_rows(rows, target_dates=None):
     os.makedirs(DATA_DIR, exist_ok=True)
     cols = ["channel", "date", "broadcast_start", "broadcast_end", "duration_min", "pgm_title",
             "brand", "item_name", "type", "item_start", "item_end", "item_duration_min",
-            "sales_amt", "category", "lavangba_category", "price", "link"]
+            "sales_amt", "category", "lavangba_category", "price", "link", "product_link"]
 
     by_date = {}
     for r in rows:
