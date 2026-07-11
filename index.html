@@ -796,6 +796,64 @@
   #lvTableWrap .sec-table th { cursor: pointer; user-select: none; }
   .lv-sort-ind { font-size: 9px; color: var(--brand-blue); margin-left: 2px; }
 
+  /* ============ 동업계 탭 (요일×시간대 히트맵) ============ */
+  #tabIndustry { font-family: 'Pretendard', -apple-system, sans-serif; }
+  .in-wrap { max-width: 1100px; margin: 0 auto; padding: 14px 16px 40px; }
+  .in-body { display: flex; gap: 24px; align-items: flex-start; flex-wrap: wrap; }
+  .in-heat-scroll { overflow-x: auto; flex: 0 0 auto; }
+  .in-grid { display: grid; grid-template-columns: 42px repeat(7, 40px); gap: 3px; }
+  .in-dhead {
+    text-align: center;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    padding-bottom: 2px;
+    align-self: end;
+  }
+  .in-dhead.sat { color: #2563EB; }
+  .in-dhead.sun { color: #DC2626; }
+  .in-hlabel {
+    font-size: 10.5px;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-faint);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 6px;
+  }
+  .in-cell {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    font-size: 10.5px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    background: var(--paper-dim, #F5F6F8);
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: transform 0.08s;
+  }
+  .in-cell:hover { transform: scale(1.12); outline: 1px solid var(--ink-faint); }
+  .in-cell.sel { outline: 2px solid var(--brand-blue); outline-offset: 1px; }
+  .in-insight {
+    flex: 1 1 300px;
+    min-width: 280px;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+  .in-insight h4 { margin: 0 0 10px; font-size: 14px; }
+  .in-insight ul { margin: 0; padding-left: 18px; }
+  .in-insight li { margin-bottom: 7px; }
+  .in-insight .in-muted { color: var(--ink-soft); }
+  .in-insight .in-pgm { color: var(--brand-blue); font-weight: 600; }
+  .in-cat-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 4px; vertical-align: 0; }
+
   /* ============ 날씨 탭(달력) ============ */
   #tabWeather {
     --cold: #2563EB;
@@ -2254,6 +2312,7 @@
     <button id="tabBtnDramaVariety">드라마·예능</button>
     <button id="tabBtnWeather">날씨</button>
     <button id="tabBtnRanking">랭킹</button>
+    <button id="tabBtnIndustry">동업계</button>
     <button id="tabBtnFeedback">의견</button>
     <button id="tabBtnSecurity" aria-label="보안">🔒</button>
   </div>
@@ -2496,6 +2555,28 @@
 
 </div>
 
+<div id="tabIndustry" class="tab-panel">
+  <div class="in-wrap">
+    <div class="lv-controls">
+      <div class="date-nav">
+        <input type="date" id="inStartPicker" class="lv-date-input" aria-label="시작일">
+        <span class="lv-range-tilde">~</span>
+        <input type="date" id="inEndPicker" class="lv-date-input" aria-label="종료일">
+      </div>
+      <button type="button" class="lv-go-btn" id="inQueryBtn">조회</button>
+      <span class="hs-time-note">※ 방송 시작시각 기준 시간대 집계 · 02~04시 생략</span>
+    </div>
+    <div class="lv-slicer" id="inChannelSlicer" style="margin-bottom:8px;"></div>
+    <div class="lv-slicer" id="inCatSlicer" style="margin-bottom:12px;"></div>
+    <p class="lv-summary" id="inSummary"></p>
+    <div class="in-body">
+      <div class="in-heat-scroll"><div id="inHeatmap"></div></div>
+      <div class="in-insight" id="inInsight"></div>
+    </div>
+    <p class="lv-table-note">집계 기준: 방송 시작시각의 시간대 (09:20 시작도 09:45 시작도 09시대) · 카테고리는 자체 분류모델 기준 · 데이터: 2026-06-22부터 (기타 채널은 06-26부터) · 히트맵 셀을 클릭하면 상세 인사이트 표시</p>
+  </div>
+</div>
+
 <div id="tabSecurity" class="tab-panel">
 
   <div id="secLoginBox" class="sec-box">
@@ -2580,6 +2661,15 @@ const TAB_TIPS = {
   ranking: {
     title: '랭킹 탭은?',
     items: ['홈쇼핑모아에서 제공하는 카테고리별 인기 랭킹이에요', '최근 7일의 매출액 순위예요'],
+  },
+  industry: {
+    title: '동업계 탭은?',
+    items: [
+      '홈쇼핑 탭 편성 데이터(자체 카테고리 분류모델 적용)를 요일×시간대로 집계해요',
+      '<b>방송 시작시각</b> 기준으로 시간대를 나눠요 (09:20도 09:45도 09시대)',
+      '데이터는 <b>2026-06-22</b>부터예요 (기타 채널은 06-26부터)',
+      '셀을 클릭하면 채널별 횟수·고정/셀럽PGM 정보를 보여줘요',
+    ],
   },
   // celebrity, feedback: 설명 없음 → 버튼 자체를 숨김
 };
@@ -3025,6 +3115,7 @@ let _dramaVarietyTabLoaded = false;
 let _fixedPgmTabLoaded = false;
 let _rankingTabLoaded = false;
 let _celebrityTabLoaded = false; // 셀럽PGM 탭 전용 캐시
+let _industryTabLoaded = false;
 
 let dvWeekStart = "2026-06-22";
 let dvFilter = "all";
@@ -3756,8 +3847,8 @@ function renderMonthPickerPanel() {
 }
 
 function switchTab(tab) {
-  const panels = { schedule: 'tabSchedule', weather: 'tabWeather', homeshop: 'tabHomeshop', dramavariety: 'tabDramaVariety', fixedpgm: 'tabFixedPgm', celebrity: 'tabCelebrity', ranking: 'tabRanking', feedback: 'tabFeedback', security: 'tabSecurity' };
-  const btns = { schedule: 'tabBtnSchedule', weather: 'tabBtnWeather', homeshop: 'tabBtnHomeshop', dramavariety: 'tabBtnDramaVariety', fixedpgm: 'tabBtnFixedPgm', celebrity: 'tabBtnCelebrity', ranking: 'tabBtnRanking', feedback: 'tabBtnFeedback', security: 'tabBtnSecurity' };
+  const panels = { schedule: 'tabSchedule', weather: 'tabWeather', homeshop: 'tabHomeshop', dramavariety: 'tabDramaVariety', fixedpgm: 'tabFixedPgm', celebrity: 'tabCelebrity', ranking: 'tabRanking', industry: 'tabIndustry', feedback: 'tabFeedback', security: 'tabSecurity' };
+  const btns = { schedule: 'tabBtnSchedule', weather: 'tabBtnWeather', homeshop: 'tabBtnHomeshop', dramavariety: 'tabBtnDramaVariety', fixedpgm: 'tabBtnFixedPgm', celebrity: 'tabBtnCelebrity', ranking: 'tabBtnRanking', industry: 'tabBtnIndustry', feedback: 'tabBtnFeedback', security: 'tabBtnSecurity' };
 
   for (const key in panels) {
     document.getElementById(panels[key]).classList.toggle('active', key === tab);
@@ -3790,6 +3881,10 @@ function switchTab(tab) {
   if (tab === 'ranking' && !_rankingTabLoaded) {
     _rankingTabLoaded = true;
     rkRefresh();
+  }
+  if (tab === 'industry' && !_industryTabLoaded) {
+    _industryTabLoaded = true;
+    window.inInit();
   }
 
   gaEvent('tab_view', { tab_name: tab });
@@ -4276,6 +4371,7 @@ function celRenderCompare() {
   document.getElementById('tabBtnFixedPgm').addEventListener('click', () => switchTab('fixedpgm'));
   document.getElementById('tabBtnCelebrity').addEventListener('click', () => switchTab('celebrity'));
   document.getElementById('tabBtnRanking').addEventListener('click', () => switchTab('ranking'));
+  document.getElementById('tabBtnIndustry').addEventListener('click', () => switchTab('industry'));
   document.getElementById('tabBtnFeedback').addEventListener('click', () => switchTab('feedback'));
   document.getElementById('tabBtnSecurity').addEventListener('click', () => switchTab('security'));
 
@@ -5119,6 +5215,354 @@ function celRenderCompare() {
     const latest = await lvFindLatestDate();
     lvSetRange(latest, latest);
     lvRender();
+  };
+})();
+
+// ============ 동업계 탭 - 요일×시간대 편성 히트맵 + 인사이트 ============
+(function () {
+  // 데이터: 홈쇼핑 탭과 동일한 편성 파일(자체 카테고리 분류모델 적용분)
+  //   본채널 4사: *_live / 플러스(데이터방송) 4사: *_data / 기타 8사: *_live·NS_plus
+  const IN_MIN_DATE = '2026-06-22'; // 카테고리 분류 시작일 (기타 채널은 06-26부터)
+  const IN_MAX_DAYS = 92;
+  const IN_CHANNELS = [
+    { dir: 'HD_live',        label: 'HD',  color: '#003C82', main: true },
+    { dir: 'GS_live',        label: 'GS',  color: '#1AA663', main: true },
+    { dir: 'CJ_live',        label: 'CJ',  color: '#4B286D', main: true },
+    { dir: 'LT_live',        label: 'LT',  color: '#DA291C', main: true },
+    { dir: 'HD_data',        label: 'HD+', color: '#003C82', main: true },
+    { dir: 'GS_data',        label: 'GS+', color: '#1AA663', main: true },
+    { dir: 'CJ_data',        label: 'CJ+', color: '#4B286D', main: true },
+    { dir: 'LT_data',        label: 'LT+', color: '#DA291C', main: true },
+    { dir: 'PUBLIC_live',    label: '공영', color: '#0E7C7B' },
+    { dir: 'HNS_live',       label: '홈앤', color: '#E8590C' },
+    { dir: 'KTALPHA_live',   label: 'KT',  color: '#5C3D99' },
+    { dir: 'SHINSEGAE_live', label: 'SSG', color: '#C8102E' },
+    { dir: 'NS_live',        label: 'NS',  color: '#1F6FEB' },
+    { dir: 'NS_plus',        label: 'NS+', color: '#6CA0F2' },
+    { dir: 'SHOPPINGNT_live', label: 'NT', color: '#B8860B' },
+    { dir: 'SKSTOA_live',    label: 'SK',  color: '#2E8B57' },
+  ];
+  const IN_GROUP_BREAKS = [4, 8];
+  // 소괄호 안 채널별 횟수를 개별 표기하는 8개사 (나머지는 '기타'로 합산)
+  const IN_MAIN_LABELS = ['HD', 'GS', 'CJ', 'LT', 'HD+', 'GS+', 'CJ+', 'LT+'];
+  const IN_DAYS = ['월', '화', '수', '목', '금', '토', '일'];
+  const IN_HOURS = [];
+  for (let h = 5; h < 24; h++) IN_HOURS.push(h); // 05~23시
+  IN_HOURS.push(0, 1);                           // 00~01시 (02~04시 생략)
+  const IN_FIXED_CO = { HD: '현대홈쇼핑', GS: 'GS홈쇼핑', CJ: 'CJ온스타일', LT: '롯데홈쇼핑' };
+
+  let inStart = null, inEnd = null;   // 'YYYY-MM-DD'
+  let inActive = new Set(IN_CHANNELS.map(c => c.label));
+  let inCat = '';                      // '' = 전체, 아니면 카테고리명
+  let inSel = null;                    // 선택 셀 { w, h }
+  let inRows = [];                     // 조회 기간 평탄화 편성: { d, w, h, cat, label, main }
+  const inCache = {};                  // 월별 JSON 캐시 (dir|YYYY-MM)
+  let inFixedSlots = null;             // 고정PGM merged.json slots
+  let inCelebs = null;                 // 셀럽PGM merged.json programs (+파싱된 요일/시)
+  let inInited = false;
+
+  const $ = id => document.getElementById(id);
+  const inEsc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const inDate = s => new Date(+s.slice(0, 4), +s.slice(5, 7) - 1, +s.slice(8, 10));
+  const inStr = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  const inAddDays = (s, n) => { const d = inDate(s); d.setDate(d.getDate() + n); return inStr(d); };
+  const inDiffDays = (a, b) => Math.round((inDate(b) - inDate(a)) / 86400000);
+  const inWeekday = s => (inDate(s).getDay() + 6) % 7; // 월=0 ... 일=6
+  // 카테고리 정규화: 분류모델 12종 외 값(구버전 소수)과 빈 값은 '기타'로 묶음
+  const inCatOf = e => HS_CATEGORY_COLORS[e.category] ? e.category : '기타';
+
+  function inSetRange(s, e) {
+    if (s > e) { const t = s; s = e; e = t; }
+    if (s < IN_MIN_DATE) s = IN_MIN_DATE;
+    if (e < s) e = s;
+    if (inDiffDays(s, e) >= IN_MAX_DAYS) e = inAddDays(s, IN_MAX_DAYS - 1);
+    inStart = s;
+    inEnd = e;
+    $('inStartPicker').value = s;
+    $('inEndPicker').value = e;
+  }
+
+  async function inLoadMonth(dir, ym) {
+    const key = dir + '|' + ym;
+    if (!(key in inCache)) {
+      try {
+        const r = await fetch('./homeshopping/' + dir + '/' + ym + '.json?t=' + Date.now());
+        inCache[key] = r.ok ? await r.json() : null;
+      } catch (e) {
+        inCache[key] = null;
+      }
+    }
+    return inCache[key];
+  }
+
+  // 조회 기간의 모든 채널 편성을 { 날짜, 요일, 시간대, 카테고리, 채널 } 로 평탄화
+  async function inLoadRange() {
+    const months = new Set();
+    for (let d = inStart; d <= inEnd; d = inAddDays(d, 1)) months.add(d.slice(0, 7));
+    const jobs = [];
+    IN_CHANNELS.forEach(c => months.forEach(ym => jobs.push(
+      inLoadMonth(c.dir, ym).then(data => ({ ch: c, data: data }))
+    )));
+    const loaded = await Promise.all(jobs);
+
+    const rows = [];
+    loaded.forEach(({ ch, data }) => {
+      const days = (data || {}).days || {};
+      for (const d in days) {
+        if (d < inStart || d > inEnd) continue;
+        const w = inWeekday(d);
+        days[d].forEach(e => {
+          const h = parseInt(String(e.start || '').slice(0, 2), 10);
+          if (isNaN(h) || (h >= 2 && h < 5)) return; // 02~04시 생략
+          rows.push({ d: d, w: w, h: h, cat: inCatOf(e), label: ch.label, main: !!ch.main });
+        });
+      }
+    });
+    inRows = rows;
+  }
+
+  async function inLoadPgms() {
+    if (!inFixedSlots) {
+      try {
+        const r = await fetch('./homeshopping/fixed_programs/merged.json?t=' + Date.now());
+        inFixedSlots = r.ok ? ((await r.json()).slots || []) : [];
+      } catch (e) { inFixedSlots = []; }
+    }
+    if (!inCelebs) {
+      try {
+        const r = await fetch('./homeshopping/representative_programs/merged.json?t=' + Date.now());
+        const progs = r.ok ? ((await r.json()).programs || []) : [];
+        inCelebs = progs.map(p => ({
+          company: p.company,
+          title: p.program_title || p.tab_name || '',
+          raw: p.schedule_raw || '',
+          slots: inParseScheduleRaw(p.schedule_raw),
+        }));
+      } catch (e) { inCelebs = []; }
+    }
+  }
+
+  // "매주 화요일 19시 30분" / "저녁 8시 45분" / "매주 목 20시 45분/ 토 08시 20분" / "수요일 20:45"
+  function inParseScheduleRaw(raw) {
+    const out = [];
+    String(raw || '').split('/').forEach(seg => {
+      let m = seg.match(/([월화수목금토일])요일/) || seg.match(/(?:^|\s)([월화수목금토일])(?=\s|$)/);
+      if (!m) return;
+      const t = seg.match(/(오전|오후|저녁|밤)?\s*(\d{1,2})\s*[시:]/);
+      if (!t) return;
+      let h = parseInt(t[2], 10);
+      if ((t[1] === '오후' || t[1] === '저녁' || t[1] === '밤') && h < 12) h += 12;
+      out.push({ w: '월화수목금토일'.indexOf(m[1]), h: h });
+    });
+    return out;
+  }
+
+  function inRenderChannelSlicer() {
+    const wrap = $('inChannelSlicer');
+    const allActive = inActive.size === IN_CHANNELS.length;
+    let html = '<button data-ch="__all__"' + (allActive ? ' class="active"' : '') + '>전체선택</button>';
+    IN_CHANNELS.forEach((c, i) => {
+      if (IN_GROUP_BREAKS.includes(i)) html += '<span class="lv-slicer-sep"></span>';
+      html += '<button data-ch="' + c.label + '"' + (inActive.has(c.label) ? ' class="active"' : '') + '>' + c.label + '</button>';
+    });
+    wrap.innerHTML = html;
+    wrap.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const ch = btn.dataset.ch;
+        if (ch === '__all__') {
+          inActive = new Set(IN_CHANNELS.map(c => c.label));
+        } else if (inActive.size === IN_CHANNELS.length) {
+          inActive = new Set([ch]);
+        } else if (inActive.has(ch)) {
+          inActive.delete(ch);
+        } else {
+          inActive.add(ch);
+        }
+        inRenderChannelSlicer();
+        inRender();
+      });
+    });
+  }
+
+  function inRenderCatSlicer() {
+    const wrap = $('inCatSlicer');
+    const cats = Object.keys(HS_CATEGORY_COLORS).concat(['기타']);
+    let html = '<button data-cat=""' + (inCat === '' ? ' class="active"' : '') + '>전체</button>';
+    cats.forEach(c => {
+      html += '<button data-cat="' + inEsc(c) + '"' + (inCat === c ? ' class="active"' : '') + '>'
+        + '<i class="in-cat-dot" style="background:' + hsCategoryColor(c) + '"></i>' + inEsc(c) + '</button>';
+    });
+    wrap.innerHTML = html;
+    wrap.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        inCat = btn.dataset.cat; // 단일 선택
+        gaEvent('filter_click', { filter_group: 'industry_category', filter_value: inCat || '전체' });
+        inRenderCatSlicer();
+        inRender();
+      });
+    });
+  }
+
+  // 현재 필터(채널·카테고리)에 해당하는 행
+  function inFiltered(catFilter) {
+    return inRows.filter(r => inActive.has(r.label) && (!catFilter || r.cat === catFilter));
+  }
+
+  function inRender() {
+    const rows = inFiltered(inCat);
+    const grid = {}; // 'h|w' -> count
+    rows.forEach(r => { const k = r.h + '|' + r.w; grid[k] = (grid[k] || 0) + 1; });
+    const max = Math.max(1, ...Object.values(grid));
+
+    let html = '<div class="in-grid"><div></div>';
+    IN_DAYS.forEach((d, w) => {
+      html += '<div class="in-dhead' + (w === 5 ? ' sat' : w === 6 ? ' sun' : '') + '">' + d + '</div>';
+    });
+    IN_HOURS.forEach(h => {
+      html += '<div class="in-hlabel">' + String(h).padStart(2, '0') + '시</div>';
+      for (let w = 0; w < 7; w++) {
+        const c = grid[h + '|' + w] || 0;
+        const a = c === 0 ? 0 : 0.08 + 0.87 * (c / max);
+        const style = c === 0 ? '' : ' style="background:rgba(220,38,38,' + a.toFixed(3) + ');color:' + (a > 0.5 ? '#fff' : '#7F1D1D') + '"';
+        const sel = inSel && inSel.h === h && inSel.w === w ? ' sel' : '';
+        html += '<div class="in-cell' + sel + '" data-h="' + h + '" data-w="' + w + '"' + style + '>' + (c || '') + '</div>';
+      }
+    });
+    html += '</div>';
+    $('inHeatmap').innerHTML = html;
+
+    $('inHeatmap').querySelectorAll('.in-cell').forEach(cell => {
+      cell.addEventListener('click', () => {
+        inSel = { h: +cell.dataset.h, w: +cell.dataset.w };
+        gaEvent('filter_click', { filter_group: 'industry_cell', filter_value: IN_DAYS[inSel.w] + '_' + inSel.h });
+        inRender();
+      });
+    });
+
+    const days = inDiffDays(inStart, inEnd) + 1;
+    $('inSummary').innerHTML = '조회기간 <b>' + inStart + ' ~ ' + inEnd + '</b> (' + days + '일) · 편성 <b>'
+      + rows.length + '건</b>' + (inCat ? ' · 카테고리 <b>' + inEsc(inCat) + '</b>' : '');
+
+    inRenderInsight();
+  }
+
+  // 기간 문구: 7의 배수면 "지난 N주간", 아니면 "조회기간 D일간"
+  function inPeriodLabel() {
+    const days = inDiffDays(inStart, inEnd) + 1;
+    return days % 7 === 0 ? '지난 ' + (days / 7) + '주간' : '조회기간 ' + days + '일간';
+  }
+
+  // 소괄호 채널별 횟수: 8개사(HD/GS/CJ/LT/HD+/GS+/CJ+/LT+)만 개별 표기, 나머지는 '기타'로 합산
+  function inChannelBreakdown(rows) {
+    const cnt = {};
+    let etc = 0;
+    rows.forEach(r => {
+      if (r.main) cnt[r.label] = (cnt[r.label] || 0) + 1;
+      else etc++;
+    });
+    const parts = IN_MAIN_LABELS.filter(l => cnt[l]).map(l => l + ' ' + cnt[l] + '회');
+    if (etc) parts.push('기타 ' + etc + '회');
+    return parts.join(' · ');
+  }
+
+  function inRenderInsight() {
+    const box = $('inInsight');
+    const period = inPeriodLabel();
+
+    if (!inSel) {
+      let html = '<h4>💡 인사이트</h4>';
+      if (inCat) {
+        const rows = inFiltered(inCat);
+        const grid = {};
+        rows.forEach(r => { const k = r.h + '|' + r.w; grid[k] = (grid[k] || 0) + 1; });
+        const top = Object.entries(grid).sort((a, b) => b[1] - a[1]).slice(0, 3)
+          .map(([k, c]) => { const [h, w] = k.split('|'); return IN_DAYS[w] + ' ' + String(h).padStart(2, '0') + '시 ' + c + '회'; });
+        html += top.length
+          ? '<ul><li>' + period + ' <b>' + inEsc(inCat) + '</b> 최다 편성: ' + top.join(' · ') + '</li></ul>'
+          : '<p class="in-muted">이 조건에 해당하는 편성이 없습니다.</p>';
+      }
+      html += '<p class="in-muted">히트맵 셀을 클릭하면 해당 요일·시간대의 상세 인사이트가 표시됩니다.</p>';
+      box.innerHTML = html;
+      return;
+    }
+
+    const { h, w } = inSel;
+    const dayName = IN_DAYS[w] + '요일';
+    const hh = String(h).padStart(2, '0');
+    const cellAll = inFiltered('').filter(r => r.h === h && r.w === w);       // 전체 카테고리
+    const cellCat = inCat ? cellAll.filter(r => r.cat === inCat) : cellAll;  // 선택 카테고리
+
+    // 기간 내 해당 요일 발생 횟수(W)와 실제 편성된 날짜 수(k)
+    let wTotal = 0;
+    for (let d = inStart; d <= inEnd; d = inAddDays(d, 1)) if (inWeekday(d) === w) wTotal++;
+    const kDates = new Set(cellCat.map(r => r.d)).size;
+
+    let html = '<h4>💡 ' + dayName + ' ' + hh + '시대 인사이트</h4><ul>';
+
+    const bd = inChannelBreakdown(cellCat);
+    if (inCat) {
+      html += '<li>' + period + ' ' + dayName + ' ' + hh + '시대에 <b>' + inEsc(inCat) + '</b> <b>'
+        + cellCat.length + '회</b> 편성' + (bd ? ' (' + bd + ')' : '') + '</li>';
+      if (cellCat.length) {
+        const pct = cellAll.length ? Math.round(cellCat.length / cellAll.length * 100) : 0;
+        html += '<li>' + dayName + ' ' + wTotal + '번 중 <b>' + kDates + '번</b> 편성 · 이 시간대 전체 방송 '
+          + cellAll.length + '회 중 <b>' + pct + '%</b></li>';
+      }
+    } else {
+      html += '<li>' + period + ' ' + dayName + ' ' + hh + '시대에 전체 <b>' + cellAll.length + '회</b> 편성'
+        + (bd ? ' (' + bd + ')' : '') + '</li>';
+      const byCat = {};
+      cellAll.forEach(r => { byCat[r.cat] = (byCat[r.cat] || 0) + 1; });
+      const top = Object.entries(byCat).sort((a, b) => b[1] - a[1]).slice(0, 3)
+        .map(([c, n]) => inEsc(c) + ' ' + n + '회');
+      if (top.length) html += '<li>주요 카테고리: ' + top.join(' · ') + '</li>';
+    }
+
+    // 고정PGM: 같은 요일 + 같은 시간대에 시작하는 고정 프로그램
+    const fixed = (inFixedSlots || []).filter(s =>
+      s.day === IN_DAYS[w] && parseInt(String(s.time || '').slice(0, 2), 10) === h);
+    const shownTitles = new Set();
+    fixed.forEach(s => {
+      shownTitles.add(String(s.title || '').replace(/\s+/g, ''));
+      html += '<li>이 시간대는 ' + inEsc(IN_FIXED_CO[s.company] || s.company) + ' 고정PGM <span class="in-pgm">&lt;'
+        + inEsc(s.title) + '&gt;</span> (' + inEsc(s.day) + ' ' + inEsc(s.time) + ') 시간대예요</li>';
+    });
+
+    // 셀럽PGM: schedule_raw 파싱 결과가 같은 요일·시간대인 프로그램 (고정PGM과 중복 표기 방지)
+    (inCelebs || []).forEach(p => {
+      if (shownTitles.has(String(p.title || '').replace(/\s+/g, ''))) return;
+      if (p.slots.some(sl => sl.w === w && sl.h === h)) {
+        html += '<li>이 시간대는 ' + inEsc(IN_FIXED_CO[p.company] || p.company) + ' 셀럽PGM <span class="in-pgm">&lt;'
+          + inEsc(p.title) + '&gt;</span> (' + inEsc(p.raw) + ') 시간대예요</li>';
+      }
+    });
+
+    html += '</ul>';
+    box.innerHTML = html;
+  }
+
+  async function inQuery() {
+    $('inHeatmap').innerHTML = '<p class="in-muted" style="font-size:13px;">불러오는 중...</p>';
+    await Promise.all([inLoadRange(), inLoadPgms()]);
+    inRender();
+  }
+
+  window.inInit = async function () {
+    if (inInited) { inRender(); return; }
+    inInited = true;
+
+    const today = inStr(new Date());
+    inSetRange(inAddDays(today, -27), today); // 기본: 최근 4주
+    $('inStartPicker').min = IN_MIN_DATE;
+    $('inEndPicker').min = IN_MIN_DATE;
+
+    $('inStartPicker').addEventListener('change', e => { if (e.target.value) inSetRange(e.target.value, inEnd); });
+    $('inEndPicker').addEventListener('change', e => { if (e.target.value) inSetRange(inStart, e.target.value); });
+    $('inQueryBtn').addEventListener('click', inQuery);
+
+    inRenderChannelSlicer();
+    inRenderCatSlicer();
+    inQuery();
   };
 })();
 </script>
