@@ -2623,7 +2623,7 @@
       <div class="lv-slicer" id="lvCatSlicer" style="margin-bottom:12px;"></div>
       <p class="lv-summary" id="lvSummary"></p>
       <div class="sec-table-wrap" id="lvTableWrap"></div>
-      <p class="lv-table-note">매출액: 1억 이상 O.O억 / 미만 백만 단위 · 판매가: 100만원 미만 천원 / 이상 만원 단위 · 목표: 7월 편성 한정, 상품 노출 구간의 분당목표 합산 · 예상전환율: 카테고리·가격대 평균(자체 매핑) · 심야(방송시작 01:00~05:00) 방송은 회색 행 표시 · 헤더 클릭 시 정렬, 오른쪽 경계 드래그 시 열 너비 조정 · 조회 기간 최대 31일</p>
+      <p class="lv-table-note">매출액: 1억 이상 O.O억 / 미만 백만 단위 · 판매가: 100만원 미만 천원 / 이상 만원 단위 · 목표: 분당목표 데이터가 있는 월만 표시(상품 노출 구간 합산) · 예상전환율: 카테고리·가격대 평균(자체 매핑) · 심야(방송시작 01:00~05:00) 방송은 회색 행 표시 · 헤더 클릭 시 정렬, 오른쪽 경계 드래그 시 열 너비 조정 · 조회 기간 최대 31일</p>
     </div>
 
     <!-- 항목/내용(안내·갱신방법) 표는 로그인 후 노출하지 않음 (복호화 성공 = 인증 용도로만 사용) -->
@@ -4652,12 +4652,6 @@ function celRenderCompare() {
 
   const SEC_SESSION_KEY = 'hdhs_sec_key'; // 새로고침 대비 세션 내 키 보관(탭 닫으면 소멸)
 
-  // 분당목표(pgmsales) 데이터 - 보안탭과 같은 비밀번호로 암호화되어 있어 로그인 성공 시 함께 복호화 시도.
-  // 실패(파일 없음·비밀번호 불일치)해도 로그인 자체는 그대로 성공 처리하고, 목표 컬럼만 '-'로 표시한다.
-  const PGM_TARGET_URL = './pgmsales/202607_pgmsales.enc';
-  const PGM_SESSION_KEY = 'hdhs_pgm_targets'; // 복호화된 목표(비밀번호 아님)를 세션에 캐시 - 새로고침 시 재입력 없이 복원
-  window.PGM_TARGETS = null; // { 'YYYYMMDD': { 'HH:MM': 분당목표(원) } }
-
   const loginBox = document.getElementById('secLoginBox');
   const contentBox = document.getElementById('secContentBox');
   const pwInput = document.getElementById('secPw');
@@ -4687,8 +4681,6 @@ function celRenderCompare() {
     pwInput.value = '';
     tableWrap.innerHTML = '';
     updatedEl.textContent = '';
-    window.PGM_TARGETS = null;
-    try { sessionStorage.removeItem(PGM_SESSION_KEY); } catch (e) {}
   }
 
   const b64ToBytes = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
@@ -4712,57 +4704,6 @@ function celRenderCompare() {
       { name: 'AES-GCM', iv: b64ToBytes(enc.iv) }, key, b64ToBytes(enc.data)
     );
     return JSON.parse(new TextDecoder().decode(buf));
-  }
-
-  // "7/1" / "07-01" 같은 헤더를 'YYYYMMDD'로 정규화 (연도가 없으면 pgmsales 파일명 기준 2026년으로 간주)
-  function pgmNormalizeDateHeader(s) {
-    s = String(s || '').trim();
-    let m = s.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})$/);
-    if (m) return m[1] + m[2].padStart(2, '0') + m[3].padStart(2, '0');
-    m = s.match(/^(\d{4})(\d{2})(\d{2})$/);
-    if (m) return s;
-    m = s.match(/^(\d{1,2})[-/](\d{1,2})$/);
-    if (m) return '2026' + m[1].padStart(2, '0') + m[2].padStart(2, '0');
-    return null;
-  }
-
-  // pgmsales.enc 복호화 결과({columns, rows}, secure.enc와 동일 관례)를
-  // { 'YYYYMMDD': { 'HH:MM': 분당목표 } } 형태로 재구성. 첫 열=시간 라벨, 나머지 열=날짜 라벨.
-  function pgmParseTargets(data) {
-    const cols = data.columns || [];
-    const rows = data.rows || [];
-    const dateKeys = cols.slice(1).map(pgmNormalizeDateHeader);
-    const out = {};
-    rows.forEach(row => {
-      const t = String(row[0] || '').trim();
-      const m = t.match(/^(\d{1,2}):(\d{2})$/);
-      if (!m) return;
-      const hhmm = m[1].padStart(2, '0') + ':' + m[2];
-      for (let i = 1; i < row.length; i++) {
-        const dk = dateKeys[i - 1];
-        if (!dk) continue;
-        const v = parseFloat(String(row[i]).replace(/,/g, ''));
-        if (!v) continue;
-        (out[dk] || (out[dk] = {}))[hhmm] = v;
-      }
-    });
-    return out;
-  }
-
-  // pgmsales.enc는 보안탭과 같은 비밀번호(v1 단일키 형식)로 암호화되어 있다고 가정하고 시도.
-  // 파일이 없거나 비밀번호가 안 맞으면 조용히 넘어간다(목표 컬럼은 '-'로 표시).
-  async function tryLoadPgmTargets(pw) {
-    try {
-      const r = await fetch(PGM_TARGET_URL + '?t=' + Date.now());
-      if (!r.ok) return;
-      const enc = await r.json();
-      const key = await deriveKey(pw, b64ToBytes(enc.salt), enc.iter || 310000);
-      const data = await decryptWithKey(key, enc);
-      window.PGM_TARGETS = pgmParseTargets(data);
-      try { sessionStorage.setItem(PGM_SESSION_KEY, JSON.stringify(window.PGM_TARGETS)); } catch (e) {}
-    } catch (e) {
-      window.PGM_TARGETS = null;
-    }
   }
 
   // v2: 데이터는 랜덤 키로 암호화되고, 그 키가 비밀번호별로 한 번씩 감싸져(keys[])
@@ -4813,10 +4754,6 @@ function celRenderCompare() {
       const raw = new Uint8Array(rawHex.match(/.{2}/g).map(h => parseInt(h, 16)));
       const key = await crypto.subtle.importKey('raw', raw, { name: 'AES-GCM' }, false, ['decrypt']);
       const data = await decryptWithKey(key, await fetchEncFile());
-      try {
-        const cached = sessionStorage.getItem(PGM_SESSION_KEY);
-        if (cached) window.PGM_TARGETS = JSON.parse(cached);
-      } catch (e) {}
       renderSecure(data);
       showLoggedIn();
     } catch (e) {
@@ -4885,7 +4822,6 @@ function celRenderCompare() {
         const raw = new Uint8Array(await crypto.subtle.exportKey('raw', key));
         sessionStorage.setItem(SEC_SESSION_KEY, [...raw].map(x => x.toString(16).padStart(2, '0')).join(''));
       } catch (e) {}
-      await tryLoadPgmTargets(pw); // 같은 비밀번호로 분당목표 데이터도 함께 시도 (실패해도 로그인은 유지)
       gaEvent('security_login', { result: 'success' });
       renderSecure(data);
       showLoggedIn();
@@ -4954,7 +4890,10 @@ function celRenderCompare() {
   const lvCatOf = r => String(r.lavangba_category || r.category || '').trim() || 'null';
 
   // ---- 목표(pgmsales 분당목표) / 예상전환율(conversionrate) ----
-  const PGM_JULY_MIN = '20260701', PGM_JULY_MAX = '20260731'; // pgmsales 데이터는 7월 편성 한정
+  // 목표는 브라우저에서 복호화하지 않는다 - 수집기(lavangba_scraper.py)가 스크레이핑 시점에
+  // pgmsales/{yyyymm}_pgmsales.enc를 미리 복호화해 상품 노출 구간(item_start~item_duration_min)의
+  // 분당목표를 합산한 값을 각 행의 'target' 필드로 채워서 lavangba/data/*.json에 그대로 커밋한다.
+  // (비밀번호를 공개 웹페이지의 클라이언트 JS에 들여보내지 않기 위함 - 수집기는 로컬에서만 실행됨)
 
   // 라방바 카테고리 -> conversionrate.csv 대분류 매핑 (이름이 다른 것들은 가장 가까운 뜻으로 매칭)
   const LV_CAT_TO_CONV = {
@@ -5025,23 +4964,10 @@ function celRenderCompare() {
     return v == null ? null : v;
   }
 
-  // pgmsales 분당목표(원)를 상품 노출 구간(item_start~item_duration_min) 만큼 합산 - 7월 편성만 지원
+  // 목표: 수집기가 미리 계산해 넣어둔 값을 그대로 읽는다 (해당 월 pgmsales 데이터가 없으면 비어있음)
   function lvPgmTarget(r) {
-    const targets = window.PGM_TARGETS;
-    const d8 = String(r.date || '');
-    if (!targets || d8 < PGM_JULY_MIN || d8 > PGM_JULY_MAX) return null;
-    const dayMap = targets[d8];
-    const dur = +r.item_duration_min || 0;
-    if (!dayMap || !dur || !r.item_start) return null;
-    let [h, m] = r.item_start.split(':').map(Number);
-    let sum = 0, any = false;
-    for (let i = 0; i < dur; i++) {
-      const v = dayMap[String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0')];
-      if (v != null) { sum += v; any = true; }
-      m++;
-      if (m >= 60) { m = 0; h = (h + 1) % 24; }
-    }
-    return any ? sum : null;
+    const v = +r.target;
+    return v > 0 ? v : null;
   }
 
   const LV_CH_ORDER = {};
@@ -5058,7 +4984,7 @@ function celRenderCompare() {
     { label: '상품명',  key: r => r.item_name || '', help: '클릭 시 상품페이지로 이동' },
     { label: '판매가',  key: r => +r.price || 0 },
     { label: '매출액',  key: r => +r.sales_amt || 0, help: '클릭 시 라방바로 이동' },
-    { label: '목표',    key: r => lvPgmTarget(r) ?? -Infinity, help: '7월 편성 한정 · 상품 노출 구간의 분당목표 합산' },
+    { label: '목표',    key: r => lvPgmTarget(r) ?? -Infinity, help: '분당목표 데이터가 있는 월만 표시 · 상품 노출 구간의 분당목표 합산 (수집 시점에 계산됨)' },
     { label: '예상전환율', key: r => lvExpectedConvRate(r) ?? -Infinity, help: '카테고리·가격대 평균 전환율 (자체 매핑)' },
   ];
 
