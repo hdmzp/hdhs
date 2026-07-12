@@ -1650,21 +1650,24 @@
     font-weight: 600;
   }
 
-  /* 기타(7개사+NS샵플러스=8열) 탭은 회사 수가 많아 균등분할하면 열이
-     너무 좁아진다. 시간대 열은 그대로 두고 나머지 열만 넉넉한 고정폭을
-     줘서(기존 대비 약 2배) 가로 스크롤(.hs-scroll)로 보게 한다. */
+  /* 기타(7개사+NS샵플러스=8열) 탭:
+     - 모바일/좁은 화면(~700px): 열이 너무 좁아지지 않게 고정폭 + 가로 스크롤(.hs-scroll)
+     - PC(701px~): 8개 열을 균등 분할해 가로 스크롤 없이 한 화면에 전부 표시 */
   table.hs-table.hs-table-etc {
     width: max-content;
     min-width: 100%;
   }
   table.hs-table.hs-table-etc th:not(.hs-time-col),
   table.hs-table.hs-table-etc td:not(.hs-time-cell) {
-    width: 190px;
+    width: 140px;
   }
-  @media (max-width: 700px) {
+  @media (min-width: 701px) {
+    table.hs-table.hs-table-etc {
+      width: 100%;
+    }
     table.hs-table.hs-table-etc th:not(.hs-time-col),
     table.hs-table.hs-table-etc td:not(.hs-time-cell) {
-      width: 140px;
+      width: auto;
     }
   }
   table.hs-table thead th .hs-co-tag {
