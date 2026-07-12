@@ -1,0 +1,16 @@
+{
+  "name": "홈쇼핑 시청환경 조회",
+  "short_name": "시청환경",
+  "description": "홈쇼핑 편성·시청환경·매출 실적 조회 대시보드",
+  "lang": "ko",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#FE3930",
+  "theme_color": "#FE3930",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
