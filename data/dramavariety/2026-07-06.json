@@ -1,7 +1,7 @@
 {
   "weekStart": "2026-07-06",
   "weekEnd": "2026-07-12",
-  "collectedAt": "2026-07-12T02:46:43.418704+09:00",
+  "collectedAt": "2026-07-12T10:08:13.407929+09:00",
   "programs": [
     {
       "id": "drama_붉은 진주_KBS2_오후 07:50",
@@ -737,12 +737,16 @@
         "토"
       ],
       "time": "오후 09:50",
-      "rating": 20.5,
-      "ratingDate": "07.10",
+      "rating": 22.3,
+      "ratingDate": "07.11",
       "ratingByDay": {
         "금": {
           "rating": 20.5,
           "ratingDate": "07.10"
+        },
+        "토": {
+          "rating": 22.3,
+          "ratingDate": "07.11"
         }
       },
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=40491304&qvt=0&query=%EA%B9%80%EB%B6%80%EC%9E%A5"
@@ -860,6 +864,256 @@
         }
       },
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=673019&qvt=0&query=%EB%82%98%20%ED%98%BC%EC%9E%90%20%EC%82%B0%EB%8B%A4"
+    },
+    {
+      "id": "drama_사랑을 처방해 드립니다_KBS2_오후 08:00",
+      "category": "drama",
+      "channel": "KBS2",
+      "title": "사랑을 처방해 드립니다",
+      "days": [
+        "토",
+        "일"
+      ],
+      "time": "오후 08:00",
+      "rating": 14.1,
+      "ratingDate": "07.11",
+      "ratingByDay": {
+        "토": {
+          "rating": 14.1,
+          "ratingDate": "07.11"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=39949898&qvt=0&query=%EC%82%AC%EB%9E%91%EC%9D%84%20%EC%B2%98%EB%B0%A9%ED%95%B4%20%EB%93%9C%EB%A6%BD%EB%8B%88%EB%8B%A4"
+    },
+    {
+      "id": "drama_결혼의 완성_KBS2_오후 09:20",
+      "category": "drama",
+      "channel": "KBS2",
+      "title": "결혼의 완성",
+      "days": [
+        "토",
+        "일"
+      ],
+      "time": "오후 09:20",
+      "rating": 5.3,
+      "ratingDate": "07.11",
+      "ratingByDay": {
+        "토": {
+          "rating": 5.3,
+          "ratingDate": "07.11"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=40645704&qvt=0&query=%EA%B2%B0%ED%98%BC%EC%9D%98%20%EC%99%84%EC%84%B1"
+    },
+    {
+      "id": "variety_영화가 좋다_KBS2_오전 10:10",
+      "category": "variety",
+      "channel": "KBS2",
+      "title": "영화가 좋다",
+      "days": [
+        "토"
+      ],
+      "time": "오전 10:10",
+      "rating": 1.6,
+      "ratingDate": "07.11",
+      "ratingByDay": {
+        "토": {
+          "rating": 1.6,
+          "ratingDate": "07.11"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=660621&qvt=0&query=%EC%98%81%ED%99%94%EA%B0%80%20%EC%A2%8B%EB%8B%A4"
+    },
+    {
+      "id": "variety_접속! 무비월드_SBS_오전 11:00",
+      "category": "variety",
+      "channel": "SBS",
+      "title": "접속! 무비월드",
+      "days": [
+        "토"
+      ],
+      "time": "오전 11:00",
+      "rating": 1.0,
+      "ratingDate": "07.11",
+      "ratingByDay": {
+        "토": {
+          "rating": 1.0,
+          "ratingDate": "07.11"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=658891&qvt=0&query=%EC%A0%91%EC%86%8D%20%EB%AC%B4%EB%B9%84%EC%9B%94%EB%93%9C"
+    },
+    {
+      "id": "variety_불후의 명곡_KBS2_오후 06:05",
+      "category": "variety",
+      "channel": "KBS2",
+      "title": "불후의 명곡",
+      "days": [
+        "토"
+      ],
+      "time": "오후 06:05",
+      "rating": 3.9,
+      "ratingDate": "07.11",
+      "ratingByDay": {
+        "토": {
+          "rating": 3.9,
+          "ratingDate": "07.11"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=670142&qvt=0&query=%EB%B6%88%ED%9B%84%EC%9D%98%20%EB%AA%85%EA%B3%A1"
+    },
+    {
+      "id": "variety_놀면 뭐하니?_MBC_오후 06:30",
+      "category": "variety",
+      "channel": "MBC",
+      "title": "놀면 뭐하니?",
+      "days": [
+        "토"
+      ],
+      "time": "오후 06:30",
+      "rating": 4.6,
+      "ratingDate": "07.11",
+      "ratingByDay": {
+        "토": {
+          "rating": 4.6,
+          "ratingDate": "07.11"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=9904885&qvt=0&query=%EB%86%80%EB%A9%B4%20%EB%AD%90%ED%95%98%EB%8B%88"
+    },
+    {
+      "id": "variety_놀라운 토요일_tvN_오후 07:40",
+      "category": "variety",
+      "channel": "tvN",
+      "title": "놀라운 토요일",
+      "days": [
+        "토"
+      ],
+      "time": "오후 07:40",
+      "rating": 1.5,
+      "ratingDate": "07.11",
+      "ratingByDay": {
+        "토": {
+          "rating": 1.5,
+          "ratingDate": "07.11"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=7682370&qvt=0&query=%EB%86%80%EB%9D%BC%EC%9A%B4%20%ED%86%A0%EC%9A%94%EC%9D%BC"
+    },
+    {
+      "id": "variety_아는 형님_JTBC_오후 09:00",
+      "category": "variety",
+      "channel": "JTBC",
+      "title": "아는 형님",
+      "days": [
+        "토"
+      ],
+      "time": "오후 09:00",
+      "rating": 1.2,
+      "ratingDate": "07.11",
+      "ratingByDay": {
+        "토": {
+          "rating": 1.2,
+          "ratingDate": "07.11"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=3052901&qvt=0&query=%EC%95%84%EB%8A%94%20%ED%98%95%EB%8B%98"
+    },
+    {
+      "id": "variety_김주하의 데이앤나잇_MBN_오후 09:40",
+      "category": "variety",
+      "channel": "MBN",
+      "title": "김주하의 데이앤나잇",
+      "days": [
+        "토"
+      ],
+      "time": "오후 09:40",
+      "rating": 1.6,
+      "ratingDate": "07.11",
+      "ratingByDay": {
+        "토": {
+          "rating": 1.6,
+          "ratingDate": "07.11"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=40256502&qvt=0&query=%EA%B9%80%EC%A3%BC%ED%95%98%EC%9D%98%20%EB%8D%B0%EC%9D%B4%EC%95%A4%EB%82%98%EC%9E%87"
+    },
+    {
+      "id": "variety_살림하는 남자들 시즌2_KBS2_오후 10:35",
+      "category": "variety",
+      "channel": "KBS2",
+      "title": "살림하는 남자들 시즌2",
+      "days": [
+        "토"
+      ],
+      "time": "오후 10:35",
+      "rating": 3.3,
+      "ratingDate": "07.11",
+      "ratingByDay": {
+        "토": {
+          "rating": 3.3,
+          "ratingDate": "07.11"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=5382630&qvt=0&query=%EC%82%B4%EB%A6%BC%ED%95%98%EB%8A%94%20%EB%82%A8%EC%9E%90%EB%93%A4%20%EC%8B%9C%EC%A6%8C2"
+    },
+    {
+      "id": "variety_속풀이쇼 동치미_MBN_오후 11:00",
+      "category": "variety",
+      "channel": "MBN",
+      "title": "속풀이쇼 동치미",
+      "days": [
+        "토"
+      ],
+      "time": "오후 11:00",
+      "rating": 1.8,
+      "ratingDate": "07.11",
+      "ratingByDay": {
+        "토": {
+          "rating": 1.8,
+          "ratingDate": "07.11"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=672063&qvt=0&query=%EC%86%8D%ED%92%80%EC%9D%B4%EC%87%BC%20%EB%8F%99%EC%B9%98%EB%AF%B8"
+    },
+    {
+      "id": "variety_전지적 참견 시점_MBC_오후 11:10",
+      "category": "variety",
+      "channel": "MBC",
+      "title": "전지적 참견 시점",
+      "days": [
+        "토"
+      ],
+      "time": "오후 11:10",
+      "rating": 2.7,
+      "ratingDate": "07.11",
+      "ratingByDay": {
+        "토": {
+          "rating": 2.7,
+          "ratingDate": "07.11"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=6272014&qvt=0&query=%EC%A0%84%EC%A7%80%EC%A0%81%20%EC%B0%B8%EA%B2%AC%20%EC%8B%9C%EC%A0%90"
+    },
+    {
+      "id": "variety_도깨비 10주년 여행_tvN_오후 09:10",
+      "category": "variety",
+      "channel": "tvN",
+      "title": "도깨비 10주년 여행",
+      "days": [
+        "토",
+        "일"
+      ],
+      "time": "오후 09:10",
+      "rating": 2.3,
+      "ratingDate": "07.11",
+      "ratingByDay": {
+        "토": {
+          "rating": 2.3,
+          "ratingDate": "07.11"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=40985292&qvt=0&query=%EB%8F%84%EA%B9%A8%EB%B9%84%2010%EC%A3%BC%EB%85%84%20%EC%97%AC%ED%96%89"
     }
   ]
 }
