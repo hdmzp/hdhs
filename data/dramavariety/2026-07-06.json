@@ -1,7 +1,7 @@
 {
   "weekStart": "2026-07-06",
   "weekEnd": "2026-07-12",
-  "collectedAt": "2026-07-13T15:29:53.430681+09:00",
+  "collectedAt": "2026-07-13T23:32:49.932393+09:00",
   "programs": [
     {
       "id": "drama_붉은 진주_KBS2_오후 07:50",
@@ -1440,6 +1440,25 @@
         }
       },
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=41524517&qvt=0&query=%EC%97%B4%ED%98%88%EB%86%8D%EA%B5%AC%EB%8B%A82"
+    },
+    {
+      "id": "variety_열린음악회_KBS1_오후 06:00",
+      "category": "variety",
+      "channel": "KBS1",
+      "title": "열린음악회",
+      "days": [
+        "일"
+      ],
+      "time": "오후 06:00",
+      "rating": 2.6,
+      "ratingDate": "07.12",
+      "ratingByDay": {
+        "일": {
+          "rating": 2.6,
+          "ratingDate": "07.12"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=659723&qvt=0&query=%EC%97%B4%EB%A6%B0%EC%9D%8C%EC%95%85%ED%9A%8C"
     }
   ]
 }
