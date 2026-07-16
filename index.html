@@ -2634,7 +2634,7 @@
       <div class="lv-slicer" id="lvCatSlicer" style="margin-bottom:12px;"></div>
       <p class="lv-summary" id="lvSummary"></p>
       <div class="sec-table-wrap" id="lvTableWrap"></div>
-      <p class="lv-table-note">금액: 1억 이상 O.O억 / 미만 백만 단위 · 총주문: 라방바 매출액(클릭 시 라방바 이동) · 순주문: 총주문 × 예상전환율(카테고리·가격대 평균) · 달성률: 순주문 ÷ 목표(상품 노출 구간의 분당목표 합산, 데이터 있는 월만) · 판매가: 100만원 미만 천원 / 이상 만원 단위 · 심야(방송시작 01:00~05:00) 방송은 회색 행 표시 · 헤더 클릭 시 정렬, 오른쪽 경계 드래그 시 열 너비 조정 · 조회 기간 최대 31일</p>
+      <p class="lv-table-note">금액: 1억 이상 O.O억 / 미만 백만 단위 · 총주문: 라방바 매출액(클릭 시 라방바 이동) · 순주문: 총주문 × 예상전환율(카테고리·가격대 평균) · 판매가: 100만원 미만 천원 / 이상 만원 단위 · 심야(방송시작 01:00~05:00) 방송은 회색 행 표시 · 헤더 클릭 시 정렬, 오른쪽 경계 드래그 시 열 너비 조정 · 조회 기간 최대 31일</p>
     </div>
 
     <!-- 항목/내용(안내·갱신방법) 표는 로그인 후 노출하지 않음 (복호화 성공 = 인증 용도로만 사용) -->
@@ -4975,7 +4975,7 @@ function celRenderCompare() {
     return v == null ? null : v;
   }
 
-  // 목표/달성률은 본채널 4사에만 적용 (분당목표가 당사 기준이라 다른 채널엔 의미 없음)
+  // 목표는 본채널 4사에만 적용 (분당목표가 당사 기준이라 다른 채널엔 의미 없음)
   const LV_TARGET_CHANNELS = new Set(['현대홈쇼핑', 'GS홈쇼핑', 'CJ온스타일', '롯데홈쇼핑']);
 
   // 목표: 수집기가 미리 계산해 넣어둔 값을 그대로 읽는다 (해당 월 pgmsales 데이터가 없으면 비어있음)
@@ -4993,14 +4993,6 @@ function celRenderCompare() {
     return amt * conv / 100;
   }
 
-  // 달성률(%) = 순주문 ÷ 목표
-  function lvAchievement(r) {
-    const net = lvNetOrder(r);
-    const target = lvPgmTarget(r);
-    if (net == null || !target) return null;
-    return net / target * 100;
-  }
-
   const LV_CH_ORDER = {};
   LV_CHANNELS.forEach((c, i) => { LV_CH_ORDER[c.name] = i; });
 
@@ -5016,7 +5008,6 @@ function celRenderCompare() {
     { label: '상품명',  key: r => r.item_name || '', help: '클릭 시 상품페이지로 이동' },
     { label: '총주문',  key: r => +r.sales_amt || 0, help: '라방바 매출액 · 클릭 시 라방바로 이동' },
     { label: '순주문',  key: r => lvNetOrder(r) ?? -Infinity, help: '총주문 × 예상전환율(카테고리·가격대 평균)' },
-    { label: '달성률',  key: r => lvAchievement(r) ?? -Infinity, help: '순주문 ÷ 목표(상품 노출 구간의 분당목표 합산)' },
     { label: '판매가',  key: r => +r.price || 0 },
   ];
 
@@ -5227,7 +5218,6 @@ function celRenderCompare() {
         : lvFmtAmt(r.sales_amt);
       const chColor = LV_CH_COLOR[r.channel];
       const net = lvNetOrder(r);
-      const ach = lvAchievement(r);
       const typeCls = r.type === '복합' ? 'complex' : 'simple';
       html += '<tr' + (lvIsNight(r.broadcast_start) ? ' class="lv-night"' : '') + '>'
         + '<td class="lv-ch"' + (chColor ? ' style="color:' + chColor + '"' : '') + '>' + esc(r.channel) + '</td>'
@@ -5240,7 +5230,6 @@ function celRenderCompare() {
         + '<td class="lv-name" title="' + esc(r.item_name) + '"><span class="lv-name-in">' + nameHtml + '</span></td>'
         + '<td class="lv-amt">' + amtHtml + '</td>'
         + '<td class="lv-amt">' + (net != null ? lvFmtAmt(net) : '-') + '</td>'
-        + '<td class="lv-amt">' + (ach != null ? Math.round(ach) + '%' : '-') + '</td>'
         + '<td class="lv-amt">' + lvFmtPrice(r.price) + '</td>'
         + '</tr>';
     });
@@ -5301,7 +5290,6 @@ function celRenderCompare() {
       ['예상전환율(%)', r => { const v = lvExpectedConvRate(r); return v == null ? '' : v.toFixed(1); }],
       ['순주문', r => { const v = lvNetOrder(r); return v == null ? '' : Math.round(v); }],
       ['목표', r => lvPgmTarget(r)],
-      ['달성률(%)', r => { const v = lvAchievement(r); return v == null ? '' : Math.round(v); }],
       ['판매가', r => r.price],
       ['링크', r => r.link],
     ];
