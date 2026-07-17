@@ -56,7 +56,8 @@ jobs:
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         
         # 변경되거나 새롭게 생성된 JSON 파일이 있는지 확인 후 스테이징
-        git add homeshopping/representative_programs/*.json || true
+        # (history/ 하위 방송회차별 누적 파일 포함)
+        git add homeshopping/representative_programs/ || true
         
         # 변경사항이 있을 때만 커밋 및 푸시 진행
         if ! git diff --cached --quiet; then
