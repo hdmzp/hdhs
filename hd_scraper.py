@@ -80,11 +80,30 @@ def add_categories(programs):
     return programs
 
 
+def item_to_program(it, fallback_start="", fallback_end=""):
+    """tv-list 아이템(대표상품 또는 withItemList 서브상품)을 공통 스키마로 변환."""
+    slitm = it.get("slitmCd")
+    return {
+        "start": it.get("brodStrtDtm") or fallback_start,
+        "end": it.get("brodEndDtm") or fallback_end,
+        "brand": it.get("brndNm", "") or "",
+        "product": it.get("convertedSlitmNm") or it.get("slitmNm") or "",
+        "price": parse_price(it.get("sellPrc")),
+        "link": f"https://www.hmall.com/md/pda/itemPtc?slitmCd={slitm}&preview=true" if slitm else "",
+    }
+
+
 def fetch_hyundai(date_compact, broad_param):
     """
     date_compact: 'YYYYMMDD'
     broad_param: 'etv'(라이브/TV쇼핑) | 'dtv'(데이터/TV+샵)
     페이지 0~7을 순회 후 (시작시각, 상품코드)로 중복 제거.
+
+    고정PGM(왕영은의 톡 투게더, 오감쇼, 황정민쇼 등 brodTitl이 있는 방송)은
+    편성표에 대표상품 1개만 나오고 나머지는 "N개 상품 더보기" 뒤에 숨는데,
+    그 숨은 상품들이 tv-list 응답의 withItemList 필드에 통째로 들어있다.
+    이런 방송은 브랜드별 대표상품 1개씩을 편성에 추가한다
+    (예: 왕영은 3시간 방송 = 로버츠베리에 + 휘슬러 + 심플휴먼 3줄).
     """
     headers = {"User-Agent": UA, "Referer": "https://www.hmall.com/"}
     seen = {}
@@ -100,15 +119,21 @@ def fetch_hyundai(date_compact, broad_param):
                 key = (it.get("brodStrtDtm"), it.get("slitmCd"))
                 if key[0] is None:
                     continue
-                slitm = it.get("slitmCd")
-                seen[key] = {
-                    "start": it.get("brodStrtDtm", ""),
-                    "end": it.get("brodEndDtm", ""),
-                    "brand": it.get("brndNm", "") or "",
-                    "product": it.get("convertedSlitmNm") or it.get("slitmNm") or "",
-                    "price": parse_price(it.get("sellPrc")),
-                    "link": f"https://www.hmall.com/md/pda/itemPtc?slitmCd={slitm}&preview=true" if slitm else "",
-                }
+                seen[key] = item_to_program(it)
+
+                # 고정PGM: withItemList에서 새 브랜드의 첫 상품만 추가
+                if not (it.get("brodTitl") or "").strip():
+                    continue
+                slot_brands = {it.get("brndNm") or ""}
+                for sub in it.get("withItemList") or []:
+                    brand = sub.get("brndNm") or ""
+                    if brand in slot_brands or not sub.get("slitmCd"):
+                        continue
+                    slot_brands.add(brand)
+                    sub_key = (sub.get("brodStrtDtm") or key[0], sub.get("slitmCd"))
+                    seen[sub_key] = item_to_program(
+                        sub, fallback_start=it.get("brodStrtDtm", ""),
+                        fallback_end=it.get("brodEndDtm", ""))
         except Exception as e:
             print(f"    [HD] page {page} 오류: {e}")
         time.sleep(0.15)
@@ -119,9 +144,13 @@ def fetch_hyundai(date_compact, broad_param):
     # 끊김이 생긴다(예: 01:00-01:19, 01:20-01:39). 다음 방송의 시작시각을
     # 현재 방송의 종료시각으로 보정해 시간이 끊김없이 이어지게 한다.
     # (라이브방송 etv는 원본부터 이미 끊김없이 맞아 있어 보정 불필요)
+    # 같은 시각에 여러 상품이 편성될 수 있으므로(고정PGM 확장 등)
+    # "다음 시작시각"은 지금보다 늦은 첫 시작시각으로 잡는다.
     if broad_param == "dtv":
         for i in range(len(programs) - 1):
-            programs[i]["end"] = programs[i + 1]["start"]
+            nxt = next((q["start"] for q in programs[i + 1:] if q["start"] > programs[i]["start"]), None)
+            if nxt:
+                programs[i]["end"] = nxt
 
     return programs
 
