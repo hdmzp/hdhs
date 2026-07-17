@@ -36,6 +36,7 @@ homeshopping/
 """
 
 import os
+import re
 import json
 import time
 import requests
@@ -125,6 +126,36 @@ def fetch_lotte(date_compact, date_dash, endpoint):
                 "price": parse_price(p.get("price_disc")),
                 "link": link,
             })
+
+            # 고정PGM(최유라쇼 등 pgmMap이 있는 방송)은 편성표에 대표상품 1개만
+            # 나오고 나머지 방송상품이 related("함께 방송하는 상품") 필드에 숨어있다.
+            # (relatedAdd는 "함께사면 좋은 상품" 단품 구성이라 방송상품이 아님 -> 제외)
+            # 브랜드는 related에 별도 필드가 없어 상품명 앞 [브랜드] 접두어로 판별하고,
+            # 새 브랜드의 첫 상품만 추가한다 (브랜드별 대표상품).
+            if p.get("pgmMap"):
+                slot_brands = {(p.get("brand") or "").strip()}
+                main_prefix = re.match(r"^\s*\[([^\]]+)\]", p.get("name") or "")
+                if main_prefix:
+                    slot_brands.add(main_prefix.group(1).strip())
+                for rel in p.get("related") or []:
+                    rel_name = rel.get("name") or ""
+                    m = re.match(r"^\s*\[([^\]]+)\]", rel_name)
+                    rel_brand = m.group(1).strip() if m else ""
+                    rel_goods = rel.get("goodsNo")
+                    if not rel_brand or rel_brand in slot_brands or not rel_goods:
+                        continue
+                    slot_brands.add(rel_brand)
+                    rel_link_info = rel.get("linkInfo", "") or ""
+                    programs.append({
+                        "uid": f"{uid}_{rel_goods}",
+                        "start": p.get("stime", ""),
+                        "end": p.get("etime", ""),
+                        "brand": rel_brand,
+                        "product": rel_name,
+                        "price": parse_price(rel.get("price_disc")),
+                        "link": (f"https://www.lotteimall.com{rel_link_info}"
+                                 if rel_link_info.startswith("/") else rel_link_info),
+                    })
     except Exception as e:
         print(f"    [LT] 오류: {e}")
 
