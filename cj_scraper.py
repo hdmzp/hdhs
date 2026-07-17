@@ -132,13 +132,14 @@ CJ_PGM_KEYWORDS = (
 )
 
 
-def item_to_program(item, start_str, end_str, brand=""):
-    """tvSchedule itemList 항목을 공통 스키마로 변환."""
+def item_to_program(item, start_str, end_str, brand="", pgm=""):
+    """tvSchedule itemList 항목을 공통 스키마로 변환.
+    pgm: 고정PGM 방송이면 프로그램명(pgmNm) - 프론트 뱃지 표시용."""
     item_cd = item.get("itemCd", "")
     chn_cd = item.get("chnCd", "")
     link = (f"https://display.cjonstyle.com/p/item/{item_cd}?channelCode={chn_cd}"
             if item_cd else "")
-    return {
+    prog = {
         "start": start_str,
         "end": end_str,
         "brand": brand or item.get("brandName") or "",
@@ -147,6 +148,9 @@ def item_to_program(item, start_str, end_str, brand=""):
         "link": link,
         "_item_cd": item_cd,  # repBrandTag 조회용 임시 필드, 마지막에 제거
     }
+    if pgm:
+        prog["pgm"] = pgm
+    return prog
 
 
 def fetch_cj(date_compact, broad_param):
@@ -169,13 +173,19 @@ def fetch_cj(date_compact, broad_param):
 
             items = pg.get("itemList", []) or []
             first = items[0] if items else {}
-            prog = item_to_program(first, start_str, end_str)
+
+            # CJ는 모든 편성에 pgmNm이 있으므로(건강식품 1부 등) 네임드 쇼
+            # 키워드에 걸리는 고정PGM만 pgm 필드를 남긴다 (프론트 뱃지용)
+            pgm_nm = (pg.get("pgmNm") or "").strip()
+            is_fixed_pgm = any(k in pgm_nm for k in CJ_PGM_KEYWORDS)
+
+            prog = item_to_program(first, start_str, end_str,
+                                   pgm=pgm_nm if is_fixed_pgm else "")
             programs.append(prog)
 
             # 고정PGM이면 itemList의 나머지 방송상품을 확장 후보로 보관
             # (브랜드는 응답에 없어서 아래에서 repBrandTag로 일괄 조회 후 그룹핑)
-            pgm_nm = pg.get("pgmNm") or ""
-            if len(items) > 1 and any(k in pgm_nm for k in CJ_PGM_KEYWORDS):
+            if len(items) > 1 and is_fixed_pgm:
                 expansions.append((prog, items[1:]))
     except Exception as e:
         print(f"    [CJ] 오류: {e}")
@@ -199,7 +209,8 @@ def fetch_cj(date_compact, broad_param):
                 if not brand or brand in slot_brands:
                     continue
                 slot_brands.add(brand)
-                programs.append(item_to_program(it, base["start"], base["end"], brand=brand))
+                programs.append(item_to_program(it, base["start"], base["end"],
+                                                brand=brand, pgm=base.get("pgm", "")))
                 added += 1
             if added:
                 print(f"    [CJ] 고정PGM 확장: {base['start']} 방송 +{added}개 브랜드")

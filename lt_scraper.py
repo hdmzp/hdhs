@@ -117,7 +117,9 @@ def fetch_lotte(date_compact, date_dash, endpoint):
             link = f"https://www.lotteimall.com{link_info}" if link_info.startswith("/") else link_info
             prgm_id = p.get("bdPrgmId")
             uid = str(prgm_id) if prgm_id else f"{sdate}_{p.get('stime','')}_{p.get('name','')}"
-            programs.append({
+            # 고정PGM 방송이면 pgmMap.titNm에 프로그램명이 있다 (프론트 뱃지용)
+            pgm = ((p.get("pgmMap") or {}).get("titNm") or "").strip()
+            entry = {
                 "uid": uid,
                 "start": p.get("stime", ""),
                 "end": p.get("etime", ""),
@@ -125,7 +127,10 @@ def fetch_lotte(date_compact, date_dash, endpoint):
                 "product": p.get("name", "") or "",
                 "price": parse_price(p.get("price_disc")),
                 "link": link,
-            })
+            }
+            if pgm:
+                entry["pgm"] = pgm
+            programs.append(entry)
 
             # 고정PGM(최유라쇼 등 pgmMap이 있는 방송)은 편성표에 대표상품 1개만
             # 나오고 나머지 방송상품이 related("함께 방송하는 상품") 필드에 숨어있다.
@@ -146,7 +151,7 @@ def fetch_lotte(date_compact, date_dash, endpoint):
                         continue
                     slot_brands.add(rel_brand)
                     rel_link_info = rel.get("linkInfo", "") or ""
-                    programs.append({
+                    rel_entry = {
                         "uid": f"{uid}_{rel_goods}",
                         "start": p.get("stime", ""),
                         "end": p.get("etime", ""),
@@ -155,7 +160,10 @@ def fetch_lotte(date_compact, date_dash, endpoint):
                         "price": parse_price(rel.get("price_disc")),
                         "link": (f"https://www.lotteimall.com{rel_link_info}"
                                  if rel_link_info.startswith("/") else rel_link_info),
-                    })
+                    }
+                    if pgm:
+                        rel_entry["pgm"] = pgm
+                    programs.append(rel_entry)
     except Exception as e:
         print(f"    [LT] 오류: {e}")
 

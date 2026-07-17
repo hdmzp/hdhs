@@ -80,10 +80,11 @@ def add_categories(programs):
     return programs
 
 
-def item_to_program(it, fallback_start="", fallback_end=""):
-    """tv-list 아이템(대표상품 또는 withItemList 서브상품)을 공통 스키마로 변환."""
+def item_to_program(it, fallback_start="", fallback_end="", pgm=""):
+    """tv-list 아이템(대표상품 또는 withItemList 서브상품)을 공통 스키마로 변환.
+    pgm: 고정PGM 방송이면 프로그램명(brodTitl) - 프론트 뱃지 표시용."""
     slitm = it.get("slitmCd")
-    return {
+    prog = {
         "start": it.get("brodStrtDtm") or fallback_start,
         "end": it.get("brodEndDtm") or fallback_end,
         "brand": it.get("brndNm", "") or "",
@@ -91,6 +92,9 @@ def item_to_program(it, fallback_start="", fallback_end=""):
         "price": parse_price(it.get("sellPrc")),
         "link": f"https://www.hmall.com/md/pda/itemPtc?slitmCd={slitm}&preview=true" if slitm else "",
     }
+    if pgm:
+        prog["pgm"] = pgm
+    return prog
 
 
 def fetch_hyundai(date_compact, broad_param):
@@ -119,10 +123,11 @@ def fetch_hyundai(date_compact, broad_param):
                 key = (it.get("brodStrtDtm"), it.get("slitmCd"))
                 if key[0] is None:
                     continue
-                seen[key] = item_to_program(it)
+                pgm = (it.get("brodTitl") or "").strip()
+                seen[key] = item_to_program(it, pgm=pgm)
 
                 # 고정PGM: withItemList에서 새 브랜드의 첫 상품만 추가
-                if not (it.get("brodTitl") or "").strip():
+                if not pgm:
                     continue
                 slot_brands = {it.get("brndNm") or ""}
                 for sub in it.get("withItemList") or []:
@@ -133,7 +138,7 @@ def fetch_hyundai(date_compact, broad_param):
                     sub_key = (sub.get("brodStrtDtm") or key[0], sub.get("slitmCd"))
                     seen[sub_key] = item_to_program(
                         sub, fallback_start=it.get("brodStrtDtm", ""),
-                        fallback_end=it.get("brodEndDtm", ""))
+                        fallback_end=it.get("brodEndDtm", ""), pgm=pgm)
         except Exception as e:
             print(f"    [HD] page {page} 오류: {e}")
         time.sleep(0.15)

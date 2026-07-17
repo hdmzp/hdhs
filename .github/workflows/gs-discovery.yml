@@ -1,0 +1,52 @@
+name: GS Schedule Discovery (temporary)
+
+# GS샵 공식 TV 편성표(프로그램명 포함) 탐색용 일회성 워크플로우.
+# 분석이 끝나면 이 파일과 fixed/gs_discover_schedule.py는 삭제한다.
+
+on:
+  workflow_dispatch:
+    inputs:
+      brod_dt:
+        description: '타깃 방송일 (YYYYMMDD, 비우면 다음 목요일)'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install requests playwright
+          playwright install --with-deps chromium
+
+      - name: Run discovery
+        env:
+          BROD_DT: ${{ inputs.brod_dt }}
+        run: python fixed/gs_discover_schedule.py
+
+      - name: Commit results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add homeshopping/_debug_gs_discovery/
+          if git diff --cached --quiet; then
+            echo "결과 없음"
+            exit 0
+          fi
+          git commit -m "chore: GS 편성표 탐색 결과 덤프"
+          for i in 1 2 3; do
+            git push && exit 0
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+          done
+          exit 1

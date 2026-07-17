@@ -1725,6 +1725,7 @@
 
   .hs-prog {
     display: block;
+    position: relative; /* 고정PGM 뱃지(.hs-pgm-badge) 기준점 */
     text-decoration: none;
     color: var(--ink);
     padding: 7px 9px 7px 11px;
@@ -1734,6 +1735,23 @@
   }
   .hs-prog:last-child { border-bottom: none; }
   .hs-prog:hover { background: var(--now-bg); }
+  /* 고정PGM 뱃지: 셀 우측 상단 작은 파란 라벨 (예: 왕톡, 오감쇼) */
+  .hs-prog .hs-pgm-badge {
+    position: absolute;
+    top: 5px;
+    right: 6px;
+    font-size: 9px;
+    font-weight: 800;
+    line-height: 1.6;
+    color: #fff;
+    background: var(--brand-blue);
+    border-radius: 7px;
+    padding: 0 6px;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  /* 뱃지가 있는 줄은 시간 텍스트가 뱃지와 겹치지 않게 우측 여백 확보 */
+  .hs-prog.has-pgm .hs-time { padding-right: 52px; }
   .hs-prog .hs-time {
     font-size: 10px;
     color: var(--ink-soft);
@@ -3659,7 +3677,43 @@ function hsRenderCategoryLegend() {
   }
 }
 
-function hsRenderProgram(p, nowMin) {
+// 고정PGM 뱃지 줄임말: 편성 데이터의 pgm(프로그램명)에 키워드가 포함되면 해당 뱃지 사용.
+// 매칭 안 되는 새 프로그램은 원문 앞 4글자로 표시 (데이터는 스크레이퍼가
+// 편성 API의 프로그램명 필드를 봤을 때만 pgm을 심으므로 휴방 주엔 뱃지 없음).
+const HS_PGM_BADGE_RULES = [
+  ['황정민', '황쇼'], ['이진아', '이진아'], ['스튜디오B', '스튜B'],
+  ['강주은', '강주은'], ['굿 라이프', '강주은'], ['굿라이프', '강주은'],
+  ['오감쇼', '오감쇼'], ['김동은', '김동은'], ['서아랑', '아쇼라'], ['아쇼라', '아쇼라'],
+  ['노블레스', '클노'], ['김나운', '김나운'], ['최화정', '최화정'], ['유리네', '유리네'],
+  ['영스타일', '영스타일'], ['LOOK AT ME', '룩앳미'], ['언니', '언니'], ['유난희', '유난희'],
+  ['빅마마', '빅마마'], ['최희', '최희'], ['최유라', '최유라'], ['백지연', '백지연'],
+  ['동가게', '동가게'], ['소유진', '소유진'], ['소이현', '소이현'], ['왕영은', '왕톡'],
+  ['더컬렉션', '더컬렉션'], ['유민', '장유민'], ['조윤주', '조윤주'], ['이승연', '이승연'],
+  ['HIT THE STYLE', '힛스'], ['힛더스', '힛스'], ['김지애', '김지애'], ['수정SHOP', '이수정'],
+  ['L.SHOW', '엘쇼'], ['쇼미', '쇼미'], ['신상뷰티', '찬스'], ['지완스', '더지완스'],
+  ['김창옥', '김창옥'],
+];
+
+function hsPgmBadgeLabel(pgm) {
+  const name = String(pgm || '').trim();
+  if (!name) return '';
+  for (const [keyword, badge] of HS_PGM_BADGE_RULES) {
+    if (name.includes(keyword)) return badge;
+  }
+  return name.length > 4 ? name.slice(0, 4) : name;
+}
+
+function hsRenderProgram(p, nowMin, badgedSet) {
+  // 고정PGM 뱃지: 같은 방송(pgm+start)의 브랜드별 여러 줄 중 첫 줄에만 표시
+  let pgmBadge = '';
+  if (p.pgm) {
+    const key = `${p.pgm}|${p.start}`;
+    if (!badgedSet || !badgedSet.has(key)) {
+      if (badgedSet) badgedSet.add(key);
+      pgmBadge = hsPgmBadgeLabel(p.pgm);
+    }
+  }
+
   let onair = false;
   if (nowMin !== null && p.start && p.end) {
     let s = hsTimeToMin(p.start);
@@ -3686,7 +3740,10 @@ function hsRenderProgram(p, nowMin) {
     ? `<a class="hs-goto" href="${p.link}" target="_blank" rel="noopener">바로가기</a>`
     : '';
 
-  return `<div class="hs-prog${onair ? ' onair-cell' : ''}" style="border-left-color:${color};">` +
+  const pgmBadgeHtml = pgmBadge ? `<span class="hs-pgm-badge">${escapeHtml(pgmBadge)}</span>` : '';
+
+  return `<div class="hs-prog${onair ? ' onair-cell' : ''}${pgmBadge ? ' has-pgm' : ''}" style="border-left-color:${color};">` +
+         pgmBadgeHtml +
          `<div class="hs-time${onair ? ' onair' : ''}">${p.start}–${p.end}${durationStr}` +
          (onair ? '<span class="hs-onair-badge">방송중</span>' : '') +
          `</div>` +
@@ -3821,6 +3878,7 @@ function hsRenderGridView(datasets, nowMin) {
   });
   html += '</tr></thead><tbody>';
 
+  const badgedSet = new Set(); // 고정PGM 뱃지는 방송당 첫 줄에만
   for (let h = 0; h < 24; h++) {
     if (!hsHourMatchesTimeFilter(h)) continue;
     html += '<tr>';
@@ -3832,7 +3890,7 @@ function hsRenderGridView(datasets, nowMin) {
       } else {
         let cell = `<td class="hs-co-cell ${c.cls}"><div class="hs-cell-inner">`;
         for (const item of items) {
-          cell += item.isGap ? hsRenderHitBest() : hsRenderProgram(item.p, nowMin);
+          cell += item.isGap ? hsRenderHitBest() : hsRenderProgram(item.p, nowMin, badgedSet);
         }
         cell += '</div></td>';
         html += cell;
@@ -3865,13 +3923,14 @@ function hsRenderListView(datasets, nowMin) {
   });
   html += '</tr></thead><tbody><tr>';
   html += '<td class="hs-time-cell"></td>';
+  const badgedSet = new Set(); // 고정PGM 뱃지는 방송당 첫 줄에만
   companies.forEach((c, ci) => {
     const progs = filtered[ci];
     if (progs.length === 0) {
       html += `<td class="hs-empty-cell hs-co-cell ${c.cls}"><div class="hs-hitbest">해당 편성 없음</div></td>`;
     } else {
       let cell = `<td class="hs-co-cell ${c.cls}"><div class="hs-cell-inner hs-cell-list">`;
-      for (const p of progs) cell += hsRenderProgram(p, nowMin);
+      for (const p of progs) cell += hsRenderProgram(p, nowMin, badgedSet);
       cell += '</div></td>';
       html += cell;
     }
