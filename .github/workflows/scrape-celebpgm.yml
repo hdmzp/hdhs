@@ -49,6 +49,9 @@ jobs:
         echo "LT 최유라쇼 수집 시작..."
         python fixed/relt.py || echo "LT 수집 중 실패 발생"
 
+        echo "셀럽PGM 월별 누적(history) 갱신..."
+        python fixed/build_celeb_history.py || echo "월별 누적 갱신 중 실패 발생"
+
     # 6. 생성된 JSON 데이터를 깃허브 레포지토리에 자동으로 Commit & Push
     - name: Commit and Push JSON Data
       run: |
