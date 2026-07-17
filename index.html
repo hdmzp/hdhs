@@ -2132,8 +2132,10 @@
 
   .cel-controls {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 10px;
     padding: 16px 0;
     background: var(--paper);
     position: sticky;
@@ -2141,6 +2143,48 @@
     z-index: 5;
     border-bottom: 1px solid var(--rule);
     margin-bottom: 20px;
+  }
+
+  /* 월별 조회 내비게이션 (PGM 슬라이서 위) */
+  .cel-month-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .cel-month-nav button {
+    font-family: 'Pretendard', -apple-system, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    background: var(--paper-dim);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 6px 12px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .cel-month-nav button:hover:not(:disabled) {
+    background: var(--brand-blue);
+    color: #fff;
+  }
+
+  .cel-month-nav button:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+
+  .cel-month-nav input[type="month"] {
+    font-family: 'Pretendard', -apple-system, sans-serif;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--ink);
+    background: var(--paper-dim);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 6px 10px;
   }
 
   .cel-slicer {
@@ -2303,7 +2347,9 @@
 
   @media (max-width: 720px) {
     #tabCelebrity { padding: 0 12px 40px; }
-    .cel-controls { padding: 10px 0; }
+    .cel-controls { padding: 10px 0; gap: 8px; }
+    .cel-month-nav button { font-size: 12px; padding: 5px 10px; }
+    .cel-month-nav input[type="month"] { font-size: 12.5px; padding: 5px 8px; }
     .cel-slicer button { font-size: 11.5px; padding: 6px 10px; }
     .cel-col { flex-basis: 190px; min-width: 180px; }
     .cel-col-title { font-size: 12.5px; }
@@ -2505,6 +2551,11 @@
 
 <div id="tabCelebrity" class="tab-panel">
   <div class="cel-controls">
+    <div class="cel-month-nav">
+      <button id="celMonthPrev" type="button" aria-label="이전 달">◀</button>
+      <input type="month" id="celMonthPicker">
+      <button id="celMonthNext" type="button" aria-label="다음 달">▶</button>
+    </div>
     <div class="cel-slicer" id="celProgramSlicer">
       <button class="active" data-file="all">전체선택</button>
       <button class="active" data-file="CJ_KJE.json">강주은 굿라이프</button>
@@ -4131,6 +4182,47 @@ let celProgramMeta = {};       // file -> {title, company, schedule_raw, detail_
 let celSelectedFiles = new Set(CEL_FILES); // 기본값: 전체 선택 상태로 시작
 let celIsSample = false; // 실제 수집 데이터가 하나도 없어 예시 데이터로 미리보기 중인지
 
+// ---- 월별 조회 (history/{YYYY-MM}.json) ----
+const CEL_HISTORY_MIN_MONTH = '2026-07'; // 월별 누적 데이터가 쌓이기 시작한 달
+let celMonth = '';             // 현재 조회 중인 달 (YYYY-MM)
+let celHistoryCache = {};      // ym -> history JSON (파일 없으면 null)
+
+function celThisMonth() {
+  const now = new Date();
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+}
+
+function celShiftMonth(ym, delta) {
+  const [y, m] = ym.split('-').map(Number);
+  const d = new Date(y, m - 1 + delta, 1);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+}
+
+async function celLoadHistory(ym) {
+  if (!(ym in celHistoryCache)) {
+    celHistoryCache[ym] = await fetchJsonSafe(`./homeshopping/representative_programs/history/${ym}.json`);
+  }
+  return celHistoryCache[ym];
+}
+
+async function celSetMonth(ym) {
+  // 다음 방송이 다음 달로 미리 잡히는 경우가 있어 +1개월까지 허용
+  const maxMonth = celShiftMonth(celThisMonth(), 1);
+  if (ym < CEL_HISTORY_MIN_MONTH) ym = CEL_HISTORY_MIN_MONTH;
+  if (ym > maxMonth) ym = maxMonth;
+  celMonth = ym;
+
+  const picker = document.getElementById('celMonthPicker');
+  if (picker) picker.value = ym;
+  const prevBtn = document.getElementById('celMonthPrev');
+  const nextBtn = document.getElementById('celMonthNext');
+  if (prevBtn) prevBtn.disabled = ym <= CEL_HISTORY_MIN_MONTH;
+  if (nextBtn) nextBtn.disabled = ym >= maxMonth;
+
+  await celLoadHistory(ym);
+  celRenderCompare();
+}
+
 // 아직 크롤러가 아무 파일도 만들지 못했을 때(첫 배포 전) 보여줄
 // 레이아웃 미리보기용 예시 데이터. 실제 산출물과 동일한 스키마를 쓰고
 // _originFile을 CEL_FILES 값과 맞춰서 슬라이서/비교 로직이 그대로 동작하게 한다.
@@ -4218,7 +4310,8 @@ async function celInitLoad() {
   const noticeEl = document.getElementById('celSampleNotice');
   if (noticeEl) noticeEl.style.display = celIsSample ? '' : 'none';
 
-  celRenderCompare();
+  // 이번 달 월별 누적(history)을 로드한 뒤 렌더 (없으면 라이브 데이터로 폴백)
+  await celSetMonth(celMonth || celThisMonth());
 }
 
 function celRenderProductRow(p) {
@@ -4281,28 +4374,55 @@ function normalizeScheduleRaw(raw) {
 }
 
 function celRenderColumn(file) {
-  const meta = celProgramMeta[file] || { title: file, company: '', schedule_raw: '' };
-  const products = celRawDataFull.filter(p => p._originFile === file);
+  const programKey = file.replace(/\.json$/, '');
+  const hist = celHistoryCache[celMonth];
+  const histProg = (hist && Array.isArray(hist.programs))
+    ? hist.programs.find(p => p.program_key === programKey)
+    : null;
+
+  // 메타는 월별 누적 데이터 우선, 없으면 라이브 데이터의 메타로
+  const meta = histProg
+    ? {
+        title: histProg.program_title || histProg.tab_name || file,
+        company: histProg.company || '',
+        schedule_raw: histProg.schedule_raw || '',
+        detail_link: histProg.detail_link || '',
+      }
+    : (celProgramMeta[file] || { title: file, company: '', schedule_raw: '' });
 
   let bodyHtml;
-  if (products.length === 0) {
-    bodyHtml = '<div class="cel-col-empty">이번 주 방송예정 상품이 없거나 수집 전입니다.</div>';
-  } else {
-    // 같은 프로그램 안에서도 방송일시(broadcast_date_label) 단위로 묶어서 보여준다.
-    const groups = [];
-    const groupIndex = {};
-    products.forEach(p => {
-      const label = p.broadcast_date_label || '';
-      if (!(label in groupIndex)) {
-        groupIndex[label] = groups.length;
-        groups.push({ label, items: [] });
-      }
-      groups[groupIndex[label]].items.push(p);
-    });
-    bodyHtml = groups.map(g =>
-      (g.label ? `<div class="cel-date-group-label">${g.label}</div>` : '') +
-      g.items.map(celRenderProductRow).join('')
+  const broadcasts = (histProg && histProg.broadcasts) || [];
+  if (broadcasts.length > 0) {
+    // 월별 누적: 방송일 내림차순(최신 방송이 맨 위)으로 방송 회차별 묶음 표시
+    const sorted = [...broadcasts].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+    bodyHtml = sorted.map(b =>
+      `<div class="cel-date-group-label">${b.label || b.date || ''}</div>` +
+      (b.products || []).map(celRenderProductRow).join('')
     ).join('');
+  } else if (celMonth && celMonth !== celThisMonth()) {
+    bodyHtml = '<div class="cel-col-empty">이 달에 수집된 방송 기록이 없습니다.</div>';
+  } else {
+    // 이번 달인데 월별 누적이 아직 없으면 기존 라이브 데이터로 폴백
+    const products = celRawDataFull.filter(p => p._originFile === file);
+    if (products.length === 0) {
+      bodyHtml = '<div class="cel-col-empty">이번 주 방송예정 상품이 없거나 수집 전입니다.</div>';
+    } else {
+      // 같은 프로그램 안에서도 방송일시(broadcast_date_label) 단위로 묶어서 보여준다.
+      const groups = [];
+      const groupIndex = {};
+      products.forEach(p => {
+        const label = p.broadcast_date_label || '';
+        if (!(label in groupIndex)) {
+          groupIndex[label] = groups.length;
+          groups.push({ label, items: [] });
+        }
+        groups[groupIndex[label]].items.push(p);
+      });
+      bodyHtml = groups.map(g =>
+        (g.label ? `<div class="cel-date-group-label">${g.label}</div>` : '') +
+        g.items.map(celRenderProductRow).join('')
+      ).join('');
+    }
   }
 
   const coCls = (meta.company || '').toLowerCase();
@@ -4553,6 +4673,27 @@ function celRenderCompare() {
 
       celRenderCompare();
       gaEvent('filter_click', { filter_group: 'celebrity_program', filter_value: file });
+    });
+  }
+
+  // 셀럽PGM 월별 조회 내비게이션
+  const celMonthPicker = document.getElementById('celMonthPicker');
+  if (celMonthPicker) {
+    celMonthPicker.min = CEL_HISTORY_MIN_MONTH;
+    celMonthPicker.addEventListener('change', () => {
+      if (!celMonthPicker.value) return;
+      celSetMonth(celMonthPicker.value);
+      gaEvent('filter_click', { filter_group: 'celebrity_month', filter_value: celMonthPicker.value });
+    });
+    document.getElementById('celMonthPrev').addEventListener('click', () => {
+      if (!celMonth) return;
+      celSetMonth(celShiftMonth(celMonth, -1));
+      gaEvent('filter_click', { filter_group: 'celebrity_month', filter_value: 'prev' });
+    });
+    document.getElementById('celMonthNext').addEventListener('click', () => {
+      if (!celMonth) return;
+      celSetMonth(celShiftMonth(celMonth, 1));
+      gaEvent('filter_click', { filter_group: 'celebrity_month', filter_value: 'next' });
     });
   }
 

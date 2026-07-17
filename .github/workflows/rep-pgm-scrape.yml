@@ -47,6 +47,10 @@ jobs:
       - name: Build merged.json
         run: python fixed/build_representative_programs.py
 
+      # 월 조회용: 프로그램별 방송 상품을 방송일자 기준 월 파일에 누적
+      - name: Build monthly celeb history
+        run: python fixed/build_celeb_history.py
+
       # 다른 워크플로우(랭킹/기타채널 등)와 push 타이밍이 겹치면
       # non-fast-forward로 실패할 수 있어 pull --rebase 재시도를 둔다.
       - name: Commit & push
