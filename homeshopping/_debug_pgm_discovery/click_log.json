@@ -1,0 +1,8 @@
+[
+  "date click fail(18): Locator.click: Timeout 3000ms exceeded.\nCall log:\n  - waiting for get_by_text(re.compile(r\"^18\")).first\n    - locator resolved to <ins aria-label=\"정상가\" class=\"_110wvq43  compound-discount-price rk5mhl1m rk5mhl0 rk5mhll _1gvluwy1t\">…</ins>\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    5 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 500ms\n",
+  "더보기 후보 4개 발견",
+  "더보기 [0] 클릭 실패: Locator.click: Timeout 2000ms exceeded.\nCall log:\n  - waiting for locator(\"text=/더보기/\").first\n    - locator resolved to ",
+  "더보기 [1] 클릭 실패: Locator.click: Timeout 2000ms exceeded.\nCall log:\n  - waiting for locator(\"text=/더보기/\").nth(1)\n    - locator resolved to",
+  "더보기 [2] 클릭 실패: Locator.click: Timeout 2000ms exceeded.\nCall log:\n  - waiting for locator(\"text=/더보기/\").nth(2)\n    - locator resolved to",
+  "더보기 [3] 클릭 실패: Locator.click: Timeout 2000ms exceeded.\nCall log:\n  - waiting for locator(\"text=/더보기/\").nth(3)\n    - locator resolved to"
+]
