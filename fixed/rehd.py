@@ -20,22 +20,44 @@ rehd.py
          brodStrtDtmParam: "20260707193000"
        즉 이 API는 "리스트"가 아니라 "대표상품 1개 + 정확한 방송일시"를
        주는 API였음.
+5차: pgmComm 페이지의 "가까운 방송 >"으로 들어가면 그 방송의 상품코드가
+     전부 노출된다는 점에서 착안. 그 페이지가 쓰는 데이터는 결국
+     편성표(tv-list) 데이터와 동일 -> hd_scraper.py가 이미 쓰고 있는
+     공개 편성 API(md/api/cache 프록시, 인증 불필요)
+       /api/hf/dp/v1/main-tv-new/tv-list?brodDt=YYYYMMDD&brodType=etv
+     를 pgm-comm이 알려준 정확한 방송일시(brodDt + brodStrtDtm~brodEndDtm)
+     로 필터링하면 해당 방송의 "전체 상품 라인업"(브랜드/가격 포함)이
+     나온다. 검증: 2026-07-14(화) 19:30~21:45 창에서 3개,
+     2026-07-09(목) 08:15~10:25 창에서 4개 확인.
 
 == 결론 ==
-HD 공개 소비자 사이트는 대표 PGM 하나당 상품을 1~2개까지만 노출하는
-구조로 보임 (GS/CJ처럼 방송 라인업 전체를 공개 페이지에서 다 보여주지
-않음). 그래서 이 스크립트는 두 소스를 합쳐서 공개 데이터 기준
-최대한 끌어모은다:
+소스 4개를 합쳐서 방송 라인업 전체를 수집한다 (우선순위 순):
+  - tv-list 편성 API           : 방송 시간대 전체 상품 (브랜드/가격 포함) <- 5차, 메인
+  - pgm-comm.respData.pgmViewItem: 대표상품 1개, 정확한 방송일시(brodDispNm)
   - searchSpexSectItem.itemList  : 최대 2개 (날짜 라벨 없음)
-  - pgm-comm.respData.pgmViewItem: 1개, 정확한 방송일시(brodDispNm) 있음
-같은 slitmCd는 중복 제거하고, pgm-comm 쪽 정확한 날짜 라벨을 우선
-적용한다. 그래도 상품이 2~3개 수준을 넘기 어렵다면, 이건 공개 API의
-한계이지 스크립트 문제가 아님 - 더 필요하면 admin.hmall.com 내부
-관리자 시스템 쪽 스크레이퍼로 가야 할 것으로 보임.
+  - pgm-comm-html 스와이퍼       : 알리미 캐러셀 카드 (가격 없음)
+같은 slitmCd는 중복 제거하되, 뒤 소스의 값으로 빈 필드(브랜드/가격/
+이미지 등)를 채워 병합한다. tv-list의 방송 시간대는 pgm-comm의
+brodDt/brodStrtDtm/brodEndDtm을 쓰고, pgm-comm 캡처가 실패하면
+schedule_raw("매주 화요일 19시 30분")에서 다음 방송 날짜/시각을
+계산해 폴백한다.
 
 == 출력 ==
 homeshopping/representative_programs/HD_HJM.json (황정민)
 homeshopping/representative_programs/HD_OGS.json (오감쇼)
+homeshopping/representative_programs/history/HD_HJM.json (방송일자별 누적)
+homeshopping/representative_programs/history/HD_OGS.json (방송일자별 누적)
+
+메인 JSON은 기존처럼 "다음 방송" 기준으로 매번 덮어쓰고,
+history/ 쪽은 방송일자(YYYY-MM-DD)를 키로 누적 보존한다
+(과거 키는 절대 덮어쓰지 않음 -> 나중에 주차별 조회 기능의 데이터 소스).
+{
+  "company": "HD", "tab_name": "오감쇼", "program_title": "오감쇼",
+  "broadcasts": {
+    "2026-07-14": {"collected_at": "...", "schedule_raw": "...", "products": [...]},
+    "2026-07-21": {...}
+  }
+}
 {
   "company": "HD",
   "tab_name": "황정민",
@@ -65,6 +87,7 @@ from bs4 import BeautifulSoup
 
 KST = timezone(timedelta(hours=9))
 OUTPUT_DIR = os.path.join("homeshopping", "representative_programs")
+HISTORY_DIR = os.path.join(OUTPUT_DIR, "history")
 
 LIST_PAGE_URL = (
     "https://www.hmall.com/md/dpa/searchSpexSectItem"
@@ -88,10 +111,18 @@ DAY_MAP = {
     "월요일": ("월", 0), "화요일": ("화", 1), "수요일": ("수", 2), "목요일": ("목", 3),
     "금요일": ("금", 4), "토요일": ("토", 5), "일요일": ("일", 6),
 }
+WEEKDAY_ABBR = ["월", "화", "수", "목", "금", "토", "일"]
 
-NAME_FIELD_CANDIDATES = ["slitmNm", "goodsNm", "itemNm", "displayItemName", "name"]
+# hd_scraper.py와 동일한 공개 편성 API (인증 불필요, requests로 호출 가능).
+# "가까운 방송 >" 페이지가 보여주는 방송 라인업 전체가 여기서 나온다.
+TV_LIST_API = (
+    "https://www.hmall.com/md/api/cache?url=/api/hf/dp/v1/main-tv-new/tv-list"
+    "&brodDt={brod_dt}&brodPrrgPage={page}&brodType=etv&deviceInfo=pc"
+)
+
+NAME_FIELD_CANDIDATES = ["slitmNm", "convertedSlitmNm", "goodsNm", "itemNm", "displayItemName", "name"]
 PRICE_FIELD_CANDIDATES = ["sellPrc", "salePrice", "price", "bbprc"]
-IMAGE_FIELD_CANDIDATES = ["orglImgNm", "imgUrl", "image", "thumbnail"]
+IMAGE_FIELD_CANDIDATES = ["orglImgNm", "simgNm", "imgUrl", "image", "thumbnail"]
 CODE_FIELD_CANDIDATES = ["slitmCd", "itemCd", "goodsCd"]
 
 # ============ 여기에 프로그램 추가 ============
@@ -137,6 +168,66 @@ def compute_this_week_date_label(schedule_raw: str) -> str:
     return f"{target_date.month}/{target_date.day}({matched_abbr}) 방송상품"
 
 
+def compute_next_broadcast(schedule_raw: str):
+    """schedule_raw('매주 화요일 19시 30분')에서 (다음 방송 date, 'HH:MM')을 계산.
+    pgm-comm 캡처가 실패했을 때 tv-list 조회용 폴백. 파싱 실패 시 (None, None)."""
+    matched_weekday = None
+    for kr, (_abbr, weekday) in DAY_MAP.items():
+        if kr in schedule_raw:
+            matched_weekday = weekday
+            break
+    if matched_weekday is None:
+        return None, None
+
+    m = re.search(r"(\d{1,2})\s*시\s*(\d{1,2})\s*분", schedule_raw) \
+        or re.search(r"(\d{1,2}):(\d{2})", schedule_raw)
+    start_hm = f"{int(m.group(1)):02d}:{int(m.group(2)):02d}" if m else None
+
+    today = datetime.now(KST).date()
+    days_ahead = (matched_weekday - today.weekday()) % 7
+    return today + timedelta(days=days_ahead), start_hm
+
+
+def make_exact_label(brod_date, start_hm: str) -> str:
+    """pgm-comm의 brodDispNm과 같은 형식('07/21(화) 19:30 방송')의 라벨 생성."""
+    abbr = WEEKDAY_ABBR[brod_date.weekday()]
+    label = f"{brod_date.month:02d}/{brod_date.day:02d}({abbr})"
+    if start_hm:
+        label += f" {start_hm}"
+    return label + " 방송"
+
+
+def fetch_broadcast_lineup(brod_dt: str, start_hm: str, end_hm: str = None) -> list:
+    """tv-list 편성 API에서 brod_dt(YYYYMMDD)의 start_hm~end_hm 시간대에
+    시작하는 방송상품 전체를 가져온다. end_hm이 없으면 시작시각이 정확히
+    start_hm인 상품만 매칭. 반환값은 API 원본 아이템 리스트."""
+    headers = {"User-Agent": UA_DESKTOP, "Referer": "https://www.hmall.com/"}
+    seen = {}
+    for page in range(0, 8):
+        url = TV_LIST_API.format(brod_dt=brod_dt, page=page)
+        try:
+            r = requests.get(url, headers=headers, timeout=12)
+            if r.status_code != 200:
+                continue
+            items = r.json().get("respData", {}).get("broadItemList", []) or []
+        except Exception as e:
+            print(f"    -> [경고] tv-list page {page} 오류: {e}")
+            continue
+        for it in items:
+            strt = it.get("brodStrtDtm") or ""
+            code = it.get("slitmCd")
+            if not strt or not code:
+                continue
+            if end_hm:
+                in_window = start_hm <= strt < end_hm
+            else:
+                in_window = strt == start_hm
+            if in_window:
+                seen[str(code)] = it
+
+    return list(seen.values())
+
+
 def extract_next_data(html: str) -> dict:
     m = re.search(r'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>', html, re.S)
     if not m:
@@ -177,7 +268,7 @@ def normalize_item(item: dict, date_label: str) -> dict:
     code = first_present(CODE_FIELD_CANDIDATES)
     link = f"https://www.hmall.com/md/pda/itemPtc?slitmCd={code}" if code else item.get("link")
     image_raw = first_present(IMAGE_FIELD_CANDIDATES)
-    brand_raw = item.get("brandNm") or item.get("repBrandNm")
+    brand_raw = item.get("brandNm") or item.get("repBrandNm") or item.get("brndNm")
 
     return {
         "broadcast_date_label": date_label,
@@ -278,11 +369,16 @@ def crawl_hd_program(page, config: dict, list_map: dict):
 
     print(f"\n===== [{tab_name}] (sectId={sect_id}) 수집 시작 =====")
 
-    products = []
+    # 소스별로 모았다가 우선순위 순(라인업 -> pgm-comm -> itemList -> 스와이퍼)으로
+    # 병합한다. 앞 소스가 기준이 되고, 뒤 소스는 빈 필드만 채운다.
+    lineup_products = []
+    pgm_comm_products = []
+    itemlist_products = []
+    swiper_products = []
 
-    # 1) searchSpexSectItem.itemList (최대 2개, 날짜 라벨 없음 -> 폴백 라벨 사용)
+    # searchSpexSectItem.itemList (최대 2개, 날짜 라벨 없음 -> 폴백 라벨 사용)
     for item in list_info.get("itemList", []):
-        products.append(normalize_item(item, fallback_label))
+        itemlist_products.append(normalize_item(item, fallback_label))
 
     # pgm-comm(대표상품 1개, JSON) + pgm-comm-html(스와이퍼 마크업 추정) 둘 다 캡처.
     captured = capture_pgm_comm_responses(page, detail_link, sect_id)
@@ -317,14 +413,18 @@ def crawl_hd_program(page, config: dict, list_map: dict):
         print(f"    -> pgm-comm-html 스와이퍼에서 {len(swiper_items)}개 카드 파싱됨")
         for it in swiper_items:
             print(f"         · [{it['broadcast_date_label']}] {it['name']}")
-        products.extend(swiper_items)
+        swiper_products.extend(swiper_items)
     elif "html_url" in captured:
         print(f"    -> [경고] pgm-comm-html 응답은 잡았는데 파싱 가능한 HTML을 못 찾음")
         print(f"       캡처된 키: {list(captured.keys())}")
     else:
         print(f"    -> [경고] pgm-comm-html 응답을 못 잡음")
 
-    # --- pgm-comm: 대표상품 1개 (JSON) ---
+    # --- pgm-comm: 대표상품 1개 (JSON) + 정확한 방송일시 확보 ---
+    brod_date = None      # datetime.date: 다음 방송 날짜
+    brod_start = None     # "HH:MM"
+    brod_end = None       # "HH:MM"
+
     if "error" in captured:
         print(f"    -> [경고] pgm-comm JSON 파싱 실패: {captured['error']}")
     elif "data" not in captured:
@@ -340,25 +440,68 @@ def crawl_hd_program(page, config: dict, list_map: dict):
         pgm_view_item = resp_data.get("pgmViewItem")
         if isinstance(pgm_view_item, dict) and pgm_view_item.get("slitmNm"):
             date_label = pgm_view_item.get("brodDispNm") or fallback_label
-            products.append(normalize_item(pgm_view_item, date_label))
+            pgm_comm_products.append(normalize_item(pgm_view_item, date_label))
             print(f"    -> pgm-comm 대표상품 1개 확보: [{date_label}] {pgm_view_item.get('slitmNm')[:25]}...")
+
+            # 정확한 방송일시: brodDt="20260721", brodStrtDtm="19:30", brodEndDtm="21:45"
+            brod_dt_raw = str(pgm_view_item.get("brodDt") or "")
+            if re.fullmatch(r"\d{8}", brod_dt_raw):
+                brod_date = datetime.strptime(brod_dt_raw, "%Y%m%d").date()
+            hm = re.compile(r"^\d{2}:\d{2}$")
+            if hm.match(str(pgm_view_item.get("brodStrtDtm") or "")):
+                brod_start = pgm_view_item["brodStrtDtm"]
+            if hm.match(str(pgm_view_item.get("brodEndDtm") or "")):
+                brod_end = pgm_view_item["brodEndDtm"]
         else:
             print(f"    -> [경고] pgm-comm 응답에 pgmViewItem이 없음")
 
-    # itemList와 pgmViewItem이 같은 상품(같은 slitmCd)을 중복으로 줄 때가 있어서
-    # slitmCd 기준으로 중복 제거한다. slitmCd가 없는 항목은 이름 기준으로.
-    seen = set()
-    deduped = []
-    for p in products:
-        key = p.get("_code") or p.get("name")
-        if key in seen:
+    # pgm-comm이 실패했으면 schedule_raw에서 다음 방송 날짜/시각을 계산해 폴백
+    if brod_date is None or brod_start is None:
+        fb_date, fb_start = compute_next_broadcast(schedule_raw)
+        brod_date = brod_date or fb_date
+        brod_start = brod_start or fb_start
+
+    # --- tv-list 편성 API: 해당 방송 시간대의 전체 상품 라인업 ---
+    # ("가까운 방송 >" 페이지가 보여주는 것과 같은 데이터. 여기가 메인 소스)
+    if brod_date and brod_start:
+        exact_label = make_exact_label(brod_date, brod_start)
+        lineup_raw = fetch_broadcast_lineup(
+            brod_date.strftime("%Y%m%d"), brod_start, brod_end)
+        print(f"    -> tv-list 라인업({brod_date} {brod_start}~{brod_end or '?'}): {len(lineup_raw)}개")
+        for it in lineup_raw:
+            lineup_products.append(normalize_item(it, exact_label))
+            print(f"         · [{it.get('brndNm') or ''}] {(it.get('slitmNm') or '')[:40]}")
+        if not lineup_raw:
+            print(f"    -> [경고] tv-list에서 해당 시간대 상품을 못 찾음 (편성 미공개일 수 있음)")
+    else:
+        print(f"    -> [경고] 방송일시를 알 수 없어 tv-list 라인업 조회 생략")
+
+    # 소스 간 같은 상품(같은 slitmCd)이 중복으로 오므로 병합한다.
+    # 우선순위: 라인업(전체+브랜드/가격) > pgm-comm(정확 라벨) > itemList > 스와이퍼.
+    # 앞 소스 항목이 기준이 되고, 뒤 소스의 값은 비어있는 필드만 채운다
+    # (예: 라인업엔 이미지가 없을 수 있는데 itemList 이미지로 보충).
+    merged = {}
+    order = []
+    for p in lineup_products + pgm_comm_products + itemlist_products + swiper_products:
+        key = str(p.get("_code") or p.get("name"))
+        if key not in merged:
+            merged[key] = p
+            order.append(key)
             continue
-        seen.add(key)
-        deduped.append(p)
+        base = merged[key]
+        for field in ("brand", "name", "price", "image", "link"):
+            if not base.get(field) and p.get(field):
+                base[field] = p[field]
+        # 폴백 라벨('... 방송상품')만 있는 항목에 정확한 방송시각 라벨이 오면 교체
+        if "방송상품" in (base.get("broadcast_date_label") or "") \
+                and re.search(r"\d{1,2}:\d{2}", p.get("broadcast_date_label") or ""):
+            base["broadcast_date_label"] = p["broadcast_date_label"]
+
+    deduped = [merged[k] for k in order]
     for p in deduped:
         p.pop("_code", None)
 
-    print(f"    -> 최종 상품 {len(deduped)}개 (중복 제거 후)")
+    print(f"    -> 최종 상품 {len(deduped)}개 (병합/중복 제거 후)")
 
     return {
         "company": "HD",
@@ -367,7 +510,51 @@ def crawl_hd_program(page, config: dict, list_map: dict):
         "schedule_raw": schedule_raw,
         "detail_link": detail_link,
         "products": deduped,
+        # history 저장용 메타 (출력 파일에 쓰기 전에 제거됨)
+        "_brod_date": brod_date.isoformat() if brod_date else None,
     }
+
+
+def save_history(config: dict, result: dict, brod_date_iso: str):
+    """방송일자(YYYY-MM-DD)를 키로 이번 수집분을 history/에 누적 저장한다.
+    메인 JSON은 매번 덮어써서 직전 방송 데이터가 사라지므로, 주차별 조회
+    기능을 위해 여기서 방송 회차별로 보존한다. 같은 방송일 키는 방송 전
+    재수집 시 갱신되지만, 지난 방송일 키는 절대 건드리지 않는다."""
+    if not brod_date_iso:
+        print(f"    -> [경고] 방송일자를 몰라 history 저장 생략")
+        return
+    if not result.get("products"):
+        print(f"    -> history 저장 생략 (수집된 상품 없음, 기존 기록 보존)")
+        return
+
+    os.makedirs(HISTORY_DIR, exist_ok=True)
+    path = os.path.join(HISTORY_DIR, config["output_file"])
+
+    history = {}
+    if os.path.isfile(path):
+        try:
+            with open(path, encoding="utf-8") as f:
+                history = json.load(f)
+        except (json.JSONDecodeError, OSError) as e:
+            print(f"    -> [경고] history 읽기 실패({e}), 새로 시작")
+            history = {}
+
+    broadcasts = history.get("broadcasts", {}) or {}
+    broadcasts[brod_date_iso] = {
+        "collected_at": datetime.now(KST).isoformat(),
+        "schedule_raw": result.get("schedule_raw", ""),
+        "products": result["products"],
+    }
+
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump({
+            "company": result.get("company", "HD"),
+            "tab_name": result.get("tab_name", ""),
+            "program_title": result.get("program_title", ""),
+            "detail_link": result.get("detail_link", ""),
+            "broadcasts": {k: broadcasts[k] for k in sorted(broadcasts)},
+        }, f, ensure_ascii=False, indent=2)
+    print(f"    -> history 저장: {path} (방송일 {brod_date_iso}, 총 {len(broadcasts)}회차 보존)")
 
 
 def main():
@@ -383,6 +570,7 @@ def main():
 
         for config in PROGRAMS:
             result = crawl_hd_program(page, config, list_map)
+            brod_date_iso = result.pop("_brod_date", None)
 
             output_path = os.path.join(OUTPUT_DIR, config["output_file"])
             with open(output_path, "w", encoding="utf-8") as f:
@@ -390,6 +578,8 @@ def main():
 
             print(f"[성공] [{config['tab_name']}] 저장 완료: {output_path}")
             print(f"  - 총 수집된 상품 수: {len(result['products'])}개")
+
+            save_history(config, result, brod_date_iso)
 
         browser.close()
 
