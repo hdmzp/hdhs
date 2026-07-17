@@ -85,6 +85,69 @@ PLATFORM_ID = {
     "data": "hs_gsshopmyshop",
 }
 
+# ---- GS 고정PGM 뱃지용 ----
+# 라방바에는 프로그램명이 없어서, GS 공식 specialPgm 페이지의
+# data-broaddate(정확한 방송 예정일시)로 어떤 시간대가 어떤 고정PGM인지
+# 알아낸 뒤 편성 항목에 pgm 필드를 입힌다. 휴방이면 해당 일시가 아예
+# 안 뜨므로(공식 페이지 기준) 고정 스케줄 매칭 방식과 달리 오탐이 없다.
+# 프로그램 목록/링크는 gs_fixed_programs.py가 매일 갱신하는 GS.json에서 읽는다.
+GS_FIXED_PGM_JSON = os.path.join("homeshopping", "fixed_programs", "GS.json")
+GS_MOBILE_UA = ("Mozilla/5.0 (Linux; Android 13; SM-S918N) AppleWebKit/537.36 "
+                "(KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36")
+PGM_MATCH_TOLERANCE_MIN = 10  # 라방바-공식 시각 오차 허용 (분)
+
+
+def fetch_gs_pgm_broadcasts() -> dict:
+    """GS 고정PGM별 specialPgm 페이지에서 방송 예정일시를 수집한다.
+    반환: {'YYYY-MM-DD': [(분단위 시각, 프로그램명), ...], ...}"""
+    try:
+        with open(GS_FIXED_PGM_JSON, encoding="utf-8") as f:
+            fixed = json.load(f)
+    except (OSError, json.JSONDecodeError) as e:
+        print(f"[GS_pgm] {GS_FIXED_PGM_JSON} 읽기 실패({e}) -> 뱃지 없이 진행")
+        return {}
+
+    headers = {"User-Agent": GS_MOBILE_UA, "Referer": "https://m.gsshop.com/index.gs"}
+    pgm_map = {}
+    for prog in fixed.get("programs", []) or []:
+        title = (prog.get("title") or "").strip()
+        link = prog.get("detail_link") or ""
+        if not title or "specialPgm" not in link:
+            continue
+        try:
+            r = requests.get(link, headers=headers, timeout=12)
+            if r.status_code != 200:
+                print(f"[GS_pgm] '{title}' HTTP {r.status_code}")
+                continue
+            found = set(re.findall(r'data-broaddate="(\d{12,14})"', r.text))
+            for raw in found:
+                dt = datetime.strptime(raw[:12], "%Y%m%d%H%M")
+                date_dash = dt.strftime("%Y-%m-%d")
+                pgm_map.setdefault(date_dash, []).append((dt.hour * 60 + dt.minute, title))
+            if found:
+                print(f"[GS_pgm] '{title}' 방송일시 {len(found)}건 확보")
+        except Exception as e:
+            print(f"[GS_pgm] '{title}' 오류: {e}")
+        time.sleep(0.3)
+    return pgm_map
+
+
+def annotate_fixed_pgm(programs: list, date_dash: str, pgm_map: dict):
+    """편성 항목의 (날짜, 시작시각)이 고정PGM 방송 예정일시와 일치하면
+    pgm 필드(프로그램명)를 단다. 공식/라방바 간 몇 분 오차 허용."""
+    slots = pgm_map.get(date_dash)
+    if not slots:
+        return
+    for p in programs:
+        start = p.get("start") or ""
+        if len(start) != 5:
+            continue
+        start_min = int(start[:2]) * 60 + int(start[3:5])
+        for slot_min, title in slots:
+            if abs(start_min - slot_min) <= PGM_MATCH_TOLERANCE_MIN:
+                p["pgm"] = title
+                break
+
 
 def today_kst():
     return datetime.now(KST)
@@ -248,6 +311,10 @@ def main():
     base = today_kst()
     today_str = base.strftime("%Y-%m-%d")
 
+    print("[GS_pgm] 고정PGM 방송 예정일시 수집 중...")
+    pgm_map = fetch_gs_pgm_broadcasts()
+    print(f"[GS_pgm] 날짜 {len(pgm_map)}개에 걸친 고정PGM 방송 확보")
+
     for broadcast in ("live", "data"):
         sub_dir = os.path.join(OUTPUT_DIR, f"GS_{broadcast}")
         os.makedirs(sub_dir, exist_ok=True)
@@ -268,6 +335,9 @@ def main():
 
             print(f"[GS_{broadcast}] {date_dash} 수집 중...")
             programs = fetch_gs(d, broadcast)
+            # 고정PGM 뱃지: 공식 방송 예정일시와 일치하는 라이브 편성에 pgm 부여
+            if broadcast == "live":
+                annotate_fixed_pgm(programs, date_dash, pgm_map)
             programs = add_categories(programs)
 
             if is_past and not programs:
