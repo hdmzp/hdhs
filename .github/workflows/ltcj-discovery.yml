@@ -1,0 +1,50 @@
+name: LT-CJ Schedule Discovery (temporary)
+
+# LT/CJ 편성 API 원본 응답 탐색용 일회성 워크플로우.
+# 분석이 끝나면 이 파일과 fixed/ltcj_discover.py는 삭제한다.
+
+on:
+  workflow_dispatch:
+    inputs:
+      brod_dts:
+        description: '타깃 방송일들 (YYYYMMDD, 콤마 구분. 비우면 다음 토/월/수)'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run discovery
+        env:
+          BROD_DTS: ${{ inputs.brod_dts }}
+        run: python fixed/ltcj_discover.py
+
+      - name: Commit results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add homeshopping/_debug_ltcj_discovery/
+          if git diff --cached --quiet; then
+            echo "결과 없음"
+            exit 0
+          fi
+          git commit -m "chore: LT/CJ 편성 API 탐색 결과 덤프"
+          for i in 1 2 3; do
+            git push && exit 0
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+          done
+          exit 1
