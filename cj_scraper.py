@@ -122,11 +122,39 @@ def fetch_repbrand_batch(item_cds):
         time.sleep(0.3)  # tvSchedule(REQUEST_DELAY=0.8)보다 짧게 - 가벼운 단건 조회라 부담 적음
     return brand_map
 
+# 고정PGM(셀럽/네임드 쇼) 판별 키워드. CJ는 모든 편성에 pgmNm이 있어서
+# (예: "건강식품 1부", "Weekly Best") HD처럼 제목 유무로는 못 거르고,
+# 이름 있는 쇼만 골라 itemList의 나머지 방송상품을 브랜드별로 추가한다.
+# 새 PGM이 생기면 여기에 키워드만 추가하면 됨.
+CJ_PGM_KEYWORDS = (
+    "최화정", "굿 라이프", "굿라이프", "강주은", "김창옥",
+    "이승연", "조윤주", "지완스", "스튜디오B", "탑쇼",
+)
+
+
+def item_to_program(item, start_str, end_str, brand=""):
+    """tvSchedule itemList 항목을 공통 스키마로 변환."""
+    item_cd = item.get("itemCd", "")
+    chn_cd = item.get("chnCd", "")
+    link = (f"https://display.cjonstyle.com/p/item/{item_cd}?channelCode={chn_cd}"
+            if item_cd else "")
+    return {
+        "start": start_str,
+        "end": end_str,
+        "brand": brand or item.get("brandName") or "",
+        "product": item.get("itemNm", "") or "",
+        "price": parse_price(item.get("salePrice")),
+        "link": link,
+        "_item_cd": item_cd,  # repBrandTag 조회용 임시 필드, 마지막에 제거
+    }
+
+
 def fetch_cj(date_compact, broad_param):
     headers = {"User-Agent": UA, "Referer": "https://display.cjonstyle.com/p/tv/tvSchedule"}
     url = (f"https://display.cjonstyle.com/c/rest/tv/tvSchedule"
            f"?bdDt={date_compact}&isMobile=false&broadType={broad_param}&isEmployee=false")
     programs = []
+    expansions = []  # (대표 편성 dict, 나머지 itemList) - 고정PGM 브랜드별 확장 후보
     try:
         r = requests.get(url, headers=headers, timeout=12)
         r.raise_for_status()
@@ -135,44 +163,49 @@ def fetch_cj(date_compact, broad_param):
             start_ms = pg.get("bdStrDtm")
             end_ms = pg.get("bdEndDtm")
             if not start_ms or not end_ms: continue
-            
+
             start_str = datetime.fromtimestamp(start_ms / 1000, tz=KST).strftime("%H:%M")
             end_str = datetime.fromtimestamp(end_ms / 1000, tz=KST).strftime("%H:%M")
 
             items = pg.get("itemList", []) or []
             first = items[0] if items else {}
-            item_cd = first.get("itemCd", "")
-            chn_cd = first.get("chnCd", "")
+            prog = item_to_program(first, start_str, end_str)
+            programs.append(prog)
 
-            # tvSchedule API의 brandName은 거의 항상 비어있음. 일단 빈 문자열로 두고
-            # 루프 종료 후 repBrandTag 일괄 조회로 채운다(_item_cd는 그때 쓰고 최종 결과에서 제거).
-            brand_name = first.get("brandName") or ""
-
-            link = (f"https://display.cjonstyle.com/p/item/{item_cd}?channelCode={chn_cd}"
-                    if item_cd else "")
-            
-            programs.append({
-                "start": start_str,
-                "end": end_str,
-                "brand": brand_name,
-                "product": first.get("itemNm", "") or "",
-                "price": parse_price(first.get("salePrice")),
-                "link": link,
-                "_item_cd": item_cd,  # repBrandTag 조회용 임시 필드, 아래에서 제거
-            })
+            # 고정PGM이면 itemList의 나머지 방송상품을 확장 후보로 보관
+            # (브랜드는 응답에 없어서 아래에서 repBrandTag로 일괄 조회 후 그룹핑)
+            pgm_nm = pg.get("pgmNm") or ""
+            if len(items) > 1 and any(k in pgm_nm for k in CJ_PGM_KEYWORDS):
+                expansions.append((prog, items[1:]))
     except Exception as e:
         print(f"    [CJ] 오류: {e}")
 
-    # itemCd 기준 대표 브랜드 일괄 조회 → brand가 비어있는 편성에 채워줌
+    # itemCd 기준 대표 브랜드 일괄 조회 (대표상품 + 고정PGM 확장 후보 전체)
     if programs:
-        brand_map = fetch_repbrand_batch(p["_item_cd"] for p in programs)
+        all_cds = [p["_item_cd"] for p in programs]
+        all_cds += [it.get("itemCd", "") for _, subs in expansions for it in subs]
+        brand_map = fetch_repbrand_batch(all_cds)
         for p in programs:
             if not p["brand"]:
-                rep_brand = brand_map.get(p.pop("_item_cd"), "")
-                if rep_brand:
-                    p["brand"] = rep_brand
-            else:
-                p.pop("_item_cd", None)
+                p["brand"] = brand_map.get(p["_item_cd"], "")
+
+        # 고정PGM 확장: 같은 방송의 나머지 상품 중 "새 브랜드"의 첫 상품만 추가
+        # (브랜드 조회가 안 된 상품은 어느 브랜드인지 알 수 없어 제외)
+        for base, subs in expansions:
+            slot_brands = {base["brand"]} if base["brand"] else set()
+            added = 0
+            for it in subs:
+                brand = brand_map.get(it.get("itemCd", ""), "")
+                if not brand or brand in slot_brands:
+                    continue
+                slot_brands.add(brand)
+                programs.append(item_to_program(it, base["start"], base["end"], brand=brand))
+                added += 1
+            if added:
+                print(f"    [CJ] 고정PGM 확장: {base['start']} 방송 +{added}개 브랜드")
+
+    for p in programs:
+        p.pop("_item_cd", None)
 
     programs.sort(key=lambda x: x["start"])
     return programs
