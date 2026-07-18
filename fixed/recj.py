@@ -68,6 +68,8 @@ PROGRAMS = [
     {"tab_name": "강주은", "program_title": "강주은 굿라이프", "pgm_cd": "100009", "output_file": "CJ_KJE.json"},
     {"tab_name": "최화정", "program_title": "최화정쇼", "pgm_cd": "100027", "output_file": "CJ_CHJ.json"},
     {"tab_name": "김창옥", "program_title": "더 김창옥 라이브", "pgm_cd": "563907", "output_file": "CJ_KCO.json"},
+    # pgm_cd는 pgmShop 페이지 URL의 번호 (fixed_programs/CJ.json의 pgmshop_link 참조)
+    {"tab_name": "소이현", "program_title": "소이현의 겟잇스타일", "pgm_cd": "100061", "output_file": "CJ_SIH.json"},
 ]
 # ==============================================
 

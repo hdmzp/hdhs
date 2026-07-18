@@ -119,6 +119,7 @@ CODE_FIELD_CANDIDATES = ["slitmCd", "itemCd", "goodsCd"]
 PROGRAMS = [
     {"tab_name": "황정민", "spex_sect_nm": "황정민쇼", "sect_id": "3094173", "output_file": "HD_HJM.json"},
     {"tab_name": "오감쇼", "spex_sect_nm": "오감쇼", "sect_id": "3094172", "output_file": "HD_OGS.json"},
+    {"tab_name": "왕영은", "spex_sect_nm": "왕영은의 톡투게더", "sect_id": "2683513", "output_file": "HD_WYE.json"},
     # TODO: 오윤아 등 추가되면 여기에
 ]
 # ==============================================
