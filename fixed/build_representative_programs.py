@@ -35,12 +35,14 @@ OUTPUT_PATH = os.path.join(SRC_DIR, "merged.json")
 SOURCE_FILES = [
     "HD_HJM.json",
     "HD_OGS.json",
+    "HD_WYE.json",   # 왕영은의 톡투게더
     "GS_BJY.json",   # 백지연 (regs.py 완성되면 생성됨)
     "GS_SYJ.json",   # 소유진 (regs.py 완성되면 생성됨)
     "LT_CYR.json",
     "CJ_KJE.json",
     "CJ_CHJ.json",
     "CJ_KCO.json",
+    "CJ_SIH.json",   # 소이현의 겟잇스타일
 ]
 
 

@@ -51,12 +51,14 @@ HISTORY_DIR = os.path.join(SRC_DIR, "history")
 SOURCE_FILES = [
     "HD_HJM.json",
     "HD_OGS.json",
+    "HD_WYE.json",   # 왕영은의 톡투게더
     "GS_BJY.json",
     "GS_SYJ.json",
     "LT_CYR.json",
     "CJ_KJE.json",
     "CJ_CHJ.json",
     "CJ_KCO.json",
+    "CJ_SIH.json",   # 소이현의 겟잇스타일
 ]
 
 WEEKDAY_ABBR = ["월", "화", "수", "목", "금", "토", "일"]
