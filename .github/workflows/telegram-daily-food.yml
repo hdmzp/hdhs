@@ -1,4 +1,4 @@
-name: 텔레그램 아침 알림 (식품방송+셀럽PGM)
+name: 텔레그램 아침 알림 (식품방송)
 on:
   schedule:
     # 매일 KST 08:30 = UTC 23:30(전날)
@@ -31,9 +31,5 @@ jobs:
           TIME_END: ${{ vars.TIME_END }}
           WEATHER_REGION: ${{ vars.WEATHER_REGION }}
         run: python notify/send_daily_food.py
-      - name: 텔레그램 발송 — 셀럽PGM 상품리스트
-        if: always()  # 식품방송 발송이 실패해도 셀럽PGM은 발송
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python notify/send_celeb_pgm.py
+      # 셀럽PGM 상품리스트 발송은 2026-07 사용자 요청으로 제거
+      # (다시 켜려면: python notify/send_celeb_pgm.py 스텝 복원 - 스크립트는 남겨둠)
