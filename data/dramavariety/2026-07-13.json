@@ -1,7 +1,7 @@
 {
   "weekStart": "2026-07-13",
   "weekEnd": "2026-07-19",
-  "collectedAt": "2026-07-18T02:58:21.172277+09:00",
+  "collectedAt": "2026-07-18T09:58:55.477804+09:00",
   "programs": [
     {
       "id": "drama_붉은 진주_KBS2_오후 07:50",
@@ -16,8 +16,8 @@
         "금"
       ],
       "time": "오후 07:50",
-      "rating": 7.8,
-      "ratingDate": "07.16",
+      "rating": 7.5,
+      "ratingDate": "07.17",
       "ratingByDay": {
         "월": {
           "rating": 7.4,
@@ -34,6 +34,10 @@
         "목": {
           "rating": 7.8,
           "ratingDate": "07.16"
+        },
+        "금": {
+          "rating": 7.5,
+          "ratingDate": "07.17"
         }
       },
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=40528849&qvt=0&query=%EB%B6%89%EC%9D%80%20%EC%A7%84%EC%A3%BC"
@@ -51,8 +55,8 @@
         "금"
       ],
       "time": "오후 08:30",
-      "rating": 11.6,
-      "ratingDate": "07.16",
+      "rating": 10.1,
+      "ratingDate": "07.17",
       "ratingByDay": {
         "월": {
           "rating": 10.9,
@@ -69,6 +73,10 @@
         "목": {
           "rating": 11.6,
           "ratingDate": "07.16"
+        },
+        "금": {
+          "rating": 10.1,
+          "ratingDate": "07.17"
         }
       },
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=40757232&qvt=0&query=%EA%B8%B0%EC%81%9C%20%EC%9A%B0%EB%A6%AC%20%EC%A2%8B%EC%9D%80%20%EB%82%A0"
@@ -718,6 +726,159 @@
         }
       },
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=28613338&qvt=0&query=%EB%82%98%EB%8A%94%20%EC%86%94%EB%A1%9C%20%EA%B7%B8%20%ED%9B%84%20%EC%82%AC%EB%9E%91%EC%9D%80%20%EA%B3%84%EC%86%8D%EB%90%9C%EB%8B%A4%20%EB%82%98%EC%86%94%EC%82%AC%EA%B3%84"
+    },
+    {
+      "id": "drama_김부장_SBS_오후 09:50",
+      "category": "drama",
+      "channel": "SBS",
+      "title": "김부장",
+      "days": [
+        "금",
+        "토"
+      ],
+      "time": "오후 09:50",
+      "rating": 21.9,
+      "ratingDate": "07.17",
+      "ratingByDay": {
+        "금": {
+          "rating": 21.9,
+          "ratingDate": "07.17"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=40491304&qvt=0&query=%EA%B9%80%EB%B6%80%EC%9E%A5"
+    },
+    {
+      "id": "variety_해피투게더 - 혼자가 아니어서 좋아_KBS2_오후 08:30",
+      "category": "variety",
+      "channel": "KBS2",
+      "title": "해피투게더 - 혼자가 아니어서 좋아",
+      "days": [
+        "금"
+      ],
+      "time": "오후 08:30",
+      "rating": 2.6,
+      "ratingDate": "07.17",
+      "ratingByDay": {
+        "금": {
+          "rating": 2.6,
+          "ratingDate": "07.17"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=41048951&qvt=0&query=%ED%95%B4%ED%94%BC%ED%88%AC%EA%B2%8C%EB%8D%94%20%ED%98%BC%EC%9E%90%EA%B0%80%20%EC%95%84%EB%8B%88%EC%96%B4%EC%84%9C%20%EC%A2%8B%EC%95%84"
+    },
+    {
+      "id": "variety_콩콩팜팜 (콩 심은 데 콩 나는 가고팜 하고팜 동물농장)_tvN_오후 08:35",
+      "category": "variety",
+      "channel": "tvN",
+      "title": "콩콩팜팜 (콩 심은 데 콩 나는 가고팜 하고팜 동물농장)",
+      "days": [
+        "금"
+      ],
+      "time": "오후 08:35",
+      "rating": 2.7,
+      "ratingDate": "07.17",
+      "ratingByDay": {
+        "금": {
+          "rating": 2.7,
+          "ratingDate": "07.17"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=41394615&qvt=0&query=%EC%BD%A9%EC%BD%A9%ED%8C%9C%ED%8C%9C%20%EC%BD%A9%20%EC%8B%AC%EC%9D%80%20%EB%8D%B0%20%EC%BD%A9%20%EB%82%98%EB%8A%94%20%EA%B0%80%EA%B3%A0%ED%8C%9C%20%ED%95%98%EA%B3%A0%ED%8C%9C%20%EB%8F%99%EB%AC%BC%EB%86%8D%EC%9E%A5"
+    },
+    {
+      "id": "variety_신랑수업2_채널A_오후 09:00",
+      "category": "variety",
+      "channel": "채널A",
+      "title": "신랑수업2",
+      "days": [
+        "금"
+      ],
+      "time": "오후 09:00",
+      "rating": 1.4,
+      "ratingDate": "07.17",
+      "ratingByDay": {
+        "금": {
+          "rating": 1.4,
+          "ratingDate": "07.17"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=40803780&qvt=0&query=%EC%8B%A0%EB%9E%91%EC%88%98%EC%97%852"
+    },
+    {
+      "id": "variety_전현무계획4_MBN_오후 09:10",
+      "category": "variety",
+      "channel": "MBN",
+      "title": "전현무계획4",
+      "days": [
+        "금"
+      ],
+      "time": "오후 09:10",
+      "rating": 1.3,
+      "ratingDate": "07.17",
+      "ratingByDay": {
+        "금": {
+          "rating": 1.3,
+          "ratingDate": "07.17"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=41531203&qvt=0&query=%EC%A0%84%ED%98%84%EB%AC%B4%EA%B3%84%ED%9A%8D4"
+    },
+    {
+      "id": "variety_금타는 금요일_TV조선_오후 10:00",
+      "category": "variety",
+      "channel": "TV조선",
+      "title": "금타는 금요일",
+      "days": [
+        "금"
+      ],
+      "time": "오후 10:00",
+      "rating": 3.8,
+      "ratingDate": "07.17",
+      "ratingByDay": {
+        "금": {
+          "rating": 3.8,
+          "ratingDate": "07.17"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=40344530&qvt=0&query=%EA%B8%88%ED%83%80%EB%8A%94%20%EA%B8%88%EC%9A%94%EC%9D%BC"
+    },
+    {
+      "id": "variety_옥탑방의 문제아들_KBS2_오후 10:10",
+      "category": "variety",
+      "channel": "KBS2",
+      "title": "옥탑방의 문제아들",
+      "days": [
+        "금"
+      ],
+      "time": "오후 10:10",
+      "rating": 1.2,
+      "ratingDate": "07.17",
+      "ratingByDay": {
+        "금": {
+          "rating": 1.2,
+          "ratingDate": "07.17"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=8724190&qvt=0&query=%EC%98%A5%ED%83%91%EB%B0%A9%EC%9D%98%20%EB%AC%B8%EC%A0%9C%EC%95%84%EB%93%A4"
+    },
+    {
+      "id": "variety_나 혼자 산다_MBC_오후 11:10",
+      "category": "variety",
+      "channel": "MBC",
+      "title": "나 혼자 산다",
+      "days": [
+        "금"
+      ],
+      "time": "오후 11:10",
+      "rating": 5.7,
+      "ratingDate": "07.17",
+      "ratingByDay": {
+        "금": {
+          "rating": 5.7,
+          "ratingDate": "07.17"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=673019&qvt=0&query=%EB%82%98%20%ED%98%BC%EC%9E%90%20%EC%82%B0%EB%8B%A4"
     }
   ]
 }
