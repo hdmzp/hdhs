@@ -1,6 +1,6 @@
 {
   "month": "2026-07",
-  "updated_at": "2026-07-18T09:02:22.083414+09:00",
+  "updated_at": "2026-07-18T14:29:56.273923+09:00",
   "programs": [
     {
       "program_key": "HD_HJM",
@@ -13,7 +13,7 @@
         {
           "date": "2026-07-20",
           "label": "07/20(월) 19:30 방송",
-          "collected_at": "2026-07-18T09:02:22.082409+09:00",
+          "collected_at": "2026-07-18T14:29:56.272851+09:00",
           "products": [
             {
               "broadcast_date_label": "07/20(월) 19:30 방송",
@@ -46,7 +46,7 @@
         {
           "date": "2026-07-21",
           "label": "07/21(화) 19:30 방송",
-          "collected_at": "2026-07-18T09:02:22.082409+09:00",
+          "collected_at": "2026-07-18T14:29:56.272851+09:00",
           "products": [
             {
               "broadcast_date_label": "07/21(화) 19:30 방송",
@@ -77,6 +77,31 @@
       ]
     },
     {
+      "program_key": "HD_WYE",
+      "company": "HD",
+      "tab_name": "왕영은",
+      "program_title": "왕영은의 톡투게더",
+      "schedule_raw": "매주 토요일 08시 20분",
+      "detail_link": "https://www.hmall.com/md/dpa/pgmComm?sectId=2683513",
+      "broadcasts": [
+        {
+          "date": "2026-07-25",
+          "label": "07/25(토) 08:20 방송",
+          "collected_at": "2026-07-18T14:29:56.272851+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "07/25(토) 08:20 방송",
+              "brand": "로얄베르겐",
+              "name": "로얄베르겐 프리미엄 뱀부타올",
+              "price": 149000,
+              "image": "https://image.hmall.com/2243702683_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2243702683"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "program_key": "GS_BJY",
       "company": "GS",
       "tab_name": "백지연",
@@ -87,7 +112,7 @@
         {
           "date": "2026-07-23",
           "label": "07/23(목) 20:45 방송",
-          "collected_at": "2026-07-18T09:02:22.082409+09:00",
+          "collected_at": "2026-07-18T14:29:56.272851+09:00",
           "products": [
             {
               "prd_id": "1124366377",
@@ -212,7 +237,7 @@
         {
           "date": "2026-07-24",
           "label": "07/24(금) 20:35 방송",
-          "collected_at": "2026-07-18T09:02:22.082409+09:00",
+          "collected_at": "2026-07-18T14:29:56.272851+09:00",
           "products": [
             {
               "prd_id": "1129138470",
@@ -398,13 +423,13 @@
         {
           "date": "2026-07-25",
           "label": "07/25(토) 08:20 방송",
-          "collected_at": "2026-07-18T09:02:22.082409+09:00",
+          "collected_at": "2026-07-18T14:29:56.272851+09:00",
           "products": [
             {
               "broadcast_date_label": "07/25 토요일 08:20",
               "brand": "로보락",
               "name": "[로보락]F25 Ultra 무선 스팀 습건식 청소기",
-              "price": 1190000,
+              "price": 760000,
               "image": "https://image2.lotteimall.com/goods/39/87/90/12908739_1.jpg/dims/resizemc/640x360/optimize",
               "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12908739"
             },
@@ -437,7 +462,7 @@
         {
           "date": "2026-07-23",
           "label": "07/23(목) 20:45 방송",
-          "collected_at": "2026-07-18T09:02:22.082409+09:00",
+          "collected_at": "2026-07-18T14:29:56.272851+09:00",
           "products": [
             {
               "broadcast_date_label": "07/23 목요일 20:45",
@@ -557,7 +582,7 @@
         {
           "date": "2026-07-20",
           "label": "07/20(월) 19:35 방송",
-          "collected_at": "2026-07-18T09:02:22.082409+09:00",
+          "collected_at": "2026-07-18T14:29:56.272851+09:00",
           "products": [
             {
               "broadcast_date_label": "07/20(월) 19:35",
@@ -606,7 +631,7 @@
         {
           "date": "2026-07-22",
           "label": "07/22(수) 20:45 방송",
-          "collected_at": "2026-07-18T09:02:22.082409+09:00",
+          "collected_at": "2026-07-18T14:29:56.272851+09:00",
           "products": [
             {
               "broadcast_date_label": "07/22(수) 20:45",
@@ -655,7 +680,7 @@
         {
           "date": "2026-07-21",
           "label": "07/21(화) 19:35 방송",
-          "collected_at": "2026-07-18T09:02:22.082409+09:00",
+          "collected_at": "2026-07-18T14:29:56.272851+09:00",
           "products": [
             {
               "broadcast_date_label": "07/21(화) 19:35",
