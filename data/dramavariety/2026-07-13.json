@@ -1,7 +1,7 @@
 {
   "weekStart": "2026-07-13",
   "weekEnd": "2026-07-19",
-  "collectedAt": "2026-07-20T10:08:07.764160+09:00",
+  "collectedAt": "2026-07-20T15:26:01.013126+09:00",
   "programs": [
     {
       "id": "drama_붉은 진주_KBS2_오후 07:50",
@@ -1422,6 +1422,25 @@
         }
       },
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=41524517&qvt=0&query=%EC%97%B4%ED%98%88%EB%86%8D%EA%B5%AC%EB%8B%A82"
+    },
+    {
+      "id": "variety_위대한 가이드3_MBC every1_오후 09:30",
+      "category": "variety",
+      "channel": "MBC every1",
+      "title": "위대한 가이드3",
+      "days": [
+        "화"
+      ],
+      "time": "오후 09:30",
+      "rating": 1.1,
+      "ratingDate": "07.14",
+      "ratingByDay": {
+        "화": {
+          "rating": 1.1,
+          "ratingDate": "07.14"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=40968104&qvt=0&query=%EC%9C%84%EB%8C%80%ED%95%9C%20%EA%B0%80%EC%9D%B4%EB%93%9C3"
     }
   ]
 }
