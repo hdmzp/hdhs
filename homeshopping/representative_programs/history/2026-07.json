@@ -1,6 +1,6 @@
 {
   "month": "2026-07",
-  "updated_at": "2026-07-20T09:06:35.235969+09:00",
+  "updated_at": "2026-07-21T04:27:09.586410+09:00",
   "programs": [
     {
       "program_key": "HD_HJM",
@@ -46,7 +46,7 @@
         {
           "date": "2026-07-21",
           "label": "07/21(화) 19:30 방송",
-          "collected_at": "2026-07-20T09:06:35.234861+09:00",
+          "collected_at": "2026-07-21T04:27:09.585275+09:00",
           "products": [
             {
               "broadcast_date_label": "07/21(화) 19:30 방송",
@@ -55,6 +55,14 @@
               "price": 59900,
               "image": "https://image.hmall.com/2251922586_0.png",
               "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2251922586"
+            },
+            {
+              "broadcast_date_label": "07/21(화) 19:30 방송",
+              "brand": "청아띠",
+              "name": "[첫][2026년산 햇고추] 국내산 청결 햇 고춧가루 4kg(500g 8팩)",
+              "price": 160000,
+              "image": "https://image.hmall.com/2152462810_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2152462810"
             },
             {
               "broadcast_date_label": "07/21(화) 19:30 방송",
@@ -87,7 +95,7 @@
         {
           "date": "2026-07-25",
           "label": "07/25(토) 08:20 방송",
-          "collected_at": "2026-07-20T09:06:35.234861+09:00",
+          "collected_at": "2026-07-21T04:27:09.585275+09:00",
           "products": [
             {
               "broadcast_date_label": "07/25(토) 08:20 방송",
@@ -96,6 +104,14 @@
               "price": 149000,
               "image": "https://image.hmall.com/2243702683_0.jpg",
               "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2243702683"
+            },
+            {
+              "broadcast_date_label": "7/25(토) 방송상품",
+              "brand": "",
+              "name": "100%제주순메밀면 18인분(면18팩+동치미육수10팩+비빔장8팩)",
+              "price": 69900,
+              "image": "https://image.hmall.com/2152450234_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2152450234"
             }
           ]
         }
@@ -112,26 +128,8 @@
         {
           "date": "2026-07-23",
           "label": "07/23(목) 20:45 방송",
-          "collected_at": "2026-07-20T09:06:35.234861+09:00",
+          "collected_at": "2026-07-21T04:27:09.585275+09:00",
           "products": [
-            {
-              "prd_id": "1124366377",
-              "broadcast_date_label": "7월 23일(목) 20:45 방송",
-              "broadcast_iso": "2026-07-23T20:45:00",
-              "brand": "GS SHOP",
-              "name": "한국인의 두유 유기농 국산  서리태 콩물두유 10팩*6박스 총 60팩",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1124366377"
-            },
-            {
-              "prd_id": "1130648194",
-              "broadcast_date_label": "7월 23일(목) 20:45 방송",
-              "broadcast_iso": "2026-07-23T20:45:00",
-              "brand": "GS SHOP",
-              "name": "한국인의 두유 유기농 국산  서리태 콩물두유 10팩*6박스 *2 총 120팩",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1130648194"
-            },
             {
               "prd_id": "1074943519",
               "broadcast_date_label": "7월 23일(목) 20:45 방송",
@@ -221,6 +219,24 @@
               "name": "아메리칸투어리스터 유틸리티 토트백",
               "price": null,
               "link": "https://m.gsshop.com/prd/prd.gs?prdid=1093288092"
+            },
+            {
+              "prd_id": "1124366377",
+              "broadcast_date_label": "7월 23일(목) 20:45 방송",
+              "broadcast_iso": "2026-07-23T20:45:00",
+              "brand": "GS SHOP",
+              "name": "한국인의 두유 유기농 국산  서리태 콩물두유 10팩*6박스 총 60팩",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1124366377"
+            },
+            {
+              "prd_id": "1130648194",
+              "broadcast_date_label": "7월 23일(목) 20:45 방송",
+              "broadcast_iso": "2026-07-23T20:45:00",
+              "brand": "GS SHOP",
+              "name": "한국인의 두유 유기농 국산  서리태 콩물두유 10팩*6박스 *2 총 120팩",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1130648194"
             }
           ]
         }
@@ -237,7 +253,7 @@
         {
           "date": "2026-07-24",
           "label": "07/24(금) 20:35 방송",
-          "collected_at": "2026-07-20T09:06:35.234861+09:00",
+          "collected_at": "2026-07-21T04:27:09.585275+09:00",
           "products": [
             {
               "prd_id": "1129138470",
@@ -422,9 +438,25 @@
       "broadcasts": [
         {
           "date": "2026-07-30",
-          "label": "07/30(목) 21:45 방송",
-          "collected_at": "2026-07-20T09:06:35.234861+09:00",
+          "label": "07/30(목) 20:45 방송",
+          "collected_at": "2026-07-21T04:27:09.585275+09:00",
           "products": [
+            {
+              "broadcast_date_label": "07/30 목요일 20:45",
+              "brand": "센트룸",
+              "name": "[센트룸] [8개월분]센트룸 타마플렉스 올인원 관절 연골 근육 (1,450mg x 30정 x 8박스)",
+              "price": 358000,
+              "image": "https://image2.lotteimall.com/goods/82/12/87/12871282_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12871282"
+            },
+            {
+              "broadcast_date_label": "07/30 목요일 20:45",
+              "brand": "센트룸",
+              "name": "[센트룸] [4개월분]센트룸 타마플렉스 올인원 관절 연골 근육 (1,450mg x 30정 x 4박스)",
+              "price": 229000,
+              "image": "https://image2.lotteimall.com/goods/87/12/87/12871287_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12871287"
+            },
             {
               "broadcast_date_label": "07/30 목요일 21:45",
               "brand": "엘라비에",
@@ -446,7 +478,7 @@
         {
           "date": "2026-07-25",
           "label": "07/25(토) 08:20 방송",
-          "collected_at": "2026-07-20T09:06:35.234861+09:00",
+          "collected_at": "2026-07-21T04:27:09.585275+09:00",
           "products": [
             {
               "broadcast_date_label": "07/25 토요일 08:20",
@@ -457,20 +489,28 @@
               "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12908739"
             },
             {
+              "broadcast_date_label": "07/25 토요일 09:20",
+              "brand": "이지(iSi)",
+              "name": "[정상가 234,000원]iSi 이지 탄산수 제조기+[특별구성]탄산가스 캡슐 30P(약 30L 제조)",
+              "price": 169000,
+              "image": "https://image2.lotteimall.com/goods/09/49/91/12914909_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12914909"
+            },
+            {
+              "broadcast_date_label": "07/25 토요일 09:20",
+              "brand": "이지(iSi)",
+              "name": "[정상가 75,000원]iSi 이지 탄산가스 캡슐 50P (약 50L 제조)",
+              "price": 49000,
+              "image": "https://image2.lotteimall.com/goods/16/49/91/12914916_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12914916"
+            },
+            {
               "broadcast_date_label": "07/25 토요일 10:20",
               "brand": "글래드",
               "name": "[글래드] GLAD 매직백 4종+매직랩 2종 (총 6종 실속 세트)",
               "price": 39900,
               "image": "https://image2.lotteimall.com/goods/03/76/85/12857603_2.jpg/dims/resizemc/640x360/optimize",
               "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12857603"
-            },
-            {
-              "broadcast_date_label": "07/25 토요일 10:20",
-              "brand": "글래드",
-              "name": "[글래드] GLAD 2겹 플렉스백 40매*2박스 (49.2L 대용량 / 트래시백)",
-              "price": 29900,
-              "image": "https://image2.lotteimall.com/goods/01/73/89/12897301_2.jpg/dims/resizemc/640x360/optimize",
-              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12897301"
             },
             {
               "broadcast_date_label": "07/25 토요일 10:20",
@@ -485,7 +525,7 @@
         {
           "date": "2026-07-23",
           "label": "07/23(목) 20:45 방송",
-          "collected_at": "2026-07-20T09:06:35.234861+09:00",
+          "collected_at": "2026-07-21T04:27:09.585275+09:00",
           "products": [
             {
               "broadcast_date_label": "07/23 목요일 20:45",
@@ -603,6 +643,37 @@
       "detail_link": "https://display.cjonstyle.com/m/pgmShop/100009",
       "broadcasts": [
         {
+          "date": "2026-07-27",
+          "label": "07/27(월) 19:35 방송",
+          "collected_at": "2026-07-21T04:27:09.585275+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "07/27(월) 19:35",
+              "brand": "이야이야앤프렌즈",
+              "name": "[굿라이프단독] 엑스트라버진 올리브오일(500ml) 3병 (블랙 2병 + 하트립 1병) + 레드 발사믹 비네거 1병(200ml)]",
+              "price": 179000,
+              "image": "https://image.cjonstyle.net/goods_images/20/597/2082929597L.jpg?timestamp=20260420100301",
+              "link": "https://item.cjonstyle.com/item/2082929597?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "07/27(월) 19:35",
+              "brand": null,
+              "name": "배나무골 무항생제 연잎 훈제오리 슬라이스 400g x 6팩 2.4kg 3마리분량",
+              "price": 69900,
+              "image": "https://image.cjonstyle.net/goods_images/20/075/2086674075L.jpg?timestamp=20260611190717",
+              "link": "https://item.cjonstyle.com/item/2086674075?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "07/27(월) 19:35",
+              "brand": null,
+              "name": "배나무골 무항생제 연잎 훈제오리 슬라이스 400g x 3팩",
+              "price": 59900,
+              "image": "https://image.cjonstyle.net/goods_images/20/722/2086674722L.jpg?timestamp=20260611154625",
+              "link": "https://item.cjonstyle.com/item/2086674722?channelCode=30002002"
+            }
+          ]
+        },
+        {
           "date": "2026-07-20",
           "label": "07/20(월) 19:35 방송",
           "collected_at": "2026-07-20T09:06:35.234861+09:00",
@@ -654,8 +725,24 @@
         {
           "date": "2026-07-22",
           "label": "07/22(수) 20:45 방송",
-          "collected_at": "2026-07-20T09:06:35.234861+09:00",
+          "collected_at": "2026-07-21T04:27:09.585275+09:00",
           "products": [
+            {
+              "broadcast_date_label": "07/22(수) 20:45",
+              "brand": "도이캄",
+              "name": "최화정쇼 pick 100% 착즙 토마토주스 (200ml x 144팩)",
+              "price": 142900,
+              "image": "https://image.cjonstyle.net/goods_images/20/431/2073737431L.jpg?timestamp=20260629134525",
+              "link": "https://item.cjonstyle.com/item/2073737431?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "07/22(수) 20:45",
+              "brand": "리터니티",
+              "name": "최화정쇼단독 사상최대용량 율무팩 200g 7개+토너255ml 1개+율무앰플 40ml 1개+스파츌라 1개",
+              "price": 168900,
+              "image": "https://image.cjonstyle.net/goods_images/20/837/2088932837L.jpg?timestamp=20260710152528",
+              "link": "https://item.cjonstyle.com/item/2088932837?channelCode=30002002"
+            },
             {
               "broadcast_date_label": "07/22(수) 20:45",
               "brand": "리터니티",
@@ -669,7 +756,7 @@
               "brand": "몽제",
               "name": "딥슬립 접이식 매트리스 슈퍼싱글(SS) + 추가 커버(밴딩형) 슈퍼싱글(SS)세트",
               "price": 419000,
-              "image": "https://image.cjonstyle.net/goods_images/20/144/2089418144L.jpg?timestamp=20260716153036",
+              "image": "https://image.cjonstyle.net/goods_images/20/144/2089418144L.jpg?timestamp=20260720164948",
               "link": "https://item.cjonstyle.com/item/2089418144?channelCode=30002002"
             },
             {
@@ -677,7 +764,7 @@
               "brand": "몽제",
               "name": "딥슬립 접이식 매트리스 퀸(Q) + 추가 커버(밴딩형) 퀸(Q)세트",
               "price": 509000,
-              "image": "https://image.cjonstyle.net/goods_images/20/185/2089418185L.jpg?timestamp=20260716153202",
+              "image": "https://image.cjonstyle.net/goods_images/20/185/2089418185L.jpg?timestamp=20260720165256",
               "link": "https://item.cjonstyle.com/item/2089418185?channelCode=30002002"
             },
             {
@@ -685,7 +772,7 @@
               "brand": "몽제",
               "name": "딥슬립 접이식 매트리스 킹(K) + 추가 커버(밴딩형) 킹(K)세트",
               "price": 599000,
-              "image": "https://image.cjonstyle.net/goods_images/20/270/2089418270L.jpg?timestamp=20260716153635",
+              "image": "https://image.cjonstyle.net/goods_images/20/270/2089418270L.jpg?timestamp=20260720165557",
               "link": "https://item.cjonstyle.com/item/2089418270?channelCode=30002002"
             }
           ]
@@ -703,8 +790,24 @@
         {
           "date": "2026-07-21",
           "label": "07/21(화) 19:35 방송",
-          "collected_at": "2026-07-20T09:06:35.234861+09:00",
+          "collected_at": "2026-07-21T04:27:09.585275+09:00",
           "products": [
+            {
+              "broadcast_date_label": "07/21(화) 19:35",
+              "brand": "브이티",
+              "name": "[김창옥쇼패키지]두피앰플 특대용량6통+샴푸&트리트먼트세트",
+              "price": 299000,
+              "image": "https://image.cjonstyle.net/goods_images/20/158/2088726158L.jpg?timestamp=20260716133631",
+              "link": "https://item.cjonstyle.com/item/2088726158?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "07/21(화) 19:35",
+              "brand": "브이티",
+              "name": "[풍성패키지]두피앰플 특대용량12통+샴푸&트리트먼트 2세트",
+              "price": 548000,
+              "image": "https://image.cjonstyle.net/goods_images/20/562/2088726562L.jpg?timestamp=20260716133703",
+              "link": "https://item.cjonstyle.com/item/2088726562?channelCode=30002002"
+            },
             {
               "broadcast_date_label": "07/21(화) 19:35",
               "brand": "브이티",
