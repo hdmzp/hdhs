@@ -1,6 +1,6 @@
 {
   "month": "2026-07",
-  "updated_at": "2026-07-21T09:06:39.654725+09:00",
+  "updated_at": "2026-07-22T04:06:03.400788+09:00",
   "programs": [
     {
       "program_key": "HD_HJM",
@@ -43,6 +43,29 @@
       "schedule_raw": "매주 화요일 19시 30분",
       "detail_link": "https://www.hmall.com/md/dpa/pgmComm?sectId=3094172",
       "broadcasts": [
+        {
+          "date": "2026-07-28",
+          "label": "07/28(화) 19:30 방송",
+          "collected_at": "2026-07-22T04:06:03.399402+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "07/28(화) 19:30 방송",
+              "brand": "우정",
+              "name": "청담 우정 오감쇼패키지 [한우스지된장전골7팩 + 특양밥2팩]",
+              "price": 69900,
+              "image": "https://image.hmall.com/2251973022_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2251973022"
+            },
+            {
+              "broadcast_date_label": "7/28(화) 방송상품",
+              "brand": "",
+              "name": "청담 우정 한우스지된장전골 6팩",
+              "price": 59900,
+              "image": "https://image.hmall.com/2252135036_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252135036"
+            }
+          ]
+        },
         {
           "date": "2026-07-21",
           "label": "07/21(화) 19:30 방송",
@@ -95,7 +118,7 @@
         {
           "date": "2026-07-25",
           "label": "07/25(토) 08:20 방송",
-          "collected_at": "2026-07-21T09:06:39.652936+09:00",
+          "collected_at": "2026-07-22T04:06:03.399402+09:00",
           "products": [
             {
               "broadcast_date_label": "07/25(토) 08:20 방송",
@@ -128,7 +151,7 @@
         {
           "date": "2026-07-23",
           "label": "07/23(목) 20:45 방송",
-          "collected_at": "2026-07-21T09:06:39.652936+09:00",
+          "collected_at": "2026-07-22T04:06:03.399402+09:00",
           "products": [
             {
               "prd_id": "1074943519",
@@ -237,6 +260,78 @@
               "name": "한국인의 두유 유기농 국산  서리태 콩물두유 10팩*6박스 *2 총 120팩",
               "price": null,
               "link": "https://m.gsshop.com/prd/prd.gs?prdid=1130648194"
+            },
+            {
+              "prd_id": "1089809446",
+              "broadcast_date_label": "7월 23일(목) 20:45 방송",
+              "broadcast_iso": "2026-07-23T20:45:00",
+              "brand": "GS SHOP",
+              "name": "론칭가 29,900원 대한민국최저 파격가   국산 100%무가당 국산 백태 콩물두유 1박스(20팩)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1089809446"
+            },
+            {
+              "prd_id": "1084434179",
+              "broadcast_date_label": "7월 23일(목) 20:45 방송",
+              "broadcast_iso": "2026-07-23T20:45:00",
+              "brand": "GS SHOP",
+              "name": "무가당 국산 서리태 콩물두유 1박스(20팩)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1084434179"
+            },
+            {
+              "prd_id": "1085094969",
+              "broadcast_date_label": "7월 23일(목) 20:45 방송",
+              "broadcast_iso": "2026-07-23T20:45:00",
+              "brand": "GS SHOP",
+              "name": "국산 100%무가당 국산 서리태 검은콩물두유 1박스(20팩)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1085094969"
+            },
+            {
+              "prd_id": "1088521942",
+              "broadcast_date_label": "7월 23일(목) 20:45 방송",
+              "broadcast_iso": "2026-07-23T20:45:00",
+              "brand": "GS SHOP",
+              "name": "국산 서리태 100% 무가당 국산 서리태 콩물두유 1박스(20팩)*3박스 총 60팩",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1088521942"
+            },
+            {
+              "prd_id": "1091245987",
+              "broadcast_date_label": "7월 23일(목) 20:45 방송",
+              "broadcast_iso": "2026-07-23T20:45:00",
+              "brand": "GS SHOP",
+              "name": "더블구성_국산 서리태 100% 무가당 국산 서리태 콩물두유 1박스(20팩)*6박스 총 120팩",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1091245987"
+            },
+            {
+              "prd_id": "1084932308",
+              "broadcast_date_label": "7월 23일(목) 20:45 방송",
+              "broadcast_iso": "2026-07-23T20:45:00",
+              "brand": "GS SHOP",
+              "name": "한국인의 두유 국산 서리태 100% 무가당 국산 서리태 콩물두유 1박스(20팩)*3박스 총 60팩",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1084932308"
+            },
+            {
+              "prd_id": "1098817634",
+              "broadcast_date_label": "7월 23일(목) 20:45 방송",
+              "broadcast_iso": "2026-07-23T20:45:00",
+              "brand": "GS SHOP",
+              "name": "한국인의 두유 더블구성_국산 서리태 100% 무가당 국산 서리태 콩물두유 1박스(20팩)*6박스 총 120팩",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1098817634"
+            },
+            {
+              "prd_id": "1105170613",
+              "broadcast_date_label": "7월 23일(목) 20:45 방송",
+              "broadcast_iso": "2026-07-23T20:45:00",
+              "brand": "GS SHOP",
+              "name": "한국인의 두유 유기농 서리태 콩물두유 10팩*5박스 총 50팩",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1105170613"
             }
           ]
         }
@@ -253,7 +348,7 @@
         {
           "date": "2026-07-24",
           "label": "07/24(금) 20:35 방송",
-          "collected_at": "2026-07-21T09:06:39.652936+09:00",
+          "collected_at": "2026-07-22T04:06:03.399402+09:00",
           "products": [
             {
               "prd_id": "1129138470",
@@ -308,6 +403,15 @@
               "name": "[프리마베라1980]양면타올 1개입 (워터멜론/레몬트리)",
               "price": null,
               "link": "https://m.gsshop.com/prd/prd.gs?prdid=1127329009"
+            },
+            {
+              "prd_id": "1096091070",
+              "broadcast_date_label": "7월 24일(금) 20:35 방송",
+              "broadcast_iso": "2026-07-24T20:35:00",
+              "brand": "GS SHOP",
+              "name": "베키아에누보 스프2종 총 18팩 (포테이토크림 9팩, 머쉬룸크림 9팩)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1096091070"
             }
           ]
         },
@@ -439,7 +543,7 @@
         {
           "date": "2026-07-30",
           "label": "07/30(목) 20:45 방송",
-          "collected_at": "2026-07-21T09:06:39.652936+09:00",
+          "collected_at": "2026-07-22T04:06:03.399402+09:00",
           "products": [
             {
               "broadcast_date_label": "07/30 목요일 20:45",
@@ -478,7 +582,7 @@
         {
           "date": "2026-07-25",
           "label": "07/25(토) 08:20 방송",
-          "collected_at": "2026-07-21T09:06:39.652936+09:00",
+          "collected_at": "2026-07-22T04:06:03.399402+09:00",
           "products": [
             {
               "broadcast_date_label": "07/25 토요일 08:20",
@@ -491,7 +595,7 @@
             {
               "broadcast_date_label": "07/25 토요일 09:20",
               "brand": "이지(iSi)",
-              "name": "[정상가 234,000원]iSi 이지 탄산수 제조기+[특별구성]탄산가스 캡슐 30P(약 30L 제조)",
+              "name": "[정상가 234,000원] iSi 이지 탄산수 제조기+[특별구성]탄산가스 캡슐 30P(약 30L 제조)",
               "price": 169000,
               "image": "https://image2.lotteimall.com/goods/09/49/91/12914909_1.jpg/dims/resizemc/640x360/optimize",
               "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12914909"
@@ -525,7 +629,7 @@
         {
           "date": "2026-07-23",
           "label": "07/23(목) 20:45 방송",
-          "collected_at": "2026-07-21T09:06:39.652936+09:00",
+          "collected_at": "2026-07-22T04:06:03.399402+09:00",
           "products": [
             {
               "broadcast_date_label": "07/23 목요일 20:45",
@@ -645,7 +749,7 @@
         {
           "date": "2026-07-27",
           "label": "07/27(월) 19:35 방송",
-          "collected_at": "2026-07-21T09:06:39.652936+09:00",
+          "collected_at": "2026-07-22T04:06:03.399402+09:00",
           "products": [
             {
               "broadcast_date_label": "07/27(월) 19:35",
@@ -725,7 +829,7 @@
         {
           "date": "2026-07-22",
           "label": "07/22(수) 20:45 방송",
-          "collected_at": "2026-07-21T09:06:39.652936+09:00",
+          "collected_at": "2026-07-22T04:06:03.399402+09:00",
           "products": [
             {
               "broadcast_date_label": "07/22(수) 20:45",
