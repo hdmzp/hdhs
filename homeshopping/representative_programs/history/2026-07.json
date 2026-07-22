@@ -1,6 +1,6 @@
 {
   "month": "2026-07",
-  "updated_at": "2026-07-22T09:02:53.671423+09:00",
+  "updated_at": "2026-07-23T04:00:00.114780+09:00",
   "programs": [
     {
       "program_key": "HD_HJM",
@@ -10,6 +10,21 @@
       "schedule_raw": "매주 월요일 19시 30분",
       "detail_link": "https://www.hmall.com/md/dpa/pgmComm?sectId=3094173",
       "broadcasts": [
+        {
+          "date": "2026-07-27",
+          "label": "07/27(월) 19:30 방송",
+          "collected_at": "2026-07-23T04:00:00.113286+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "07/27(월) 19:30 방송",
+              "brand": "하늘작",
+              "name": "[농할] 국내산 충주산 햇 그레이트백도 2.5kg 2박스(총 5kg 박스당 7과∼11과)",
+              "price": 52900,
+              "image": "https://image.hmall.com/2152965637_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2152965637"
+            }
+          ]
+        },
         {
           "date": "2026-07-20",
           "label": "07/20(월) 19:30 방송",
@@ -46,7 +61,7 @@
         {
           "date": "2026-07-28",
           "label": "07/28(화) 19:30 방송",
-          "collected_at": "2026-07-22T09:02:53.670117+09:00",
+          "collected_at": "2026-07-23T04:00:00.113286+09:00",
           "products": [
             {
               "broadcast_date_label": "07/28(화) 19:30 방송",
@@ -118,7 +133,7 @@
         {
           "date": "2026-07-25",
           "label": "07/25(토) 08:20 방송",
-          "collected_at": "2026-07-22T09:02:53.670117+09:00",
+          "collected_at": "2026-07-23T04:00:00.113286+09:00",
           "products": [
             {
               "broadcast_date_label": "07/25(토) 08:20 방송",
@@ -151,98 +166,8 @@
         {
           "date": "2026-07-23",
           "label": "07/23(목) 20:45 방송",
-          "collected_at": "2026-07-22T09:02:53.670117+09:00",
+          "collected_at": "2026-07-23T04:00:00.113286+09:00",
           "products": [
-            {
-              "prd_id": "1124366377",
-              "broadcast_date_label": "7월 23일(목) 20:45 방송",
-              "broadcast_iso": "2026-07-23T20:45:00",
-              "brand": "GS SHOP",
-              "name": "한국인의 두유 유기농 국산  서리태 콩물두유 10팩*6박스 총 60팩",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1124366377"
-            },
-            {
-              "prd_id": "1130648194",
-              "broadcast_date_label": "7월 23일(목) 20:45 방송",
-              "broadcast_iso": "2026-07-23T20:45:00",
-              "brand": "GS SHOP",
-              "name": "한국인의 두유 유기농 국산  서리태 콩물두유 10팩*6박스 *2 총 120팩",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1130648194"
-            },
-            {
-              "prd_id": "1089809446",
-              "broadcast_date_label": "7월 23일(목) 20:45 방송",
-              "broadcast_iso": "2026-07-23T20:45:00",
-              "brand": "GS SHOP",
-              "name": "론칭가 29,900원 대한민국최저 파격가   국산 100%무가당 국산 백태 콩물두유 1박스(20팩)",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1089809446"
-            },
-            {
-              "prd_id": "1084434179",
-              "broadcast_date_label": "7월 23일(목) 20:45 방송",
-              "broadcast_iso": "2026-07-23T20:45:00",
-              "brand": "GS SHOP",
-              "name": "무가당 국산 서리태 콩물두유 1박스(20팩)",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1084434179"
-            },
-            {
-              "prd_id": "1085094969",
-              "broadcast_date_label": "7월 23일(목) 20:45 방송",
-              "broadcast_iso": "2026-07-23T20:45:00",
-              "brand": "GS SHOP",
-              "name": "국산 100%무가당 국산 서리태 검은콩물두유 1박스(20팩)",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1085094969"
-            },
-            {
-              "prd_id": "1088521942",
-              "broadcast_date_label": "7월 23일(목) 20:45 방송",
-              "broadcast_iso": "2026-07-23T20:45:00",
-              "brand": "GS SHOP",
-              "name": "국산 서리태 100% 무가당 국산 서리태 콩물두유 1박스(20팩)*3박스 총 60팩",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1088521942"
-            },
-            {
-              "prd_id": "1091245987",
-              "broadcast_date_label": "7월 23일(목) 20:45 방송",
-              "broadcast_iso": "2026-07-23T20:45:00",
-              "brand": "GS SHOP",
-              "name": "더블구성_국산 서리태 100% 무가당 국산 서리태 콩물두유 1박스(20팩)*6박스 총 120팩",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1091245987"
-            },
-            {
-              "prd_id": "1084932308",
-              "broadcast_date_label": "7월 23일(목) 20:45 방송",
-              "broadcast_iso": "2026-07-23T20:45:00",
-              "brand": "GS SHOP",
-              "name": "한국인의 두유 국산 서리태 100% 무가당 국산 서리태 콩물두유 1박스(20팩)*3박스 총 60팩",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1084932308"
-            },
-            {
-              "prd_id": "1098817634",
-              "broadcast_date_label": "7월 23일(목) 20:45 방송",
-              "broadcast_iso": "2026-07-23T20:45:00",
-              "brand": "GS SHOP",
-              "name": "한국인의 두유 더블구성_국산 서리태 100% 무가당 국산 서리태 콩물두유 1박스(20팩)*6박스 총 120팩",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1098817634"
-            },
-            {
-              "prd_id": "1105170613",
-              "broadcast_date_label": "7월 23일(목) 20:45 방송",
-              "broadcast_iso": "2026-07-23T20:45:00",
-              "brand": "GS SHOP",
-              "name": "한국인의 두유 유기농 서리태 콩물두유 10팩*5박스 총 50팩",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1105170613"
-            },
             {
               "prd_id": "1074943519",
               "broadcast_date_label": "7월 23일(목) 20:45 방송",
@@ -332,6 +257,96 @@
               "name": "아메리칸투어리스터 유틸리티 토트백",
               "price": null,
               "link": "https://m.gsshop.com/prd/prd.gs?prdid=1093288092"
+            },
+            {
+              "prd_id": "1124366377",
+              "broadcast_date_label": "7월 23일(목) 20:45 방송",
+              "broadcast_iso": "2026-07-23T20:45:00",
+              "brand": "GS SHOP",
+              "name": "한국인의 두유 유기농 국산  서리태 콩물두유 10팩*6박스 총 60팩",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1124366377"
+            },
+            {
+              "prd_id": "1130648194",
+              "broadcast_date_label": "7월 23일(목) 20:45 방송",
+              "broadcast_iso": "2026-07-23T20:45:00",
+              "brand": "GS SHOP",
+              "name": "한국인의 두유 유기농 국산  서리태 콩물두유 10팩*6박스 *2 총 120팩",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1130648194"
+            },
+            {
+              "prd_id": "1089809446",
+              "broadcast_date_label": "7월 23일(목) 20:45 방송",
+              "broadcast_iso": "2026-07-23T20:45:00",
+              "brand": "GS SHOP",
+              "name": "론칭가 29,900원 대한민국최저 파격가   국산 100%무가당 국산 백태 콩물두유 1박스(20팩)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1089809446"
+            },
+            {
+              "prd_id": "1084434179",
+              "broadcast_date_label": "7월 23일(목) 20:45 방송",
+              "broadcast_iso": "2026-07-23T20:45:00",
+              "brand": "GS SHOP",
+              "name": "무가당 국산 서리태 콩물두유 1박스(20팩)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1084434179"
+            },
+            {
+              "prd_id": "1085094969",
+              "broadcast_date_label": "7월 23일(목) 20:45 방송",
+              "broadcast_iso": "2026-07-23T20:45:00",
+              "brand": "GS SHOP",
+              "name": "국산 100%무가당 국산 서리태 검은콩물두유 1박스(20팩)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1085094969"
+            },
+            {
+              "prd_id": "1088521942",
+              "broadcast_date_label": "7월 23일(목) 20:45 방송",
+              "broadcast_iso": "2026-07-23T20:45:00",
+              "brand": "GS SHOP",
+              "name": "국산 서리태 100% 무가당 국산 서리태 콩물두유 1박스(20팩)*3박스 총 60팩",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1088521942"
+            },
+            {
+              "prd_id": "1091245987",
+              "broadcast_date_label": "7월 23일(목) 20:45 방송",
+              "broadcast_iso": "2026-07-23T20:45:00",
+              "brand": "GS SHOP",
+              "name": "더블구성_국산 서리태 100% 무가당 국산 서리태 콩물두유 1박스(20팩)*6박스 총 120팩",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1091245987"
+            },
+            {
+              "prd_id": "1084932308",
+              "broadcast_date_label": "7월 23일(목) 20:45 방송",
+              "broadcast_iso": "2026-07-23T20:45:00",
+              "brand": "GS SHOP",
+              "name": "한국인의 두유 국산 서리태 100% 무가당 국산 서리태 콩물두유 1박스(20팩)*3박스 총 60팩",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1084932308"
+            },
+            {
+              "prd_id": "1098817634",
+              "broadcast_date_label": "7월 23일(목) 20:45 방송",
+              "broadcast_iso": "2026-07-23T20:45:00",
+              "brand": "GS SHOP",
+              "name": "한국인의 두유 더블구성_국산 서리태 100% 무가당 국산 서리태 콩물두유 1박스(20팩)*6박스 총 120팩",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1098817634"
+            },
+            {
+              "prd_id": "1105170613",
+              "broadcast_date_label": "7월 23일(목) 20:45 방송",
+              "broadcast_iso": "2026-07-23T20:45:00",
+              "brand": "GS SHOP",
+              "name": "한국인의 두유 유기농 서리태 콩물두유 10팩*5박스 총 50팩",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1105170613"
             }
           ]
         }
@@ -348,7 +363,7 @@
         {
           "date": "2026-07-24",
           "label": "07/24(금) 20:35 방송",
-          "collected_at": "2026-07-22T09:02:53.670117+09:00",
+          "collected_at": "2026-07-23T04:00:00.113286+09:00",
           "products": [
             {
               "prd_id": "1096091070",
@@ -358,6 +373,87 @@
               "name": "베키아에누보 스프2종 총 18팩 (포테이토크림 9팩, 머쉬룸크림 9팩)",
               "price": null,
               "link": "https://m.gsshop.com/prd/prd.gs?prdid=1096091070"
+            },
+            {
+              "prd_id": "1114741722",
+              "broadcast_date_label": "7월 24일(금) 20:35 방송",
+              "broadcast_iso": "2026-07-24T20:35:00",
+              "brand": "GS SHOP",
+              "name": "베키아에누보 샌드위치 총 18개입 바질모짜 3개입1봉, 바질토마토3개입2봉, 비프치즈3개입1봉,베이컨바게트3개입2봉",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1114741722"
+            },
+            {
+              "prd_id": "1126775360",
+              "broadcast_date_label": "7월 24일(금) 20:35 방송",
+              "broadcast_iso": "2026-07-24T20:35:00",
+              "brand": "GS SHOP",
+              "name": "워커힐 고메 아이스크림 4종 총 20개(딸기6/초코6/망고바나나4/치즈4)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1126775360"
+            },
+            {
+              "prd_id": "1103756978",
+              "broadcast_date_label": "7월 24일(금) 20:35 방송",
+              "broadcast_iso": "2026-07-24T20:35:00",
+              "brand": "GS SHOP",
+              "name": "[조선호텔김치] 조선호텔 포기김치 8kg",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1103756978"
+            },
+            {
+              "prd_id": "1103756999",
+              "broadcast_date_label": "7월 24일(금) 20:35 방송",
+              "broadcast_iso": "2026-07-24T20:35:00",
+              "brand": "GS SHOP",
+              "name": "조선호텔 특제육수 포기김치 4KG",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1103756999"
+            },
+            {
+              "prd_id": "1115147286",
+              "broadcast_date_label": "7월 24일(금) 20:35 방송",
+              "broadcast_iso": "2026-07-24T20:35:00",
+              "brand": "GS SHOP",
+              "name": "워커힐 고메 아이스크림 4종 총 16개(딸기4/초코4/망고바나나4/치즈4)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1115147286"
+            },
+            {
+              "prd_id": "1126777646",
+              "broadcast_date_label": "7월 24일(금) 20:35 방송",
+              "broadcast_iso": "2026-07-24T20:35:00",
+              "brand": "GS SHOP",
+              "name": "워커힐 고메 아이스크림 4종 총 12개(딸기4/초코4/망고바나나2/치즈2)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1126777646"
+            },
+            {
+              "prd_id": "1006074847",
+              "broadcast_date_label": "7월 24일(금) 20:35 방송",
+              "broadcast_iso": "2026-07-24T20:35:00",
+              "brand": "GS SHOP",
+              "name": "피코크 정통꿔바로우 500g 3팩",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1006074847"
+            },
+            {
+              "prd_id": "1103756950",
+              "broadcast_date_label": "7월 24일(금) 20:35 방송",
+              "broadcast_iso": "2026-07-24T20:35:00",
+              "brand": "GS SHOP",
+              "name": "[조선호텔김치] 조선호텔 열무얼갈이김치 2kg",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1103756950"
+            },
+            {
+              "prd_id": "1103756983",
+              "broadcast_date_label": "7월 24일(금) 20:35 방송",
+              "broadcast_iso": "2026-07-24T20:35:00",
+              "brand": "GS SHOP",
+              "name": "[조선호텔김치] 조선호텔 포기김치 5kg",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1103756983"
             },
             {
               "prd_id": "1129138470",
@@ -412,6 +508,24 @@
               "name": "[프리마베라1980]양면타올 1개입 (워터멜론/레몬트리)",
               "price": null,
               "link": "https://m.gsshop.com/prd/prd.gs?prdid=1127329009"
+            },
+            {
+              "prd_id": "1128885173",
+              "broadcast_date_label": "7월 24일(금) 20:35 방송",
+              "broadcast_iso": "2026-07-24T20:35:00",
+              "brand": "GS SHOP",
+              "name": "스칸디나비안포레스트 NEW 빅핸들 텀블러 2종 (600ml+800ml+전용빨대+지비츠 포함)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1128885173"
+            },
+            {
+              "prd_id": "1128889171",
+              "broadcast_date_label": "7월 24일(금) 20:35 방송",
+              "broadcast_iso": "2026-07-24T20:35:00",
+              "brand": "GS SHOP",
+              "name": "스칸디나비안포레스트 NEW 대용량 텀블러 1종 (1,300ml)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1128889171"
             }
           ]
         },
@@ -543,7 +657,7 @@
         {
           "date": "2026-07-30",
           "label": "07/30(목) 20:45 방송",
-          "collected_at": "2026-07-22T09:02:53.670117+09:00",
+          "collected_at": "2026-07-23T04:00:00.113286+09:00",
           "products": [
             {
               "broadcast_date_label": "07/30 목요일 20:45",
@@ -582,7 +696,7 @@
         {
           "date": "2026-07-25",
           "label": "07/25(토) 08:20 방송",
-          "collected_at": "2026-07-22T09:02:53.670117+09:00",
+          "collected_at": "2026-07-23T04:00:00.113286+09:00",
           "products": [
             {
               "broadcast_date_label": "07/25 토요일 08:20",
@@ -629,7 +743,7 @@
         {
           "date": "2026-07-23",
           "label": "07/23(목) 20:45 방송",
-          "collected_at": "2026-07-22T09:02:53.670117+09:00",
+          "collected_at": "2026-07-23T04:00:00.113286+09:00",
           "products": [
             {
               "broadcast_date_label": "07/23 목요일 20:45",
@@ -749,15 +863,23 @@
         {
           "date": "2026-07-27",
           "label": "07/27(월) 19:35 방송",
-          "collected_at": "2026-07-22T09:02:53.670117+09:00",
+          "collected_at": "2026-07-23T04:00:00.113286+09:00",
           "products": [
             {
               "broadcast_date_label": "07/27(월) 19:35",
               "brand": "이야이야앤프렌즈",
-              "name": "[굿라이프단독] 엑스트라버진 올리브오일(500ml) 3병 (블랙 2병 + 하트립 1병) + 레드 발사믹 비네거 1병(200ml)]",
-              "price": 179000,
-              "image": "https://image.cjonstyle.net/goods_images/20/597/2082929597L.jpg?timestamp=20260420100301",
-              "link": "https://item.cjonstyle.com/item/2082929597?channelCode=30002002"
+              "name": "[7월 굿라이프 단독] 엑스트라버진 올리브오일(500ml×2병) + 레드 발사믹 비네거(200ml) + 올리브오일 스틱 4박스",
+              "price": 169000,
+              "image": "https://image.cjonstyle.net/goods_images/20/978/2089336978L.jpg?timestamp=20260720125616",
+              "link": "https://item.cjonstyle.com/item/2089336978?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "07/27(월) 19:35",
+              "brand": "이야이야앤프렌즈",
+              "name": "[7월 굿라이프 단독] 엑스트라버진 올리브오일 스틱형 4박스 + 유기농 NFC 토마토즙 스틱형 4박스 + 샷잔",
+              "price": 149000,
+              "image": "https://image.cjonstyle.net/goods_images/20/634/2089337634L.jpg?timestamp=20260720125559",
+              "link": "https://item.cjonstyle.com/item/2089337634?channelCode=30002002"
             },
             {
               "broadcast_date_label": "07/27(월) 19:35",

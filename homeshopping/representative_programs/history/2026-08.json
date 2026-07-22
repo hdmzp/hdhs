@@ -1,7 +1,81 @@
 {
   "month": "2026-08",
-  "updated_at": "2026-07-22T09:02:53.672791+09:00",
+  "updated_at": "2026-07-23T04:00:00.116552+09:00",
   "programs": [
+    {
+      "program_key": "LT_CYR",
+      "company": "LT",
+      "tab_name": "최유라",
+      "program_title": "최유라쇼",
+      "schedule_raw": "매주 목 20시 45분/ 토 08시 20분",
+      "detail_link": "https://www.lotteimall.com/contstmpl/viewContsTmplDetail.lotte?conts_no=73",
+      "broadcasts": [
+        {
+          "date": "2026-08-01",
+          "label": "08/01(토) 09:20 방송",
+          "collected_at": "2026-07-23T04:00:00.113286+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "08/01 토요일 09:20",
+              "brand": "설성목장",
+              "name": "[설성목장] 설성목장 삼계탕 1.2kgx8팩",
+              "price": 89900,
+              "image": "https://image2.lotteimall.com/goods/88/38/86/12863888_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12863888"
+            },
+            {
+              "broadcast_date_label": "08/01 토요일 09:20",
+              "brand": "설성목장",
+              "name": "[설성목장] 설성목장 무항생제 한우 차돌박이 구이용 300g X 3팩 (총 900g)",
+              "price": 85900,
+              "image": "https://image2.lotteimall.com/goods/11/65/90/12906511_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12906511"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "program_key": "CJ_CHJ",
+      "company": "CJ",
+      "tab_name": "최화정",
+      "program_title": "최화정쇼",
+      "schedule_raw": "매주 수요일 20:45",
+      "detail_link": "https://display.cjonstyle.com/m/pgmShop/100027",
+      "broadcasts": [
+        {
+          "date": "2026-08-05",
+          "label": "08/05(수) 20:45 방송",
+          "collected_at": "2026-07-23T04:00:00.113286+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "08/05(수) 20:45",
+              "brand": "레인코스트크리스프",
+              "name": "최화정쇼픽 베스트 10박스 세트[크-로-대-블-파]",
+              "price": 89900,
+              "image": "https://image.cjonstyle.net/goods_images/20/218/2083219218L.jpg?timestamp=20260518170125",
+              "link": "https://item.cjonstyle.com/item/2083219218?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/05(수) 20:45",
+              "brand": "몬스터겔",
+              "name": "[최화정픽]물걸레포 5통+샘플5매+정전기포 2통+샘플12매+자석밀대",
+              "price": 89900,
+              "image": "https://image.cjonstyle.net/goods_images/20/297/2084943297L.jpg?timestamp=20260702111012",
+              "link": "https://item.cjonstyle.com/item/2084943297?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/05(수) 20:45",
+              "brand": "레인코스트크리스프",
+              "name": "최화정쇼픽 베스트 10박스 세트[크-대-블-복-파]",
+              "price": 89900,
+              "image": "https://image.cjonstyle.net/goods_images/20/552/2089415552L.jpg?timestamp=20260720001711",
+              "link": "https://item.cjonstyle.com/item/2089415552?channelCode=30002002"
+            }
+          ]
+        }
+      ]
+    },
     {
       "program_key": "CJ_KCO",
       "company": "CJ",
@@ -13,7 +87,7 @@
         {
           "date": "2026-08-04",
           "label": "08/04(화) 19:35 방송",
-          "collected_at": "2026-07-22T09:02:53.670117+09:00",
+          "collected_at": "2026-07-23T04:00:00.113286+09:00",
           "products": [
             {
               "broadcast_date_label": "08/04(화) 19:35",
