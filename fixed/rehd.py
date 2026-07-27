@@ -31,8 +31,14 @@ rehd.py
      2026-07-09(목) 08:15~10:25 창에서 4개 확인.
 
 == 결론 ==
-소스 4개를 합쳐서 방송 라인업 전체를 수집한다 (우선순위 순):
+소스 5개를 합쳐서 방송 라인업 전체를 수집한다 (우선순위 순):
   - tv-list 편성 API           : 방송 시간대 전체 상품 (브랜드/가격 포함) <- 5차, 메인
+  - 로컬 편성 데이터(HD_live)   : hd_scraper.py가 수집해 둔 같은 편성.
+      이 스크립트는 새벽 3시에 도는데, 그 시각엔 tv-list에 해당 방송의
+      대표상품 1개만 있고 나머지 라인업("함께 나오는 대표상품들")은 낮에
+      추가되는 경우가 있다 (예: 7/28 오감쇼 - 새벽엔 우정 1개, 낮에
+      라오메뜨/리오마레 4개 추가). 전날 오전/점심(05:50/12:20)에 수집된
+      로컬 편성엔 전체 라인업이 있으므로 이걸로 보충한다.
   - pgm-comm.respData.pgmViewItem: 대표상품 1개, 정확한 방송일시(brodDispNm)
   - searchSpexSectItem.itemList  : 최대 2개 (날짜 라벨 없음)
   - pgm-comm-html 스와이퍼       : 알리미 캐러셀 카드 (가격 없음)
@@ -217,6 +223,49 @@ def fetch_broadcast_lineup(brod_dt: str, start_hm: str, end_hm: str = None) -> l
                 seen[str(code)] = it
 
     return list(seen.values())
+
+
+HD_LIVE_DIR = os.path.join("homeshopping", "HD_live")
+
+
+def load_local_lineup(brod_date, start_hm: str, end_hm: str = None) -> list:
+    """hd_scraper.py가 만든 로컬 편성(homeshopping/HD_live/{YYYY-MM}.json)에서
+    brod_date의 start_hm~end_hm 시간대에 시작하는 상품을 normalize_item과 같은
+    스키마(_code 포함)로 반환한다. tv-list 실시간 조회가 라인업 공개 전이라
+    일부만 반환했을 때의 보충 소스. 파일이 없거나 날짜가 없으면 빈 리스트."""
+    path = os.path.join(HD_LIVE_DIR, f"{brod_date.strftime('%Y-%m')}.json")
+    if not os.path.exists(path):
+        return []
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            days = json.load(f).get("days", {})
+    except Exception as e:
+        print(f"    -> [경고] 로컬 편성({path}) 읽기 실패: {e}")
+        return []
+
+    items = []
+    for p in days.get(brod_date.strftime("%Y-%m-%d"), []):
+        strt = p.get("start") or ""
+        if not strt:
+            continue
+        in_window = (start_hm <= strt < end_hm) if end_hm else (strt == start_hm)
+        if not in_window:
+            continue
+        link = p.get("link") or ""
+        m = re.search(r"slitmCd=(\d+)", link)
+        code = m.group(1) if m else None
+        items.append({
+            "broadcast_date_label": None,  # 호출부에서 정확한 방송시각 라벨로 채움
+            "brand": p.get("brand") or "",
+            "name": p.get("product"),
+            "price": p.get("price") or None,
+            # 상품 이미지는 로컬 편성에 없어서 기존 데이터와 같은
+            # image.hmall.com/{상품코드}_0.jpg 규칙으로 구성한다.
+            "image": to_image_url(f"{code}_0.jpg") if code else None,
+            "link": link or None,
+            "_code": code,
+        })
+    return items
 
 
 def extract_next_data(html: str) -> dict:
@@ -464,6 +513,17 @@ def crawl_hd_program(page, config: dict, list_map: dict):
             print(f"         · [{it.get('brndNm') or ''}] {(it.get('slitmNm') or '')[:40]}")
         if not lineup_raw:
             print(f"    -> [경고] tv-list에서 해당 시간대 상품을 못 찾음 (편성 미공개일 수 있음)")
+
+        # 같은 시간대의 로컬 편성(HD_live)으로 보충 - 새벽 실행 시점엔
+        # tv-list에 라인업이 다 공개되기 전이라 일부만 잡히는 경우가 있다.
+        local_items = load_local_lineup(brod_date, brod_start, brod_end)
+        for it in local_items:
+            it["broadcast_date_label"] = exact_label
+        if local_items:
+            print(f"    -> 로컬 편성(HD_live) 라인업: {len(local_items)}개")
+            for it in local_items:
+                print(f"         · [{it['brand']}] {(it['name'] or '')[:40]}")
+        lineup_products.extend(local_items)
     else:
         print(f"    -> [경고] 방송일시를 알 수 없어 tv-list 라인업 조회 생략")
 
