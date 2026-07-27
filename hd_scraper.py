@@ -103,11 +103,13 @@ def fetch_hyundai(date_compact, broad_param):
     broad_param: 'etv'(라이브/TV쇼핑) | 'dtv'(데이터/TV+샵)
     페이지 0~7을 순회 후 (시작시각, 상품코드)로 중복 제거.
 
-    고정PGM(왕영은의 톡 투게더, 오감쇼, 황정민쇼 등 brodTitl이 있는 방송)은
-    편성표에 대표상품 1개만 나오고 나머지는 "N개 상품 더보기" 뒤에 숨는데,
-    그 숨은 상품들이 tv-list 응답의 withItemList 필드에 통째로 들어있다.
-    이런 방송은 브랜드별 대표상품 1개씩을 편성에 추가한다
-    (예: 왕영은 3시간 방송 = 로버츠베리에 + 휘슬러 + 심플휴먼 3줄).
+    같은 시간대에 함께 방송되는 상품들은 편성표에 대표상품 1개만 나오고
+    나머지는 tv-list 응답의 withItemList 필드에 들어있다.
+    - 고정PGM(왕영은의 톡 투게더, 오감쇼, 황정민쇼 등 brodTitl이 있는 방송):
+      상품이 수십 개라 브랜드별 대표상품 1개씩만 편성에 추가한다
+      (예: 왕영은 3시간 방송 = 로버츠베리에 + 휘슬러 + 심플휴먼 3줄).
+    - 일반 방송: "함께 방송하는 상품"이 1~2개 수준이므로 전부 편성에 추가한다
+      (예: 망고수박 + 불고기한판이 한 방송에 같이 나오는 경우).
     """
     headers = {"User-Agent": UA, "Referer": "https://www.hmall.com/"}
     seen = {}
@@ -126,15 +128,16 @@ def fetch_hyundai(date_compact, broad_param):
                 pgm = (it.get("brodTitl") or "").strip()
                 seen[key] = item_to_program(it, pgm=pgm)
 
-                # 고정PGM: withItemList에서 새 브랜드의 첫 상품만 추가
-                if not pgm:
-                    continue
+                # withItemList: 고정PGM은 새 브랜드의 첫 상품만, 일반 방송은 전부 추가
                 slot_brands = {it.get("brndNm") or ""}
                 for sub in it.get("withItemList") or []:
-                    brand = sub.get("brndNm") or ""
-                    if brand in slot_brands or not sub.get("slitmCd"):
+                    if not sub.get("slitmCd"):
                         continue
-                    slot_brands.add(brand)
+                    brand = sub.get("brndNm") or ""
+                    if pgm:
+                        if brand in slot_brands:
+                            continue
+                        slot_brands.add(brand)
                     sub_key = (sub.get("brodStrtDtm") or key[0], sub.get("slitmCd"))
                     seen[sub_key] = item_to_program(
                         sub, fallback_start=it.get("brodStrtDtm", ""),
