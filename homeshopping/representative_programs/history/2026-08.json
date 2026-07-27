@@ -1,6 +1,6 @@
 {
   "month": "2026-08",
-  "updated_at": "2026-07-27T20:13:08.504336+09:00",
+  "updated_at": "2026-07-27T20:24:21.743528+09:00",
   "programs": [
     {
       "program_key": "LT_CYR",
@@ -12,9 +12,17 @@
       "broadcasts": [
         {
           "date": "2026-08-01",
-          "label": "08/01(토) 09:20 방송",
-          "collected_at": "2026-07-27T20:13:08.501044+09:00",
+          "label": "08/01(토) 08:20 방송",
+          "collected_at": "2026-07-27T20:24:21.740446+09:00",
           "products": [
+            {
+              "broadcast_date_label": "08/01 토요일 08:20",
+              "brand": "샤크닌자",
+              "name": "[샤크닌자] 샤크 청소기 파워클린 360 라이트쿠퍼/퓨어블랙(IW4271)+[사은품]닌자 블랜더",
+              "price": 949000,
+              "image": "https://image2.lotteimall.com/goods/83/58/91/12915883_2.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12915883"
+            },
             {
               "broadcast_date_label": "08/01 토요일 09:20",
               "brand": "설성목장",
@@ -54,7 +62,7 @@
         {
           "date": "2026-08-05",
           "label": "08/05(수) 20:45 방송",
-          "collected_at": "2026-07-27T20:13:08.501044+09:00",
+          "collected_at": "2026-07-27T20:24:21.740446+09:00",
           "products": [
             {
               "broadcast_date_label": "08/05(수) 20:45",
@@ -95,7 +103,7 @@
         {
           "date": "2026-08-04",
           "label": "08/04(화) 19:35 방송",
-          "collected_at": "2026-07-27T20:13:08.501044+09:00",
+          "collected_at": "2026-07-27T20:24:21.740446+09:00",
           "products": [
             {
               "broadcast_date_label": "08/04(화) 19:35",
@@ -112,6 +120,31 @@
               "price": 25000,
               "image": "https://image.cjonstyle.net/goods_images/20/105/2076089105L.jpg?timestamp=20260616120527",
               "link": "https://item.cjonstyle.com/item/2076089105?channelCode=30002002"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "program_key": "CJ_SIH",
+      "company": "CJ",
+      "tab_name": "소이현",
+      "program_title": "겟잇스타일",
+      "schedule_raw": "금요일 21시 45분 / 방송 일정 수시 업데이트",
+      "detail_link": "https://display.cjonstyle.com/m/pgmShop/100061",
+      "broadcasts": [
+        {
+          "date": "2026-08-21",
+          "label": "08/21(금) 22:45 방송",
+          "collected_at": "2026-07-27T20:24:21.740446+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "08/21(금) 22:45",
+              "brand": "락포트",
+              "name": "남성 오일 소가죽 컴포트화",
+              "price": 179000,
+              "image": "https://image.cjonstyle.net/goods_images/20/870/2064894870L.jpg?timestamp=20250829141241",
+              "link": "https://item.cjonstyle.com/item/2064894870?channelCode=30002002"
             }
           ]
         }
