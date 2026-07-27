@@ -1,6 +1,6 @@
 {
   "month": "2026-08",
-  "updated_at": "2026-07-27T20:24:21.743528+09:00",
+  "updated_at": "2026-07-28T04:14:14.045688+09:00",
   "programs": [
     {
       "program_key": "LT_CYR",
@@ -13,7 +13,7 @@
         {
           "date": "2026-08-01",
           "label": "08/01(토) 08:20 방송",
-          "collected_at": "2026-07-27T20:24:21.740446+09:00",
+          "collected_at": "2026-07-28T04:14:14.042710+09:00",
           "products": [
             {
               "broadcast_date_label": "08/01 토요일 08:20",
@@ -52,6 +52,31 @@
       ]
     },
     {
+      "program_key": "CJ_KJE",
+      "company": "CJ",
+      "tab_name": "강주은",
+      "program_title": "굿 라이프",
+      "schedule_raw": "매주 월요일 19시35분",
+      "detail_link": "https://display.cjonstyle.com/m/pgmShop/100009",
+      "broadcasts": [
+        {
+          "date": "2026-08-03",
+          "label": "08/03(월) 19:35 방송",
+          "collected_at": "2026-07-28T04:14:14.042710+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "08/03(월) 19:35",
+              "brand": "라이프밀",
+              "name": "[1등 생식] 황성주 박사의 라이프 밀 4박스+흔들컵1",
+              "price": 249000,
+              "image": "https://image.cjonstyle.net/goods_images/20/670/2070472670L.jpg?timestamp=20260526152220",
+              "link": "https://item.cjonstyle.com/item/2070472670?channelCode=30002002"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "program_key": "CJ_CHJ",
       "company": "CJ",
       "tab_name": "최화정",
@@ -62,7 +87,7 @@
         {
           "date": "2026-08-05",
           "label": "08/05(수) 20:45 방송",
-          "collected_at": "2026-07-27T20:24:21.740446+09:00",
+          "collected_at": "2026-07-28T04:14:14.042710+09:00",
           "products": [
             {
               "broadcast_date_label": "08/05(수) 20:45",
@@ -103,7 +128,7 @@
         {
           "date": "2026-08-04",
           "label": "08/04(화) 19:35 방송",
-          "collected_at": "2026-07-27T20:24:21.740446+09:00",
+          "collected_at": "2026-07-28T04:14:14.042710+09:00",
           "products": [
             {
               "broadcast_date_label": "08/04(화) 19:35",
@@ -136,7 +161,7 @@
         {
           "date": "2026-08-21",
           "label": "08/21(금) 22:45 방송",
-          "collected_at": "2026-07-27T20:24:21.740446+09:00",
+          "collected_at": "2026-07-28T04:14:14.042710+09:00",
           "products": [
             {
               "broadcast_date_label": "08/21(금) 22:45",
