@@ -1,7 +1,32 @@
 {
   "month": "2026-08",
-  "updated_at": "2026-07-28T09:09:22.815721+09:00",
+  "updated_at": "2026-07-29T04:09:23.816972+09:00",
   "programs": [
+    {
+      "program_key": "HD_WYE",
+      "company": "HD",
+      "tab_name": "왕영은",
+      "program_title": "왕영은의 톡투게더",
+      "schedule_raw": "매주 토요일 08시 20분",
+      "detail_link": "https://www.hmall.com/md/dpa/pgmComm?sectId=2683513",
+      "broadcasts": [
+        {
+          "date": "2026-08-01",
+          "label": "08/01(토) 08:20 방송",
+          "collected_at": "2026-07-29T04:09:23.814435+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "08/01(토) 08:20 방송",
+              "brand": "체스키포슬란",
+              "name": "체스키포슬란 프라하블루 4인 디너세트",
+              "price": 399000,
+              "image": "https://image.hmall.com/2252186184_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252186184"
+            }
+          ]
+        }
+      ]
+    },
     {
       "program_key": "LT_CYR",
       "company": "LT",
@@ -11,9 +36,40 @@
       "detail_link": "https://www.lotteimall.com/contstmpl/viewContsTmplDetail.lotte?conts_no=73",
       "broadcasts": [
         {
+          "date": "2026-08-06",
+          "label": "08/06(목) 20:45 방송",
+          "collected_at": "2026-07-29T04:09:23.814435+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "08/06 목요일 20:45",
+              "brand": "영양명가",
+              "name": "[25년 햇]영양명가 특등급 고춧가루 4kg (500gx8ea)",
+              "price": 149800,
+              "image": "https://image2.lotteimall.com/goods/43/68/86/12866843_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12866843"
+            },
+            {
+              "broadcast_date_label": "08/06 목요일 20:45",
+              "brand": "영양명가",
+              "name": "[25년 햇]영양명가 특등급 고춧가루 2kg (500gx4ea)",
+              "price": 70310,
+              "image": "https://image2.lotteimall.com/goods/61/59/86/12865961_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12865961"
+            },
+            {
+              "broadcast_date_label": "08/06 목요일 20:45",
+              "brand": "청도",
+              "name": "[청도] 특등급 백도 햇복숭아 4kg x 1박스 (박스당 13 -20과 )",
+              "price": 34320,
+              "image": "https://image2.lotteimall.com/goods/64/52/91/12915264_2.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12915264"
+            }
+          ]
+        },
+        {
           "date": "2026-08-01",
           "label": "08/01(토) 08:20 방송",
-          "collected_at": "2026-07-28T09:09:22.812939+09:00",
+          "collected_at": "2026-07-29T04:09:23.814435+09:00",
           "products": [
             {
               "broadcast_date_label": "08/01 토요일 08:20",
@@ -34,8 +90,16 @@
             {
               "broadcast_date_label": "08/01 토요일 09:20",
               "brand": "스칸디나비안포레스트",
+              "name": "[스칸디나비안포레스트] 최초 SALE NEW 빅핸들 316 텀블러 2종세트(피코크그린 600ml+아이보리 800ml)",
+              "price": 69000,
+              "image": "https://image2.lotteimall.com/goods/54/65/91/12916554_12.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12916554"
+            },
+            {
+              "broadcast_date_label": "08/01 토요일 09:20",
+              "brand": "스칸디나비안포레스트",
               "name": "[대용량]NEW 빅핸들 316 대용량 텀블러 1종(1300ml)",
-              "price": 63000,
+              "price": 49000,
               "image": "https://image2.lotteimall.com/goods/66/53/90/12905366_9.jpg/dims/resizemc/640x360/optimize",
               "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12905366"
             },
@@ -62,7 +126,7 @@
         {
           "date": "2026-08-03",
           "label": "08/03(월) 19:35 방송",
-          "collected_at": "2026-07-28T09:09:22.812939+09:00",
+          "collected_at": "2026-07-29T04:09:23.814435+09:00",
           "products": [
             {
               "broadcast_date_label": "08/03(월) 19:35",
@@ -87,7 +151,7 @@
         {
           "date": "2026-08-05",
           "label": "08/05(수) 20:45 방송",
-          "collected_at": "2026-07-28T09:09:22.812939+09:00",
+          "collected_at": "2026-07-29T04:09:23.814435+09:00",
           "products": [
             {
               "broadcast_date_label": "08/05(수) 20:45",
@@ -128,7 +192,7 @@
         {
           "date": "2026-08-04",
           "label": "08/04(화) 19:35 방송",
-          "collected_at": "2026-07-28T09:09:22.812939+09:00",
+          "collected_at": "2026-07-29T04:09:23.814435+09:00",
           "products": [
             {
               "broadcast_date_label": "08/04(화) 19:35",
@@ -161,7 +225,7 @@
         {
           "date": "2026-08-21",
           "label": "08/21(금) 22:45 방송",
-          "collected_at": "2026-07-28T09:09:22.812939+09:00",
+          "collected_at": "2026-07-29T04:09:23.814435+09:00",
           "products": [
             {
               "broadcast_date_label": "08/21(금) 22:45",
