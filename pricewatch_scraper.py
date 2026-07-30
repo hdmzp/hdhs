@@ -189,13 +189,19 @@ def fetch_hd(pid):
 
 # ---------------------------------------------------------- CJ (cjonstyle)
 
-CJ_DETAIL_RESOURCES = ["summary", "priceInfo", "itemInfo"]
-_cj_resource = None  # 이번 실행에서 확정된 리소스명 (-1 대신 "": HTML만)
+# 1회차 실행 결과 summary/priceInfo/itemInfo는 전부 실패 → 후보 확장.
+# repBrandTag(cj_scraper.py에서 동작 확인됨)와 같은 API 패밀리에서 탐색한다.
+CJ_DETAIL_RESOURCES = ["summary", "basicInfo", "price", "itemInfo", "detailInfo"]
+_cj_resource = None  # 이번 실행에서 확정된 리소스명 ("": API 전멸, HTML만 사용)
+_cj_debug_left = 2   # 초반 N개 상품은 전략별 응답 상태를 로그로 남김 (엔드포인트 진단용)
 
 
 def fetch_cj(pid):
-    global _cj_resource
-    headers = {"User-Agent": UA, "Referer": "https://item.cjonstyle.com/nfront/item/"}
+    global _cj_resource, _cj_debug_left
+    debug = _cj_debug_left > 0
+    if debug:
+        _cj_debug_left -= 1
+    headers = {"User-Agent": UA, "Referer": "https://display.cjonstyle.com/p/item/"}
 
     resources = ([_cj_resource] if _cj_resource else
                  CJ_DETAIL_RESOURCES if _cj_resource is None else [])
@@ -203,6 +209,8 @@ def fetch_cj(pid):
         try:
             r = requests.get(f"https://display-frontapi.cjonstyle.com/itemDetails/{pid}/{res}",
                              headers=headers, timeout=TIMEOUT)
+            if debug:
+                print(f"    [CJ진단] {pid} api/{res}: HTTP {r.status_code} {len(r.text)}b")
             if r.status_code != 200:
                 continue
             data = r.json()
@@ -212,26 +220,39 @@ def fetch_cj(pid):
                 _cj_resource = res
                 soldout = bool(find_key(data, ["soldOut", "soldOutYn"]) in (True, "Y"))
                 return {"price": price, "name": str(name), "soldout": soldout, "src": "cj_api"}
-        except Exception:
+        except Exception as e:
+            if debug:
+                print(f"    [CJ진단] {pid} api/{res}: {e}")
             continue
     if _cj_resource is None:
         _cj_resource = ""  # 리소스 후보 전멸 → HTML만 사용
 
-    try:
-        r = requests.get(f"https://item.cjonstyle.com/nfront/item/{pid}",
-                         headers=headers, timeout=TIMEOUT)
-        if r.status_code == 200 and len(r.text) > 2000:
+    # HTML: 편성 링크와 동일한 display.cjonstyle.com 상품페이지 우선
+    # (cj_scraper가 같은 호스트의 REST를 Actions에서 정상 호출 중 → 미차단 확인됨)
+    for url in (f"https://display.cjonstyle.com/p/item/{pid}",
+                f"https://item.cjonstyle.com/nfront/item/{pid}"):
+        try:
+            r = requests.get(url, headers=headers, timeout=TIMEOUT)
+            if debug:
+                print(f"    [CJ진단] {pid} {url.split('/')[2]}: HTTP {r.status_code} {len(r.text)}b")
+            if r.status_code != 200 or len(r.text) < 2000:
+                continue
             text = r.text
             price = parse_price(first_match([
                 r'"salePrice"\s*:\s*"?([\d,]+)',
+                r'"sellPrice"\s*:\s*"?([\d,]+)',
                 r'property="og:price:amount"\s+content="([\d\.]+)"',
+                r'property="product:sale_price:amount"\s+content="([\d\.]+)"',
             ], text))
-            name = first_match([r'"itemNm"\s*:\s*"([^"]+)"'], text) or og_title(text)
+            name = first_match([r'"itemNm"\s*:\s*"([^"]+)"',
+                                r'"itemName"\s*:\s*"([^"]+)"'], text) or og_title(text)
             if price > 0:
                 return {"price": price, "name": name, "soldout": html_soldout(text),
                         "src": "cj_html"}
-    except Exception:
-        pass
+        except Exception as e:
+            if debug:
+                print(f"    [CJ진단] {pid} {url.split('/')[2]}: {e}")
+            continue
     return None
 
 
@@ -263,11 +284,20 @@ def fetch_lt(pid):
 
 # ------------------------------------------------------------- GS (gsshop)
 
+_gs_debug_left = 2  # 초반 N개 상품은 응답 상태를 로그로 남김 (차단 형태 진단용)
+
+
 def fetch_gs(pid):
+    global _gs_debug_left
+    debug = _gs_debug_left > 0
+    if debug:
+        _gs_debug_left -= 1
     headers = {"User-Agent": GS_MOBILE_UA, "Referer": "https://m.gsshop.com/index.gs"}
     try:
         r = requests.get(f"https://m.gsshop.com/prd/prd.gs?prdid={pid}",
                          headers=headers, timeout=TIMEOUT)
+        if debug:
+            print(f"    [GS진단] {pid}: HTTP {r.status_code} {len(r.text)}b")
         if r.status_code == 200 and len(r.text) > 2000:
             text = r.text
             price = parse_price(first_match([
@@ -279,8 +309,9 @@ def fetch_gs(pid):
             if price > 0:
                 return {"price": price, "name": name, "soldout": html_soldout(text),
                         "src": "gs_html"}
-    except Exception:
-        pass
+    except Exception as e:
+        if debug:
+            print(f"    [GS진단] {pid}: {e}")
     return None
 
 
