@@ -123,6 +123,22 @@ def html_soldout(text):
     return any(m in text for m in SOLDOUT_MARKERS[:3])  # '품절' 단독은 오탐 잦아 제외
 
 
+def debug_price_snippets(tag, pid, text):
+    """파싱 실패 진단: HTML 안의 가격 후보(키:숫자)와 og 메타를 로그로 출력.
+    2회차 실행에서 CJ/GS 페이지가 HTTP 200인데 패턴 미검출로 확인됨 → 실제
+    키 이름을 로그로 확보해 패턴을 확정하기 위한 임시 코드 (확정 후 제거)."""
+    for m in re.findall(r'<meta[^>]+(?:og:price|product:|og:title)[^>]*>', text)[:6]:
+        print(f"    [{tag}진단] {pid} meta: {m[:150]}")
+    hits = re.findall(
+        r'.{0,50}["\']?\w*[Pp](?:rice|rc)\w*["\']?\s*[:=]\s*["\']?[\d,]{4,}.{0,15}', text)[:12]
+    for h in hits:
+        print(f"    [{tag}진단] {pid} hit: {' '.join(h.split())[:160]}")
+    for h in re.findall(r'.{0,40}판매가.{0,60}', text)[:4]:
+        print(f"    [{tag}진단] {pid} 판매가: {' '.join(h.split())[:140]}")
+    if "__NEXT_DATA__" in text:
+        print(f"    [{tag}진단] {pid} __NEXT_DATA__ 존재")
+
+
 def og_title(text):
     t = first_match([r'<meta\s+property="og:title"\s+content="([^"]+)"',
                      r'<meta\s+content="([^"]+)"\s+property="og:title"'], text)
@@ -241,6 +257,10 @@ def fetch_cj(pid):
             price = parse_price(first_match([
                 r'"salePrice"\s*:\s*"?([\d,]+)',
                 r'"sellPrice"\s*:\s*"?([\d,]+)',
+                r'"salePrc"\s*:\s*"?([\d,]+)',
+                r'"lastSalePrice"\s*:\s*"?([\d,]+)',
+                r'"itemSalePrice"\s*:\s*"?([\d,]+)',
+                r'"custPrice"\s*:\s*"?([\d,]+)',
                 r'property="og:price:amount"\s+content="([\d\.]+)"',
                 r'property="product:sale_price:amount"\s+content="([\d\.]+)"',
             ], text))
@@ -249,6 +269,8 @@ def fetch_cj(pid):
             if price > 0:
                 return {"price": price, "name": name, "soldout": html_soldout(text),
                         "src": "cj_html"}
+            if debug:
+                debug_price_snippets("CJ", pid, text)
         except Exception as e:
             if debug:
                 print(f"    [CJ진단] {pid} {url.split('/')[2]}: {e}")
@@ -303,12 +325,16 @@ def fetch_gs(pid):
             price = parse_price(first_match([
                 r'property="og:price:amount"\s+content="([\d\.]+)"',
                 r'property="product:sale_price:amount"\s+content="([\d\.]+)"',
-                r'"(?:salePrice|sellPrice|finalPrice)"\s*:\s*"?([\d,]+)',
+                r'"(?:salePrice|sellPrice|finalPrice|salePrc|sellPrc|prdPrc|sellingPrice|discountPrice)"\s*:\s*"?([\d,]+)',
+                r"'(?:salePrice|sellPrc|price)'\s*:\s*'?([\d,]{4,})",
+                r'data-price="([\d,]{4,})"',
             ], text))
             name = og_title(text) or (first_match([r'"prdNm"\s*:\s*"([^"]+)"'], text) or "")
             if price > 0:
                 return {"price": price, "name": name, "soldout": html_soldout(text),
                         "src": "gs_html"}
+            if debug:
+                debug_price_snippets("GS", pid, text)
     except Exception as e:
         if debug:
             print(f"    [GS진단] {pid}: {e}")
