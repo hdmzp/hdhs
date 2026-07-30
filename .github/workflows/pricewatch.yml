@@ -1,0 +1,67 @@
+name: 가격추적 (다사 동일브랜드)
+
+on:
+  schedule:
+    # 하루 2회: KST 10:40 / 16:40. 다른 워크플로우 크론(05:50/08:50/12:20/
+    # 14:30/18:30 등)과 시간대를 분리해 push 경합을 피한다.
+    - cron: "40 1 * * *"   # KST 10:40 = UTC 01:40
+    - cron: "40 7 * * *"   # KST 16:40 = UTC 07:40
+  workflow_dispatch: {}  # 수동 실행 버튼
+
+permissions:
+  contents: write
+  actions: write   # pages-deploy 워크플로우를 API로 dispatch하려면 필요
+
+jobs:
+  pricewatch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Python 설치
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 패키지 설치
+        run: pip install requests
+
+      - name: 추적 대상 갱신 (편성 데이터 스캔)
+        continue-on-error: true
+        run: python pricewatch_tracker.py
+
+      - name: 가격 수집 + 변경 감지
+        continue-on-error: true
+        run: python pricewatch_scraper.py
+
+      - name: 결과 커밋 & 푸시
+        id: commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # 위 스텝들이 continue-on-error라 전부 실패해도 여기까지 온다.
+          # 디렉토리 미생성 시 git add -A -- {경로}가 fatal 나지 않게 보장.
+          mkdir -p pricewatch/history
+          git add -A -- pricewatch
+          if git diff --staged --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "chore: 가격추적 자동 갱신 $(date -u +%Y-%m-%d)"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+          git pull --rebase --autostash origin main
+          git push
+
+      - name: Pages 재배포 트리거
+        # github-actions[bot] push는 다른 워크플로우를 재귀 트리거하지 않으므로
+        # workflow_dispatch API로 배포를 직접 큐에 넣는다 (homeshopping.yml과 동일).
+        if: steps.commit.outputs.changed == 'true'
+        run: |
+          curl -L -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/pages-deploy.yml/dispatches" \
+            -d '{"ref":"main"}'

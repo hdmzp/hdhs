@@ -805,6 +805,54 @@
   #lvTableWrap .sec-table th { cursor: pointer; user-select: none; }
   .lv-sort-ind { font-size: 9px; color: var(--brand-blue); margin-left: 2px; }
 
+  /* ============ 보안 탭 - 가격추적 (4사 동일브랜드) ============ */
+  .sec-subtabs { margin-bottom: 14px; }
+  .sec-subtabs button { font-size: 12.5px; padding: 6px 14px; }
+  #pwCatSlicer button.active { background: #A9C6F2; color: #173E7C; }
+  #pwTableWrap { max-height: 72vh; overflow: auto; }
+  #pwTableWrap .sec-table th { position: sticky; top: 0; z-index: 2; }
+  #pwTableWrap .sec-table td { vertical-align: top; }
+  .pw-cat-row td {
+    background: var(--paper-dim);
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--ink-soft);
+    padding: 6px 12px;
+  }
+  .pw-brand-row { cursor: pointer; }
+  .pw-brand-row:hover td { background: var(--bg-soft, #F8FAFC); }
+  .pw-brand { font-weight: 700; white-space: nowrap; }
+  .pw-brand .pw-co-count { font-size: 10.5px; font-weight: 600; color: var(--ink-faint); margin-left: 4px; }
+  .pw-price { font-variant-numeric: tabular-nums; font-weight: 600; white-space: nowrap; }
+  .pw-price.pw-soldout { color: var(--ink-faint); text-decoration: line-through; font-weight: 500; }
+  .pw-cell-empty { color: var(--ink-faint); }
+  .pw-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: 4px;
+    padding: 1px 5px;
+    margin-left: 5px;
+    vertical-align: 1px;
+    white-space: nowrap;
+  }
+  .pw-badge.drop { background: #DBEAFE; color: #1D4ED8; }   /* 인하 = 파랑 */
+  .pw-badge.raise { background: #FEE2E2; color: #B91C1C; }  /* 인상 = 빨강 */
+  .pw-badge.name { background: #FEF3E2; color: #B45309; }   /* 구성변경 */
+  .pw-badge.soldout { background: #E2E8F0; color: #475569; }
+  .pw-badge.sched { background: var(--paper-dim); color: var(--ink-faint); font-weight: 600; }
+  /* 최근 48시간 내 변동 셀 하이라이트 */
+  #pwTableWrap td.pw-hot { background: #FFFBEB; }
+  /* 브랜드 확장 상세 */
+  .pw-detail-row > td { background: var(--bg-soft, #F8FAFC); padding: 12px 16px; }
+  .pw-detail-co { margin-bottom: 10px; }
+  .pw-detail-co-name { font-size: 12px; font-weight: 800; margin-bottom: 4px; }
+  .pw-detail-item { font-size: 12.5px; margin: 2px 0 2px 8px; white-space: normal; }
+  .pw-detail-item a { color: var(--brand-blue); text-decoration: none; }
+  .pw-detail-item a:hover { text-decoration: underline; }
+  .pw-detail-hist { font-size: 11.5px; color: var(--ink-soft); margin: 2px 0 0 16px; }
+  .pw-detail-hist .pw-hist-date { color: var(--ink-faint); margin-right: 6px; font-variant-numeric: tabular-nums; }
+
   /* ============ 편성맵 탭 (요일×시간대 히트맵) ============ */
   #tabIndustry { font-family: 'Pretendard', -apple-system, sans-serif; }
   .in-wrap { max-width: 1100px; margin: 0 auto; padding: 14px 16px 40px; }
@@ -2682,6 +2730,11 @@
   </div>
 
   <div id="secContentBox" class="sec-content" style="display:none;">
+    <div class="lv-slicer sec-subtabs" id="secSubTabs">
+      <button class="active" data-sub="lv">📺 방송 실적</button>
+      <button data-sub="pw">💰 가격추적</button>
+    </div>
+
     <div class="lv-section" id="lvSection">
       <h3 class="lv-title">📺 홈쇼핑 방송 실적 (라방바)</h3>
       <div class="lv-controls">
@@ -2707,6 +2760,26 @@
       <p class="lv-summary" id="lvSummary"></p>
       <div class="sec-table-wrap" id="lvTableWrap"></div>
       <p class="lv-table-note">금액: 1억 이상 O.O억 / 미만 백만 단위 · 총주문: 라방바 매출액(클릭 시 라방바 이동) · 순주문: 총주문 × 예상전환율(카테고리·가격대 평균) · 판매가: 100만원 미만 천원 / 이상 만원 단위 · 심야(방송시작 01:00~05:00) 방송은 회색 행 표시 · 헤더 클릭 시 정렬, 오른쪽 경계 드래그 시 열 너비 조정 · 조회 기간 최대 31일</p>
+    </div>
+
+    <div class="lv-section" id="pwSection" style="display:none;">
+      <h3 class="lv-title">💰 4사 동일 브랜드 가격추적</h3>
+      <div class="lv-controls">
+        <div class="lv-slicer" id="pwCoSlicer">
+          <button class="active" data-min="3">3사 이상</button>
+          <button data-min="4">4사 공통</button>
+        </div>
+        <div class="lv-slicer" id="pwSortSlicer">
+          <button class="active" data-sort="change">최근변동순</button>
+          <button data-sort="name">브랜드명순</button>
+          <button data-sort="drop">인하폭순</button>
+        </div>
+        <input type="search" id="pwSearchInput" class="lv-search-input" placeholder="브랜드 검색" aria-label="브랜드 검색">
+      </div>
+      <div class="lv-slicer" id="pwCatSlicer" style="margin-bottom:12px;"></div>
+      <p class="lv-summary" id="pwSummary"></p>
+      <div class="sec-table-wrap" id="pwTableWrap"></div>
+      <p class="lv-table-note">여러 사에서 동시 운영 중인 브랜드의 상품페이지 판매가를 하루 2회(10:40/16:40) 수집 · 셀: 회사별 추적상품 중 최저 현재가 · 뱃지(최근 14일): <b>▼</b> 인하(파랑) / <b>▲</b> 인상(빨강) / <b>✎</b> 구성(상품명) 변경 / 품절 · '방송가' 뱃지: 상품페이지 접근 실패로 최근 방송가 기준 · 최근 48시간 내 변동 셀은 배경 하이라이트 · 행 클릭 시 상품별 상세와 변동 이력</p>
     </div>
 
     <!-- 항목/내용(안내·갱신방법) 표는 로그인 후 노출하지 않음 (복호화 성공 = 인증 용도로만 사용) -->
@@ -4896,6 +4969,7 @@ function celRenderCompare() {
     pwInput.value = '';
     tableWrap.innerHTML = '';
     updatedEl.textContent = '';
+    if (window.pwResetSubtab) window.pwResetSubtab(); // 가격추적 서브탭도 초기 상태로
   }
 
   const b64ToBytes = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
@@ -5566,6 +5640,279 @@ function celRenderCompare() {
     const latest = await lvFindLatestDate();
     lvSetRange(latest, latest);
     lvRender();
+  };
+})();
+
+// ============ 보안 탭 - 가격추적 (4사 동일브랜드) ============
+(function () {
+  // 데이터: pricewatch/tracked.json (추적 대상), pricewatch/current.json (최신 스냅샷),
+  //         pricewatch/history/{YYYY-MM}.json (변경 이벤트, 당월+전월 로드)
+  // GitHub Actions(pricewatch.yml)가 하루 2회 갱신. 여러 사에서 동시 운영 중인
+  // 브랜드의 상품페이지 판매가를 브랜드×4사 표로 비교한다.
+  const $ = id => document.getElementById(id);
+  const PW_CO = [
+    { co: 'HD', label: '현대', color: '#003C82' },
+    { co: 'GS', label: 'GS', color: '#1AA663' },
+    { co: 'CJ', label: 'CJ', color: '#4B286D' },
+    { co: 'LT', label: '롯데', color: '#DA291C' },
+  ];
+  const pwEsc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  let pwInited = false;
+  let pwTracked = null, pwCurrent = null, pwEvents = [];
+  let pwMinCo = 3;            // 3 = 3사 이상, 4 = 4사 공통
+  let pwSort = 'change';      // change | name | drop
+  let pwCatSel = null;        // 선택 카테고리 (null = 전체)
+  let pwSearch = '';
+  const pwExpanded = new Set();  // 확장된 브랜드
+
+  // ---- 서브탭 (방송 실적 ↔ 가격추적) ----
+  function pwShowSub(sub) {
+    document.querySelectorAll('#secSubTabs button').forEach(b => b.classList.toggle('active', b.dataset.sub === sub));
+    const lvSec = $('lvSection'), pwSec = $('pwSection');
+    if (lvSec) lvSec.style.display = sub === 'lv' ? '' : 'none';
+    if (pwSec) pwSec.style.display = sub === 'pw' ? '' : 'none';
+    if (sub === 'pw') window.pwInit();
+  }
+  document.querySelectorAll('#secSubTabs button').forEach(btn => {
+    btn.addEventListener('click', () => pwShowSub(btn.dataset.sub));
+  });
+  window.pwResetSubtab = function () { pwShowSub('lv'); };
+
+  // ---- 유틸 ----
+  const pwFmt = n => (+n || 0).toLocaleString('ko-KR');
+  function pwDaysAgo(dateStr) {
+    if (!dateStr) return Infinity;
+    const d = new Date(dateStr + 'T00:00:00');
+    return (Date.now() - d.getTime()) / 86400000;
+  }
+  const PW_TYPE_LABEL = {
+    price_drop: '▼ 인하', price_raise: '▲ 인상', name_change: '✎ 구성변경',
+    sold_out: '품절', restock: '판매재개', new_product: '추적 시작', obs: '관측',
+  };
+
+  async function pwLoad() {
+    const now = new Date();
+    const ym = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
+    const prev = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    const prevYm = prev.getFullYear() + '-' + String(prev.getMonth() + 1).padStart(2, '0');
+    const [tracked, current, h1, h2] = await Promise.all([
+      fetchJsonSafe('./pricewatch/tracked.json'),
+      fetchJsonSafe('./pricewatch/current.json'),
+      fetchJsonSafe('./pricewatch/history/' + ym + '.json'),
+      fetchJsonSafe('./pricewatch/history/' + prevYm + '.json'),
+    ]);
+    pwTracked = tracked;
+    pwCurrent = current;
+    pwEvents = [].concat((h2 && h2.events) || [], (h1 && h1.events) || []);
+  }
+
+  // ---- 표 데이터 구성 ----
+  function pwPickCell(brand, co) {
+    // 회사별 추적 상품 중 대표 1개 선택: 판매중 최저가 우선, 없으면 품절 포함 최저가
+    const prods = ((pwTracked.brands[brand] || {}).products || {})[co] || [];
+    const items = prods.map(p => (pwCurrent.items || {})[co + '|' + p.pid]).filter(it => it && it.price > 0);
+    if (!items.length) return null;
+    const alive = items.filter(it => !it.soldout);
+    const pool = alive.length ? alive : items;
+    let best = pool[0];
+    pool.forEach(it => { if (it.price < best.price) best = it; });
+    return { item: best, count: items.length, allSoldout: !alive.length };
+  }
+
+  function pwBuildRows() {
+    const rows = [];
+    Object.keys(pwTracked.brands).forEach(brand => {
+      const info = pwTracked.brands[brand];
+      if ((info.companies || []).length < pwMinCo) return;
+      if (pwCatSel && (info.category || '기타') !== pwCatSel) return;
+      if (pwSearch && !brand.toLowerCase().includes(pwSearch)) return;
+      const cells = {};
+      let lastChangeDate = '', bestDrop = 0;
+      PW_CO.forEach(({ co }) => {
+        const cell = pwPickCell(brand, co);
+        cells[co] = cell;
+        const lc = cell && cell.item.last_change;
+        if (lc && pwDaysAgo(lc.date) <= 14) {
+          if (lc.date > lastChangeDate) lastChangeDate = lc.date;
+          if (lc.type === 'price_drop' && lc.pct < bestDrop) bestDrop = lc.pct;
+        }
+      });
+      rows.push({ brand, category: info.category || '기타', nCo: (info.companies || []).length, cells, lastChangeDate, bestDrop });
+    });
+
+    rows.sort((a, b) => {
+      // 브랜드명순은 카테고리 그룹 헤더로 묶어 보여주므로 카테고리 우선 정렬
+      if (pwSort === 'name') return a.category.localeCompare(b.category, 'ko') || a.brand.localeCompare(b.brand, 'ko');
+      if (pwSort === 'drop') return (a.bestDrop - b.bestDrop) || a.brand.localeCompare(b.brand, 'ko');
+      return (b.lastChangeDate || '').localeCompare(a.lastChangeDate || '') || a.brand.localeCompare(b.brand, 'ko');
+    });
+    return rows;
+  }
+
+  // ---- 렌더링 ----
+  function pwRenderCatChips() {
+    const counts = {};
+    Object.keys(pwTracked.brands).forEach(brand => {
+      const info = pwTracked.brands[brand];
+      if ((info.companies || []).length < pwMinCo) return;
+      const cat = info.category || '기타';
+      counts[cat] = (counts[cat] || 0) + 1;
+    });
+    const cats = Object.keys(counts).sort((a, b) => counts[b] - counts[a]);
+    if (pwCatSel && !counts[pwCatSel]) pwCatSel = null;
+    let html = '<button class="' + (pwCatSel === null ? 'active' : '') + '" data-cat="">전체</button>';
+    cats.forEach(c => {
+      html += '<button class="' + (pwCatSel === c ? 'active' : '') + '" data-cat="' + pwEsc(c) + '">' +
+              pwEsc(c) + ' <span style="opacity:.6">' + counts[c] + '</span></button>';
+    });
+    $('pwCatSlicer').innerHTML = html;
+    $('pwCatSlicer').querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => { pwCatSel = btn.dataset.cat || null; pwRender(); });
+    });
+  }
+
+  function pwCellHtml(cell) {
+    if (!cell) return '<span class="pw-cell-empty">-</span>';
+    const it = cell.item;
+    let html = '<span class="pw-price' + (it.soldout ? ' pw-soldout' : '') + '">' + pwFmt(it.price) + '</span>';
+    const lc = it.last_change;
+    if (lc && pwDaysAgo(lc.date) <= 14) {
+      if (lc.type === 'price_drop') html += '<span class="pw-badge drop">▼ ' + pwEsc(Math.abs(lc.pct).toFixed(1)) + '%</span>';
+      else if (lc.type === 'price_raise') html += '<span class="pw-badge raise">▲ ' + pwEsc((+lc.pct).toFixed(1)) + '%</span>';
+      else if (lc.type === 'name_change') html += '<span class="pw-badge name">✎</span>';
+      else if (lc.type === 'sold_out') html += '<span class="pw-badge soldout">품절</span>';
+    } else if (it.soldout) {
+      html += '<span class="pw-badge soldout">품절</span>';
+    }
+    if (it.src === 'schedule') html += '<span class="pw-badge sched">방송가</span>';
+    return html;
+  }
+
+  function pwDetailHtml(row) {
+    let html = '';
+    PW_CO.forEach(({ co, label, color }) => {
+      const prods = ((pwTracked.brands[row.brand] || {}).products || {})[co] || [];
+      if (!prods.length) return;
+      html += '<div class="pw-detail-co"><div class="pw-detail-co-name" style="color:' + color + '">' + label + '</div>';
+      prods.forEach(p => {
+        const it = (pwCurrent.items || {})[co + '|' + p.pid];
+        if (!it) return;
+        const link = it.link || p.link || '';
+        html += '<div class="pw-detail-item">' +
+          (link ? '<a href="' + pwEsc(link) + '" target="_blank" rel="noopener">' + pwEsc(it.name || p.name) + '</a>' : pwEsc(it.name || p.name)) +
+          ' · <b>' + pwFmt(it.price) + '원</b>' +
+          (it.soldout ? ' <span class="pw-badge soldout">품절</span>' : '') +
+          (it.src === 'schedule' ? ' <span class="pw-badge sched">방송가</span>' : '') +
+          (it.prev_price ? ' <span style="color:var(--ink-faint)">(직전 ' + pwFmt(it.prev_price) + '원, ' + pwEsc(it.prev_date || '') + ')</span>' : '') +
+          '</div>';
+      });
+      html += '</div>';
+    });
+    // 변동 이력 (obs 제외, 최신순 최대 20건)
+    const evs = pwEvents.filter(e => e.brand === row.brand && e.type !== 'obs' && e.type !== 'new_product')
+                        .sort((a, b) => (b.date + b.ts).localeCompare(a.date + a.ts)).slice(0, 20);
+    if (evs.length) {
+      html += '<div class="pw-detail-co"><div class="pw-detail-co-name">변동 이력</div>';
+      evs.forEach(e => {
+        let desc = PW_TYPE_LABEL[e.type] || e.type;
+        if (e.type === 'price_drop' || e.type === 'price_raise') {
+          desc += ' ' + pwFmt(e.old) + '→' + pwFmt(e.new) + '원 (' + (e.pct > 0 ? '+' : '') + e.pct + '%)';
+        } else if (e.type === 'name_change') {
+          desc += ' "' + pwEsc(e.old_name) + '" → "' + pwEsc(e.new_name) + '"';
+        }
+        html += '<div class="pw-detail-hist"><span class="pw-hist-date">' + pwEsc(e.date) + '</span>[' + pwEsc(e.co) + '] ' + desc + '</div>';
+      });
+      html += '</div>';
+    } else {
+      html += '<div class="pw-detail-hist">아직 감지된 변동이 없어요 (수집을 시작한 지 얼마 안 됐거나 가격이 안정적이에요)</div>';
+    }
+    return html;
+  }
+
+  function pwRender() {
+    pwRenderCatChips();
+    const rows = pwBuildRows();
+    const nFour = rows.filter(r => r.nCo === 4).length;
+    const nChanged = rows.filter(r => r.lastChangeDate).length;
+    $('pwSummary').innerHTML = '브랜드 <b>' + rows.length + '</b>개' +
+      (pwMinCo < 4 ? ' (4사 공통 <b>' + nFour + '</b>개)' : '') +
+      ' · 최근 14일 내 변동 <b>' + nChanged + '</b>개' +
+      (pwCurrent && pwCurrent.checked_at ? ' · 마지막 수집 ' + pwEsc(String(pwCurrent.checked_at).replace('T', ' ').slice(0, 16)) : '');
+
+    if (!rows.length) {
+      $('pwTableWrap').innerHTML = '<div class="lv-empty">표시할 브랜드가 없어요</div>';
+      return;
+    }
+    let html = '<table class="sec-table"><thead><tr><th>브랜드</th>';
+    PW_CO.forEach(({ label, color }) => { html += '<th style="color:' + color + '">' + label + '</th>'; });
+    html += '</tr></thead><tbody>';
+    let lastCat = null;
+    rows.forEach(row => {
+      if (pwSort === 'name' && row.category !== lastCat) {
+        lastCat = row.category;
+        html += '<tr class="pw-cat-row"><td colspan="5">' + pwEsc(lastCat) + '</td></tr>';
+      }
+      html += '<tr class="pw-brand-row" data-brand="' + pwEsc(row.brand) + '">' +
+        '<td class="pw-brand">' + pwEsc(row.brand) +
+        '<span class="pw-co-count">' + row.nCo + '사</span>' +
+        (pwSort !== 'name' ? ' <span class="pw-co-count">' + pwEsc(row.category) + '</span>' : '') + '</td>';
+      PW_CO.forEach(({ co }) => {
+        const cell = row.cells[co];
+        const lc = cell && cell.item.last_change;
+        const hot = lc && pwDaysAgo(lc.date) <= 2;
+        html += '<td' + (hot ? ' class="pw-hot"' : '') + '>' + pwCellHtml(cell) + '</td>';
+      });
+      html += '</tr>';
+      if (pwExpanded.has(row.brand)) {
+        html += '<tr class="pw-detail-row"><td colspan="5">' + pwDetailHtml(row) + '</td></tr>';
+      }
+    });
+    html += '</tbody></table>';
+    $('pwTableWrap').innerHTML = html;
+    $('pwTableWrap').querySelectorAll('.pw-brand-row').forEach(tr => {
+      tr.addEventListener('click', () => {
+        const b = tr.dataset.brand;
+        if (pwExpanded.has(b)) pwExpanded.delete(b); else pwExpanded.add(b);
+        pwRender();
+      });
+    });
+  }
+
+  window.pwInit = async function () {
+    if (pwInited) return;
+    pwInited = true;
+    if (typeof gaEvent === 'function') gaEvent('pricewatch_view', {});
+
+    $('pwCoSlicer').querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        $('pwCoSlicer').querySelectorAll('button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        pwMinCo = +btn.dataset.min;
+        pwRender();
+      });
+    });
+    $('pwSortSlicer').querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        $('pwSortSlicer').querySelectorAll('button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        pwSort = btn.dataset.sort;
+        pwRender();
+      });
+    });
+    let pwSearchTimer = null;
+    $('pwSearchInput').addEventListener('input', e => {
+      clearTimeout(pwSearchTimer);
+      pwSearchTimer = setTimeout(() => { pwSearch = e.target.value.trim().toLowerCase(); pwRender(); }, 250);
+    });
+
+    $('pwTableWrap').innerHTML = '<div class="lv-empty">불러오는 중...</div>';
+    await pwLoad();
+    if (!pwTracked || !pwCurrent) {
+      $('pwTableWrap').innerHTML = '<div class="lv-empty">아직 수집된 가격 데이터가 없어요 (첫 수집 후 표시됩니다)</div>';
+      return;
+    }
+    pwRender();
   };
 })();
 
