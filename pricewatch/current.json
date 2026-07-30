@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-30T23:54:27+09:00",
+  "checked_at": "2026-07-31T00:16:37+09:00",
   "items": {
     "HD|2252211375": {
       "co": "HD",
@@ -4932,14 +4932,17 @@
       "co": "LT",
       "brand": "기본에",
       "pid": "12901561",
-      "name": "[기본에][300초] 기본에 행주티슈 플러스케어 80매 10팩+셀룰로오스 수세미 4종",
+      "name": "[300초] 기본에 행주티슈 플러스케어 80매 10팩+셀룰로오스 수세미 4종",
       "price": 19800,
       "soldout": true,
       "src": "lt_html",
       "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12901561",
       "prev_price": null,
       "prev_date": null,
-      "last_change": null
+      "last_change": {
+        "type": "name_change",
+        "date": "2026-07-31"
+      }
     },
     "LT|12913236": {
       "co": "LT",
@@ -5102,13 +5105,17 @@
       "brand": "닥터린",
       "pid": "12840800",
       "name": "[12개월] 닥터린 콘드로이친 1200 콘레이티+MBP+K2 12박스 (1박스:1,200mgX30정)",
-      "price": 329000,
+      "price": 230300,
       "soldout": false,
       "src": "lt_html",
       "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12840800",
-      "prev_price": null,
-      "prev_date": null,
-      "last_change": null
+      "prev_price": 329000,
+      "prev_date": "2026-07-31",
+      "last_change": {
+        "type": "price_drop",
+        "date": "2026-07-31",
+        "pct": -30.0
+      }
     },
     "LT|12915256": {
       "co": "LT",
@@ -5284,13 +5291,17 @@
       "brand": "라스튜디오",
       "pid": "12914057",
       "name": "★역시즌특가★ 라스튜디오 26FW 컬링 아일랜드산 양모100 FAUX 스웨이드 자켓",
-      "price": 119000,
+      "price": 101150,
       "soldout": false,
       "src": "lt_html",
       "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12914057",
-      "prev_price": null,
-      "prev_date": null,
-      "last_change": null
+      "prev_price": 119000,
+      "prev_date": "2026-07-31",
+      "last_change": {
+        "type": "price_drop",
+        "date": "2026-07-31",
+        "pct": -15.0
+      }
     },
     "LT|12888210": {
       "co": "LT",
