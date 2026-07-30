@@ -24,13 +24,14 @@ pricewatch/
       #       new_product 추적 신규 진입 {price,name}
     ]}
 
-== 수집 전략 (회사별 폴백 체인) ==
+== 수집 전략 (회사별, Actions 실측으로 확정) ==
 HD: hmall /md/api/cache 상세 API 후보 → itemPtc HTML 인라인 JSON/메타
-CJ: display-frontapi itemDetails/{pid}/(summary|priceInfo|itemInfo) →
-    item.cjonstyle.com/nfront/item/{pid} HTML 인라인 JSON
+CJ: item.cjonstyle.com/nfront/item/{pid} HTML
+    (display.cjonstyle.com/p/item은 트래픽 대기 페이지라 사용 불가,
+     display-frontapi 상세 API 후보는 전부 404)
 LT: viewGoodsDetail.lotte HTML → m.lotteimall.com 재시도
 GS: m.gsshop.com/prd/prd.gs HTML (gs_scraper의 모바일 UA 재사용;
-    gsshop은 클라우드 IP에서 www가 막혀 있으나 m.은 specialPgm 수집 실적 있음)
+    www는 클라우드 IP 차단이지만 m.은 정상 응답 확인됨)
 모든 전략 실패 시 tracked.json의 최근 방송가로 폴백(src="schedule").
 회사별로 실행 초반 CIRCUIT_BREAK_N건 연속 실패하면 그 회사는 이번 실행
 전체를 schedule 폴백 처리(차단 상황에서 헛요청 방지).
@@ -125,8 +126,8 @@ def html_soldout(text):
 
 def debug_price_snippets(tag, pid, text):
     """파싱 실패 진단: HTML 안의 가격 후보(키:숫자)와 og 메타를 로그로 출력.
-    2회차 실행에서 CJ/GS 페이지가 HTTP 200인데 패턴 미검출로 확인됨 → 실제
-    키 이름을 로그로 확보해 패턴을 확정하기 위한 임시 코드 (확정 후 제거)."""
+    사이트 개편으로 패턴이 어긋나면 이 로그만으로 새 키를 확정할 수 있다
+    (회사별 초반 2개 상품, 파싱 실패 시에만 출력)."""
     for m in re.findall(r'<meta[^>]+(?:og:price|product:|og:title)[^>]*>', text)[:6]:
         print(f"    [{tag}진단] {pid} meta: {m[:150]}")
     hits = re.findall(
@@ -205,64 +206,32 @@ def fetch_hd(pid):
 
 # ---------------------------------------------------------- CJ (cjonstyle)
 
-# 1회차 실행 결과 summary/priceInfo/itemInfo는 전부 실패 → 후보 확장.
-# repBrandTag(cj_scraper.py에서 동작 확인됨)와 같은 API 패밀리에서 탐색한다.
-CJ_DETAIL_RESOURCES = ["summary", "basicInfo", "price", "itemInfo", "detailInfo"]
-_cj_resource = None  # 이번 실행에서 확정된 리소스명 ("": API 전멸, HTML만 사용)
-_cj_debug_left = 2   # 초반 N개 상품은 전략별 응답 상태를 로그로 남김 (엔드포인트 진단용)
+# 1~3회차 실행으로 확정한 사실:
+# - display-frontapi.cjonstyle.com/itemDetails/{pid}/* 상세 API 후보는 전부 404
+# - display.cjonstyle.com/p/item/{pid}는 트래픽 대기 페이지("잠시 후 판매가
+#   시작됩니다")를 반환해 상품 정보가 없음
+# - item.cjonstyle.com/nfront/item/{pid}가 실제 콘텐츠:
+#   <strong class="price">108,000</strong>원 마크업 + "price": 108000 JSON 키
+_cj_debug_left = 2  # 초반 N개 상품은 실패 시 가격후보 스니펫을 로그로 남김
 
 
 def fetch_cj(pid):
-    global _cj_resource, _cj_debug_left
+    global _cj_debug_left
     debug = _cj_debug_left > 0
     if debug:
         _cj_debug_left -= 1
     headers = {"User-Agent": UA, "Referer": "https://display.cjonstyle.com/p/item/"}
-
-    resources = ([_cj_resource] if _cj_resource else
-                 CJ_DETAIL_RESOURCES if _cj_resource is None else [])
-    for res in resources:
-        try:
-            r = requests.get(f"https://display-frontapi.cjonstyle.com/itemDetails/{pid}/{res}",
-                             headers=headers, timeout=TIMEOUT)
-            if debug:
-                print(f"    [CJ진단] {pid} api/{res}: HTTP {r.status_code} {len(r.text)}b")
-            if r.status_code != 200:
-                continue
-            data = r.json()
-            price = parse_price(find_key(data, ["salePrice", "sellPrice", "custSalePrice"]))
-            name = find_key(data, ["itemNm", "itemName"]) or ""
-            if price > 0:
-                _cj_resource = res
-                soldout = bool(find_key(data, ["soldOut", "soldOutYn"]) in (True, "Y"))
-                return {"price": price, "name": str(name), "soldout": soldout, "src": "cj_api"}
-        except Exception as e:
-            if debug:
-                print(f"    [CJ진단] {pid} api/{res}: {e}")
-            continue
-    if _cj_resource is None:
-        _cj_resource = ""  # 리소스 후보 전멸 → HTML만 사용
-
-    # HTML: 편성 링크와 동일한 display.cjonstyle.com 상품페이지 우선
-    # (cj_scraper가 같은 호스트의 REST를 Actions에서 정상 호출 중 → 미차단 확인됨)
-    for url in (f"https://display.cjonstyle.com/p/item/{pid}",
-                f"https://item.cjonstyle.com/nfront/item/{pid}"):
-        try:
-            r = requests.get(url, headers=headers, timeout=TIMEOUT)
-            if debug:
-                print(f"    [CJ진단] {pid} {url.split('/')[2]}: HTTP {r.status_code} {len(r.text)}b")
-            if r.status_code != 200 or len(r.text) < 2000:
-                continue
+    try:
+        r = requests.get(f"https://item.cjonstyle.com/nfront/item/{pid}",
+                         headers=headers, timeout=TIMEOUT)
+        if debug:
+            print(f"    [CJ진단] {pid}: HTTP {r.status_code} {len(r.text)}b")
+        if r.status_code == 200 and len(r.text) > 2000:
             text = r.text
             price = parse_price(first_match([
-                r'"salePrice"\s*:\s*"?([\d,]+)',
-                r'"sellPrice"\s*:\s*"?([\d,]+)',
-                r'"salePrc"\s*:\s*"?([\d,]+)',
-                r'"lastSalePrice"\s*:\s*"?([\d,]+)',
-                r'"itemSalePrice"\s*:\s*"?([\d,]+)',
-                r'"custPrice"\s*:\s*"?([\d,]+)',
+                r'class="price"[^>]*>([\d,]{3,})<',      # 판매가격 표시 마크업 (1순위)
+                r'"price"\s*:\s*"?([\d,]{4,})',          # 인라인 JSON
                 r'property="og:price:amount"\s+content="([\d\.]+)"',
-                r'property="product:sale_price:amount"\s+content="([\d\.]+)"',
             ], text))
             name = first_match([r'"itemNm"\s*:\s*"([^"]+)"',
                                 r'"itemName"\s*:\s*"([^"]+)"'], text) or og_title(text)
@@ -271,10 +240,9 @@ def fetch_cj(pid):
                         "src": "cj_html"}
             if debug:
                 debug_price_snippets("CJ", pid, text)
-        except Exception as e:
-            if debug:
-                print(f"    [CJ진단] {pid} {url.split('/')[2]}: {e}")
-            continue
+    except Exception as e:
+        if debug:
+            print(f"    [CJ진단] {pid}: {e}")
     return None
 
 
@@ -330,6 +298,7 @@ def fetch_gs(pid):
                 r'data-price="([\d,]{4,})"',
             ], text))
             name = og_title(text) or (first_match([r'"prdNm"\s*:\s*"([^"]+)"'], text) or "")
+            name = re.sub(r'^\[GS\s?SHOP\]\s*', '', name, flags=re.IGNORECASE)  # og:title 사이트 태그 제거
             if price > 0:
                 return {"price": price, "name": name, "soldout": html_soldout(text),
                         "src": "gs_html"}
