@@ -140,6 +140,13 @@ hdhs/
 - 직전 스냅샷(`link_cache.json` / 이전 날짜 파일)과 비교해 순위 변동을 계산, 인기/HOT/RISING 배지에 반영
 - 날짜별 파일(`data/ranking/{날짜}.json`)과 최신 스냅샷(`latest.json`)을 함께 저장
 
+### 💰 가격추적 — `pricewatch_tracker.py` + `pricewatch_scraper.py`
+- 4사 편성 데이터(최근 60일)에서 **3사 이상에 편성된 브랜드**를 자동 선정하고, 브랜드×회사별 최근 상품(최대 3개)의 상품페이지 판매가를 하루 2회(KST 10:40/16:40, `pricewatch.yml`) 수집
+- 편성표에는 안 보이는 "방송 후 상시가 인하"와 구성(상품명) 변경을 잡는 것이 목적
+- `pricewatch/tracked.json`(추적 대상) / `current.json`(최신 스냅샷) / `history/{YYYY-MM}.json`(변경 이벤트만 append — obs/price_drop/price_raise/name_change/sold_out/restock/new_product)
+- 수집 폴백 체인: HD·CJ는 상세 API → HTML, LT는 HTML(www→m), GS는 `m.gsshop.com`(클라우드 IP 차단 시 최근 방송가 폴백, `src:"schedule"`로 구분). 같은 `src`끼리만 가격을 비교해 방송가↔상시가 혼동 오탐 방지, 1% 미만이면서 1,000원 미만 변동은 노이즈로 무시
+- 프론트는 🔒보안 탭 로그인 후 "💰 가격추적" 서브탭 (브랜드×4사 표, 카테고리/4사공통 필터, 행 클릭 시 상품·이력)
+
 ### 🌤 날씨 — `weather.py`
 - 서울 기준(위경도 격자 60,127 / 관측소ID 108)
 - 과거(ASOS): 확정된 지난 달까지는 `weather/asos/{YYYY-MM}.json`에 한 번만 저장하고 재수집 안 함. 진행 중인 현재 달은 매일 1일~어제까지 통째로 재수집
