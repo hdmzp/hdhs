@@ -1,6 +1,6 @@
 {
   "month": "2026-08",
-  "updated_at": "2026-07-31T09:13:09.545147+09:00",
+  "updated_at": "2026-08-01T04:10:30.330149+09:00",
   "programs": [
     {
       "program_key": "HD_HJM",
@@ -13,15 +13,23 @@
         {
           "date": "2026-08-03",
           "label": "08/03(월) 19:30 방송",
-          "collected_at": "2026-07-31T09:13:09.541778+09:00",
+          "collected_at": "2026-08-01T04:10:30.329313+09:00",
           "products": [
             {
               "broadcast_date_label": "08/03(월) 19:30 방송",
+              "brand": "농협안심한우",
+              "name": "[황쇼패키지] 농협안심한우 1++ 한우 프리미엄 세트 1kg (꽃갈비살 +등심 +채끝 +업진안살 +불고기)",
+              "price": 119000,
+              "image": "https://image.hmall.com/2233153466_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2233153466"
+            },
+            {
+              "broadcast_date_label": "08/03(월) 19:30 방송",
               "brand": "비빌",
-              "name": "[황정민쇼 단독 비빌 컬렉션] 비빌 무설탕 캔디 14박스(총 11가지 맛)",
+              "name": "비빌 무설탕 캔디",
               "price": 46500,
               "image": "https://image.hmall.com/2252362447_0.jpg",
-              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252362447"
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252362447&preview=true"
             },
             {
               "broadcast_date_label": "08/03(월) 19:30 방송",
@@ -32,20 +40,12 @@
               "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252020369&preview=true"
             },
             {
-              "broadcast_date_label": "08/03(월) 19:30 방송",
+              "broadcast_date_label": "8/3(월) 방송상품",
               "brand": "",
               "name": "비빌 무설탕 캔디 11박스(총 11가지 맛)",
               "price": 46500,
               "image": "https://image.hmall.com/2252363029_0.jpg",
               "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252363029"
-            },
-            {
-              "broadcast_date_label": "8/3(월) 방송상품",
-              "brand": "",
-              "name": "비빌 크림체리맛 캔디",
-              "price": 5000,
-              "image": "https://image.hmall.com/2252320931_0.png",
-              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252320931"
             }
           ]
         }
@@ -62,7 +62,7 @@
         {
           "date": "2026-08-04",
           "label": "08/04(화) 19:30 방송",
-          "collected_at": "2026-07-31T09:13:09.541778+09:00",
+          "collected_at": "2026-08-01T04:10:30.329313+09:00",
           "products": [
             {
               "broadcast_date_label": "08/04(화) 19:30 방송",
@@ -83,7 +83,7 @@
             {
               "broadcast_date_label": "08/04(화) 19:30 방송",
               "brand": "프로티원",
-              "name": "[오감쇼 단독구성] 프로티원 단백질 쉐이크 4박스 + 대용량 490g 1통(곡물) + 보틀",
+              "name": "[오감쇼 론칭 단한번 구성] 프로티원 단백질 쉐이크 4박스 + 대용량 490g 1통(곡물) + 보틀",
               "price": 87900,
               "image": "https://image.hmall.com/2252243797_0.png",
               "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252243797"
@@ -143,7 +143,7 @@
         {
           "date": "2026-08-01",
           "label": "08/01(토) 08:20 방송",
-          "collected_at": "2026-07-31T09:13:09.541778+09:00",
+          "collected_at": "2026-08-01T04:10:30.329313+09:00",
           "products": [
             {
               "broadcast_date_label": "08/01(토) 08:20 방송",
@@ -184,7 +184,7 @@
         {
           "date": "2026-08-13",
           "label": "08/13(목) 20:45 방송",
-          "collected_at": "2026-07-31T09:13:09.541778+09:00",
+          "collected_at": "2026-08-01T04:10:30.329313+09:00",
           "products": [
             {
               "prd_id": "1107902603",
@@ -281,6 +281,59 @@
       ]
     },
     {
+      "program_key": "GS_SYJ",
+      "company": "GS",
+      "tab_name": "소유진",
+      "program_title": "소유진쇼",
+      "schedule_raw": "매주 금요일 저녁 8시 35분",
+      "detail_link": "https://m.gsshop.com/section/broad/specialPgm/13401?mseq=W00618-TV_PRO_BB-2",
+      "broadcasts": [
+        {
+          "date": "2026-08-14",
+          "label": "08/14(금) 20:35 방송",
+          "collected_at": "2026-08-01T04:10:30.329313+09:00",
+          "products": [
+            {
+              "prd_id": "1132562145",
+              "broadcast_date_label": "8월 14일(금) 20:35 방송",
+              "broadcast_iso": "2026-08-14T20:35:00",
+              "brand": "GS SHOP",
+              "name": "유시몰 오리지널 쿨링피치 치약 소유진쇼 패키지",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1132562145"
+            },
+            {
+              "prd_id": "1107684430",
+              "broadcast_date_label": "8월 14일(금) 20:35 방송",
+              "broadcast_iso": "2026-08-14T20:35:00",
+              "brand": "GS SHOP",
+              "name": "유시몰 오리지널 쿨링피치 치약 기본세트",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1107684430"
+            },
+            {
+              "prd_id": "1107684423",
+              "broadcast_date_label": "8월 14일(금) 20:35 방송",
+              "broadcast_iso": "2026-08-14T20:35:00",
+              "brand": "GS SHOP",
+              "name": "유시몰 클래식 칫솔세트 8개",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1107684423"
+            },
+            {
+              "prd_id": "1107684520",
+              "broadcast_date_label": "8월 14일(금) 20:35 방송",
+              "broadcast_iso": "2026-08-14T20:35:00",
+              "brand": "GS SHOP",
+              "name": "유시몰 쿨링피치 오리지널 치약 120g 1개",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1107684520"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "program_key": "LT_CYR",
       "company": "LT",
       "tab_name": "최유라",
@@ -290,9 +343,17 @@
       "broadcasts": [
         {
           "date": "2026-08-08",
-          "label": "08/08(토) 10:00 방송",
-          "collected_at": "2026-07-31T09:13:09.541778+09:00",
+          "label": "08/08(토) 09:20 방송",
+          "collected_at": "2026-08-01T04:10:30.329313+09:00",
           "products": [
+            {
+              "broadcast_date_label": "08/08 토요일 09:20",
+              "brand": "밥스누",
+              "name": "[밥스누] 밥스누 서목태 약콩차 500ml x24병 ",
+              "price": 49000,
+              "image": "https://image2.lotteimall.com/goods/21/73/91/12917321_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12917321"
+            },
             {
               "broadcast_date_label": "08/08 토요일 10:00",
               "brand": "설아래",
@@ -306,7 +367,7 @@
         {
           "date": "2026-08-06",
           "label": "08/06(목) 20:45 방송",
-          "collected_at": "2026-07-31T09:13:09.541778+09:00",
+          "collected_at": "2026-08-01T04:10:30.329313+09:00",
           "products": [
             {
               "broadcast_date_label": "08/06 목요일 20:45",
@@ -345,14 +406,14 @@
         {
           "date": "2026-08-01",
           "label": "08/01(토) 08:20 방송",
-          "collected_at": "2026-07-31T09:13:09.541778+09:00",
+          "collected_at": "2026-08-01T04:10:30.329313+09:00",
           "products": [
             {
               "broadcast_date_label": "08/01 토요일 08:20",
               "brand": "샤크닌자",
               "name": "[샤크닌자] 샤크 청소기 파워클린 360 라이트쿠퍼/퓨어블랙(IW4271)+[사은품]닌자 블랜더",
               "price": 949000,
-              "image": "https://image2.lotteimall.com/goods/83/58/91/12915883_2.jpg/dims/resizemc/640x360/optimize",
+              "image": "https://image2.lotteimall.com/goods/83/58/91/12915883_4.jpg/dims/resizemc/640x360/optimize",
               "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12915883"
             },
             {
@@ -402,7 +463,7 @@
         {
           "date": "2026-08-03",
           "label": "08/03(월) 19:35 방송",
-          "collected_at": "2026-07-31T09:13:09.541778+09:00",
+          "collected_at": "2026-08-01T04:10:30.329313+09:00",
           "products": [
             {
               "broadcast_date_label": "08/03(월) 19:35",
@@ -427,7 +488,7 @@
         {
           "date": "2026-08-05",
           "label": "08/05(수) 20:45 방송",
-          "collected_at": "2026-07-31T09:13:09.541778+09:00",
+          "collected_at": "2026-08-01T04:10:30.329313+09:00",
           "products": [
             {
               "broadcast_date_label": "08/05(수) 20:45",
@@ -436,6 +497,22 @@
               "price": 89900,
               "image": "https://image.cjonstyle.net/goods_images/20/552/2089415552L.jpg?timestamp=20260720001711",
               "link": "https://item.cjonstyle.com/item/2089415552?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/05(수) 20:45",
+              "brand": "슬로가닉",
+              "name": "[최화정쇼/단독] 유기농 블루베리 100 총 14박스",
+              "price": 169000,
+              "image": "https://image.cjonstyle.net/goods_images/20/515/2090316515L.jpg?timestamp=20260728161841",
+              "link": "https://item.cjonstyle.com/item/2090316515?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/05(수) 20:45",
+              "brand": null,
+              "name": "장지녕 갈치 김치 5kg",
+              "price": 54900,
+              "image": "https://image.cjonstyle.net/goods_images/20/114/2090316114L.jpg?timestamp=20260728160043",
+              "link": "https://item.cjonstyle.com/item/2090316114?channelCode=30002002"
             },
             {
               "broadcast_date_label": "08/05(수) 20:45",
@@ -460,7 +537,7 @@
         {
           "date": "2026-08-04",
           "label": "08/04(화) 19:35 방송",
-          "collected_at": "2026-07-31T09:13:09.541778+09:00",
+          "collected_at": "2026-08-01T04:10:30.329313+09:00",
           "products": [
             {
               "broadcast_date_label": "08/04(화) 19:35",
@@ -509,7 +586,7 @@
         {
           "date": "2026-08-21",
           "label": "08/21(금) 22:45 방송",
-          "collected_at": "2026-07-31T09:13:09.541778+09:00",
+          "collected_at": "2026-08-01T04:10:30.329313+09:00",
           "products": [
             {
               "broadcast_date_label": "08/21(금) 22:45",
