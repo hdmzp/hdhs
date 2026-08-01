@@ -2303,7 +2303,17 @@
     white-space: nowrap;
     vertical-align: middle;
   }
+  /* 좁은 화면에서 가로 스크롤해도 날짜 열은 왼쪽에 고정 */
+  table.pm-table thead th.pm-date-col,
+  td.pm-date-cell {
+    position: sticky;
+    left: 0;
+    background: var(--paper);
+    z-index: 3;
+  }
+  table.pm-table thead th.pm-date-col { z-index: 5; }
   tr.pm-today td { background: var(--paper-dim); }
+  tr.pm-today td.pm-date-cell { background: var(--paper-dim); }
   .pm-today-badge {
     display: inline-block;
     background: var(--brand-blue);
@@ -2339,15 +2349,17 @@
     height: 9px;
     border-radius: 50%;
   }
+  /* 카드사명과 할인율이 핵심 정보 - 절대 줄이지 않고(flex:none),
+     공간이 모자라면 할인유형 문구가 먼저 잘리게 한다 */
   .pm-bar-name {
+    flex: none;
     font-size: 12.5px;
     font-weight: 700;
     color: var(--ink);
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
   .pm-bar-rate {
+    flex: none;
     font-size: 19px;
     font-weight: 800;
     color: var(--ink);
@@ -2360,10 +2372,14 @@
     color: var(--ink-soft);
   }
   .pm-bar-type {
+    flex: 0 1 auto;
+    min-width: 0;
     font-size: 10px;
     font-weight: 600;
     color: var(--ink-faint);
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .pm-empty { color: var(--ink-faint); font-size: 12px; }
 
@@ -2374,9 +2390,9 @@
     table.pm-table thead th.pm-date-col { width: 58px; white-space: nowrap; }
     td.pm-date-cell { font-size: 11px; }
     .pm-co-tag { font-size: 11px; padding: 3px 10px; }
-    .pm-bar { height: 36px; gap: 5px; border-radius: 9px; padding: 0 6px; margin-bottom: 6px; }
-    .pm-bar-name { font-size: 10.5px; }
-    .pm-bar-rate { font-size: 15px; }
+    .pm-bar { height: 36px; gap: 5px; border-radius: 9px; padding: 0 7px; margin-bottom: 6px; }
+    .pm-bar-name { font-size: 11.5px; }
+    .pm-bar-rate { font-size: 16px; }
     .pm-bar-pct { font-size: 10px; }
     .pm-bar-type { font-size: 9px; }
   }
@@ -4561,6 +4577,21 @@ function pmCardStyle(name) {
   return ['#6b7280', '#ffffff'];
 }
 
+// 표시용 카드명 축약: 카드사+할인율이 핵심이라 '카드' 접미어 등을 걷어낸다
+// (삼성카드->삼성, KB국민카드->국민, 카카오페이 현대카드->카페현대)
+// 원래 이름은 바의 title 속성으로 남겨 마우스오버로 확인 가능
+function pmShortCard(name) {
+  const s = (name || '')
+    .replace(/카카오페이/g, '카페')
+    .replace(/네이버페이/g, '네이버')
+    .replace(/토스페이/g, '토스')
+    .replace(/KB국민/g, '국민')
+    .replace(/NH농협/g, '농협')
+    .replace(/카드/g, '')
+    .replace(/\s+/g, '');
+  return s || name;
+}
+
 function pmFormatDate(dateStr) {
   const d = new Date(dateStr + 'T00:00:00');
   const days = ['일', '월', '화', '수', '목', '금', '토'];
@@ -4623,9 +4654,9 @@ async function pmRefresh() {
         const rate = (e.rate != null && e.rate !== '')
           ? `${e.max ? '~' : ''}${e.rate}<span class="pm-bar-pct">%</span>` : '';
         const typeTxt = (e.type || '') + (e.note ? `·${e.note}` : '');
-        return `<div class="pm-bar">` +
+        return `<div class="pm-bar" title="${fpEscapeHtml(e.card)}">` +
           `<span class="pm-bar-dot" style="background:${dotColor}"></span>` +
-          `<span class="pm-bar-name">${fpEscapeHtml(e.card)}</span>` +
+          `<span class="pm-bar-name">${fpEscapeHtml(pmShortCard(e.card))}</span>` +
           `<span class="pm-bar-rate">${rate}</span>` +
           `<span class="pm-bar-type">${fpEscapeHtml(typeTxt)}</span>` +
           `</div>`;
