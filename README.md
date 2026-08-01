@@ -30,6 +30,7 @@ hdhs/
 ├── hd_scraper.py / gs_scraper.py     # [홈쇼핑] 현대 / GS(라방바 경유)
 ├── cj_scraper.py / lt_scraper.py     # [홈쇼핑] CJ온스타일 / 롯데
 ├── etc_scraper.py                    # [홈쇼핑] 기타 7개사(공영/홈앤/K쇼핑/신세계/NS/쇼핑엔티/SK스토아, 라방바 경유)
+├── promotion_scraper.py              # [프로모션] 4사(HD/GS/CJ/LT) 카드할인 일정
 ├── weather.py                        # [날씨] ASOS 과거 + 단기예보
 │
 ├── scraper/scrape_naver.py           # [드라마/예능] 시청률 편성 (Playwright)
@@ -59,6 +60,7 @@ hdhs/
 ├── data/dramavariety/{주월요일}.json              # 드라마/예능 결과 (주 단위 파일)
 ├── data/ranking/{YYYY-MM-DD}.json, latest.json  # 랭킹 결과 (일 단위 + 최신 스냅샷)
 ├── homeshopping/{사}_{live|data|plus}/{YYYY-MM}.json  # 홈쇼핑 편성 결과 (월별 파일, 11개사)
+├── homeshopping/promotions/card_discounts.json  # 프로모션(카드할인) 일정
 ├── homeshopping/fixed_programs/{사}.json, merged.json         # 고정PGM
 ├── homeshopping/representative_programs/{사}_{코드}.json, merged.json  # 셀럽PGM
 └── weather/asos|forecast/...                    # 날씨 결과
@@ -78,6 +80,7 @@ hdhs/
 | `homeshopping.yml` | 05:50, 12:20 (하루 2회) | 홈쇼핑 4사(HD/GS/CJ/LT) | 스크래퍼별 `continue-on-error` |
 | `etc-scrape.yml` | 06:10, 12:40 (하루 2회) | 홈쇼핑 기타 7개사 | `continue-on-error` |
 | `scrape-ranking.yml` | 07:00 | 홈쇼핑 랭킹 18개 카테고리 | - |
+| `promotion.yml` | 06:20, 12:50 (하루 2회) | 프로모션 카드할인 4사(HD/GS/CJ/LT) | 회사별 실패는 스크립트 내부에서 격리 |
 | `rep-pgm-scrape.yml` | 08:10 | 셀럽PGM 대표프로그램 메타 병합 | 회사별 `continue-on-error` |
 | `scrape-celebpgm.yml` | 03:00 | 셀럽PGM(8개 프로그램) 상품 데이터 | 스크립트별 `|| echo` |
 | `scrape-dramavariety.yml` | 02:00, 08:30, 12:10, 21:00 (하루 4회) | 드라마/예능 시청률 | - |
@@ -140,6 +143,15 @@ hdhs/
 - 직전 스냅샷(`link_cache.json` / 이전 날짜 파일)과 비교해 순위 변동을 계산, 인기/HOT/RISING 배지에 반영
 - 날짜별 파일(`data/ranking/{날짜}.json`)과 최신 스냅샷(`latest.json`)을 함께 저장
 
+### 💳 프로모션(카드할인) — `promotion_scraper.py`
+- 홈쇼핑 4사(HD/GS/CJ/LT)의 날짜별 카드할인 일정(카드사/할인유형/할인율)을 수집해 `homeshopping/promotions/card_discounts.json` 하나에 저장
+- 과거 날짜는 보존(이력 누적), 오늘 이후 날짜는 매 수집 시 통째로 교체. 실패한 회사는 기존 데이터 유지 + `status: "failed"` 표시
+- 회사별 수집 방식:
+  - **HD**: `hmall.com/md/dpl/index`의 "한눈에 보는 카드 혜택" 스와이퍼. requests 우선, 실패 시 Playwright 렌더링. 해시 클래스명 대신 `data-anchor` 속성+태그 구조로 파싱 (구조 확정)
+  - **LT**: `lotteimall.com` 메인의 "카드 청구할인" `ul.cardbox`. Vue 렌더링이라 Playwright 필요 가능성 높음 (구조 확정)
+  - **CJ/GS**: 구조 미확정 - 렌더링된 텍스트에서 "카드사명+할인율%" 휴리스틱으로 추출(오늘 날짜로만 기록). 실패 시 `homeshopping/promotions/_debug_{사}.html` 스냅샷 저장 → 스냅샷 보고 파서 확정하는 방식으로 개선 예정. GS는 클라우드 IP 차단 가능성 있음
+- 회사 확장: 스크래퍼의 `COMPANIES` 리스트 + 프론트 `PM_COMPANIES`에 추가. NS(카드혜택 캘린더 table)가 다음 후보, KT는 이미지 배너뿐이라 보류
+
 ### 💰 가격추적 — `pricewatch_tracker.py` + `pricewatch_scraper.py`
 - 4사 편성 데이터(최근 60일)에서 **3사 이상에 편성된 브랜드**를 자동 선정하고, 브랜드×회사별 최근 상품(최대 3개)의 상품페이지 판매가를 하루 2회(KST 10:40/16:40, `pricewatch.yml`) 수집
 - 편성표에는 안 보이는 "방송 후 상시가 인하"와 구성(상품명) 변경을 잡는 것이 목적
@@ -180,7 +192,7 @@ hdhs/
 
 공통 구조: 모든 데이터는 fetch로 JSON을 불러와 그리드/표로 렌더링하는 정적 SPA 한 페이지. 데이터 fetch는 전부 `?t=${Date.now()}` 캐시버스팅 적용(브라우저가 옛 응답을 캐싱해 화면이 안 갱신되는 문제 방지). GA4(`G-EZ7V7Y9SFC`)로 `tab_view`, `filter_click`, `outbound_click`, `feedback_submit` 이벤트를 수집.
 
-탭 순서(index.html 기준): **홈쇼핑 → 고정PGM → 셀럽PGM → 지상파·종편 → 드라마·예능 → 날씨 → 랭킹 → 의견**
+탭 순서(index.html 기준): **홈쇼핑 → 고정PGM → 셀럽PGM → 편성맵 → 지상파·종편 → 드라마·예능 → 날씨 → 랭킹 → 프로모션 → 의견**
 
 ### 🛒 홈쇼핑 탭 (기본 진입 탭)
 - 일 단위 조회, 24시간 × 회사 그리드 (라이브방송/데이터방송 토글)
@@ -213,6 +225,12 @@ hdhs/
 ### 📊 랭킹 탭
 - 18개 카테고리(대/소분류) 선택형 주간 랭킹, 순위 변동 표시(▲▼)와 인기/HOT/RISING 배지
 - 채널 색상 코딩 적용
+
+### 💳 프로모션 탭
+- 서브탭 구조(현재 "카드할인" 하나, 쿠폰 등 확장 대비)
+- "날짜 × 4사(HD/GS/CJ/LT)" 표로 오늘 이후의 카드할인 일정 표시, 오늘 행 하이라이트
+- 카드사별 브랜드 색 점 + 할인유형(즉시/청구할인) + 할인율 칩
+- 수집 실패한 회사는 헤더에 "수집실패" 뱃지 표시(마지막 성공 데이터는 유지)
 
 ### 💬 의견 탭
 - 유형 선택(버그 신고/기능 제안/기타 의견) + 자유 텍스트 입력
