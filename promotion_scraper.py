@@ -147,9 +147,13 @@ def close_browser():
         _playwright = None
 
 
-def fetch_rendered(url, wait_selector=None, mobile=False, timeout_ms=30000, scroll_steps=8):
+def fetch_rendered(url, wait_selector=None, mobile=False, timeout_ms=30000,
+                   scroll_steps=8, anchor_selector=None):
     """Playwright로 페이지를 렌더링해 HTML을 반환한다.
-    카드혜택 영역이 lazy-load(스크롤 시 렌더)인 경우가 많아 단계적으로 스크롤한다.
+    카드혜택 영역이 lazy-load(스크롤로 화면에 가까워져야 렌더)인 경우가 많아
+    화면 높이 단위로 단계적으로 스크롤한다. anchor_selector가 주어지면
+    (섹션 컨테이너는 DOM에 있는데 내용물이 lazy인 케이스) 해당 요소를
+    scroll_into_view로 강제 노출시킨다.
     wait_selector가 끝내 안 나타나도 예외를 던지지 않고 현재 HTML을 반환한다
     (호출부의 파서가 빈 결과를 내면 그때 실패 처리)."""
     browser = _ensure_browser()
@@ -169,8 +173,18 @@ def fetch_rendered(url, wait_selector=None, mobile=False, timeout_ms=30000, scro
                         break
                 except Exception:
                     pass
-            page.mouse.wheel(0, 1200)
-            page.wait_for_timeout(700)
+            # 앵커 컨테이너가 이미 DOM에 있으면 그 위치로 바로 스크롤
+            if anchor_selector:
+                try:
+                    loc = page.locator(anchor_selector)
+                    if loc.count() > 0:
+                        loc.first.scroll_into_view_if_needed(timeout=3000)
+                        page.wait_for_timeout(1200)
+                        continue
+                except Exception:
+                    pass
+            page.evaluate("window.scrollBy(0, window.innerHeight * 0.9)")
+            page.wait_for_timeout(600)
         if wait_selector:
             try:
                 page.wait_for_selector(wait_selector, timeout=5000)
@@ -199,6 +213,12 @@ def save_debug(company, html):
         print(f"    -> [디버그] 렌더링 HTML 저장: {path}")
     except Exception as e:
         print(f"    -> [디버그] 스냅샷 저장 실패: {e}")
+
+
+# PROMO_DEBUG=true 면 파싱 성공 여부와 무관하게 렌더링 스냅샷을 저장한다.
+# (CJ/GS처럼 휴리스틱으로 돌아가는 회사의 실제 DOM을 확보해 파서를 확정하는 용도.
+#  promotion.yml의 workflow_dispatch 입력으로 켤 수 있다)
+DEBUG_SNAPSHOTS = os.environ.get("PROMO_DEBUG", "").lower() in ("1", "true", "yes")
 
 
 # ============ HD (현대홈쇼핑) ============
@@ -264,7 +284,7 @@ def parse_hd(html):
 
 def scrape_hd():
     try:
-        html = fetch_static(HD_URL, referer="https://www.hmall.com/")
+        html = fetch_static(HD_URL, referer="https://www.hmall.com/", mobile=True)
         days = parse_hd(html)
         if days:
             return days
@@ -272,8 +292,17 @@ def scrape_hd():
     except Exception as e:
         print(f"    [HD] 정적 요청 실패({e}) -> Playwright 렌더링 시도")
 
-    html = fetch_rendered(HD_URL, wait_selector='[data-anchor="evnt_card_new"] .swiper-slide')
+    # /md/* 는 모바일 웹이라 모바일 컨텍스트로 연다 (rehd.py와 동일 접근).
+    # 카드혜택 섹션은 스크롤로 화면에 가까워져야 렌더링되는 lazy 섹션이고
+    # 페이지가 길어서 스크롤 단계를 넉넉히 준다. 섹션 컨테이너(data-anchor)가
+    # DOM에 먼저 생기는 경우 scroll_into_view로 강제 노출시킨다.
+    html = fetch_rendered(
+        HD_URL, mobile=True, scroll_steps=30,
+        wait_selector='[data-anchor="evnt_card_new"] .swiper-slide',
+        anchor_selector='[data-anchor="evnt_card_new"], [data-scroll-anchor="evnt_card_new"]')
     days = parse_hd(html)
+    if DEBUG_SNAPSHOTS and days:
+        save_debug("HD", html)
     if not days:
         save_debug("HD", html)
         raise RuntimeError("카드혜택 스와이퍼 파싱 결과 0건 (구조 변경 의심)")
@@ -398,6 +427,8 @@ CJ_URL = "https://display.cjonstyle.com/p/homeTab/main?hmtabMenuId=H00009"
 def scrape_cj():
     html = fetch_rendered(CJ_URL, mobile=True)
     entries = parse_card_text_heuristic(html)
+    if DEBUG_SNAPSHOTS:
+        save_debug("CJ", html)
     if not entries:
         save_debug("CJ", html)
         raise RuntimeError("혜택탭에서 카드할인 패턴을 못 찾음 (스냅샷 저장됨 - 파서 확정 필요)")
@@ -420,6 +451,8 @@ def scrape_gs():
 
     html = fetch_rendered(GS_URL, mobile=True)
     entries = parse_card_text_heuristic(html)
+    if DEBUG_SNAPSHOTS:
+        save_debug("GS", html)
     if not entries:
         save_debug("GS", html)
         raise RuntimeError("이벤트 페이지에서 카드할인 패턴을 못 찾음 "

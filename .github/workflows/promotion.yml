@@ -5,7 +5,12 @@ on:
     # 하루 2회: KST 06:20 / 12:50 (다른 워크플로우 크론과 겹치지 않게 분산)
     - cron: "20 21 * * *"   # KST 06:20 = UTC 21:20 (전날)
     - cron: "50 3 * * *"    # KST 12:50 = UTC 03:50
-  workflow_dispatch: {}  # 수동 실행 버튼
+  workflow_dispatch:     # 수동 실행 버튼
+    inputs:
+      debug_snapshots:
+        description: '렌더링 HTML 스냅샷 저장 (CJ/GS 파서 개선용)'
+        required: false
+        default: 'false'
 
 permissions:
   contents: write
@@ -33,6 +38,8 @@ jobs:
       # 스텝 자체는 실패해도 커밋까지 진행한다 (실패 회사의 기존 데이터 보존).
       - name: 프로모션 카드할인 수집
         continue-on-error: true
+        env:
+          PROMO_DEBUG: ${{ inputs.debug_snapshots }}
         run: python promotion_scraper.py
 
       - name: 결과 커밋 & 푸시
