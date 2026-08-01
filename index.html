@@ -2208,30 +2208,6 @@
     gap: 10px;
     background: var(--paper);
   }
-  .pm-sub-tabs {
-    display: inline-flex;
-    gap: 4px;
-    background: var(--paper-dim);
-    border: 1px solid var(--rule);
-    border-radius: 9px;
-    padding: 4px;
-    box-shadow: var(--shadow-sm);
-  }
-  .pm-sub-btn {
-    font-family: 'Pretendard', -apple-system, sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    background: none;
-    border: none;
-    border-radius: 6px;
-    padding: 7px 18px;
-    color: var(--ink-soft);
-    cursor: pointer;
-    transition: background 0.15s, color 0.15s;
-  }
-  .pm-sub-btn.active { background: var(--brand-blue); color: #fff; }
-  .pm-sub-btn:hover:not(.active) { background: #fff; color: var(--ink); }
-
   .pm-updated {
     text-align: center;
     font-size: 11px;
@@ -2659,7 +2635,7 @@
     <button id="tabBtnDramaVariety">드라마·예능</button>
     <button id="tabBtnWeather">날씨</button>
     <button id="tabBtnRanking">랭킹</button>
-    <button id="tabBtnPromotion">프로모션</button>
+    <button id="tabBtnPromotion">카드할인</button>
     <button id="tabBtnFeedback">의견</button>
     <button id="tabBtnSecurity" aria-label="보안">🔒</button>
   </div>
@@ -2859,10 +2835,6 @@
 <div id="tabPromotion" class="tab-panel">
 
 <div class="pm-controls">
-  <div class="pm-sub-tabs" id="pmSubTabs">
-    <button class="pm-sub-btn active" data-sub="card">💳 카드할인</button>
-    <!-- 추후 쿠폰/적립 등 프로모션 유형 확장 시 여기에 서브탭 추가 -->
-  </div>
   <div class="pm-month-nav">
     <button id="pmMonthPrev" type="button" aria-label="이전 달">◀</button>
     <input type="month" id="pmMonthPicker">
@@ -3072,7 +3044,7 @@ const TAB_TIPS = {
     ],
   },
   promotion: {
-    title: '프로모션 탭은?',
+    title: '카드할인 탭은?',
     items: [
       '홈쇼핑 4사(HD/GS/CJ/LT)의 <b>카드할인 일정</b>을 각 사 사이트에서 수집해요',
       '오늘 이후 일정만 보여주고, 회사마다 공개하는 기간이 달라요',
