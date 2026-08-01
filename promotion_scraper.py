@@ -162,6 +162,9 @@ def fetch_rendered(url, wait_selector=None, mobile=False, timeout_ms=30000,
         user_agent=UA_MOBILE if mobile else UA_DESKTOP,
         viewport={"width": 390, "height": 844} if mobile else {"width": 1440, "height": 900},
         locale="ko-KR",
+        # hmall '오늘' 슬라이드의 날짜 라벨은 브라우저 로컬 시간으로 계산된다.
+        # Actions 러너는 UTC라 KST 새벽에 하루 전 날짜로 렌더링되므로 KST로 고정.
+        timezone_id="Asia/Seoul",
     )
     try:
         page = context.new_page()
@@ -264,13 +267,16 @@ def parse_hd(html):
     for slide in container.select(".swiper-slide"):
         text = slide.get_text(" ", strip=True)
 
-        m = re.search(r"(\d{1,2})\.(\d{1,2})\s*\(", text)
-        if m:
-            d = infer_date(int(m.group(1)), int(m.group(2)))
-            if d:
-                cur_date = d
-        elif "오늘" in text and cur_date is None:
+        # '오늘' 슬라이드의 날짜 라벨은 클라이언트 로컬 시간으로 계산돼
+        # UTC 환경에선 하루 전으로 찍힌다 -> 라벨 대신 KST 오늘을 신뢰
+        if "오늘" in text:
             cur_date = today_kst()
+        else:
+            m = re.search(r"(\d{1,2})\.(\d{1,2})\s*\(", text)
+            if m:
+                d = infer_date(int(m.group(1)), int(m.group(2)))
+                if d:
+                    cur_date = d
         if cur_date is None:
             continue
 
