@@ -2203,7 +2203,9 @@
     margin: 0 auto;
     padding: 14px 24px 0;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
     background: var(--paper);
   }
   .pm-sub-tabs {
@@ -2383,6 +2385,18 @@
   }
   .pm-empty { color: var(--ink-faint); font-size: 12px; }
 
+  /* 이번 달 지난 일정 구분선 + 흐림 처리 */
+  tr.pm-divider td {
+    padding: 18px 6px 6px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ink-faint);
+    text-align: center;
+    border-bottom: 1px solid var(--rule);
+    background: var(--paper);
+  }
+  tr.pm-past td { opacity: 0.62; }
+
   @media (max-width: 700px) {
     .pm-controls { padding: 10px 8px 0; }
     .pm-scroll { padding: 0 8px 40px; }
@@ -2420,14 +2434,16 @@
   }
 
   /* 월별 조회 내비게이션 (PGM 슬라이서 위) */
-  .cel-month-nav {
+  .cel-month-nav,
+  .pm-month-nav {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
   }
 
-  .cel-month-nav button {
+  .cel-month-nav button,
+  .pm-month-nav button {
     font-family: 'Pretendard', -apple-system, sans-serif;
     font-size: 13px;
     font-weight: 700;
@@ -2440,17 +2456,20 @@
     transition: background 0.15s, color 0.15s;
   }
 
-  .cel-month-nav button:hover:not(:disabled) {
+  .cel-month-nav button:hover:not(:disabled),
+  .pm-month-nav button:hover:not(:disabled) {
     background: var(--brand-blue);
     color: #fff;
   }
 
-  .cel-month-nav button:disabled {
+  .cel-month-nav button:disabled,
+  .pm-month-nav button:disabled {
     opacity: 0.35;
     cursor: default;
   }
 
-  .cel-month-nav input[type="month"] {
+  .cel-month-nav input[type="month"],
+  .pm-month-nav input[type="month"] {
     font-family: 'Pretendard', -apple-system, sans-serif;
     font-size: 13.5px;
     font-weight: 700;
@@ -2622,8 +2641,8 @@
   @media (max-width: 720px) {
     #tabCelebrity { padding: 0 12px 40px; }
     .cel-controls { padding: 10px 0; gap: 8px; }
-    .cel-month-nav button { font-size: 12px; padding: 5px 10px; }
-    .cel-month-nav input[type="month"] { font-size: 12.5px; padding: 5px 8px; }
+    .cel-month-nav button, .pm-month-nav button { font-size: 12px; padding: 5px 10px; }
+    .cel-month-nav input[type="month"], .pm-month-nav input[type="month"] { font-size: 12.5px; padding: 5px 8px; }
     .cel-slicer button { font-size: 11.5px; padding: 6px 10px; }
     .cel-col { flex-basis: 190px; min-width: 180px; }
     .cel-col-title { font-size: 12.5px; }
@@ -2855,6 +2874,11 @@
   <div class="pm-sub-tabs" id="pmSubTabs">
     <button class="pm-sub-btn active" data-sub="card">💳 카드할인</button>
     <!-- 추후 쿠폰/적립 등 프로모션 유형 확장 시 여기에 서브탭 추가 -->
+  </div>
+  <div class="pm-month-nav">
+    <button id="pmMonthPrev" type="button" aria-label="이전 달">◀</button>
+    <input type="month" id="pmMonthPicker">
+    <button id="pmMonthNext" type="button" aria-label="다음 달">▶</button>
   </div>
 </div>
 
@@ -4598,6 +4622,15 @@ function pmFormatDate(dateStr) {
   return `${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')} (${days[d.getDay()]})`;
 }
 
+// 'YYYY-MM'에 delta개월 더하기
+function pmMonthAdd(ym, delta) {
+  const [y, m] = ym.split('-').map(Number);
+  const d = new Date(y, m - 1 + delta, 1);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+}
+
+let pmMonth = null; // 조회 중인 달 'YYYY-MM' (null = 이번 달)
+
 async function pmRefresh() {
   const wrap = document.getElementById('pmGridWrap');
   const updated = document.getElementById('pmUpdated');
@@ -4616,19 +4649,47 @@ async function pmRefresh() {
 
   const companies = pmData.companies;
   const todayStr = toLocalDateStr(new Date());
+  const curMonth = todayStr.slice(0, 7);
 
-  // 오늘 이후 날짜의 합집합 (과거 이력은 JSON에 쌓이지만 화면엔 예정 일정만)
-  const dateSet = new Set();
+  // 전체 날짜 합집합에서 조회 가능한 월 범위를 계산 (이력이 쌓이면 과거 달로 이동 가능)
+  const allDates = new Set();
   for (const co of PM_COMPANIES) {
     const days = (companies[co.code] || {}).days || {};
-    for (const d in days) if (d >= todayStr) dateSet.add(d);
+    for (const d in days) allDates.add(d);
   }
-  if (dateSet.size === 0) {
-    notice.textContent = '오늘 이후의 카드할인 일정이 아직 없습니다.';
+  const months = [...new Set([...allDates].map(d => d.slice(0, 7)).concat([curMonth]))].sort();
+  const minMonth = months[0];
+  const maxMonth = months[months.length - 1];
+  if (!pmMonth) pmMonth = curMonth;
+  if (pmMonth < minMonth) pmMonth = minMonth;
+  if (pmMonth > maxMonth) pmMonth = maxMonth;
+
+  const picker = document.getElementById('pmMonthPicker');
+  picker.value = pmMonth;
+  picker.min = minMonth;
+  picker.max = maxMonth;
+  document.getElementById('pmMonthPrev').disabled = pmMonth <= minMonth;
+  document.getElementById('pmMonthNext').disabled = pmMonth >= maxMonth;
+
+  const monthDates = [...allDates].filter(d => d.slice(0, 7) === pmMonth).sort();
+
+  // 이번 달: 오늘부터 미래(오름차순)를 먼저, 지난 날짜는 아래 '지난 일정'으로 최신순 누적.
+  // 다른 달(아카이브): 1일부터 오름차순 전체.
+  let ordered, pastStartIdx = -1;
+  if (pmMonth === curMonth) {
+    const future = monthDates.filter(d => d >= todayStr);
+    const past = monthDates.filter(d => d < todayStr).reverse();
+    ordered = future.concat(past);
+    pastStartIdx = past.length ? future.length : -1;
+  } else {
+    ordered = monthDates;
+  }
+
+  if (!ordered.length) {
+    notice.textContent = '이 달에는 수집된 카드할인 일정이 없습니다.';
     notice.style.display = '';
     return;
   }
-  const dates = [...dateSet].sort();
 
   let html = '<table class="pm-table"><thead><tr><th class="pm-date-col">날짜</th>';
   for (const co of PM_COMPANIES) {
@@ -4638,9 +4699,14 @@ async function pmRefresh() {
   }
   html += '</tr></thead><tbody>';
 
-  for (const d of dates) {
+  for (let i = 0; i < ordered.length; i++) {
+    const d = ordered[i];
+    if (i === pastStartIdx) {
+      html += `<tr class="pm-divider"><td colspan="${PM_COMPANIES.length + 1}">지난 일정</td></tr>`;
+    }
     const isToday = d === todayStr;
-    html += `<tr class="${isToday ? 'pm-today' : ''}">` +
+    const isPast = pmMonth === curMonth && d < todayStr;
+    html += `<tr class="${isToday ? 'pm-today' : ''}${isPast ? ' pm-past' : ''}">` +
       `<td class="pm-cell pm-date-cell">${pmFormatDate(d)}` +
       (isToday ? '<span class="pm-today-badge">오늘</span>' : '') + '</td>';
     for (const co of PM_COMPANIES) {
@@ -4668,6 +4734,24 @@ async function pmRefresh() {
   html += '</tbody></table>';
   wrap.innerHTML = html;
 }
+
+document.getElementById('pmMonthPrev').addEventListener('click', () => {
+  pmMonth = pmMonthAdd(pmMonth || toLocalDateStr(new Date()).slice(0, 7), -1);
+  pmRefresh();
+  gaEvent('filter_click', { filter_group: 'promotion_month', filter_value: pmMonth });
+});
+document.getElementById('pmMonthNext').addEventListener('click', () => {
+  pmMonth = pmMonthAdd(pmMonth || toLocalDateStr(new Date()).slice(0, 7), 1);
+  pmRefresh();
+  gaEvent('filter_click', { filter_group: 'promotion_month', filter_value: pmMonth });
+});
+document.getElementById('pmMonthPicker').addEventListener('change', (e) => {
+  if (e.target.value) {
+    pmMonth = e.target.value;
+    pmRefresh();
+    gaEvent('filter_click', { filter_group: 'promotion_month', filter_value: pmMonth });
+  }
+});
 
 // ============ 셀럽PGM 탭 연동 로직 ============
 // "전체" 중 하나만 보는 게 아니라, 여러 셀럽PGM을 동시에 선택해서

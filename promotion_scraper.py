@@ -60,6 +60,7 @@ KT(K쇼핑)는 혜택 영역이 이미지뿐이라 텍스트 파싱 불가 - 보
 import os
 import re
 import json
+import time
 import traceback
 from datetime import datetime, date, timedelta, timezone
 
@@ -577,6 +578,9 @@ def parse_gs(html):
 
 
 def scrape_gs():
+    """m.gsshop은 간헐적으로 1KB 미만의 빈 껍데기 문서('GS이숍의 새이름' 레거시
+    타이틀만 있는 스텁)를 내려주는 경우가 있다 (같은 날 4:00 성공 -> 4:28 스텁 확인).
+    차단 페이지는 아니고 일시 현상이라, 스텁이 오면 잠시 쉬었다가 재시도한다."""
     try:
         html = fetch_static(GS_URL, referer="https://m.gsshop.com/", mobile=True)
         days = parse_gs(html)
@@ -588,15 +592,21 @@ def scrape_gs():
     except Exception as e:
         print(f"    [GS] 정적 요청 실패({e}) -> Playwright 렌더링 시도")
 
-    html = fetch_rendered(GS_URL, mobile=True, scroll_steps=20)
-    days = parse_gs(html)
-    if DEBUG_SNAPSHOTS:
-        save_debug("GS", html)
-    if not days:
-        save_debug("GS", html)
-        raise RuntimeError("m.gsshop 메인에서 카드혜택 슬라이더를 못 찾음 "
-                           "(클라우드 IP 차단 또는 셀렉터 미확정 - 스냅샷 확인 필요)")
-    return days
+    html = ""
+    for attempt in range(1, 4):
+        html = fetch_rendered(GS_URL, mobile=True, scroll_steps=20)
+        days = parse_gs(html)
+        if days:
+            if DEBUG_SNAPSHOTS:
+                save_debug("GS", html)
+            return days
+        print(f"    [GS] 렌더링 {attempt}/3회차 실패 (HTML {len(html)}자"
+              f"{' - 스텁 의심' if len(html) < 5000 else ''}) -> 재시도")
+        time.sleep(5)
+
+    save_debug("GS", html)
+    raise RuntimeError("m.gsshop 메인에서 카드혜택 슬라이더를 못 찾음 (3회 재시도 실패 - "
+                       "스텁 응답 반복 또는 구조 변경, 스냅샷 확인 필요)")
 
 
 # ============ 회사 목록 (확장 지점) ============
