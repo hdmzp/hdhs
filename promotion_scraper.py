@@ -528,7 +528,7 @@ def scrape_cj():
 # 사용자 제공 HTML로 확정한 구조:
 #   section.card-slider > .x-scroll > ul.card-detail-box > li
 #     ├ time.date        : '오늘' | '8.3(월)' | ''(빈값 = 직전 날짜 이어받음)
-#     ├ div.card-gs-pay  : 있으면 GS Pay 결합 카드 (카드명 앞에 GS Pay× 붙임)
+#     ├ div.card-gs-pay  : 있으면 GS Pay 결합 카드 (수집 제외 - 일반 카드행사만)
 #     ├ div.card-name    : '신한카드'
 #     ├ p.benefit-num    : '5 %'
 #     └ p.benefit-txt    : '즉시할인' | '즉시할인 외'
@@ -556,10 +556,11 @@ def parse_gs(html):
             if cur_date is None:
                 continue
 
+            # GS Pay 결합 카드는 표시 대상에서 제외 (일반 카드행사만 수집)
+            if li.select_one(".card-gs-pay"):
+                continue
             name_el = li.select_one(".card-name")
             name = name_el.get_text(strip=True) if name_el else ""
-            if li.select_one(".card-gs-pay"):
-                name = f"GS Pay×{name}" if name else "GS Pay"
 
             num_el = li.select_one(".benefit-num")
             rate = parse_rate(num_el.get_text(" ", strip=True) if num_el
