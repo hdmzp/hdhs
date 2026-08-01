@@ -1,0 +1,103 @@
+{
+  "collected_at": "2026-08-02T03:40:32+09:00",
+  "companies": {
+    "HD": {
+      "name": "현대홈쇼핑",
+      "source": "https://www.hmall.com/md/dpl/index",
+      "status": "failed",
+      "error": "카드혜택 스와이퍼 파싱 결과 0건 (구조 변경 의심)",
+      "last_success": "",
+      "days": {}
+    },
+    "GS": {
+      "name": "GS샵",
+      "source": "https://event.gsshop.com/event/gs-pay-tip",
+      "status": "ok",
+      "error": "",
+      "last_success": "2026-08-02T03:40:32+09:00",
+      "days": {
+        "2026-08-02": [
+          {
+            "card": "신한카드",
+            "type": "할인",
+            "rate": 5
+          },
+          {
+            "card": "삼성카드",
+            "type": "할인",
+            "rate": 5
+          },
+          {
+            "card": "롯데카드",
+            "type": "할인",
+            "rate": 5
+          },
+          {
+            "card": "현대카드",
+            "type": "할인",
+            "rate": 5
+          },
+          {
+            "card": "KB국민카드",
+            "type": "할인",
+            "rate": 5
+          }
+        ]
+      }
+    },
+    "CJ": {
+      "name": "CJ온스타일",
+      "source": "https://display.cjonstyle.com/p/homeTab/main?hmtabMenuId=H00009",
+      "status": "ok",
+      "error": "",
+      "last_success": "2026-08-02T03:40:32+09:00",
+      "days": {
+        "2026-08-02": [
+          {
+            "card": "삼성카드",
+            "type": "할인",
+            "rate": 10
+          },
+          {
+            "card": "삼성카드",
+            "type": "할인",
+            "rate": 5
+          },
+          {
+            "card": "카카오페이",
+            "type": "할인",
+            "rate": 7
+          }
+        ]
+      }
+    },
+    "LT": {
+      "name": "롯데홈쇼핑",
+      "source": "https://www.lotteimall.com/main/viewMain.lotte?dpml_no=1",
+      "status": "ok",
+      "error": "",
+      "last_success": "2026-08-02T03:40:32+09:00",
+      "days": {
+        "2026-08-02": [
+          {
+            "card": "KB국민카드",
+            "type": "청구할인",
+            "rate": 5
+          }
+        ],
+        "2026-08-03": [
+          {
+            "card": "롯데카드",
+            "type": "청구할인",
+            "rate": 7
+          },
+          {
+            "card": "삼성카드",
+            "type": "청구할인",
+            "rate": 5
+          }
+        ]
+      }
+    }
+  }
+}
