@@ -2315,49 +2315,43 @@
     margin-left: 3px;
     vertical-align: 1px;
   }
-  /* 카드 타일: 각 카드사 브랜드 배경색 + 큰 할인율 (CJ 카드혜택 카드 디자인 참고) */
-  .pm-tile {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: flex-start;
-    text-align: left;
-    border-radius: 14px;
-    padding: 10px 12px 9px;
-    margin: 3px;
-    min-width: 92px;
-    max-width: 150px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.10);
-    vertical-align: top;
+  /* 카드 바: 셀 너비를 꽉 채우는 동일 폭 가로 바, 카드사 브랜드 배경색.
+     한 줄 표기 "OO카드 O% 즉시할인" - 할인율 숫자만 크게, 유형은 작게 */
+  .pm-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    width: 100%;
+    height: 42px;
+    border-radius: 11px;
+    margin: 0 0 8px;
+    padding: 0 10px;
+    box-sizing: border-box;
   }
-  .pm-tile-name {
+  .pm-bar:last-child { margin-bottom: 0; }
+  .pm-bar-name {
+    font-size: 12.5px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .pm-bar-rate {
+    font-size: 19px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    white-space: nowrap;
+  }
+  .pm-bar-pct {
     font-size: 11.5px;
     font-weight: 700;
-    line-height: 1.25;
-    word-break: keep-all;
   }
-  .pm-tile-note {
-    font-size: 9.5px;
-    font-weight: 600;
-    opacity: 0.8;
-    margin-top: 1px;
-  }
-  .pm-tile-rate {
-    font-size: 21px;
-    font-weight: 800;
-    line-height: 1.1;
-    margin-top: 7px;
-    letter-spacing: -0.5px;
-  }
-  .pm-tile-pct {
-    font-size: 12px;
-    font-weight: 700;
-    margin-left: 1px;
-  }
-  .pm-tile-type {
+  .pm-bar-type {
     font-size: 10px;
     font-weight: 600;
     opacity: 0.85;
-    margin-top: 1px;
+    white-space: nowrap;
   }
   .pm-empty { color: var(--ink-faint); font-size: 12px; }
 
@@ -2368,9 +2362,11 @@
     table.pm-table thead th.pm-date-col { width: 58px; white-space: nowrap; }
     td.pm-date-cell { font-size: 11px; }
     .pm-co-tag { font-size: 11px; padding: 3px 10px; }
-    .pm-tile { min-width: 80px; padding: 8px 10px 8px; border-radius: 12px; }
-    .pm-tile-name { font-size: 10.5px; }
-    .pm-tile-rate { font-size: 18px; }
+    .pm-bar { height: 36px; gap: 5px; border-radius: 9px; padding: 0 6px; margin-bottom: 6px; }
+    .pm-bar-name { font-size: 10.5px; }
+    .pm-bar-rate { font-size: 15px; }
+    .pm-bar-pct { font-size: 10px; }
+    .pm-bar-type { font-size: 9px; }
   }
 
   /* ============ 셀럽PGM 탭 전용 스타일 추가 ============ */
@@ -4610,18 +4606,18 @@ async function pmRefresh() {
         html += '<td class="pm-cell"><span class="pm-empty">—</span></td>';
         continue;
       }
-      const tiles = entries.map(e => {
+      const bars = entries.map(e => {
         const [bg, fg] = pmCardStyle(e.card);
         const rate = (e.rate != null && e.rate !== '')
-          ? `${e.max ? '~' : ''}${e.rate}<span class="pm-tile-pct">%</span>` : '';
-        return `<div class="pm-tile" style="background:${bg};color:${fg}">` +
-          `<div class="pm-tile-name">${fpEscapeHtml(e.card)}</div>` +
-          (e.note ? `<div class="pm-tile-note">${fpEscapeHtml(e.note)}</div>` : '') +
-          `<div class="pm-tile-rate">${rate}</div>` +
-          `<div class="pm-tile-type">${fpEscapeHtml(e.type || '')}</div>` +
+          ? `${e.max ? '~' : ''}${e.rate}<span class="pm-bar-pct">%</span>` : '';
+        const typeTxt = (e.type || '') + (e.note ? `·${e.note}` : '');
+        return `<div class="pm-bar" style="background:${bg};color:${fg}">` +
+          `<span class="pm-bar-name">${fpEscapeHtml(e.card)}</span>` +
+          `<span class="pm-bar-rate">${rate}</span>` +
+          `<span class="pm-bar-type">${fpEscapeHtml(typeTxt)}</span>` +
           `</div>`;
       }).join('');
-      html += `<td class="pm-cell">${tiles}</td>`;
+      html += `<td class="pm-cell">${bars}</td>`;
     }
     html += '</tr>';
   }
