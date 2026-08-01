@@ -2190,6 +2190,176 @@
     .fp-cell-row .fp-card-compact { flex: none; min-width: 0; }
   }
 
+  /* ============ 프로모션 탭 ============ */
+  #tabPromotion {
+    --hd: #003C82;
+    --lt: #DA291C;
+    --cj: #4B286D;
+    --gs: #1AA663;
+  }
+
+  .pm-controls {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 14px 24px 0;
+    display: flex;
+    justify-content: center;
+    background: var(--paper);
+  }
+  .pm-sub-tabs {
+    display: inline-flex;
+    gap: 4px;
+    background: var(--paper-dim);
+    border: 1px solid var(--rule);
+    border-radius: 9px;
+    padding: 4px;
+    box-shadow: var(--shadow-sm);
+  }
+  .pm-sub-btn {
+    font-family: 'Pretendard', -apple-system, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    background: none;
+    border: none;
+    border-radius: 6px;
+    padding: 7px 18px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .pm-sub-btn.active { background: var(--brand-blue); color: #fff; }
+  .pm-sub-btn:hover:not(.active) { background: #fff; color: var(--ink); }
+
+  .pm-updated {
+    text-align: center;
+    font-size: 11px;
+    color: var(--ink-faint);
+    padding: 10px 0 4px;
+  }
+  .pm-notice {
+    text-align: center;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    padding: 30px 16px;
+  }
+
+  .pm-scroll {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 24px 60px;
+  }
+  .pm-hscroll { overflow: auto; }
+
+  table.pm-table {
+    width: 100%;
+    min-width: 560px;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+  }
+  table.pm-table thead th {
+    background: var(--paper);
+    padding: 10px 4px 12px;
+    border-bottom: 1px solid var(--rule);
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 4;
+  }
+  table.pm-table thead th.pm-date-col {
+    width: 96px;
+    font-size: 10.5px;
+    color: var(--ink-faint);
+    font-weight: 600;
+  }
+  .pm-co-tag {
+    display: inline-block;
+    color: #fff;
+    font-size: 12.5px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 20px;
+  }
+  .pm-co-tag.hd { background: var(--hd); }
+  .pm-co-tag.gs { background: var(--gs); }
+  .pm-co-tag.cj { background: var(--cj); }
+  .pm-co-tag.lt { background: var(--lt); }
+  .pm-fail {
+    font-size: 10px;
+    color: #c0392b;
+    padding-top: 3px;
+  }
+
+  td.pm-cell {
+    border-bottom: 1px solid var(--rule);
+    padding: 10px 6px;
+    text-align: center;
+    vertical-align: top;
+  }
+  td.pm-date-cell {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+  tr.pm-today td { background: var(--paper-dim); }
+  .pm-today-badge {
+    display: inline-block;
+    background: var(--brand-blue);
+    color: #fff;
+    font-size: 9.5px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 10px;
+    margin-left: 3px;
+    vertical-align: 1px;
+  }
+  .pm-card-chip {
+    display: inline-block;
+    border: 1px solid var(--rule);
+    border-radius: 9px;
+    background: #fff;
+    padding: 6px 10px;
+    margin: 2px 3px;
+    text-align: left;
+  }
+  .pm-chip-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 5px;
+    vertical-align: 0.5px;
+  }
+  .pm-chip-name {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .pm-chip-meta {
+    display: block;
+    font-size: 10.5px;
+    color: var(--ink-faint);
+    padding: 2px 0 0 13px;
+  }
+  .pm-chip-rate {
+    font-size: 12.5px;
+    font-weight: 800;
+  }
+  .pm-empty { color: var(--ink-faint); font-size: 12px; }
+
+  @media (max-width: 700px) {
+    .pm-controls { padding: 10px 8px 0; }
+    .pm-scroll { padding: 0 8px 40px; }
+    table.pm-table { min-width: 480px; }
+    table.pm-table thead th.pm-date-col { width: 64px; white-space: nowrap; }
+    td.pm-date-cell { font-size: 11px; }
+    .pm-co-tag { font-size: 11px; padding: 3px 10px; }
+    .pm-card-chip { padding: 5px 7px; }
+    .pm-chip-name { font-size: 11px; }
+  }
+
   /* ============ 셀럽PGM 탭 전용 스타일 추가 ============ */
   #tabCelebrity {
     max-width: 1400px;
@@ -2445,6 +2615,7 @@
     <button id="tabBtnDramaVariety">드라마·예능</button>
     <button id="tabBtnWeather">날씨</button>
     <button id="tabBtnRanking">랭킹</button>
+    <button id="tabBtnPromotion">프로모션</button>
     <button id="tabBtnFeedback">의견</button>
     <button id="tabBtnSecurity" aria-label="보안">🔒</button>
   </div>
@@ -2641,6 +2812,22 @@
   <div id="celGridWrap"></div>
 </div>
 
+<div id="tabPromotion" class="tab-panel">
+
+<div class="pm-controls">
+  <div class="pm-sub-tabs" id="pmSubTabs">
+    <button class="pm-sub-btn active" data-sub="card">💳 카드할인</button>
+    <!-- 추후 쿠폰/적립 등 프로모션 유형 확장 시 여기에 서브탭 추가 -->
+  </div>
+</div>
+
+<div class="pm-updated" id="pmUpdated"></div>
+<div class="pm-notice" id="pmNotice" style="display:none;"></div>
+
+<div class="pm-scroll"><div class="pm-hscroll" id="pmGridWrap"></div></div>
+
+</div>
+
 <div id="tabRanking" class="tab-panel">
 
 <div class="rk-controls">
@@ -2833,6 +3020,14 @@ const TAB_TIPS = {
       '<b>방송 시작시각</b> 기준으로 시간대를 나눠요 (09:20도 09:45도 09시대)',
       '데이터는 <b>2026-06-22</b>부터예요 (기타 채널은 06-26부터)',
       '셀을 클릭하면 채널별 횟수·고정/셀럽PGM 정보를 보여줘요',
+    ],
+  },
+  promotion: {
+    title: '프로모션 탭은?',
+    items: [
+      '홈쇼핑 4사(HD/GS/CJ/LT)의 <b>카드할인 일정</b>을 각 사 사이트에서 수집해요',
+      '오늘 이후 일정만 보여주고, 회사마다 공개하는 기간이 달라요',
+      '수집이 실패한 회사는 <b>수집실패</b> 표시와 함께 마지막 성공 데이터를 보여줘요',
     ],
   },
   // celebrity, feedback: 설명 없음 → 버튼 자체를 숨김
@@ -3279,6 +3474,7 @@ let _dramaVarietyTabLoaded = false;
 let _fixedPgmTabLoaded = false;
 let _rankingTabLoaded = false;
 let _celebrityTabLoaded = false; // 셀럽PGM 탭 전용 캐시
+let _promotionTabLoaded = false; // 프로모션 탭
 let _industryTabLoaded = false;
 
 let dvWeekStart = "2026-06-22";
@@ -4052,8 +4248,8 @@ function renderMonthPickerPanel() {
 }
 
 function switchTab(tab) {
-  const panels = { schedule: 'tabSchedule', weather: 'tabWeather', homeshop: 'tabHomeshop', dramavariety: 'tabDramaVariety', fixedpgm: 'tabFixedPgm', celebrity: 'tabCelebrity', ranking: 'tabRanking', industry: 'tabIndustry', feedback: 'tabFeedback', security: 'tabSecurity' };
-  const btns = { schedule: 'tabBtnSchedule', weather: 'tabBtnWeather', homeshop: 'tabBtnHomeshop', dramavariety: 'tabBtnDramaVariety', fixedpgm: 'tabBtnFixedPgm', celebrity: 'tabBtnCelebrity', ranking: 'tabBtnRanking', industry: 'tabBtnIndustry', feedback: 'tabBtnFeedback', security: 'tabBtnSecurity' };
+  const panels = { schedule: 'tabSchedule', weather: 'tabWeather', homeshop: 'tabHomeshop', dramavariety: 'tabDramaVariety', fixedpgm: 'tabFixedPgm', celebrity: 'tabCelebrity', promotion: 'tabPromotion', ranking: 'tabRanking', industry: 'tabIndustry', feedback: 'tabFeedback', security: 'tabSecurity' };
+  const btns = { schedule: 'tabBtnSchedule', weather: 'tabBtnWeather', homeshop: 'tabBtnHomeshop', dramavariety: 'tabBtnDramaVariety', fixedpgm: 'tabBtnFixedPgm', celebrity: 'tabBtnCelebrity', promotion: 'tabBtnPromotion', ranking: 'tabBtnRanking', industry: 'tabBtnIndustry', feedback: 'tabBtnFeedback', security: 'tabBtnSecurity' };
 
   for (const key in panels) {
     document.getElementById(panels[key]).classList.toggle('active', key === tab);
@@ -4086,6 +4282,10 @@ function switchTab(tab) {
   if (tab === 'ranking' && !_rankingTabLoaded) {
     _rankingTabLoaded = true;
     rkRefresh();
+  }
+  if (tab === 'promotion' && !_promotionTabLoaded) {
+    _promotionTabLoaded = true;
+    pmRefresh();
   }
   if (tab === 'industry' && !_industryTabLoaded) {
     _industryTabLoaded = true;
@@ -4301,6 +4501,109 @@ document.querySelectorAll('.fp-day-btn').forEach(btn => {
     gaEvent('filter_click', { filter_group: 'fixedpgm_day', filter_value: fpCurrentDay });
   });
 });
+
+// ============ 프로모션 탭 (카드할인) ============
+// homeshopping/promotions/card_discounts.json 을 읽어 "날짜 × 4사" 표로 렌더링.
+// 회사 확장 시 PM_COMPANIES에 추가 (스크래퍼 COMPANIES와 코드 일치 필요).
+const PM_COMPANIES = [
+  { code: 'HD', cls: 'hd' },
+  { code: 'GS', cls: 'gs' },
+  { code: 'CJ', cls: 'cj' },
+  { code: 'LT', cls: 'lt' },
+];
+
+// 카드사 브랜드 색 (카드명 키워드 매칭, 위에서부터 우선 - '카카오페이 현대카드'는
+// 현대보다 카카오가 먼저 잡혀야 해서 페이류를 앞에 둔다)
+const PM_CARD_COLORS = [
+  ['카카오', '#f5c800'], ['네이버', '#03c75a'], ['토스', '#0064ff'],
+  ['국민', '#60584c'], ['KB', '#60584c'],
+  ['신한', '#0046ff'], ['삼성', '#0c4da2'], ['현대', '#555555'],
+  ['롯데', '#e60012'], ['하나', '#116d65'], ['우리', '#0083cb'],
+  ['비씨', '#e83434'], ['BC', '#e83434'],
+  ['농협', '#00a5e5'], ['NH', '#00a5e5'], ['씨티', '#003b70'],
+];
+
+let pmData = null;
+
+function pmCardColor(name) {
+  for (const [kw, color] of PM_CARD_COLORS) {
+    if ((name || '').includes(kw)) return color;
+  }
+  return '#8a8a8a';
+}
+
+function pmFormatDate(dateStr) {
+  const d = new Date(dateStr + 'T00:00:00');
+  const days = ['일', '월', '화', '수', '목', '금', '토'];
+  return `${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')} (${days[d.getDay()]})`;
+}
+
+async function pmRefresh() {
+  const wrap = document.getElementById('pmGridWrap');
+  const updated = document.getElementById('pmUpdated');
+  const notice = document.getElementById('pmNotice');
+  wrap.innerHTML = '';
+  notice.style.display = 'none';
+
+  if (!pmData) pmData = await fetchJsonSafe('./homeshopping/promotions/card_discounts.json');
+  if (!pmData || !pmData.companies) {
+    updated.textContent = '';
+    notice.textContent = '아직 수집된 카드할인 데이터가 없습니다. 수집 워크플로우가 실행되면 표시됩니다.';
+    notice.style.display = '';
+    return;
+  }
+  updated.textContent = pmData.collected_at ? fpFormatUpdated(pmData.collected_at) : '';
+
+  const companies = pmData.companies;
+  const todayStr = toLocalDateStr(new Date());
+
+  // 오늘 이후 날짜의 합집합 (과거 이력은 JSON에 쌓이지만 화면엔 예정 일정만)
+  const dateSet = new Set();
+  for (const co of PM_COMPANIES) {
+    const days = (companies[co.code] || {}).days || {};
+    for (const d in days) if (d >= todayStr) dateSet.add(d);
+  }
+  if (dateSet.size === 0) {
+    notice.textContent = '오늘 이후의 카드할인 일정이 아직 없습니다.';
+    notice.style.display = '';
+    return;
+  }
+  const dates = [...dateSet].sort();
+
+  let html = '<table class="pm-table"><thead><tr><th class="pm-date-col">날짜</th>';
+  for (const co of PM_COMPANIES) {
+    const failed = (companies[co.code] || {}).status === 'failed';
+    html += `<th><span class="pm-co-tag ${co.cls}">${co.code}</span>` +
+      (failed ? '<div class="pm-fail">수집실패</div>' : '') + '</th>';
+  }
+  html += '</tr></thead><tbody>';
+
+  for (const d of dates) {
+    const isToday = d === todayStr;
+    html += `<tr class="${isToday ? 'pm-today' : ''}">` +
+      `<td class="pm-cell pm-date-cell">${pmFormatDate(d)}` +
+      (isToday ? '<span class="pm-today-badge">오늘</span>' : '') + '</td>';
+    for (const co of PM_COMPANIES) {
+      const entries = (((companies[co.code] || {}).days) || {})[d] || [];
+      if (!entries.length) {
+        html += '<td class="pm-cell"><span class="pm-empty">—</span></td>';
+        continue;
+      }
+      const chips = entries.map(e => {
+        const color = pmCardColor(e.card);
+        const rate = (e.rate != null && e.rate !== '') ? `${e.rate}%` : '';
+        return `<div class="pm-card-chip">` +
+          `<span class="pm-chip-name"><span class="pm-chip-dot" style="background:${color}"></span>${fpEscapeHtml(e.card)}</span>` +
+          `<span class="pm-chip-meta">${fpEscapeHtml(e.type || '')} <b class="pm-chip-rate" style="color:${color}">${rate}</b></span>` +
+          `</div>`;
+      }).join('');
+      html += `<td class="pm-cell">${chips}</td>`;
+    }
+    html += '</tr>';
+  }
+  html += '</tbody></table>';
+  wrap.innerHTML = html;
+}
 
 // ============ 셀럽PGM 탭 연동 로직 ============
 // "전체" 중 하나만 보는 게 아니라, 여러 셀럽PGM을 동시에 선택해서
@@ -4645,6 +4948,7 @@ function celRenderCompare() {
   document.getElementById('tabBtnDramaVariety').addEventListener('click', () => switchTab('dramavariety'));
   document.getElementById('tabBtnFixedPgm').addEventListener('click', () => switchTab('fixedpgm'));
   document.getElementById('tabBtnCelebrity').addEventListener('click', () => switchTab('celebrity'));
+  document.getElementById('tabBtnPromotion').addEventListener('click', () => switchTab('promotion'));
   document.getElementById('tabBtnRanking').addEventListener('click', () => switchTab('ranking'));
   document.getElementById('tabBtnIndustry').addEventListener('click', () => switchTab('industry'));
   document.getElementById('tabBtnFeedback').addEventListener('click', () => switchTab('feedback'));
