@@ -234,9 +234,17 @@ HD_URL = "https://www.hmall.com/md/dpl/index"
 
 def parse_hd(html):
     soup = BeautifulSoup(html, "html.parser")
-    container = soup.select_one('[data-anchor="evnt_card_new"]')
+    # 같은 스와이퍼가 페이지에 따라 다른 앵커명으로 붙는다:
+    #  - /md/dpl/index (혜택 페이지): evnt_card_new
+    #  - 모바일 메인:               home_card  (data-scroll-anchor만 있는 경우도 있음)
+    container = None
+    for sel in ('[data-anchor="evnt_card_new"]', '[data-scroll-anchor="evnt_card_new"]',
+                '[data-anchor="home_card"]', '[data-scroll-anchor="home_card"]'):
+        container = soup.select_one(sel)
+        if container is not None:
+            break
     if container is None:
-        # 앵커명이 바뀌었을 때의 폴백: 섹션 제목 텍스트로 역추적
+        # 앵커명이 또 바뀌었을 때의 폴백: 섹션 제목 텍스트로 역추적
         title = soup.find(string=re.compile("한눈에 보는 카드 혜택"))
         if title:
             node = title.parent
@@ -298,8 +306,10 @@ def scrape_hd():
     # DOM에 먼저 생기는 경우 scroll_into_view로 강제 노출시킨다.
     html = fetch_rendered(
         HD_URL, mobile=True, scroll_steps=30,
-        wait_selector='[data-anchor="evnt_card_new"] .swiper-slide',
-        anchor_selector='[data-anchor="evnt_card_new"], [data-scroll-anchor="evnt_card_new"]')
+        wait_selector=('[data-anchor="evnt_card_new"] .swiper-slide, '
+                       '[data-scroll-anchor="home_card"] .swiper-slide'),
+        anchor_selector=('[data-anchor="evnt_card_new"], [data-scroll-anchor="evnt_card_new"], '
+                         '[data-anchor="home_card"], [data-scroll-anchor="home_card"]'))
     days = parse_hd(html)
     if DEBUG_SNAPSHOTS and days:
         save_debug("HD", html)
@@ -377,25 +387,28 @@ def scrape_lt():
     return days
 
 
-# ============ CJ / GS (구조 미확정 - 텍스트 휴리스틱) ============
-# 페이지 구조를 아직 못 봐서(스냅샷 미확보), 렌더링된 텍스트에서
-# "카드사명 (+할인유형) N%" 패턴을 찾는 휴리스틱으로 시작한다.
-# 날짜 정보를 함께 못 잡으므로 일단 '오늘' 혜택으로만 기록한다.
-# 첫 Actions 실행에서 _debug_{사}.html 스냅샷이 남으면 그걸 보고 파서를 확정할 것.
+# ============ CJ (혜택탭 - 텍스트 휴리스틱) ============
+# 스냅샷(_debug_CJ.html) 확인 결과 혜택탭에는 '오늘 적용중인' 카드혜택이
+# "삼성카드 10% 5만원 이상 즉시할인 일부 행사상품" 같은 텍스트로 나열된다.
+# 날짜 정보가 없는 대신 실제로 '오늘' 혜택이 맞아서, 오늘 날짜로 기록하는 게 정확하다.
+# 할인유형(즉시/청구할인)이 %(할인율) 뒤에 오는 패턴이라 매칭 후 주변 텍스트에서 찾는다.
 
 CARD_ENTRY_RE = re.compile(
-    r"((?:카카오페이\s*현대|카카오페이|네이버페이|토스페이|"
-    r"(?:KB\s*)?국민|신한|삼성|현대|롯데|하나|우리|비씨|BC|NH\s*농협|농협|씨티)"
-    r"\s*(?:카드|페이)?)"
-    r"[\s]*(즉시\s*할인|청구\s*할인|할인)?"
-    r"[\s]*(?:최대)?[\s]*(\d{1,2}(?:\.\d)?)\s*%"
+    r"((?:카카오페이|네이버페이|토스페이)\s*"
+    r"(?:KB\s*국민|국민|신한|삼성|현대|롯데|하나|우리|비씨|BC|NH\s*농협|농협|씨티)\s*(?:카드)?"
+    r"|(?:KB\s*국민|국민|신한|삼성|현대|롯데|하나|우리|비씨|BC|NH\s*농협|농협|씨티)\s*(?:카드)?"
+    r"|카카오페이|네이버페이|토스페이)"
+    r"[\s]*(?:혜택)?[\s]*(즉시\s*할인|청구\s*할인|할인)?"
+    r"[\s~]*(?:최대)?[\s~]*(\d{1,2}(?:\.\d)?)\s*%"
 )
 
 
 def parse_card_text_heuristic(html):
     """렌더링된 페이지 텍스트에서 '카드사 N%' 패턴을 추출한다 (날짜 미상 -> 오늘로 기록).
-    상품 할인율('삼성 갤럭시 50%↓' 등) 오탐을 줄이기 위해
-    카드/페이 표기가 없으면 '할인' 문구가 함께 있을 때만 채택한다."""
+    - 할인유형이 % 앞/뒤 어디에 있든 매칭 주변(±30자)에서 찾는다
+    - '5만원 이상' 같은 조건 문구는 note로 함께 저장
+    - 상품 할인율('삼성 갤럭시 50%↓' 등) 오탐을 줄이기 위해 카드/페이 표기가 없으면
+      할인 문구가 함께 있을 때만 채택한다"""
     soup = BeautifulSoup(html, "html.parser")
     for tag in soup(["script", "style", "noscript"]):
         tag.decompose()
@@ -404,17 +417,39 @@ def parse_card_text_heuristic(html):
     entries = []
     for m in CARD_ENTRY_RE.finditer(text):
         name = re.sub(r"\s+", " ", m.group(1)).strip()
-        dc_type = re.sub(r"\s+", "", m.group(2)) if m.group(2) else ""
         rate = parse_rate(m.group(3) + "%")
         if rate is None:
             continue
+
+        # 할인유형: 매칭 내부 -> 없으면 매칭 직후 30자에서 탐색 (CJ는 % 뒤에 옴)
+        after = text[m.end():m.end() + 30]
+        if m.group(2):
+            dc_type = re.sub(r"\s+", "", m.group(2))
+        elif "즉시할인" in after.replace(" ", ""):
+            dc_type = "즉시할인"
+        elif "청구할인" in after.replace(" ", ""):
+            dc_type = "청구할인"
+        else:
+            dc_type = ""
+
         if not re.search(r"(카드|페이)$", name):
             if not dc_type:  # 카드/페이 표기도, 할인 문구도 없으면 오탐 가능성 높음
                 continue
             name += "카드"
-        entries.append({"card": name, "type": dc_type or "할인", "rate": rate})
+
+        entry = {"card": name, "type": dc_type or "할인", "rate": rate}
+        note_m = re.search(r"(\d+\s*만\s*원?\s*이상)", after)
+        if note_m:
+            entry["note"] = re.sub(r"\s+", "", note_m.group(1))
+        entries.append(entry)
 
     entries = dedup_entries(entries)
+    # '카카오페이 7%'와 '카카오페이 삼성카드 7%'처럼 같은 혜택이 축약/전체 표기로
+    # 두 번 잡히면 더 구체적인 쪽만 남긴다
+    entries = [e for e in entries
+               if not any(o is not e and e["card"] != o["card"] and e["card"] in o["card"]
+                          and e["rate"] == o["rate"] and e["type"] == o["type"]
+                          for o in entries)]
     # 패턴이 비정상적으로 많이 잡히면 상품 목록 등을 오탐한 것으로 보고 버린다
     if len(entries) > 12:
         return []
@@ -424,40 +459,143 @@ def parse_card_text_heuristic(html):
 CJ_URL = "https://display.cjonstyle.com/p/homeTab/main?hmtabMenuId=H00009"
 
 
+def parse_cj(html):
+    """CJ 혜택탭의 '카드 혜택' 카드 목록. 사용자 제공 HTML로 확정한 구조:
+      li.item_card > a.btn_benefit > span.benefit_wrap
+        ├ strong.card_name : '삼성카드' | '카카오페이'
+        ├ span.notify      : 결합카드 부기 ('카카오페이' 카드의 '삼성카드')
+        ├ strong.range     : '~' (최대 할인율 표기)
+        ├ strong.number    : '5'  + span.txt '%'
+        └ span.txt_benefit : '즉시할인'
+    날짜 라벨이 없는 '현재 적용중' 혜택이라 오늘 날짜로 기록한다.
+    (쿠폰팩 등 비카드 item_card는 card_name이 없어 자연히 걸러짐)"""
+    soup = BeautifulSoup(html, "html.parser")
+    entries = []
+    for li in soup.select("li.item_card"):
+        wrap = li.select_one("span.benefit_wrap")
+        if wrap is None:
+            continue
+        name_el = wrap.select_one("strong.card_name")
+        if name_el is None:
+            continue
+        name = name_el.get_text(strip=True)
+        sub_el = wrap.select_one("span.notify")
+        sub = sub_el.get_text(strip=True) if sub_el else ""
+        if sub:
+            name = f"{name} {sub}"
+
+        num_el = wrap.select_one("strong.number")
+        rate = parse_rate((num_el.get_text(strip=True) + "%") if num_el
+                          else wrap.get_text(" ", strip=True))
+        if not name or rate is None:
+            continue
+
+        type_el = wrap.select_one(".txt_benefit")
+        dc_type = type_el.get_text(strip=True) if type_el else "할인"
+
+        entry = {"card": name, "type": dc_type, "rate": rate}
+        range_el = wrap.select_one("strong.range")
+        if range_el and "~" in range_el.get_text():
+            entry["max"] = True  # '~5%' = 최대 5% (프론트에서 ~ 접두 표시)
+        entries.append(entry)
+
+    entries = dedup_entries(entries)
+    return {today_kst().isoformat(): entries} if entries else {}
+
+
 def scrape_cj():
     html = fetch_rendered(CJ_URL, mobile=True)
-    entries = parse_card_text_heuristic(html)
+    days = parse_cj(html)
+    if not days:
+        # 구조가 바뀌었을 때의 백업: 텍스트 휴리스틱
+        entries = parse_card_text_heuristic(html)
+        if entries:
+            print("    [CJ] item_card 파서 실패 -> 텍스트 휴리스틱으로 백업 수집")
+            days = {today_kst().isoformat(): entries}
     if DEBUG_SNAPSHOTS:
         save_debug("CJ", html)
-    if not entries:
+    if not days:
         save_debug("CJ", html)
-        raise RuntimeError("혜택탭에서 카드할인 패턴을 못 찾음 (스냅샷 저장됨 - 파서 확정 필요)")
-    return {today_kst().isoformat(): entries}
+        raise RuntimeError("혜택탭에서 카드할인 카드를 못 찾음 (스냅샷 저장됨 - 구조 변경 의심)")
+    return days
 
 
-GS_URL = "https://event.gsshop.com/event/gs-pay-tip"
+# ============ GS (m.gsshop 메인 "카드 혜택" 슬라이더) ============
+# 처음엔 event.gsshop.com/event/gs-pay-tip 을 썼는데, 그 페이지는 월간 카드행사
+# '안내' 페이지라 날짜별로 다른 카드가 전부 나열돼 있어 텍스트 휴리스틱이
+# 전체를 '오늘' 혜택으로 오탐했다 (실제 오늘은 신한 5%뿐인데 5개 카드가 잡힘).
+# m.gsshop.com 모바일 메인에 HD와 같은 날짜 슬라이더("카드 혜택")가 있어 이쪽을 쓴다.
+# 사용자 제공 HTML로 확정한 구조:
+#   section.card-slider > .x-scroll > ul.card-detail-box > li
+#     ├ time.date        : '오늘' | '8.3(월)' | ''(빈값 = 직전 날짜 이어받음)
+#     ├ div.card-gs-pay  : 있으면 GS Pay 결합 카드 (카드명 앞에 GS Pay× 붙임)
+#     ├ div.card-name    : '신한카드'
+#     ├ p.benefit-num    : '5 %'
+#     └ p.benefit-txt    : '즉시할인' | '즉시할인 외'
+
+GS_URL = "https://m.gsshop.com/index.gs"
+
+
+def parse_gs(html):
+    soup = BeautifulSoup(html, "html.parser")
+    days = {}
+    for ul in soup.select("section.card-slider ul.card-detail-box"):
+        cur_date = None
+        for li in ul.find_all("li", recursive=False):
+            time_el = li.select_one("time.date")
+            label = time_el.get_text(strip=True) if time_el else ""
+            if label:
+                if "오늘" in label:
+                    cur_date = today_kst()
+                else:
+                    m = re.search(r"(\d{1,2})\.(\d{1,2})", label)
+                    if m:
+                        d = infer_date(int(m.group(1)), int(m.group(2)))
+                        if d:
+                            cur_date = d
+            if cur_date is None:
+                continue
+
+            name_el = li.select_one(".card-name")
+            name = name_el.get_text(strip=True) if name_el else ""
+            if li.select_one(".card-gs-pay"):
+                name = f"GS Pay×{name}" if name else "GS Pay"
+
+            num_el = li.select_one(".benefit-num")
+            rate = parse_rate(num_el.get_text(" ", strip=True) if num_el
+                              else li.get_text(" ", strip=True))
+            txt_el = li.select_one(".benefit-txt")
+            dc_type = txt_el.get_text(" ", strip=True) if txt_el else "할인"
+            if not name or rate is None:
+                continue
+
+            key = cur_date.isoformat()
+            days.setdefault(key, []).append({"card": name, "type": dc_type, "rate": rate})
+
+    return {k: dedup_entries(v) for k, v in days.items()}
 
 
 def scrape_gs():
-    html = None
     try:
-        html = fetch_static(GS_URL, referer="https://www.gsshop.com/", mobile=True)
-        entries = parse_card_text_heuristic(html)
-        if entries:
-            return {today_kst().isoformat(): entries}
-        print("    [GS] 정적 HTML에서 패턴 못 찾음 -> Playwright 렌더링 시도")
+        html = fetch_static(GS_URL, referer="https://m.gsshop.com/", mobile=True)
+        days = parse_gs(html)
+        if days:
+            if DEBUG_SNAPSHOTS:
+                save_debug("GS", html)
+            return days
+        print("    [GS] 정적 HTML에서 카드혜택 슬라이더 못 찾음 -> Playwright 렌더링 시도")
     except Exception as e:
         print(f"    [GS] 정적 요청 실패({e}) -> Playwright 렌더링 시도")
 
-    html = fetch_rendered(GS_URL, mobile=True)
-    entries = parse_card_text_heuristic(html)
+    html = fetch_rendered(GS_URL, mobile=True, scroll_steps=20)
+    days = parse_gs(html)
     if DEBUG_SNAPSHOTS:
         save_debug("GS", html)
-    if not entries:
+    if not days:
         save_debug("GS", html)
-        raise RuntimeError("이벤트 페이지에서 카드할인 패턴을 못 찾음 "
-                           "(클라우드 IP 차단 또는 이미지 구성 - 스냅샷 확인 필요)")
-    return {today_kst().isoformat(): entries}
+        raise RuntimeError("m.gsshop 메인에서 카드혜택 슬라이더를 못 찾음 "
+                           "(클라우드 IP 차단 또는 셀렉터 미확정 - 스냅샷 확인 필요)")
+    return days
 
 
 # ============ 회사 목록 (확장 지점) ============

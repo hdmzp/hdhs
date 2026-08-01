@@ -146,10 +146,13 @@ hdhs/
 ### 💳 프로모션(카드할인) — `promotion_scraper.py`
 - 홈쇼핑 4사(HD/GS/CJ/LT)의 날짜별 카드할인 일정(카드사/할인유형/할인율)을 수집해 `homeshopping/promotions/card_discounts.json` 하나에 저장
 - 과거 날짜는 보존(이력 누적), 오늘 이후 날짜는 매 수집 시 통째로 교체. 실패한 회사는 기존 데이터 유지 + `status: "failed"` 표시
-- 회사별 수집 방식:
-  - **HD**: `hmall.com/md/dpl/index`의 "한눈에 보는 카드 혜택" 스와이퍼. requests 우선, 실패 시 Playwright 렌더링. 해시 클래스명 대신 `data-anchor` 속성+태그 구조로 파싱 (구조 확정)
-  - **LT**: `lotteimall.com` 메인의 "카드 청구할인" `ul.cardbox`. Vue 렌더링이라 Playwright 필요 가능성 높음 (구조 확정)
-  - **CJ/GS**: 구조 미확정 - 렌더링된 텍스트에서 "카드사명+할인율%" 휴리스틱으로 추출(오늘 날짜로만 기록). 실패 시 `homeshopping/promotions/_debug_{사}.html` 스냅샷 저장 → 스냅샷 보고 파서 확정하는 방식으로 개선 예정. GS는 클라우드 IP 차단 가능성 있음
+- 회사별 수집 방식 (4사 모두 구조 확정):
+  - **HD**: `hmall.com/md/dpl/index`의 "한눈에 보는 카드 혜택" 스와이퍼. 같은 스와이퍼가 페이지에 따라 앵커명이 다름(`evnt_card_new`/`home_card`) - 둘 다 지원. 모바일 컨텍스트 + lazy 섹션이라 스크롤 도달 필요
+  - **LT**: `lotteimall.com` 메인의 "카드 청구할인" `ul.cardbox` (Vue 렌더링 - Playwright)
+  - **GS**: `m.gsshop.com` 메인의 "카드 혜택" 날짜 슬라이더 (`section.card-slider ul.card-detail-box`, `time.date` 빈값은 직전 날짜 상속, GS Pay 결합카드는 `card-gs-pay`로 판별). ⚠️ 처음에 쓰던 `event.gsshop.com/event/gs-pay-tip`은 월간 '안내' 페이지라 전체 일정이 오늘로 오탐돼 폐기
+  - **CJ**: 혜택 홈탭(H00009)의 `li.item_card` 카드 목록 (`card_name`+`notify` 결합카드, `range`(~)=최대 할인율 → `max` 플래그). 날짜 없는 '현재 적용중' 혜택이라 오늘로 기록. 구조 변경 시 텍스트 휴리스틱 백업
+- HD/LT/GS는 같은 날짜의 두 번째 카드부터 날짜 라벨이 없는 구조라 "직전 날짜 상속"으로 파싱
+- 파싱 실패 시 `homeshopping/promotions/_debug_{사}.html` 스냅샷 저장 (PROMO_DEBUG=true면 성공해도 저장 - workflow_dispatch 입력으로 켤 수 있음)
 - 회사 확장: 스크래퍼의 `COMPANIES` 리스트 + 프론트 `PM_COMPANIES`에 추가. NS(카드혜택 캘린더 table)가 다음 후보, KT는 이미지 배너뿐이라 보류
 
 ### 💰 가격추적 — `pricewatch_tracker.py` + `pricewatch_scraper.py`
@@ -229,7 +232,7 @@ hdhs/
 ### 💳 프로모션 탭
 - 서브탭 구조(현재 "카드할인" 하나, 쿠폰 등 확장 대비)
 - "날짜 × 4사(HD/GS/CJ/LT)" 표로 오늘 이후의 카드할인 일정 표시, 오늘 행 하이라이트
-- 카드사별 브랜드 색 점 + 할인유형(즉시/청구할인) + 할인율 칩
+- 카드사 브랜드 배경색 타일(카드명/할인율/할인유형, CJ 카드혜택 카드 디자인 참고), `~`=최대 할인율, 조건(`5만원이상` 등)은 작은 글씨로 부기
 - 수집 실패한 회사는 헤더에 "수집실패" 뱃지 표시(마지막 성공 데이터는 유지)
 
 ### 💬 의견 탭

@@ -1,45 +1,115 @@
 {
-  "collected_at": "2026-08-02T03:46:38+09:00",
+  "collected_at": "2026-08-02T03:57:40+09:00",
   "companies": {
     "HD": {
       "name": "현대홈쇼핑",
       "source": "https://www.hmall.com/md/dpl/index",
-      "status": "failed",
-      "error": "카드혜택 스와이퍼 파싱 결과 0건 (구조 변경 의심)",
-      "last_success": "",
-      "days": {}
+      "status": "ok",
+      "error": "",
+      "last_success": "2026-08-02T03:57:40+09:00",
+      "days": {
+        "2026-08-01": [
+          {
+            "card": "현대카드",
+            "type": "즉시할인",
+            "rate": 5
+          }
+        ],
+        "2026-08-03": [
+          {
+            "card": "삼성카드",
+            "type": "즉시할인",
+            "rate": 5
+          }
+        ],
+        "2026-08-04": [
+          {
+            "card": "카카오페이 현대카드",
+            "type": "즉시할인",
+            "rate": 7
+          },
+          {
+            "card": "하나카드",
+            "type": "즉시할인",
+            "rate": 5
+          }
+        ],
+        "2026-08-05": [
+          {
+            "card": "비씨카드",
+            "type": "즉시할인",
+            "rate": 5
+          },
+          {
+            "card": "NH농협카드",
+            "type": "즉시할인",
+            "rate": 5
+          }
+        ]
+      }
     },
     "GS": {
       "name": "GS샵",
-      "source": "https://event.gsshop.com/event/gs-pay-tip",
+      "source": "https://m.gsshop.com/index.gs",
       "status": "ok",
       "error": "",
-      "last_success": "2026-08-02T03:46:38+09:00",
+      "last_success": "2026-08-02T03:57:40+09:00",
       "days": {
         "2026-08-02": [
           {
             "card": "신한카드",
-            "type": "할인",
+            "type": "즉시할인",
             "rate": 5
           },
           {
+            "card": "GS Pay×신한카드",
+            "type": "즉시할인",
+            "rate": 5
+          }
+        ],
+        "2026-08-03": [
+          {
             "card": "삼성카드",
-            "type": "할인",
+            "type": "즉시할인",
             "rate": 5
           },
           {
             "card": "롯데카드",
-            "type": "할인",
+            "type": "즉시할인",
+            "rate": 5
+          },
+          {
+            "card": "GS Pay×삼성카드",
+            "type": "즉시할인 외",
+            "rate": 5
+          }
+        ],
+        "2026-08-04": [
+          {
+            "card": "신한카드",
+            "type": "즉시할인",
             "rate": 5
           },
           {
             "card": "현대카드",
-            "type": "할인",
+            "type": "즉시할인",
             "rate": 5
           },
           {
+            "card": "GS Pay×신한카드",
+            "type": "즉시할인 외",
+            "rate": 5
+          }
+        ],
+        "2026-08-05": [
+          {
             "card": "KB국민카드",
-            "type": "할인",
+            "type": "즉시할인",
+            "rate": 5
+          },
+          {
+            "card": "GS Pay×KB국민카드",
+            "type": "즉시할인",
             "rate": 5
           }
         ]
@@ -50,23 +120,20 @@
       "source": "https://display.cjonstyle.com/p/homeTab/main?hmtabMenuId=H00009",
       "status": "ok",
       "error": "",
-      "last_success": "2026-08-02T03:46:38+09:00",
+      "last_success": "2026-08-02T03:57:40+09:00",
       "days": {
         "2026-08-02": [
           {
             "card": "삼성카드",
-            "type": "할인",
-            "rate": 10
+            "type": "즉시할인",
+            "rate": 5,
+            "max": true
           },
           {
-            "card": "삼성카드",
-            "type": "할인",
-            "rate": 5
-          },
-          {
-            "card": "카카오페이",
-            "type": "할인",
-            "rate": 7
+            "card": "카카오페이 삼성카드",
+            "type": "즉시할인",
+            "rate": 7,
+            "max": true
           }
         ]
       }

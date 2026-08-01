@@ -2315,37 +2315,49 @@
     margin-left: 3px;
     vertical-align: 1px;
   }
-  .pm-card-chip {
-    display: inline-block;
-    border: 1px solid var(--rule);
-    border-radius: 9px;
-    background: #fff;
-    padding: 6px 10px;
-    margin: 2px 3px;
+  /* 카드 타일: 각 카드사 브랜드 배경색 + 큰 할인율 (CJ 카드혜택 카드 디자인 참고) */
+  .pm-tile {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
     text-align: left;
+    border-radius: 14px;
+    padding: 10px 12px 9px;
+    margin: 3px;
+    min-width: 92px;
+    max-width: 150px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.10);
+    vertical-align: top;
   }
-  .pm-chip-dot {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    margin-right: 5px;
-    vertical-align: 0.5px;
+  .pm-tile-name {
+    font-size: 11.5px;
+    font-weight: 700;
+    line-height: 1.25;
+    word-break: keep-all;
   }
-  .pm-chip-name {
+  .pm-tile-note {
+    font-size: 9.5px;
+    font-weight: 600;
+    opacity: 0.8;
+    margin-top: 1px;
+  }
+  .pm-tile-rate {
+    font-size: 21px;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-top: 7px;
+    letter-spacing: -0.5px;
+  }
+  .pm-tile-pct {
     font-size: 12px;
     font-weight: 700;
-    color: var(--ink);
+    margin-left: 1px;
   }
-  .pm-chip-meta {
-    display: block;
-    font-size: 10.5px;
-    color: var(--ink-faint);
-    padding: 2px 0 0 13px;
-  }
-  .pm-chip-rate {
-    font-size: 12.5px;
-    font-weight: 800;
+  .pm-tile-type {
+    font-size: 10px;
+    font-weight: 600;
+    opacity: 0.85;
+    margin-top: 1px;
   }
   .pm-empty { color: var(--ink-faint); font-size: 12px; }
 
@@ -2353,11 +2365,12 @@
     .pm-controls { padding: 10px 8px 0; }
     .pm-scroll { padding: 0 8px 40px; }
     table.pm-table { min-width: 480px; }
-    table.pm-table thead th.pm-date-col { width: 64px; white-space: nowrap; }
+    table.pm-table thead th.pm-date-col { width: 58px; white-space: nowrap; }
     td.pm-date-cell { font-size: 11px; }
     .pm-co-tag { font-size: 11px; padding: 3px 10px; }
-    .pm-card-chip { padding: 5px 7px; }
-    .pm-chip-name { font-size: 11px; }
+    .pm-tile { min-width: 80px; padding: 8px 10px 8px; border-radius: 12px; }
+    .pm-tile-name { font-size: 10.5px; }
+    .pm-tile-rate { font-size: 18px; }
   }
 
   /* ============ 셀럽PGM 탭 전용 스타일 추가 ============ */
@@ -4512,24 +4525,32 @@ const PM_COMPANIES = [
   { code: 'LT', cls: 'lt' },
 ];
 
-// 카드사 브랜드 색 (카드명 키워드 매칭, 위에서부터 우선 - '카카오페이 현대카드'는
-// 현대보다 카카오가 먼저 잡혀야 해서 페이류를 앞에 둔다)
+// 카드사 브랜드 색 [키워드, 배경, 글자] (카드명 키워드 매칭, 위에서부터 우선 -
+// '카카오페이 현대카드'는 현대보다 카카오가 먼저 잡혀야 해서 페이류를 앞에 둔다.
+// 'GS Pay×신한카드'는 결합된 카드사 키워드(신한)로 색이 정해진다)
 const PM_CARD_COLORS = [
-  ['카카오', '#f5c800'], ['네이버', '#03c75a'], ['토스', '#0064ff'],
-  ['국민', '#60584c'], ['KB', '#60584c'],
-  ['신한', '#0046ff'], ['삼성', '#0c4da2'], ['현대', '#555555'],
-  ['롯데', '#e60012'], ['하나', '#116d65'], ['우리', '#0083cb'],
-  ['비씨', '#e83434'], ['BC', '#e83434'],
-  ['농협', '#00a5e5'], ['NH', '#00a5e5'], ['씨티', '#003b70'],
+  ['카카오', '#fee500', '#191919'],
+  ['네이버', '#03c75a', '#ffffff'],
+  ['토스', '#0064ff', '#ffffff'],
+  ['국민', '#ffbc00', '#4b3d00'], ['KB', '#ffbc00', '#4b3d00'],
+  ['신한', '#0046ff', '#ffffff'],
+  ['삼성', '#1428a0', '#ffffff'],
+  ['현대', '#1c1c1c', '#ffffff'],
+  ['롯데', '#da1f26', '#ffffff'],
+  ['하나', '#008485', '#ffffff'],
+  ['우리', '#0083cb', '#ffffff'],
+  ['비씨', '#e4032e', '#ffffff'], ['BC', '#e4032e', '#ffffff'],
+  ['농협', '#0080c8', '#ffffff'], ['NH', '#0080c8', '#ffffff'],
+  ['씨티', '#003b70', '#ffffff'],
 ];
 
 let pmData = null;
 
-function pmCardColor(name) {
-  for (const [kw, color] of PM_CARD_COLORS) {
-    if ((name || '').includes(kw)) return color;
+function pmCardStyle(name) {
+  for (const [kw, bg, fg] of PM_CARD_COLORS) {
+    if ((name || '').includes(kw)) return [bg, fg];
   }
-  return '#8a8a8a';
+  return ['#6b7280', '#ffffff'];
 }
 
 function pmFormatDate(dateStr) {
@@ -4589,15 +4610,18 @@ async function pmRefresh() {
         html += '<td class="pm-cell"><span class="pm-empty">—</span></td>';
         continue;
       }
-      const chips = entries.map(e => {
-        const color = pmCardColor(e.card);
-        const rate = (e.rate != null && e.rate !== '') ? `${e.rate}%` : '';
-        return `<div class="pm-card-chip">` +
-          `<span class="pm-chip-name"><span class="pm-chip-dot" style="background:${color}"></span>${fpEscapeHtml(e.card)}</span>` +
-          `<span class="pm-chip-meta">${fpEscapeHtml(e.type || '')} <b class="pm-chip-rate" style="color:${color}">${rate}</b></span>` +
+      const tiles = entries.map(e => {
+        const [bg, fg] = pmCardStyle(e.card);
+        const rate = (e.rate != null && e.rate !== '')
+          ? `${e.max ? '~' : ''}${e.rate}<span class="pm-tile-pct">%</span>` : '';
+        return `<div class="pm-tile" style="background:${bg};color:${fg}">` +
+          `<div class="pm-tile-name">${fpEscapeHtml(e.card)}</div>` +
+          (e.note ? `<div class="pm-tile-note">${fpEscapeHtml(e.note)}</div>` : '') +
+          `<div class="pm-tile-rate">${rate}</div>` +
+          `<div class="pm-tile-type">${fpEscapeHtml(e.type || '')}</div>` +
           `</div>`;
       }).join('');
-      html += `<td class="pm-cell">${chips}</td>`;
+      html += `<td class="pm-cell">${tiles}</td>`;
     }
     html += '</tr>';
   }
