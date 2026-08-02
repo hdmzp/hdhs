@@ -1851,6 +1851,23 @@
   }
   .hs-prog:hover .hs-goto { color: var(--now-accent); }
 
+  /* 일반방송(고정PGM 아님) 한 방송에 상품이 4개를 넘으면 나머지는 접어둔다 */
+  .hs-more-wrap { display: none; }
+  .hs-prog-group.open .hs-more-wrap { display: block; }
+  .hs-more-btn {
+    display: block;
+    width: 100%;
+    border: none;
+    background: none;
+    color: var(--brand-blue);
+    font-size: 10px;
+    font-weight: 700;
+    text-align: center;
+    padding: 4px 0 6px;
+    cursor: pointer;
+    border-bottom: 1px dotted var(--rule);
+  }
+  .hs-more-btn:hover { text-decoration: underline; }
   .hs-prog.onair-cell {
     background: var(--now-bg);
   }
@@ -4049,6 +4066,54 @@ function hsRenderHitBest() {
   return `<div class="hs-hitbest">Hit &amp; Best</div>`;
 }
 
+// 일반방송(고정PGM 아님) 한 방송에 상품이 이 개수를 넘으면 나머지를 접는다.
+// 보이는 상위 4개는 데이터 순서 그대로 = 편성표에서 "더보기" 누르기 전
+// 상단에 노출되는 상품 순서(대표상품 -> 함께 방송 상품 순).
+const HS_COLLAPSE_LIMIT = 4;
+
+function hsRenderProgGroup(progs, nowMin, badgedSet) {
+  let html = '';
+  for (const p of progs.slice(0, HS_COLLAPSE_LIMIT)) html += hsRenderProgram(p, nowMin, badgedSet);
+  const hidden = progs.slice(HS_COLLAPSE_LIMIT);
+  if (hidden.length === 0) return html;
+
+  let hiddenHtml = '';
+  for (const p of hidden) hiddenHtml += hsRenderProgram(p, nowMin, badgedSet);
+  return `<div class="hs-prog-group">` + html +
+         `<div class="hs-more-wrap">${hiddenHtml}</div>` +
+         `<button type="button" class="hs-more-btn" data-count="${hidden.length}" ` +
+         `onclick="hsToggleMore(this)">상품 ${hidden.length}개 펼치기</button>` +
+         `</div>`;
+}
+
+// 연속된 같은 방송(시작·종료 동일, 고정PGM 아님) 상품들을 묶어서 렌더.
+// 고정PGM(pgm 있는 줄)은 기존처럼 묶지 않고 그대로 나열한다.
+function hsRenderProgsWithCollapse(progs, nowMin, badgedSet) {
+  let html = '';
+  let i = 0;
+  while (i < progs.length) {
+    const base = progs[i];
+    const group = [base];
+    if (!base.pgm) {
+      while (i + group.length < progs.length) {
+        const nxt = progs[i + group.length];
+        if (nxt.pgm || nxt.start !== base.start || nxt.end !== base.end) break;
+        group.push(nxt);
+      }
+    }
+    html += hsRenderProgGroup(group, nowMin, badgedSet);
+    i += group.length;
+  }
+  return html;
+}
+
+function hsToggleMore(btn) {
+  const groupEl = btn.closest('.hs-prog-group');
+  if (!groupEl) return;
+  const open = groupEl.classList.toggle('open');
+  btn.textContent = open ? '접기' : `상품 ${btn.dataset.count}개 펼치기`;
+}
+
 let _hsLastDatasets = null;
 let _hsLastDateStr = null;
 
@@ -4182,9 +4247,17 @@ function hsRenderGridView(datasets, nowMin) {
         html += `<td class="hs-empty-cell hs-co-cell ${c.cls}"></td>`;
       } else {
         let cell = `<td class="hs-co-cell ${c.cls}"><div class="hs-cell-inner">`;
+        // 연속된 편성 줄들은 모아서(같은 방송 상품 묶음 접기 처리) 렌더하고,
+        // Hit&Best 공백은 그 사이에 그대로 끼워 넣는다.
+        let run = [];
+        const flushRun = () => {
+          if (run.length) { cell += hsRenderProgsWithCollapse(run, nowMin, badgedSet); run = []; }
+        };
         for (const item of items) {
-          cell += item.isGap ? hsRenderHitBest() : hsRenderProgram(item.p, nowMin, badgedSet);
+          if (item.isGap) { flushRun(); cell += hsRenderHitBest(); }
+          else run.push(item.p);
         }
+        flushRun();
         cell += '</div></td>';
         html += cell;
       }
@@ -4223,7 +4296,7 @@ function hsRenderListView(datasets, nowMin) {
       html += `<td class="hs-empty-cell hs-co-cell ${c.cls}"><div class="hs-hitbest">해당 편성 없음</div></td>`;
     } else {
       let cell = `<td class="hs-co-cell ${c.cls}"><div class="hs-cell-inner hs-cell-list">`;
-      for (const p of progs) cell += hsRenderProgram(p, nowMin, badgedSet);
+      cell += hsRenderProgsWithCollapse(progs, nowMin, badgedSet);
       cell += '</div></td>';
       html += cell;
     }
