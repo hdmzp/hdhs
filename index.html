@@ -2838,16 +2838,16 @@
     </div>
     <div class="cel-slicer" id="celProgramSlicer">
       <button class="active" data-file="all">전체선택</button>
+      <button class="active" data-file="HD_HJM.json">황정민쇼</button>
       <button class="active" data-file="CJ_KJE.json">강주은 굿라이프</button>
       <button class="active" data-file="HD_OGS.json">오감쇼</button>
       <button class="active" data-file="CJ_KCO.json">더 김창옥 라이브</button>
       <button class="active" data-file="CJ_CHJ.json">최화정쇼</button>
-      <button class="active" data-file="HD_HJM.json">황정민쇼</button>
       <button class="active" data-file="GS_BJY.json">지금 백지연</button>
       <button class="active" data-file="LT_CYR.json">최유라쇼</button>
       <button class="active" data-file="GS_SYJ.json">소유진쇼</button>
-      <button class="active" data-file="HD_WYE.json">왕영은 톡투게더</button>
       <button class="active" data-file="CJ_SIH.json">소이현 겟잇스타일</button>
+      <button class="active" data-file="HD_WYE.json">왕영은 톡투게더</button>
     </div>
   </div>
   <div class="cel-sample-notice" id="celSampleNotice" style="display:none;">⚠️ 아직 수집된 데이터가 없어 레이아웃 미리보기용 예시 데이터를 보여주고 있습니다.</div>
@@ -4795,12 +4795,14 @@ document.getElementById('pmMonthPicker').addEventListener('change', (e) => {
 // "전체" 중 하나만 보는 게 아니라, 여러 셀럽PGM을 동시에 선택해서
 // 상품 라인업을 나란히 비교하는 화면. 이미지는 참고용일 뿐이라 굳이
 // 안 불러도 되고, 브랜드+상품명이 핵심이라 텍스트 위주 리스트로 구성한다.
-// 프로그램 순서는 방송 요일 기준 월화수목금토일 순으로 정렬한다.
-// (강주은=월, 오감쇼=화, 김창옥=화, 최화정=수, 황정민=목, 백지연=목, 최유라=목/토, 소유진=금)
+// 프로그램 순서는 방송 요일·시작시간 기준 월화수목금토일 순으로 정렬한다.
+// (황정민=월 19:30, 강주은=월 19:35, 오감쇼=화 19:30, 김창옥=화 19:35, 최화정=수,
+//  백지연=목, 최유라=목/토, 소유진=금 20:35, 소이현=금 21:45, 왕영은=토 08:20)
+// ※ 황정민쇼는 목요일이었다가 월요일로 이동함 (2026-08 기준)
 const CEL_FILES = [
-  "CJ_KJE.json", "HD_OGS.json", "CJ_KCO.json", "CJ_CHJ.json",
-  "HD_HJM.json", "GS_BJY.json", "LT_CYR.json", "GS_SYJ.json",
-  "HD_WYE.json", "CJ_SIH.json"
+  "HD_HJM.json", "CJ_KJE.json", "HD_OGS.json", "CJ_KCO.json",
+  "CJ_CHJ.json", "GS_BJY.json", "LT_CYR.json", "GS_SYJ.json",
+  "CJ_SIH.json", "HD_WYE.json"
 ];
 let celRawDataFull = [];       // 전체 상품(프로그램 태그 포함)
 let celProgramMeta = {};       // file -> {title, company, schedule_raw, detail_link}
