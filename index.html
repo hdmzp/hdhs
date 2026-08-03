@@ -2243,7 +2243,9 @@
     margin: 0 auto;
     padding: 0 24px 60px;
   }
-  .pm-hscroll { overflow: auto; }
+  /* 세로 스크롤 컨테이너: 지난 날짜는 위쪽에 있고, 로드 시 오늘 행으로
+     자동 스크롤된다 (지상파 시간표처럼 위로 올리면 지난 일정이 보임) */
+  .pm-hscroll { overflow: auto; max-height: calc(100vh - 240px); }
 
   table.pm-table {
     width: 100%;
@@ -2378,16 +2380,7 @@
   }
   .pm-empty { color: var(--ink-faint); font-size: 12px; }
 
-  /* 이번 달 지난 일정(누적 이력) 구분선 + 흐림 처리 */
-  tr.pm-divider td {
-    padding: 18px 6px 6px;
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--ink-faint);
-    text-align: center;
-    border-bottom: 1px solid var(--rule);
-    background: var(--paper);
-  }
+  /* 이번 달의 지난 날짜(위쪽 누적 이력)는 흐리게 */
   tr.pm-past td { opacity: 0.62; }
 
   @media (max-width: 700px) {
@@ -4716,19 +4709,9 @@ async function pmRefresh() {
   document.getElementById('pmMonthPrev').disabled = pmMonth <= minMonth;
   document.getElementById('pmMonthNext').disabled = pmMonth >= maxMonth;
 
-  const monthDates = [...allDates].filter(d => d.slice(0, 7) === pmMonth).sort();
-
-  // 이번 달: 오늘~미래(오름차순)를 먼저 보여주고, 그 아래 '지난 일정'으로
-  // 이달의 지난 날짜 이력을 최신순으로 누적 표시. 과거 달은 1일부터 전체.
-  let ordered, pastStartIdx = -1;
-  if (pmMonth === curMonth) {
-    const future = monthDates.filter(d => d >= todayStr);
-    const past = monthDates.filter(d => d < todayStr).reverse();
-    ordered = future.concat(past);
-    pastStartIdx = past.length ? future.length : -1;
-  } else {
-    ordered = monthDates;
-  }
+  // 시간표처럼 이달 전체를 날짜 오름차순으로 쌓는다. 지난 날짜(흐림)가 위에
+  // 누적되고, 이번 달이면 렌더 후 오늘 행이 상단에 오도록 자동 스크롤한다.
+  const ordered = [...allDates].filter(d => d.slice(0, 7) === pmMonth).sort();
 
   if (!ordered.length) {
     notice.textContent = '이 달에는 수집된 카드할인 일정이 없습니다.';
@@ -4744,11 +4727,7 @@ async function pmRefresh() {
   }
   html += '</tr></thead><tbody>';
 
-  for (let i = 0; i < ordered.length; i++) {
-    const d = ordered[i];
-    if (i === pastStartIdx) {
-      html += `<tr class="pm-divider"><td colspan="${PM_COMPANIES.length + 1}">지난 일정</td></tr>`;
-    }
+  for (const d of ordered) {
     const isToday = d === todayStr;
     const isPast = pmMonth === curMonth && d < todayStr;
     html += `<tr class="${isToday ? 'pm-today' : ''}${isPast ? ' pm-past' : ''}">` +
@@ -4778,6 +4757,20 @@ async function pmRefresh() {
   }
   html += '</tbody></table>';
   wrap.innerHTML = html;
+
+  // 이번 달이면 오늘 행이 (고정 헤더 바로 아래) 상단에 오도록 스크롤.
+  // 지난 날짜를 보려면 위로 스크롤해 올리면 된다.
+  if (pmMonth === curMonth) {
+    const todayRow = wrap.querySelector('tr.pm-today');
+    const thead = wrap.querySelector('thead');
+    if (todayRow) {
+      const top = todayRow.getBoundingClientRect().top - wrap.getBoundingClientRect().top
+        + wrap.scrollTop - (thead ? thead.offsetHeight : 0);
+      wrap.scrollTop = Math.max(0, top);
+    }
+  } else {
+    wrap.scrollTop = 0;
+  }
 }
 
 document.getElementById('pmMonthPrev').addEventListener('click', () => {
