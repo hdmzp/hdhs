@@ -2361,6 +2361,18 @@
   }
   .pm-empty { color: var(--ink-faint); font-size: 12px; }
 
+  /* 이번 달 지난 일정(누적 이력) 구분선 + 흐림 처리 */
+  tr.pm-divider td {
+    padding: 18px 6px 6px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ink-faint);
+    text-align: center;
+    border-bottom: 1px solid var(--rule);
+    background: var(--paper);
+  }
+  tr.pm-past td { opacity: 0.62; }
+
   @media (max-width: 700px) {
     .pm-controls { padding: 10px 8px 0; }
     .pm-scroll { padding: 0 8px 40px; }
@@ -4633,11 +4645,17 @@ async function pmRefresh() {
 
   const monthDates = [...allDates].filter(d => d.slice(0, 7) === pmMonth).sort();
 
-  // 이번 달: 오늘부터 미래만 (지난 날짜는 ◀ 월 이동 아카이브에서 확인).
-  // 다른 달(아카이브): 1일부터 오름차순 전체.
-  const ordered = (pmMonth === curMonth)
-    ? monthDates.filter(d => d >= todayStr)
-    : monthDates;
+  // 이번 달: 오늘~미래(오름차순)를 먼저 보여주고, 그 아래 '지난 일정'으로
+  // 이달의 지난 날짜 이력을 최신순으로 누적 표시. 과거 달은 1일부터 전체.
+  let ordered, pastStartIdx = -1;
+  if (pmMonth === curMonth) {
+    const future = monthDates.filter(d => d >= todayStr);
+    const past = monthDates.filter(d => d < todayStr).reverse();
+    ordered = future.concat(past);
+    pastStartIdx = past.length ? future.length : -1;
+  } else {
+    ordered = monthDates;
+  }
 
   if (!ordered.length) {
     notice.textContent = '이 달에는 수집된 카드할인 일정이 없습니다.';
@@ -4653,9 +4671,14 @@ async function pmRefresh() {
   }
   html += '</tr></thead><tbody>';
 
-  for (const d of ordered) {
+  for (let i = 0; i < ordered.length; i++) {
+    const d = ordered[i];
+    if (i === pastStartIdx) {
+      html += `<tr class="pm-divider"><td colspan="${PM_COMPANIES.length + 1}">지난 일정</td></tr>`;
+    }
     const isToday = d === todayStr;
-    html += `<tr class="${isToday ? 'pm-today' : ''}">` +
+    const isPast = pmMonth === curMonth && d < todayStr;
+    html += `<tr class="${isToday ? 'pm-today' : ''}${isPast ? ' pm-past' : ''}">` +
       `<td class="pm-cell pm-date-cell">${pmFormatDate(d)}` +
       (isToday ? '<span class="pm-today-badge">오늘</span>' : '') + '</td>';
     for (const co of PM_COMPANIES) {
