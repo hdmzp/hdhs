@@ -168,7 +168,13 @@ def fetch_rendered(url, wait_selector=None, mobile=False, timeout_ms=30000,
     )
     try:
         page = context.new_page()
-        page.goto(url, wait_until="domcontentloaded", timeout=timeout_ms)
+        # 무거운 페이지(롯데 메인 등)는 domcontentloaded가 타임아웃까지 안 오는
+        # 경우가 있다. 네비게이션 자체는 시작됐을 수 있으므로 중단하지 않고
+        # 이어서 셀렉터 대기/스크롤로 진행한다 (파싱이 비면 호출부에서 실패 처리).
+        try:
+            page.goto(url, wait_until="domcontentloaded", timeout=timeout_ms)
+        except Exception as e:
+            print(f"    -> [경고] goto 타임아웃/오류({type(e).__name__}) - 로딩된 상태로 계속 진행")
         page.wait_for_timeout(2000)
         for i in range(scroll_steps):
             if wait_selector:
@@ -386,12 +392,20 @@ def scrape_lt():
     except Exception as e:
         print(f"    [LT] 정적 요청 실패({e}) -> Playwright 렌더링 시도")
 
-    html = fetch_rendered(LT_URL, wait_selector="ul.cardbox li.card_list")
-    days = parse_lt(html)
-    if not days:
-        save_debug("LT", html)
-        raise RuntimeError("cardbox 파싱 결과 0건 (구조 변경 의심)")
-    return days
+    # 롯데 메인은 무거워서 로딩이 간헐적으로 매우 느리다 (goto 30초 타임아웃으로
+    # 실패한 사례 있음). 타임아웃을 넉넉히 주고 실패 시 잠시 쉬었다 재시도.
+    html = ""
+    for attempt in range(1, 4):
+        html = fetch_rendered(LT_URL, wait_selector="ul.cardbox li.card_list",
+                              timeout_ms=45000)
+        days = parse_lt(html)
+        if days:
+            return days
+        print(f"    [LT] 렌더링 {attempt}/3회차 실패 (HTML {len(html)}자) -> 재시도")
+        time.sleep(5)
+
+    save_debug("LT", html)
+    raise RuntimeError("cardbox 파싱 결과 0건 (3회 재시도 실패 - 로딩 지연 반복 또는 구조 변경)")
 
 
 # ============ CJ (혜택탭 - 텍스트 휴리스틱) ============
