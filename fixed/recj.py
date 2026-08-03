@@ -65,6 +65,35 @@ HEADERS = {
 
 TARGET_MODULE_CODE = "MSRT06"
 
+# pgmShop 페이지에는 MSRT06(TV 방송상품 모음) 외에도 "라이브쇼 방송상품 모음",
+# "라이브 캘린더"(방송 예고 + 대표상품) 같은 방송 구좌가 더 있다 (겟잇스타일에서
+# 확인 - 08/10 라이브쇼 상품, 08/21 예고 상품이 MSRT06엔 없고 다른 구좌에만 있음).
+# 구좌별 상세 스키마를 다 알 수 없어, MSRT 계열 모듈을 재귀로 훑어
+# itemBaseInfo가 있는 항목을 전부 수집한다. 날짜 라벨은 가장 가까운 조상의
+# srttbNm(또는 유사 필드)을 쓰고 없으면 '방송상품'으로 둔다.
+MODULE_CODE_PREFIX = "MSRT"
+
+LABEL_FIELD_CANDIDATES = ("srttbNm", "bdDtmNm", "bdTmNm", "broadcastDtmNm")
+
+
+def walk_collect_items(node, current_label, out):
+    """모듈 JSON을 재귀 순회하며 (라벨, itemBaseInfo) 수집."""
+    if isinstance(node, dict):
+        for f in LABEL_FIELD_CANDIDATES:
+            v = node.get(f)
+            if isinstance(v, str) and v.strip():
+                current_label = v.strip()
+                break
+        base = node.get("itemBaseInfo")
+        if isinstance(base, dict) and (base.get("itemCd") or base.get("displayItemName")):
+            out.append((current_label, base))
+        for v in node.values():
+            if isinstance(v, (dict, list)):
+                walk_collect_items(v, current_label, out)
+    elif isinstance(node, list):
+        for v in node:
+            walk_collect_items(v, current_label, out)
+
 # ============ 여기에 프로그램 추가 ============
 # keywords: 편성표(tvSchedule) 보강 시 같은 시간대 방송이 이 프로그램이 맞는지
 #           pgmNm으로 확인하는 키워드 (cj_scraper.CJ_PGM_KEYWORDS와 표기 일치)
@@ -170,10 +199,13 @@ def supplement_from_schedule(session: requests.Session, config: dict, products: 
     labels = list(dict.fromkeys(p["broadcast_date_label"] for p in products))
 
     seen_codes = set()
+    seen_names = set()
     for p in products:
         m = re.search(r"/item/(\d+)", p.get("link") or "")
         if m:
             seen_codes.add(m.group(1))
+        if p.get("name"):
+            seen_names.add(p["name"])
 
     for label in labels:
         bdate, start_hm = parse_label_datetime(label)
@@ -182,7 +214,8 @@ def supplement_from_schedule(session: requests.Session, config: dict, products: 
         items = fetch_schedule_lineup(session, bdate.strftime("%Y%m%d"), start_hm,
                                       config.get("keywords"))
         new_items = [it for it in items
-                     if it.get("itemCd") and str(it["itemCd"]) not in seen_codes]
+                     if it.get("itemCd") and str(it["itemCd"]) not in seen_codes
+                     and (it.get("itemNm") or "") not in seen_names]
         if not new_items:
             continue
 
@@ -253,23 +286,41 @@ def crawl_cj_program(session: requests.Session, config: dict):
         return None
 
     modules = module_data.get("result", {}).get("moduleList", []) or []
+    # 모듈 인벤토리 로그 (새 구좌 유형이 생기면 여기서 코드 확인)
+    inventory = [m.get("moduleBaseInfo", {}).get("repModulTpCd") for m in modules]
+    print(f"    -> 모듈 구성: {inventory}")
+
     target_module = next(
         (m for m in modules if m.get("moduleBaseInfo", {}).get("repModulTpCd") == TARGET_MODULE_CODE),
         None
     )
     if not target_module:
-        print(f"[경고] [{tab_name}] '{TARGET_MODULE_CODE}'(방송 라인업) 모듈을 못 찾음")
-        return {
-            "company": "CJ",
-            "tab_name": tab_name,
-            "program_title": program_title or config["program_title"],
-            "schedule_raw": schedule_raw,
-            "detail_link": f"https://display.cjonstyle.com/m/pgmShop/{pgm_cd}",
-            "products": [],
-        }
+        print(f"[경고] [{tab_name}] '{TARGET_MODULE_CODE}'(TV 방송상품) 모듈 없음 - 다른 구좌만 수집")
+
+    def item_key(base):
+        return str(base.get("itemCd") or base.get("displayItemName") or "")
 
     products = []
-    content_list = target_module.get("contentList") or []
+    seen_item_keys = set()
+
+    def add_product(date_label, base):
+        key = item_key(base)
+        if not key or key in seen_item_keys:
+            return False
+        seen_item_keys.add(key)
+        img_list = base.get("imgUrlList") or []
+        products.append({
+            "broadcast_date_label": date_label or "방송상품",
+            "brand": base.get("repBrandNm", ""),
+            "name": base.get("displayItemName") or base.get("itemNm"),
+            "price": base.get("salePrice"),
+            "image": to_https(img_list[0]) if img_list else "",
+            "link": base.get("itemLink"),
+        })
+        return True
+
+    # 1) TV 방송상품 모음(MSRT06): srttbNm이 정확한 방송일시 라벨
+    content_list = (target_module.get("contentList") or []) if target_module else []
     for content in content_list:
         srttb_list = content.get("srttbList") or []
         for srttb in srttb_list:
@@ -283,17 +334,23 @@ def crawl_cj_program(session: requests.Session, config: dict):
 
             for it in item_list:
                 base = it.get("itemBaseInfo", {}) or {}
-                if not base:
-                    continue
-                img_list = base.get("imgUrlList") or []
-                products.append({
-                    "broadcast_date_label": date_label,
-                    "brand": base.get("repBrandNm", ""),
-                    "name": base.get("displayItemName") or base.get("itemNm"),
-                    "price": base.get("salePrice"),
-                    "image": to_https(img_list[0]) if img_list else "",
-                    "link": base.get("itemLink"),
-                })
+                if base:
+                    add_product(date_label, base)
+
+    # 2) 나머지 방송 구좌(라이브쇼 방송상품 모음, 라이브 캘린더 등 MSRT 계열)를
+    #    재귀로 훑어 아직 없는 상품을 추가 (겟잇스타일의 08/10 라이브쇼,
+    #    08/21 예고 상품이 여기서 나온다)
+    for m in modules:
+        if m is target_module:
+            continue
+        code = (m.get("moduleBaseInfo", {}) or {}).get("repModulTpCd") or ""
+        if not code.startswith(MODULE_CODE_PREFIX):
+            continue
+        found = []
+        walk_collect_items(m, "", found)
+        added = sum(1 for label, base in found if add_product(label, base))
+        if added:
+            print(f"    -> [{code}] 구좌에서 +{added}개")
 
     # 방송 타임당 대표상품만 온 경우를 대비해 편성표 itemList 전체로 보강
     supplement_from_schedule(session, config, products)
