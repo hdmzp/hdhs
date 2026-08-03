@@ -44,7 +44,9 @@ import re
 import json
 import time
 import requests
+from datetime import datetime, date, timedelta, timezone
 
+KST = timezone(timedelta(hours=9))
 OUTPUT_DIR = os.path.join("homeshopping", "representative_programs")
 
 STEP1_URL_TEMPLATE = (
@@ -64,12 +66,18 @@ HEADERS = {
 TARGET_MODULE_CODE = "MSRT06"
 
 # ============ 여기에 프로그램 추가 ============
+# keywords: 편성표(tvSchedule) 보강 시 같은 시간대 방송이 이 프로그램이 맞는지
+#           pgmNm으로 확인하는 키워드 (cj_scraper.CJ_PGM_KEYWORDS와 표기 일치)
 PROGRAMS = [
-    {"tab_name": "강주은", "program_title": "강주은 굿라이프", "pgm_cd": "100009", "output_file": "CJ_KJE.json"},
-    {"tab_name": "최화정", "program_title": "최화정쇼", "pgm_cd": "100027", "output_file": "CJ_CHJ.json"},
-    {"tab_name": "김창옥", "program_title": "더 김창옥 라이브", "pgm_cd": "563907", "output_file": "CJ_KCO.json"},
+    {"tab_name": "강주은", "program_title": "강주은 굿라이프", "pgm_cd": "100009", "output_file": "CJ_KJE.json",
+     "keywords": ("강주은", "굿라이프", "굿 라이프")},
+    {"tab_name": "최화정", "program_title": "최화정쇼", "pgm_cd": "100027", "output_file": "CJ_CHJ.json",
+     "keywords": ("최화정",)},
+    {"tab_name": "김창옥", "program_title": "더 김창옥 라이브", "pgm_cd": "563907", "output_file": "CJ_KCO.json",
+     "keywords": ("김창옥",)},
     # pgm_cd는 pgmShop 페이지 URL의 번호 (fixed_programs/CJ.json의 pgmshop_link 참조)
-    {"tab_name": "소이현", "program_title": "소이현의 겟잇스타일", "pgm_cd": "100061", "output_file": "CJ_SIH.json"},
+    {"tab_name": "소이현", "program_title": "소이현의 겟잇스타일", "pgm_cd": "100061", "output_file": "CJ_SIH.json",
+     "keywords": ("소이현", "겟잇스타일")},
 ]
 # ==============================================
 
@@ -90,6 +98,112 @@ def to_https(url: str) -> str:
     if url.startswith("//"):
         return "https:" + url
     return url
+
+
+# ============ 편성표(tvSchedule) 라인업 보강 ============
+# MSRT06(방송 라인업) 모듈이 방송 타임당 대표상품 1개만 주는 프로그램이 있다
+# (강주은 굿라이프에서 확인 - 실제 페이지엔 라이프밀/다이슨 등 여러 개).
+# cj_scraper.py가 쓰는 공개 편성표 API에는 같은 방송의 itemList 전체가 있으므로,
+# MSRT06이 준 방송일시로 편성표를 조회해 나머지 상품을 채운다 (rehd.py의
+# tv-list 보강과 같은 접근). 브랜드는 repBrandTag 단건 API로 조회.
+
+TV_SCHEDULE_URL = ("https://display.cjonstyle.com/c/rest/tv/tvSchedule"
+                   "?bdDt={bd_dt}&isMobile=false&broadType=live&isEmployee=false")
+REPBRAND_URL = "https://display-frontapi.cjonstyle.com/itemDetails/{item_cd}/repBrandTag"
+
+
+def parse_label_datetime(label: str):
+    """'08/03(월) 19:35' -> (date(2026,8,3), '19:35'). 연도는 오늘과 가장
+    가까운 해로 추정(연말/연초 경계 대응). 파싱 실패 시 (None, None)."""
+    m = re.search(r"(\d{1,2})/(\d{1,2})\s*\([^)]*\)\s*(\d{1,2}):(\d{2})", label or "")
+    if not m:
+        return None, None
+    month, day, hh, mi = map(int, m.groups())
+    base = datetime.now(KST).date()
+    cands = []
+    for y in (base.year - 1, base.year, base.year + 1):
+        try:
+            cands.append(date(y, month, day))
+        except ValueError:
+            pass
+    if not cands:
+        return None, None
+    d = min(cands, key=lambda x: abs((x - base).days))
+    return d, f"{hh:02d}:{mi:02d}"
+
+
+def fetch_schedule_lineup(session: requests.Session, bd_dt: str, start_hm: str, keywords):
+    """편성표에서 bd_dt(YYYYMMDD) start_hm에 시작하는 방송의 itemList 전체를 반환.
+    keywords가 있으면 pgmNm 확인으로 다른 방송 오매칭을 방어한다."""
+    data = fetch_json(session, TV_SCHEDULE_URL.format(bd_dt=bd_dt))
+    if not data:
+        return []
+    for pg in data.get("result", {}).get("programList", []) or []:
+        start_ms = pg.get("bdStrDtm")
+        if not start_ms:
+            continue
+        s = datetime.fromtimestamp(start_ms / 1000, tz=KST).strftime("%H:%M")
+        if s != start_hm:
+            continue
+        pgm_nm = (pg.get("pgmNm") or "")
+        if keywords and not any(k in pgm_nm for k in keywords):
+            print(f"    -> [보강] {start_hm} 방송 pgmNm '{pgm_nm}'이 키워드와 불일치 - 건너뜀")
+            continue
+        return pg.get("itemList") or []
+    return []
+
+
+def fetch_repbrands(session: requests.Session, item_cds):
+    """itemCd별 대표 브랜드 조회 (cj_scraper.fetch_repbrand_batch와 동일 API)."""
+    out = {}
+    for cd in dict.fromkeys(c for c in item_cds if c):
+        data = fetch_json(session, REPBRAND_URL.format(item_cd=cd))
+        result = (data or {}).get("result")
+        if result and result.get("repBrandNm"):
+            out[cd] = result["repBrandNm"]
+        time.sleep(0.2)
+    return out
+
+
+def supplement_from_schedule(session: requests.Session, config: dict, products: list):
+    """MSRT06 결과(products)의 각 방송 타임에 대해 편성표 itemList 전체로 보강."""
+    labels = list(dict.fromkeys(p["broadcast_date_label"] for p in products))
+
+    seen_codes = set()
+    for p in products:
+        m = re.search(r"/item/(\d+)", p.get("link") or "")
+        if m:
+            seen_codes.add(m.group(1))
+
+    for label in labels:
+        bdate, start_hm = parse_label_datetime(label)
+        if not bdate or not start_hm:
+            continue
+        items = fetch_schedule_lineup(session, bdate.strftime("%Y%m%d"), start_hm,
+                                      config.get("keywords"))
+        new_items = [it for it in items
+                     if it.get("itemCd") and str(it["itemCd"]) not in seen_codes]
+        if not new_items:
+            continue
+
+        brand_map = fetch_repbrands(session, [str(it["itemCd"]) for it in new_items])
+        for it in new_items:
+            cd = str(it["itemCd"])
+            seen_codes.add(cd)
+            chn = it.get("chnCd", "")
+            link = f"https://display.cjonstyle.com/p/item/{cd}"
+            if chn:
+                link += f"?channelCode={chn}"
+            products.append({
+                "broadcast_date_label": label,
+                "brand": brand_map.get(cd, "") or it.get("brandName") or "",
+                "name": it.get("itemNm", ""),
+                "price": it.get("salePrice"),
+                "image": to_https(it.get("itemImgUrl") or it.get("imgUrl") or ""),
+                "link": link,
+            })
+        print(f"    -> 편성표 보강: {label} +{len(new_items)}개 (전체 {len(products)}개)")
+        time.sleep(0.3)
 
 
 def get_tab_id(session: requests.Session, pgm_cd: str):
@@ -180,6 +294,9 @@ def crawl_cj_program(session: requests.Session, config: dict):
                     "image": to_https(img_list[0]) if img_list else "",
                     "link": base.get("itemLink"),
                 })
+
+    # 방송 타임당 대표상품만 온 경우를 대비해 편성표 itemList 전체로 보강
+    supplement_from_schedule(session, config, products)
 
     print(f"[{tab_name}] 수집 완료. 방송예정 상품 총 {len(products)}개")
 
