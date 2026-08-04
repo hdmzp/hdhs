@@ -1,0 +1,23 @@
+name: 네트워크 진단 (임시)
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: 날씨 API 후보 호스트 연결 테스트
+        run: |
+          for url in \
+            "https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=test" \
+            "http://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=test" \
+            "https://apihub.kma.go.kr/" \
+            "https://api.open-meteo.com/v1/forecast?latitude=37.57&longitude=126.98&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=Asia%2FTokyo&forecast_days=2" \
+            "https://archive-api.open-meteo.com/v1/archive?latitude=37.57&longitude=126.98&start_date=2026-06-30&end_date=2026-06-30&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=Asia%2FTokyo" \
+          ; do
+            echo "=== $url"
+            curl -s -o /tmp/resp.txt -w "HTTP %{http_code} | connect %{time_connect}s | total %{time_total}s\n" --max-time 25 "$url" || echo "(curl 실패)"
+            head -c 300 /tmp/resp.txt; echo; echo
+          done
