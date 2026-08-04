@@ -48,6 +48,7 @@ homeshopping/fixed_programs/GS.json
 
 import os
 import re
+import sys
 import json
 import requests
 from datetime import datetime, timezone, timedelta
@@ -108,15 +109,34 @@ def fetch_tv_highlight_html(session: requests.Session) -> str:
     return resp.text
 
 
+def describe_markup(soup) -> None:
+    """대표프로그램을 못 찾았을 때, 어떤 페이지가 내려왔는지 단서를 남긴다."""
+    title = soup.select_one("title")
+    print(f"  [GS] [진단] <title>: {title.get_text(strip=True) if title else '(없음)'}")
+
+    section_ids = [
+        el.get("id") for el in soup.select("[id]")
+        if el.get("id") and re.search(r"(pgm|tv|program)", el.get("id"), re.I)
+    ]
+    print(f"  [GS] [진단] pgm/tv 관련 id: {section_ids[:15] or '(없음)'}")
+
+    for sel in (".swiper-slide", ".item-head", "h3.ttl-lg",
+                "article.ban-item", "article.prd-item"):
+        print(f"  [GS] [진단] '{sel}' 개수: {len(soup.select(sel))}")
+
+
 def parse_programs(html: str) -> list:
     programs = []
     soup = BeautifulSoup(html, "html.parser")
 
     section = soup.select_one("#tv-sect-pgm2")
     if not section:
+        # 컨테이너 id만 바뀐 경우까지 죽지 않도록, 문서 전체에서 슬라이드를 찾는
+        # 폴백을 시도한다. 아래 루프가 .item-head + 제목 없는 슬라이드는
+        # 어차피 걸러내므로 무관한 슬라이드가 섞여도 결과에 들어오지 않는다.
         print("  [GS] [경고] '#tv-sect-pgm2' 컨테이너를 찾을 수 없습니다. "
-              "페이지 구조가 바뀌었을 가능성이 있습니다.")
-        return programs
+              "문서 전체에서 대표프로그램 슬라이드를 찾아봅니다.")
+        section = soup
 
     # 중복된 가짜 슬라이드(swiper-slide-duplicate) 제외하고 진짜 프로그램만
     slides = section.select(".swiper-slide:not(.swiper-slide-duplicate)")
@@ -178,19 +198,43 @@ def parse_programs(html: str) -> list:
     return programs
 
 
+def load_existing_programs() -> list:
+    """이미 저장돼 있는 GS.json의 programs. 없거나 깨졌으면 빈 리스트."""
+    try:
+        with open(OUTPUT_PATH, encoding="utf-8") as f:
+            data = json.load(f)
+        programs = data.get("programs")
+        return programs if isinstance(programs, list) else []
+    except (OSError, ValueError):
+        return []
+
+
 def main():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     print("[GS] TV 대표프로그램 수집 중...")
     session = make_session()
 
+    html = ""
     try:
         html = fetch_tv_highlight_html(session)
     except Exception as e:
         print(f"  [실패] {GS_TV_HIGHLIGHT_URL} 호출: {e}")
-        html = ""
 
     programs = parse_programs(html) if html else []
+
+    # 수집 0개인데 파일을 덮어쓰면 멀쩡하던 기존 데이터까지 날아가고,
+    # 화면에서는 GS만 통째로 사라진다. 수집 실패는 데이터 유실 사유가 아니다.
+    if not programs:
+        if html:
+            describe_markup(BeautifulSoup(html, "html.parser"))
+        kept = load_existing_programs()
+        if kept:
+            print(f"\n[GS] 수집 0개 -> 기존 데이터 {len(kept)}개를 그대로 유지합니다 "
+                  f"(덮어쓰지 않음): {OUTPUT_PATH}")
+        else:
+            print(f"\n[GS] 수집 0개, 유지할 기존 데이터도 없습니다: {OUTPUT_PATH}")
+        sys.exit(1)
 
     payload = {
         "company": "GS",
