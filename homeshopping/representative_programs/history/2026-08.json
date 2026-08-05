@@ -1,6 +1,6 @@
 {
   "month": "2026-08",
-  "updated_at": "2026-08-05T09:13:34.648095+09:00",
+  "updated_at": "2026-08-06T04:16:52.455115+09:00",
   "programs": [
     {
       "program_key": "HD_HJM",
@@ -10,6 +10,21 @@
       "schedule_raw": "매주 월요일 19시 30분",
       "detail_link": "https://www.hmall.com/md/dpa/pgmComm?sectId=3094173",
       "broadcasts": [
+        {
+          "date": "2026-08-10",
+          "label": "08/10(월) 19:30 방송",
+          "collected_at": "2026-08-06T04:16:52.453721+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "08/10(월) 19:30 방송",
+              "brand": "끼아베리니",
+              "name": "[황쇼단독구성]끼아베리니 이탈리아 프리미엄 잼 6종",
+              "price": 69900,
+              "image": "https://image.hmall.com/2252508401_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252508401"
+            }
+          ]
+        },
         {
           "date": "2026-08-03",
           "label": "08/03(월) 19:30 방송",
@@ -59,6 +74,29 @@
       "schedule_raw": "매주 화요일 19시 30분",
       "detail_link": "https://www.hmall.com/md/dpa/pgmComm?sectId=3094172",
       "broadcasts": [
+        {
+          "date": "2026-08-11",
+          "label": "08/11(화) 19:30 방송",
+          "collected_at": "2026-08-06T04:16:52.453721+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "08/11(화) 19:30 방송",
+              "brand": "",
+              "name": "오감쇼[正品] 26SS 아디다스 뉴베이직 드로즈 패키지 (8종+2종)",
+              "price": 99000,
+              "image": "https://image.hmall.com/2252204675_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252204675"
+            },
+            {
+              "broadcast_date_label": "8/11(화) 방송상품",
+              "brand": "",
+              "name": "[正品] 26SS 아디다스 뉴베이직 남성 트렁크 패키지 (6종)",
+              "price": 99000,
+              "image": "https://image.hmall.com/2247065482_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2247065482"
+            }
+          ]
+        },
         {
           "date": "2026-08-04",
           "label": "08/04(화) 19:30 방송",
@@ -143,7 +181,7 @@
         {
           "date": "2026-08-08",
           "label": "08/08(토) 08:20 방송",
-          "collected_at": "2026-08-05T09:13:34.647085+09:00",
+          "collected_at": "2026-08-06T04:16:52.453721+09:00",
           "products": [
             {
               "broadcast_date_label": "08/08(토) 08:20 방송",
@@ -160,6 +198,14 @@
               "price": 119000,
               "image": "https://image.hmall.com/2205098290_0.jpg",
               "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2205098290"
+            },
+            {
+              "broadcast_date_label": "08/08(토) 08:20 방송",
+              "brand": "휘슬러",
+              "name": "휘슬러 마에스트 인덕션 포르티스 3구 (모델명:BIGK5701)",
+              "price": 1990000,
+              "image": "https://image.hmall.com/2252524805_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252524805"
             }
           ]
         },
@@ -215,17 +261,8 @@
         {
           "date": "2026-08-13",
           "label": "08/13(목) 20:45 방송",
-          "collected_at": "2026-08-05T09:13:34.647085+09:00",
+          "collected_at": "2026-08-06T04:16:52.453721+09:00",
           "products": [
-            {
-              "prd_id": "1107902603",
-              "broadcast_date_label": "8월 13일(목) 20:45 방송",
-              "broadcast_iso": "2026-08-13T20:45:00",
-              "brand": "GS SHOP",
-              "name": "하이랜드 프레쉬 100% 블루베리 착즙 주스 96팩 (백지연 PICK)",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1107902603"
-            },
             {
               "prd_id": "1101552186",
               "broadcast_date_label": "8월 13일(목) 20:45 방송",
@@ -234,6 +271,15 @@
               "name": "하이랜드 프레쉬 100% 블루베리 착즙 주스 48팩 120mL (백지연 PICK)",
               "price": null,
               "link": "https://m.gsshop.com/prd/prd.gs?prdid=1101552186"
+            },
+            {
+              "prd_id": "1107902603",
+              "broadcast_date_label": "8월 13일(목) 20:45 방송",
+              "broadcast_iso": "2026-08-13T20:45:00",
+              "brand": "GS SHOP",
+              "name": "하이랜드 프레쉬 100% 블루베리 착즙 주스 96팩 (백지연 PICK)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1107902603"
             },
             {
               "prd_id": "1104113220",
@@ -306,6 +352,15 @@
               "name": "궁키친 이상민 블랙타이거 새우 5팩 100미 (소스 X,오직 새우만)",
               "price": null,
               "link": "https://m.gsshop.com/prd/prd.gs?prdid=1057551916"
+            },
+            {
+              "prd_id": "1128185127",
+              "broadcast_date_label": "8월 13일(목) 20:45 방송",
+              "broadcast_iso": "2026-08-13T20:45:00",
+              "brand": "GS SHOP",
+              "name": "폴리보이 오가닉 클리너 세트 (욕실 클리너 5개+다목적 클리너 2개+가죽케어 티슈 2개)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1128185127"
             }
           ]
         }
@@ -322,7 +377,7 @@
         {
           "date": "2026-08-14",
           "label": "08/14(금) 20:35 방송",
-          "collected_at": "2026-08-05T09:13:34.647085+09:00",
+          "collected_at": "2026-08-06T04:16:52.453721+09:00",
           "products": [
             {
               "prd_id": "1103156429",
@@ -465,7 +520,7 @@
         {
           "date": "2026-08-15",
           "label": "08/15(토) 09:20 방송",
-          "collected_at": "2026-08-05T09:13:34.647085+09:00",
+          "collected_at": "2026-08-06T04:16:52.453721+09:00",
           "products": [
             {
               "broadcast_date_label": "08/15 토요일 09:20",
@@ -504,7 +559,7 @@
         {
           "date": "2026-08-13",
           "label": "08/13(목) 20:45 방송",
-          "collected_at": "2026-08-05T09:13:34.647085+09:00",
+          "collected_at": "2026-08-06T04:16:52.453721+09:00",
           "products": [
             {
               "broadcast_date_label": "08/13 목요일 20:45",
@@ -535,8 +590,16 @@
         {
           "date": "2026-08-08",
           "label": "08/08(토) 08:20 방송",
-          "collected_at": "2026-08-05T09:13:34.647085+09:00",
+          "collected_at": "2026-08-06T04:16:52.453721+09:00",
           "products": [
+            {
+              "broadcast_date_label": "08/08 토요일 08:20",
+              "brand": "사샤후안",
+              "name": "[사샤후안] 최유라쇼 사샤후안 리브인 컨디셔너 250ml * 6통 + 100ml*1통",
+              "price": 229000,
+              "image": "https://image2.lotteimall.com/goods/14/78/91/12917814_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12917814"
+            },
             {
               "broadcast_date_label": "08/08 토요일 08:20",
               "brand": "사샤후안",
@@ -574,7 +637,7 @@
         {
           "date": "2026-08-06",
           "label": "08/06(목) 20:45 방송",
-          "collected_at": "2026-08-05T09:13:34.647085+09:00",
+          "collected_at": "2026-08-06T04:16:52.453721+09:00",
           "products": [
             {
               "broadcast_date_label": "08/06 목요일 20:45",
@@ -623,6 +686,14 @@
               "price": 69900,
               "image": "https://image2.lotteimall.com/goods/95/67/91/12916795_1.jpg/dims/resizemc/640x360/optimize",
               "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12916795"
+            },
+            {
+              "broadcast_date_label": "08/06 목요일 20:45",
+              "brand": "온다숲",
+              "name": "[올해마지막찬스] 계피수 250ml*2개 + 편백수 탈취제 500ml*2개",
+              "price": 49900,
+              "image": "https://image2.lotteimall.com/goods/47/72/91/12917247_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12917247"
             },
             {
               "broadcast_date_label": "08/06 목요일 20:45",
@@ -694,7 +765,7 @@
         {
           "date": "2026-08-10",
           "label": "08/10(월) 19:35 방송",
-          "collected_at": "2026-08-05T09:13:34.647085+09:00",
+          "collected_at": "2026-08-06T04:16:52.453721+09:00",
           "products": [
             {
               "broadcast_date_label": "08/10(월) 19:35",
@@ -709,7 +780,7 @@
               "brand": "피지",
               "name": "[굿라이프PICK/더블] 모락셀라 쉰내잡는 캡슐세제",
               "price": 109900,
-              "image": "goods_images/20/623/2085498623L.jpg?timestamp=20260804164508",
+              "image": "goods_images/20/623/2085498623L.jpg?timestamp=20260805145807",
               "link": "https://display.cjonstyle.com/p/item/2085498623?channelCode=30002002"
             }
           ]
@@ -755,6 +826,29 @@
       "schedule_raw": "매주 수요일 20:45",
       "detail_link": "https://display.cjonstyle.com/m/pgmShop/100027",
       "broadcasts": [
+        {
+          "date": "2026-08-12",
+          "label": "08/12(수) 20:45 방송",
+          "collected_at": "2026-08-06T04:16:52.453721+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "08/12(수) 20:45",
+              "brand": "라이프밀",
+              "name": "황성주 생식 라이프 밀 4박스+쉐이커1",
+              "price": 249000,
+              "image": "https://image.cjonstyle.net/goods_images/20/027/2075265027L.jpg?timestamp=20251128105652",
+              "link": "https://item.cjonstyle.com/item/2075265027?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/12(수) 20:45",
+              "brand": "맛있는家",
+              "name": "[바로도착] 방배쭈꾸미볶음 500g 5팩",
+              "price": 59900,
+              "image": "https://image.cjonstyle.net/goods_images/20/840/2083272840L.jpg?timestamp=20260428175217",
+              "link": "https://item.cjonstyle.com/item/2083272840?channelCode=30002002"
+            }
+          ]
+        },
         {
           "date": "2026-08-05",
           "label": "08/05(수) 20:45 방송",
@@ -967,7 +1061,7 @@
         {
           "date": "2026-08-07",
           "label": "08/07(금) 22:45 방송",
-          "collected_at": "2026-08-05T09:13:34.647085+09:00",
+          "collected_at": "2026-08-06T04:16:52.453721+09:00",
           "products": [
             {
               "broadcast_date_label": "08/07(금) 22:45",
