@@ -917,6 +917,10 @@
   .in-cross { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--rule); font-size: 12.5px; color: var(--ink-soft); }
   .in-cross b { color: var(--ink); font-size: 13px; }
   .in-cross div { margin-top: 4px; }
+  .in-cross .in-cross-grp { margin-top: 8px; font-weight: 600; color: var(--ink); }
+  .in-cross .in-cross-row { margin-top: 2px; padding-left: 8px; line-height: 1.5; }
+  .in-cross .in-cross-ch { font-weight: 600; color: var(--ink); }
+  .in-cross .in-cross-cnt { color: var(--ink-soft); opacity: .85; font-size: 11.5px; }
 
   /* ============ 날씨 탭(달력) ============ */
   #tabWeather {
@@ -6442,6 +6446,7 @@ function celRenderCompare() {
   for (let h = 5; h < 24; h++) IN_HOURS.push(h); // 05~23시
   IN_HOURS.push(0, 1);                           // 00~01시 (02~04시 생략)
   const IN_FIXED_CO = { HD: '현대홈쇼핑', GS: 'GS홈쇼핑', CJ: 'CJ온스타일', LT: '롯데홈쇼핑' };
+  const IN_CROSS_MAX_TITLES = 4; // 지상파·종편 크로스레퍼런스에서 채널당 나열할 최대 프로그램 수
 
   const IN_CATS = Object.keys(HS_CATEGORY_COLORS).concat(['기타']);
 
@@ -6796,6 +6801,13 @@ function celRenderCompare() {
     inLoadCrossref(w, h, inSelToken);
   }
 
+  // "조선의 사랑꾼(131회)"처럼 회차가 붙으면 매주 다른 제목으로 집계돼, 같은 프로그램이
+  // 4주 내내 편성됐는데도 최빈 제목이 1/4일이 되어 '편성 다양함'으로 빠진다. 집계 전에 회차를 뗀다.
+  const inNormTitle = t => {
+    const s = String(t || '').trim();
+    return s.replace(/\s*\(\s*\d+\s*회\s*\)\s*$/, '').trim() || s;
+  };
+
   // 지상파·종편(./data/{날짜}.json) 크로스레퍼런스: 조회기간 내 같은 요일 날짜들에서
   // 해당 시간대에 시작하는 채널별 프로그램을 모아 최빈 제목을 뽑는다.
   async function inLoadCrossref(w, h, token) {
@@ -6822,32 +6834,45 @@ function celRenderCompare() {
           if (ph !== h) return;
           const slot = perChannel[ch.key] || (perChannel[ch.key] = { group: ch.group, dates: new Set(), titleDates: {} });
           slot.dates.add(d);
-          (slot.titleDates[p.title] || (slot.titleDates[p.title] = new Set())).add(d);
+          const title = inNormTitle(p.title);
+          (slot.titleDates[title] || (slot.titleDates[title] = new Set())).add(d);
         });
       });
     });
 
-    const fmtGroup = group => Object.entries(perChannel)
-      .filter(([, v]) => v.group === group)
-      .map(([key, v]) => {
-        const T = v.dates.size;
-        const [topTitle, topDates] = Object.entries(v.titleDates).sort((a, b) => b[1].size - a[1].size)[0];
-        const K = topDates.size;
-        const majority = K / T >= 0.5;
-        return majority
-          ? inEsc(key) + ' ' + inEsc(topTitle) + ' (' + K + '/' + T + '일)'
-          : inEsc(key) + ' 편성 다양함';
-      }).join(' · ');
+    // 한 채널을 한 줄로 요약한다. 최빈 제목이 과반이면 그 제목만 보여주고,
+    // 과반이 없으면 '편성 다양함'으로 뭉뚱그리지 않고 실제 제목을 빈도순으로 나열한다.
+    // (기본 조회기간 4주 = 요일별 4일이라 제목 종류가 많지 않다)
+    const fmtChannel = (key, v) => {
+      const T = v.dates.size;
+      const titles = Object.entries(v.titleDates).sort((a, b) => b[1].size - a[1].size);
+      const [topTitle, topDates] = titles[0];
+      const K = topDates.size;
+      const head = '<span class="in-cross-ch">' + inEsc(key) + '</span> ';
 
-    const terr = fmtGroup('terrestrial');
-    const comp = fmtGroup('comprehensive');
+      if (K / T >= 0.5) {
+        return head + inEsc(topTitle) + ' <span class="in-cross-cnt">(' + K + '/' + T + '일)</span>';
+      }
+
+      const shown = titles.slice(0, IN_CROSS_MAX_TITLES).map(([t, ds]) =>
+        inEsc(t) + (ds.size > 1 ? ' <span class="in-cross-cnt">' + ds.size + '일</span>' : ''));
+      const rest = titles.length - shown.length;
+      return head + '<span class="in-cross-cnt">편성 다양함 (' + T + '일)</span> ' + shown.join(', ')
+        + (rest ? ' <span class="in-cross-cnt">외 ' + rest + '편</span>' : '');
+    };
+
+    const fmtGroup = (label, group) => {
+      const rows = Object.entries(perChannel).filter(([, v]) => v.group === group)
+        .map(([key, v]) => '<div class="in-cross-row">' + fmtChannel(key, v) + '</div>');
+      return rows.length ? '<div class="in-cross-grp">' + label + '</div>' + rows.join('') : '';
+    };
+
+    const terr = fmtGroup('지상파', 'terrestrial');
+    const comp = fmtGroup('종편', 'comprehensive');
     const el = $('inCrossref');
     if (!el) return;
     el.innerHTML = (!terr && !comp) ? '' :
-      '<div class="in-cross"><b>이 시간대엔 주로 이런 방송이 진행돼요</b>'
-      + (terr ? '<div>지상파: ' + terr + '</div>' : '')
-      + (comp ? '<div>종편: ' + comp + '</div>' : '')
-      + '</div>';
+      '<div class="in-cross"><b>이 시간대엔 주로 이런 방송이 진행돼요</b>' + terr + comp + '</div>';
   }
 
   async function inQuery() {
