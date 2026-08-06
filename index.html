@@ -3185,6 +3185,8 @@ function formatDateLabel(dateStr) {
   return `${dateStr} (${days[d.getDay()]})`;
 }
 
+// 편성표 상단 날씨 바는 서울 기준으로 표시한다.
+const SCHEDULE_WEATHER_REGION = 'seoul';
 const _weatherCache = { forecast: null, asosMonths: {} };
 
 async function fetchJsonSafe(path) {
@@ -3200,7 +3202,7 @@ async function getWeatherForDate(dateStr) {
   if (location.protocol === 'file:') return null;
 
   if (_weatherCache.forecast === null) {
-    _weatherCache.forecast = await fetchJsonSafe('./weather/forecast/latest.json') || {};
+    _weatherCache.forecast = await fetchJsonSafe(`./weather/forecast/${SCHEDULE_WEATHER_REGION}/latest.json`) || {};
   }
   if (_weatherCache.forecast[dateStr]) {
     const w = _weatherCache.forecast[dateStr];
@@ -3209,7 +3211,7 @@ async function getWeatherForDate(dateStr) {
 
   const yearMonth = dateStr.slice(0, 7);
   if (!(yearMonth in _weatherCache.asosMonths)) {
-    _weatherCache.asosMonths[yearMonth] = await fetchJsonSafe(`./weather/asos/${yearMonth}.json`);
+    _weatherCache.asosMonths[yearMonth] = await fetchJsonSafe(`./weather/asos/${SCHEDULE_WEATHER_REGION}/${yearMonth}.json`);
   }
   const monthData = _weatherCache.asosMonths[yearMonth];
   if (monthData && monthData[dateStr]) {
