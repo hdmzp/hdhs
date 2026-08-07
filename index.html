@@ -2966,7 +2966,7 @@
     <div class="in-trk">
       <div class="in-trk-head">
         <b>📡 건강프로그램 추적</b>
-        <button type="button" class="lv-go-btn" id="inTrkBtn">분석</button>
+        <button type="button" class="lv-go-btn" id="inTrkBtn">조회</button>
       </div>
       <div class="lv-slicer" id="inTrkSlicer" style="margin:8px 0;"></div>
       <div id="inTrkBody"><p class="in-muted" style="font-size:12.5px;">조회 기간의 지상파·종편 편성에서 건강 프로그램을 찾고, 방영일마다 같은 시간대 홈쇼핑에 건강식품이 얼마나 편성됐는지 세어 보여줍니다. [분석]을 눌러 주세요.</p></div>
@@ -6611,6 +6611,7 @@ function celRenderCompare() {
         inActive = ch === '__all__' ? inToggleAllClick(inActive, labels) : inToggleOneClick(inActive, labels, ch);
         inRenderChannelSlicer();
         inRender();
+        if (inTrkResult) inAnalyzePpl(); // 건강프로그램 추적도 홈쇼핑사 선택을 반영해 다시 계산
       });
     });
   }
@@ -6924,16 +6925,18 @@ function celRenderCompare() {
   // 본방과 '스페셜/특별판'을 한 프로그램으로 묶는다
   const inTrkGroupTitle = t => String(t || '').replace(/\s*(스페셜|특별판|하이라이트)\s*$/, '').trim() || String(t || '');
 
-  // 조회 기간 홈쇼핑 편성의 날짜·시간대별 건강식품 비중 (채널·카테고리 슬라이서와 무관하게 전체 기준)
+  // 조회 기간 홈쇼핑 편성의 날짜·시간대별 건강식품 비중
+  // 상단 홈쇼핑사 슬라이서(inActive) 선택을 반영한다. 카테고리 슬라이서는 무관(건강식품 고정).
   function inTrkHealthShare() {
-    const dh = {}; // 'YYYY-MM-DD|h' -> { t: 전체 편성 수, he: 건강식품 수 }
+    const dh = {}; // 'YYYY-MM-DD|h' -> { t: 전체 편성 수, he: 건강식품 수, by: {홈쇼핑사: 건강식품 수} }
     let totAll = 0, healAll = 0;
     inRows.forEach(r => {
+      if (!inActive.has(r.label)) return;
       const k = r.d + '|' + r.h;
-      const c = dh[k] || (dh[k] = { t: 0, he: 0 });
+      const c = dh[k] || (dh[k] = { t: 0, he: 0, by: {} });
       c.t++;
       totAll++;
-      if (r.cat === '건강식품') { c.he++; healAll++; }
+      if (r.cat === '건강식품') { c.he++; healAll++; c.by[r.label] = (c.by[r.label] || 0) + 1; }
     });
     return { dh: dh, base: totAll ? healAll / totAll : 0 };
   }
@@ -6941,7 +6944,7 @@ function celRenderCompare() {
   async function inAnalyzePpl() {
     const btn = $('inTrkBtn'), body = $('inTrkBody');
     btn.disabled = true;
-    btn.textContent = '분석 중...';
+    btn.textContent = '조회 중...';
     body.innerHTML = '<p class="in-muted" style="font-size:12.5px;">지상파·종편 편성을 불러오는 중...</p>';
 
     try {
@@ -6993,20 +6996,25 @@ function celRenderCompare() {
         const topHour = +Object.entries(g.hours).sort((a, b) => b[1] - a[1])[0][0];
 
         // 방영일별로: 그날 이 프로그램이 방송된 시간대 중 하나라도
-        // 홈쇼핑 건강식품 비중이 기준(기간 평균의 1.3배)을 넘었으면 '높음'인 날로 센다.
+        // 홈쇼핑 건강식품 비중이 기준(기간 평균의 1.3배)을 넘었으면 '높음'인 날로 세고,
+        // 그 시간대들에 편성된 건강식품을 홈쇼핑사별로 집계한다(운영상품 열).
         const okDates = new Set(), knownDates = new Set();
+        const byCo = {};
+        let coTotal = 0;
         g.slots.forEach(s => {
           const c = dh[s];
           if (!c || !c.t) return; // 02~04시 등 홈쇼핑 집계가 없는 시간대
           const d = s.slice(0, 10);
           knownDates.add(d);
           if (c.he / c.t >= thresh) okDates.add(d);
+          for (const co in c.by) { byCo[co] = (byCo[co] || 0) + c.by[co]; coTotal += c.by[co]; }
         });
 
         rows.push({
           ...g, topHour: topHour,
           linkedDays: okDates.size, knownDays: knownDates.size,
           linked: knownDates.size > 0 && okDates.size / knownDates.size >= 0.5,
+          byCo: byCo, coTotal: coTotal,
         });
       });
 
@@ -7019,7 +7027,7 @@ function celRenderCompare() {
       inTrkResult = { rows: rows, base: base, days: loadedDays, total: dates.length };
     } finally {
       btn.disabled = false;
-      btn.textContent = '다시 분석';
+      btn.textContent = '조회';
     }
     inRenderPpl();
   }
@@ -7065,26 +7073,36 @@ function celRenderCompare() {
     }
 
     html += '<div class="in-trk-scroll"><table class="in-trk-table"><thead><tr>'
-      + '<th>채널</th><th>프로그램</th><th>방영</th><th>주 시간대</th><th>같은 시간대 홈쇼핑 건강식품↑</th>'
+      + '<th>채널</th><th>프로그램</th><th>방영</th><th>주 시간대</th><th>연계비중</th><th>근거</th><th>운영상품</th>'
       + '</tr></thead><tbody>';
 
     shown.forEach(r => {
-      const co = r.knownDays === 0 ? '–'
-        : '<b>' + r.linkedDays + '</b>/' + r.knownDays + '일'
-          + (r.linked ? ' <span class="in-trk-badge in-trk-link">동시편성 잦음</span>' : '');
+      const ratio = r.knownDays === 0 ? '–'
+        : '<b>' + Math.round(r.linkedDays / r.knownDays * 100) + '%</b> (' + r.linkedDays + '/' + r.knownDays + '일)';
+      const basis = r.linked ? '<span class="in-trk-badge in-trk-link">동시편성 잦음</span>' : '–';
+      let coStr = '–';
+      if (r.coTotal > 0) {
+        const cos = Object.entries(r.byCo).sort((a, b) => b[1] - a[1]);
+        coStr = cos.slice(0, 4).map(([co, n]) => inEsc(co) + ' ' + Math.round(n / r.coTotal * 100) + '%').join(', ')
+          + (cos.length > 4 ? ' 외' : '');
+      }
       html += '<tr>'
         + '<td>' + inEsc(r.ch) + '</td>'
         + '<td>' + inEsc(r.title) + '</td>'
         + '<td class="in-trk-num">' + r.n + '회 / ' + r.dates.size + '일</td>'
         + '<td class="in-trk-num">' + String(r.topHour).padStart(2, '0') + '시</td>'
-        + '<td class="in-trk-num">' + co + '</td>'
+        + '<td class="in-trk-num">' + ratio + '</td>'
+        + '<td>' + basis + '</td>'
+        + '<td>' + coStr + '</td>'
         + '</tr>';
     });
 
     html += '</tbody></table></div>'
-      + '<p class="lv-table-note">같은 시간대 홈쇼핑 건강식품↑: 방영일 중, 그날 그 방송 시간대 홈쇼핑 편성에서 건강식품 비중이'
-      + ' 조회기간 평균의 ' + IN_TRK_LINK_RATIO + '배 이상이었던 날 수. 예: 15/18일 = 방영 18일 가운데 15일은 같은 시간대'
-      + ' 홈쇼핑에 건강식품이 평소보다 많이 편성됨 · 02~04시 방영분은 홈쇼핑 집계 제외(–)'
+      + '<p class="lv-table-note">연계비중: 방영일 중, 그날 그 방송 시간대 홈쇼핑 편성에서 건강식품 비중이'
+      + ' 조회기간 평균의 ' + IN_TRK_LINK_RATIO + '배 이상이었던 날 비율. 예: 83% (15/18일) = 방영 18일 가운데 15일은'
+      + ' 같은 시간대 홈쇼핑에 건강식품이 평소보다 많이 편성됨 · 근거: 그 비율이 절반 이상이면 동시편성 잦음'
+      + ' · 운영상품: 방영 시간대에 편성된 홈쇼핑 건강식품의 회사별 비중 (많은 순)'
+      + ' · 상단 홈쇼핑사 슬라이서 선택이 반영됨 · 02~04시 방영분은 홈쇼핑 집계 제외(–)'
       + ' · 건강프로그램 선별은 제목·이력 기준 (드라마·뉴스 등 제외) · 본방과 스페셜/특별판은 한 줄로 묶음</p>';
 
     body.innerHTML = html;
@@ -7100,7 +7118,7 @@ function celRenderCompare() {
       inRender();
       // 조회 기간이 바뀌면 이전 PPL 분석 결과는 그 기간 것이 아니다
       inTrkResult = null;
-      $('inTrkBtn').textContent = '분석';
+      $('inTrkBtn').textContent = '조회';
       inRenderPpl();
     } finally {
       btn.disabled = false;
