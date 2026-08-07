@@ -5041,13 +5041,11 @@ async function celInitLoad() {
 }
 
 // GS 스크래퍼는 실제 브랜드를 못 뽑고 전 상품에 'GS SHOP'을 넣는다.
-// 이런 자리표시자 브랜드는 없는 것으로 보고, 상품명 첫 어절(선행 [구성문구] 제거 후)로 브랜드를 추정한다.
+// 자리표시자 브랜드는 없는 것으로 취급한다 - 추정치를 만들어 적느니 생략한다.
 const CEL_BRAND_PLACEHOLDER = /^(gs\s*shop|gs샵)$/i;
 function celBrandKey(p) {
   const b = String(p.brand || '').trim();
-  if (b && !CEL_BRAND_PLACEHOLDER.test(b)) return b;
-  const name = String(p.name || '').replace(/^\s*(\[[^\]]*\]\s*)+/, '').trim();
-  return name.split(/\s+/)[0] || '';
+  return (b && !CEL_BRAND_PLACEHOLDER.test(b)) ? b : '';
 }
 
 function celRenderProductRow(p) {
@@ -5186,8 +5184,8 @@ function celRenderBand(file) {
   const monthNum = parseInt((celMonth || celThisMonth()).slice(5, 7), 10);
   const weeks = Object.keys(weekMap).map(Number).sort((a, b) => b - a);
   const bcastCnt = broadcasts.length;
-  // 한 브랜드가 여러 상품코드로 노출돼 상품 수는 과잉집계라, 고유 브랜드 수로 센다
-  // (브랜드 미추출 회사는 celBrandKey가 상품명 첫 어절로 추정)
+  // 한 브랜드가 여러 상품코드로 노출돼 상품 수는 과잉집계라, 고유 브랜드 수로 센다.
+  // 브랜드를 못 뽑는 회사(GS)는 brandCnt가 0이 되고 요약에서 브랜드 표기가 생략된다.
   const brandSet = new Set();
   broadcasts.forEach(b => b.products.forEach(p => {
     const key = celBrandKey(p);
@@ -5209,7 +5207,16 @@ function celRenderBand(file) {
       }).join('');
 
   const coCls = (meta.company || '').toLowerCase();
-  const thumb = celThumbOf(meta.title);
+  // 프로그램 썸네일: 고정PGM 수집분 우선. 거기 없는 프로그램(예: 더 김창옥 라이브는
+  // CJ 고정PGM 목록에 미등재)은 최신 방송의 첫 상품 이미지로 폴백한다.
+  let thumb = celThumbOf(meta.title);
+  if (!thumb) {
+    const sorted = [...broadcasts].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+    for (const b of sorted) {
+      const withImg = (b.products || []).find(p => p.image);
+      if (withImg) { thumb = withImg.image; break; }
+    }
+  }
   const thumbHtml = `<div class="cel-band-thumb">` +
     (thumb
       ? `<img src="${thumb}" alt="" loading="lazy" onerror="this.parentNode.innerHTML='<span class=cel-thumb-ph>${(meta.title || '?')[0]}</span>'">`
