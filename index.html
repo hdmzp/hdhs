@@ -5040,9 +5040,21 @@ async function celInitLoad() {
   await celSetMonth(celMonth || celThisMonth());
 }
 
+// GS 스크래퍼는 실제 브랜드를 못 뽑고 전 상품에 'GS SHOP'을 넣는다.
+// 이런 자리표시자 브랜드는 없는 것으로 보고, 상품명 첫 어절(선행 [구성문구] 제거 후)로 브랜드를 추정한다.
+const CEL_BRAND_PLACEHOLDER = /^(gs\s*shop|gs샵)$/i;
+function celBrandKey(p) {
+  const b = String(p.brand || '').trim();
+  if (b && !CEL_BRAND_PLACEHOLDER.test(b)) return b;
+  const name = String(p.name || '').replace(/^\s*(\[[^\]]*\]\s*)+/, '').trim();
+  return name.split(/\s+/)[0] || '';
+}
+
 function celRenderProductRow(p) {
   const priceText = p.price ? Number(p.price).toLocaleString() + '원' : '';
-  const brandTag = p.brand ? `<span class="cel-prod-brand">${p.brand}</span>` : '';
+  // 자리표시자 브랜드('GS SHOP')는 태그로도 안 보여준다 (전 상품 동일해서 정보가 없음)
+  const brandShown = (p.brand && !CEL_BRAND_PLACEHOLDER.test(String(p.brand).trim())) ? p.brand : '';
+  const brandTag = brandShown ? `<span class="cel-prod-brand">${brandShown}</span>` : '';
   return (
     `<a class="cel-prod-row" href="${p.link || '#'}" target="_blank" rel="noopener noreferrer">` +
       `<div class="cel-prod-name">${brandTag}${p.name || ''}</div>` +
@@ -5175,10 +5187,11 @@ function celRenderBand(file) {
   const weeks = Object.keys(weekMap).map(Number).sort((a, b) => b - a);
   const bcastCnt = broadcasts.length;
   // 한 브랜드가 여러 상품코드로 노출돼 상품 수는 과잉집계라, 고유 브랜드 수로 센다
+  // (브랜드 미추출 회사는 celBrandKey가 상품명 첫 어절로 추정)
   const brandSet = new Set();
   broadcasts.forEach(b => b.products.forEach(p => {
-    const brand = String(p.brand || '').trim();
-    if (brand) brandSet.add(brand);
+    const key = celBrandKey(p);
+    if (key) brandSet.add(key);
   }));
   const brandCnt = brandSet.size;
 
