@@ -239,12 +239,39 @@ def supplement_from_schedule(session: requests.Session, config: dict, products: 
         time.sleep(0.3)
 
 
+_IMG_URL_RE = re.compile(r"^(?:https?:)?//\S+\.(?:png|jpe?g|webp)(?:\?\S*)?$", re.I)
+
+
+def find_first_image_url(obj):
+    """중첩 dict/list에서 이미지로 보이는 첫 URL 문자열을 찾는다.
+    dict에서는 img/image/bnr/banner/thumb 계열 키를 먼저 확인해
+    상품 등 무관한 이미지가 먼저 잡히는 것을 줄인다."""
+    if isinstance(obj, str):
+        return obj if _IMG_URL_RE.match(obj.strip()) else None
+    if isinstance(obj, dict):
+        for key in obj:
+            if re.search(r"img|image|bnr|banner|thumb", key, re.I):
+                found = find_first_image_url(obj[key])
+                if found:
+                    return found
+        for value in obj.values():
+            found = find_first_image_url(value)
+            if found:
+                return found
+    if isinstance(obj, list):
+        for value in obj:
+            found = find_first_image_url(value)
+            if found:
+                return found
+    return None
+
+
 def get_tab_id(session: requests.Session, pgm_cd: str):
-    """1단계: pgmShop 기본정보 API에서 tabId + 편성텍스트를 얻는다."""
+    """1단계: pgmShop 기본정보 API에서 tabId + 편성텍스트 + 프로그램 이미지를 얻는다."""
     url = STEP1_URL_TEMPLATE.format(pgm_cd=pgm_cd)
     data = fetch_json(session, url)
     if not data:
-        return None, None, None
+        return None, None, None, None
 
     result = data.get("result", {})
     pgm_shop_info = result.get("pgmShopInfo", {}) or {}
@@ -254,11 +281,16 @@ def get_tab_id(session: requests.Session, pgm_cd: str):
     ]
     schedule_raw = " / ".join(p for p in schedule_parts if p)
 
+    # pgmShop 페이지 상단 배너 이미지. 고정PGM 목록(newContList)에 미등재인
+    # 프로그램(더 김창옥 라이브)은 이게 유일한 프로그램 이미지 소스다.
+    # 정확한 필드명이 프로그램마다 다를 수 있어 pgmShopInfo 안을 탐색한다.
+    program_image = to_https(find_first_image_url(pgm_shop_info) or "")
+
     tab_list = result.get("tabList") or []
     main_tab = next((t for t in tab_list if t.get("mainTabYn") == "Y"), None) or (tab_list[0] if tab_list else None)
     tab_id = main_tab.get("tabId") if main_tab else None
 
-    return tab_id, program_title, schedule_raw
+    return tab_id, program_title, schedule_raw, program_image
 
 
 def crawl_cj_program(session: requests.Session, config: dict):
@@ -267,12 +299,13 @@ def crawl_cj_program(session: requests.Session, config: dict):
 
     print(f"\n===== [{tab_name}] (pgmCd={pgm_cd}) 수집 시작 =====")
 
-    tab_id, program_title, schedule_raw = get_tab_id(session, pgm_cd)
+    tab_id, program_title, schedule_raw, program_image = get_tab_id(session, pgm_cd)
     if not tab_id:
         print(f"[실패] [{tab_name}] tabId를 못 얻음 (1단계 URL이 아직 안 채워졌을 수 있음)")
         return None
 
     print(f"    -> tabId={tab_id} / 프로그램명: {program_title} / 편성: {schedule_raw}")
+    print(f"    -> 프로그램 이미지: {program_image or '(못 찾음)'}")
 
     time.sleep(0.3)
     module_data = fetch_json(session, STEP2_MODULE_LIST_URL, params={
@@ -363,6 +396,7 @@ def crawl_cj_program(session: requests.Session, config: dict):
         "program_title": program_title or config["program_title"],
         "schedule_raw": schedule_raw,
         "detail_link": f"https://display.cjonstyle.com/m/pgmShop/{pgm_cd}",
+        "program_image": program_image,
         "products": products,
     }
 
