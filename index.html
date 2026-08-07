@@ -2642,6 +2642,21 @@
   }
   .cel-date-group-label:first-child { margin-top: 4px; }
 
+  .cel-more-btn {
+    display: block;
+    width: 100%;
+    margin-top: 6px;
+    padding: 5px 0;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--brand-blue);
+    background: var(--brand-blue-soft);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .cel-more-btn:hover { filter: brightness(0.96); }
+
   .cel-prod-row {
     display: block;
     padding: 7px 2px;
@@ -3993,7 +4008,10 @@ const HS_COMPANIES_ETC = [
 ];
 
 function hsActiveCompanies() {
-  return hsCurrentBc === 'etc' ? HS_COMPANIES_ETC : HS_COMPANIES_MAIN;
+  if (hsCurrentBc === 'etc') return HS_COMPANIES_ETC;
+  // 데이터방송은 플러스 채널이므로 헤더에 +를 붙여 본채널과 구분한다 (HD+ 등)
+  if (hsCurrentBc === 'data') return HS_COMPANIES_MAIN.map(c => ({ ...c, name: c.name + '+' }));
+  return HS_COMPANIES_MAIN;
 }
 const _hsCache = {};
 
@@ -5049,6 +5067,18 @@ function celBrandKey(p) {
   return (b && !CEL_BRAND_PLACEHOLDER.test(b)) ? b : '';
 }
 
+// 한 브랜드가 상품코드 여러 개로 노출되는 그룹은 목록이 하염없이 길어진다.
+// 5개까지만 보여주고 나머지는 펼치기/접기로 숨긴다.
+const CEL_ROWS_COLLAPSED = 5;
+function celRenderProductList(products) {
+  const rows = (products || []).map(celRenderProductRow);
+  if (rows.length <= CEL_ROWS_COLLAPSED) return rows.join('');
+  const hiddenCnt = rows.length - CEL_ROWS_COLLAPSED;
+  return rows.slice(0, CEL_ROWS_COLLAPSED).join('') +
+    `<div class="cel-more-rows" style="display:none;">${rows.slice(CEL_ROWS_COLLAPSED).join('')}</div>` +
+    `<button type="button" class="cel-more-btn" data-more="${hiddenCnt}">+ ${hiddenCnt}개 펼치기</button>`;
+}
+
 function celRenderProductRow(p) {
   const priceText = p.price ? Number(p.price).toLocaleString() + '원' : '';
   // 자리표시자 브랜드('GS SHOP')는 태그로도 안 보여준다 (전 상품 동일해서 정보가 없음)
@@ -5201,7 +5231,7 @@ function celRenderBand(file) {
         const items = weekMap[w].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
         const cols = items.map(b =>
           `<div class="cel-bcast"><div class="cel-date-group-label">${b.label}</div>` +
-          b.products.map(celRenderProductRow).join('') + `</div>`
+          celRenderProductList(b.products) + `</div>`
         ).join('');
         return `<div class="cel-week">` +
           `<span class="cel-week-label">${w === 0 ? '기타' : monthNum + '월 ' + w + '주차'}</span>` +
@@ -5257,6 +5287,17 @@ function celRenderCompare() {
 
   wrap.innerHTML = selected.map(celRenderBand).join('');
 }
+
+// 펼치기/접기 버튼: 재렌더링마다 버튼이 새로 생기므로 컨테이너에 위임으로 한 번만 건다
+document.getElementById('celGridWrap').addEventListener('click', (e) => {
+  const btn = e.target.closest('.cel-more-btn');
+  if (!btn) return;
+  const moreRows = btn.previousElementSibling;
+  if (!moreRows || !moreRows.classList.contains('cel-more-rows')) return;
+  const opening = moreRows.style.display === 'none';
+  moreRows.style.display = opening ? '' : 'none';
+  btn.textContent = opening ? '접기 ▲' : `+ ${btn.dataset.more}개 펼치기`;
+});
 
 (async function init() {
   initInfoTip();
