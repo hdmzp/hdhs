@@ -6800,7 +6800,14 @@ function celRenderCompare() {
         if (!((IN_TRK_KEYWORD.test(g.title) && !IN_TRK_KEYWORD_EXCL.test(g.title))
           || IN_TRK_TITLES.some(t => nTitle.includes(t)))) return;
 
-        const topHour = +Object.entries(g.hours).sort((a, b) => b[1] - a[1])[0][0];
+        // 주 시간대: 본방·재방이 요일마다 다른 슬롯에 붙으므로 '요일+시각' 조합을
+        // 빈도순으로 뽑는다. (예: 일 06시 > 수 06시 > ... 외)
+        const slotCnt = {};
+        g.slots.forEach(s => {
+          const k = IN_DAYS[inWeekday(s.slice(0, 10))] + ' ' + s.slice(11).padStart(2, '0') + '시';
+          slotCnt[k] = (slotCnt[k] || 0) + 1;
+        });
+        const topSlots = Object.entries(slotCnt).sort((a, b) => b[1] - a[1]).map(e => e[0]);
 
         // 방영일별로: 그날 이 프로그램이 방송된 시간대 중 하나라도
         // 홈쇼핑 건강식품 비중이 기준(기간 평균의 1.3배)을 넘었으면 '높음'인 날로 세고,
@@ -6818,7 +6825,7 @@ function celRenderCompare() {
         });
 
         rows.push({
-          ...g, topHour: topHour,
+          ...g, topSlots: topSlots,
           linkedDays: okDates.size, knownDays: knownDates.size,
           linked: knownDates.size > 0 && okDates.size / knownDates.size >= 0.5,
           byCo: byCo, coTotal: coTotal,
@@ -6881,7 +6888,7 @@ function celRenderCompare() {
         + '<td>' + inEsc(r.ch) + '</td>'
         + '<td><a href="' + naver + '" target="_blank" rel="noopener">' + inEsc(r.title) + '</a></td>'
         + '<td class="in-trk-num">' + r.n + '회 / ' + r.dates.size + '일</td>'
-        + '<td class="in-trk-num">' + String(r.topHour).padStart(2, '0') + '시</td>'
+        + '<td>' + inEsc(r.topSlots.slice(0, 3).join(' > ')) + (r.topSlots.length > 3 ? ' 외' : '') + '</td>'
         + '<td class="in-trk-num">' + ratio + '</td>'
         + '<td>' + basis + '</td>'
         + '<td>' + coStr + '</td>'
