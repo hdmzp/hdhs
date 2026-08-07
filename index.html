@@ -5174,7 +5174,13 @@ function celRenderBand(file) {
   const monthNum = parseInt((celMonth || celThisMonth()).slice(5, 7), 10);
   const weeks = Object.keys(weekMap).map(Number).sort((a, b) => b - a);
   const bcastCnt = broadcasts.length;
-  const prodCnt = broadcasts.reduce((s, b) => s + b.products.length, 0);
+  // 한 브랜드가 여러 상품코드로 노출돼 상품 수는 과잉집계라, 고유 브랜드 수로 센다
+  const brandSet = new Set();
+  broadcasts.forEach(b => b.products.forEach(p => {
+    const brand = String(p.brand || '').trim();
+    if (brand) brandSet.add(brand);
+  }));
+  const brandCnt = brandSet.size;
 
   const bodyHtml = emptyMsg
     ? `<div class="cel-col-empty" style="flex:1;">${emptyMsg}</div>`
@@ -5208,7 +5214,7 @@ function celRenderBand(file) {
           (meta.company ? `<span class="cel-col-co ${coCls}">${meta.company}</span>` : '') +
           titleHtml +
           (meta.schedule_raw ? `<div class="cel-col-sched">${normalizeScheduleRaw(meta.schedule_raw)}</div>` : '') +
-          (bcastCnt ? `<div class="cel-band-cnt">이번 달 방송 <b>${bcastCnt}회</b> · 상품 <b>${prodCnt}개</b></div>` : '') +
+          (bcastCnt ? `<div class="cel-band-cnt">이번 달 방송 <b>${bcastCnt}회</b>${brandCnt ? ` · 브랜드 <b>${brandCnt}개</b>` : ''}</div>` : '') +
         `</div>` +
       `</div>` +
       `<div class="cel-band-body">${bodyHtml}</div>` +
