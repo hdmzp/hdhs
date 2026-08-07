@@ -493,6 +493,27 @@
   }
   .main-tabs button:hover { color: var(--ink); background: var(--paper-dim); }
   .main-tabs button.active:hover { color: var(--brand-blue); background: var(--brand-blue-soft); }
+  .main-tabs .lv-logo { display: block; }
+
+  /* 조회 진행 중 오버레이 (긴 조회에서 진행 상태가 보이도록) */
+  .busy-overlay {
+    position: fixed; inset: 0; z-index: 9999;
+    display: none; align-items: center; justify-content: center;
+    background: rgba(255, 255, 255, 0.55);
+  }
+  .busy-overlay.show { display: flex; }
+  .busy-box {
+    display: flex; align-items: center; gap: 10px;
+    background: #fff; border: 1px solid var(--rule); border-radius: 12px;
+    padding: 14px 22px; box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+    font-size: 14px; font-weight: 600; color: var(--ink);
+  }
+  .busy-spin {
+    width: 20px; height: 20px; border-radius: 50%;
+    border: 3px solid var(--rule); border-top-color: var(--brand-blue);
+    animation: busySpin 0.8s linear infinite;
+  }
+  @keyframes busySpin { to { transform: rotate(360deg); } }
 
   @media (max-width: 700px) {
     .main-tabs button { font-size: 12.5px; padding: 7px 10px 6px; }
@@ -2679,7 +2700,7 @@
     <button id="tabBtnRanking">랭킹</button>
     <button id="tabBtnPromotion">카드할인</button>
     <button id="tabBtnFeedback">의견</button>
-    <button id="tabBtnSecurity" aria-label="보안">🔒</button>
+    <button id="tabBtnSecurity" aria-label="라방바" title="라방바"><svg class="lv-logo" viewBox="0 0 100 100" width="18" height="18" aria-hidden="true" focusable="false"><rect x="18" y="4" width="24" height="60" rx="12" fill="#151515"/><circle cx="56" cy="60" r="36" fill="#151515"/><path d="M48 47 L73 60 L48 73 Z" fill="#F2C230" stroke="#F2C230" stroke-width="9" stroke-linejoin="round" transform="rotate(12 58 60)"/></svg></button>
   </div>
   <div class="info-tip-wrap" id="infoTipWrap">
     <button type="button" class="info-tip-btn" id="infoTipBtn" aria-label="화면 설명 보기">
@@ -2976,18 +2997,7 @@
 
 <div id="tabSecurity" class="tab-panel">
 
-  <div id="secLoginBox" class="sec-box">
-    <div class="fb-block">
-      <div class="fb-label">비밀번호 <span class="req">*</span></div>
-      <input type="password" class="fb-input" id="secPw" placeholder="비밀번호" maxlength="100" autocomplete="off">
-      <label class="sec-show"><input type="checkbox" id="secPwShow"> 비밀번호 표시</label>
-    </div>
-
-    <button type="button" class="fb-submit" id="secLoginBtn">접속하기</button>
-    <div class="fb-status" id="secStatus"></div>
-  </div>
-
-  <div id="secContentBox" class="sec-content" style="display:none;">
+  <div id="secContentBox" class="sec-content">
     <div class="lv-slicer sec-subtabs" id="secSubTabs">
       <button class="active" data-sub="lv">📺 방송 실적</button>
       <button data-sub="pw">💰 가격추적</button>
@@ -3040,13 +3050,6 @@
       <p class="lv-table-note">여러 사에서 동시 운영 중인 브랜드의 상품페이지 판매가를 하루 2회(10:40/16:40) 수집 · 셀: 회사별 추적상품 중 최저 현재가 · 뱃지(최근 14일): <b>▼</b> 인하(파랑) / <b>▲</b> 인상(빨강) / <b>✎</b> 구성(상품명) 변경 / 품절 · '방송가' 뱃지: 상품페이지 접근 실패로 최근 방송가 기준 · 최근 48시간 내 변동 셀은 배경 하이라이트 · 행 클릭 시 상품별 상세와 변동 이력</p>
     </div>
 
-    <!-- 항목/내용(안내·갱신방법) 표는 로그인 후 노출하지 않음 (복호화 성공 = 인증 용도로만 사용) -->
-    <p class="sec-updated" id="secUpdated" style="display:none;"></p>
-    <div class="sec-table-wrap" id="secTableWrap" style="display:none;"></div>
-
-    <div class="sec-logout-row">
-      <button type="button" class="fb-submit sec-logout" id="secLogoutBtn">로그아웃</button>
-    </div>
   </div>
 
 </div>
@@ -4420,6 +4423,9 @@ function switchTab(tab) {
     _industryTabLoaded = true;
     window.inInit();
   }
+  if (tab === 'security' && window.lvInit) {
+    window.lvInit(); // 라방바 탭: 로그인 없이 바로 대시보드 초기화 (내부에서 중복 초기화 방지)
+  }
 
   gaEvent('tab_view', { tab_name: tab });
 }
@@ -5448,214 +5454,9 @@ function celRenderCompare() {
   });
 })();
 
-// ============ 보안(로그인 + 접속 기록 + 암호화 데이터) 탭 ============
-(function () {
-  // 보안 데이터는 data/secure/secure.enc 에 AES-256-GCM으로 암호화되어 있고,
-  // 입력한 비밀번호로 복호화가 성공하는 것 자체가 로그인 인증입니다.
-  // (비밀번호나 그 해시는 소스 어디에도 저장되지 않습니다)
-  // 데이터 갱신: tools/secure_encrypt.html 에서 새 파일을 만들어 교체하세요.
-  const SEC_DATA_URL = './data/secure/secure.enc';
-
-  // ▼ 접속 기록을 저장할 Google Apps Script 웹앱 URL (시트 누적용).
-  //   배포 후 발급되는 URL을 붙여넣으세요. 비워두면 기록 전송은 생략됩니다.
-  const SEC_LOG_URL = 'https://script.google.com/macros/s/AKfycbz0uc0vBk4lJgt0-MhvSZcqAje-zb5tuLj2NF5Y_0AQ-8nJQRD5XllnOeGDKYyrj4o0/exec';
-
-  const SEC_SESSION_KEY = 'hdhs_sec_key'; // 새로고침 대비 세션 내 키 보관(탭 닫으면 소멸)
-
-  const loginBox = document.getElementById('secLoginBox');
-  const contentBox = document.getElementById('secContentBox');
-  const pwInput = document.getElementById('secPw');
-  const pwShow = document.getElementById('secPwShow');
-  const loginBtn = document.getElementById('secLoginBtn');
-  const logoutBtn = document.getElementById('secLogoutBtn');
-  const statusEl = document.getElementById('secStatus');
-  const updatedEl = document.getElementById('secUpdated');
-  const tableWrap = document.getElementById('secTableWrap');
-
-  if (!loginBox) return;
-
-  function secShowStatus(msg, ok) {
-    statusEl.textContent = msg;
-    statusEl.className = 'fb-status show ' + (ok ? 'ok' : 'err');
-  }
-
-  function showLoggedIn() {
-    loginBox.style.display = 'none';
-    contentBox.style.display = 'block';
-    if (window.lvInit) window.lvInit(); // 라방바 매출 대시보드 초기화
-  }
-  function showLoggedOut() {
-    contentBox.style.display = 'none';
-    loginBox.style.display = 'block';
-    statusEl.className = 'fb-status';
-    pwInput.value = '';
-    tableWrap.innerHTML = '';
-    updatedEl.textContent = '';
-    if (window.pwResetSubtab) window.pwResetSubtab(); // 가격추적 서브탭도 초기 상태로
-  }
-
-  const b64ToBytes = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
-
-  async function fetchEncFile() {
-    const r = await fetch(SEC_DATA_URL + '?t=' + Date.now());
-    if (!r.ok) throw new Error('enc file not found');
-    return r.json();
-  }
-
-  async function deriveKey(pw, saltBytes, iter) {
-    const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pw), 'PBKDF2', false, ['deriveKey']);
-    return crypto.subtle.deriveKey(
-      { name: 'PBKDF2', hash: 'SHA-256', salt: saltBytes, iterations: iter },
-      base, { name: 'AES-GCM', length: 256 }, true, ['decrypt']
-    );
-  }
-
-  async function decryptWithKey(key, enc) {
-    const buf = await crypto.subtle.decrypt(
-      { name: 'AES-GCM', iv: b64ToBytes(enc.iv) }, key, b64ToBytes(enc.data)
-    );
-    return JSON.parse(new TextDecoder().decode(buf));
-  }
-
-  // v2: 데이터는 랜덤 키로 암호화되고, 그 키가 비밀번호별로 한 번씩 감싸져(keys[])
-  // 등록된 비밀번호 중 어떤 것으로도 열 수 있다. v1(salt/iv/data 단일)도 계속 지원.
-  async function unlockWithPassword(pw, enc) {
-    if (enc.v >= 2 && Array.isArray(enc.keys)) {
-      for (const k of enc.keys) {
-        try {
-          const pwKey = await deriveKey(pw, b64ToBytes(k.salt), enc.iter || 310000);
-          const rawBuf = await crypto.subtle.decrypt(
-            { name: 'AES-GCM', iv: b64ToBytes(k.iv) }, pwKey, b64ToBytes(k.wrap)
-          );
-          const dataKey = await crypto.subtle.importKey('raw', rawBuf, { name: 'AES-GCM' }, true, ['decrypt']);
-          const data = await decryptWithKey(dataKey, enc);
-          return { data: data, key: dataKey };
-        } catch (e) { /* 이 비밀번호로 안 열리면 다음 키 시도 */ }
-      }
-      throw new Error('invalid password');
-    }
-    const key = await deriveKey(pw, b64ToBytes(enc.salt), enc.iter || 310000);
-    const data = await decryptWithKey(key, enc); // 비번이 틀리면 여기서 예외 발생
-    return { data: data, key: key };
-  }
-
-  function renderSecure(data) {
-    updatedEl.textContent = data.updated ? '기준일: ' + data.updated : '';
-    const cols = data.columns || [];
-    const rows = data.rows || [];
-    const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-    let html = '<table class="sec-table"><thead><tr>';
-    cols.forEach(c => { html += '<th>' + esc(c) + '</th>'; });
-    html += '</tr></thead><tbody>';
-    rows.forEach(row => {
-      html += '<tr>';
-      row.forEach(cell => { html += '<td>' + esc(cell) + '</td>'; });
-      html += '</tr>';
-    });
-    html += '</tbody></table>';
-    tableWrap.innerHTML = html;
-  }
-
-  // 새로고침 후에도 같은 브라우저 탭이면 세션에 보관한 키로 자동 복호화
-  (async function tryRestore() {
-    let rawHex = null;
-    try { rawHex = sessionStorage.getItem(SEC_SESSION_KEY); } catch (e) {}
-    if (!rawHex) return;
-    try {
-      const raw = new Uint8Array(rawHex.match(/.{2}/g).map(h => parseInt(h, 16)));
-      const key = await crypto.subtle.importKey('raw', raw, { name: 'AES-GCM' }, false, ['decrypt']);
-      const data = await decryptWithKey(key, await fetchEncFile());
-      renderSecure(data);
-      showLoggedIn();
-    } catch (e) {
-      try { sessionStorage.removeItem(SEC_SESSION_KEY); } catch (e2) {}
-    }
-  })();
-
-  async function getClientIp() {
-    try {
-      const r = await fetch('https://api.ipify.org?format=json');
-      const j = await r.json();
-      return j.ip || '';
-    } catch (e) {
-      return '';
-    }
-  }
-
-  function sendLog(ip, result) {
-    if (!SEC_LOG_URL) return; // URL 미설정 시 전송 생략
-    const payload = {
-      empNo: '', // 사번 입력 제거됨 (시트 열 구조 유지용)
-      ip: ip,
-      result: result, // 'success' | 'fail'
-      userAgent: navigator.userAgent,
-      timestamp: new Date().toISOString()
-    };
-    fetch(SEC_LOG_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(payload)
-    }).catch(() => {});
-  }
-
-  async function doLogin() {
-    // 앞뒤 공백 제거 + 한글 유니코드 정규화(NFC)로 보이지 않는 입력 차이 보정
-    const pw = pwInput.value.trim().normalize('NFC');
-
-    if (!pw) { secShowStatus('비밀번호를 입력해 주세요.', false); pwInput.focus(); return; }
-
-    loginBtn.disabled = true;
-    loginBtn.textContent = '확인 중...';
-
-    let ok = false;
-    let data = null;
-    let key = null;
-    try {
-      const enc = await fetchEncFile();
-      const res = await unlockWithPassword(pw, enc); // 등록된 비번 어느 것도 안 맞으면 예외
-      data = res.data;
-      key = res.key;
-      ok = true;
-    } catch (e) {
-      ok = false;
-    }
-
-    // 성공/실패 모두 기록 (IP 조회 실패해도 빈 값으로 전송)
-    const ip = await getClientIp();
-    sendLog(ip, ok ? 'success' : 'fail');
-
-    loginBtn.disabled = false;
-    loginBtn.textContent = '접속하기';
-
-    if (ok) {
-      try {
-        const raw = new Uint8Array(await crypto.subtle.exportKey('raw', key));
-        sessionStorage.setItem(SEC_SESSION_KEY, [...raw].map(x => x.toString(16).padStart(2, '0')).join(''));
-      } catch (e) {}
-      gaEvent('security_login', { result: 'success' });
-      renderSecure(data);
-      showLoggedIn();
-    } else {
-      secShowStatus('비밀번호가 올바르지 않습니다.', false);
-      pwInput.focus();
-      gaEvent('security_login', { result: 'fail' });
-    }
-  }
-
-  loginBtn.addEventListener('click', doLogin);
-  if (pwShow) {
-    pwShow.addEventListener('change', () => { pwInput.type = pwShow.checked ? 'text' : 'password'; });
-  }
-  pwInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') doLogin(); });
-
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', () => {
-      try { sessionStorage.removeItem(SEC_SESSION_KEY); } catch (e) {}
-      showLoggedOut();
-    });
-  }
-})();
+// ============ 라방바 탭 ============
+// 로그인 절차 제거: 탭을 열면 바로 대시보드를 초기화한다.
+// (구 보안 탭의 암호화 데이터(data/secure)와 로그인 UI는 더 이상 사용하지 않음)
 
 // ============ 보안 탭 - 라방바 매출 대시보드 ============
 (function () {
@@ -6091,7 +5892,8 @@ function celRenderCompare() {
       ['순주문', r => { const v = lvNetOrder(r); return v == null ? '' : Math.round(v); }],
       ['목표', r => lvPgmTarget(r)],
       ['판매가', r => r.price],
-      ['링크', r => r.link],
+      ['상품링크', r => r.product_link],
+      ['라방바링크', r => r.link],
     ];
     const cell = v => {
       const s = String(v == null ? '' : v);
@@ -6137,7 +5939,11 @@ function celRenderCompare() {
       btn.disabled = true;
       btn.textContent = '조회 중...';
       $('lvTableWrap').innerHTML = '<div class="lv-empty">불러오는 중...</div>';
-      try { await lvRender(); } finally { btn.disabled = false; btn.textContent = '조회'; }
+      if (window.showBusy) showBusy('방송 실적 조회 중...');
+      try { await lvRender(); } finally {
+        btn.disabled = false; btn.textContent = '조회';
+        if (window.hideBusy) hideBusy();
+      }
     });
     // 상품명 검색: 검색어를 포함하는 상품명만 표시 (대소문자 무시)
     let lvSearchTimer = null;
@@ -6944,6 +6750,7 @@ function celRenderCompare() {
     btn.disabled = true;
     btn.textContent = '조회 중...';
     body.innerHTML = '<p class="in-muted" style="font-size:12.5px;">지상파·종편 편성을 불러오는 중...</p>';
+    if (window.showBusy) showBusy('건강프로그램 분석 중...');
 
     try {
       const dates = [];
@@ -7026,6 +6833,7 @@ function celRenderCompare() {
     } finally {
       btn.disabled = false;
       btn.textContent = '조회';
+      if (window.hideBusy) hideBusy();
     }
     inRenderPpl();
   }
@@ -7094,6 +6902,7 @@ function celRenderCompare() {
     btn.disabled = true;
     btn.textContent = '조회 중...';
     $('inHeatmap').innerHTML = '<p class="in-muted" style="font-size:13px;">불러오는 중...</p>';
+    if (window.showBusy) showBusy('편성맵 조회 중...');
     try {
       await Promise.all([inLoadRange(), inLoadPgms()]);
       inRender();
@@ -7104,6 +6913,7 @@ function celRenderCompare() {
     } finally {
       btn.disabled = false;
       btn.textContent = '조회';
+      if (window.hideBusy) hideBusy();
     }
   }
 
@@ -7124,6 +6934,26 @@ function celRenderCompare() {
     inRenderChannelSlicer();
     inRenderCatSlicer();
     inQuery();
+  };
+})();
+</script>
+
+<div id="busyOverlay" class="busy-overlay" aria-hidden="true">
+  <div class="busy-box"><div class="busy-spin"></div><span id="busyLabel">조회 중...</span></div>
+</div>
+<script>
+// 긴 조회(라방바·편성맵·건강프로그램 추적) 동안 화면 중앙에 진행 표시를 띄운다.
+// 중첩 호출을 대비해 카운터로 관리한다.
+(function () {
+  let busyCount = 0;
+  window.showBusy = function (msg) {
+    busyCount++;
+    document.getElementById('busyLabel').textContent = msg || '조회 중...';
+    document.getElementById('busyOverlay').classList.add('show');
+  };
+  window.hideBusy = function () {
+    busyCount = Math.max(0, busyCount - 1);
+    if (!busyCount) document.getElementById('busyOverlay').classList.remove('show');
   };
 })();
 </script>
