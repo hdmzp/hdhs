@@ -5016,6 +5016,7 @@ async function celInitLoad() {
       company: data.company || '',
       schedule_raw: data.schedule_raw || '',
       detail_link: data.detail_link || '',
+      program_image: data.program_image || '',
     };
 
     const products = data.products || [];
@@ -5150,6 +5151,7 @@ function celRenderBand(file) {
         company: histProg.company || '',
         schedule_raw: histProg.schedule_raw || '',
         detail_link: histProg.detail_link || '',
+        program_image: histProg.program_image || (celProgramMeta[file] || {}).program_image || '',
       }
     : (celProgramMeta[file] || { title: file, company: '', schedule_raw: '' });
 
@@ -5207,9 +5209,10 @@ function celRenderBand(file) {
       }).join('');
 
   const coCls = (meta.company || '').toLowerCase();
-  // 프로그램 썸네일: 고정PGM 수집분 우선. 거기 없는 프로그램(예: 더 김창옥 라이브는
-  // CJ 고정PGM 목록에 미등재)은 최신 방송의 첫 상품 이미지로 폴백한다.
-  let thumb = celThumbOf(meta.title);
+  // 프로그램 썸네일: 고정PGM 수집분 -> 상세페이지 배너(program_image) -> 최신 방송
+  // 첫 상품 이미지 순으로 폴백. (더 김창옥 라이브는 CJ 고정PGM 목록에 미등재라
+  // program_image가 주 소스가 된다)
+  let thumb = celThumbOf(meta.title) || meta.program_image || '';
   if (!thumb) {
     const sorted = [...broadcasts].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
     for (const b of sorted) {

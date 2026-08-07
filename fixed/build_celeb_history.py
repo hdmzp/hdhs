@@ -156,6 +156,7 @@ def collect_current_broadcasts(today: date) -> dict:
                 "program_title": data.get("program_title", ""),
                 "schedule_raw": data.get("schedule_raw", ""),
                 "detail_link": data.get("detail_link", ""),
+                "program_image": data.get("program_image", ""),
             },
             "broadcasts": by_date,
         }
