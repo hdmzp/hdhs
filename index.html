@@ -5904,7 +5904,9 @@ function celRenderCompare() {
     const blob = new Blob(['\uFEFF' + lines.join('\n')], { type: 'text/csv;charset=utf-8;' }); // BOM: 엑셀 한글 깨짐 방지
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'lavangba_' + (lvStart === lvEnd ? lvStart : lvStart + '-' + lvEnd) + '.csv';
+    // 파일명: lavangba_기간(_검색어).csv - 검색어로 거른 결과임이 파일명에 남도록
+    const safeSearch = lvSearch ? '_' + lvSearch.replace(/[\\/:*?"<>|\s]+/g, '-') : '';
+    a.download = 'lavangba_' + (lvStart === lvEnd ? lvStart : lvStart + '-' + lvEnd) + safeSearch + '.csv';
     a.click();
     URL.revokeObjectURL(a.href);
   }
