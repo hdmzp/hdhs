@@ -2546,29 +2546,63 @@
     color: var(--ink);
   }
 
-  .cel-compare-wrap {
+  /* 프로그램별 가로 밴드: 세로 스크롤만으로 전체 프로그램을 훑는다 */
+  .cel-band {
     display: flex;
-    gap: 14px;
-    overflow-x: auto;
-    padding-bottom: 10px;
-    align-items: flex-start;
-  }
-
-  .cel-col {
-    flex: 0 0 230px;
-    min-width: 210px;
     background: #fff;
     border: 1px solid var(--rule);
     border-radius: var(--radius);
     box-shadow: var(--shadow-sm);
+    margin-bottom: 14px;
     overflow: hidden;
   }
-
-  .cel-col-head {
-    padding: 10px 12px 9px;
-    border-bottom: 1px solid var(--rule);
+  .cel-band-head {
+    flex: 0 0 200px;
+    padding: 14px;
+    border-right: 1px solid var(--rule);
     background: var(--paper-dim);
   }
+  .cel-band-thumb {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #e2e7ee;
+    margin-bottom: 8px;
+  }
+  .cel-band-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .cel-thumb-ph {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; font-weight: 800; color: #fff; background: #8b94a5;
+  }
+  .cel-band-cnt { font-size: 11px; color: var(--ink-soft); margin-top: 6px; }
+  .cel-band-body {
+    flex: 1;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    padding: 12px 14px;
+    align-items: flex-start;
+  }
+  .cel-week { flex: 0 0 auto; }
+  .cel-week + .cel-week { border-left: 2px solid var(--rule); margin-left: 14px; padding-left: 14px; }
+  .cel-week-label {
+    display: inline-block;
+    font-size: 10.5px;
+    font-weight: 800;
+    color: var(--brand-blue);
+    background: var(--brand-blue-soft);
+    border: 1px solid var(--brand-blue);
+    border-radius: 20px;
+    padding: 2px 10px;
+    margin-bottom: 8px;
+  }
+  .cel-week-cols { display: flex; align-items: flex-start; }
+  .cel-bcast { flex: 0 0 auto; width: 215px; padding: 0 12px; border-right: 1px dashed var(--rule); }
+  .cel-bcast:first-child { padding-left: 0; }
+  .cel-bcast:last-child { border-right: none; padding-right: 0; }
 
   .cel-col-co {
     display: inline-block;
@@ -2598,12 +2632,6 @@
     font-size: 10px;
     color: var(--ink-faint);
     margin-top: 2px;
-  }
-
-  .cel-col-body {
-    padding: 6px 10px 10px;
-    max-height: 560px;
-    overflow-y: auto;
   }
 
   .cel-date-group-label {
@@ -2675,7 +2703,20 @@
     .cel-month-nav button, .pm-month-nav button { font-size: 12px; padding: 5px 10px; }
     .cel-month-nav input[type="month"], .pm-month-nav input[type="month"] { font-size: 12.5px; padding: 5px 8px; }
     .cel-slicer button { font-size: 11.5px; padding: 6px 10px; }
-    .cel-col { flex-basis: 190px; min-width: 180px; }
+    .cel-band { flex-direction: column; }
+    .cel-band-head {
+      flex: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-right: none;
+      border-bottom: 1px solid var(--rule);
+      padding: 10px 12px;
+    }
+    .cel-band-thumb { width: 92px; flex: 0 0 92px; margin-bottom: 0; }
+    .cel-thumb-ph { font-size: 16px; }
+    .cel-band-meta { min-width: 0; }
+    .cel-bcast { width: 190px; }
     .cel-col-title { font-size: 12.5px; }
     .cel-prod-name { font-size: 11px; }
   }
@@ -4860,6 +4901,7 @@ let celIsSample = false; // 실제 수집 데이터가 하나도 없어 예시 �
 // ---- 월별 조회 (history/{YYYY-MM}.json) ----
 const CEL_HISTORY_MIN_MONTH = '2026-07'; // 월별 누적 데이터가 쌓이기 시작한 달
 let celMonth = '';             // 현재 조회 중인 달 (YYYY-MM)
+let celThumbs = null;          // 고정PGM 썸네일 재활용 맵 (공백 제거 제목 -> URL)
 let celHistoryCache = {};      // ym -> history JSON (파일 없으면 null)
 
 function celThisMonth() {
@@ -4953,6 +4995,15 @@ async function celInitLoad() {
 
   celRawDataFull = [];
   celProgramMeta = {};
+
+  // 고정PGM 수집분의 썸네일 재활용 (제목 공백 제거 후 매칭)
+  if (!celThumbs) {
+    const fpm = await fetchJsonSafe('./homeshopping/fixed_programs/merged.json');
+    celThumbs = {};
+    ((fpm && fpm.slots) || []).forEach(s => {
+      if (s.thumbnail) celThumbs[String(s.title || '').replace(/\s+/g, '')] = s.thumbnail;
+    });
+  }
 
   const fetchPromises = CEL_FILES.map(async (file) => {
     const data = await fetchJsonSafe(`./homeshopping/representative_programs/${file}`);
@@ -5048,7 +5099,34 @@ function normalizeScheduleRaw(raw) {
   return `매주 ${parts.join(' · ')}`;
 }
 
-function celRenderColumn(file) {
+// 고정PGM 수집분의 프로그램 썸네일을 제목 매칭으로 재활용한다 (별도 수집 없음)
+function celThumbOf(title) {
+  if (!celThumbs) return '';
+  const n = String(title || '').replace(/\s+/g, '');
+  if (celThumbs[n]) return celThumbs[n];
+  for (const k in celThumbs) {
+    if (k.includes(n) || n.includes(k)) return celThumbs[k];
+  }
+  return '';
+}
+
+// 'YYYY-MM-DD'의 월내 주차 (달력 기준, 월요일 시작. 1일이 있는 줄 = 1주차)
+function celWeekOfMonth(dateStr) {
+  const d = new Date(dateStr + 'T00:00:00');
+  if (isNaN(d)) return null;
+  const firstDow = (new Date(d.getFullYear(), d.getMonth(), 1).getDay() + 6) % 7; // 월=0
+  return Math.floor((d.getDate() + firstDow - 1) / 7) + 1;
+}
+
+// 라이브 데이터의 '08/11(화) 19:30 방송' 라벨에서 날짜를 복원 (연도는 조회 중인 달 기준)
+function celDateFromLabel(label) {
+  const m = String(label || '').match(/(\d{2})\/(\d{2})/);
+  if (!m) return '';
+  const year = (celMonth || celThisMonth()).slice(0, 4);
+  return `${year}-${m[1]}-${m[2]}`;
+}
+
+function celRenderBand(file) {
   const programKey = file.replace(/\.json$/, '');
   const hist = celHistoryCache[celMonth];
   const histProg = (hist && Array.isArray(hist.programs))
@@ -5065,53 +5143,75 @@ function celRenderColumn(file) {
       }
     : (celProgramMeta[file] || { title: file, company: '', schedule_raw: '' });
 
-  let bodyHtml;
-  const broadcasts = (histProg && histProg.broadcasts) || [];
-  if (broadcasts.length > 0) {
-    // 월별 누적: 방송일 내림차순(최신 방송이 맨 위)으로 방송 회차별 묶음 표시
-    const sorted = [...broadcasts].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
-    bodyHtml = sorted.map(b =>
-      `<div class="cel-date-group-label">${b.label || b.date || ''}</div>` +
-      (b.products || []).map(celRenderProductRow).join('')
-    ).join('');
+  // 방송 회차 목록을 {date, label, products}로 통일 (월별 누적 우선, 없으면 라이브 폴백)
+  let broadcasts = [];
+  let emptyMsg = '';
+  if (histProg && (histProg.broadcasts || []).length > 0) {
+    broadcasts = histProg.broadcasts.map(b => ({ date: b.date || '', label: b.label || b.date || '', products: b.products || [] }));
   } else if (celMonth && celMonth !== celThisMonth()) {
-    bodyHtml = '<div class="cel-col-empty">이 달에 수집된 방송 기록이 없습니다.</div>';
+    emptyMsg = '이 달에 수집된 방송 기록이 없습니다.';
   } else {
-    // 이번 달인데 월별 누적이 아직 없으면 기존 라이브 데이터로 폴백
     const products = celRawDataFull.filter(p => p._originFile === file);
     if (products.length === 0) {
-      bodyHtml = '<div class="cel-col-empty">이번 주 방송예정 상품이 없거나 수집 전입니다.</div>';
+      emptyMsg = '이번 주 방송예정 상품이 없거나 수집 전입니다.';
     } else {
-      // 같은 프로그램 안에서도 방송일시(broadcast_date_label) 단위로 묶어서 보여준다.
-      const groups = [];
-      const groupIndex = {};
+      const idx = {};
       products.forEach(p => {
         const label = p.broadcast_date_label || '';
-        if (!(label in groupIndex)) {
-          groupIndex[label] = groups.length;
-          groups.push({ label, items: [] });
-        }
-        groups[groupIndex[label]].items.push(p);
+        if (!(label in idx)) { idx[label] = broadcasts.length; broadcasts.push({ date: celDateFromLabel(label), label: label, products: [] }); }
+        broadcasts[idx[label]].products.push(p);
       });
-      bodyHtml = groups.map(g =>
-        (g.label ? `<div class="cel-date-group-label">${g.label}</div>` : '') +
-        g.items.map(celRenderProductRow).join('')
-      ).join('');
     }
   }
 
+  // 같은 주차끼리 묶음 (주차 배지 아래에 그 주의 방송 회차들, 최신 주가 앞)
+  const weekMap = {};
+  broadcasts.forEach(b => {
+    const w = b.date ? celWeekOfMonth(b.date) : null;
+    const key = w === null ? 0 : w;
+    (weekMap[key] = weekMap[key] || []).push(b);
+  });
+  const monthNum = parseInt((celMonth || celThisMonth()).slice(5, 7), 10);
+  const weeks = Object.keys(weekMap).map(Number).sort((a, b) => b - a);
+  const bcastCnt = broadcasts.length;
+  const prodCnt = broadcasts.reduce((s, b) => s + b.products.length, 0);
+
+  const bodyHtml = emptyMsg
+    ? `<div class="cel-col-empty" style="flex:1;">${emptyMsg}</div>`
+    : weeks.map(w => {
+        const items = weekMap[w].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+        const cols = items.map(b =>
+          `<div class="cel-bcast"><div class="cel-date-group-label">${b.label}</div>` +
+          b.products.map(celRenderProductRow).join('') + `</div>`
+        ).join('');
+        return `<div class="cel-week">` +
+          `<span class="cel-week-label">${w === 0 ? '기타' : monthNum + '월 ' + w + '주차'}</span>` +
+          `<div class="cel-week-cols">${cols}</div></div>`;
+      }).join('');
+
   const coCls = (meta.company || '').toLowerCase();
+  const thumb = celThumbOf(meta.title);
+  const thumbHtml = `<div class="cel-band-thumb">` +
+    (thumb
+      ? `<img src="${thumb}" alt="" loading="lazy" onerror="this.parentNode.innerHTML='<span class=cel-thumb-ph>${(meta.title || '?')[0]}</span>'">`
+      : `<span class="cel-thumb-ph">${(meta.title || '?')[0]}</span>`) +
+    `</div>`;
   const titleHtml = meta.detail_link
     ? `<a class="cel-col-title" href="${meta.detail_link}" target="_blank" rel="noopener noreferrer">${meta.title} ↗</a>`
     : `<div class="cel-col-title">${meta.title}</div>`;
+
   return (
-    `<div class="cel-col">` +
-      `<div class="cel-col-head">` +
-        (meta.company ? `<span class="cel-col-co ${coCls}">${meta.company}</span>` : '') +
-        titleHtml +
-        (meta.schedule_raw ? `<div class="cel-col-sched">${normalizeScheduleRaw(meta.schedule_raw)}</div>` : '') +
+    `<div class="cel-band">` +
+      `<div class="cel-band-head">` +
+        thumbHtml +
+        `<div class="cel-band-meta">` +
+          (meta.company ? `<span class="cel-col-co ${coCls}">${meta.company}</span>` : '') +
+          titleHtml +
+          (meta.schedule_raw ? `<div class="cel-col-sched">${normalizeScheduleRaw(meta.schedule_raw)}</div>` : '') +
+          (bcastCnt ? `<div class="cel-band-cnt">이번 달 방송 <b>${bcastCnt}회</b> · 상품 <b>${prodCnt}개</b></div>` : '') +
+        `</div>` +
       `</div>` +
-      `<div class="cel-col-body">${bodyHtml}</div>` +
+      `<div class="cel-band-body">${bodyHtml}</div>` +
     `</div>`
   );
 }
@@ -5126,7 +5226,7 @@ function celRenderCompare() {
     return;
   }
 
-  wrap.innerHTML = `<div class="cel-compare-wrap">${selected.map(celRenderColumn).join('')}</div>`;
+  wrap.innerHTML = selected.map(celRenderBand).join('');
 }
 
 (async function init() {
