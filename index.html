@@ -2989,6 +2989,7 @@
         <b>📡 건강프로그램 추적</b>
         <button type="button" class="lv-go-btn" id="inTrkBtn">조회</button>
       </div>
+      <div class="lv-slicer" id="inTrkSlicer" style="margin:8px 0;"></div>
       <div id="inTrkBody"><p class="in-muted" style="font-size:12.5px;">조회 기간의 지상파·종편 편성에서 건강 프로그램을 찾고, 방영일마다 같은 시간대 홈쇼핑에 건강식품이 얼마나 편성됐는지 세어 보여줍니다. [분석]을 눌러 주세요.</p></div>
     </div>
     <p class="lv-table-note">집계 기준: 방송 시작시각의 시간대 (09:20 시작도 09:45 시작도 09시대) · 카테고리는 자체 분류모델 기준 · 데이터: 2026-06-22부터 (기타 채널은 06-26부터) · 히트맵 셀을 클릭하면 상세 인사이트 표시</p>
@@ -5820,11 +5821,12 @@ function celRenderCompare() {
       const chColor = LV_CH_COLOR[r.channel];
       const net = lvNetOrder(r);
       const typeCls = r.type === '복합' ? 'complex' : 'simple';
+      const typeLabel = r.type === '단순' ? '단일' : r.type; // 데이터 원본은 '단순'이지만 화면·CSV는 '단일'로 표기
       html += '<tr' + (lvIsNight(r.broadcast_start) ? ' class="lv-night"' : '') + '>'
         + '<td class="lv-ch"' + (chColor ? ' style="color:' + chColor + '"' : '') + '>' + esc(r.channel) + '</td>'
         + '<td class="lv-time">' + (d8.length === 8 ? d8.slice(4, 6) + '/' + d8.slice(6, 8) : esc(d8)) + '</td>'
         + '<td class="lv-time">' + (d8.length === 8 ? d8Weekday(d8) : '-') + '</td>'
-        + '<td>' + (r.type ? '<span class="lv-type-tag ' + typeCls + '">' + esc(r.type) + '</span>' : '-') + '</td>'
+        + '<td>' + (r.type ? '<span class="lv-type-tag ' + typeCls + '">' + esc(typeLabel) + '</span>' : '-') + '</td>'
         + '<td class="lv-time">' + esc(r.item_start) + '~' + esc(r.item_end) + '</td>'
         + '<td class="lv-time">' + esc(r.item_duration_min) + '분</td>'
         + '<td>' + esc(lvCatOf(r)) + '</td>'
@@ -5884,7 +5886,7 @@ function celRenderCompare() {
       ['채널', r => r.channel], ['날짜', r => r.date],
       ['요일', r => String(r.date || '').length === 8 ? d8Weekday(String(r.date)) : ''],
       ['방송시작', r => r.broadcast_start], ['방송종료', r => r.broadcast_end],
-      ['유형', r => r.type], ['브랜드', r => r.brand], ['상품명', r => r.item_name],
+      ['유형', r => r.type === '단순' ? '단일' : r.type], ['브랜드', r => r.brand], ['상품명', r => r.item_name],
       ['상품시작', r => r.item_start], ['상품종료', r => r.item_end],
       ['노출분', r => r.item_duration_min], ['카테고리', r => r.lavangba_category || r.category],
       ['총주문', r => r.sales_amt],
@@ -6418,7 +6420,6 @@ function celRenderCompare() {
         inActive = ch === '__all__' ? inToggleAllClick(inActive, labels) : inToggleOneClick(inActive, labels, ch);
         inRenderChannelSlicer();
         inRender();
-        if (inTrkResult) inAnalyzePpl(); // 건강프로그램 추적도 홈쇼핑사 선택을 반영해 다시 계산
       });
     });
   }
@@ -6725,6 +6726,7 @@ function celRenderCompare() {
   const IN_TRK_LINK_MIN = 0.12;    // 평균 자체가 낮은 기간을 대비한 하한
 
   let inTrkResult = null;  // 분석 결과 (조회 조건이 바뀌면 버린다)
+  let inTrkActive = new Set(IN_CHANNELS.map(c => c.label)); // 이 섹션 전용 홈쇼핑사 선택
 
   // 표기 차이('소문난건강법' / '소문난 건강법')를 흡수하기 위해 공백·기호를 모두 뗀다
   const inTrkNorm = s => String(s || '').replace(/[^0-9A-Za-z가-힣]/g, '').toLowerCase();
@@ -6732,12 +6734,12 @@ function celRenderCompare() {
   const inTrkGroupTitle = t => String(t || '').replace(/\s*(스페셜|특별판|하이라이트)\s*$/, '').trim() || String(t || '');
 
   // 조회 기간 홈쇼핑 편성의 날짜·시간대별 건강식품 비중
-  // 상단 홈쇼핑사 슬라이서(inActive) 선택을 반영한다. 카테고리 슬라이서는 무관(건강식품 고정).
+  // 이 섹션 전용 홈쇼핑사 슬라이서(inTrkActive) 선택을 반영한다. 카테고리 슬라이서는 무관(건강식품 고정).
   function inTrkHealthShare() {
     const dh = {}; // 'YYYY-MM-DD|h' -> { t: 전체 편성 수, he: 건강식품 수, by: {홈쇼핑사: 건강식품 수} }
     let totAll = 0, healAll = 0;
     inRows.forEach(r => {
-      if (!inActive.has(r.label)) return;
+      if (!inTrkActive.has(r.label)) return;
       const k = r.d + '|' + r.h;
       const c = dh[k] || (dh[k] = { t: 0, he: 0, by: {} });
       c.t++;
@@ -6800,7 +6802,14 @@ function celRenderCompare() {
         if (!((IN_TRK_KEYWORD.test(g.title) && !IN_TRK_KEYWORD_EXCL.test(g.title))
           || IN_TRK_TITLES.some(t => nTitle.includes(t)))) return;
 
-        const topHour = +Object.entries(g.hours).sort((a, b) => b[1] - a[1])[0][0];
+        // 주 시간대: 본방·재방이 요일마다 다른 슬롯에 붙으므로 '요일+시각' 조합을
+        // 빈도순으로 뽑는다. (예: 일 06시 > 수 06시 > ... 외)
+        const slotCnt = {};
+        g.slots.forEach(s => {
+          const k = IN_DAYS[inWeekday(s.slice(0, 10))] + ' ' + s.slice(11).padStart(2, '0') + '시';
+          slotCnt[k] = (slotCnt[k] || 0) + 1;
+        });
+        const topSlots = Object.entries(slotCnt).sort((a, b) => b[1] - a[1]).map(e => e[0]);
 
         // 방영일별로: 그날 이 프로그램이 방송된 시간대 중 하나라도
         // 홈쇼핑 건강식품 비중이 기준(기간 평균의 1.3배)을 넘었으면 '높음'인 날로 세고,
@@ -6818,7 +6827,7 @@ function celRenderCompare() {
         });
 
         rows.push({
-          ...g, topHour: topHour,
+          ...g, topSlots: topSlots,
           linkedDays: okDates.size, knownDays: knownDates.size,
           linked: knownDates.size > 0 && okDates.size / knownDates.size >= 0.5,
           byCo: byCo, coTotal: coTotal,
@@ -6838,6 +6847,29 @@ function celRenderCompare() {
       if (window.hideBusy) hideBusy();
     }
     inRenderPpl();
+  }
+
+  // 건강프로그램 추적 전용 홈쇼핑사 슬라이서 (히트맵의 상단 슬라이서와 독립)
+  function inRenderTrkSlicer() {
+    const wrap = $('inTrkSlicer');
+    if (!wrap) return;
+    const labels = IN_CHANNELS.map(c => c.label);
+    const allActive = inTrkActive.size === labels.length;
+    let html = '<button data-ch="__all__"' + (allActive ? ' class="active"' : '') + '>전체선택</button>';
+    IN_CHANNELS.forEach((c, i) => {
+      if (IN_GROUP_BREAKS.includes(i)) html += '<span class="lv-slicer-sep"></span>';
+      html += '<button data-ch="' + c.label + '"' + (inTrkActive.has(c.label) ? ' class="active"' : '') + '>' + c.label + '</button>';
+    });
+    wrap.innerHTML = html;
+    wrap.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const ch = btn.dataset.ch;
+        inTrkActive = ch === '__all__' ? inToggleAllClick(inTrkActive, labels) : inToggleOneClick(inTrkActive, labels, ch);
+        gaEvent('filter_click', { filter_group: 'industry_track_company', filter_value: ch });
+        inRenderTrkSlicer();
+        if (inTrkResult) inAnalyzePpl(); // 선택이 바뀌면 결과를 새 기준으로 다시 계산
+      });
+    });
   }
 
   function inRenderPpl() {
@@ -6881,7 +6913,7 @@ function celRenderCompare() {
         + '<td>' + inEsc(r.ch) + '</td>'
         + '<td><a href="' + naver + '" target="_blank" rel="noopener">' + inEsc(r.title) + '</a></td>'
         + '<td class="in-trk-num">' + r.n + '회 / ' + r.dates.size + '일</td>'
-        + '<td class="in-trk-num">' + String(r.topHour).padStart(2, '0') + '시</td>'
+        + '<td>' + inEsc(r.topSlots.slice(0, 3).join(' > ')) + (r.topSlots.length > 3 ? ' 외' : '') + '</td>'
         + '<td class="in-trk-num">' + ratio + '</td>'
         + '<td>' + basis + '</td>'
         + '<td>' + coStr + '</td>'
@@ -6893,7 +6925,7 @@ function celRenderCompare() {
       + ' 조회기간 평균의 ' + IN_TRK_LINK_RATIO + '배 이상이었던 날 비율. 예: 83% (15/18일) = 방영 18일 가운데 15일은'
       + ' 같은 시간대 홈쇼핑에 건강식품이 평소보다 많이 편성됨 · 근거: 그 비율이 절반 이상이면 동시편성 잦음'
       + ' · 운영상품: 방영 시간대에 편성된 홈쇼핑 건강식품의 회사별 비중 (많은 순)'
-      + ' · 상단 홈쇼핑사 슬라이서 선택이 반영됨 · 02~04시 방영분은 홈쇼핑 집계 제외(–)'
+      + ' · 위 홈쇼핑사 선택이 반영됨 (변경 시 자동 재계산) · 02~04시 방영분은 홈쇼핑 집계 제외(–)'
       + ' · 건강프로그램 선별은 제목·이력 기준 (드라마·뉴스 등 제외) · 본방과 스페셜/특별판은 한 줄로 묶음</p>';
 
     body.innerHTML = html;
@@ -6932,6 +6964,7 @@ function celRenderCompare() {
     $('inEndPicker').addEventListener('change', e => { if (e.target.value) inSetRange(inStart, e.target.value); });
     $('inQueryBtn').addEventListener('click', inQuery);
     $('inTrkBtn').addEventListener('click', inAnalyzePpl);
+    inRenderTrkSlicer();
 
     inRenderChannelSlicer();
     inRenderCatSlicer();
