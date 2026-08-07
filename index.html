@@ -415,12 +415,16 @@
   }
 
   .prog-block {
+    display: block;
     padding: 8px 10px;
     font-size: 12.5px;
     line-height: 1.4;
     border-bottom: 1px solid var(--rule);
     min-height: 16px;
     transition: background 0.12s;
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
   }
   .prog-block:hover { background: var(--paper-dim); }
 
@@ -3357,10 +3361,13 @@ function renderGrid(data, dateStr) {
           const startMin = timeToMinutes(p.start);
           const endMin = p.end === '24:00' ? 24*60 : timeToMinutes(p.end);
           const isNow = nowMin !== null && nowMin >= startMin && nowMin < endMin;
-          html += `<div class="prog-block${isNow ? ' now' : ''}">`;
+          // 셀 클릭 시 '채널 프로그램명'으로 네이버 검색 이동 (회차 표기는 검색어에서 뗀다)
+          const naverQ = ch.key + ' ' + String(p.title).replace(/\s*\(\s*\d+\s*회\s*\)\s*$/, '').trim();
+          const naverUrl = 'https://search.naver.com/search.naver?query=' + encodeURIComponent(naverQ);
+          html += `<a class="prog-block${isNow ? ' now' : ''}" href="${naverUrl}" target="_blank" rel="noopener">`;
           html += `<span class="ptime">${p.start}–${p.end === '24:00' ? '24:00' : p.end}</span>`;
           html += escapeHtml(p.title);
-          html += '</div>';
+          html += '</a>';
         });
       }
       html += '</td>';
