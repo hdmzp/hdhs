@@ -1,47 +1,8 @@
 {
   "weekStart": "2026-07-27",
   "weekEnd": "2026-08-02",
-  "collectedAt": "2026-08-08T09:02:26.747319+09:00",
+  "collectedAt": "2026-08-08T13:19:53.801994+09:00",
   "programs": [
-    {
-      "id": "drama_붉은 진주_KBS2_오후 07:50",
-      "category": "drama",
-      "channel": "KBS2",
-      "title": "붉은 진주",
-      "days": [
-        "월",
-        "화",
-        "수",
-        "목",
-        "금"
-      ],
-      "time": "오후 07:50",
-      "rating": 7.9,
-      "ratingDate": "07.31",
-      "ratingByDay": {
-        "월": {
-          "rating": 7.7,
-          "ratingDate": "07.27"
-        },
-        "화": {
-          "rating": 8.2,
-          "ratingDate": "07.28"
-        },
-        "수": {
-          "rating": 7.5,
-          "ratingDate": "07.29"
-        },
-        "목": {
-          "rating": 8.0,
-          "ratingDate": "07.30"
-        },
-        "금": {
-          "rating": 7.9,
-          "ratingDate": "07.31"
-        }
-      },
-      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=40528849&qvt=0&query=%EB%B6%89%EC%9D%80%20%EC%A7%84%EC%A3%BC"
-    },
     {
       "id": "drama_기쁜 우리 좋은 날_KBS1_오후 08:30",
       "category": "drama",
