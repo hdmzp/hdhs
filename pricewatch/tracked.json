@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-08T17:08:45+09:00",
+  "generated_at": "2026-08-09T12:19:43+09:00",
   "window_days": 60,
   "min_companies": 3,
   "retain_days": 90,
@@ -195,7 +195,7 @@
             "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252018684&preview=true",
             "category": "의류",
             "last_seen": "2026-08-12",
-            "last_broadcast_price": 79000
+            "last_broadcast_price": 39000
           },
           {
             "pid": "2252018688",
@@ -203,7 +203,7 @@
             "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252018688&preview=true",
             "category": "의류",
             "last_seen": "2026-08-12",
-            "last_broadcast_price": 79000
+            "last_broadcast_price": 39000
           }
         ],
         "GS": [
@@ -416,19 +416,11 @@
         ],
         "GS": [
           {
-            "pid": "1048082713",
-            "name": "관절엔 콘드로이친1200",
-            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1048082713&brddate=20260812071500&pgmID=13352&ordChannel=WE&tveshop=Y",
+            "pid": "1107928676",
+            "name": "관절엔 콘드로이친1200 주영 오메가",
+            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1107928676&brddate=20260812071500&pgmID=13352&ordChannel=WE&tveshop=Y",
             "category": "건강식품",
             "last_seen": "2026-08-12",
-            "last_broadcast_price": 268000
-          },
-          {
-            "pid": "1107929932",
-            "name": "관절엔 콘드로이친1200 주영 오메가",
-            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1107929932&brddate=20260809073600&pgmID=13352&ordChannel=WE&tveshop=Y",
-            "category": "건강식품",
-            "last_seen": "2026-08-09",
             "last_broadcast_price": 648000
           },
           {
@@ -438,6 +430,14 @@
             "category": "건강식품",
             "last_seen": "2026-08-09",
             "last_broadcast_price": 459000
+          },
+          {
+            "pid": "1107929932",
+            "name": "관절엔 콘드로이친1200 주영 오메가",
+            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1107929932&brddate=20260809073600&pgmID=13352&ordChannel=WE&tveshop=Y",
+            "category": "건강식품",
+            "last_seen": "2026-08-09",
+            "last_broadcast_price": 648000
           }
         ],
         "LT": [
@@ -622,7 +622,7 @@
             "name": "카사베르디 유기농 와인비니거 레드6 2병 디스펜서 텀블러믹서기",
             "link": "https://display.cjonstyle.com/p/item/2088725767?channelCode=30002002",
             "category": "건강식품",
-            "last_seen": "2026-08-13",
+            "last_seen": "2026-08-14",
             "last_broadcast_price": 129000
           },
           {
@@ -744,6 +744,70 @@
             "category": "리빙/주방",
             "last_seen": "2026-08-06",
             "last_broadcast_price": 19800
+          }
+        ]
+      }
+    },
+    "기펠": {
+      "category": "가전",
+      "companies": [
+        "GS",
+        "CJ",
+        "LT"
+      ],
+      "products": {
+        "GS": [
+          {
+            "pid": "1122235241",
+            "name": "기펠 진공 흡착 BLDC 핸디 스타일러",
+            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1122235241&brddate=20260814020000&pgmID=9613&ordChannel=WE&tveshop=Y",
+            "category": "가전",
+            "last_seen": "2026-08-14",
+            "last_broadcast_price": 159000
+          },
+          {
+            "pid": "1112089089",
+            "name": "기펠 진공 흡착 BLDC 핸디 스타일러",
+            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1112089089&brddate=20260707021000&pgmID=872&ordChannel=WE&tveshop=Y",
+            "category": "가전",
+            "last_seen": "2026-07-07",
+            "last_broadcast_price": 159000
+          },
+          {
+            "pid": "1115098164",
+            "name": "기펠 진공 흡착 BLDC 핸디 스타일러",
+            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1115098164&brddate=20260701020000&pgmID=9613&ordChannel=WE&tveshop=Y",
+            "category": "가전",
+            "last_seen": "2026-07-01",
+            "last_broadcast_price": 159000
+          }
+        ],
+        "CJ": [
+          {
+            "pid": "2090923349",
+            "name": "진공 흡착 BLDC 핸디 스타일러 다리미",
+            "link": "https://display.cjonstyle.com/p/item/2090923349?channelCode=30002002",
+            "category": "가전",
+            "last_seen": "2026-08-14",
+            "last_broadcast_price": 159000
+          }
+        ],
+        "LT": [
+          {
+            "pid": "12915767",
+            "name": "기펠 진공 흡착 스팀다리미 GDF-2100B",
+            "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12915767",
+            "category": "가전",
+            "last_seen": "2026-07-26",
+            "last_broadcast_price": 159000
+          },
+          {
+            "pid": "12913347",
+            "name": "기펠 진공 흡착 스팀다리미 GDF-2100B",
+            "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12913347",
+            "category": "가전",
+            "last_seen": "2026-07-10",
+            "last_broadcast_price": 159000
           }
         ]
       }
@@ -1006,12 +1070,20 @@
       "products": {
         "GS": [
           {
-            "pid": "1104407897",
+            "pid": "1127524891",
             "name": "뉴온 시서스 필 다이어트",
-            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1104407897&brddate=20260811163500&pgmID=13352&ordChannel=WE&tveshop=Y",
+            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1127524891&brddate=20260814113600&pgmID=13352&ordChannel=WE&tveshop=Y",
+            "category": "건강식품",
+            "last_seen": "2026-08-14",
+            "last_broadcast_price": 219600
+          },
+          {
+            "pid": "1102765904",
+            "name": "뉴온 시서스 필 다이어트",
+            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1102765904&brddate=20260811163500&pgmID=13352&ordChannel=WE&tveshop=Y",
             "category": "건강식품",
             "last_seen": "2026-08-11",
-            "last_broadcast_price": 119800
+            "last_broadcast_price": 299000
           },
           {
             "pid": "1103318789",
@@ -1020,14 +1092,6 @@
             "category": "건강식품",
             "last_seen": "2026-08-11",
             "last_broadcast_price": 599000
-          },
-          {
-            "pid": "1127524891",
-            "name": "뉴온 시서스 필 다이어트",
-            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1127524891&brddate=20260809003800&pgmID=13352&ordChannel=WE&tveshop=Y",
-            "category": "건강식품",
-            "last_seen": "2026-08-09",
-            "last_broadcast_price": 219600
           }
         ],
         "CJ": [
@@ -1036,7 +1100,7 @@
             "name": "시서스 필 다이어트",
             "link": "https://display.cjonstyle.com/p/item/2076080336?channelCode=30002002",
             "category": "건강식품",
-            "last_seen": "2026-08-09",
+            "last_seen": "2026-08-14",
             "last_broadcast_price": 199000
           },
           {
@@ -1257,7 +1321,7 @@
             "name": "○뉴트리코어 하이퍼셀 코엔자임 Q10 맥스 :1,000mgX30캡슐",
             "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12903277",
             "category": "건강식품",
-            "last_seen": "2026-08-13",
+            "last_seen": "2026-08-14",
             "last_broadcast_price": 249000
           },
           {
@@ -1404,6 +1468,14 @@
         ],
         "GS": [
           {
+            "pid": "1131151363",
+            "name": "닥터린 하이퍼셀 대마종자유",
+            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1131151363&brddate=20260814163000&pgmID=13352&ordChannel=WE&tveshop=Y",
+            "category": "건강식품",
+            "last_seen": "2026-08-14",
+            "last_broadcast_price": 179000
+          },
+          {
             "pid": "1127904793",
             "name": "닥터린 콘드로이친 1200 콘레이티 MBP 비타민K2 더",
             "link": "https://www.gsshop.com/prd/prd.gs?prdid=1127904793&brddate=20260810021000&pgmID=13352&ordChannel=WE&tveshop=Y",
@@ -1418,14 +1490,6 @@
             "category": "건강식품",
             "last_seen": "2026-08-10",
             "last_broadcast_price": 99500
-          },
-          {
-            "pid": "1097420914",
-            "name": "닥터린 하이퍼셀 대마종자유",
-            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1097420914&brddate=20260809064500&pgmID=13352&ordChannel=WE&tveshop=Y",
-            "category": "건강식품",
-            "last_seen": "2026-08-09",
-            "last_broadcast_price": 179000
           }
         ],
         "CJ": [
@@ -1518,14 +1582,6 @@
         ],
         "GS": [
           {
-            "pid": "1119903317",
-            "name": "달바 엑소세럼 4 아쿠아세럼 2 2 선세럼 / 2년만의",
-            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1119903317&brddate=20260810113500&pgmID=6737&ordChannel=WE&tveshop=Y",
-            "category": "미용",
-            "last_seen": "2026-08-10",
-            "last_broadcast_price": 134900
-          },
-          {
             "pid": "1116205754",
             "name": "달바 엑소세럼 4 2 선세럼 / 2년만의",
             "link": "https://www.gsshop.com/prd/prd.gs?prdid=1116205754&brddate=20260810113500&pgmID=6737&ordChannel=WE&tveshop=Y",
@@ -1539,6 +1595,14 @@
             "link": "https://www.gsshop.com/prd/prd.gs?prdid=1125951521&brddate=20260802224000&pgmID=6737&ordChannel=WE&tveshop=Y",
             "category": "미용",
             "last_seen": "2026-08-02",
+            "last_broadcast_price": 134900
+          },
+          {
+            "pid": "1119914194",
+            "name": "달바 엑소세럼 5 아쿠아세럼 1 2 바이탈크림 / 2년만의",
+            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1119914194&brddate=20260724193000&pgmID=6737&ordChannel=WE&tveshop=Y",
+            "category": "미용",
+            "last_seen": "2026-07-24",
             "last_broadcast_price": 134900
           }
         ],
@@ -1616,6 +1680,14 @@
         ],
         "LT": [
           {
+            "pid": "12915260",
+            "name": "○반값!대원헬스 혈당파이터",
+            "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12915260",
+            "category": "건강식품",
+            "last_seen": "2026-08-14",
+            "last_broadcast_price": 99000
+          },
+          {
             "pid": "12910248",
             "name": "○대원헬스 모발콜라겐3X 48주분",
             "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12910248",
@@ -1630,14 +1702,6 @@
             "category": "건강식품",
             "last_seen": "2026-08-11",
             "last_broadcast_price": 198000
-          },
-          {
-            "pid": "12917682",
-            "name": "대원제약 소연골 콘드로이친 뮤코다당단백",
-            "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12917682",
-            "category": "건강식품",
-            "last_seen": "2026-08-11",
-            "last_broadcast_price": 79000
           }
         ]
       }
@@ -1842,20 +1906,20 @@
         ],
         "GS": [
           {
+            "pid": "1100912130",
+            "name": "덴프스 트루바이타민 올인원 멀티비타민 루테인 밀크씨슬",
+            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1100912130&brddate=20260814133700&pgmID=13352&ordChannel=WE&tveshop=Y",
+            "category": "건강식품",
+            "last_seen": "2026-08-14",
+            "last_broadcast_price": 278000
+          },
+          {
             "pid": "1083204123",
             "name": "덴프스 혈당케어 프로 더",
             "link": "https://www.gsshop.com/prd/prd.gs?prdid=1083204123&brddate=20260813143700&pgmID=13352&ordChannel=WE&tveshop=Y",
             "category": "건강식품",
             "last_seen": "2026-08-13",
             "last_broadcast_price": 76000
-          },
-          {
-            "pid": "1100912130",
-            "name": "덴프스 트루바이타민 올인원 멀티비타민 루테인 밀크씨슬",
-            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1100912130&brddate=20260811133700&pgmID=13352&ordChannel=WE&tveshop=Y",
-            "category": "건강식품",
-            "last_seen": "2026-08-11",
-            "last_broadcast_price": 278000
           },
           {
             "pid": "1097193445",
@@ -2004,19 +2068,19 @@
             "last_broadcast_price": 159000
           },
           {
-            "pid": "1097761776",
-            "name": "도미나스 3X 플럼핑 NMN세럼 본품",
-            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1097761776&brddate=20260811060000&pgmID=6737&ordChannel=WE&tveshop=Y",
-            "category": "미용",
-            "last_seen": "2026-08-11",
-            "last_broadcast_price": 119000
-          },
-          {
             "pid": "1133079553",
             "name": "도미나스 3X 플럼핑 NMN세럼 본품6개 에센스",
             "link": "https://www.gsshop.com/prd/prd.gs?prdid=1133079553&brddate=20260811060000&pgmID=6737&ordChannel=WE&tveshop=Y",
             "category": "미용",
             "last_seen": "2026-08-11",
+            "last_broadcast_price": 159000
+          },
+          {
+            "pid": "1103205044",
+            "name": "트라넥삼산 크림 4세대 크림 VIP단독 패키지",
+            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1103205044&brddate=20260808083600&pgmID=13392&ordChannel=WE&tveshop=Y",
+            "category": "미용",
+            "last_seen": "2026-08-08",
             "last_broadcast_price": 159000
           }
         ],
@@ -2147,7 +2211,7 @@
             "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12909709",
             "category": "의류",
             "last_seen": "2026-08-09",
-            "last_broadcast_price": 59900
+            "last_broadcast_price": 58900
           },
           {
             "pid": "12908837",
@@ -2155,7 +2219,7 @@
             "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12908837",
             "category": "의류",
             "last_seen": "2026-08-08",
-            "last_broadcast_price": 59900
+            "last_broadcast_price": 58300
           }
         ]
       }
@@ -2291,7 +2355,7 @@
             "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12912140",
             "category": "언더웨어",
             "last_seen": "2026-08-09",
-            "last_broadcast_price": 23920
+            "last_broadcast_price": 29900
           }
         ]
       }
@@ -2333,28 +2397,28 @@
         ],
         "GS": [
           {
+            "pid": "1117917325",
+            "name": "라포레 플레이팅팬 풀세트",
+            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1117917325&brddate=20260814173000&pgmID=6995&ordChannel=WE&tveshop=Y",
+            "category": "리빙/주방",
+            "last_seen": "2026-08-14",
+            "last_broadcast_price": 189000
+          },
+          {
+            "pid": "1123830794",
+            "name": "라포레 스타일 텀블러 풀세트",
+            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1123830794&brddate=20260814235500&pgmID=6995&ordChannel=WE&tveshop=Y",
+            "category": "리빙/주방",
+            "last_seen": "2026-08-14",
+            "last_broadcast_price": 64900
+          },
+          {
             "pid": "1133303684",
             "name": "라포레 글라스팝 밥용기",
             "link": "https://www.gsshop.com/prd/prd.gs?prdid=1133303684&brddate=20260810133500&pgmID=6995&ordChannel=WE&tveshop=Y",
             "category": "리빙/주방",
             "last_seen": "2026-08-10",
             "last_broadcast_price": 39900
-          },
-          {
-            "pid": "1119988928",
-            "name": "라포레 글라스팝 밥용기 찜기1개",
-            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1119988928&brddate=20260810133500&pgmID=6995&ordChannel=WE&tveshop=Y",
-            "category": "리빙/주방",
-            "last_seen": "2026-08-10",
-            "last_broadcast_price": 59800
-          },
-          {
-            "pid": "1117917325",
-            "name": "라포레 플레이팅팬 풀세트",
-            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1117917325&brddate=20260805031000&pgmID=9613&ordChannel=WE&tveshop=Y",
-            "category": "리빙/주방",
-            "last_seen": "2026-08-05",
-            "last_broadcast_price": 189000
           }
         ],
         "CJ": [
@@ -2432,20 +2496,20 @@
         ],
         "GS": [
           {
+            "pid": "1081719131",
+            "name": "락앤락 스마트킵 프래쉬 신선밀폐용기",
+            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1081719131&brddate=20260814040000&pgmID=9613&ordChannel=WE&tveshop=Y",
+            "category": "리빙/주방",
+            "last_seen": "2026-08-14",
+            "last_broadcast_price": 69800
+          },
+          {
             "pid": "1126293340",
             "name": "락앤락 온더테이블 트라이탄 밀폐용기 풀세트",
             "link": "https://www.gsshop.com/prd/prd.gs?prdid=1126293340&brddate=20260810060000&pgmID=6995&ordChannel=WE&tveshop=Y",
             "category": "리빙/주방",
             "last_seen": "2026-08-10",
             "last_broadcast_price": 118000
-          },
-          {
-            "pid": "1081719131",
-            "name": "락앤락 스마트킵 프래쉬 신선밀폐용기",
-            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1081719131&brddate=20260806030000&pgmID=9613&ordChannel=WE&tveshop=Y",
-            "category": "리빙/주방",
-            "last_seen": "2026-08-06",
-            "last_broadcast_price": 69800
           },
           {
             "pid": "1081719360",
@@ -2620,28 +2684,28 @@
         ],
         "CJ": [
           {
+            "pid": "2073792375",
+            "name": "25FW 리버시블 넥벨트 더블 하프 무스탕",
+            "link": "https://display.cjonstyle.com/p/item/2073792375?channelCode=30002002",
+            "category": "의류",
+            "last_seen": "2026-08-14",
+            "last_broadcast_price": 1390000
+          },
+          {
+            "pid": "2064475805",
+            "name": "25FW 이태리 스웨이드 레더카라 워크자켓",
+            "link": "https://display.cjonstyle.com/p/item/2064475805?channelCode=30002002",
+            "category": "의류",
+            "last_seen": "2026-08-14",
+            "last_broadcast_price": 699000
+          },
+          {
             "pid": "2066913157",
             "name": "25FW 이태리 스웨이드 더블플랩 롱 트렌치코트",
             "link": "https://display.cjonstyle.com/p/item/2066913157?channelCode=30002002",
             "category": "의류",
             "last_seen": "2026-08-10",
             "last_broadcast_price": 990000
-          },
-          {
-            "pid": "2074056896",
-            "name": "25F/W 리버시블 넥벨트 더블 하프 무스탕",
-            "link": "https://display.cjonstyle.com/p/item/2074056896?channelCode=30002002",
-            "category": "의류",
-            "last_seen": "2026-08-10",
-            "last_broadcast_price": 1390000
-          },
-          {
-            "pid": "2067701778",
-            "name": "25F/W 이태리 스웨이드 더블 하프코트",
-            "link": "https://display.cjonstyle.com/p/item/2067701778?channelCode=30002002",
-            "category": "의류",
-            "last_seen": "2026-08-09",
-            "last_broadcast_price": 599000
           }
         ]
       }
@@ -2683,19 +2747,19 @@
         ],
         "GS": [
           {
+            "pid": "1101476773",
+            "name": "로보락 S9 MaxV Ultra 로봇청소기 초슬림디자인 장애물회피 로봇팔 문턱리프팅",
+            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1101476773&brddate=20260814213800&pgmID=872&ordChannel=WE&tveshop=Y",
+            "category": "가전",
+            "last_seen": "2026-08-14",
+            "last_broadcast_price": 1840000
+          },
+          {
             "pid": "1076919142",
             "name": "로보락 S9 MaxV Ultra 로봇청소기 초슬림디자인 장애물회피 로봇팔 문턱리프팅",
             "link": "https://www.gsshop.com/prd/prd.gs?prdid=1076919142&brddate=20260809203000&pgmID=872&ordChannel=WE&tveshop=Y",
             "category": "가전",
             "last_seen": "2026-08-09",
-            "last_broadcast_price": 1840000
-          },
-          {
-            "pid": "1101476773",
-            "name": "로보락 S9 MaxV Ultra 로봇청소기 초슬림디자인 장애물회피 로봇팔 문턱리프팅",
-            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1101476773&brddate=20260805213800&pgmID=872&ordChannel=WE&tveshop=Y",
-            "category": "가전",
-            "last_seen": "2026-08-05",
             "last_broadcast_price": 1840000
           },
           {
@@ -2955,7 +3019,7 @@
             "name": "뜨왈보타닉 암막 코팅우양산 2종세트",
             "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12906242",
             "category": "잡화/주얼리",
-            "last_seen": "2026-08-11",
+            "last_seen": "2026-08-14",
             "last_broadcast_price": 59410
           },
           {
@@ -3230,20 +3294,20 @@
             "last_broadcast_price": 149000
           },
           {
+            "pid": "1129315387",
+            "name": "시즌4 기미앰플 올특대 9병 패키지",
+            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1129315387&brddate=20260812081500&pgmID=6737&ordChannel=WE&tveshop=Y",
+            "category": "미용",
+            "last_seen": "2026-08-12",
+            "last_broadcast_price": 249000
+          },
+          {
             "pid": "1129317169",
             "name": "시즌4 기미앰플 특대용량 1병",
             "link": "https://www.gsshop.com/prd/prd.gs?prdid=1129317169&brddate=20260812081500&pgmID=6737&ordChannel=WE&tveshop=Y",
             "category": "미용",
             "last_seen": "2026-08-12",
             "last_broadcast_price": 129000
-          },
-          {
-            "pid": "1106868393",
-            "name": "시즌4 기미앰플 기본패키지",
-            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1106868393&brddate=20260812081500&pgmID=6737&ordChannel=WE&tveshop=Y",
-            "category": "미용",
-            "last_seen": "2026-08-12",
-            "last_broadcast_price": 109000
           }
         ],
         "CJ": [
@@ -3346,7 +3410,7 @@
             "name": "경추 안마 베개 K38",
             "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2250343555&preview=true",
             "category": "리빙/주방",
-            "last_seen": "2026-08-11",
+            "last_seen": "2026-08-14",
             "last_broadcast_price": 59800
           },
           {
@@ -4146,20 +4210,20 @@
         ],
         "GS": [
           {
+            "pid": "1095501320",
+            "name": "보넬드 당근주스 큰병이 무려 12병",
+            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1095501320&brddate=20260814060000&pgmID=6997&ordChannel=WE&tveshop=Y",
+            "category": "건강식품",
+            "last_seen": "2026-08-14",
+            "last_broadcast_price": 99000
+          },
+          {
             "pid": "1129260640",
             "name": "보넬드 당근주스 큰병이 무려 15병",
             "link": "https://www.gsshop.com/prd/prd.gs?prdid=1129260640&brddate=20260803204500&pgmID=6997&ordChannel=WE&tveshop=Y",
             "category": "건강식품",
             "last_seen": "2026-08-03",
             "last_broadcast_price": 122000
-          },
-          {
-            "pid": "1095501320",
-            "name": "보넬드 당근주스 큰병이 무려 12병",
-            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1095501320&brddate=20260730163500&pgmID=6997&ordChannel=WE&tveshop=Y",
-            "category": "건강식품",
-            "last_seen": "2026-07-30",
-            "last_broadcast_price": 99000
           }
         ],
         "CJ": [
@@ -4771,19 +4835,19 @@
         ],
         "GS": [
           {
+            "pid": "1129919062",
+            "name": "세포랩 스페셜 에디션 93% 4병 4병 1병 스프레이캡",
+            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1129919062&brddate=20260814193000&pgmID=6737&ordChannel=WE&tveshop=Y",
+            "category": "미용",
+            "last_seen": "2026-08-14",
+            "last_broadcast_price": 289000
+          },
+          {
             "pid": "1129921305",
             "name": "세포랩 스페셜 에디션 93% 4병 4병 1병 스프레이캡",
             "link": "https://www.gsshop.com/prd/prd.gs?prdid=1129921305&brddate=20260810213800&pgmID=6737&ordChannel=WE&tveshop=Y",
             "category": "미용",
             "last_seen": "2026-08-10",
-            "last_broadcast_price": 289000
-          },
-          {
-            "pid": "1129919062",
-            "name": "세포랩 스페셜 에디션 93% 4병 4병 1병 스프레이캡",
-            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1129919062&brddate=20260806204500&pgmID=6737&ordChannel=WE&tveshop=Y",
-            "category": "미용",
-            "last_seen": "2026-08-06",
             "last_broadcast_price": 289000
           },
           {
@@ -4896,19 +4960,19 @@
         ],
         "CJ": [
           {
+            "pid": "2070450798",
+            "name": "셀폰즈 녹는실 리프팅 앰플 포토리뷰",
+            "link": "https://display.cjonstyle.com/p/item/2070450798?channelCode=30002002",
+            "category": "미용",
+            "last_seen": "2026-08-14",
+            "last_broadcast_price": 349000
+          },
+          {
             "pid": "2087628275",
             "name": "녹는실 리프팅 앰플6박스",
             "link": "https://display.cjonstyle.com/p/item/2087628275?channelCode=30002002",
             "category": "미용",
             "last_seen": "2026-08-08",
-            "last_broadcast_price": 349000
-          },
-          {
-            "pid": "2070450798",
-            "name": "셀폰즈 녹는실 리프팅 앰플 포토리뷰",
-            "link": "https://display.cjonstyle.com/p/item/2070450798?channelCode=30002002",
-            "category": "미용",
-            "last_seen": "2026-07-20",
             "last_broadcast_price": 349000
           }
         ],
@@ -4961,6 +5025,14 @@
         ],
         "GS": [
           {
+            "pid": "1097686285",
+            "name": "스케쳐스 26SS 여성용 썸머 베이퍼폼 브리더블 슬립인스 워킹화",
+            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1097686285&brddate=20260814113500&pgmID=12502&ordChannel=WE&tveshop=Y",
+            "category": "잡화/주얼리",
+            "last_seen": "2026-08-14",
+            "last_broadcast_price": 109000
+          },
+          {
             "pid": "1116767656",
             "name": "스케쳐스 26FW 여성용 아치핏 라구나 스니커즈",
             "link": "https://www.gsshop.com/prd/prd.gs?prdid=1116767656&brddate=20260808103600&pgmID=12502&ordChannel=WE&tveshop=Y",
@@ -4975,14 +5047,6 @@
             "category": "잡화/주얼리",
             "last_seen": "2026-08-06",
             "last_broadcast_price": 139000
-          },
-          {
-            "pid": "1131828889",
-            "name": "스케쳐스 26SS 남성용 맥스런 워킹화",
-            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1131828889&brddate=20260804173500&pgmID=12502&ordChannel=WE&tveshop=Y",
-            "category": "잡화/주얼리",
-            "last_seen": "2026-08-04",
-            "last_broadcast_price": 129000
           }
         ],
         "CJ": [
@@ -4997,6 +5061,14 @@
         ],
         "LT": [
           {
+            "pid": "12917803",
+            "name": "★스케쳐스 26FW 여성 고런 아치핏 슬립인스",
+            "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12917803",
+            "category": "잡화/주얼리",
+            "last_seen": "2026-08-14",
+            "last_broadcast_price": 149000
+          },
+          {
             "pid": "12916491",
             "name": "○ 스케쳐스 26FW 여성 고런 아치핏 슬립인스",
             "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12916491",
@@ -5008,14 +5080,6 @@
             "pid": "12916553",
             "name": "● 스케쳐스 26FW 여성 고런 아치핏 슬립인스",
             "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12916553",
-            "category": "잡화/주얼리",
-            "last_seen": "2026-08-08",
-            "last_broadcast_price": 149000
-          },
-          {
-            "pid": "12916556",
-            "name": "◎ 스케쳐스 26FW 여성 고런 아치핏 슬립인스",
-            "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12916556",
             "category": "잡화/주얼리",
             "last_seen": "2026-08-08",
             "last_broadcast_price": 149000
@@ -5195,20 +5259,20 @@
         ],
         "CJ": [
           {
+            "pid": "2088919995",
+            "name": "홈그린 프리미엄 빨래건조대",
+            "link": "https://display.cjonstyle.com/p/item/2088919995?channelCode=30002002",
+            "category": "일반식품",
+            "last_seen": "2026-08-14",
+            "last_broadcast_price": 169000
+          },
+          {
             "pid": "2074971585",
             "name": "클린엣지 점보플러스 3단 식기건조대 풀세트",
             "link": "https://display.cjonstyle.com/p/item/2074971585?channelCode=30002002",
             "category": "리빙/주방",
             "last_seen": "2026-08-08",
             "last_broadcast_price": 129000
-          },
-          {
-            "pid": "2088919995",
-            "name": "홈그린 프리미엄 빨래건조대",
-            "link": "https://display.cjonstyle.com/p/item/2088919995?channelCode=30002002",
-            "category": "일반식품",
-            "last_seen": "2026-07-17",
-            "last_broadcast_price": 169000
           },
           {
             "pid": "2087549094",
@@ -5515,7 +5579,7 @@
             "link": "https://display.cjonstyle.com/p/item/2081638641?channelCode=30002002",
             "category": "의류",
             "last_seen": "2026-08-11",
-            "last_broadcast_price": 79900
+            "last_broadcast_price": 99900
           },
           {
             "pid": "2081395191",
@@ -5523,7 +5587,7 @@
             "link": "https://display.cjonstyle.com/p/item/2081395191?channelCode=30002002",
             "category": "의류",
             "last_seen": "2026-08-09",
-            "last_broadcast_price": 69900
+            "last_broadcast_price": 89900
           }
         ],
         "LT": [
@@ -5670,6 +5734,14 @@
         ],
         "CJ": [
           {
+            "pid": "2082780308",
+            "name": "여에스더 리포좀 NMN 울트라X 12",
+            "link": "https://display.cjonstyle.com/p/item/2082780308?channelCode=30002002",
+            "category": "건강식품",
+            "last_seen": "2026-08-14",
+            "last_broadcast_price": 318000
+          },
+          {
             "pid": "2089689372",
             "name": "여에스더 PQQ 9 유기농 대마종자유",
             "link": "https://display.cjonstyle.com/p/item/2089689372?channelCode=30002002",
@@ -5684,14 +5756,6 @@
             "category": "건강식품",
             "last_seen": "2026-08-10",
             "last_broadcast_price": 89000
-          },
-          {
-            "pid": "2090362871",
-            "name": "리포좀 글루타치온 다이렉트 12X 알파 네트워크 냉온장고",
-            "link": "https://display.cjonstyle.com/p/item/2090362871?channelCode=30002002",
-            "category": "건강식품",
-            "last_seen": "2026-08-10",
-            "last_broadcast_price": 548000
           }
         ],
         "LT": [
@@ -5801,9 +5865,9 @@
           {
             "pid": "1121430187",
             "name": "에코센스 히트락 올트라이탄 밀폐용기",
-            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1121430187&brddate=20260813055500&pgmID=6995&ordChannel=WE&tveshop=Y",
+            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1121430187&brddate=20260814103600&pgmID=6995&ordChannel=WE&tveshop=Y",
             "category": "리빙/주방",
-            "last_seen": "2026-08-13",
+            "last_seen": "2026-08-14",
             "last_broadcast_price": 79800
           }
         ],
@@ -5960,7 +6024,7 @@
             "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12914842",
             "category": "건강식품",
             "last_seen": "2026-08-09",
-            "last_broadcast_price": 270400
+            "last_broadcast_price": 338000
           },
           {
             "pid": "12916506",
@@ -6201,6 +6265,78 @@
             "category": "건강식품",
             "last_seen": "2026-08-01",
             "last_broadcast_price": 526000
+          }
+        ]
+      }
+    },
+    "워커힐": {
+      "category": "일반식품",
+      "companies": [
+        "GS",
+        "CJ",
+        "LT"
+      ],
+      "products": {
+        "GS": [
+          {
+            "pid": "1115142770",
+            "name": "워커힐 치킨스테이크 16팩",
+            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1115142770&brddate=20260804153800&pgmID=6997&ordChannel=WE&tveshop=Y",
+            "category": "일반식품",
+            "last_seen": "2026-08-04",
+            "last_broadcast_price": 59900
+          },
+          {
+            "pid": "1115147286",
+            "name": "워커힐 고메 아이스크림 총",
+            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1115147286&brddate=20260728133700&pgmID=6997&ordChannel=WE&tveshop=Y",
+            "category": "일반식품",
+            "last_seen": "2026-07-28",
+            "last_broadcast_price": 49900
+          },
+          {
+            "pid": "1126775360",
+            "name": "워커힐 고메 아이스크림 총",
+            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1126775360&brddate=20260701153500&pgmID=6997&ordChannel=WE&tveshop=Y",
+            "category": "일반식품",
+            "last_seen": "2026-07-01",
+            "last_broadcast_price": 59900
+          }
+        ],
+        "CJ": [
+          {
+            "pid": "2088516069",
+            "name": "워커힐호텔 포기김치",
+            "link": "https://display.cjonstyle.com/p/item/2088516069?channelCode=30002002",
+            "category": "일반식품",
+            "last_seen": "2026-08-14",
+            "last_broadcast_price": 68400
+          }
+        ],
+        "LT": [
+          {
+            "pid": "12905475",
+            "name": "워커힐 고메 치킨 스테이크 16팩",
+            "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12905475",
+            "category": "일반식품",
+            "last_seen": "2026-08-07",
+            "last_broadcast_price": 59900
+          },
+          {
+            "pid": "12910586",
+            "name": "워커힐 로얄 스위트 타올 바스타올 2장",
+            "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12910586",
+            "category": "리빙/주방",
+            "last_seen": "2026-07-30",
+            "last_broadcast_price": 286000
+          },
+          {
+            "pid": "12896512",
+            "name": "워커힐 고메 치킨 스테이크 16팩",
+            "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12896512",
+            "category": "일반식품",
+            "last_seen": "2026-06-29",
+            "last_broadcast_price": 59900
           }
         ]
       }
@@ -6507,7 +6643,7 @@
             "name": "갱년기엔 이알하나 더",
             "link": "https://display.cjonstyle.com/p/item/2073408726?channelCode=30002002",
             "category": "건강식품",
-            "last_seen": "2026-08-12",
+            "last_seen": "2026-08-14",
             "last_broadcast_price": 328000
           },
           {
@@ -6558,28 +6694,28 @@
       "products": {
         "HD": [
           {
+            "pid": "2250750415",
+            "name": "대웅제약 이지듀 EGF 코어 이펙트 두피 앰플 입문패키지",
+            "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2250750415&preview=true",
+            "category": "미용",
+            "last_seen": "2026-08-14",
+            "last_broadcast_price": 219000
+          },
+          {
+            "pid": "2244414228",
+            "name": "대웅제약 이지듀 EGF 코어 이펙트 두피 앰플 기본패키지",
+            "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2244414228&preview=true",
+            "category": "미용",
+            "last_seen": "2026-08-14",
+            "last_broadcast_price": 159000
+          },
+          {
             "pid": "2227061248",
             "name": "기미쿠션 멜라 비 토닝 앰플 쿠션",
             "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2227061248&preview=true",
             "category": "미용",
-            "last_seen": "2026-08-09",
+            "last_seen": "2026-08-14",
             "last_broadcast_price": 49800
-          },
-          {
-            "pid": "2227061441",
-            "name": "대웅제약 기미쿠션 멜라 비 토닝 앰플 쿠션 리필",
-            "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2227061441&preview=true",
-            "category": "미용",
-            "last_seen": "2026-08-09",
-            "last_broadcast_price": 29800
-          },
-          {
-            "pid": "2226512378",
-            "name": "대웅제약 이지듀 리프트 코어 이펙트 앰플 입문 구성",
-            "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2226512378&preview=true",
-            "category": "미용",
-            "last_seen": "2026-08-09",
-            "last_broadcast_price": 159000
           }
         ],
         "GS": [
@@ -6610,6 +6746,14 @@
         ],
         "CJ": [
           {
+            "pid": "2090746127",
+            "name": "대웅제약 아이스 메쉬쿠션 본품4 리필4",
+            "link": "https://display.cjonstyle.com/p/item/2090746127?channelCode=30002002",
+            "category": "미용",
+            "last_seen": "2026-08-14",
+            "last_broadcast_price": 188000
+          },
+          {
             "pid": "2086617671",
             "name": "대웅제약 아이스 메쉬쿠션 본품2 리필2",
             "link": "https://display.cjonstyle.com/p/item/2086617671?channelCode=30002002",
@@ -6624,14 +6768,6 @@
             "category": "미용",
             "last_seen": "2026-08-10",
             "last_broadcast_price": 209000
-          },
-          {
-            "pid": "2090374161",
-            "name": "대웅제약 리프트앰플 부스팅토너1개",
-            "link": "https://display.cjonstyle.com/p/item/2090374161?channelCode=30002002",
-            "category": "미용",
-            "last_seen": "2026-08-10",
-            "last_broadcast_price": 389000
           }
         ],
         "LT": [
@@ -6735,6 +6871,14 @@
         ],
         "LT": [
           {
+            "pid": "12897708",
+            "name": "26SS 여성 포인트 카라 티셔츠",
+            "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12897708",
+            "category": "의류",
+            "last_seen": "2026-08-14",
+            "last_broadcast_price": 99000
+          },
+          {
             "pid": "12917294",
             "name": "잭니클라우스 26 SUMMER 남성 소프트쉘 자켓",
             "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12917294",
@@ -6749,14 +6893,6 @@
             "category": "의류",
             "last_seen": "2026-08-06",
             "last_broadcast_price": 109000
-          },
-          {
-            "pid": "12899297",
-            "name": "○ 26SS 여성 포인트 카라 티셔츠",
-            "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12899297",
-            "category": "의류",
-            "last_seen": "2026-08-06",
-            "last_broadcast_price": 99000
           }
         ]
       }
@@ -7505,12 +7641,12 @@
       "products": {
         "GS": [
           {
-            "pid": "1068579296",
-            "name": "쿠쿠 블랙스톤 전기압력밥솥 풀스텐 10인용 CRP-R1095FGW/FGB/R1015FBB",
-            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1068579296&brddate=20260812173500&pgmID=872&ordChannel=WE&tveshop=Y",
+            "pid": "1068579537",
+            "name": "쿠쿠 블랙스톤 전기압력밥솥 풀스텐 6인용 CRP-R0695FGW/FGB/R0625FBB",
+            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1068579537&brddate=20260812173500&pgmID=872&ordChannel=WE&tveshop=Y",
             "category": "가전",
             "last_seen": "2026-08-12",
-            "last_broadcast_price": 298000
+            "last_broadcast_price": 278000
           },
           {
             "pid": "1071537779",
@@ -7759,6 +7895,14 @@
         ],
         "GS": [
           {
+            "pid": "1109673599",
+            "name": "클랍 C퓨어 버블에센스 원장님패키지",
+            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1109673599&brddate=20260810225500&pgmID=6737&ordChannel=WE&tveshop=Y",
+            "category": "미용",
+            "last_seen": "2026-08-10",
+            "last_broadcast_price": 366000
+          },
+          {
             "pid": "1109674085",
             "name": "클랍 C퓨어 버블에센스 최현우패키지",
             "link": "https://www.gsshop.com/prd/prd.gs?prdid=1109674085&brddate=20260810225500&pgmID=6737&ordChannel=WE&tveshop=Y",
@@ -7773,14 +7917,6 @@
             "category": "미용",
             "last_seen": "2026-08-10",
             "last_broadcast_price": 110000
-          },
-          {
-            "pid": "1109673599",
-            "name": "클랍 C퓨어 버블에센스 원장님패키지",
-            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1109673599&brddate=20260810225500&pgmID=6737&ordChannel=WE&tveshop=Y",
-            "category": "미용",
-            "last_seen": "2026-08-10",
-            "last_broadcast_price": 366000
           }
         ],
         "CJ": [
@@ -8304,12 +8440,12 @@
         ],
         "GS": [
           {
-            "pid": "1112958708",
-            "name": "프리메로 블루베리 리얼 100% 총",
-            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1112958708&brddate=20260810043000&pgmID=9613&ordChannel=WE&tveshop=Y",
+            "pid": "1113064247",
+            "name": "프리메로 블루베리 리얼 100% 10포",
+            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1113064247&brddate=20260810043000&pgmID=9613&ordChannel=WE&tveshop=Y",
             "category": "건강식품",
             "last_seen": "2026-08-10",
-            "last_broadcast_price": 129000
+            "last_broadcast_price": 21000
           },
           {
             "pid": "1119903752",
@@ -8666,20 +8802,20 @@
         ],
         "GS": [
           {
-            "pid": "1126494226",
-            "name": "하루틴 리포좀 비타민C 프로",
-            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1126494226&brddate=20260813163500&pgmID=13352&ordChannel=WE&tveshop=Y",
-            "category": "건강식품",
-            "last_seen": "2026-08-13",
-            "last_broadcast_price": 109000
-          },
-          {
             "pid": "1130172230",
             "name": "하루틴 리포좀 비타민C 프로 리포좀 글루타치온 10포",
             "link": "https://www.gsshop.com/prd/prd.gs?prdid=1130172230&brddate=20260813163500&pgmID=13352&ordChannel=WE&tveshop=Y",
             "category": "건강식품",
-            "last_seen": "2026-08-12",
+            "last_seen": "2026-08-13",
             "last_broadcast_price": 209000
+          },
+          {
+            "pid": "1126494226",
+            "name": "하루틴 리포좀 비타민C 프로",
+            "link": "https://www.gsshop.com/prd/prd.gs?prdid=1126494226&brddate=20260813163500&pgmID=13352&ordChannel=WE&tveshop=Y",
+            "category": "건강식품",
+            "last_seen": "2026-08-12",
+            "last_broadcast_price": 109000
           },
           {
             "pid": "1120802943",
