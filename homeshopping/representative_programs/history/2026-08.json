@@ -1,6 +1,6 @@
 {
   "month": "2026-08",
-  "updated_at": "2026-08-10T03:26:59.415252+09:00",
+  "updated_at": "2026-08-10T08:41:59.603912+09:00",
   "programs": [
     {
       "program_key": "HD_HJM",
@@ -13,7 +13,7 @@
         {
           "date": "2026-08-10",
           "label": "08/10(월) 19:30 방송",
-          "collected_at": "2026-08-10T03:26:59.413634+09:00",
+          "collected_at": "2026-08-10T08:41:59.601988+09:00",
           "products": [
             {
               "broadcast_date_label": "08/10(월) 19:30 방송",
@@ -86,7 +86,7 @@
         {
           "date": "2026-08-11",
           "label": "08/11(화) 19:30 방송",
-          "collected_at": "2026-08-10T03:26:59.413634+09:00",
+          "collected_at": "2026-08-10T08:41:59.601988+09:00",
           "products": [
             {
               "broadcast_date_label": "08/11(화) 19:30 방송",
@@ -199,7 +199,7 @@
         {
           "date": "2026-08-15",
           "label": "08/15(토) 08:20 방송",
-          "collected_at": "2026-08-10T03:26:59.413634+09:00",
+          "collected_at": "2026-08-10T08:41:59.601988+09:00",
           "products": [
             {
               "broadcast_date_label": "08/15(토) 08:20 방송",
@@ -295,8 +295,17 @@
         {
           "date": "2026-08-13",
           "label": "08/13(목) 20:45 방송",
-          "collected_at": "2026-08-10T03:26:59.413634+09:00",
+          "collected_at": "2026-08-10T08:41:59.601988+09:00",
           "products": [
+            {
+              "prd_id": "1128185127",
+              "broadcast_date_label": "8월 13일(목) 20:45 방송",
+              "broadcast_iso": "2026-08-13T20:45:00",
+              "brand": "GS SHOP",
+              "name": "폴리보이 오가닉 클리너 세트 (욕실 클리너 5개+다목적 클리너 2개+가죽케어 티슈 2개)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1128185127"
+            },
             {
               "prd_id": "1101552186",
               "broadcast_date_label": "8월 13일(목) 20:45 방송",
@@ -386,15 +395,6 @@
               "name": "궁키친 이상민 블랙타이거 새우 5팩 100미 (소스 X,오직 새우만)",
               "price": null,
               "link": "https://m.gsshop.com/prd/prd.gs?prdid=1057551916"
-            },
-            {
-              "prd_id": "1128185127",
-              "broadcast_date_label": "8월 13일(목) 20:45 방송",
-              "broadcast_iso": "2026-08-13T20:45:00",
-              "brand": "GS SHOP",
-              "name": "폴리보이 오가닉 클리너 세트 (욕실 클리너 5개+다목적 클리너 2개+가죽케어 티슈 2개)",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1128185127"
             }
           ]
         }
@@ -412,8 +412,44 @@
         {
           "date": "2026-08-14",
           "label": "08/14(금) 20:35 방송",
-          "collected_at": "2026-08-10T03:26:59.413634+09:00",
+          "collected_at": "2026-08-10T08:41:59.601988+09:00",
           "products": [
+            {
+              "prd_id": "1132562145",
+              "broadcast_date_label": "8월 14일(금) 20:35 방송",
+              "broadcast_iso": "2026-08-14T20:35:00",
+              "brand": "GS SHOP",
+              "name": "유시몰 오리지널 쿨링피치 치약 소유진쇼 패키지",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1132562145"
+            },
+            {
+              "prd_id": "1107684430",
+              "broadcast_date_label": "8월 14일(금) 20:35 방송",
+              "broadcast_iso": "2026-08-14T20:35:00",
+              "brand": "GS SHOP",
+              "name": "유시몰 오리지널 쿨링피치 치약 기본세트",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1107684430"
+            },
+            {
+              "prd_id": "1107684423",
+              "broadcast_date_label": "8월 14일(금) 20:35 방송",
+              "broadcast_iso": "2026-08-14T20:35:00",
+              "brand": "GS SHOP",
+              "name": "유시몰 클래식 칫솔세트 8개",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1107684423"
+            },
+            {
+              "prd_id": "1107684520",
+              "broadcast_date_label": "8월 14일(금) 20:35 방송",
+              "broadcast_iso": "2026-08-14T20:35:00",
+              "brand": "GS SHOP",
+              "name": "유시몰 쿨링피치 오리지널 치약 120g 1개",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1107684520"
+            },
             {
               "prd_id": "1103156429",
               "broadcast_date_label": "8월 14일(금) 20:35 방송",
@@ -503,42 +539,6 @@
               "name": "바밤 국산 단호박식혜 1.2L 2병기획",
               "price": null,
               "link": "https://m.gsshop.com/prd/prd.gs?prdid=1108357051"
-            },
-            {
-              "prd_id": "1132562145",
-              "broadcast_date_label": "8월 14일(금) 20:35 방송",
-              "broadcast_iso": "2026-08-14T20:35:00",
-              "brand": "GS SHOP",
-              "name": "유시몰 오리지널 쿨링피치 치약 소유진쇼 패키지",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1132562145"
-            },
-            {
-              "prd_id": "1107684430",
-              "broadcast_date_label": "8월 14일(금) 20:35 방송",
-              "broadcast_iso": "2026-08-14T20:35:00",
-              "brand": "GS SHOP",
-              "name": "유시몰 오리지널 쿨링피치 치약 기본세트",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1107684430"
-            },
-            {
-              "prd_id": "1107684423",
-              "broadcast_date_label": "8월 14일(금) 20:35 방송",
-              "broadcast_iso": "2026-08-14T20:35:00",
-              "brand": "GS SHOP",
-              "name": "유시몰 클래식 칫솔세트 8개",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1107684423"
-            },
-            {
-              "prd_id": "1107684520",
-              "broadcast_date_label": "8월 14일(금) 20:35 방송",
-              "broadcast_iso": "2026-08-14T20:35:00",
-              "brand": "GS SHOP",
-              "name": "유시몰 쿨링피치 오리지널 치약 120g 1개",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1107684520"
             }
           ]
         }
@@ -556,7 +556,7 @@
         {
           "date": "2026-08-15",
           "label": "08/15(토) 09:20 방송",
-          "collected_at": "2026-08-10T03:26:59.413634+09:00",
+          "collected_at": "2026-08-10T08:41:59.601988+09:00",
           "products": [
             {
               "broadcast_date_label": "08/15 토요일 09:20",
@@ -603,7 +603,7 @@
         {
           "date": "2026-08-13",
           "label": "08/13(목) 20:45 방송",
-          "collected_at": "2026-08-10T03:26:59.413634+09:00",
+          "collected_at": "2026-08-10T08:41:59.601988+09:00",
           "products": [
             {
               "broadcast_date_label": "08/13 목요일 20:45",
@@ -818,7 +818,7 @@
         {
           "date": "2026-08-10",
           "label": "08/10(월) 19:35 방송",
-          "collected_at": "2026-08-10T03:26:59.413634+09:00",
+          "collected_at": "2026-08-10T08:41:59.601988+09:00",
           "products": [
             {
               "broadcast_date_label": "08/10(월) 19:35",
@@ -899,7 +899,7 @@
         {
           "date": "2026-08-12",
           "label": "08/12(수) 20:45 방송",
-          "collected_at": "2026-08-10T03:26:59.413634+09:00",
+          "collected_at": "2026-08-10T08:41:59.601988+09:00",
           "products": [
             {
               "broadcast_date_label": "08/12(수) 20:45",
@@ -1140,7 +1140,7 @@
         {
           "date": "2026-08-10",
           "label": "08/10(월) 20:00 방송",
-          "collected_at": "2026-08-10T03:26:59.413634+09:00",
+          "collected_at": "2026-08-10T08:41:59.601988+09:00",
           "products": [
             {
               "broadcast_date_label": "08/10(월) 20:00",
