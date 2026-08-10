@@ -649,7 +649,9 @@
           "ratingDate": "07.09"
         }
       },
-      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=40843748&qvt=0&query=%EC%95%BC%EA%B5%AC%EC%97%AC%EC%99%95%20%EC%8B%9C%EC%A6%8C2"
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=40843748&qvt=0&query=%EC%95%BC%EA%B5%AC%EC%97%AC%EC%99%95%20%EC%8B%9C%EC%A6%8C2",
+      "isNew": true,
+      "newReason": "firstAir"
     },
     {
       "id": "variety_이혼숙려캠프_JTBC_오후 10:00",
@@ -749,7 +751,9 @@
           "ratingDate": "07.10"
         }
       },
-      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=41048951&qvt=0&query=%ED%95%B4%ED%94%BC%ED%88%AC%EA%B2%8C%EB%8D%94%20%ED%98%BC%EC%9E%90%EA%B0%80%20%EC%95%84%EB%8B%88%EC%96%B4%EC%84%9C%20%EC%A2%8B%EC%95%84"
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=41048951&qvt=0&query=%ED%95%B4%ED%94%BC%ED%88%AC%EA%B2%8C%EB%8D%94%20%ED%98%BC%EC%9E%90%EA%B0%80%20%EC%95%84%EB%8B%88%EC%96%B4%EC%84%9C%20%EC%A2%8B%EC%95%84",
+      "isNew": true,
+      "newReason": "firstAir"
     },
     {
       "id": "variety_콩콩팜팜 (콩 심은 데 콩 나는 가고팜 하고팜 동물농장)_tvN_오후 08:35",
@@ -1096,7 +1100,9 @@
       "rating": 5.4,
       "ratingDate": "07.12",
       "ratingByDay": {},
-      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=40275988&qvt=0&query=%EC%95%84%ED%8C%8C%ED%8A%B8"
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=40275988&qvt=0&query=%EC%95%84%ED%8C%8C%ED%8A%B8",
+      "isNew": true,
+      "newReason": "firstAir"
     },
     {
       "id": "drama_아파트_JTBC_오후 10:30",
@@ -1115,7 +1121,9 @@
           "ratingDate": "07.12"
         }
       },
-      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=40275988&qvt=0&query=%EC%95%84%ED%8C%8C%ED%8A%B8"
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=40275988&qvt=0&query=%EC%95%84%ED%8C%8C%ED%8A%B8",
+      "isNew": true,
+      "newReason": "firstAir"
     },
     {
       "id": "variety_서프라이즈 미스터리 살롱_MBC_오전 10:40",
@@ -1401,6 +1409,27 @@
         }
       },
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=659723&qvt=0&query=%EC%97%B4%EB%A6%B0%EC%9D%8C%EC%95%85%ED%9A%8C"
+    }
+  ],
+  "newBelowCutoff": [
+    {
+      "id": "variety_시간관찰자: 더 시크릿_tvN_오전 09:25",
+      "category": "variety",
+      "channel": "tvN",
+      "title": "시간관찰자: 더 시크릿",
+      "days": [
+        "일"
+      ],
+      "time": "오전 09:25",
+      "rating": 0.4,
+      "ratingDate": "07.12",
+      "ratingByDay": {
+        "일": {
+          "rating": 0.4,
+          "ratingDate": "07.12"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41406372&qvt=0&query=%EC%8B%9C%EA%B0%84%EA%B4%80%EC%B0%B0%EC%9E%90%20%EB%8D%94%20%EC%8B%9C%ED%81%AC%EB%A6%BF"
     }
   ]
 }

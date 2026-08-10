@@ -1,7 +1,7 @@
 {
   "weekStart": "2026-07-27",
   "weekEnd": "2026-08-02",
-  "collectedAt": "2026-08-11T00:09:08.123443+09:00",
+  "collectedAt": "2026-08-11T00:20:32.121150+09:00",
   "programs": [
     {
       "id": "drama_기쁜 우리 좋은 날_KBS1_오후 08:30",
@@ -439,7 +439,9 @@
           "ratingDate": "07.30"
         }
       },
-      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41332301&qvt=0&query=%EC%96%B8%EB%8B%88%EB%84%A4%20%EC%82%B0%EC%A7%80%EC%A7%81%EC%86%A13"
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41332301&qvt=0&query=%EC%96%B8%EB%8B%88%EB%84%A4%20%EC%82%B0%EC%A7%80%EC%A7%81%EC%86%A13",
+      "isNew": true,
+      "newReason": "firstAir"
     },
     {
       "id": "variety_자식방생프로젝트 합숙 맞선2_SBS_오후 09:00",
@@ -596,7 +598,9 @@
           "ratingDate": "08.01"
         }
       },
-      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40393258&qvt=0&query=%EC%9C%A0%EB%B6%80%EB%85%80%20%ED%82%AC%EB%9F%AC"
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40393258&qvt=0&query=%EC%9C%A0%EB%B6%80%EB%85%80%20%ED%82%AC%EB%9F%AC",
+      "isNew": true,
+      "newReason": "firstAir"
     },
     {
       "id": "variety_우주떡집_tvN_오후 08:35",
@@ -1274,6 +1278,27 @@
         }
       },
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40281127&qvt=0&query=%EB%A7%90%EC%9E%90%EC%87%BC"
+    }
+  ],
+  "newBelowCutoff": [
+    {
+      "id": "variety_너의 몸소리가 들려_tvN_오전 08:20",
+      "category": "variety",
+      "channel": "tvN",
+      "title": "너의 몸소리가 들려",
+      "days": [
+        "일"
+      ],
+      "time": "오전 08:20",
+      "rating": 0.4,
+      "ratingDate": "08.02",
+      "ratingByDay": {
+        "일": {
+          "rating": 0.4,
+          "ratingDate": "08.02"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=35201617&qvt=0&query=%EB%84%88%EC%9D%98%20%EB%AA%B8%EC%86%8C%EB%A6%AC%EA%B0%80%20%EB%93%A4%EB%A0%A4"
     }
   ]
 }
