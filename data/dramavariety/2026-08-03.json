@@ -1,7 +1,7 @@
 {
   "weekStart": "2026-08-03",
   "weekEnd": "2026-08-09",
-  "collectedAt": "2026-08-11T00:20:32.123436+09:00",
+  "collectedAt": "2026-08-11T02:45:25.865688+09:00",
   "programs": [
     {
       "id": "drama_붉은 진주_KBS2_오후 07:50",
@@ -1051,7 +1051,9 @@
           "ratingDate": "08.08"
         }
       },
-      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41592492&qvt=0&query=%EC%9A%B0%EB%A6%AC%EB%8F%99%EB%84%A4%20%EC%A0%84%EC%84%B1%EC%8B%9C%EB%8C%80"
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41592492&qvt=0&query=%EC%9A%B0%EB%A6%AC%EB%8F%99%EB%84%A4%20%EC%A0%84%EC%84%B1%EC%8B%9C%EB%8C%80",
+      "isNew": true,
+      "newReason": "firstAir"
     },
     {
       "id": "drama_오싹한 연애_tvN_오후 09:10",
@@ -1392,139 +1394,9 @@
           "ratingDate": "08.04"
         }
       },
-      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40652850&qvt=0&query=%EC%B5%9C%EC%95%A0%EC%9D%98%20%EC%82%AC%EC%9B%90"
-    },
-    {
-      "id": "drama_그대에게 드림_ENA_오후 10:00",
-      "category": "drama",
-      "channel": "ENA",
-      "title": "그대에게 드림",
-      "days": [
-        "월",
-        "화"
-      ],
-      "time": "오후 10:00",
-      "rating": 2.5,
-      "ratingDate": "08.04",
-      "ratingByDay": {
-        "화": {
-          "rating": 2.5,
-          "ratingDate": "08.04"
-        }
-      },
-      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40928922&qvt=0&query=%EA%B7%B8%EB%8C%80%EC%97%90%EA%B2%8C%20%EB%93%9C%EB%A6%BC"
-    },
-    {
-      "id": "drama_가족관계증명서_MBC_오후 07:05",
-      "category": "drama",
-      "channel": "MBC",
-      "title": "가족관계증명서",
-      "days": [
-        "월",
-        "화",
-        "수",
-        "금"
-      ],
-      "time": "오후 07:05",
-      "rating": 4.5,
-      "ratingDate": "08.07",
-      "ratingByDay": {
-        "금": {
-          "rating": 4.5,
-          "ratingDate": "08.07"
-        }
-      },
-      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41317408&qvt=0&query=%EA%B0%80%EC%A1%B1%EA%B4%80%EA%B3%84%EC%A6%9D%EB%AA%85%EC%84%9C"
-    },
-    {
-      "id": "drama_가족관계증명서_MBC_오후 07:10",
-      "category": "drama",
-      "channel": "MBC",
-      "title": "가족관계증명서",
-      "days": [
-        "목"
-      ],
-      "time": "오후 07:10",
-      "rating": 4.5,
-      "ratingDate": "08.07",
-      "ratingByDay": {},
-      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41317408&qvt=0&query=%EA%B0%80%EC%A1%B1%EA%B4%80%EA%B3%84%EC%A6%9D%EB%AA%85%EC%84%9C"
-    },
-    {
-      "id": "variety_보석이네 건강수다_SBS_오전 11:00",
-      "category": "variety",
-      "channel": "SBS",
-      "title": "보석이네 건강수다",
-      "days": [
-        "월"
-      ],
-      "time": "오전 11:00",
-      "rating": 0.3,
-      "ratingDate": "08.03",
-      "ratingByDay": {
-        "월": {
-          "rating": 0.3,
-          "ratingDate": "08.03"
-        }
-      },
-      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=36984024&qvt=0&query=%EB%B3%B4%EC%84%9D%EC%9D%B4%EB%84%A4%20%EA%B1%B4%EA%B0%95%EC%88%98%EB%8B%A4"
-    },
-    {
-      "id": "variety_남겨서 뭐하게_tvN STORY_오후 08:00",
-      "category": "variety",
-      "channel": "tvN STORY",
-      "title": "남겨서 뭐하게",
-      "days": [
-        "월"
-      ],
-      "time": "오후 08:00",
-      "rating": 0.6,
-      "ratingDate": "08.03",
-      "ratingByDay": {
-        "월": {
-          "rating": 0.6,
-          "ratingDate": "08.03"
-        }
-      },
-      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=36896459&qvt=0&query=%EB%82%A8%EA%B2%A8%EC%84%9C%20%EB%AD%90%ED%95%98%EA%B2%8C"
-    },
-    {
-      "id": "variety_무엇이든 물어보살_KBS Joy_오후 08:00",
-      "category": "variety",
-      "channel": "KBS Joy",
-      "title": "무엇이든 물어보살",
-      "days": [
-        "월"
-      ],
-      "time": "오후 08:00",
-      "rating": 0.6,
-      "ratingDate": "08.03",
-      "ratingByDay": {
-        "월": {
-          "rating": 0.6,
-          "ratingDate": "08.03"
-        }
-      },
-      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=9334459&qvt=0&query=%EB%AC%B4%EC%97%87%EC%9D%B4%EB%93%A0%20%EB%AC%BC%EC%96%B4%EB%B3%B4%EC%82%B4"
-    },
-    {
-      "id": "variety_히든아이_MBC every1_오후 08:30",
-      "category": "variety",
-      "channel": "MBC every1",
-      "title": "히든아이",
-      "days": [
-        "월"
-      ],
-      "time": "오후 08:30",
-      "rating": 0.8,
-      "ratingDate": "08.03",
-      "ratingByDay": {
-        "월": {
-          "rating": 0.8,
-          "ratingDate": "08.03"
-        }
-      },
-      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=34400067&qvt=0&query=%ED%9E%88%EB%93%A0%EC%95%84%EC%9D%B4"
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40652850&qvt=0&query=%EC%B5%9C%EC%95%A0%EC%9D%98%20%EC%82%AC%EC%9B%90",
+      "isNew": true,
+      "newReason": "firstAir"
     },
     {
       "id": "variety_내 남은 연애_SBS_오후 10:00",
@@ -1543,83 +1415,9 @@
           "ratingDate": "08.03"
         }
       },
-      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41682976&qvt=0&query=%EB%82%B4%20%EB%82%A8%EC%9D%80%20%EC%97%B0%EC%95%A0"
-    },
-    {
-      "id": "variety_신빨토크쇼 귀묘한 이야기 2_SBS Plus_오후 11:30",
-      "category": "variety",
-      "channel": "SBS Plus",
-      "title": "신빨토크쇼 귀묘한 이야기 2",
-      "days": [
-        "월"
-      ],
-      "time": "오후 11:30",
-      "rating": 0.2,
-      "ratingDate": "08.03",
-      "ratingByDay": {
-        "월": {
-          "rating": 0.2,
-          "ratingDate": "08.03"
-        }
-      },
-      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40520741&qvt=0&query=%EC%8B%A0%EB%B9%A8%ED%86%A0%ED%81%AC%EC%87%BC%20%EA%B7%80%EB%AC%98%ED%95%9C%20%EC%9D%B4%EC%95%BC%EA%B8%B0%202"
-    },
-    {
-      "id": "variety_왕자와 거지_ENA_오후 11:15",
-      "category": "variety",
-      "channel": "ENA",
-      "title": "왕자와 거지",
-      "days": [
-        "월"
-      ],
-      "time": "오후 11:15",
-      "rating": 0.3,
-      "ratingDate": "08.03",
-      "ratingByDay": {
-        "월": {
-          "rating": 0.3,
-          "ratingDate": "08.03"
-        }
-      },
-      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41536156&qvt=0&query=%EC%99%95%EC%9E%90%EC%99%80%20%EA%B1%B0%EC%A7%80"
-    },
-    {
-      "id": "variety_히든카드_SBS_오전 11:00",
-      "category": "variety",
-      "channel": "SBS",
-      "title": "히든카드",
-      "days": [
-        "화"
-      ],
-      "time": "오전 11:00",
-      "rating": 0.4,
-      "ratingDate": "08.04",
-      "ratingByDay": {
-        "화": {
-          "rating": 0.4,
-          "ratingDate": "08.04"
-        }
-      },
-      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=36860088&qvt=0&query=%ED%9E%88%EB%93%A0%EC%B9%B4%EB%93%9C"
-    },
-    {
-      "id": "variety_랭킹송: 건강한가요_SBS_오후 05:10",
-      "category": "variety",
-      "channel": "SBS",
-      "title": "랭킹송: 건강한가요",
-      "days": [
-        "화"
-      ],
-      "time": "오후 05:10",
-      "rating": 0.6,
-      "ratingDate": "08.04",
-      "ratingByDay": {
-        "화": {
-          "rating": 0.6,
-          "ratingDate": "08.04"
-        }
-      },
-      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41443922&qvt=0&query=%EB%9E%AD%ED%82%B9%EC%86%A1%20%EA%B1%B4%EA%B0%95%ED%95%9C%EA%B0%80%EC%9A%94"
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41682976&qvt=0&query=%EB%82%B4%20%EB%82%A8%EC%9D%80%20%EC%97%B0%EC%95%A0",
+      "isNew": true,
+      "newReason": "firstAir"
     },
     {
       "id": "variety_몸신의 탄생_채널A_오후 08:00",
