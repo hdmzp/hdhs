@@ -6,6 +6,7 @@ scrape_naver.py
 - 수집된 모든 데이터를 무조건 '이번 주' 파일에 덮어쓰기/누적
 """
 import argparse
+import glob
 import json
 import os
 import re
@@ -30,6 +31,24 @@ KST = timezone(timedelta(hours=9))
 DAY_ORDER = ["월", "화", "수", "목", "금", "토", "일"]
 DAY_INDEX = {d: i for i, d in enumerate(DAY_ORDER)}
 DEBUG = False
+
+# 회차(N회) 추출용. 네이버 카드가 "1회", "제 1회", "12회차" 등 어떤 표기로
+# 내려주더라도 잡히도록 느슨하게 매칭한다. 네이버가 회차를 아예 안 주는
+# 레이아웃일 수도 있어서(카드 구성이 수시로 바뀜) 못 찾으면 None을 반환하고,
+# 신규 판별은 이력 기반 폴백(recompute_new_flags)이 대신 처리한다.
+EPISODE_RE = re.compile(r'(?:제\s*)?(\d{1,4})\s*회(?:차)?')
+# "첫 방송"류 문구는 회차 숫자가 없어도 1회로 간주한다.
+FIRST_AIR_RE = re.compile(r'첫\s*방송|첫방송|첫방|새\s*드라마|신규\s*편성')
+
+# 신규(New) 판정에 이력 폴백을 적용하기 전에 최소한 이만큼의 과거 주차
+# 파일이 쌓여 있어야 한다. 수집 초기(파일이 1~2개뿐)에는 모든 프로그램이
+# "처음 보는 프로그램"이라 전부 New로 찍히는 오탐이 나기 때문이다.
+NEW_FLAG_MIN_HISTORY_WEEKS = 2
+# 주차 수뿐 아니라 "이력에 쌓인 프로그램 수"도 본다. 초기 주차 파일에는
+# 수집 실패로 2~8건만 들어있는 경우가 있어, 파일 개수만 세면 사실상 비어
+# 있는 이력을 근거로 그 다음 주 전체를 신규로 찍어버린다.
+NEW_FLAG_MIN_HISTORY_PROGRAMS = 20
+WEEK_FILE_RE = re.compile(r'^\d{4}-\d{2}-\d{2}\.json$')
 
 
 def monday_of(date_obj):
@@ -100,6 +119,33 @@ def parse_schedule_text(schedule_text: str):
     return results
 
 
+def parse_episode(li, title: str = ""):
+    """카드에서 회차(N회)를 뽑아낸다. 못 찾으면 None.
+
+    제목 안의 숫자(예: "슈퍼맨이 돌아왔다 500회 특집" 같은 표기)에 걸려
+    엉뚱한 회차가 잡히지 않도록, 제목 텍스트는 검색 대상에서 제외한다."""
+    texts = []
+    for sel in ('div.sub_info', 'div.main_info', 'span.info_txt', 'em.mark', 'span.tag', 'span.badge'):
+        for el in li.select(sel):
+            texts.append(el.get_text(" ", strip=True))
+    blob = " ".join(t for t in texts if t)
+    if title:
+        blob = blob.replace(title, " ")
+
+    m = EPISODE_RE.search(blob)
+    if m:
+        try:
+            ep = int(m.group(1))
+        except ValueError:
+            ep = None
+        if ep is not None and 1 <= ep <= 3000:
+            return ep
+
+    if FIRST_AIR_RE.search(blob):
+        return 1
+    return None
+
+
 def parse_card(li, category: str, base_url: str = "", today=None):
     title_tag = li.select_one('strong.title a')
     if not title_tag:
@@ -137,6 +183,8 @@ def parse_card(li, category: str, base_url: str = "", today=None):
     if rating is None:
         return []
 
+    episode = parse_episode(li, title=title)
+
     # 네이버 카드는 (월~목) 처럼 여러 요일을 한 줄로 묶어서 보여주지만,
     # 시청률/ratingDate는 그 그룹 전체가 아니라 "가장 최근 방영된 회차"
     # 딱 하나에 대한 값이다. 여기서 ratingDate를 실제 날짜로 환산해
@@ -160,9 +208,16 @@ def parse_card(li, category: str, base_url: str = "", today=None):
         # 별도로 처리한다.
         rating_by_day = {}
         if matched_weekday and matched_weekday in slot["days"]:
-            rating_by_day[matched_weekday] = {"rating": rating, "ratingDate": rating_date}
+            # 회차도 시청률과 똑같이 "가장 최근 방영된 회차" 하나에 대한 값이라
+            # 요일별 버킷에 함께 담아둔다. 이렇게 해두면 1회가 어느 요일에
+            # 방영됐는지까지 남아, 나중에 회차가 올라가도(2회, 3회...) 그 주에
+            # 1회가 있었다는 사실이 사라지지 않는다.
+            entry = {"rating": rating, "ratingDate": rating_date}
+            if episode is not None:
+                entry["episode"] = episode
+            rating_by_day[matched_weekday] = entry
 
-        programs.append({
+        program = {
             "id": f"{category}_{title}_{channel}_{slot['time']}",
             "category": category,
             "channel": channel,
@@ -173,7 +228,10 @@ def parse_card(li, category: str, base_url: str = "", today=None):
             "ratingDate": rating_date,
             "ratingByDay": rating_by_day,
             "link": link,
-        })
+        }
+        if episode is not None:
+            program["episode"] = episode
+        programs.append(program)
     return programs
 
 
@@ -244,12 +302,16 @@ def dedupe_programs(programs: list):
         merged[key].setdefault("ratingByDay", {})
         merged[key]["ratingByDay"].update(p.get("ratingByDay", {}))
 
-        # ratingDate가 더 최신인 카드로 rating/ratingDate를 교체한다.
+        # ratingDate가 더 최신인 카드로 rating/ratingDate/episode를 교체한다.
         existing_resolved = resolve_rating_date(merged[key].get("ratingDate"), today)
         new_resolved = resolve_rating_date(p.get("ratingDate"), today)
         if new_resolved and (existing_resolved is None or new_resolved > existing_resolved):
             merged[key]["rating"] = p["rating"]
             merged[key]["ratingDate"] = p["ratingDate"]
+            if p.get("episode") is not None:
+                merged[key]["episode"] = p["episode"]
+        elif merged[key].get("episode") is None and p.get("episode") is not None:
+            merged[key]["episode"] = p["episode"]
 
     return list(merged.values())
 
@@ -605,6 +667,35 @@ def _validate_week_membership(monday_date, programs, today):
     return valid, invalid
 
 
+def _merge_rating_by_day(existing_map: dict, new_map: dict):
+    """요일별 값(ratingByDay)을 요일 단위가 아니라 '필드 단위'로 병합한다.
+
+    dict.update로 요일 항목을 통째로 갈아끼우면, 예전 수집에서 잡아둔
+    회차(episode)가 이번 수집(회차 없이 시청률만 잡힌 경우)에 의해 통째로
+    지워진다. 1회 방영 사실이 그 주에 딱 한 번만 관측되는 값이라 이렇게
+    날아가면 New 배지가 사라지므로, 같은 요일이면 필드를 덮어쓰되 새 값에
+    없는 필드는 기존 값을 남긴다."""
+    merged = {}
+    for day, entry in (existing_map or {}).items():
+        merged[day] = dict(entry) if isinstance(entry, dict) else entry
+    for day, entry in (new_map or {}).items():
+        if isinstance(entry, dict) and isinstance(merged.get(day), dict):
+            merged[day].update(entry)
+        else:
+            merged[day] = dict(entry) if isinstance(entry, dict) else entry
+    return merged
+
+
+def _carry_over_history(existing_entry: dict, p: dict):
+    """같은 id의 기존 저장분(existing_entry)이 갖고 있던 이력을 새 항목(p)에 옮긴다."""
+    existing_days = set(existing_entry.get("days", []))
+    existing_days.update(p.get("days", []))
+    p["days"] = [d for d in DAY_ORDER if d in existing_days]
+    p["ratingByDay"] = _merge_rating_by_day(existing_entry.get("ratingByDay"), p.get("ratingByDay"))
+    if p.get("episode") is None and existing_entry.get("episode") is not None:
+        p["episode"] = existing_entry["episode"]
+
+
 def _merge_programs_into_file(out_dir: str, monday_date, programs: list):
     """programs를 monday_date가 속한 주차 파일에 머지 저장한다.
     (기존 dispatch_to_current_week의 병합 로직을 그대로 사용, 대상 주차만 인자로 받음)"""
@@ -635,18 +726,11 @@ def _merge_programs_into_file(out_dir: str, monday_date, programs: list):
     by_id = {p["id"]: p for p in existing_programs}
     for p in programs:
         if p["id"] in by_id:
-            existing_entry = by_id[p["id"]]
-            existing_days = set(existing_entry["days"])
-            existing_days.update(p["days"])
-            p["days"] = [d for d in DAY_ORDER if d in existing_days]
-
             # 요일별 시청률은 "이번에 새로 들어온 요일"만 덮어쓰고, 나머지
             # 요일은 기존에 저장돼 있던 값을 그대로 보존한다. 이렇게 해야
             # 월화수목 같은 그룹에서 매일 실행할 때마다 그날 요일만 갱신되고
             # 나머지 요일이 그날 값으로 덮어써지지 않는다.
-            merged_rating_by_day = dict(existing_entry.get("ratingByDay", {}))
-            merged_rating_by_day.update(p.get("ratingByDay", {}))
-            p["ratingByDay"] = merged_rating_by_day
+            _carry_over_history(by_id[p["id"]], p)
         by_id[p["id"]] = p
 
     # 기존에 누적 저장된 데이터(과거 회차에 말줄임으로 박혀있을 수 있음)와
@@ -659,14 +743,7 @@ def _merge_programs_into_file(out_dir: str, monday_date, programs: list):
     for p in all_merged:
         p["id"] = f"{p['category']}_{p['title']}_{p['channel']}_{p['time']}"
         if p["id"] in by_id:
-            existing_entry = by_id[p["id"]]
-            existing_days = set(existing_entry["days"])
-            existing_days.update(p["days"])
-            p["days"] = [d for d in DAY_ORDER if d in existing_days]
-
-            merged_rating_by_day = dict(existing_entry.get("ratingByDay", {}))
-            merged_rating_by_day.update(p.get("ratingByDay", {}))
-            p["ratingByDay"] = merged_rating_by_day
+            _carry_over_history(by_id[p["id"]], p)
         by_id[p["id"]] = p
 
     merged_payload = {
@@ -784,6 +861,133 @@ def prune_dropped_programs(out_dir: str, collected_ids: set, today):
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 
+# ---------- 신규(New) 프로그램 판정 ----------
+
+def _clean_title(title: str):
+    """제목 비교용 정규화. 말줄임("...")은 잘라내고 공백을 정리한다."""
+    t = (title or "").strip()
+    if t.endswith("..."):
+        t = t[:-3].strip()
+    return re.sub(r'\s+', ' ', t)
+
+
+def _title_matches(a: str, b: str):
+    """말줄임으로 잘린 제목까지 같은 프로그램으로 인정한다.
+    (같은 채널·장르 안에서만 쓰이므로 접두사 일치로 충분하다)"""
+    if a == b:
+        return True
+    if not a or not b:
+        return False
+    shorter, longer = (a, b) if len(a) < len(b) else (b, a)
+    return len(shorter) >= 2 and longer.startswith(shorter)
+
+
+def has_first_episode(p: dict):
+    """이 프로그램이 '1회'로 관측된 적이 있는지."""
+    if p.get("episode") == 1:
+        return True
+    for entry in (p.get("ratingByDay") or {}).values():
+        if isinstance(entry, dict) and entry.get("episode") == 1:
+            return True
+    return False
+
+
+def _week_files(out_dir: str):
+    names = [os.path.basename(p) for p in glob.glob(os.path.join(out_dir, "*.json"))]
+    return sorted(n for n in names if WEEK_FILE_RE.match(n))
+
+
+def recompute_new_flags(out_dir: str):
+    """주차 파일 전체를 훑어 각 프로그램에 신규 여부(isNew/newReason)를 붙인다.
+
+    판정 우선순위:
+      1) episode == 1 — 네이버 카드에 '1회'가 표기돼 있으면 그게 가장 확실한
+         신규 신호다(newReason="episode").
+      2) 이력에 없던 프로그램 — 회차를 못 얻었을 때의 폴백. 직전 주차 하나만
+         보는 게 아니라 **가지고 있는 모든 과거 주차**를 통틀어 처음 등장한
+         경우에만 신규로 본다. 시청률이 컷오프(드라마 5%/예능 1%) 근처에서
+         출렁여 잠깐 빠졌다가 돌아오는 프로그램을 신규로 오탐하지 않기 위함
+         (newReason="firstSeen").
+
+    2)는 이력이 충분히 쌓였을 때만 적용한다. 주차 파일 수가
+    NEW_FLAG_MIN_HISTORY_WEEKS개 미만이거나, 쌓인 프로그램 수가 이번 주차에
+    비해 턱없이 적으면(초기 구간이나 그 주 수집이 실패해 몇 건만 남은 경우)
+    비교 기준이 없는 것과 마찬가지라 전부 신규로 오탐되기 때문이다.
+    매 실행마다 전체를 다시 계산하므로 결과는 멱등이고, 실제로 값이
+    바뀐 파일만 다시 쓴다."""
+    files = _week_files(out_dir)
+    if not files:
+        return
+
+    seen = {}  # (category, channel) -> {정규화된 제목, ...}
+    seen_total = 0
+    for idx, name in enumerate(files):
+        path = os.path.join(out_dir, name)
+        try:
+            with open(path, encoding="utf-8") as f:
+                data = json.load(f)
+        except Exception:
+            continue
+
+        programs = data.get("programs", [])
+        has_history = (idx >= NEW_FLAG_MIN_HISTORY_WEEKS
+                       and seen_total >= max(NEW_FLAG_MIN_HISTORY_PROGRAMS, len(programs) * 0.5))
+        changed = False
+        new_count = 0
+
+        for p in programs:
+            key = (p.get("category", ""), p.get("channel", ""))
+            title = _clean_title(p.get("title"))
+
+            if has_first_episode(p):
+                is_new, reason = True, "episode"
+            elif has_history and not any(_title_matches(title, t) for t in seen.get(key, ())):
+                is_new, reason = True, "firstSeen"
+            else:
+                is_new, reason = False, None
+
+            if is_new:
+                new_count += 1
+                if p.get("isNew") is not True or p.get("newReason") != reason:
+                    changed = True
+                p["isNew"] = True
+                p["newReason"] = reason
+            else:
+                if "isNew" in p or "newReason" in p:
+                    changed = True
+                p.pop("isNew", None)
+                p.pop("newReason", None)
+
+        for p in programs:
+            key = (p.get("category", ""), p.get("channel", ""))
+            bucket = seen.setdefault(key, set())
+            title = _clean_title(p.get("title"))
+            if title not in bucket:
+                bucket.add(title)
+                seen_total += 1
+
+        if changed:
+            with open(path, "w", encoding="utf-8") as f:
+                json.dump(data, f, ensure_ascii=False, indent=2)
+            print(f"  [신규 판정] {name}: {new_count}건 New 표시 (총 {len(programs)}건)")
+
+
+def report_episode_coverage(programs: list):
+    """네이버 카드에서 회차(N회)가 실제로 몇 건이나 잡혔는지 로그로 남긴다.
+    네이버 위젯 마크업은 수시로 바뀌기 때문에, 어느 날 갑자기 회차가 0건이
+    되면(=1회 기반 New 판정이 폴백으로만 동작하게 되면) 이 로그로 바로
+    알아챌 수 있게 하기 위함이다."""
+    with_ep = [p for p in programs if p.get("episode") is not None]
+    firsts = [p for p in programs if has_first_episode(p)]
+    print(f"  [회차] 전체 {len(programs)}건 중 {len(with_ep)}건에서 회차 정보 추출"
+          f" / 그중 1회(신규) {len(firsts)}건")
+    for p in firsts:
+        print(f"    - 1회: '{p['title']}' ({p['channel']}, {p.get('ratingDate')})")
+    if not with_ep and programs:
+        print("    ⚠️ 회차 정보가 하나도 안 잡혔습니다 — 네이버 카드가 회차를 안 주는"
+              " 마크업일 수 있습니다(신규 판정은 이력 기반 폴백으로 동작).")
+
+
 def main():
     global DEBUG
     parser = argparse.ArgumentParser()
@@ -815,6 +1019,7 @@ def main():
         browser.close()
 
     all_raw_programs = drama_programs + variety_programs
+    report_episode_coverage(all_raw_programs)
     dispatch_by_rating_date(final_out_dir, all_raw_programs)
 
     # 이번에 수집된 전체 program id 집합을 기준으로, 직전 주차 파일에서
@@ -822,6 +1027,10 @@ def main():
     collected_ids = {p["id"] for p in all_raw_programs}
     today = datetime.now(KST).date()
     prune_dropped_programs(final_out_dir, collected_ids, today)
+
+    # 저장이 끝난 뒤 전체 주차를 다시 훑어 신규(New) 여부를 갱신한다.
+    # 이번 실행에서 과거 주차로 소급 반영된 데이터까지 반영되도록 마지막에 돈다.
+    recompute_new_flags(final_out_dir)
 
 
 if __name__ == "__main__":

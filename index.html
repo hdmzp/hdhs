@@ -1376,6 +1376,21 @@
     color: #1B5E5A;
     font-weight: 800;
   }
+  /* 신규(1회차) 프로그램 표시 — 제목 옆에 작게 붙는 배지 */
+  .dv-new-badge {
+    display: inline-block;
+    margin-left: 4px;
+    padding: 0 3px;
+    border-radius: 3px;
+    background: #DC2626;
+    color: #fff;
+    font-size: 8.5px;
+    font-weight: 800;
+    line-height: 1.5;
+    letter-spacing: 0.3px;
+    vertical-align: 1px;
+  }
+  .dv-card.dv-high-rating .dv-new-badge { background: #B91C1C; }
   .dv-card .dv-meta {
     font-size: 10.5px;
     color: var(--ink-soft);
@@ -1406,6 +1421,7 @@
     table.dv-table thead th { font-size: 12px; }
     .dv-card { padding: 5px 6px 5px 8px; }
     .dv-card .dv-title { font-size: 10.5px; }
+    .dv-new-badge { font-size: 8px; }
   }
 
   /* ============ 홈쇼핑랭킹 탭 ============ */
@@ -3698,10 +3714,12 @@ function dvRenderBasis() {
   const el = document.getElementById('dvBasis');
   if (!el) return;
 
+  const newNote = ' /● <span class="dv-new-badge">New</span> : 신규 편성(1회차) 프로그램';
+
   if (dvFilter === "high") {
-    el.innerHTML = '● 고시청률 기준: <strong>[드라마]</strong> 시청률 8% 이상 · <strong>[예능]</strong> 시청률 3% 이상';
+    el.innerHTML = '● 고시청률 기준: <strong>[드라마]</strong> 시청률 8% 이상 · <strong>[예능]</strong> 시청률 3% 이상' + newNote;
   } else {
-    el.innerHTML = '● 조회 기준: <strong>[드라마]</strong> 시청률 5%+ · <strong>[예능]</strong> 시청률 1%+ /● 고시청률: <strong>[드라마]</strong> 8%+ · <strong>[예능]</strong> 3%+';
+    el.innerHTML = '● 조회 기준: <strong>[드라마]</strong> 시청률 5%+ · <strong>[예능]</strong> 시청률 1%+ /● 고시청률: <strong>[드라마]</strong> 8%+ · <strong>[예능]</strong> 3%+' + newNote;
   }
 }
 
@@ -3766,8 +3784,19 @@ function dvRenderGrid(data) {
           );
           const safeLink = dvEscapeHtml(p.link || '#');
           const cardCls = `dv-card dv-cat-${p.category}${isHighRating ? ' dv-high-rating' : ''}`;
+          // 신규(1회차) 배지: 수집 단계에서 네이버 카드의 '1회' 표기를 잡으면
+          // newReason이 'episode'가 되고, 회차를 못 얻었을 때는 보유한 모든
+          // 과거 주차를 통틀어 처음 등장했는지(firstSeen)로 판정한다.
+          const dayEpisode = (dayEntry && dayEntry.episode != null) ? dayEntry.episode : null;
+          const isNewProgram = p.isNew === true || dayEpisode === 1;
+          const newTitle = (dayEpisode === 1 || p.newReason === 'episode')
+            ? '신규 편성 (1회 방영 확인)'
+            : '신규 편성 (이전 주차 데이터에 없던 프로그램)';
+          const newBadge = isNewProgram
+            ? `<span class="dv-new-badge" title="${newTitle}">New</span>`
+            : '';
           html += `<a class="${cardCls}" href="${safeLink}" target="_blank" rel="noopener">`;
-          html += `<span class="dv-title"><span class="dv-channel">[${dvEscapeHtml(p.channel)}]</span> ${dvEscapeHtml(p.title)}</span>`;
+          html += `<span class="dv-title"><span class="dv-channel">[${dvEscapeHtml(p.channel)}]</span> ${dvEscapeHtml(p.title)}${newBadge}</span>`;
           html += `<span class="dv-meta">(${dvEscapeHtml(p.days.join(', '))}) ${dvEscapeHtml(p.time)}</span>`;
           html += `<span class="dv-rating">${dvEscapeHtml(dayRating)}%</span> <span class="dv-rating-date">${dayRatingDate ? '(' + dvEscapeHtml(dayRatingDate) + ')' : ''}</span>`;
           html += `</a>`;
