@@ -3049,7 +3049,8 @@
         <b>📡 건강프로그램 추적</b>
         <button type="button" class="lv-go-btn" id="inTrkBtn">조회</button>
       </div>
-      <div class="lv-slicer" id="inTrkGroupSlicer" style="margin:8px 0 4px;"></div>
+      <div class="lv-slicer" id="inTrkChSlicer" style="margin:8px 0 4px;"></div>
+      <div class="lv-slicer" id="inTrkDaySlicer" style="margin:4px 0 4px;"></div>
       <div class="lv-slicer" id="inTrkSlicer" style="margin:4px 0 8px;"></div>
       <div id="inTrkBody"><p class="in-muted" style="font-size:12.5px;">조회 기간의 지상파·종편 편성에서 건강 프로그램을 찾고, 방영일마다 같은 시간대 홈쇼핑에 건강식품이 얼마나 편성됐는지 세어 보여줍니다. [분석]을 눌러 주세요.</p></div>
     </div>
@@ -6908,11 +6909,9 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
 
   let inTrkResult = null;  // 분석 결과 (조회 조건이 바뀌면 버린다)
   let inTrkActive = new Set(IN_CHANNELS.map(c => c.label)); // 이 섹션 전용 홈쇼핑사 선택
-  const IN_TRK_GROUPS = [
-    { key: 'terrestrial', label: '지상파' },
-    { key: 'comprehensive', label: '종편·케이블' },
-  ];
-  let inTrkGroupSel = new Set(IN_TRK_GROUPS.map(g => g.key)); // 방송사 그룹 필터 (표시만 거름, 재계산 불필요)
+  const IN_TRK_CH_KEYS = CHANNELS.map(c => c.key);
+  let inTrkChSel = new Set(IN_TRK_CH_KEYS);            // 채널 필터 (표시 집계만 다시, 재조회 불필요)
+  let inTrkDaySel = new Set(IN_DAYS.map((_, i) => i)); // 요일 필터 (월=0 ... 일=6, 표시 집계만 다시)
 
   // 표기 차이('소문난건강법' / '소문난 건강법')를 흡수하기 위해 공백·기호를 모두 뗀다
   const inTrkNorm = s => String(s || '').replace(/[^0-9A-Za-z가-힣]/g, '').toLowerCase();
@@ -6969,64 +6968,23 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
             if (isNaN(h)) return;
             const title = inTrkGroupTitle(inNormTitle(p.title));
             const key = ch.key + '|' + inTrkNorm(title);
-            const g = progs[key] || (progs[key] = {
-              ch: ch.key, group: ch.group, title: title,
-              n: 0, dates: new Set(), hours: {}, slots: new Set(),
-            });
-            g.n++;
-            g.dates.add(d);
-            g.hours[h] = (g.hours[h] || 0) + 1;
-            g.slots.add(d + '|' + h);
+            const g = progs[key] || (progs[key] = { ch: ch.key, title: title, slotN: {} });
+            const s = d + '|' + h;
+            g.slotN[s] = (g.slotN[s] || 0) + 1; // '날짜|시' 슬롯별 방영 횟수 (채널·요일 필터 시 재집계용)
             if (title.length < g.title.length) g.title = title; // 가장 짧은 표기를 대표 제목으로
           });
         });
       });
 
-      const rows = [];
-      Object.values(progs).forEach(g => {
+      // 건강 프로그램만 남긴다. 표의 세부 수치(방영·연계 등)는 채널·요일 필터를
+      // 반영해야 하므로 inRenderPpl에서 슬롯 단위로 다시 집계한다.
+      const health = Object.values(progs).filter(g => {
         const nTitle = inTrkNorm(g.title);
-        if (!((IN_TRK_KEYWORD.test(g.title) && !IN_TRK_KEYWORD_EXCL.test(g.title))
-          || IN_TRK_TITLES.some(t => nTitle.includes(t)))) return;
-
-        // 주 시간대: 본방·재방이 요일마다 다른 슬롯에 붙으므로 '요일+시각' 조합을
-        // 빈도순으로 뽑는다. (예: 일 06시 > 수 06시 > ... 외)
-        const slotCnt = {};
-        g.slots.forEach(s => {
-          const k = IN_DAYS[inWeekday(s.slice(0, 10))] + ' ' + s.slice(11).padStart(2, '0') + '시';
-          slotCnt[k] = (slotCnt[k] || 0) + 1;
-        });
-        const topSlots = Object.entries(slotCnt).sort((a, b) => b[1] - a[1]).map(e => e[0]);
-
-        // 방영일별로: 그날 이 프로그램이 방송된 시간대 중 하나라도
-        // 홈쇼핑 건강식품 비중이 기준(기간 평균의 1.3배)을 넘었으면 '높음'인 날로 세고,
-        // 그 시간대들에 편성된 건강식품을 홈쇼핑사별로 집계한다(운영상품 열).
-        const okDates = new Set(), knownDates = new Set();
-        const byCo = {};
-        let coTotal = 0;
-        g.slots.forEach(s => {
-          const c = dh[s];
-          if (!c || !c.t) return; // 02~04시 등 홈쇼핑 집계가 없는 시간대
-          const d = s.slice(0, 10);
-          knownDates.add(d);
-          if (c.he / c.t >= thresh) okDates.add(d);
-          for (const co in c.by) { byCo[co] = (byCo[co] || 0) + c.by[co]; coTotal += c.by[co]; }
-        });
-
-        rows.push({
-          ...g, topSlots: topSlots,
-          linkedDays: okDates.size, knownDays: knownDates.size,
-          linked: knownDates.size > 0 && okDates.size / knownDates.size >= 0.5,
-          byCo: byCo, coTotal: coTotal,
-        });
+        return (IN_TRK_KEYWORD.test(g.title) && !IN_TRK_KEYWORD_EXCL.test(g.title))
+          || IN_TRK_TITLES.some(t => nTitle.includes(t));
       });
 
-      rows.sort((a, b) => {
-        const ra = a.knownDays ? a.linkedDays / a.knownDays : -1;
-        const rb = b.knownDays ? b.linkedDays / b.knownDays : -1;
-        return (rb - ra) || (b.linkedDays - a.linkedDays) || (b.n - a.n);
-      });
-
-      inTrkResult = { rows: rows, base: base, days: loadedDays, total: dates.length };
+      inTrkResult = { progs: health, dh: dh, thresh: thresh, base: base, days: loadedDays, total: dates.length };
     } finally {
       btn.disabled = false;
       btn.textContent = '조회';
@@ -7035,23 +6993,45 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     inRenderPpl();
   }
 
-  // 방송사 그룹(지상파/종편·케이블) 필터 - 이미 계산된 결과에서 표시만 거른다
-  function inRenderTrkGroupSlicer() {
-    const wrap = $('inTrkGroupSlicer');
+  // 채널(KBS1~채널A) 필터 - 이미 계산된 결과에서 표시 집계만 다시 한다
+  function inRenderTrkChSlicer() {
+    const wrap = $('inTrkChSlicer');
     if (!wrap) return;
-    const keys = IN_TRK_GROUPS.map(g => g.key);
-    const allActive = inTrkGroupSel.size === keys.length;
-    let html = '<button data-grp="__all__"' + (allActive ? ' class="active"' : '') + '>전체선택</button>';
-    IN_TRK_GROUPS.forEach(g => {
-      html += '<button data-grp="' + g.key + '"' + (inTrkGroupSel.has(g.key) ? ' class="active"' : '') + '>' + g.label + '</button>';
+    const allActive = inTrkChSel.size === IN_TRK_CH_KEYS.length;
+    let html = '<button data-ch="__all__"' + (allActive ? ' class="active"' : '') + '>전체선택</button>';
+    CHANNELS.forEach((c, i) => {
+      if (i > 0 && c.group !== CHANNELS[i - 1].group) html += '<span class="lv-slicer-sep"></span>';
+      html += '<button data-ch="' + c.key + '"' + (inTrkChSel.has(c.key) ? ' class="active"' : '') + '>' + c.key + '</button>';
     });
     wrap.innerHTML = html;
     wrap.querySelectorAll('button').forEach(btn => {
       btn.addEventListener('click', () => {
-        const k = btn.dataset.grp;
-        inTrkGroupSel = k === '__all__' ? inToggleAllClick(inTrkGroupSel, keys) : inToggleOneClick(inTrkGroupSel, keys, k);
-        gaEvent('filter_click', { filter_group: 'industry_track_group', filter_value: k });
-        inRenderTrkGroupSlicer();
+        const k = btn.dataset.ch;
+        inTrkChSel = k === '__all__' ? inToggleAllClick(inTrkChSel, IN_TRK_CH_KEYS) : inToggleOneClick(inTrkChSel, IN_TRK_CH_KEYS, k);
+        gaEvent('filter_click', { filter_group: 'industry_track_channel', filter_value: k });
+        inRenderTrkChSlicer();
+        inRenderPpl();
+      });
+    });
+  }
+
+  // 요일 필터 - 방영·연계 수치를 선택한 요일의 방영분 기준으로 다시 집계한다 (재조회 없음)
+  function inRenderTrkDaySlicer() {
+    const wrap = $('inTrkDaySlicer');
+    if (!wrap) return;
+    const keys = IN_DAYS.map((_, i) => i);
+    const allActive = inTrkDaySel.size === keys.length;
+    let html = '<button data-day="__all__"' + (allActive ? ' class="active"' : '') + '>전체선택</button>';
+    IN_DAYS.forEach((d, i) => {
+      html += '<button data-day="' + i + '"' + (inTrkDaySel.has(i) ? ' class="active"' : '') + '>' + d + '</button>';
+    });
+    wrap.innerHTML = html;
+    wrap.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const k = btn.dataset.day;
+        inTrkDaySel = k === '__all__' ? inToggleAllClick(inTrkDaySel, keys) : inToggleOneClick(inTrkDaySel, keys, +k);
+        gaEvent('filter_click', { filter_group: 'industry_track_day', filter_value: k === '__all__' ? k : IN_DAYS[+k] });
+        inRenderTrkDaySlicer();
         inRenderPpl();
       });
     });
@@ -7088,7 +7068,55 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
       return;
     }
 
-    const shown = inTrkResult.rows.filter(r => inTrkGroupSel.has(r.group));
+    // 채널·요일 슬라이서 선택을 반영해 프로그램별 수치를 슬롯 단위로 다시 집계한다
+    const dh = inTrkResult.dh, thresh = inTrkResult.thresh;
+    const shown = [];
+    inTrkResult.progs.forEach(g => {
+      if (!inTrkChSel.has(g.ch)) return;
+      const slots = Object.keys(g.slotN).filter(s => inTrkDaySel.has(inWeekday(s.slice(0, 10))));
+      if (!slots.length) return;
+
+      // 주 시간대: 본방·재방이 요일마다 다른 슬롯에 붙으므로 '요일+시각' 조합을
+      // 빈도순으로 뽑는다. (예: 일 06시 > 수 06시 > ... 외)
+      let n = 0;
+      const dates = new Set(), slotCnt = {};
+      slots.forEach(s => {
+        n += g.slotN[s];
+        dates.add(s.slice(0, 10));
+        const k = IN_DAYS[inWeekday(s.slice(0, 10))] + ' ' + s.slice(11).padStart(2, '0') + '시';
+        slotCnt[k] = (slotCnt[k] || 0) + 1;
+      });
+      const topSlots = Object.entries(slotCnt).sort((a, b) => b[1] - a[1]).map(e => e[0]);
+
+      // 방영일별로: 그날 이 프로그램이 방송된 시간대 중 하나라도
+      // 홈쇼핑 건강식품 비중이 기준(기간 평균의 1.3배)을 넘었으면 '높음'인 날로 세고,
+      // 그 시간대들에 편성된 건강식품을 홈쇼핑사별로 집계한다(운영상품 열).
+      const okDates = new Set(), knownDates = new Set();
+      const byCo = {};
+      let coTotal = 0;
+      slots.forEach(s => {
+        const c = dh[s];
+        if (!c || !c.t) return; // 02~04시 등 홈쇼핑 집계가 없는 시간대
+        const d = s.slice(0, 10);
+        knownDates.add(d);
+        if (c.he / c.t >= thresh) okDates.add(d);
+        for (const co in c.by) { byCo[co] = (byCo[co] || 0) + c.by[co]; coTotal += c.by[co]; }
+      });
+
+      shown.push({
+        ch: g.ch, title: g.title, n: n, dates: dates, topSlots: topSlots,
+        linkedDays: okDates.size, knownDays: knownDates.size,
+        linked: knownDates.size > 0 && okDates.size / knownDates.size >= 0.5,
+        byCo: byCo, coTotal: coTotal,
+      });
+    });
+
+    shown.sort((a, b) => {
+      const ra = a.knownDays ? a.linkedDays / a.knownDays : -1;
+      const rb = b.knownDays ? b.linkedDays / b.knownDays : -1;
+      return (rb - ra) || (b.linkedDays - a.linkedDays) || (b.n - a.n);
+    });
+
     const linkedCnt = shown.filter(r => r.linked).length;
 
     let html = '<p class="in-trk-sum">조회 ' + inTrkResult.days + '일 · 건강프로그램 <b>' + shown.length + '개</b>'
@@ -7133,7 +7161,8 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
       + ' 조회기간 평균의 ' + IN_TRK_LINK_RATIO + '배 이상이었던 날 비율. 예: 83% (15/18일) = 방영 18일 가운데 15일은'
       + ' 같은 시간대 홈쇼핑에 건강식품이 평소보다 많이 편성됨 · 근거: 그 비율이 절반 이상이면 동시편성 잦음'
       + ' · 운영상품: 방영 시간대에 편성된 홈쇼핑 건강식품의 회사별 비중 (많은 순)'
-      + ' · 위 홈쇼핑사 선택이 반영됨 (변경 시 자동 재계산) · 02~04시 방영분은 홈쇼핑 집계 제외(–)'
+      + ' · 채널·요일 슬라이서는 선택한 방영분만으로 즉시 재집계 · 위 홈쇼핑사 선택도 반영됨 (변경 시 자동 재계산)'
+      + ' · 02~04시 방영분은 홈쇼핑 집계 제외(–)'
       + ' · 건강프로그램 선별은 제목·이력 기준 (드라마·뉴스 등 제외) · 본방과 스페셜/특별판은 한 줄로 묶음</p>';
 
     body.innerHTML = html;
@@ -7172,7 +7201,8 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     $('inEndPicker').addEventListener('change', e => { if (e.target.value) inSetRange(inStart, e.target.value); });
     $('inQueryBtn').addEventListener('click', inQuery);
     $('inTrkBtn').addEventListener('click', inAnalyzePpl);
-    inRenderTrkGroupSlicer();
+    inRenderTrkChSlicer();
+    inRenderTrkDaySlicer();
     inRenderTrkSlicer();
 
     inRenderChannelSlicer();
