@@ -1,7 +1,7 @@
 {
   "weekStart": "2026-07-27",
   "weekEnd": "2026-08-02",
-  "collectedAt": "2026-08-10T08:50:41.978697+09:00",
+  "collectedAt": "2026-08-10T09:01:46.376825+09:00",
   "programs": [
     {
       "id": "drama_기쁜 우리 좋은 날_KBS1_오후 08:30",
@@ -1215,6 +1215,25 @@
         }
       },
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41524517&qvt=0&query=%EC%97%B4%ED%98%88%EB%86%8D%EA%B5%AC%EB%8B%A82"
+    },
+    {
+      "id": "variety_말자쇼_KBS2_오후 10:10",
+      "category": "variety",
+      "channel": "KBS2",
+      "title": "말자쇼",
+      "days": [
+        "월"
+      ],
+      "time": "오후 10:10",
+      "rating": 2.9,
+      "ratingDate": "07.27",
+      "ratingByDay": {
+        "월": {
+          "rating": 2.9,
+          "ratingDate": "07.27"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40281127&qvt=0&query=%EB%A7%90%EC%9E%90%EC%87%BC"
     }
   ]
 }
