@@ -40,15 +40,20 @@ EPISODE_RE = re.compile(r'(?:제\s*)?(\d{1,4})\s*회(?:차)?')
 # "첫 방송"류 문구는 회차 숫자가 없어도 1회로 간주한다.
 FIRST_AIR_RE = re.compile(r'첫\s*방송|첫방송|첫방|새\s*드라마|신규\s*편성')
 
-# 신규(New) 판정에 이력 폴백을 적용하기 전에 최소한 이만큼의 과거 주차
-# 파일이 쌓여 있어야 한다. 수집 초기(파일이 1~2개뿐)에는 모든 프로그램이
-# "처음 보는 프로그램"이라 전부 New로 찍히는 오탐이 나기 때문이다.
-NEW_FLAG_MIN_HISTORY_WEEKS = 2
-# 주차 수뿐 아니라 "이력에 쌓인 프로그램 수"도 본다. 초기 주차 파일에는
-# 수집 실패로 2~8건만 들어있는 경우가 있어, 파일 개수만 세면 사실상 비어
-# 있는 이력을 근거로 그 다음 주 전체를 신규로 찍어버린다.
-NEW_FLAG_MIN_HISTORY_PROGRAMS = 20
 WEEK_FILE_RE = re.compile(r'^\d{4}-\d{2}-\d{2}\.json$')
+
+# 첫 방송일 조회: 각 카드의 link는 그 프로그램의 네이버 정보 페이지로
+# 연결되고, 거기에 방영 기간("2026.07.03. ~" 형태)이 표기된다. 이걸 뽑아
+# 캐시에 저장해두고 신규(New) 판정의 근거로 쓴다.
+#
+# 왜 "이력에 처음 등장" 방식(firstSeen)을 쓰지 않는가: 시청률 컷오프
+# (드라마 5%/예능 1%) 미달로 초반 몇 주 데이터에 안 잡히다가 뒤늦게
+# 컷오프를 넘은 프로그램(예: 전현무계획4 — 1회는 7/3인데 7/17에야 1.3%로
+# 처음 등장)이 신규로 오탐되기 때문. 첫 방송일은 이 문제가 없다.
+FIRST_AIR_CACHE_FILE = "first_air_dates.json"
+FIRST_AIR_RANGE_RE = re.compile(r'(20\d{2})\s*\.\s*(\d{1,2})\s*\.\s*(\d{1,2})\s*\.?\s*~')
+FIRST_AIR_LOOKUP_MAX = 40   # 한 번의 실행에서 상세 페이지를 방문할 최대 건수
+FIRST_AIR_RETRY_DAYS = 7    # 조회 실패(날짜 못 찾음)한 프로그램의 재시도 간격
 
 
 def monday_of(date_obj):
@@ -871,15 +876,8 @@ def _clean_title(title: str):
     return re.sub(r'\s+', ' ', t)
 
 
-def _title_matches(a: str, b: str):
-    """말줄임으로 잘린 제목까지 같은 프로그램으로 인정한다.
-    (같은 채널·장르 안에서만 쓰이므로 접두사 일치로 충분하다)"""
-    if a == b:
-        return True
-    if not a or not b:
-        return False
-    shorter, longer = (a, b) if len(a) < len(b) else (b, a)
-    return len(shorter) >= 2 and longer.startswith(shorter)
+def _first_air_key(p: dict):
+    return f"{p.get('category','')}|{_clean_title(p.get('title'))}|{p.get('channel','')}"
 
 
 def has_first_episode(p: dict):
@@ -897,31 +895,128 @@ def _week_files(out_dir: str):
     return sorted(n for n in names if WEEK_FILE_RE.match(n))
 
 
+# ---------- 첫 방송일 조회 (네이버 프로그램 정보 페이지) ----------
+
+def _first_air_cache_path(out_dir: str):
+    return os.path.join(out_dir, FIRST_AIR_CACHE_FILE)
+
+
+def load_first_air_cache(out_dir: str):
+    path = _first_air_cache_path(out_dir)
+    if not os.path.exists(path):
+        return {}
+    try:
+        with open(path, encoding="utf-8") as f:
+            data = json.load(f)
+        return data if isinstance(data, dict) else {}
+    except Exception:
+        return {}
+
+
+def save_first_air_cache(out_dir: str, cache: dict):
+    with open(_first_air_cache_path(out_dir), "w", encoding="utf-8") as f:
+        json.dump(cache, f, ensure_ascii=False, indent=2, sort_keys=True)
+
+
+def parse_first_air_date_from_html(html: str, today=None):
+    """프로그램 정보 페이지 HTML에서 첫 방송일("2026.07.03. ~")을 뽑는다.
+
+    페이지 다른 곳의 날짜 범위(광고, 다른 카드)에 걸리지 않도록 프로그램
+    정보 모듈 안쪽부터 좁게 찾고, 없으면 점점 넓힌다. 미래 날짜나 말도 안
+    되는 과거(2000년 이전)는 버린다."""
+    if today is None:
+        today = datetime.now(KST).date()
+    soup = BeautifulSoup(html, 'lxml')
+    scopes = []
+    for sel in ('.cs_common_module', '.detail_info', '.cm_content_wrap'):
+        el = soup.select_one(sel)
+        if el:
+            scopes.append(el.get_text(" ", strip=True))
+    scopes.append(soup.get_text(" ", strip=True))
+
+    for text in scopes:
+        m = FIRST_AIR_RANGE_RE.search(text)
+        if not m:
+            continue
+        try:
+            d = date_cls(int(m.group(1)), int(m.group(2)), int(m.group(3)))
+        except ValueError:
+            continue
+        if date_cls(2000, 1, 1) <= d <= today:
+            return d
+    return None
+
+
+def lookup_first_air_dates(page, programs: list, out_dir: str):
+    """이번 수집에 등장한 프로그램들의 첫 방송일을 상세 페이지에서 조회해
+    캐시(first_air_dates.json)에 채운다. 프로그램당 1회만 방문하고,
+    실패(날짜 못 찾음)한 항목은 FIRST_AIR_RETRY_DAYS 후 재시도한다."""
+    cache = load_first_air_cache(out_dir)
+    today = datetime.now(KST).date()
+    now_iso = datetime.now(KST).isoformat()
+
+    # 같은 프로그램이 슬롯별로 여러 항목일 수 있으니 키 기준으로 유니크하게
+    targets = {}
+    for p in programs:
+        key = _first_air_key(p)
+        if key not in targets and p.get("link"):
+            targets[key] = p["link"]
+
+    looked = 0
+    for key, link in targets.items():
+        ent = cache.get(key)
+        if ent:
+            if ent.get("date"):
+                continue  # 이미 확보
+            try:
+                checked = datetime.fromisoformat(ent.get("checkedAt", "")).date()
+                if (today - checked).days < FIRST_AIR_RETRY_DAYS:
+                    continue  # 최근에 실패한 건 잠시 쉼
+            except ValueError:
+                pass
+        if looked >= FIRST_AIR_LOOKUP_MAX:
+            print(f"  [첫방송일] 이번 실행 조회 한도({FIRST_AIR_LOOKUP_MAX}건) 도달 — 나머지는 다음 실행에서 계속")
+            break
+
+        looked += 1
+        d = None
+        try:
+            page.goto(link, wait_until="domcontentloaded", timeout=20000)
+            page.wait_for_timeout(800)
+            d = parse_first_air_date_from_html(page.content(), today)
+        except Exception as e:
+            print(f"  [첫방송일] '{key}' 조회 실패: {e}")
+        cache[key] = {"date": d.isoformat() if d else None, "checkedAt": now_iso}
+        status = d.isoformat() if d else "못 찾음"
+        print(f"  [첫방송일] {key} -> {status}")
+
+    if looked:
+        save_first_air_cache(out_dir, cache)
+    known = sum(1 for v in cache.values() if v.get("date"))
+    print(f"  [첫방송일] 캐시 현황: {known}건 확보 / 전체 {len(cache)}건 (이번 실행 {looked}건 조회)")
+    return cache
+
+
 def recompute_new_flags(out_dir: str):
     """주차 파일 전체를 훑어 각 프로그램에 신규 여부(isNew/newReason)를 붙인다.
 
     판정 우선순위:
       1) episode == 1 — 네이버 카드에 '1회'가 표기돼 있으면 그게 가장 확실한
          신규 신호다(newReason="episode").
-      2) 이력에 없던 프로그램 — 회차를 못 얻었을 때의 폴백. 직전 주차 하나만
-         보는 게 아니라 **가지고 있는 모든 과거 주차**를 통틀어 처음 등장한
-         경우에만 신규로 본다. 시청률이 컷오프(드라마 5%/예능 1%) 근처에서
-         출렁여 잠깐 빠졌다가 돌아오는 프로그램을 신규로 오탐하지 않기 위함
-         (newReason="firstSeen").
+      2) 첫 방송일이 그 주(월~일) 안 — 상세 페이지에서 조회해 캐시해둔
+         firstAirDate 기준(newReason="firstAir"). 컷오프 미달로 초반 몇 주
+         데이터에 없다가 뒤늦게 등장한 프로그램은 첫 방송일이 이미 지난
+         주차라 신규로 찍히지 않는다.
 
-    2)는 이력이 충분히 쌓였을 때만 적용한다. 주차 파일 수가
-    NEW_FLAG_MIN_HISTORY_WEEKS개 미만이거나, 쌓인 프로그램 수가 이번 주차에
-    비해 턱없이 적으면(초기 구간이나 그 주 수집이 실패해 몇 건만 남은 경우)
-    비교 기준이 없는 것과 마찬가지라 전부 신규로 오탐되기 때문이다.
     매 실행마다 전체를 다시 계산하므로 결과는 멱등이고, 실제로 값이
     바뀐 파일만 다시 쓴다."""
     files = _week_files(out_dir)
     if not files:
         return
 
-    seen = {}  # (category, channel) -> {정규화된 제목, ...}
-    seen_total = 0
-    for idx, name in enumerate(files):
+    cache = load_first_air_cache(out_dir)
+
+    for name in files:
         path = os.path.join(out_dir, name)
         try:
             with open(path, encoding="utf-8") as f:
@@ -929,20 +1024,29 @@ def recompute_new_flags(out_dir: str):
         except Exception:
             continue
 
+        try:
+            week_start = date_cls.fromisoformat(name[:-5])
+        except ValueError:
+            continue
+        week_end = week_start + timedelta(days=6)
+
         programs = data.get("programs", [])
-        has_history = (idx >= NEW_FLAG_MIN_HISTORY_WEEKS
-                       and seen_total >= max(NEW_FLAG_MIN_HISTORY_PROGRAMS, len(programs) * 0.5))
         changed = False
         new_count = 0
 
         for p in programs:
-            key = (p.get("category", ""), p.get("channel", ""))
-            title = _clean_title(p.get("title"))
+            ent = cache.get(_first_air_key(p)) or {}
+            first_air = None
+            if ent.get("date"):
+                try:
+                    first_air = date_cls.fromisoformat(ent["date"])
+                except ValueError:
+                    first_air = None
 
             if has_first_episode(p):
                 is_new, reason = True, "episode"
-            elif has_history and not any(_title_matches(title, t) for t in seen.get(key, ())):
-                is_new, reason = True, "firstSeen"
+            elif first_air and week_start <= first_air <= week_end:
+                is_new, reason = True, "firstAir"
             else:
                 is_new, reason = False, None
 
@@ -957,14 +1061,6 @@ def recompute_new_flags(out_dir: str):
                     changed = True
                 p.pop("isNew", None)
                 p.pop("newReason", None)
-
-        for p in programs:
-            key = (p.get("category", ""), p.get("channel", ""))
-            bucket = seen.setdefault(key, set())
-            title = _clean_title(p.get("title"))
-            if title not in bucket:
-                bucket.add(title)
-                seen_total += 1
 
         if changed:
             with open(path, "w", encoding="utf-8") as f:
@@ -1015,6 +1111,14 @@ def main():
 
         print("collecting variety...")
         variety_programs = fetch_variety(page, max_pages=args.max_pages)
+
+        # 신규(New) 판정용 첫 방송일 조회 — 아직 캐시에 없는 프로그램만
+        # 상세 페이지를 방문한다. 실패해도 수집 결과 저장에는 영향 없음.
+        print("looking up first air dates...")
+        try:
+            lookup_first_air_dates(page, drama_programs + variety_programs, final_out_dir)
+        except Exception as e:
+            print(f"  [첫방송일] 조회 단계 전체 실패(무시하고 진행): {e}")
 
         browser.close()
 

@@ -3785,13 +3785,13 @@ function dvRenderGrid(data) {
           const safeLink = dvEscapeHtml(p.link || '#');
           const cardCls = `dv-card dv-cat-${p.category}${isHighRating ? ' dv-high-rating' : ''}`;
           // 신규(1회차) 배지: 수집 단계에서 네이버 카드의 '1회' 표기를 잡으면
-          // newReason이 'episode'가 되고, 회차를 못 얻었을 때는 보유한 모든
-          // 과거 주차를 통틀어 처음 등장했는지(firstSeen)로 판정한다.
+          // newReason이 'episode', 회차 표기가 없으면 프로그램 상세 페이지에서
+          // 조회한 첫 방송일이 이 주(월~일)에 속하는지(firstAir)로 판정한다.
           const dayEpisode = (dayEntry && dayEntry.episode != null) ? dayEntry.episode : null;
           const isNewProgram = p.isNew === true || dayEpisode === 1;
           const newTitle = (dayEpisode === 1 || p.newReason === 'episode')
             ? '신규 편성 (1회 방영 확인)'
-            : '신규 편성 (이전 주차 데이터에 없던 프로그램)';
+            : '신규 편성 (첫 방송일이 이번 주)';
           const newBadge = isNewProgram
             ? `<span class="dv-new-badge" title="${newTitle}">New</span>`
             : '';
