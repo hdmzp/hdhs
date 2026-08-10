@@ -1193,6 +1193,12 @@
     border-top: 1px dotted var(--rule);
     padding-top: 2px;
   }
+  .day-stats .ly-rain {
+    margin-left: 2px;
+    font-size: 10.5px;
+    line-height: 1;
+    vertical-align: -1px;
+  }
   .no-data-cell {
     font-size: 10px;
     color: var(--rule);
@@ -3517,6 +3523,22 @@ function getLastYearData(dateStr, monthData) {
   return monthData.lastYearAsos[lyDateStr] || null;
 }
 
+// 작년 같은 날 관측값(최저/최고 + 비 왔는지) 한 줄.
+// 강수량이 0보다 크면 비 아이콘을 붙이고, 정확한 mm는 툴팁으로 보여준다.
+function renderLastYearHtml(dateStr, monthData) {
+  const ly = getLastYearData(dateStr, monthData);
+  if (!ly) return '';
+  if (ly.minTa === null || ly.minTa === undefined) return '';
+  if (ly.maxTa === null || ly.maxTa === undefined) return '';
+
+  const sumRn = typeof ly.sumRn === 'number' ? ly.sumRn : 0;
+  const rainIcon = sumRn > 0
+    ? ` <span class="ly-rain" title="작년 강수량 ${sumRn.toFixed(1)}mm">🌧️</span>`
+    : '';
+
+  return `<div class="ly">작년 ${ly.minTa.toFixed(0)}°/${ly.maxTa.toFixed(0)}°${rainIcon}</div>`;
+}
+
 function renderDayCell(year, month, day, monthData, today) {
   const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
   const dow = new Date(dateStr + 'T00:00:00').getDay();
@@ -3530,10 +3552,12 @@ function renderDayCell(year, month, day, monthData, today) {
   const dowClass = dow === 0 ? 'sun' : (dow === 6 ? 'sat' : '');
 
   const data = getDayData(dateStr, monthData);
+  // 예보 범위 밖의 미래 날짜는 올해 값이 없다. 그래도 작년 비교는 보여준다.
+  const lyHtml = renderLastYearHtml(dateStr, monthData);
 
   let statsHtml;
   if (!data) {
-    statsHtml = '<div class="no-data-cell">정보없음</div>';
+    statsHtml = '<div class="day-stats"><div class="no-data-cell">정보없음</div>' + lyHtml + '</div>';
   } else {
     const minTa = data.minTa;
     const maxTa = data.maxTa;
@@ -3547,12 +3571,6 @@ function renderDayCell(year, month, day, monthData, today) {
     } else {
       rainStr = `${data.sumRn.toFixed(1)}mm`;
       hasRain = data.sumRn > 0;
-    }
-
-    let lyHtml = '';
-    const ly = getLastYearData(dateStr, monthData);
-    if (ly && ly.minTa !== null && ly.maxTa !== null) {
-      lyHtml = `<div class="ly">작년 ${ly.minTa.toFixed(0)}°/${ly.maxTa.toFixed(0)}°</div>`;
     }
 
     statsHtml =
