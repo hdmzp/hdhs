@@ -1103,6 +1103,24 @@ def recompute_new_flags(out_dir: str):
 
     cache = load_first_air_cache(out_dir)
 
+    # 교차검증용: 각 프로그램이 데이터에 처음 등장한 주차(월요일).
+    # 상세 페이지에서 뽑은 첫 방송일이 가끔 엉뚱한 값일 때가 있다
+    # (예: 가요무대 — 수십 년 된 프로그램인데 '다음 방송' 날짜로 추정되는
+    # 2026.08.11.~ 이 잡힘). 첫 방송일보다 이전 주차 데이터에 그 프로그램이
+    # 이미 존재한다면 그 첫 방송일은 모순이므로 신규 판정에 쓰지 않는다.
+    earliest_week = {}
+    for name in files:
+        try:
+            with open(os.path.join(out_dir, name), encoding="utf-8") as f:
+                d = json.load(f)
+            ws = date_cls.fromisoformat(name[:-5])
+        except Exception:
+            continue
+        for p in d.get("programs", []) + d.get("newBelowCutoff", []):
+            key = _first_air_key(p)
+            if key not in earliest_week or ws < earliest_week[key]:
+                earliest_week[key] = ws
+
     for name in files:
         path = os.path.join(out_dir, name)
         try:
@@ -1134,6 +1152,11 @@ def recompute_new_flags(out_dir: str):
             if has_first_episode(p):
                 return True, "episode", first_air is not None
             if first_air and week_start <= first_air <= week_end:
+                # 모순 검사: 첫 방송일 이전 주차에 이미 등장한 프로그램이면
+                # 그 첫 방송일은 잘못 파싱된 값 — 신규 아님으로 처리
+                seen_from = earliest_week.get(_first_air_key(p))
+                if seen_from is not None and seen_from < monday_of(first_air):
+                    return False, None, True
                 return True, "firstAir", True
             return False, None, first_air is not None
 
