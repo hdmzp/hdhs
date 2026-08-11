@@ -1424,6 +1424,16 @@
 
   td.dv-empty-cell { background: var(--paper-dim); opacity: 0.4; }
 
+  /* 배지 표시 규칙 고지 (표 바로 아래) */
+  .dv-badge-note {
+    margin: 8px 2px 0;
+    color: var(--ink-faint);
+    font-size: 11px;
+    line-height: 1.6;
+  }
+  .dv-badge-note .dv-new-badge,
+  .dv-badge-note .dv-end-badge { margin-left: 0; }
+
   /* 그 주의 신규 편성/종영 프로그램 요약 (표 아래) */
   .dv-below-new {
     margin: 10px 2px 4px;
@@ -3891,6 +3901,15 @@ function dvRenderGrid(data) {
   }
 
   html += '</tbody></table>';
+
+  // 두 배지의 표시 규칙이 다르다는 점을 표 바로 아래에 고지한다.
+  // (New는 그 주 편성 요일 전체, End는 마지막 회차 요일 하나에만)
+  if (filteredPrograms.length) {
+    html += '<div class="dv-badge-note">'
+          + '※ <span class="dv-new-badge">New</span> 신규 편성은 해당 주의 <strong>편성 요일 전체</strong>에, '
+          + '<span class="dv-end-badge">End</span> 종영은 <strong>마지막 방영 회차</strong>에만 표시됩니다.'
+          + '</div>';
+  }
 
   // 그 주의 신규 편성/종영 프로그램을 표 아래에 요약한다.
   // 시청률 기준(드라마 5%/예능 1%) 이상이라 표에 실린 것과, 기준 미만이라
