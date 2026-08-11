@@ -1291,7 +1291,10 @@ def recompute_new_flags(out_dir: str):
     # (예: 가요무대 — 수십 년 된 프로그램인데 '다음 방송' 날짜로 추정되는
     # 2026.08.11.~ 이 잡힘). 첫 방송일보다 이전 주차 데이터에 그 프로그램이
     # 이미 존재한다면 그 첫 방송일은 모순이므로 신규 판정에 쓰지 않는다.
-    earliest_week = {}
+    # latest_week은 종영일 교차검증용. 종영했다는 프로그램이 그 뒤 주차에도
+    # 계속 편성돼 있으면 그 종영일은 잘못 읽은 값이다(재방송 안내나 다른
+    # 프로그램의 날짜를 집었을 수 있음).
+    earliest_week, latest_week = {}, {}
     for name in files:
         try:
             with open(os.path.join(out_dir, name), encoding="utf-8") as f:
@@ -1303,6 +1306,8 @@ def recompute_new_flags(out_dir: str):
             key = _first_air_key(p)
             if key not in earliest_week or ws < earliest_week[key]:
                 earliest_week[key] = ws
+            if key not in latest_week or ws > latest_week[key]:
+                latest_week[key] = ws
 
     for name in files:
         path = os.path.join(out_dir, name)
@@ -1323,14 +1328,32 @@ def recompute_new_flags(out_dir: str):
         new_count = 0
 
         def judge_ended(p):
-            """종영일이 이 주(월~일) 안이면 종영 주차로 본다."""
-            ent = cache.get(_first_air_key(p)) or {}
+            """종영일이 이 주(월~일) 안이면 종영 주차로 본다.
+
+            상세 페이지에서 읽은 종영일이 항상 옳다고 믿지 않고 두 가지
+            모순을 걸러낸다:
+              - 종영일이 첫 방송일보다 앞선 경우 (날짜를 잘못 집은 것)
+              - 종영했다는데 그 뒤 주차에도 계속 편성돼 있는 경우"""
+            key = _first_air_key(p)
+            ent = cache.get(key) or {}
             if not ent.get("endDate"):
                 return False, None
             try:
                 end = date_cls.fromisoformat(ent["endDate"])
             except ValueError:
                 return False, None
+
+            if ent.get("date"):
+                try:
+                    if end < date_cls.fromisoformat(ent["date"]):
+                        return False, None
+                except ValueError:
+                    pass
+
+            seen_until = latest_week.get(key)
+            if seen_until is not None and seen_until > monday_of(end):
+                return False, None
+
             return (week_start <= end <= week_end), end.isoformat()
 
         def judge(p):
