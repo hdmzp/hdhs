@@ -1,7 +1,7 @@
 {
   "weekStart": "2026-08-03",
   "weekEnd": "2026-08-09",
-  "collectedAt": "2026-08-11T13:38:28.933305+09:00",
+  "collectedAt": "2026-08-11T21:18:40.752067+09:00",
   "programs": [
     {
       "id": "drama_붉은 진주_KBS2_오후 07:50",
@@ -40,7 +40,9 @@
           "ratingDate": "08.07"
         }
       },
-      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40528849&qvt=0&query=%EB%B6%89%EC%9D%80%20%EC%A7%84%EC%A3%BC"
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40528849&qvt=0&query=%EB%B6%89%EC%9D%80%20%EC%A7%84%EC%A3%BC",
+      "isEnded": true,
+      "endDate": "2026-08-07"
     },
     {
       "id": "drama_기쁜 우리 좋은 날_KBS1_오후 08:30",
@@ -823,7 +825,9 @@
           "ratingDate": "08.09"
         }
       },
-      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40645704&qvt=0&query=%EA%B2%B0%ED%98%BC%EC%9D%98%20%EC%99%84%EC%84%B1"
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40645704&qvt=0&query=%EA%B2%B0%ED%98%BC%EC%9D%98%20%EC%99%84%EC%84%B1",
+      "isEnded": true,
+      "endDate": "2026-08-09"
     },
     {
       "id": "variety_최수종의 여행사담3_KBS2_오전 07:30",
@@ -978,14 +982,14 @@
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40256502&qvt=0&query=%EA%B9%80%EC%A3%BC%ED%95%98%EC%9D%98%20%EB%8D%B0%EC%9D%B4%EC%95%A4%EB%82%98%EC%9E%87"
     },
     {
-      "id": "variety_살림하는 남자들 시즌2_KBS2_오후 10:35",
+      "id": "variety_살림하는 남자들 시즌2_KBS2_오후 09:20",
       "category": "variety",
       "channel": "KBS2",
       "title": "살림하는 남자들 시즌2",
       "days": [
         "토"
       ],
-      "time": "오후 10:35",
+      "time": "오후 09:20",
       "rating": 3.8,
       "ratingDate": "08.08",
       "ratingByDay": {
@@ -1318,14 +1322,14 @@
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=36712715&qvt=0&query=%EC%9D%B8%EC%83%9D%EC%9D%B4%20%EC%98%81%ED%99%94"
     },
     {
-      "id": "variety_개그콘서트_KBS2_오후 10:35",
+      "id": "variety_개그콘서트_KBS2_오후 09:20",
       "category": "variety",
       "channel": "KBS2",
       "title": "개그콘서트",
       "days": [
         "일"
       ],
-      "time": "오후 10:35",
+      "time": "오후 09:20",
       "rating": 1.9,
       "ratingDate": "08.09",
       "ratingByDay": {
