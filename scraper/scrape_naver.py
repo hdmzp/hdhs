@@ -1329,6 +1329,120 @@ def _cutoff_for(category: str):
     return MIN_RATING_DRAMA if category == "drama" else MIN_RATING_VARIETY
 
 
+def _program_meta_and_weeks(out_dir: str, files: list):
+    """프로그램별 (마지막 등장 시점의 편성 정보, 등장한 주차 집합)을 모은다."""
+    meta, seen_weeks = {}, {}
+    for name in files:
+        try:
+            with open(os.path.join(out_dir, name), encoding="utf-8") as f:
+                d = json.load(f)
+        except Exception:
+            continue
+        wk = name[:-5]
+        for p in d.get("programs", []) + d.get("newBelowCutoff", []):
+            key = _first_air_key(p)
+            meta[key] = p           # 파일 순서가 오름차순이라 마지막 등장분이 남는다
+            seen_weeks.setdefault(key, set()).add(wk)
+    return meta, seen_weeks
+
+
+def fill_missing_weeks_from_cache(out_dir: str):
+    """위젯 수집에서 놓친 주차를 상세 페이지 시청률로 메운다.
+
+    방영 중인 프로그램도 종영 여부 확인 때문에 7일마다 상세 페이지를 보게
+    되고, 그때마다 그 시점의 최신 시청률(lastRating/lastRatingDate)이 캐시에
+    남는다. 위젯 페이징이 불안정해 어쩌다 한 주 통째로 놓친 프로그램이라도
+    이 값으로 메울 수 있다.
+
+    '시청률 기준일이 그 주에 속한다'는 것은 그 주에 실제로 방영됐다는 뜻이라,
+    결방한 주차를 잘못 채울 위험은 없다. 종영작은 ensure_ended_entries가
+    따로 처리하므로 여기서는 건너뛴다."""
+    files = _week_files(out_dir)
+    if not files:
+        return
+    cache = load_first_air_cache(out_dir)
+    meta, seen_weeks = _program_meta_and_weeks(out_dir, files)
+
+    filled = 0
+    for key, ent in cache.items():
+        if ent.get("endDate") or key not in meta:
+            continue
+        if ent.get("lastRating") is None or not ent.get("lastRatingDate"):
+            continue
+        try:
+            basis = date_cls.fromisoformat(ent["lastRatingDate"])
+        except ValueError:
+            continue
+
+        target = monday_of(basis).isoformat()
+        if f"{target}.json" not in files or target in seen_weeks.get(key, set()):
+            continue
+
+        path = os.path.join(out_dir, f"{target}.json")
+        try:
+            with open(path, encoding="utf-8") as f:
+                data = json.load(f)
+        except Exception:
+            continue
+
+        src = meta[key]
+        rating = ent["lastRating"]
+        md = f"{basis.month:02d}.{basis.day:02d}"
+        day = DAY_ORDER[basis.weekday()]
+        entry = {
+            "id": src["id"],
+            "category": src["category"],
+            "channel": src["channel"],
+            "title": src["title"],
+            "days": list(src.get("days", [])) or [day],
+            "time": src.get("time", ""),
+            "rating": rating,
+            "ratingDate": md,
+            "ratingByDay": {day: {"rating": rating, "ratingDate": md}},
+            "link": src.get("link", ""),
+        }
+        target_list = ("programs" if rating >= _cutoff_for(entry["category"])
+                       else "newBelowCutoff")
+        data.setdefault(target_list, []).append(entry)
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+        filled += 1
+        print(f"  [누락 보강] {target}.json 에 '{src['title']}' ({src['channel']}) "
+              f"{rating}% ({md}) 추가 — 위젯 수집에서 빠졌던 주차를 상세 페이지 값으로 메움")
+
+    if filled:
+        print(f"  [누락 보강] 총 {filled}건")
+
+
+def report_week_gaps(out_dir: str):
+    """앞뒤 주차엔 있는데 그 주에만 빠진 프로그램을 로그로 경고한다.
+
+    결방일 수도 있어 자동으로 채우지는 않지만, 수집 누락이라면 그 주가
+    지나기 전에 알아야 손쓸 수 있다(네이버는 프로그램당 최신 회차만 노출)."""
+    files = _week_files(out_dir)
+    if len(files) < 3:
+        return
+    present = {}
+    for name in files:
+        try:
+            with open(os.path.join(out_dir, name), encoding="utf-8") as f:
+                d = json.load(f)
+        except Exception:
+            continue
+        present[name[:-5]] = {(_first_air_key(p), p["title"], p["channel"])
+                              for p in d.get("programs", [])}
+
+    weeks = sorted(present)
+    # 최근 3개 주차만 본다 — 오래된 주차는 이미 손쓸 수 없고, 종영/개편으로
+    # 자연스럽게 빠진 경우가 섞여 노이즈만 커진다.
+    for i in range(max(1, len(weeks) - 3), len(weeks) - 1):
+        prev, cur, nxt = weeks[i - 1], weeks[i], weeks[i + 1]
+        gap = (present[prev] & present[nxt]) - present[cur]
+        for _, title, ch in sorted(gap):
+            print(f"  [⚠️ 주차 구멍] {cur} 주차에 '{title}' ({ch}) 없음 "
+                  f"— {prev}·{nxt}엔 있음. 결방이 아니라면 수집 누락입니다.")
+
+
 def ensure_ended_entries(out_dir: str):
     """종영 주차에 카드가 없는 프로그램을 그 주차의 newBelowCutoff에 채워 넣는다.
 
@@ -1346,19 +1460,7 @@ def ensure_ended_entries(out_dir: str):
         return
     cache = load_first_air_cache(out_dir)
 
-    # 프로그램별 최근 등장 주차와 그때의 편성 정보를 모은다
-    meta, seen_weeks = {}, {}
-    for name in files:
-        try:
-            with open(os.path.join(out_dir, name), encoding="utf-8") as f:
-                d = json.load(f)
-        except Exception:
-            continue
-        wk = name[:-5]
-        for p in d.get("programs", []) + d.get("newBelowCutoff", []):
-            key = _first_air_key(p)
-            meta[key] = p           # 파일 순서가 오름차순이라 마지막 등장분이 남는다
-            seen_weeks.setdefault(key, set()).add(wk)
+    meta, seen_weeks = _program_meta_and_weeks(out_dir, files)
 
     added_total, filled_total = 0, 0
     for key, ent in cache.items():
@@ -1728,9 +1830,15 @@ def main():
     # 종영했지만 그 주차 시청률이 수집되지 않아 카드가 없는 프로그램을 보강한다.
     ensure_ended_entries(final_out_dir)
 
+    # 위젯 수집에서 놓친 주차를 상세 페이지에서 받아둔 시청률로 메운다.
+    fill_missing_weeks_from_cache(final_out_dir)
+
     # 저장이 끝난 뒤 전체 주차를 다시 훑어 신규(New)·종영(End) 여부를 갱신한다.
     # 이번 실행에서 과거 주차로 소급 반영된 데이터까지 반영되도록 마지막에 돈다.
     recompute_new_flags(final_out_dir)
+
+    # 보강까지 마친 뒤에도 남아있는 주차 구멍을 경고로 남긴다.
+    report_week_gaps(final_out_dir)
 
 
 if __name__ == "__main__":
