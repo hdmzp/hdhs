@@ -62,6 +62,9 @@ AIR_END_RE = re.compile(r'~\s*(20\d{2})\s*\.\s*(\d{1,2})\s*\.\s*(\d{1,2})')
 RATING_LABEL_RE = re.compile(r'시청률')
 RATING_VALUE_RE = re.compile(r'(\d{1,3}(?:\.\d+)?)\s*%')
 RATING_BASIS_DATE_RE = re.compile(r'(20\d{2})\s*\.\s*(\d{1,2})\s*\.\s*(\d{1,2})\s*\.?\s*기준')
+# 시청률 파서 버전. 파서를 고쳤을 때 이 값을 올리면, 예전 파서로 잘못 뽑아둔
+# 캐시 항목을 딱 한 번씩만 다시 조회해 바로잡는다(무한 재조회 방지).
+RATING_PARSER_VERSION = 2
 FIRST_AIR_LOOKUP_MAX = 60   # 한 번의 실행에서 상세 페이지를 방문할 최대 건수
 FIRST_AIR_RETRY_DAYS = 7    # 조회 실패(날짜 못 찾음)한 프로그램의 재시도 간격
 # 아직 종영일이 없는(=방영 중인) 프로그램을 다시 확인하는 간격. 방영 중이던
@@ -1206,11 +1209,18 @@ def parse_last_rating_from_html(html: str, today=None):
     화면상 "시청률 ⓘ / 0.8% / 2026.08.07. 기준" 순서로 나오므로, '시청률'
     라벨 뒤 일정 구간 안에서 퍼센트 값과 '기준' 날짜를 함께 찾는다.
     페이지 다른 곳의 퍼센트(할인율 등)를 잘못 집지 않도록 라벨 근처로
-    범위를 좁히고, 둘 다 찾은 경우에만 인정한다."""
+    범위를 좁히고, 둘 다 찾은 경우에만 인정한다.
+
+    한 페이지에 시청률 블록이 여러 개 있는 경우가 있어(첫 회 시청률이 함께
+    노출되는 등), 처음 만난 값을 그대로 쓰면 엉뚱하게 옛날 수치를 집는다.
+    실제로 킬잇·콩콩팜팜·도깨비 10주년 여행이 첫 방송일 기준 시청률로 잡혀
+    종영 주차 값으로 쓰지 못했다. 그래서 후보를 전부 모은 뒤 기준일이 가장
+    최신인 것을 택한다."""
     if today is None:
         today = datetime.now(KST).date()
     text = BeautifulSoup(html, 'lxml').get_text(" ", strip=True)
 
+    candidates = []
     for m in RATING_LABEL_RE.finditer(text):
         window = text[m.end():m.end() + 160]
         mv = RATING_VALUE_RE.search(window)
@@ -1223,8 +1233,12 @@ def parse_last_rating_from_html(html: str, today=None):
         except ValueError:
             continue
         if 0 < rating <= 100 and date_cls(2000, 1, 1) <= basis <= today:
-            return rating, basis
-    return None, None
+            candidates.append((basis, rating))
+
+    if not candidates:
+        return None, None
+    basis, rating = max(candidates, key=lambda c: c[0])
+    return rating, basis
 
 
 def lookup_air_periods(page, programs: list, out_dir: str):
@@ -1263,8 +1277,10 @@ def lookup_air_periods(page, programs: list, out_dir: str):
             continue
         if ent.get("endDate"):
             # 종영일까지 확보된 프로그램은 더 볼 게 없지만, 마지막 회차
-            # 시청률을 아직 안 받아온 경우 딱 한 번 회수하러 간다.
-            if "lastRating" not in ent:
+            # 시청률을 아직 안 받아왔거나 예전 파서로 잘못 뽑아둔 경우
+            # 딱 한 번 회수하러 간다.
+            if ("lastRating" not in ent
+                    or ent.get("lastRatingParser") != RATING_PARSER_VERSION):
                 need_rating.append((key, link))
             continue
         if not ent.get("date"):
@@ -1307,10 +1323,12 @@ def lookup_air_periods(page, programs: list, out_dir: str):
         if rating is not None:
             ent["lastRating"] = rating
             ent["lastRatingDate"] = basis.isoformat()
+            ent["lastRatingParser"] = RATING_PARSER_VERSION
         elif ok:
             ent["lastRating"] = prev.get("lastRating")
             if prev.get("lastRatingDate"):
                 ent["lastRatingDate"] = prev["lastRatingDate"]
+            ent["lastRatingParser"] = RATING_PARSER_VERSION
         cache[key] = ent
         print(f"  [방영기간] {key} -> 첫방송 {ent['date'] or '못 찾음'}"
               f"{' / 종영 ' + ent['endDate'] if ent['endDate'] else ''}"
@@ -1478,7 +1496,7 @@ def ensure_ended_entries(out_dir: str):
             continue                      # 이후 주차에도 편성됨 = 종영일이 의심스러움
 
         # 상세 페이지에서 회수해둔 마지막 회차 시청률이 이 주차 것이면 함께 채운다.
-        last_rating, last_day, last_md = None, None, None
+        last_rating, last_day, last_md, basis = None, None, None, None
         if ent.get("lastRating") is not None and ent.get("lastRatingDate"):
             try:
                 basis = date_cls.fromisoformat(ent["lastRatingDate"])
@@ -1509,25 +1527,39 @@ def ensure_ended_entries(out_dir: str):
                     break
 
         if existing is not None:
-            if last_rating is not None and existing.get("rating") is None:
+            if last_rating is None:
+                continue
+
+            rbd = existing.setdefault("ratingByDay", {})
+            # 마지막 회차 요일 값이 비어 있으면 채운다. 위젯이 그 요일을 못 잡고
+            # 지나간 경우(종영 직후 집계) 그 칸이 다른 요일 값으로 폴백돼 보이던
+            # 것을 바로잡는다. 이미 값이 있으면 덮어쓰지 않는다.
+            day_added = last_day not in rbd
+            if day_added:
+                rbd[last_day] = {"rating": last_rating, "ratingDate": last_md}
+
+            # 대표 시청률은 비어 있거나, 되찾은 쪽이 더 최신 회차일 때만 교체
+            cur = resolve_rating_date(existing.get("ratingDate"), end)
+            if existing.get("rating") is None or cur is None or basis > cur:
                 existing["rating"] = last_rating
                 existing["ratingDate"] = last_md
-                existing.setdefault("ratingByDay", {})[last_day] = {
-                    "rating": last_rating, "ratingDate": last_md}
                 existing.pop("noWeekData", None)
-                moved = ""
-                # 되찾은 시청률이 컷오프를 넘으면 표(그리드)로 올린다.
-                # 종영 주차 시청률이 없어 임시로 목록에만 있던 항목이므로,
-                # 값이 생긴 이상 다른 프로그램과 똑같이 표에 실려야 한다.
-                if in_below and last_rating >= _cutoff_for(existing.get("category")):
-                    data["newBelowCutoff"].remove(existing)
-                    data.setdefault("programs", []).append(existing)
-                    moved = " → 표로 이동"
-                with open(path, "w", encoding="utf-8") as f:
-                    json.dump(data, f, ensure_ascii=False, indent=2)
-                filled_total += 1
-                print(f"  [종영 보강] {target}.json '{existing['title']}' 마지막 회차 시청률 "
-                      f"{last_rating}% ({last_md}) 회수{moved}")
+            elif not day_added:
+                continue                      # 채울 게 없음
+
+            # 되찾은 시청률이 컷오프를 넘으면 표(그리드)로 올린다. 종영 주차
+            # 시청률이 없어 임시로 목록에만 있던 항목이므로, 값이 생긴 이상
+            # 다른 프로그램과 똑같이 표에 실려야 한다.
+            moved = ""
+            if in_below and existing["rating"] >= _cutoff_for(existing.get("category")):
+                data["newBelowCutoff"].remove(existing)
+                data.setdefault("programs", []).append(existing)
+                moved = " → 표로 이동"
+            with open(path, "w", encoding="utf-8") as f:
+                json.dump(data, f, ensure_ascii=False, indent=2)
+            filled_total += 1
+            print(f"  [종영 보강] {target}.json '{existing['title']}' 마지막 회차 시청률 "
+                  f"{last_rating}% ({last_md}) 반영{moved}")
             continue
 
         src = meta[key]
