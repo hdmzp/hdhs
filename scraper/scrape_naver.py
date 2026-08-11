@@ -62,9 +62,10 @@ AIR_END_RE = re.compile(r'~\s*(20\d{2})\s*\.\s*(\d{1,2})\s*\.\s*(\d{1,2})')
 RATING_LABEL_RE = re.compile(r'시청률')
 RATING_VALUE_RE = re.compile(r'(\d{1,3}(?:\.\d+)?)\s*%')
 RATING_BASIS_DATE_RE = re.compile(r'(20\d{2})\s*\.\s*(\d{1,2})\s*\.\s*(\d{1,2})\s*\.?\s*기준')
+RATING_EPISODE_RE = re.compile(r'(\d{1,4})\s*회')
 # 시청률 파서 버전. 파서를 고쳤을 때 이 값을 올리면, 예전 파서로 잘못 뽑아둔
 # 캐시 항목을 딱 한 번씩만 다시 조회해 바로잡는다(무한 재조회 방지).
-RATING_PARSER_VERSION = 2
+RATING_PARSER_VERSION = 3
 FIRST_AIR_LOOKUP_MAX = 60   # 한 번의 실행에서 상세 페이지를 방문할 최대 건수
 FIRST_AIR_RETRY_DAYS = 7    # 조회 실패(날짜 못 찾음)한 프로그램의 재시도 간격
 # 아직 종영일이 없는(=방영 중인) 프로그램을 다시 확인하는 간격. 방영 중이던
@@ -1204,41 +1205,62 @@ def _stored_program_links(out_dir: str, since: str = "2026-06-29"):
 
 
 def parse_last_rating_from_html(html: str, today=None):
-    """상세 페이지의 시청률 블록에서 (시청률, 기준일)을 뽑는다.
+    """상세 페이지의 시청률 블록에서 (시청률, 기준일, 회차)를 뽑는다.
 
-    화면상 "시청률 ⓘ / 0.8% / 2026.08.07. 기준" 순서로 나오므로, '시청률'
-    라벨 뒤 일정 구간 안에서 퍼센트 값과 '기준' 날짜를 함께 찾는다.
-    페이지 다른 곳의 퍼센트(할인율 등)를 잘못 집지 않도록 라벨 근처로
-    범위를 좁히고, 둘 다 찾은 경우에만 인정한다.
+    같은 시청률 블록이라도 페이지에 따라 순서가 다르다:
+      - "시청률 ⓘ  0.8%  2026.08.07. 기준"          (퍼센트 → 날짜)
+      - "시청률 ⓘ  2026.07.28. 기준 · 12회 0.9%"    (날짜 → 회차 → 퍼센트)
+    그래서 퍼센트와 날짜를 각각 '처음 나온 것'으로 독립적으로 집으면 짝이
+    어긋난다(실제로 킬잇이 12회 0.9% 대신 엉뚱한 값으로 잡혔다).
 
-    한 페이지에 시청률 블록이 여러 개 있는 경우가 있어(첫 회 시청률이 함께
-    노출되는 등), 처음 만난 값을 그대로 쓰면 엉뚱하게 옛날 수치를 집는다.
-    실제로 킬잇·콩콩팜팜·도깨비 10주년 여행이 첫 방송일 기준 시청률로 잡혀
-    종영 주차 값으로 쓰지 못했다. 그래서 후보를 전부 모은 뒤 기준일이 가장
-    최신인 것을 택한다."""
+    '기준' 날짜를 기준점으로 삼아, 그 바로 뒤에서 퍼센트를 찾고 없으면 바로
+    앞에서 찾는 식으로 짝을 맞춘다. 페이지 다른 곳의 퍼센트(할인율 등)를
+    잘못 집지 않도록, 날짜 앞쪽에 '시청률' 라벨이 있는 경우만 인정한다.
+    여러 개가 잡히면 기준일이 가장 최신인 것을 택한다."""
     if today is None:
         today = datetime.now(KST).date()
     text = BeautifulSoup(html, 'lxml').get_text(" ", strip=True)
 
     candidates = []
-    for m in RATING_LABEL_RE.finditer(text):
-        window = text[m.end():m.end() + 160]
-        mv = RATING_VALUE_RE.search(window)
-        md = RATING_BASIS_DATE_RE.search(window)
-        if not mv or not md:
+    for md in RATING_BASIS_DATE_RE.finditer(text):
+        if "시청률" not in text[max(0, md.start() - 200):md.start()]:
             continue
         try:
-            rating = float(mv.group(1))
             basis = date_cls(int(md.group(1)), int(md.group(2)), int(md.group(3)))
         except ValueError:
             continue
-        if 0 < rating <= 100 and date_cls(2000, 1, 1) <= basis <= today:
-            candidates.append((basis, rating))
+        if not (date_cls(2000, 1, 1) <= basis <= today):
+            continue
+
+        after = text[md.end():md.end() + 60]
+        before = text[max(0, md.start() - 60):md.start()]
+        mv, seg = RATING_VALUE_RE.search(after), after
+        if not mv:
+            hits = list(RATING_VALUE_RE.finditer(before))
+            mv, seg = (hits[-1] if hits else None), before
+        if not mv:
+            continue
+        try:
+            rating = float(mv.group(1))
+        except ValueError:
+            continue
+        if not (0 < rating <= 100):
+            continue
+
+        episode = None
+        me = RATING_EPISODE_RE.search(seg)
+        if me:
+            try:
+                ep = int(me.group(1))
+                episode = ep if 1 <= ep <= 3000 else None
+            except ValueError:
+                episode = None
+        candidates.append((basis, rating, episode))
 
     if not candidates:
-        return None, None
-    basis, rating = max(candidates, key=lambda c: c[0])
-    return rating, basis
+        return None, None, None
+    basis, rating, episode = max(candidates, key=lambda c: c[0])
+    return rating, basis, episode
 
 
 def lookup_air_periods(page, programs: list, out_dir: str):
@@ -1301,14 +1323,14 @@ def lookup_air_periods(page, programs: list, out_dir: str):
     for key, link in queue:
         looked += 1
         start = end = None
-        rating = basis = None
+        rating = basis = episode = None
         ok = False
         try:
             page.goto(link, wait_until="domcontentloaded", timeout=20000)
             page.wait_for_timeout(800)
             html = page.content()
             start, end = parse_air_period_from_html(html, today)
-            rating, basis = parse_last_rating_from_html(html, today)
+            rating, basis, episode = parse_last_rating_from_html(html, today)
             ok = True
         except Exception as e:
             print(f"  [방영기간] '{key}' 조회 실패: {e}")
@@ -1324,6 +1346,8 @@ def lookup_air_periods(page, programs: list, out_dir: str):
             ent["lastRating"] = rating
             ent["lastRatingDate"] = basis.isoformat()
             ent["lastRatingParser"] = RATING_PARSER_VERSION
+            if episode is not None:
+                ent["lastEpisode"] = episode
         elif ok:
             ent["lastRating"] = prev.get("lastRating")
             if prev.get("lastRatingDate"):
@@ -1332,7 +1356,8 @@ def lookup_air_periods(page, programs: list, out_dir: str):
         cache[key] = ent
         print(f"  [방영기간] {key} -> 첫방송 {ent['date'] or '못 찾음'}"
               f"{' / 종영 ' + ent['endDate'] if ent['endDate'] else ''}"
-              f"{f' / 최신시청률 {rating}%({basis})' if rating is not None else ''}")
+              f"{f' / 최신시청률 {rating}%({basis})' if rating is not None else ''}"
+              f"{f' {episode}회' if episode is not None else ''}")
 
     if looked:
         save_first_air_cache(out_dir, cache)
@@ -1419,6 +1444,9 @@ def fill_missing_weeks_from_cache(out_dir: str):
             "ratingByDay": {day: {"rating": rating, "ratingDate": md}},
             "link": src.get("link", ""),
         }
+        if ent.get("lastEpisode") is not None:
+            entry["episode"] = ent["lastEpisode"]
+            entry["ratingByDay"][day]["episode"] = ent["lastEpisode"]
         target_list = ("programs" if rating >= _cutoff_for(entry["category"])
                        else "newBelowCutoff")
         data.setdefault(target_list, []).append(entry)
@@ -1578,6 +1606,9 @@ def ensure_ended_entries(out_dir: str):
             "isEnded": True,
             "endDate": ent["endDate"],
         }
+        if last_rating is not None and ent.get("lastEpisode") is not None:
+            entry["episode"] = ent["lastEpisode"]
+            entry["ratingByDay"][last_day]["episode"] = ent["lastEpisode"]
         if last_rating is not None and last_rating >= _cutoff_for(entry["category"]):
             data.setdefault("programs", []).append(entry)
         else:
