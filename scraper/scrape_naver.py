@@ -606,11 +606,18 @@ def warn_if_short(category: str, count: int, baseline: float):
 
 
 def _split_by_cutoff(programs: list, min_rating: float):
-    """수집된 카드를 컷오프 이상(main)/미만(below)으로 나눈다.
+    """수집된 카드를 컷오프 이상(main)/미만(below)으로 나눈 뒤 각각 중복 제거.
+
     below는 표(그리드)에는 안 실리지만, 신규(1회차) 프로그램이 컷오프
-    미만이라 표에서 안 보이는 경우를 표 아래에 따로 알려주기 위해 유지한다."""
-    main = [p for p in programs if p["rating"] >= min_rating]
-    below = [p for p in programs if p["rating"] < min_rating]
+    미만이라 표에서 안 보이는 경우를 표 아래에 따로 알려주기 위해 유지한다.
+
+    중복 제거를 여기서 끝내는 이유: 페이징을 돌며 모은 원본 리스트에는 같은
+    프로그램이 여러 번 들어있어(페이지 전환 중 DOM에 남아있는 카드를 다시
+    읽는 등) 실제 프로그램 수보다 훨씬 부풀려져 있다. 수집량 점검을 원본
+    건수로 하면 기준선 대비 1000%가 넘게 나와 의미가 없으므로, 판정 전에
+    중복을 정리한 실제 건수를 쓴다."""
+    main = dedupe_programs([p for p in programs if p["rating"] >= min_rating])
+    below = dedupe_programs([p for p in programs if p["rating"] < min_rating])
     return main, below
 
 
@@ -660,7 +667,7 @@ def fetch_drama(page, max_pages: int = 30, baseline: float = None):
                   f"원래 결과를 그대로 사용하되 데이터가 불완전할 수 있음에 유의.")
 
     warn_if_short("drama", len(main_programs), baseline)
-    return dedupe_programs(main_programs), dedupe_programs(below_programs)
+    return main_programs, below_programs
 
 
 def _collect_variety_pages(page, max_pages: int):
@@ -740,7 +747,7 @@ def fetch_variety(page, max_pages: int = 30, baseline: float = None):
                   f"원래 결과를 그대로 사용하되 데이터가 불완전할 수 있음에 유의.")
 
     warn_if_short("variety", len(main_programs), baseline)
-    return dedupe_programs(main_programs), dedupe_programs(below_programs)
+    return main_programs, below_programs
 
 
 # ---------- 저장 로직 (ratingDate 기준으로 해당 주차 파일에 분배) ----------
@@ -1265,6 +1272,87 @@ def lookup_air_periods(page, programs: list, out_dir: str):
     return cache
 
 
+def ensure_ended_entries(out_dir: str):
+    """종영 주차에 카드가 없는 프로그램을 그 주차의 newBelowCutoff에 채워 넣는다.
+
+    프로그램이 종영하면 네이버 '방영중' 위젯에서 곧바로 빠지는데, 마지막
+    회차의 시청률은 방송 며칠 뒤에야 집계돼 올라온다. 그래서 종영 주차의
+    시청률은 영영 수집되지 않는 경우가 많고(실측: 14건 중 6건), 그 주차
+    파일에 카드가 아예 없어 종영 목록에서도 빠져 버린다.
+
+    시청률은 모르지만 '언제 종영했는지'는 캐시에 있으므로, 편성 정보
+    (채널/요일/시간/링크)를 그 프로그램이 마지막으로 등장한 주차에서 가져와
+    최소한의 항목을 만들어 둔다. 시청률은 그 주 실측값이 아니므로 넣지
+    않는다(지난주 수치를 그 주 값처럼 보여주면 안 되기 때문)."""
+    files = _week_files(out_dir)
+    if not files:
+        return
+    cache = load_first_air_cache(out_dir)
+
+    # 프로그램별 최근 등장 주차와 그때의 편성 정보를 모은다
+    meta, seen_weeks = {}, {}
+    for name in files:
+        try:
+            with open(os.path.join(out_dir, name), encoding="utf-8") as f:
+                d = json.load(f)
+        except Exception:
+            continue
+        wk = name[:-5]
+        for p in d.get("programs", []) + d.get("newBelowCutoff", []):
+            key = _first_air_key(p)
+            meta[key] = p           # 파일 순서가 오름차순이라 마지막 등장분이 남는다
+            seen_weeks.setdefault(key, set()).add(wk)
+
+    added_total = 0
+    for key, ent in cache.items():
+        if not ent.get("endDate") or key not in meta:
+            continue
+        try:
+            end = date_cls.fromisoformat(ent["endDate"])
+        except ValueError:
+            continue
+        target = monday_of(end).isoformat()
+        if f"{target}.json" not in files:
+            continue
+        weeks = seen_weeks.get(key, set())
+        if target in weeks:
+            continue                      # 이미 그 주차에 있음
+        if any(w > target for w in weeks):
+            continue                      # 이후 주차에도 편성됨 = 종영일이 의심스러움
+
+        path = os.path.join(out_dir, f"{target}.json")
+        try:
+            with open(path, encoding="utf-8") as f:
+                data = json.load(f)
+        except Exception:
+            continue
+
+        src = meta[key]
+        data.setdefault("newBelowCutoff", []).append({
+            "id": src["id"],
+            "category": src["category"],
+            "channel": src["channel"],
+            "title": src["title"],
+            "days": list(src.get("days", [])),
+            "time": src.get("time", ""),
+            "rating": None,               # 그 주 실측값 없음
+            "ratingDate": None,
+            "ratingByDay": {},
+            "link": src.get("link", ""),
+            "isEnded": True,
+            "endDate": ent["endDate"],
+            "noWeekData": True,
+        })
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+        added_total += 1
+        print(f"  [종영 보강] {target}.json 에 '{src['title']}' ({src['channel']}) 추가 "
+              f"— 종영 {ent['endDate']}, 그 주 시청률은 미수집")
+
+    if added_total:
+        print(f"  [종영 보강] 총 {added_total}건 추가")
+
+
 def recompute_new_flags(out_dir: str):
     """주차 파일 전체를 훑어 각 프로그램에 신규(isNew)·종영(isEnded)을 붙인다.
 
@@ -1522,7 +1610,10 @@ def main():
     today = datetime.now(KST).date()
     prune_dropped_programs(final_out_dir, collected_ids, today)
 
-    # 저장이 끝난 뒤 전체 주차를 다시 훑어 신규(New) 여부를 갱신한다.
+    # 종영했지만 그 주차 시청률이 수집되지 않아 카드가 없는 프로그램을 보강한다.
+    ensure_ended_entries(final_out_dir)
+
+    # 저장이 끝난 뒤 전체 주차를 다시 훑어 신규(New)·종영(End) 여부를 갱신한다.
     # 이번 실행에서 과거 주차로 소급 반영된 데이터까지 반영되도록 마지막에 돈다.
     recompute_new_flags(final_out_dir)
 
