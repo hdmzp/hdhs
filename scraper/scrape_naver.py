@@ -65,7 +65,18 @@ RATING_BASIS_DATE_RE = re.compile(r'(20\d{2})\s*\.\s*(\d{1,2})\s*\.\s*(\d{1,2})\
 RATING_EPISODE_RE = re.compile(r'(\d{1,4})\s*회')
 # 시청률 파서 버전. 파서를 고쳤을 때 이 값을 올리면, 예전 파서로 잘못 뽑아둔
 # 캐시 항목을 딱 한 번씩만 다시 조회해 바로잡는다(무한 재조회 방지).
-RATING_PARSER_VERSION = 3
+RATING_PARSER_VERSION = 4
+# 상세 페이지는 모바일 화면으로 받는다. 데스크톱 화면은 시청률을 첫 회
+# 기준으로 보여주는 경우가 있는 반면(킬잇: 2026.05.12. 기준 1.3%), 모바일
+# 화면은 최신 회차를 회차 번호와 함께 준다(2026.07.28. 기준 · 12회 0.9%).
+MOBILE_UA = ("Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) "
+             "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1")
+
+
+def to_mobile_link(link: str):
+    """네이버 검색 링크를 모바일 도메인으로 바꾼다."""
+    return re.sub(r'^https?://(?:m\.)?search\.naver\.com',
+                  'https://m.search.naver.com', link or '')
 FIRST_AIR_LOOKUP_MAX = 60   # 한 번의 실행에서 상세 페이지를 방문할 최대 건수
 FIRST_AIR_RETRY_DAYS = 7    # 조회 실패(날짜 못 찾음)한 프로그램의 재시도 간격
 # 아직 종영일이 없는(=방영 중인) 프로그램을 다시 확인하는 간격. 방영 중이던
@@ -1326,7 +1337,7 @@ def lookup_air_periods(page, programs: list, out_dir: str):
         rating = basis = episode = None
         ok = False
         try:
-            page.goto(link, wait_until="domcontentloaded", timeout=20000)
+            page.goto(to_mobile_link(link), wait_until="domcontentloaded", timeout=20000)
             page.wait_for_timeout(800)
             html = page.content()
             start, end = parse_air_period_from_html(html, today)
@@ -1871,11 +1882,25 @@ def main():
         # 상세 페이지를 방문한다. 실패해도 수집 결과 저장에는 영향 없음.
         # 컷오프 미만 프로그램도 포함(컷오프 이상 우선 조회) — 신규인데
         # 시청률 미달로 표에 안 실리는 경우를 표 아래에 알려주기 위해.
+        # 상세 페이지는 모바일 화면이 최신 회차 시청률을 회차 번호와 함께
+        # 주므로, 전용 페이지를 모바일 UA로 따로 띄워서 조회한다.
         print("looking up air periods (first air / end dates)...")
+        mobile_page = None
         try:
-            lookup_air_periods(page, drama_programs + variety_programs + below_raw_programs, final_out_dir)
+            mobile_page = browser.new_page(user_agent=MOBILE_UA, locale="ko-KR",
+                                           viewport={"width": 390, "height": 844})
+            mobile_page.set_default_timeout(25000)
+            lookup_air_periods(mobile_page,
+                               drama_programs + variety_programs + below_raw_programs,
+                               final_out_dir)
         except Exception as e:
             print(f"  [방영기간] 조회 단계 전체 실패(무시하고 진행): {e}")
+        finally:
+            if mobile_page:
+                try:
+                    mobile_page.close()
+                except Exception:
+                    pass
 
         browser.close()
 
