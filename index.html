@@ -1391,13 +1391,13 @@
     vertical-align: 1px;
   }
   .dv-card.dv-high-rating .dv-new-badge { background: #B91C1C; }
-  /* 종영 프로그램 표시 */
+  /* 종영 프로그램 표시 (마지막 회차가 방영된 요일 칸에만 붙는다) */
   .dv-end-badge {
     display: inline-block;
     margin-left: 4px;
     padding: 0 3px;
     border-radius: 3px;
-    background: #64748B;
+    background: var(--brand-blue);
     color: #fff;
     font-size: 8.5px;
     font-weight: 800;
@@ -3783,6 +3783,23 @@ function dvRenderBasis() {
   }
 }
 
+// "2026-08-09" -> "일". DV_DAYS는 월요일 시작이라 getDay()(일=0)를 밀어서 맞춘다.
+function dvDayOfDate(iso) {
+  if (!iso) return null;
+  const d = new Date(iso + "T00:00:00");
+  if (isNaN(d)) return null;
+  return DV_DAYS[(d.getDay() + 6) % 7];
+}
+
+// 종영 배지를 붙일 요일 하나를 고른다. 토·일 편성이면 마지막 회차가 방영된
+// 일요일 칸에만 붙어야 하므로, 종영일의 요일을 쓴다. 종영일 요일이 그 프로그램
+// 편성 요일에 없으면(휴방 등) 편성 요일 중 가장 늦은 요일로 대체한다.
+function dvEndDayOf(p) {
+  if (p.isEnded !== true || !p.days || !p.days.length) return null;
+  const d = dvDayOfDate(p.endDate);
+  return (d && p.days.includes(d)) ? d : p.days[p.days.length - 1];
+}
+
 function dvEscapeHtml(s) {
   if (s == null) return '';
   return String(s)
@@ -3855,8 +3872,10 @@ function dvRenderGrid(data) {
           const newBadge = isNewProgram
             ? `<span class="dv-new-badge" title="${newTitle}">New</span>`
             : '';
-          // 종영: 방영 기간의 끝 날짜가 이 주(월~일)에 속하는 프로그램
-          const endBadge = (p.isEnded === true)
+          // 종영: 방영 기간의 끝 날짜가 이 주(월~일)에 속하는 프로그램.
+          // 배지는 마지막 회차가 실제로 방영된 요일 칸에만 붙인다
+          // (토·일 편성이 일요일에 끝나면 일요일 칸에만).
+          const endBadge = (dvEndDayOf(p) === day)
             ? `<span class="dv-end-badge" title="종영 (${dvEscapeHtml(p.endDate || '')})">End</span>`
             : '';
           html += `<a class="${cardCls}" href="${safeLink}" target="_blank" rel="noopener">`;
@@ -3895,6 +3914,11 @@ function dvRenderGrid(data) {
       if (p.days && p.days.length) meta.push(p.days.join(', '));
       if (p.time) meta.push(p.time);
       if (p.rating != null) meta.push(`${p.rating}%${p.ratingDate ? ' (' + p.ratingDate + ')' : ''}`);
+      // 종영 목록에는 마지막 회차 날짜(요일)를 함께 적어준다
+      if (p.isEnded === true && p.endDate) {
+        const endDay = dvDayOfDate(p.endDate);
+        meta.push(`종영 ${p.endDate.slice(5).replace('-', '.')}${endDay ? '(' + endDay + ')' : ''}`);
+      }
       out += `<a class="dv-below-new-item" href="${safeLink}" target="_blank" rel="noopener">`;
       out += `<span class="dv-channel">[${dvEscapeHtml(p.channel)}]</span> `;
       out += `<span class="dv-below-name">${dvEscapeHtml(p.title)}</span>`;
