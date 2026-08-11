@@ -709,6 +709,42 @@ def _merge_rating_by_day(existing_map: dict, new_map: dict):
     return merged
 
 
+def collapse_time_variants(programs: list, fresh_ids: set = None):
+    """같은 프로그램이 '시간 표기만 다르게' 두 건으로 갈린 것을 하나로 합친다.
+
+    id가 (분류, 제목, 채널, 시간)이라서, 네이버가 주중에 편성 시간 표기를
+    바꾸면(예: KBS2 개그콘서트가 오후 10:35 → 오후 09:20으로 바뀜) 같은 회차가
+    서로 다른 id로 저장돼 그리드에 카드 두 장이 나란히 뜬다. 실제로
+    2026-08-03 주차에서 개그콘서트(일)·살림하는 남자들 시즌2(토)가 각각
+    시청률·측정일까지 똑같은 카드 두 장으로 표시됐다.
+
+    요일 구성이 완전히 같을 때만 합친다. 아파트(JTBC)처럼 토 오후 10:40 /
+    일 오후 10:30으로 요일마다 다른 시간에 편성되는 경우는 별개 슬롯이므로
+    건드리지 않는다. 대표로 남길 항목은 이번 수집에서 확인된 시간(fresh_ids)을
+    우선하고, 그다음 요일별 데이터가 더 풍부한 쪽을 택한다."""
+    fresh_ids = fresh_ids or set()
+    groups = {}
+    for p in programs:
+        key = (p["category"], p["title"], p["channel"], tuple(sorted(p["days"])))
+        groups.setdefault(key, []).append(p)
+
+    out = []
+    for key, group in groups.items():
+        if len(group) == 1:
+            out.append(group[0])
+            continue
+        # 대표 선정: 이번 수집에서 본 시간 > 요일별 데이터가 많은 쪽
+        winner = max(group, key=lambda p: (p["id"] in fresh_ids, len(p.get("ratingByDay") or {})))
+        for p in group:
+            if p is winner:
+                continue
+            _carry_over_history(p, winner)
+            print(f"  [시간표기 통합] '{p['title']}' ({p['channel']}) {p['time']} → {winner['time']}"
+                  f" — 같은 요일({'/'.join(key[3])}) 중복 카드 병합")
+        out.append(winner)
+    return out
+
+
 def _carry_over_history(existing_entry: dict, p: dict):
     """같은 id의 기존 저장분(existing_entry)이 갖고 있던 이력을 새 항목(p)에 옮긴다."""
     existing_days = set(existing_entry.get("days", []))
@@ -771,11 +807,15 @@ def _merge_programs_into_file(out_dir: str, monday_date, programs: list):
             _carry_over_history(by_id[p["id"]], p)
         by_id[p["id"]] = p
 
+    # 네이버가 편성 시간 표기를 바꿔 같은 회차가 두 장의 카드로 갈린 경우 통합
+    fresh_ids = {p["id"] for p in programs}
+    final_programs = collapse_time_variants(list(by_id.values()), fresh_ids)
+
     merged_payload = {
         "weekStart": file_date,
         "weekEnd": week_end,
         "collectedAt": datetime.now(KST).isoformat(),
-        "programs": list(by_id.values()),
+        "programs": final_programs,
     }
     # 컷오프 미만 신규 후보 목록(dispatch_below_cutoff가 관리)은 보존한다
     if existing_below is not None:
@@ -878,7 +918,8 @@ def dispatch_below_cutoff(out_dir: str, programs: list):
                 _carry_over_history(by_id[p["id"]], p)
             by_id[p["id"]] = p
 
-        data["newBelowCutoff"] = list(by_id.values())
+        data["newBelowCutoff"] = collapse_time_variants(
+            list(by_id.values()), {p["id"] for p in bucket})
         with open(file_path, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
         print(f"  [컷오프 미만] {file_date}.json newBelowCutoff에 {len(data['newBelowCutoff'])}건 유지")
