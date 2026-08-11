@@ -1330,44 +1330,5 @@
       "newReason": "firstAir"
     }
   ],
-  "newBelowCutoff": [
-    {
-      "id": "variety_은밀한 여자들 : 적과의 동거_tvN_오후 07:00",
-      "category": "variety",
-      "channel": "tvN",
-      "title": "은밀한 여자들 : 적과의 동거",
-      "days": [
-        "목"
-      ],
-      "time": "오후 07:00",
-      "rating": 0.5,
-      "ratingDate": "07.23",
-      "ratingByDay": {
-        "목": {
-          "rating": 0.5,
-          "ratingDate": "07.23"
-        }
-      },
-      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41356894&qvt=0&query=%EC%9D%80%EB%B0%80%ED%95%9C%20%EC%97%AC%EC%9E%90%EB%93%A4%20%EC%A0%81%EA%B3%BC%EC%9D%98%20%EB%8F%99%EA%B1%B0"
-    },
-    {
-      "id": "variety_SBS 인기가요_SBS_오후 03:20",
-      "category": "variety",
-      "channel": "SBS",
-      "title": "SBS 인기가요",
-      "days": [
-        "일"
-      ],
-      "time": "오후 03:20",
-      "rating": 0.6,
-      "ratingDate": "07.26",
-      "ratingByDay": {
-        "일": {
-          "rating": 0.6,
-          "ratingDate": "07.26"
-        }
-      },
-      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=658960&qvt=0&query=SBS%20%EC%9D%B8%EA%B8%B0%EA%B0%80%EC%9A%94"
-    }
-  ]
+  "newBelowCutoff": []
 }
