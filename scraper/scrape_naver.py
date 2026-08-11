@@ -42,9 +42,10 @@ FIRST_AIR_RE = re.compile(r'첫\s*방송|첫방송|첫방|새\s*드라마|신규
 
 WEEK_FILE_RE = re.compile(r'^\d{4}-\d{2}-\d{2}\.json$')
 
-# 첫 방송일 조회: 각 카드의 link는 그 프로그램의 네이버 정보 페이지로
-# 연결되고, 거기에 방영 기간("2026.07.03. ~" 형태)이 표기된다. 이걸 뽑아
-# 캐시에 저장해두고 신규(New) 판정의 근거로 쓴다.
+# 방영 기간 조회: 각 카드의 link는 그 프로그램의 네이버 정보 페이지로
+# 연결되고, 거기에 방영 기간이 표기된다. 방영 중이면 "2026.07.03. ~",
+# 종영했으면 "2026.07.03. ~ 2026.09.20." 처럼 끝나는 날짜가 붙는다.
+# 앞 날짜는 신규(New), 뒤 날짜는 종영 판정의 근거로 쓴다.
 #
 # 왜 "이력에 처음 등장" 방식(firstSeen)을 쓰지 않는가: 시청률 컷오프
 # (드라마 5%/예능 1%) 미달로 초반 몇 주 데이터에 안 잡히다가 뒤늦게
@@ -52,8 +53,14 @@ WEEK_FILE_RE = re.compile(r'^\d{4}-\d{2}-\d{2}\.json$')
 # 처음 등장)이 신규로 오탐되기 때문. 첫 방송일은 이 문제가 없다.
 FIRST_AIR_CACHE_FILE = "first_air_dates.json"
 FIRST_AIR_RANGE_RE = re.compile(r'(20\d{2})\s*\.\s*(\d{1,2})\s*\.\s*(\d{1,2})\s*\.?\s*~')
-FIRST_AIR_LOOKUP_MAX = 40   # 한 번의 실행에서 상세 페이지를 방문할 최대 건수
+# 종영일: '~' 바로 뒤에 오는 날짜. 방영 중인 프로그램은 '~' 뒤가 비어 있거나
+# 다른 채널명이 이어지므로(예: "2026.07.03.~, 채널S") 날짜가 안 잡힌다.
+AIR_END_RE = re.compile(r'~\s*(20\d{2})\s*\.\s*(\d{1,2})\s*\.\s*(\d{1,2})')
+FIRST_AIR_LOOKUP_MAX = 60   # 한 번의 실행에서 상세 페이지를 방문할 최대 건수
 FIRST_AIR_RETRY_DAYS = 7    # 조회 실패(날짜 못 찾음)한 프로그램의 재시도 간격
+# 아직 종영일이 없는(=방영 중인) 프로그램을 다시 확인하는 간격. 방영 중이던
+# 프로그램은 언제든 종영할 수 있으므로 주기적으로 다시 봐야 한다.
+AIR_END_RECHECK_DAYS = 7
 
 
 def monday_of(date_obj):
@@ -542,6 +549,62 @@ def _collect_drama_pages(page, max_pages: int):
     return all_programs
 
 
+def recent_collection_baseline(out_dir: str, category: str, weeks: int = 4):
+    """최근 '완료된' 주차들의 카테고리별 프로그램 수 중앙값을 낸다.
+
+    수집 실패 감지의 기준선으로 쓴다. 위젯은 언제 조회하든 '현재 방영 중인
+    프로그램 전체'를 보여주므로, 정상 수집이면 카테고리별 건수가 주차마다
+    크게 튀지 않는다(실측: 예능 59~69, 드라마 5~9). 이번 수집이 이 기준선에
+    한참 못 미치면 페이징 유실 등 부분 수집을 의심할 수 있다.
+
+    진행 중인 주차는 아직 한 주치가 다 안 쌓여 건수가 적으므로 제외한다.
+    중앙값을 쓰는 이유는, 과거에 부분 수집으로 유난히 적게 기록된 주차가
+    섞여 있어도 기준선이 끌려 내려가지 않게 하기 위함이다."""
+    try:
+        this_monday = monday_of(datetime.now(KST).date()).isoformat()
+    except Exception:
+        this_monday = "9999-12-31"
+
+    counts = []
+    for name in reversed(_week_files(out_dir)):
+        if name[:-5] >= this_monday:
+            continue  # 진행 중인 주차 제외
+        try:
+            with open(os.path.join(out_dir, name), encoding="utf-8") as f:
+                d = json.load(f)
+        except Exception:
+            continue
+        counts.append(sum(1 for p in d.get("programs", []) if p.get("category") == category))
+        if len(counts) >= weeks:
+            break
+
+    if not counts:
+        return None
+    counts.sort()
+    mid = len(counts) // 2
+    return counts[mid] if len(counts) % 2 else (counts[mid - 1] + counts[mid]) / 2
+
+
+# 이번 수집이 기준선의 이 비율보다 적으면 부분 수집을 의심해 재시도한다.
+COLLECTION_MIN_RATIO = 0.75
+
+
+def warn_if_short(category: str, count: int, baseline: float):
+    """재시도까지 했는데도 기준선에 못 미치면 눈에 띄게 경고를 남긴다.
+
+    이 경고가 뜬 주차는 그 주에만 잡히는 시청률을 놓쳤을 수 있고, 지난 뒤에는
+    복구가 불가능하다(네이버는 프로그램당 최신 회차만 보여준다). 그러니
+    Actions 로그에서 바로 눈에 띄어야 한다."""
+    if not baseline:
+        return
+    if count < baseline * COLLECTION_MIN_RATIO:
+        print(f"  [⚠️ 수집 부족] {category}: {count}건 — 최근 주차 기준선 {baseline:g}건의 "
+              f"{count / baseline:.0%}에 그침. 재시도 후에도 회복되지 않았으므로 이번 실행은"
+              f" 부분 수집일 가능성이 높습니다(그 주에만 잡히는 시청률을 놓쳤을 수 있음).")
+    else:
+        print(f"  [수집 점검] {category}: {count}건 (기준선 {baseline:g}건 대비 {count / baseline:.0%}) — 정상")
+
+
 def _split_by_cutoff(programs: list, min_rating: float):
     """수집된 카드를 컷오프 이상(main)/미만(below)으로 나눈다.
     below는 표(그리드)에는 안 실리지만, 신규(1회차) 프로그램이 컷오프
@@ -551,7 +614,7 @@ def _split_by_cutoff(programs: list, min_rating: float):
     return main, below
 
 
-def fetch_drama(page, max_pages: int = 30):
+def fetch_drama(page, max_pages: int = 30, baseline: float = None):
     safe_goto(page, DRAMA_URL)
     click_all_days_tab(page, "drama")
     # '전체' 탭 클릭 직후 실제 위젯(페이징 포함)이 완전히 다시 렌더링되기 전에
@@ -573,8 +636,14 @@ def fetch_drama(page, max_pages: int = 30):
     distinct_days = {d for p in main_programs for d in p["days"]}
     too_few = len(main_programs) < 10
     narrow_days = len(main_programs) >= 5 and len(distinct_days) <= 2
-    if too_few or narrow_days:
-        reason = "카드 수가 비정상적으로 적음" if too_few else f"요일 {sorted(distinct_days)}에만 몰려있음"
+    below_baseline = baseline and len(main_programs) < baseline * COLLECTION_MIN_RATIO
+    if too_few or narrow_days or below_baseline:
+        if too_few:
+            reason = "카드 수가 비정상적으로 적음"
+        elif narrow_days:
+            reason = f"요일 {sorted(distinct_days)}에만 몰려있음"
+        else:
+            reason = f"최근 주차 기준선({baseline:g}건)의 {COLLECTION_MIN_RATIO:.0%}에 미달"
         print(f"  [drama] ⚠️ 수집된 {len(main_programs)}건 — {reason} "
               f"— 부분 수집으로 의심됨. 페이지를 다시 로드해 재시도합니다.")
         safe_goto(page, DRAMA_URL)
@@ -590,6 +659,7 @@ def fetch_drama(page, max_pages: int = 30):
             print(f"  [drama] ⚠️ 재시도해도 {len(retry_main)}건으로 동일/더 적음 — "
                   f"원래 결과를 그대로 사용하되 데이터가 불완전할 수 있음에 유의.")
 
+    warn_if_short("drama", len(main_programs), baseline)
     return dedupe_programs(main_programs), dedupe_programs(below_programs)
 
 
@@ -634,7 +704,7 @@ def _collect_variety_pages(page, max_pages: int):
     return all_programs
 
 
-def fetch_variety(page, max_pages: int = 30):
+def fetch_variety(page, max_pages: int = 30, baseline: float = None):
     safe_goto(page, VARIETY_URL)
     click_all_days_tab(page, "variety")
     all_programs = _collect_variety_pages(page, max_pages)
@@ -649,22 +719,27 @@ def fetch_variety(page, max_pages: int = 30):
     # '전체' 탭이 아니라 '오늘' 스냅샷만 긁힌 것으로 간주하고 재시도한다.
     # (판정은 기존과 동일하게 컷오프 이상 카드 기준으로 한다)
     distinct_days = {d for p in main_programs for d in p["days"]}
-    if len(main_programs) >= 5 and len(distinct_days) <= 2:
-        print(f"  [variety] ⚠️ 수집된 {len(main_programs)}건이 요일 {sorted(distinct_days)}에만 몰려있음 "
-              f"— '오늘' 스냅샷만 잡힌 것으로 의심됨. 페이지를 다시 로드해 재시도합니다.")
+    narrow_days = len(main_programs) >= 5 and len(distinct_days) <= 2
+    below_baseline = baseline and len(main_programs) < baseline * COLLECTION_MIN_RATIO
+    if narrow_days or below_baseline:
+        cause = (f"요일 {sorted(distinct_days)}에만 몰려있음 — '오늘' 스냅샷만 잡힌 것으로 의심됨"
+                 if narrow_days
+                 else f"최근 주차 기준선({baseline:g}건)의 {COLLECTION_MIN_RATIO:.0%}에 미달 — 부분 수집 의심")
+        print(f"  [variety] ⚠️ 수집된 {len(main_programs)}건이 {cause}. 페이지를 다시 로드해 재시도합니다.")
         safe_goto(page, VARIETY_URL)
         page.wait_for_timeout(1500)
         click_all_days_tab(page, "variety")
         retry_programs = _collect_variety_pages(page, max_pages)
         retry_main, retry_below = _split_by_cutoff(retry_programs, MIN_RATING_VARIETY)
         retry_days = {d for p in retry_main for d in p["days"]}
-        if len(retry_days) > len(distinct_days):
-            print(f"  [variety] ✅ 재시도 후 요일 {sorted(retry_days)}로 확대 — 재시도 결과를 채택합니다.")
+        if len(retry_days) > len(distinct_days) or len(retry_main) > len(main_programs):
+            print(f"  [variety] ✅ 재시도 후 {len(retry_main)}건/요일 {sorted(retry_days)} — 재시도 결과를 채택합니다.")
             main_programs, below_programs = retry_main, retry_below
         else:
-            print(f"  [variety] ⚠️ 재시도해도 요일 {sorted(retry_days)}로 동일/더 좁음 — "
+            print(f"  [variety] ⚠️ 재시도해도 {len(retry_main)}건/요일 {sorted(retry_days)}로 나아지지 않음 — "
                   f"원래 결과를 그대로 사용하되 데이터가 불완전할 수 있음에 유의.")
 
+    warn_if_short("variety", len(main_programs), baseline)
     return dedupe_programs(main_programs), dedupe_programs(below_programs)
 
 
@@ -1045,12 +1120,15 @@ def save_first_air_cache(out_dir: str, cache: dict):
         json.dump(cache, f, ensure_ascii=False, indent=2, sort_keys=True)
 
 
-def parse_first_air_date_from_html(html: str, today=None):
-    """프로그램 정보 페이지 HTML에서 첫 방송일("2026.07.03. ~")을 뽑는다.
+def parse_air_period_from_html(html: str, today=None):
+    """프로그램 정보 페이지 HTML에서 방영 기간을 뽑아 (첫방송일, 종영일)로 반환.
+
+    방영 중이면 "2026.07.03. ~" 라 종영일은 None이고, 종영했으면
+    "2026.07.03. ~ 2026.09.20." 처럼 뒤 날짜가 붙는다.
 
     페이지 다른 곳의 날짜 범위(광고, 다른 카드)에 걸리지 않도록 프로그램
-    정보 모듈 안쪽부터 좁게 찾고, 없으면 점점 넓힌다. 미래 날짜나 말도 안
-    되는 과거(2000년 이전)는 버린다."""
+    정보 모듈 안쪽부터 좁게 찾고, 없으면 점점 넓힌다. 첫방송일이 미래거나
+    말도 안 되는 과거(2000년 이전)면 버린다."""
     if today is None:
         today = datetime.now(KST).date()
     soup = BeautifulSoup(html, 'lxml')
@@ -1066,74 +1144,139 @@ def parse_first_air_date_from_html(html: str, today=None):
         if not m:
             continue
         try:
-            d = date_cls(int(m.group(1)), int(m.group(2)), int(m.group(3)))
+            start = date_cls(int(m.group(1)), int(m.group(2)), int(m.group(3)))
         except ValueError:
             continue
-        if date_cls(2000, 1, 1) <= d <= today:
-            return d
-    return None
+        if not (date_cls(2000, 1, 1) <= start <= today):
+            continue
+
+        end = None
+        me = AIR_END_RE.search(text, m.end() - 1)
+        if me:
+            try:
+                cand = date_cls(int(me.group(1)), int(me.group(2)), int(me.group(3)))
+            except ValueError:
+                cand = None
+            # 종영일은 첫방송일보다 뒤여야 한다(엉뚱한 날짜 매칭 방어)
+            if cand and cand >= start:
+                end = cand
+        return start, end
+    return None, None
 
 
-def lookup_first_air_dates(page, programs: list, out_dir: str):
-    """이번 수집에 등장한 프로그램들의 첫 방송일을 상세 페이지에서 조회해
-    캐시(first_air_dates.json)에 채운다. 프로그램당 1회만 방문하고,
-    실패(날짜 못 찾음)한 항목은 FIRST_AIR_RETRY_DAYS 후 재시도한다."""
+def _stored_program_links(out_dir: str, since: str = "2026-06-29"):
+    """주차 파일에 저장된 프로그램들의 link를 모은다.
+
+    종영한 프로그램은 네이버 '방영중' 위젯에서 빠지기 때문에 이번 수집
+    대상에는 절대 안 들어온다. 그런데 우리가 종영일을 알아야 하는 대상이
+    바로 그 프로그램들이다. 그래서 조회 후보를 이번 수집분만이 아니라
+    저장된 과거 주차 데이터에서도 끌어온다(최신 주차부터)."""
+    links = {}
+    for name in reversed(_week_files(out_dir)):
+        if name[:-5] < since:
+            break
+        try:
+            with open(os.path.join(out_dir, name), encoding="utf-8") as f:
+                d = json.load(f)
+        except Exception:
+            continue
+        for p in d.get("programs", []) + d.get("newBelowCutoff", []):
+            key = _first_air_key(p)
+            if key not in links and p.get("link"):
+                links[key] = p["link"]
+    return links
+
+
+def lookup_air_periods(page, programs: list, out_dir: str):
+    """프로그램들의 방영 기간(첫방송일/종영일)을 상세 페이지에서 조회해
+    캐시(first_air_dates.json)에 채운다.
+
+    조회 대상 우선순위:
+      1) 첫방송일조차 모르는 프로그램 (신규 판정에 바로 필요)
+      2) 방영 중으로 알고 있는데 마지막 확인이 오래된 프로그램 (종영 여부 확인)
+    종영일까지 확보한 프로그램은 더 이상 조회하지 않는다."""
     cache = load_first_air_cache(out_dir)
     today = datetime.now(KST).date()
     now_iso = datetime.now(KST).isoformat()
 
-    # 같은 프로그램이 슬롯별로 여러 항목일 수 있으니 키 기준으로 유니크하게
+    # 같은 프로그램이 슬롯별로 여러 항목일 수 있으니 키 기준으로 유니크하게.
+    # 이번 수집분을 먼저 넣고, 저장된 과거 주차 데이터로 보충한다(종영작 포함).
     targets = {}
     for p in programs:
         key = _first_air_key(p)
         if key not in targets and p.get("link"):
             targets[key] = p["link"]
+    for key, link in _stored_program_links(out_dir).items():
+        targets.setdefault(key, link)
 
-    looked = 0
+    def days_since_check(ent):
+        try:
+            return (today - datetime.fromisoformat(ent.get("checkedAt", "")).date()).days
+        except ValueError:
+            return 10 ** 6
+
+    need_start, need_end = [], []
     for key, link in targets.items():
         ent = cache.get(key)
-        if ent:
-            if ent.get("date"):
-                continue  # 이미 확보
-            try:
-                checked = datetime.fromisoformat(ent.get("checkedAt", "")).date()
-                if (today - checked).days < FIRST_AIR_RETRY_DAYS:
-                    continue  # 최근에 실패한 건 잠시 쉼
-            except ValueError:
-                pass
-        if looked >= FIRST_AIR_LOOKUP_MAX:
-            print(f"  [첫방송일] 이번 실행 조회 한도({FIRST_AIR_LOOKUP_MAX}건) 도달 — 나머지는 다음 실행에서 계속")
-            break
+        if not ent:
+            need_start.append((key, link))
+            continue
+        if ent.get("endDate"):
+            continue  # 종영일까지 확보 — 더 볼 것 없음
+        if not ent.get("date"):
+            if days_since_check(ent) >= FIRST_AIR_RETRY_DAYS:
+                need_start.append((key, link))
+            continue
+        # 첫방송일은 아는데 종영 여부를 모르는 상태 — 주기적으로 다시 확인
+        if days_since_check(ent) >= AIR_END_RECHECK_DAYS:
+            need_end.append((key, link))
 
+    queue = need_start + need_end
+    if len(queue) > FIRST_AIR_LOOKUP_MAX:
+        print(f"  [방영기간] 조회 대기 {len(queue)}건 중 이번 실행은 {FIRST_AIR_LOOKUP_MAX}건만 "
+              f"— 나머지는 다음 실행에서 계속 (신규 판정 우선)")
+        queue = queue[:FIRST_AIR_LOOKUP_MAX]
+
+    looked = 0
+    for key, link in queue:
         looked += 1
-        d = None
+        start = end = None
         try:
             page.goto(link, wait_until="domcontentloaded", timeout=20000)
             page.wait_for_timeout(800)
-            d = parse_first_air_date_from_html(page.content(), today)
+            start, end = parse_air_period_from_html(page.content(), today)
         except Exception as e:
-            print(f"  [첫방송일] '{key}' 조회 실패: {e}")
-        cache[key] = {"date": d.isoformat() if d else None, "checkedAt": now_iso}
-        status = d.isoformat() if d else "못 찾음"
-        print(f"  [첫방송일] {key} -> {status}")
+            print(f"  [방영기간] '{key}' 조회 실패: {e}")
+        prev = cache.get(key) or {}
+        cache[key] = {
+            "date": start.isoformat() if start else prev.get("date"),
+            "endDate": end.isoformat() if end else None,
+            "checkedAt": now_iso,
+        }
+        print(f"  [방영기간] {key} -> 첫방송 {cache[key]['date'] or '못 찾음'}"
+              f"{' / 종영 ' + cache[key]['endDate'] if cache[key]['endDate'] else ''}")
 
     if looked:
         save_first_air_cache(out_dir, cache)
     known = sum(1 for v in cache.values() if v.get("date"))
-    print(f"  [첫방송일] 캐시 현황: {known}건 확보 / 전체 {len(cache)}건 (이번 실행 {looked}건 조회)")
+    ended = sum(1 for v in cache.values() if v.get("endDate"))
+    print(f"  [방영기간] 캐시 현황: 첫방송 {known}건 / 종영 {ended}건 / 전체 {len(cache)}건"
+          f" (이번 실행 {looked}건 조회, 대기 {max(0, len(need_start)+len(need_end)-looked)}건)")
     return cache
 
 
 def recompute_new_flags(out_dir: str):
-    """주차 파일 전체를 훑어 각 프로그램에 신규 여부(isNew/newReason)를 붙인다.
+    """주차 파일 전체를 훑어 각 프로그램에 신규(isNew)·종영(isEnded)을 붙인다.
 
-    판정 우선순위:
+    신규 판정 우선순위:
       1) episode == 1 — 네이버 카드에 '1회'가 표기돼 있으면 그게 가장 확실한
          신규 신호다(newReason="episode").
       2) 첫 방송일이 그 주(월~일) 안 — 상세 페이지에서 조회해 캐시해둔
          firstAirDate 기준(newReason="firstAir"). 컷오프 미달로 초반 몇 주
          데이터에 없다가 뒤늦게 등장한 프로그램은 첫 방송일이 이미 지난
          주차라 신규로 찍히지 않는다.
+
+    종영 판정: 캐시된 종영일이 그 주(월~일) 안이면 isEnded.
 
     매 실행마다 전체를 다시 계산하므로 결과는 멱등이고, 실제로 값이
     바뀐 파일만 다시 쓴다."""
@@ -1179,6 +1322,17 @@ def recompute_new_flags(out_dir: str):
         changed = False
         new_count = 0
 
+        def judge_ended(p):
+            """종영일이 이 주(월~일) 안이면 종영 주차로 본다."""
+            ent = cache.get(_first_air_key(p)) or {}
+            if not ent.get("endDate"):
+                return False, None
+            try:
+                end = date_cls.fromisoformat(ent["endDate"])
+            except ValueError:
+                return False, None
+            return (week_start <= end <= week_end), end.isoformat()
+
         def judge(p):
             """(is_new, reason, first_air_known) 판정. episode==1 또는
             첫 방송일이 이 주(월~일) 안이면 신규."""
@@ -1200,59 +1354,75 @@ def recompute_new_flags(out_dir: str):
                 return True, "firstAir", True
             return False, None, first_air is not None
 
-        for p in programs:
+        def apply_flags(p):
+            """isNew/newReason/isEnded/endDate를 다시 계산해 붙인다.
+            변경이 있었으면 True를 반환(파일 재기록 판단용)."""
+            touched = False
             is_new, reason, _ = judge(p)
-
             if is_new:
-                new_count += 1
                 if p.get("isNew") is not True or p.get("newReason") != reason:
-                    changed = True
+                    touched = True
                 p["isNew"] = True
                 p["newReason"] = reason
             else:
                 if "isNew" in p or "newReason" in p:
-                    changed = True
+                    touched = True
                 p.pop("isNew", None)
                 p.pop("newReason", None)
 
+            ended, end_iso = judge_ended(p)
+            if ended:
+                if p.get("isEnded") is not True or p.get("endDate") != end_iso:
+                    touched = True
+                p["isEnded"] = True
+                p["endDate"] = end_iso
+            else:
+                if "isEnded" in p or "endDate" in p:
+                    touched = True
+                p.pop("isEnded", None)
+                p.pop("endDate", None)
+            return touched, is_new, ended
+
+        end_count = 0
+        for p in programs:
+            touched, is_new, ended = apply_flags(p)
+            changed = changed or touched
+            new_count += 1 if is_new else 0
+            end_count += 1 if ended else 0
+
         # 컷오프 미만 목록(newBelowCutoff): 같은 판정을 적용하되,
         # - 표(programs)에 이미 있는 프로그램(주중에 컷오프를 넘은 경우)은 제거
-        #   → 그리드 카드의 New 배지가 대신 보여준다
-        # - 첫 방송일이 확인됐는데 이 주가 아닌 프로그램도 제거(신규 아님 확정)
+        #   → 그리드 카드의 배지가 대신 보여준다
+        # - 신규도 종영도 아닌 것으로 확정된 항목은 제거(보여줄 게 없음)
         # - 첫 방송일을 아직 모르는 항목은 나중에 판정할 수 있게 보류(표시는 안 됨)
         below = data.get("newBelowCutoff", [])
         if below:
             main_keys = {_first_air_key(p) for p in programs}
             kept_below = []
-            below_new_count = 0
+            below_new, below_end = 0, 0
             for p in below:
                 if _first_air_key(p) in main_keys:
                     changed = True
                     continue
-                is_new, reason, known = judge(p)
-                if is_new:
-                    below_new_count += 1
-                    if p.get("isNew") is not True or p.get("newReason") != reason:
-                        changed = True
-                    p["isNew"] = True
-                    p["newReason"] = reason
+                touched, is_new, ended = apply_flags(p)
+                changed = changed or touched
+                _, _, known = judge(p)
+                if is_new or ended:
+                    below_new += 1 if is_new else 0
+                    below_end += 1 if ended else 0
                     kept_below.append(p)
                 elif known:
-                    changed = True  # 신규 아님 확정 → 목록에서 제거
+                    changed = True  # 신규·종영 아님 확정 → 목록에서 제거
                 else:
-                    if "isNew" in p or "newReason" in p:
-                        changed = True
-                    p.pop("isNew", None)
-                    p.pop("newReason", None)
                     kept_below.append(p)  # 첫 방송일 미확인 — 판정 보류
             data["newBelowCutoff"] = kept_below
-            if below_new_count:
-                print(f"  [신규 판정] {name}: 컷오프 미만 신규 {below_new_count}건")
+            if below_new or below_end:
+                print(f"  [판정] {name}: 컷오프 미만 신규 {below_new}건 / 종영 {below_end}건")
 
         if changed:
             with open(path, "w", encoding="utf-8") as f:
                 json.dump(data, f, ensure_ascii=False, indent=2)
-            print(f"  [신규 판정] {name}: {new_count}건 New 표시 (총 {len(programs)}건)")
+            print(f"  [판정] {name}: New {new_count}건 / End {end_count}건 (총 {len(programs)}건)")
 
 
 def report_episode_coverage(programs: list):
@@ -1293,11 +1463,16 @@ def main():
         )
         page.set_default_timeout(25000)
 
+        # 최근 완료된 주차들의 수집량을 기준선으로 삼아 부분 수집을 감지한다.
+        drama_baseline = recent_collection_baseline(final_out_dir, "drama")
+        variety_baseline = recent_collection_baseline(final_out_dir, "variety")
+        print(f"수집 기준선(최근 주차 중앙값): 드라마 {drama_baseline or '없음'} / 예능 {variety_baseline or '없음'}")
+
         print("collecting drama...")
-        drama_programs, drama_below = fetch_drama(page, max_pages=args.max_pages)
+        drama_programs, drama_below = fetch_drama(page, max_pages=args.max_pages, baseline=drama_baseline)
 
         print("collecting variety...")
-        variety_programs, variety_below = fetch_variety(page, max_pages=args.max_pages)
+        variety_programs, variety_below = fetch_variety(page, max_pages=args.max_pages, baseline=variety_baseline)
 
         below_raw_programs = drama_below + variety_below
 
@@ -1305,11 +1480,11 @@ def main():
         # 상세 페이지를 방문한다. 실패해도 수집 결과 저장에는 영향 없음.
         # 컷오프 미만 프로그램도 포함(컷오프 이상 우선 조회) — 신규인데
         # 시청률 미달로 표에 안 실리는 경우를 표 아래에 알려주기 위해.
-        print("looking up first air dates...")
+        print("looking up air periods (first air / end dates)...")
         try:
-            lookup_first_air_dates(page, drama_programs + variety_programs + below_raw_programs, final_out_dir)
+            lookup_air_periods(page, drama_programs + variety_programs + below_raw_programs, final_out_dir)
         except Exception as e:
-            print(f"  [첫방송일] 조회 단계 전체 실패(무시하고 진행): {e}")
+            print(f"  [방영기간] 조회 단계 전체 실패(무시하고 진행): {e}")
 
         browser.close()
 
