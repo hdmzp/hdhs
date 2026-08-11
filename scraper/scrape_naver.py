@@ -56,6 +56,12 @@ FIRST_AIR_RANGE_RE = re.compile(r'(20\d{2})\s*\.\s*(\d{1,2})\s*\.\s*(\d{1,2})\s*
 # 종영일: '~' 바로 뒤에 오는 날짜. 방영 중인 프로그램은 '~' 뒤가 비어 있거나
 # 다른 채널명이 이어지므로(예: "2026.07.03.~, 채널S") 날짜가 안 잡힌다.
 AIR_END_RE = re.compile(r'~\s*(20\d{2})\s*\.\s*(\d{1,2})\s*\.\s*(\d{1,2})')
+# 상세 페이지의 시청률 블록("시청률 0.8% 2026.08.07. 기준").
+# 종영한 프로그램은 '방영중' 위젯에서 빠져 마지막 회차 시청률을 위젯으로는
+# 못 받아오지만, 상세 페이지에는 그대로 남아 있어 여기서 회수한다.
+RATING_LABEL_RE = re.compile(r'시청률')
+RATING_VALUE_RE = re.compile(r'(\d{1,3}(?:\.\d+)?)\s*%')
+RATING_BASIS_DATE_RE = re.compile(r'(20\d{2})\s*\.\s*(\d{1,2})\s*\.\s*(\d{1,2})\s*\.?\s*기준')
 FIRST_AIR_LOOKUP_MAX = 60   # 한 번의 실행에서 상세 페이지를 방문할 최대 건수
 FIRST_AIR_RETRY_DAYS = 7    # 조회 실패(날짜 못 찾음)한 프로그램의 재시도 간격
 # 아직 종영일이 없는(=방영 중인) 프로그램을 다시 확인하는 간격. 방영 중이던
@@ -1194,6 +1200,33 @@ def _stored_program_links(out_dir: str, since: str = "2026-06-29"):
     return links
 
 
+def parse_last_rating_from_html(html: str, today=None):
+    """상세 페이지의 시청률 블록에서 (시청률, 기준일)을 뽑는다.
+
+    화면상 "시청률 ⓘ / 0.8% / 2026.08.07. 기준" 순서로 나오므로, '시청률'
+    라벨 뒤 일정 구간 안에서 퍼센트 값과 '기준' 날짜를 함께 찾는다.
+    페이지 다른 곳의 퍼센트(할인율 등)를 잘못 집지 않도록 라벨 근처로
+    범위를 좁히고, 둘 다 찾은 경우에만 인정한다."""
+    if today is None:
+        today = datetime.now(KST).date()
+    text = BeautifulSoup(html, 'lxml').get_text(" ", strip=True)
+
+    for m in RATING_LABEL_RE.finditer(text):
+        window = text[m.end():m.end() + 160]
+        mv = RATING_VALUE_RE.search(window)
+        md = RATING_BASIS_DATE_RE.search(window)
+        if not mv or not md:
+            continue
+        try:
+            rating = float(mv.group(1))
+            basis = date_cls(int(md.group(1)), int(md.group(2)), int(md.group(3)))
+        except ValueError:
+            continue
+        if 0 < rating <= 100 and date_cls(2000, 1, 1) <= basis <= today:
+            return rating, basis
+    return None, None
+
+
 def lookup_air_periods(page, programs: list, out_dir: str):
     """프로그램들의 방영 기간(첫방송일/종영일)을 상세 페이지에서 조회해
     캐시(first_air_dates.json)에 채운다.
@@ -1222,14 +1255,18 @@ def lookup_air_periods(page, programs: list, out_dir: str):
         except ValueError:
             return 10 ** 6
 
-    need_start, need_end = [], []
+    need_start, need_end, need_rating = [], [], []
     for key, link in targets.items():
         ent = cache.get(key)
         if not ent:
             need_start.append((key, link))
             continue
         if ent.get("endDate"):
-            continue  # 종영일까지 확보 — 더 볼 것 없음
+            # 종영일까지 확보된 프로그램은 더 볼 게 없지만, 마지막 회차
+            # 시청률을 아직 안 받아온 경우 딱 한 번 회수하러 간다.
+            if "lastRating" not in ent:
+                need_rating.append((key, link))
+            continue
         if not ent.get("date"):
             if days_since_check(ent) >= FIRST_AIR_RETRY_DAYS:
                 need_start.append((key, link))
@@ -1238,7 +1275,7 @@ def lookup_air_periods(page, programs: list, out_dir: str):
         if days_since_check(ent) >= AIR_END_RECHECK_DAYS:
             need_end.append((key, link))
 
-    queue = need_start + need_end
+    queue = need_start + need_end + need_rating
     if len(queue) > FIRST_AIR_LOOKUP_MAX:
         print(f"  [방영기간] 조회 대기 {len(queue)}건 중 이번 실행은 {FIRST_AIR_LOOKUP_MAX}건만 "
               f"— 나머지는 다음 실행에서 계속 (신규 판정 우선)")
@@ -1248,20 +1285,36 @@ def lookup_air_periods(page, programs: list, out_dir: str):
     for key, link in queue:
         looked += 1
         start = end = None
+        rating = basis = None
+        ok = False
         try:
             page.goto(link, wait_until="domcontentloaded", timeout=20000)
             page.wait_for_timeout(800)
-            start, end = parse_air_period_from_html(page.content(), today)
+            html = page.content()
+            start, end = parse_air_period_from_html(html, today)
+            rating, basis = parse_last_rating_from_html(html, today)
+            ok = True
         except Exception as e:
             print(f"  [방영기간] '{key}' 조회 실패: {e}")
         prev = cache.get(key) or {}
-        cache[key] = {
+        ent = {
             "date": start.isoformat() if start else prev.get("date"),
-            "endDate": end.isoformat() if end else None,
+            "endDate": (end.isoformat() if end else None) or prev.get("endDate"),
             "checkedAt": now_iso,
         }
-        print(f"  [방영기간] {key} -> 첫방송 {cache[key]['date'] or '못 찾음'}"
-              f"{' / 종영 ' + cache[key]['endDate'] if cache[key]['endDate'] else ''}")
+        # 조회 자체가 성공했으면 시청률은 못 찾았더라도 키를 남겨, 같은
+        # 프로그램을 매 실행 다시 방문하지 않게 한다.
+        if rating is not None:
+            ent["lastRating"] = rating
+            ent["lastRatingDate"] = basis.isoformat()
+        elif ok:
+            ent["lastRating"] = prev.get("lastRating")
+            if prev.get("lastRatingDate"):
+                ent["lastRatingDate"] = prev["lastRatingDate"]
+        cache[key] = ent
+        print(f"  [방영기간] {key} -> 첫방송 {ent['date'] or '못 찾음'}"
+              f"{' / 종영 ' + ent['endDate'] if ent['endDate'] else ''}"
+              f"{f' / 최신시청률 {rating}%({basis})' if rating is not None else ''}")
 
     if looked:
         save_first_air_cache(out_dir, cache)
@@ -1303,7 +1356,7 @@ def ensure_ended_entries(out_dir: str):
             meta[key] = p           # 파일 순서가 오름차순이라 마지막 등장분이 남는다
             seen_weeks.setdefault(key, set()).add(wk)
 
-    added_total = 0
+    added_total, filled_total = 0, 0
     for key, ent in cache.items():
         if not ent.get("endDate") or key not in meta:
             continue
@@ -1315,10 +1368,20 @@ def ensure_ended_entries(out_dir: str):
         if f"{target}.json" not in files:
             continue
         weeks = seen_weeks.get(key, set())
-        if target in weeks:
-            continue                      # 이미 그 주차에 있음
         if any(w > target for w in weeks):
             continue                      # 이후 주차에도 편성됨 = 종영일이 의심스러움
+
+        # 상세 페이지에서 회수해둔 마지막 회차 시청률이 이 주차 것이면 함께 채운다.
+        last_rating, last_day, last_md = None, None, None
+        if ent.get("lastRating") is not None and ent.get("lastRatingDate"):
+            try:
+                basis = date_cls.fromisoformat(ent["lastRatingDate"])
+            except ValueError:
+                basis = None
+            if basis and monday_of(basis).isoformat() == target:
+                last_rating = ent["lastRating"]
+                last_day = DAY_ORDER[basis.weekday()]
+                last_md = f"{basis.month:02d}.{basis.day:02d}"
 
         path = os.path.join(out_dir, f"{target}.json")
         try:
@@ -1327,30 +1390,53 @@ def ensure_ended_entries(out_dir: str):
         except Exception:
             continue
 
+        # 이미 그 주차에 있으면(표 안이든 보강분이든) 시청률만 채워준다
+        existing = None
+        for p in data.get("programs", []) + data.get("newBelowCutoff", []):
+            if _first_air_key(p) == key:
+                existing = p
+                break
+        if existing is not None:
+            if last_rating is not None and existing.get("rating") is None:
+                existing["rating"] = last_rating
+                existing["ratingDate"] = last_md
+                existing.setdefault("ratingByDay", {})[last_day] = {
+                    "rating": last_rating, "ratingDate": last_md}
+                existing.pop("noWeekData", None)
+                with open(path, "w", encoding="utf-8") as f:
+                    json.dump(data, f, ensure_ascii=False, indent=2)
+                filled_total += 1
+                print(f"  [종영 보강] {target}.json '{existing['title']}' 마지막 회차 시청률 "
+                      f"{last_rating}% ({last_md}) 회수")
+            continue
+
         src = meta[key]
-        data.setdefault("newBelowCutoff", []).append({
+        entry = {
             "id": src["id"],
             "category": src["category"],
             "channel": src["channel"],
             "title": src["title"],
             "days": list(src.get("days", [])),
             "time": src.get("time", ""),
-            "rating": None,               # 그 주 실측값 없음
-            "ratingDate": None,
-            "ratingByDay": {},
+            "rating": last_rating,
+            "ratingDate": last_md,
+            "ratingByDay": ({last_day: {"rating": last_rating, "ratingDate": last_md}}
+                            if last_rating is not None else {}),
             "link": src.get("link", ""),
             "isEnded": True,
             "endDate": ent["endDate"],
-            "noWeekData": True,
-        })
+        }
+        if last_rating is None:
+            entry["noWeekData"] = True    # 그 주 실측값을 끝내 못 구함
+        data.setdefault("newBelowCutoff", []).append(entry)
         with open(path, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
         added_total += 1
-        print(f"  [종영 보강] {target}.json 에 '{src['title']}' ({src['channel']}) 추가 "
-              f"— 종영 {ent['endDate']}, 그 주 시청률은 미수집")
+        print(f"  [종영 보강] {target}.json 에 '{src['title']}' ({src['channel']}) 추가 — 종영 {ent['endDate']}"
+              + (f", 마지막 회차 {last_rating}% ({last_md})" if last_rating is not None else ", 그 주 시청률 미수집"))
 
-    if added_total:
-        print(f"  [종영 보강] 총 {added_total}건 추가")
+    if added_total or filled_total:
+        print(f"  [종영 보강] 신규 {added_total}건 / 시청률 보강 {filled_total}건")
 
 
 def recompute_new_flags(out_dir: str):
