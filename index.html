@@ -3942,7 +3942,13 @@ function dvRenderGrid(data) {
       out += `<span class="dv-channel">[${dvEscapeHtml(p.channel)}]</span> `;
       out += `<span class="dv-below-name">${dvEscapeHtml(p.title)}</span>`;
       out += ` <span class="dv-below-meta">/ ${dvEscapeHtml(meta.join(' · '))}</span>`;
-      if (below) out += `<span class="dv-below-mark" title="시청률 기준 미만이라 위 표에는 없습니다">표 미표시</span>`;
+      if (p.noWeekData) {
+        // 종영 주차의 시청률이 끝내 수집되지 않은 경우(종영과 동시에 네이버
+        // 위젯에서 빠져 마지막 회차 집계를 못 받아옴)
+        out += `<span class="dv-below-mark" title="종영 주차의 시청률이 집계 전에 네이버에서 내려가 수집되지 않았습니다">시청률 미수집</span>`;
+      } else if (below) {
+        out += `<span class="dv-below-mark" title="시청률 기준 미만이라 위 표에는 없습니다">표 미표시</span>`;
+      }
       out += `</a>`;
     }
     out += '</div>';
