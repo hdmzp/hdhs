@@ -56,6 +56,8 @@ FIRST_AIR_RANGE_RE = re.compile(r'(20\d{2})\s*\.\s*(\d{1,2})\s*\.\s*(\d{1,2})\s*
 # 종영일: '~' 바로 뒤에 오는 날짜. 방영 중인 프로그램은 '~' 뒤가 비어 있거나
 # 다른 채널명이 이어지므로(예: "2026.07.03.~, 채널S") 날짜가 안 잡힌다.
 AIR_END_RE = re.compile(r'~\s*(20\d{2})\s*\.\s*(\d{1,2})\s*\.\s*(\d{1,2})')
+# 방영 기간은 '편성' 라벨 뒤에서만 찾는다(다른 곳의 날짜를 집지 않도록)
+AIR_LABEL_RE = re.compile(r'편성')
 # 상세 페이지의 시청률 블록("시청률 0.8% 2026.08.07. 기준").
 # 종영한 프로그램은 '방영중' 위젯에서 빠져 마지막 회차 시청률을 위젯으로는
 # 못 받아오지만, 상세 페이지에는 그대로 남아 있어 여기서 회수한다.
@@ -1168,27 +1170,32 @@ def parse_air_period_from_html(html: str, today=None):
     scopes.append(soup.get_text(" ", strip=True))
 
     for text in scopes:
-        m = FIRST_AIR_RANGE_RE.search(text)
-        if not m:
-            continue
-        try:
-            start = date_cls(int(m.group(1)), int(m.group(2)), int(m.group(3)))
-        except ValueError:
-            continue
-        if not (date_cls(2000, 1, 1) <= start <= today):
-            continue
-
-        end = None
-        me = AIR_END_RE.search(text, m.end() - 1)
-        if me:
+        # '편성' 라벨 뒤에서만 찾는다. 모바일 화면에는 편성 블록 밖에도
+        # "날짜 ~" 형태의 텍스트가 있어(오늘 날짜 기반 UI 등), 아무 데서나
+        # 찾으면 첫 방송일이 오늘 날짜로 덮어써지는 사고가 난다.
+        for lm in AIR_LABEL_RE.finditer(text):
+            window = text[lm.end():lm.end() + 120]
+            m = FIRST_AIR_RANGE_RE.search(window)
+            if not m:
+                continue
             try:
-                cand = date_cls(int(me.group(1)), int(me.group(2)), int(me.group(3)))
+                start = date_cls(int(m.group(1)), int(m.group(2)), int(m.group(3)))
             except ValueError:
-                cand = None
-            # 종영일은 첫방송일보다 뒤여야 한다(엉뚱한 날짜 매칭 방어)
-            if cand and cand >= start:
-                end = cand
-        return start, end
+                continue
+            if not (date_cls(2000, 1, 1) <= start <= today):
+                continue
+
+            end = None
+            me = AIR_END_RE.search(window, m.end() - 1)
+            if me:
+                try:
+                    cand = date_cls(int(me.group(1)), int(me.group(2)), int(me.group(3)))
+                except ValueError:
+                    cand = None
+                # 종영일은 첫방송일보다 뒤여야 한다(엉뚱한 날짜 매칭 방어)
+                if cand and cand >= start:
+                    end = cand
+            return start, end
     return None, None
 
 
@@ -1346,6 +1353,11 @@ def lookup_air_periods(page, programs: list, out_dir: str):
         except Exception as e:
             print(f"  [방영기간] '{key}' 조회 실패: {e}")
         prev = cache.get(key) or {}
+        # 첫 방송일이 이미 아는 종영일보다 뒤면 잘못 읽은 값 — 기존 값을 지킨다
+        known_end = prev.get("endDate") or (end.isoformat() if end else None)
+        if start and known_end and start.isoformat() > known_end:
+            print(f"  [방영기간] '{key}' 첫방송일 {start} 이 종영일 {known_end} 보다 뒤 — 무시")
+            start = None
         ent = {
             "date": start.isoformat() if start else prev.get("date"),
             "endDate": (end.isoformat() if end else None) or prev.get("endDate"),
