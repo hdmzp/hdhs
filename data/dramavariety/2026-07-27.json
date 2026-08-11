@@ -1225,61 +1225,197 @@
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41524517&qvt=0&query=%EC%97%B4%ED%98%88%EB%86%8D%EA%B5%AC%EB%8B%A82"
     },
     {
-      "id": "variety_말자쇼_KBS2_오후 10:10",
-      "category": "variety",
+      "id": "drama_붉은 진주_KBS2_오후 07:50",
+      "category": "drama",
       "channel": "KBS2",
-      "title": "말자쇼",
+      "title": "붉은 진주",
       "days": [
-        "월"
-      ],
-      "time": "오후 10:10",
-      "rating": 2.9,
-      "ratingDate": "07.27",
-      "ratingByDay": {
-        "월": {
-          "rating": 2.9,
-          "ratingDate": "07.27"
-        }
-      },
-      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40281127&qvt=0&query=%EB%A7%90%EC%9E%90%EC%87%BC"
-    },
-    {
-      "id": "variety_더 시즌즈-성시경의 고막남친_KBS2_오후 11:30",
-      "category": "variety",
-      "channel": "KBS2",
-      "title": "더 시즌즈-성시경의 고막남친",
-      "days": [
+        "월",
+        "화",
+        "수",
+        "목",
         "금"
       ],
-      "time": "오후 11:30",
-      "rating": 1.0,
+      "time": "오후 07:50",
+      "rating": 7.9,
       "ratingDate": "07.31",
       "ratingByDay": {
+        "월": {
+          "rating": 7.7,
+          "ratingDate": "07.27"
+        },
+        "화": {
+          "rating": 8.2,
+          "ratingDate": "07.28"
+        },
+        "수": {
+          "rating": 7.5,
+          "ratingDate": "07.29"
+        },
+        "목": {
+          "rating": 8.0,
+          "ratingDate": "07.30"
+        },
         "금": {
-          "rating": 1.0,
+          "rating": 7.9,
           "ratingDate": "07.31"
         }
       },
-      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40902448&qvt=0&query=%EB%8D%94%20%EC%8B%9C%EC%A6%8C%EC%A6%88%20%EC%84%B1%EC%8B%9C%EA%B2%BD%EC%9D%98%20%EA%B3%A0%EB%A7%89%EB%82%A8%EC%B9%9C"
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=40528849&qvt=0&query=%EB%B6%89%EC%9D%80%20%EC%A7%84%EC%A3%BC"
     },
     {
-      "id": "variety_말자쇼_KBS2_오후 09:50",
+      "id": "drama_아파트_JTBC_오후 10:30",
+      "category": "drama",
+      "channel": "JTBC",
+      "title": "아파트",
+      "days": [
+        "일"
+      ],
+      "time": "오후 10:30",
+      "rating": 5.4,
+      "ratingDate": "08.02",
+      "ratingByDay": {
+        "일": {
+          "rating": 5.4,
+          "ratingDate": "08.02"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40275988&qvt=0&query=%EC%95%84%ED%8C%8C%ED%8A%B8"
+    },
+    {
+      "id": "drama_아파트_JTBC_오후 10:40",
+      "category": "drama",
+      "channel": "JTBC",
+      "title": "아파트",
+      "days": [
+        "토"
+      ],
+      "time": "오후 10:40",
+      "rating": 5.4,
+      "ratingDate": "08.02",
+      "ratingByDay": {},
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40275988&qvt=0&query=%EC%95%84%ED%8C%8C%ED%8A%B8"
+    },
+    {
+      "id": "drama_오싹한 연애_tvN_오후 09:10",
+      "category": "drama",
+      "channel": "tvN",
+      "title": "오싹한 연애",
+      "days": [
+        "토",
+        "일"
+      ],
+      "time": "오후 09:10",
+      "rating": 6.0,
+      "ratingDate": "08.02",
+      "ratingByDay": {
+        "토": {
+          "rating": 5.5,
+          "ratingDate": "08.01"
+        },
+        "일": {
+          "rating": 6.0,
+          "ratingDate": "08.02"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40359046&qvt=0&query=%EC%98%A4%EC%8B%B9%ED%95%9C%20%EC%97%B0%EC%95%A0"
+    },
+    {
+      "id": "variety_산골총각 영웅 (High Valley, Top Hero)_SBS_오후 09:00",
       "category": "variety",
-      "channel": "KBS2",
-      "title": "말자쇼",
+      "channel": "SBS",
+      "title": "산골총각 영웅 (High Valley, Top Hero)",
+      "days": [
+        "화"
+      ],
+      "time": "오후 09:00",
+      "rating": 4.2,
+      "ratingDate": "07.28",
+      "ratingByDay": {
+        "화": {
+          "rating": 4.2,
+          "ratingDate": "07.28"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=41437215&qvt=0&query=%EC%82%B0%EA%B3%A8%EC%B4%9D%EA%B0%81%20%EC%98%81%EC%9B%85%20%ED%95%98%EC%9D%B4%20%EB%B0%B8%EB%A6%AC%20%ED%83%91%20%ED%9E%88%EC%96%B4%EB%A1%9C"
+    },
+    {
+      "id": "variety_전현무계획4_MBN_오후 09:10",
+      "category": "variety",
+      "channel": "MBN",
+      "title": "전현무계획4",
+      "days": [
+        "금"
+      ],
+      "time": "오후 09:10",
+      "rating": 1.2,
+      "ratingDate": "07.31",
+      "ratingByDay": {
+        "금": {
+          "rating": 1.2,
+          "ratingDate": "07.31"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41531203&qvt=0&query=%EC%A0%84%ED%98%84%EB%AC%B4%EA%B3%84%ED%9A%8D4"
+    },
+    {
+      "id": "variety_조선의 사랑꾼_TV조선_오후 10:00",
+      "category": "variety",
+      "channel": "TV조선",
+      "title": "조선의 사랑꾼",
       "days": [
         "월"
       ],
-      "time": "오후 09:50",
-      "rating": 2.9,
+      "time": "오후 10:00",
+      "rating": 1.9,
       "ratingDate": "07.27",
       "ratingByDay": {
         "월": {
-          "rating": 2.9,
+          "rating": 1.9,
           "ratingDate": "07.27"
         }
       },
-      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40281127&qvt=0&query=%EB%A7%90%EC%9E%90%EC%87%BC"
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=29545231&qvt=0&query=%EC%A1%B0%EC%84%A0%EC%9D%98%20%EC%82%AC%EB%9E%91%EA%BE%BC"
+    },
+    {
+      "id": "variety_타임슬립 천일야사_채널A_오후 10:00",
+      "category": "variety",
+      "channel": "채널A",
+      "title": "타임슬립 천일야사",
+      "days": [
+        "화"
+      ],
+      "time": "오후 10:00",
+      "rating": 1.1,
+      "ratingDate": "07.28",
+      "ratingByDay": {
+        "화": {
+          "rating": 1.1,
+          "ratingDate": "07.28"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=41587761&qvt=0&query=%ED%83%80%EC%9E%84%EC%8A%AC%EB%A6%BD%20%EC%B2%9C%EC%9D%BC%EC%95%BC%EC%82%AC",
+      "isNew": true,
+      "newReason": "firstAir"
+    },
+    {
+      "id": "variety_히든아이_MBC every1_오후 08:30",
+      "category": "variety",
+      "channel": "MBC every1",
+      "title": "히든아이",
+      "days": [
+        "월"
+      ],
+      "time": "오후 08:30",
+      "rating": 1.1,
+      "ratingDate": "07.27",
+      "ratingByDay": {
+        "월": {
+          "rating": 1.1,
+          "ratingDate": "07.27"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=34400067&qvt=0&query=%ED%9E%88%EB%93%A0%EC%95%84%EC%9D%B4"
     }
   ],
   "newBelowCutoff": []
