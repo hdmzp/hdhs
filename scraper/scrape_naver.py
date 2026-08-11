@@ -1325,6 +1325,10 @@ def lookup_air_periods(page, programs: list, out_dir: str):
     return cache
 
 
+def _cutoff_for(category: str):
+    return MIN_RATING_DRAMA if category == "drama" else MIN_RATING_VARIETY
+
+
 def ensure_ended_entries(out_dir: str):
     """종영 주차에 카드가 없는 프로그램을 그 주차의 newBelowCutoff에 채워 넣는다.
 
@@ -1391,11 +1395,17 @@ def ensure_ended_entries(out_dir: str):
             continue
 
         # 이미 그 주차에 있으면(표 안이든 보강분이든) 시청률만 채워준다
-        existing = None
-        for p in data.get("programs", []) + data.get("newBelowCutoff", []):
+        existing, in_below = None, False
+        for p in data.get("programs", []):
             if _first_air_key(p) == key:
                 existing = p
                 break
+        if existing is None:
+            for p in data.get("newBelowCutoff", []):
+                if _first_air_key(p) == key:
+                    existing, in_below = p, True
+                    break
+
         if existing is not None:
             if last_rating is not None and existing.get("rating") is None:
                 existing["rating"] = last_rating
@@ -1403,11 +1413,19 @@ def ensure_ended_entries(out_dir: str):
                 existing.setdefault("ratingByDay", {})[last_day] = {
                     "rating": last_rating, "ratingDate": last_md}
                 existing.pop("noWeekData", None)
+                moved = ""
+                # 되찾은 시청률이 컷오프를 넘으면 표(그리드)로 올린다.
+                # 종영 주차 시청률이 없어 임시로 목록에만 있던 항목이므로,
+                # 값이 생긴 이상 다른 프로그램과 똑같이 표에 실려야 한다.
+                if in_below and last_rating >= _cutoff_for(existing.get("category")):
+                    data["newBelowCutoff"].remove(existing)
+                    data.setdefault("programs", []).append(existing)
+                    moved = " → 표로 이동"
                 with open(path, "w", encoding="utf-8") as f:
                     json.dump(data, f, ensure_ascii=False, indent=2)
                 filled_total += 1
                 print(f"  [종영 보강] {target}.json '{existing['title']}' 마지막 회차 시청률 "
-                      f"{last_rating}% ({last_md}) 회수")
+                      f"{last_rating}% ({last_md}) 회수{moved}")
             continue
 
         src = meta[key]
@@ -1426,9 +1444,12 @@ def ensure_ended_entries(out_dir: str):
             "isEnded": True,
             "endDate": ent["endDate"],
         }
-        if last_rating is None:
-            entry["noWeekData"] = True    # 그 주 실측값을 끝내 못 구함
-        data.setdefault("newBelowCutoff", []).append(entry)
+        if last_rating is not None and last_rating >= _cutoff_for(entry["category"]):
+            data.setdefault("programs", []).append(entry)
+        else:
+            if last_rating is None:
+                entry["noWeekData"] = True    # 그 주 실측값을 끝내 못 구함
+            data.setdefault("newBelowCutoff", []).append(entry)
         with open(path, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
         added_total += 1
@@ -1604,6 +1625,14 @@ def recompute_new_flags(out_dir: str):
                 touched, is_new, ended = apply_flags(p)
                 changed = changed or touched
                 _, _, known = judge(p)
+                # 정합성: 이 배열은 '컷오프 미만이라 표에 못 실린 것'만 담아야
+                # 한다. 종영작의 마지막 회차 시청률을 뒤늦게 회수해 컷오프를
+                # 넘게 된 항목은 표(programs)로 올린다.
+                if p.get("rating") is not None and p["rating"] >= _cutoff_for(p.get("category")):
+                    programs.append(p)
+                    changed = True
+                    print(f"  [정합성] {name}: '{p['title']}' {p['rating']}% — 컷오프 이상이므로 표로 이동")
+                    continue
                 if is_new or ended:
                     below_new += 1 if is_new else 0
                     below_end += 1 if ended else 0
