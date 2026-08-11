@@ -885,32 +885,33 @@ def dispatch_below_cutoff(out_dir: str, programs: list):
 
 
 def prune_dropped_programs(out_dir: str, collected_ids: set, today):
-    """이번 스크래핑에서 더 이상 안 보이는(=시청률이 컷오프 미달로 떨어진)
-    프로그램을 '직전 주차' 파일에서만 찾아 제거한다.
+    """직전 주차 파일에서 '그 주의 실측 근거가 없는' 항목만 정리한다.
 
-    범위를 직전 주 하나로 한정하는 이유:
-    - 이번 주(진행 중인 주)는 아직 데이터가 다 안 모인 상태라 대상에서 뺀다
-      (괜히 진행 중인 주 데이터를 흔들 위험을 없앤다).
-    - 그보다 오래된 주차는 네이버 위젯이 시간이 지나 더 이상 보여주지 않는
-      게 정상이라("방영종료" 탭으로 넘어갔거나 화면에서 자연스럽게 빠짐),
-      그런 정상적인 경우까지 "컷오프로 사라졌다"고 착각해서 지우면 과거
-      데이터가 통째로 날아간다.
-    토/일 시청률이 막 갱신되는 시점인 '바로 직전 주'만 이 정리 대상으로
-    삼아야 안전하다."""
+    ⚠️ 과거에는 "이번 스크래핑에서 안 보이면 = 컷오프 미달로 떨어진 것"으로
+    보고 직전 주차 파일에서 삭제했는데, 이게 데이터를 영구 소실시키는
+    버그였다. 실제 사고 사례(2026-07-26):
+      7/13 주차 파일에서 김부장(23.1%), 결혼의 완성(6.4%), 아파트(6.0%),
+      오싹한 연애(5.3%), 사랑을 처방해 드립니다(14.5%)가 삭제됨.
+      전부 그 뒤로도 계속 방영된 드라마고, 7/18~19(토·일) 시청률이 통째로
+      사라져 그 주차 주말 칸이 빈 상태로 남았다.
+
+    원인: 네이버 위젯 수집은 페이징이 불안정해서 한 번의 실행에서 일부
+    카드를 놓치는 일이 흔하다(이 파일의 재시도 로직들이 그 방증). "한 번의
+    수집에 안 보임"은 컷오프 하락이 아니라 그냥 수집 누락일 때가 많은데,
+    30% 안전장치는 한꺼번에 대량 삭제되는 경우만 막아줄 뿐 매 실행 몇 건씩
+    조금씩 지워지는 이 패턴은 통과시켜 버렸다.
+
+    더 근본적으로, 주차 파일에 들어있는 항목은 "그 주에 이 시청률로 방영됐다"는
+    과거의 사실 기록이다. 그 프로그램의 '현재' 시청률이 나중에 컷오프 밑으로
+    떨어졌다고 해서 지난주 기록을 소급해 지울 이유가 없다.
+
+    그래서 지금은 수집 여부(collected_ids)로는 아무것도 지우지 않고, 그 주의
+    실측 근거(주차 범위 안의 ratingDate 또는 ratingByDay)가 전혀 없는 항목만
+    정리한다. 주차 범위를 벗어난 오염 데이터는 _validate_week_membership이
+    저장 시점에 이미 걸러낸다."""
     today_monday = monday_of(today)
     target_monday = today_monday - timedelta(days=7)
     target_week_end = target_monday + timedelta(days=6)
-
-    # 주말(토/일) 시청률은 네이버 집계가 며칠 늦게 올라온다(dispatch_by_rating_date
-    # 주석 참고). 그 주가 끝나자마자(월요일) 바로 정리를 돌리면, 아직 집계가
-    # 안 올라온 토/일 방영작이 "이번 수집에 안 보임"으로 오판되어 삭제될 수
-    # 있다. 그래서 그 주가 끝난 뒤 최소 며칠(유예기간)은 정리를 보류한다.
-    GRACE_DAYS = 3
-    days_since_week_end = (today - target_week_end).days
-    if days_since_week_end < GRACE_DAYS:
-        print(f"  [컷오프 정리 보류] {target_monday.isoformat()} 주차는 종료 {days_since_week_end}일 "
-              f"경과 — 주말 시청률 집계 시차를 고려해 {GRACE_DAYS}일 유예 후 정리합니다.")
-        return
 
     file_path = os.path.join(out_dir, f"{target_monday.isoformat()}.json")
     if not os.path.exists(file_path):
@@ -921,31 +922,29 @@ def prune_dropped_programs(out_dir: str, collected_ids: set, today):
     except Exception:
         return
 
+    def has_week_evidence(p):
+        resolved = resolve_rating_date(p.get("ratingDate"), today)
+        if resolved and target_monday <= resolved <= target_week_end:
+            return True
+        for entry in (p.get("ratingByDay") or {}).values():
+            if not isinstance(entry, dict):
+                continue
+            d = resolve_rating_date(entry.get("ratingDate"), today)
+            if d and target_monday <= d <= target_week_end:
+                return True
+        # ratingDate를 아예 못 읽는 항목은 보수적으로 유지(잘못 지우는 것보다 안전)
+        return resolve_rating_date(p.get("ratingDate"), today) is None
+
     existing_programs = data.get("programs", [])
-    kept = [p for p in existing_programs if p["id"] in collected_ids]
-    dropped = [p for p in existing_programs if p["id"] not in collected_ids]
+    kept = [p for p in existing_programs if has_week_evidence(p)]
+    dropped = [p for p in existing_programs if not has_week_evidence(p)]
 
     if not dropped:
         return
 
-    # 안전장치: 기존 데이터의 상당수가 한꺼번에 "안 보임"으로 판정되면,
-    # 실제 컷오프(시청률 하락)보다는 이번 실행의 스크래핑 자체가 부분적/
-    # 실패했을 가능성이 훨씬 높다. 이 경우 잘못 삭제하는 대신 삭제를
-    # 보류하고 로그만 남긴다. (예: 김부장 21.5%, 신입사원 강회장 11.1%처럼
-    # 고시청률 프로그램이 수집 실패로 삭제되는 사고 방지)
-    existing_count = len(existing_programs)
-    dropped_ratio = len(dropped) / existing_count if existing_count else 0
-    if dropped_ratio > 0.3:
-        print(f"  [컷오프 정리 보류] {target_monday.isoformat()} 주차에서 {len(dropped)}/{existing_count}건"
-              f"({dropped_ratio:.0%})이 이번 수집에서 안 보임 — 실제 컷오프보다 이번 실행의"
-              f" 부분/실패 수집일 가능성이 높아 삭제를 건너뜁니다.")
-        for p in dropped:
-            print(f"    - 보류: '{p['title']}' ({p['channel']}, {p.get('ratingDate')}, {p['rating']}%)")
-        return
-
     for p in dropped:
-        print(f"  [컷오프 제거] {target_monday.isoformat()} 주차에서 '{p['title']}'"
-              f" ({p['channel']}, {p.get('ratingDate')}, {p['rating']}%) 제거 — 이번 수집에서 더 이상 확인되지 않음")
+        print(f"  [정리] {target_monday.isoformat()} 주차에서 '{p['title']}'"
+              f" ({p['channel']}, ratingDate={p.get('ratingDate')}) 제거 — 이 주차의 실측 근거 없음")
 
     data["programs"] = kept
     data["collectedAt"] = datetime.now(KST).isoformat()
