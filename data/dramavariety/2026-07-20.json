@@ -1536,13 +1536,17 @@
         "목"
       ],
       "time": "오후 08:40",
-      "rating": null,
-      "ratingDate": null,
-      "ratingByDay": {},
+      "rating": 6.2,
+      "ratingDate": "07.23",
+      "ratingByDay": {
+        "목": {
+          "rating": 6.2,
+          "ratingDate": "07.23"
+        }
+      },
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=41064652&qvt=0&query=%EC%96%B8%EB%8D%94%EC%BB%A4%EB%B2%84%20%EC%85%B0%ED%94%84",
       "isEnded": true,
-      "endDate": "2026-07-23",
-      "noWeekData": true
+      "endDate": "2026-07-23"
     }
   ]
 }
