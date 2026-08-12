@@ -110,8 +110,10 @@ PROGRAMS = [
     # 2026-08-18(화) 21:45 론칭 신규PGM. <나혼자산다> 컨셉 식품·리빙 라이프스타일.
     # 연간 10회 내외(8월 1회, 9월 추석 2회, 10월 컴온 1회 등) 비정기 편성이라
     # 상품에 따라 요일·시간대가 바뀐다 -> schedule_raw는 매번 API에서 새로 읽는다.
+    # fallback_schedule: pgmShop API가 편성 문구를 아직 안 내려주는 신규PGM용
+    # 임시 표기 (API에 값이 생기면 그쪽이 우선).
     {"tab_name": "김신영", "program_title": "김신영이 산다", "pgm_cd": "100078", "output_file": "CJ_KSY.json",
-     "keywords": ("김신영",)},
+     "keywords": ("김신영",), "fallback_schedule": "화 21:45"},
 ]
 # ==============================================
 
@@ -310,6 +312,8 @@ def crawl_cj_program(session: requests.Session, config: dict):
     if not tab_id:
         print(f"[실패] [{tab_name}] tabId를 못 얻음 (1단계 URL이 아직 안 채워졌을 수 있음)")
         return None
+
+    schedule_raw = schedule_raw or config.get("fallback_schedule", "")
 
     print(f"    -> tabId={tab_id} / 프로그램명: {program_title} / 편성: {schedule_raw}")
     print(f"    -> 프로그램 이미지: {program_image or '(못 찾음)'}")
