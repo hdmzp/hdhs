@@ -1,6 +1,6 @@
 {
   "month": "2026-08",
-  "updated_at": "2026-08-12T20:23:41.239531+09:00",
+  "updated_at": "2026-08-12T20:38:10.115508+09:00",
   "programs": [
     {
       "program_key": "HD_HJM",
@@ -13,7 +13,7 @@
         {
           "date": "2026-08-17",
           "label": "08/17(월) 19:30 방송",
-          "collected_at": "2026-08-12T20:23:41.237695+09:00",
+          "collected_at": "2026-08-12T20:38:10.111165+09:00",
           "products": [
             {
               "broadcast_date_label": "08/17(월) 19:30 방송",
@@ -117,7 +117,7 @@
         {
           "date": "2026-08-18",
           "label": "08/18(화) 19:30 방송",
-          "collected_at": "2026-08-12T20:23:41.237695+09:00",
+          "collected_at": "2026-08-12T20:38:10.111165+09:00",
           "products": [
             {
               "broadcast_date_label": "08/18(화) 19:30 방송",
@@ -253,7 +253,7 @@
         {
           "date": "2026-08-15",
           "label": "08/15(토) 08:20 방송",
-          "collected_at": "2026-08-12T20:23:41.237695+09:00",
+          "collected_at": "2026-08-12T20:38:10.111165+09:00",
           "products": [
             {
               "broadcast_date_label": "08/15(토) 08:20 방송",
@@ -357,7 +357,7 @@
         {
           "date": "2026-08-20",
           "label": "08/20(목) 20:45 방송",
-          "collected_at": "2026-08-12T20:23:41.237695+09:00",
+          "collected_at": "2026-08-12T20:38:10.111165+09:00",
           "products": [
             {
               "prd_id": "1133513492",
@@ -436,7 +436,7 @@
         {
           "date": "2026-08-13",
           "label": "08/13(목) 20:45 방송",
-          "collected_at": "2026-08-12T20:23:41.237695+09:00",
+          "collected_at": "2026-08-12T20:38:10.111165+09:00",
           "products": [
             {
               "prd_id": "1101552186",
@@ -634,8 +634,71 @@
         {
           "date": "2026-08-14",
           "label": "08/14(금) 20:35 방송",
-          "collected_at": "2026-08-12T20:23:41.237695+09:00",
+          "collected_at": "2026-08-12T20:38:10.111165+09:00",
           "products": [
+            {
+              "prd_id": "1132562145",
+              "broadcast_date_label": "8월 14일(금) 20:35 방송",
+              "broadcast_iso": "2026-08-14T20:35:00",
+              "brand": "GS SHOP",
+              "name": "유시몰 오리지널 쿨링피치 치약 소유진쇼 패키지",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1132562145"
+            },
+            {
+              "prd_id": "1107684430",
+              "broadcast_date_label": "8월 14일(금) 20:35 방송",
+              "broadcast_iso": "2026-08-14T20:35:00",
+              "brand": "GS SHOP",
+              "name": "유시몰 오리지널 쿨링피치 치약 기본세트",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1107684430"
+            },
+            {
+              "prd_id": "1107684423",
+              "broadcast_date_label": "8월 14일(금) 20:35 방송",
+              "broadcast_iso": "2026-08-14T20:35:00",
+              "brand": "GS SHOP",
+              "name": "유시몰 클래식 칫솔세트 8개",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1107684423"
+            },
+            {
+              "prd_id": "1107684520",
+              "broadcast_date_label": "8월 14일(금) 20:35 방송",
+              "broadcast_iso": "2026-08-14T20:35:00",
+              "brand": "GS SHOP",
+              "name": "유시몰 쿨링피치 오리지널 치약 120g 1개",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1107684520"
+            },
+            {
+              "prd_id": "1107684409",
+              "broadcast_date_label": "8월 14일(금) 20:35 방송",
+              "broadcast_iso": "2026-08-14T20:35:00",
+              "brand": "GS SHOP",
+              "name": "유시몰 쿨링피치 오리지널 치약 120g 6개 + 클래식 칫솔 1개",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1107684409"
+            },
+            {
+              "prd_id": "1107684416",
+              "broadcast_date_label": "8월 14일(금) 20:35 방송",
+              "broadcast_iso": "2026-08-14T20:35:00",
+              "brand": "GS SHOP",
+              "name": "유시몰 쿨링피치 오리지널 치약 120g 4개",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1107684416"
+            },
+            {
+              "prd_id": "1107684406",
+              "broadcast_date_label": "8월 14일(금) 20:35 방송",
+              "broadcast_iso": "2026-08-14T20:35:00",
+              "brand": "GS SHOP",
+              "name": "유시몰 쿨링피치 오리지널 치약 120g 6개 + 스퀴저 1개",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1107684406"
+            },
             {
               "prd_id": "1103156429",
               "broadcast_date_label": "8월 14일(금) 20:35 방송",
@@ -725,69 +788,6 @@
               "name": "바밤 국산 단호박식혜 1.2L 2병기획",
               "price": null,
               "link": "https://m.gsshop.com/prd/prd.gs?prdid=1108357051"
-            },
-            {
-              "prd_id": "1132562145",
-              "broadcast_date_label": "8월 14일(금) 20:35 방송",
-              "broadcast_iso": "2026-08-14T20:35:00",
-              "brand": "GS SHOP",
-              "name": "유시몰 오리지널 쿨링피치 치약 소유진쇼 패키지",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1132562145"
-            },
-            {
-              "prd_id": "1107684430",
-              "broadcast_date_label": "8월 14일(금) 20:35 방송",
-              "broadcast_iso": "2026-08-14T20:35:00",
-              "brand": "GS SHOP",
-              "name": "유시몰 오리지널 쿨링피치 치약 기본세트",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1107684430"
-            },
-            {
-              "prd_id": "1107684423",
-              "broadcast_date_label": "8월 14일(금) 20:35 방송",
-              "broadcast_iso": "2026-08-14T20:35:00",
-              "brand": "GS SHOP",
-              "name": "유시몰 클래식 칫솔세트 8개",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1107684423"
-            },
-            {
-              "prd_id": "1107684520",
-              "broadcast_date_label": "8월 14일(금) 20:35 방송",
-              "broadcast_iso": "2026-08-14T20:35:00",
-              "brand": "GS SHOP",
-              "name": "유시몰 쿨링피치 오리지널 치약 120g 1개",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1107684520"
-            },
-            {
-              "prd_id": "1107684409",
-              "broadcast_date_label": "8월 14일(금) 20:35 방송",
-              "broadcast_iso": "2026-08-14T20:35:00",
-              "brand": "GS SHOP",
-              "name": "유시몰 쿨링피치 오리지널 치약 120g 6개 + 클래식 칫솔 1개",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1107684409"
-            },
-            {
-              "prd_id": "1107684416",
-              "broadcast_date_label": "8월 14일(금) 20:35 방송",
-              "broadcast_iso": "2026-08-14T20:35:00",
-              "brand": "GS SHOP",
-              "name": "유시몰 쿨링피치 오리지널 치약 120g 4개",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1107684416"
-            },
-            {
-              "prd_id": "1107684406",
-              "broadcast_date_label": "8월 14일(금) 20:35 방송",
-              "broadcast_iso": "2026-08-14T20:35:00",
-              "brand": "GS SHOP",
-              "name": "유시몰 쿨링피치 오리지널 치약 120g 6개 + 스퀴저 1개",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1107684406"
             }
           ]
         }
@@ -805,7 +805,7 @@
         {
           "date": "2026-08-20",
           "label": "08/20(목) 20:45 방송",
-          "collected_at": "2026-08-12T20:23:41.237695+09:00",
+          "collected_at": "2026-08-12T20:38:10.111165+09:00",
           "products": [
             {
               "broadcast_date_label": "08/20 목요일 20:45",
@@ -828,7 +828,7 @@
         {
           "date": "2026-08-15",
           "label": "08/15(토) 08:20 방송",
-          "collected_at": "2026-08-12T20:23:41.237695+09:00",
+          "collected_at": "2026-08-12T20:38:10.111165+09:00",
           "products": [
             {
               "broadcast_date_label": "08/15 토요일 08:20",
@@ -891,7 +891,7 @@
         {
           "date": "2026-08-13",
           "label": "08/13(목) 20:45 방송",
-          "collected_at": "2026-08-12T20:23:41.237695+09:00",
+          "collected_at": "2026-08-12T20:38:10.111165+09:00",
           "products": [
             {
               "broadcast_date_label": "08/13 목요일 20:45",
@@ -1112,6 +1112,21 @@
       "detail_link": "https://display.cjonstyle.com/m/pgmShop/100009",
       "broadcasts": [
         {
+          "date": "2026-08-24",
+          "label": "08/24(월) 19:35 방송",
+          "collected_at": "2026-08-12T20:38:10.111165+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "08/24(월) 19:35",
+              "brand": "하라다 키요이",
+              "name": "하라다 키요이 일본 7겹 카야 행주 키친크로스 10종 세트",
+              "price": 59900,
+              "image": "https://image.cjonstyle.net/goods_images/20/572/2083257572L.jpg?timestamp=20260618153547",
+              "link": "https://item.cjonstyle.com/item/2083257572?channelCode=30002002"
+            }
+          ]
+        },
+        {
           "date": "2026-08-10",
           "label": "08/10(월) 19:35 방송",
           "collected_at": "2026-08-10T08:41:59.601988+09:00",
@@ -1195,8 +1210,16 @@
         {
           "date": "2026-08-12",
           "label": "08/12(수) 20:45 방송",
-          "collected_at": "2026-08-12T20:23:41.237695+09:00",
+          "collected_at": "2026-08-12T20:38:10.111165+09:00",
           "products": [
+            {
+              "broadcast_date_label": "08/12(수) 20:45",
+              "brand": "라이프밀",
+              "name": "[최화정쇼PICK] 황성주 박사의 라이프 밀 6+2박스+프로틴바1박스",
+              "price": 298000,
+              "image": "https://image.cjonstyle.net/goods_images/20/867/2090448867L.jpg?timestamp=20260801110944",
+              "link": "https://item.cjonstyle.com/item/2090448867?channelCode=30002002"
+            },
             {
               "broadcast_date_label": "08/12(수) 20:45",
               "brand": "라이프밀",
@@ -1220,6 +1243,14 @@
               "price": 145800,
               "image": "https://image.cjonstyle.net/goods_images/20/521/2058910521L.jpg?timestamp=20250722134844",
               "link": "https://item.cjonstyle.com/item/2058910521?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/12(수) 20:45",
+              "brand": "앳센셜",
+              "name": "[최화정쇼PICK] 체크스트라이프 선염타월 10P세트",
+              "price": 83900,
+              "image": "https://image.cjonstyle.net/goods_images/20/035/2058909035L.jpg?timestamp=20250722135251",
+              "link": "https://item.cjonstyle.com/item/2058909035?channelCode=30002002"
             }
           ]
         },
@@ -1370,6 +1401,45 @@
       "detail_link": "https://display.cjonstyle.com/m/pgmShop/563907",
       "broadcasts": [
         {
+          "date": "2026-08-15",
+          "label": "08/15(토) 08:20 방송",
+          "collected_at": "2026-08-12T20:38:10.111165+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "08/15(토) 08:20",
+              "brand": "대상웰라이프",
+              "name": "[김창옥단독]뉴케어 구수한맛 밸런스업 6박스 144팩+뉴케어 오트아몬드 10팩",
+              "price": 289000,
+              "image": "https://image.cjonstyle.net/goods_images/20/956/2085993956L.jpg?timestamp=20260601095811",
+              "link": "https://item.cjonstyle.com/item/2085993956?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/15(토) 08:20",
+              "brand": "대상웰라이프",
+              "name": "뉴케어 구수한맛 밸런스업 3박스 72팩",
+              "price": 179000,
+              "image": "https://image.cjonstyle.net/goods_images/20/751/2041704751L.jpg?timestamp=20260518114250",
+              "link": "https://item.cjonstyle.com/item/2041704751?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/15(토) 08:20",
+              "brand": "LG생활건강",
+              "name": "(김창옥쇼)[매니아] 리치 잇몸 전문 치약",
+              "price": 119000,
+              "image": "goods_images/20/325/2090390325L.jpg?timestamp=20260803150528",
+              "link": "https://display.cjonstyle.com/p/item/2090390325?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/15(토) 08:20",
+              "brand": "LG생활건강",
+              "name": "[싱글] 리치 검케어 잇몸 전문 치약",
+              "price": 79000,
+              "image": "goods_images/20/081/2037532081L.jpg?timestamp=20240814123549",
+              "link": "https://display.cjonstyle.com/p/item/2037532081?channelCode=30002002"
+            }
+          ]
+        },
+        {
           "date": "2026-08-04",
           "label": "08/04(화) 19:35 방송",
           "collected_at": "2026-08-04T09:15:53.249061+09:00",
@@ -1408,7 +1478,8 @@
             }
           ]
         }
-      ]
+      ],
+      "program_image": "https://image.cjonstyle.net/public/confirm/assets/pgm/shop/563907/2026/2/3/7041270f12d2ab6e9d229dc91dfb95dcd41518e7.png"
     },
     {
       "program_key": "CJ_SIH",
@@ -1421,8 +1492,24 @@
         {
           "date": "2026-08-21",
           "label": "08/21(금) 22:45 방송",
-          "collected_at": "2026-08-03T09:08:21.633578+09:00",
+          "collected_at": "2026-08-12T20:38:10.111165+09:00",
           "products": [
+            {
+              "broadcast_date_label": "08/21(금) 22:45",
+              "brand": "락포트",
+              "name": "[미리주문10%][공식정품] NEW 새틴 메리제인 스니커즈",
+              "price": 149000,
+              "image": "https://image.cjonstyle.net/goods_images/20/922/2089145922L.jpg?timestamp=20260805145001",
+              "link": "https://item.cjonstyle.com/item/2089145922?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/21(금) 22:45",
+              "brand": "락포트",
+              "name": "[미리주문10%][공식정품] NEW 램스킨 리버시블 숄더백 2종",
+              "price": 219000,
+              "image": "https://image.cjonstyle.net/goods_images/20/950/2089147950L.jpg?timestamp=20260812103615",
+              "link": "https://item.cjonstyle.com/item/2089147950?channelCode=30002002"
+            },
             {
               "broadcast_date_label": "08/21(금) 22:45",
               "brand": "락포트",
@@ -1953,6 +2040,576 @@
         }
       ],
       "program_image": "https://image.cjonstyle.net/public/confirm/assets/pgm/shop/100061/2026/3/16/6d77e0914780a652eb59a742224d0a6ce323ee9e.png"
+    },
+    {
+      "program_key": "CJ_KSY",
+      "company": "CJ",
+      "tab_name": "김신영",
+      "program_title": "김신영이 산다",
+      "schedule_raw": "",
+      "detail_link": "https://display.cjonstyle.com/m/pgmShop/100078",
+      "program_image": "https://image.cjonstyle.net/public/confirm/assets/pgm/shop/100078/2026/8/3/d2cee9c2e2ebe5141aff840592028fdd1bfe53bf.png",
+      "broadcasts": [
+        {
+          "date": "2026-08-18",
+          "label": "08/18(화) 21:45 방송",
+          "collected_at": "2026-08-12T20:38:10.111165+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "미닉스",
+              "name": "더 플렌더 MAX 음식물처리기 3L용량",
+              "price": 599000,
+              "image": "https://image.cjonstyle.net/goods_images/20/483/2081693483L.jpg?timestamp=20260429115813",
+              "link": "https://item.cjonstyle.com/item/2081693483?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "미닉스",
+              "name": "더시프트 미니 김치냉장고",
+              "price": 499000,
+              "image": "https://image.cjonstyle.net/goods_images/20/650/2080804650L.jpg?timestamp=20260617235950",
+              "link": "https://item.cjonstyle.com/item/2080804650?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "엑스쿠첸 316Ti 통5중 저압냄비 4L",
+              "price": 205000,
+              "image": "https://image.cjonstyle.net/goods_images/20/583/2077508583L.jpg?timestamp=20260211145850",
+              "link": "https://item.cjonstyle.com/item/2077508583?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "엑스쿠첸 316Ti 통5중 저압냄비 7L",
+              "price": 229000,
+              "image": "https://image.cjonstyle.net/goods_images/20/935/2077508935L.jpg?timestamp=20260211145806",
+              "link": "https://item.cjonstyle.com/item/2077508935?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "엑스쿠첸 316Ti 통5중 저압냄비 11L",
+              "price": 249000,
+              "image": "https://image.cjonstyle.net/goods_images/20/277/2077509277L.jpg?timestamp=20260211145500",
+              "link": "https://item.cjonstyle.com/item/2077509277?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 디펜더스 프라이팬(22팬) 인덕션 후라이팬 22팬 단품",
+              "price": 59900,
+              "image": "https://image.cjonstyle.net/goods_images/20/249/2052075249L.jpg?timestamp=20260313095051",
+              "link": "https://item.cjonstyle.com/item/2052075249?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 디펜더스 프라이팬(24팬) 인덕션 스텐 후라이팬 24팬 단품",
+              "price": 62900,
+              "image": "https://image.cjonstyle.net/goods_images/20/248/2029260248L.jpg?timestamp=20260430103720",
+              "link": "https://item.cjonstyle.com/item/2029260248?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 디펜더스 프라이팬(24웍) 인덕션 스텐 후라이팬 24웍 단품",
+              "price": 64900,
+              "image": "https://image.cjonstyle.net/goods_images/20/250/2029260250L.jpg?timestamp=20260430103642",
+              "link": "https://item.cjonstyle.com/item/2029260250?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "미닉스",
+              "name": "더 플렌더 MAX 음식물처리기 3L",
+              "price": 499000,
+              "image": "goods_images/20/964/2073018964L.jpg?timestamp=20260731142340",
+              "link": "https://display.cjonstyle.com/p/item/2073018964?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 디펜더스 프라이팬(28웍) 인덕션 스텐 후라이팬 28웍 단품",
+              "price": 71900,
+              "image": "goods_images/20/246/2029260246L.jpg?timestamp=20260430103738",
+              "link": "https://display.cjonstyle.com/p/item/2029260246?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 디펜더스S 프라이팬(24팬) 인덕션 스텐 후라이팬 24팬 단품",
+              "price": 70900,
+              "image": "goods_images/20/361/2059015361L.jpg?timestamp=20260428133327",
+              "link": "https://display.cjonstyle.com/p/item/2059015361?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 디펜더스S 프라이팬(24웍) 인덕션 스텐 후라이팬 24웍 단품",
+              "price": 73900,
+              "image": "goods_images/20/366/2059015366L.jpg?timestamp=20260428133535",
+              "link": "https://display.cjonstyle.com/p/item/2059015366?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 디펜더스S 프라이팬(28웍) 인덕션 스텐 후라이팬 28웍 단품",
+              "price": 80900,
+              "image": "goods_images/20/362/2059015362L.jpg?timestamp=20260428133633",
+              "link": "https://display.cjonstyle.com/p/item/2059015362?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 디펜더스 사각 프라이팬 인덕션 계란말이 후라이팬",
+              "price": 80900,
+              "image": "goods_images/20/526/2031488526L.jpg?timestamp=20260430103630",
+              "link": "https://display.cjonstyle.com/p/item/2031488526?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 디펜더스 브런치팬 사각 프라이팬 인덕션 후라이팬",
+              "price": 75900,
+              "image": "goods_images/20/274/2051328274L.jpg?timestamp=20260313095353",
+              "link": "https://display.cjonstyle.com/p/item/2051328274?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 디펜더스 미니에그팬 인덕션 사각 계란말이 에그팬",
+              "price": 66900,
+              "image": "goods_images/20/485/2063245485L.jpg?timestamp=20260313095135",
+              "link": "https://display.cjonstyle.com/p/item/2063245485?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 디펜더스S 후라이팬 서빙팬 28팬 인덕션 스테인레스",
+              "price": 77900,
+              "image": "goods_images/20/364/2078575364L.jpg?timestamp=20260715134353",
+              "link": "https://display.cjonstyle.com/p/item/2078575364?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 디펜더스S 후라이팬 서빙웍 28웍 스테인레스 프라이팬",
+              "price": 80900,
+              "image": "goods_images/20/688/2083512688L.jpg?timestamp=20260715134156",
+              "link": "https://display.cjonstyle.com/p/item/2083512688?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 디펜더스S 사각 크레페팬 인덕션 팬케이크 토스트 후라이팬",
+              "price": 86900,
+              "image": "goods_images/20/468/2063245468L.jpg?timestamp=20260409094614",
+              "link": "https://display.cjonstyle.com/p/item/2063245468?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 디펜더스S 프라이팬 팬팟세트(6종) 냄비 인덕션 스테인리스",
+              "price": 175900,
+              "image": "goods_images/20/791/2082133791L.jpg?timestamp=20260430103824",
+              "link": "https://display.cjonstyle.com/p/item/2082133791?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 디펜더스 프라이팬(24커버) 인덕션 스텐후라이팬 24웍 전용뚜껑",
+              "price": 15900,
+              "image": "goods_images/20/737/2060104737L.jpg?timestamp=20260313100317",
+              "link": "https://display.cjonstyle.com/p/item/2060104737?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 디펜더스 프라이팬(28커버) 인덕션 스텐후라이팬 28팬웍 전용뚜껑",
+              "price": 17900,
+              "image": "goods_images/20/837/2060104837L.jpg?timestamp=20260313100758",
+              "link": "https://display.cjonstyle.com/p/item/2060104837?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 디펜더스S 프라이팬(24커버) 인덕션 스텐후라이팬 24웍커버",
+              "price": 25900,
+              "image": "goods_images/20/359/2059015359L.jpg?timestamp=20260428133732",
+              "link": "https://display.cjonstyle.com/p/item/2059015359?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 디펜더스S 프라이팬(28커버) 인덕션 스텐후라이팬 28팬웍커버",
+              "price": 27900,
+              "image": "goods_images/20/364/2059015364L.jpg?timestamp=20260428133800",
+              "link": "https://display.cjonstyle.com/p/item/2059015364?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 디펜더스 프라이팬(22팬+24웍) 인덕션후라이팬 22팬24웍 세트",
+              "price": 123900,
+              "image": "goods_images/20/273/2051328273L.jpg?timestamp=20260313095758",
+              "link": "https://display.cjonstyle.com/p/item/2051328273?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 디펜더스 프라이팬(24팬+28팬) 인덕션후라이팬 24팬28팬 세트",
+              "price": 131900,
+              "image": "goods_images/20/573/2044283573L.jpg?timestamp=20260313100556",
+              "link": "https://display.cjonstyle.com/p/item/2044283573?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 디펜더스 프라이팬(24팬+24웍) 인덕션후라이팬 24팬24웍 세트",
+              "price": 126900,
+              "image": "goods_images/20/220/2060104220L.jpg?timestamp=20260313100433",
+              "link": "https://display.cjonstyle.com/p/item/2060104220?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 디펜더스 후라이팬(24팬+28웍) 스텐 후라이팬 24팬28웍 세트",
+              "price": 133900,
+              "image": "goods_images/20/468/2060103468L.jpg?timestamp=20260313101024",
+              "link": "https://display.cjonstyle.com/p/item/2060103468?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가]  디펜더스 후라이팬(24웍+28팬) 인덕션프라이팬 24웍28팬 세트",
+              "price": 134900,
+              "image": "goods_images/20/307/2078575307L.jpg?timestamp=20260324145551",
+              "link": "https://display.cjonstyle.com/p/item/2078575307?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 디펜더스 프라이팬(28팬+28웍) 인덕션후라이팬 28팬28웍 세트",
+              "price": 140900,
+              "image": "goods_images/20/634/2060103634L.jpg?timestamp=20260324145637",
+              "link": "https://display.cjonstyle.com/p/item/2060103634?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 디펜더스 프라이팬(24팬+28팬+28웍) 인덕션후라이팬 24팬28팬28웍세트",
+              "price": 197900,
+              "image": "goods_images/20/332/2044280332L.jpg?timestamp=20260313100630",
+              "link": "https://display.cjonstyle.com/p/item/2044280332?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 디펜더스 프라이팬(24팬+24웍+28팬) 인덕션후라이팬 24팬24웍28팬 세트",
+              "price": 192900,
+              "image": "goods_images/20/475/2060104475L.jpg?timestamp=20260313100525",
+              "link": "https://display.cjonstyle.com/p/item/2060104475?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 디펜더스 프라이팬(24팬+24웍+24커버) 인덕션후라이팬 24팬24웍24커버 세트",
+              "price": 140900,
+              "image": "goods_images/20/008/2060104008L.jpg?timestamp=20260313100457",
+              "link": "https://display.cjonstyle.com/p/item/2060104008?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 디펜더스 프라이팬(28팬+28웍+28커버) 인덕션후라이팬 28팬28웍28커버세트",
+              "price": 156900,
+              "image": "goods_images/20/340/2044280340L.jpg?timestamp=20260430103554",
+              "link": "https://display.cjonstyle.com/p/item/2044280340?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 디펜더스 프라이팬(24팬+28팬+28웍+28커버) 인덕션후라이팬 24팬28팬28웍28커버 세트",
+              "price": 199900,
+              "image": "goods_images/20/324/2044280324L.jpg?timestamp=20260430103607",
+              "link": "https://display.cjonstyle.com/p/item/2044280324?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 디펜더스 후라이팬(24팬+24웍+28팬+24커버+스퀘어팬) 5종 세트",
+              "price": 266900,
+              "image": "goods_images/20/097/2060103097L.jpg?timestamp=20260313100949",
+              "link": "https://display.cjonstyle.com/p/item/2060103097?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 디펜더스 후라이팬(24팬+28팬+28웍+28커버+스퀘어팬) 5종 세트",
+              "price": 262900,
+              "image": "goods_images/20/217/2060103217L.jpg?timestamp=20260313101105",
+              "link": "https://display.cjonstyle.com/p/item/2060103217?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 디펜더스S 팬팟 6종 파우치 세트",
+              "price": 188900,
+              "image": "goods_images/20/799/2082141799L.jpg?timestamp=20260714131022",
+              "link": "https://display.cjonstyle.com/p/item/2082141799?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 큐라이네 인덕션 통5중 냄비 5종 세트 (멀티캐셀포함)",
+              "price": 394900,
+              "image": "goods_images/20/277/2051328277L.jpg?timestamp=20260417144220",
+              "link": "https://display.cjonstyle.com/p/item/2051328277?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 큐라이네 인덕션 통5중 냄비 편수 16cm",
+              "price": 86900,
+              "image": "goods_images/20/124/2082138124L.jpg?timestamp=20260331155656",
+              "link": "https://display.cjonstyle.com/p/item/2082138124?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 큐라이네 인덕션 통5중 냄비 양수 20cm",
+              "price": 104900,
+              "image": "goods_images/20/190/2082138190L.jpg?timestamp=20260331155746",
+              "link": "https://display.cjonstyle.com/p/item/2082138190?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 큐라이네 인덕션 통5중 냄비 양수 24cm",
+              "price": 126900,
+              "image": "goods_images/20/141/2082138141L.jpg?timestamp=20260331155708",
+              "link": "https://display.cjonstyle.com/p/item/2082138141?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 큐라이네 인덕션 통5중 냄비 멀티케셀24cm+스티머",
+              "price": 152900,
+              "image": "goods_images/20/149/2082138149L.jpg?timestamp=20260331155713",
+              "link": "https://display.cjonstyle.com/p/item/2082138149?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 아트리움 편수냄비(16cm) 스텐 인덕션 편수 냄비 16cm",
+              "price": 97900,
+              "image": "goods_images/20/722/2059351722L.jpg?timestamp=20250604171541",
+              "link": "https://display.cjonstyle.com/p/item/2059351722?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 아트리움 양수냄비(20cm) 스텐 인덕션 파스타 냄비 20cm",
+              "price": 127900,
+              "image": "goods_images/20/693/2059351693L.jpg?timestamp=20250604171535",
+              "link": "https://display.cjonstyle.com/p/item/2059351693?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 아트리움 양수냄비(24cm) 스텐 인덕션 파스타 냄비 24cm",
+              "price": 173900,
+              "image": "goods_images/20/649/2059351649L.jpg?timestamp=20250604171529",
+              "link": "https://display.cjonstyle.com/p/item/2059351649?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 아트리움 전골냄비(24cm) 스텐 인덕션 전골 냄비 24cm",
+              "price": 152900,
+              "image": "goods_images/20/561/2059351561L.jpg?timestamp=20250604171511",
+              "link": "https://display.cjonstyle.com/p/item/2059351561?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 아트리움 인덕션 전골 냄비 24cm + 스티머",
+              "price": 174900,
+              "image": "goods_images/20/749/2059351749L.jpg?timestamp=20250604171547",
+              "link": "https://display.cjonstyle.com/p/item/2059351749?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 아트리움 스텐 냄비 편수 양수 전골 스티머 5종 세트",
+              "price": 504900,
+              "image": "goods_images/20/824/2059351824L.jpg?timestamp=20260121171024",
+              "link": "https://display.cjonstyle.com/p/item/2059351824?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가]  파인그립 스텐 핀셋 집게 2종 세트",
+              "price": 37900,
+              "image": "goods_images/20/262/2082138262L.jpg?timestamp=20260331160042",
+              "link": "https://display.cjonstyle.com/p/item/2082138262?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가]  VG10 다마스커스 나이프 과도 식도 주방칼 슬라이서나이프",
+              "price": 85900,
+              "image": "goods_images/20/341/2063243341L.jpg?timestamp=20260310134524",
+              "link": "https://display.cjonstyle.com/p/item/2063243341?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가]  VG10 다마스커스 나이프 과도 식도 주방칼 페어링나이프",
+              "price": 63900,
+              "image": "goods_images/20/846/2063242846L.jpg?timestamp=20260310134518",
+              "link": "https://display.cjonstyle.com/p/item/2063242846?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가]  VG10 다마스커스 나이프 과도 식도 주방칼 3종세트",
+              "price": 209900,
+              "image": "goods_images/20/683/2063236683L.jpg?timestamp=20260310134513",
+              "link": "https://display.cjonstyle.com/p/item/2063236683?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가]  VG10 다마스커스 나이프 주방칼 3종세트+다마스커스칼블럭",
+              "price": 225900,
+              "image": "goods_images/20/464/2063236464L.jpg?timestamp=20260325145229",
+              "link": "https://display.cjonstyle.com/p/item/2063236464?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 믹싱볼 3종세트 샐러드볼 스텐볼 스텐믹싱볼",
+              "price": 75900,
+              "image": "goods_images/20/368/2031488368L.jpg?timestamp=20250530141226",
+              "link": "https://display.cjonstyle.com/p/item/2031488368?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 밧드 스텐 반찬통(S) 밀폐용기 스텐 사각 주방바트 소 단품",
+              "price": 30900,
+              "image": "goods_images/20/114/2060105114L.jpg?timestamp=20260129150839",
+              "link": "https://display.cjonstyle.com/p/item/2060105114?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 밧드 스텐 반찬통(M) 바트 밀폐용기 밧트 스테인레스 사각 주방바트 중 단품",
+              "price": 33900,
+              "image": "goods_images/20/772/2045509772L.jpg?timestamp=20260129150855",
+              "link": "https://display.cjonstyle.com/p/item/2045509772?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 밧드 스텐 반찬통(L) 밀폐용기 바트 밧트 스텐 사각 주방바트 대 단품",
+              "price": 35900,
+              "image": "goods_images/20/961/2045509961L.jpg?timestamp=20260129150908",
+              "link": "https://display.cjonstyle.com/p/item/2045509961?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 밧드 스텐 반찬통(Long) 밀폐용기 스텐 사각 주방바트 롱 단품",
+              "price": 39900,
+              "image": "goods_images/20/223/2060105223L.jpg?timestamp=20260129150949",
+              "link": "https://display.cjonstyle.com/p/item/2060105223?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 밧드 스텐 반찬통(S+Long) 스텐밧드 소+롱 세트",
+              "price": 63900,
+              "image": "goods_images/20/306/2060105306L.jpg?timestamp=20260129151016",
+              "link": "https://display.cjonstyle.com/p/item/2060105306?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 밧드 스텐 반찬통(M+L) 바트 밀폐용기 스테인레스 중+대 세트",
+              "price": 62500,
+              "image": "goods_images/20/763/2029306763L.jpg?timestamp=20260129151035",
+              "link": "https://display.cjonstyle.com/p/item/2029306763?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 밧드 스텐 반찬통(S+M+L) 스텐밧드 소+중+대 세트",
+              "price": 92900,
+              "image": "goods_images/20/380/2060105380L.jpg?timestamp=20260129151103",
+              "link": "https://display.cjonstyle.com/p/item/2060105380?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 밧드 스텐 반찬통(M+L+Long) 스텐밧드 중+대+롱 세트",
+              "price": 98500,
+              "image": "goods_images/20/595/2060105595L.jpg?timestamp=20260129151132",
+              "link": "https://display.cjonstyle.com/p/item/2060105595?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 밧드 스텐 반찬통(L+XL+Long) 스텐밧드 대+특대+롱 세트",
+              "price": 102900,
+              "image": "goods_images/20/651/2060105651L.jpg?timestamp=20260129151159",
+              "link": "https://display.cjonstyle.com/p/item/2060105651?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 밧드 스텐 반찬통(M+L+XL) 바트 밀폐용기 밧트 스테인레스 사각 주방 중+대+특대 세트",
+              "price": 98500,
+              "image": "goods_images/20/369/2040861369L.jpg?timestamp=20260129151253",
+              "link": "https://display.cjonstyle.com/p/item/2040861369?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 밧드 스텐 반찬통(M+L+L+XL) 스텐밧드 중+대+대+특대 세트",
+              "price": 126900,
+              "image": "goods_images/20/717/2060105717L.jpg?timestamp=20260205155737",
+              "link": "https://display.cjonstyle.com/p/item/2060105717?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 찜기 스텐 만두 이유식 야채찜기 멀티 하이브리드 스티머 20cm",
+              "price": 24900,
+              "image": "goods_images/20/466/2029260466L.jpg?timestamp=20250530141413",
+              "link": "https://display.cjonstyle.com/p/item/2029260466?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 찜기 스텐 만두 이유식 야채찜기 멀티 하이브리드 스티머 24cm",
+              "price": 29900,
+              "image": "goods_images/20/456/2029260456L.jpg?timestamp=20250530141448",
+              "link": "https://display.cjonstyle.com/p/item/2029260456?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/18(화) 21:45",
+              "brand": "알텐바흐",
+              "name": "[특별가] 가위 주방 고기 스텐가위 3종 세트",
+              "price": 42900,
+              "image": "goods_images/20/636/2044283636L.jpg?timestamp=20250530141122",
+              "link": "https://display.cjonstyle.com/p/item/2044283636?channelCode=30002002"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

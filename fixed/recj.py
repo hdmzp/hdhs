@@ -107,6 +107,13 @@ PROGRAMS = [
     # pgm_cd는 pgmShop 페이지 URL의 번호 (fixed_programs/CJ.json의 pgmshop_link 참조)
     {"tab_name": "소이현", "program_title": "소이현의 겟잇스타일", "pgm_cd": "100061", "output_file": "CJ_SIH.json",
      "keywords": ("소이현", "겟잇스타일")},
+    # 2026-08-18(화) 21:45 론칭 신규PGM. <나혼자산다> 컨셉 식품·리빙 라이프스타일.
+    # 연간 10회 내외(8월 1회, 9월 추석 2회, 10월 컴온 1회 등) 비정기 편성이라
+    # 상품에 따라 요일·시간대가 바뀐다 -> schedule_raw는 매번 API에서 새로 읽는다.
+    # fallback_schedule: pgmShop API가 편성 문구를 아직 안 내려주는 신규PGM용
+    # 임시 표기 (API에 값이 생기면 그쪽이 우선).
+    {"tab_name": "김신영", "program_title": "김신영이 산다", "pgm_cd": "100078", "output_file": "CJ_KSY.json",
+     "keywords": ("김신영",), "fallback_schedule": "화 21:45"},
 ]
 # ==============================================
 
@@ -167,7 +174,9 @@ def fetch_schedule_lineup(session: requests.Session, bd_dt: str, start_hm: str, 
     data = fetch_json(session, TV_SCHEDULE_URL.format(bd_dt=bd_dt))
     if not data:
         return []
-    for pg in data.get("result", {}).get("programList", []) or []:
+    # 아직 편성이 안 잡힌 날짜(예: 2주 뒤 방송)는 200 OK에 result가 null로 온다.
+    # get("result", {})는 이 경우 {}가 아니라 None을 돌려주므로 or {}로 막는다.
+    for pg in (data.get("result") or {}).get("programList", []) or []:
         start_ms = pg.get("bdStrDtm")
         if not start_ms:
             continue
@@ -273,7 +282,7 @@ def get_tab_id(session: requests.Session, pgm_cd: str):
     if not data:
         return None, None, None, None
 
-    result = data.get("result", {})
+    result = data.get("result") or {}
     pgm_shop_info = result.get("pgmShopInfo", {}) or {}
     program_title = pgm_shop_info.get("pgmNm", "")
     schedule_parts = [
@@ -304,6 +313,8 @@ def crawl_cj_program(session: requests.Session, config: dict):
         print(f"[실패] [{tab_name}] tabId를 못 얻음 (1단계 URL이 아직 안 채워졌을 수 있음)")
         return None
 
+    schedule_raw = schedule_raw or config.get("fallback_schedule", "")
+
     print(f"    -> tabId={tab_id} / 프로그램명: {program_title} / 편성: {schedule_raw}")
     print(f"    -> 프로그램 이미지: {program_image or '(못 찾음)'}")
 
@@ -318,7 +329,7 @@ def crawl_cj_program(session: requests.Session, config: dict):
         print(f"[실패] [{tab_name}] moduleList 응답 없음")
         return None
 
-    modules = module_data.get("result", {}).get("moduleList", []) or []
+    modules = (module_data.get("result") or {}).get("moduleList", []) or []
     # 모듈 인벤토리 로그 (새 구좌 유형이 생기면 여기서 코드 확인)
     inventory = [m.get("moduleBaseInfo", {}).get("repModulTpCd") for m in modules]
     print(f"    -> 모듈 구성: {inventory}")
@@ -406,7 +417,14 @@ def main():
     session = requests.Session()
 
     for config in PROGRAMS:
-        result = crawl_cj_program(session, config)
+        # 프로그램 하나가 예상 못 한 응답 형태로 터져도(CJ API가 간헐적으로
+        # result=null을 준다) 나머지 프로그램 수집은 계속돼야 한다.
+        # 워크플로우의 회사별 continue-on-error와 같은 취지의 프로그램별 격리.
+        try:
+            result = crawl_cj_program(session, config)
+        except Exception as e:
+            print(f"[실패] [{config['tab_name']}] 수집 중 오류: {e!r}")
+            continue
         if not result:
             continue
 
