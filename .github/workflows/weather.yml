@@ -43,8 +43,11 @@ jobs:
             git commit -m "chore: 날씨 자동 갱신 $(date -u +%Y-%m-%d)"
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
-          git pull --rebase --autostash origin main
-          git push
+          # main에 고정하면 다른 브랜치에서 수동 실행할 때 그 브랜치를 main에
+          # 리베이스하려다 충돌로 죽는다. 지금 체크아웃된 브랜치를 그대로 쓴다.
+          BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+          git pull --rebase --autostash origin "$BRANCH"
+          git push origin "$BRANCH"
 
       - name: Pages 재배포 트리거
         # github-actions[bot] 계정(GITHUB_TOKEN)으로 만든 push는 GitHub이

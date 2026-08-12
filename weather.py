@@ -95,7 +95,9 @@ WEATHER_ROOT = "weather"
 
 BACKFILL_START = datetime(2023, 1, 1)
 REQUEST_DELAY_SEC = 0.5
-REQUEST_TIMEOUT_SEC = 20
+REQUEST_TIMEOUT_SEC = 20        # 응답 대기(읽기) 제한
+REQUEST_CONNECT_TIMEOUT_SEC = 5  # 접속 제한. 막힌 호스트에 20초씩 매달리면
+                                 # 지역 8곳 x 요청 2종에 15분이 날아가 잡 타임아웃에 닿는다
 MAX_RETRIES = 3
 RETRY_BACKOFF_SEC = 2
 FAILFAST_AFTER = 3  # 연속 실패가 이만큼 쌓이면 재시도 없이 즉시 포기
@@ -136,7 +138,9 @@ def request_json_urls(urls: list[str], params: dict, group: str) -> dict:
     for attempt in range(attempts):
         for url in targets:
             try:
-                resp = requests.get(url, params=params, timeout=REQUEST_TIMEOUT_SEC)
+                resp = requests.get(
+                    url, params=params,
+                    timeout=(REQUEST_CONNECT_TIMEOUT_SEC, REQUEST_TIMEOUT_SEC))
                 resp.raise_for_status()
                 data = resp.json()
                 _consecutive_failures[group] = 0
