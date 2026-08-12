@@ -383,13 +383,22 @@ def main():
         print(f"  - 총 수집된 예고 상품 수: {len(result['products'])}개")
 
 
+DIAG_FILE = ".gs_price_diag.txt"
+
+
 def print_price_diagnosis_summary():
-    """가격 진단은 상품별 로그 사이에 묻히면 찾기 어려워서 맨 마지막에 모아 찍는다."""
+    """가격 진단은 상품별 로그 사이에 묻히면 찾기 어려워서 맨 마지막에 모아 찍고,
+    워크플로우 마지막 스텝이 다시 출력할 수 있게 파일로도 남긴다."""
     if not _price_diag_lines:
         return
+    body = "\n".join(_price_diag_lines)
     print("\n===== GS 가격 추출 진단 =====")
-    for line in _price_diag_lines:
-        print(line)
+    print(body)
+    try:
+        with open(DIAG_FILE, "w", encoding="utf-8") as f:
+            f.write(body)
+    except OSError:
+        pass
 
 
 if __name__ == "__main__":

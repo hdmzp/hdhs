@@ -121,3 +121,9 @@ jobs:
           echo "수집 건전성 검사에서 문제가 발견됐습니다:"
           echo "${{ steps.health.outputs.failures }}"
           exit 1
+
+      # GS 가격 추출 진단(임시): 로그 중간에 묻히지 않게 마지막에 다시 출력한다.
+      # 셀렉터 확정 후 regs.py의 진단 코드와 함께 제거할 것.
+      - name: GS 가격 진단 출력
+        if: always()
+        run: cat .gs_price_diag.txt || echo "(진단 파일 없음 - 가격 추출이 성공했거나 GS 수집이 실행되지 않음)"
