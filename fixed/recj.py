@@ -107,6 +107,11 @@ PROGRAMS = [
     # pgm_cd는 pgmShop 페이지 URL의 번호 (fixed_programs/CJ.json의 pgmshop_link 참조)
     {"tab_name": "소이현", "program_title": "소이현의 겟잇스타일", "pgm_cd": "100061", "output_file": "CJ_SIH.json",
      "keywords": ("소이현", "겟잇스타일")},
+    # 2026-08-18(화) 21:45 론칭 신규PGM. <나혼자산다> 컨셉 식품·리빙 라이프스타일.
+    # 연간 10회 내외(8월 1회, 9월 추석 2회, 10월 컴온 1회 등) 비정기 편성이라
+    # 상품에 따라 요일·시간대가 바뀐다 -> schedule_raw는 매번 API에서 새로 읽는다.
+    {"tab_name": "김신영", "program_title": "김신영이 산다", "pgm_cd": "100078", "output_file": "CJ_KSY.json",
+     "keywords": ("김신영",)},
 ]
 # ==============================================
 

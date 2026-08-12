@@ -3034,6 +3034,7 @@
       <button class="active" data-file="CJ_KJE.json">강주은 굿라이프</button>
       <button class="active" data-file="HD_OGS.json">오감쇼</button>
       <button class="active" data-file="CJ_KCO.json">더 김창옥 라이브</button>
+      <button class="active" data-file="CJ_KSY.json">김신영이 산다</button>
       <button class="active" data-file="CJ_CHJ.json">최화정쇼</button>
       <button class="active" data-file="GS_BJY.json">지금 백지연</button>
       <button class="active" data-file="LT_CYR.json">최유라쇼</button>
@@ -4308,7 +4309,7 @@ const HS_PGM_BADGE_RULES = [
   ['더컬렉션', '더컬렉션'], ['유민', '장유민'], ['조윤주', '조윤주'], ['이승연', '이승연'],
   ['HIT THE STYLE', '힛스'], ['힛더스', '힛스'], ['김지애', '김지애'], ['수정SHOP', '이수정'],
   ['L.SHOW', '엘쇼'], ['쇼미', '쇼미'], ['신상뷰티', '찬스'], ['지완스', '더지완스'],
-  ['김창옥', '김창옥'], ['지금 여행', '지금여행'],
+  ['김창옥', '김창옥'], ['지금 여행', '지금여행'], ['김신영', '김신영'],
 ];
 
 function hsPgmBadgeLabel(pgm) {
@@ -5104,8 +5105,10 @@ document.getElementById('pmMonthPicker').addEventListener('change', (e) => {
 // (황정민=월 19:30, 강주은=월 19:35, 오감쇼=화 19:30, 김창옥=화 19:35, 최화정=수,
 //  백지연=목, 최유라=목/토, 소유진=금 20:35, 소이현=금 21:45, 왕영은=토 08:20)
 // ※ 황정민쇼는 목요일이었다가 월요일로 이동함 (2026-08 기준)
+// ※ 김신영이 산다는 8/18(화) 21:45 론칭 후 연간 10회 내외 비정기 편성이라
+//   요일·시간대가 유동적 - 우선 론칭 시간대(화 21:45) 자리에 둔다.
 const CEL_FILES = [
-  "HD_HJM.json", "CJ_KJE.json", "HD_OGS.json", "CJ_KCO.json",
+  "HD_HJM.json", "CJ_KJE.json", "HD_OGS.json", "CJ_KCO.json", "CJ_KSY.json",
   "CJ_CHJ.json", "GS_BJY.json", "LT_CYR.json", "GS_SYJ.json",
   "CJ_SIH.json", "HD_WYE.json"
 ];
