@@ -1,5 +1,5 @@
 {
-  "collectedAt": "2026-08-12T20:22:06.011690+09:00",
+  "collectedAt": "2026-08-12T20:41:34.673934+09:00",
   "companies": [
     "HD",
     "GS",
@@ -138,6 +138,16 @@
           "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2238432716"
         }
       ]
+    },
+    {
+      "company": "CJ",
+      "day": "화",
+      "time": "21:45",
+      "title": "김신영이 산다",
+      "schedule_raw": "화 21:45",
+      "thumbnail": "https://image.cjonstyle.net/public/confirm/assets/pgm/shop/100078/2026/8/3/d2cee9c2e2ebe5141aff840592028fdd1bfe53bf.png",
+      "detail_link": "https://display.cjonstyle.com/m/pgmShop/100078",
+      "upcoming_products": []
     },
     {
       "company": "HD",
@@ -840,7 +850,7 @@
       "upcoming_products": [
         {
           "name": "26FW 모닐리 소프트 티블라우스 3종",
-          "price": 71910,
+          "price": 67920,
           "image": "https://asset.m-gs.kr/prod/1130659501/1/370",
           "link": "https://m.gsshop.com/prd/prd.gs?prdid=1130659501&mseq=W00618-TV_PRO-1"
         },
@@ -1255,13 +1265,28 @@
     },
     {
       "company": "LT",
-      "title": "Sell love",
+      "title": "엘라이브 가구단지",
+      "schedule_raw": "엘단지로 완성하는 우리집 스타일링"
+    },
+    {
+      "company": "LT",
+      "title": "가전패스",
+      "schedule_raw": "가전! 엘라이브 가전패스"
+    },
+    {
+      "company": "LT",
+      "title": "섭PD의 어섭쇼!",
       "schedule_raw": ""
     },
     {
       "company": "LT",
-      "title": "미숙씨 X 가전 LIVE",
+      "title": "태윤맘과 맘심톡톡!",
       "schedule_raw": ""
+    },
+    {
+      "company": "LT",
+      "title": "리빙패스",
+      "schedule_raw": "최저가 리빙템! 리빙패스!"
     },
     {
       "company": "LT",
@@ -1275,32 +1300,17 @@
     },
     {
       "company": "LT",
-      "title": "태윤맘과 맘심톡톡!",
-      "schedule_raw": ""
-    },
-    {
-      "company": "LT",
-      "title": "엘라이브 가구단지",
-      "schedule_raw": "엘단지로 완성하는 우리집 스타일링"
-    },
-    {
-      "company": "LT",
-      "title": "가전패스",
-      "schedule_raw": "가전! 엘라이브 가전패스"
-    },
-    {
-      "company": "LT",
-      "title": "리빙패스",
-      "schedule_raw": "최저가 리빙템! 리빙패스!"
-    },
-    {
-      "company": "LT",
-      "title": "섭PD의 어섭쇼!",
+      "title": "Sell love",
       "schedule_raw": ""
     },
     {
       "company": "LT",
       "title": "쇼핑마스터",
+      "schedule_raw": ""
+    },
+    {
+      "company": "LT",
+      "title": "미숙씨 X 가전 LIVE",
       "schedule_raw": ""
     }
   ]
