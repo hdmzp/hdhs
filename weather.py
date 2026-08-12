@@ -85,6 +85,7 @@ OPEN_METEO_URL = "https://api.open-meteo.com/v1/forecast"
 KST = timezone(timedelta(hours=9))
 FORECAST_DAYS = 4        # 오늘 + 앞으로 3일
 FALLBACK_PAST_DAYS = 3   # 폴백 시 최근 며칠치도 같이 받아 ASOS 공백을 임시로 메움
+MIN_TMP_SAMPLES = 3     # TMN/TMX 없는 날을 시간대별 기온으로 대신 채울 최소 표본 수
 
 # 평문 http(80)로만 붙으면 실행 환경에 따라 연결 자체가 타임아웃 난다
 # (GitHub Actions 러너에서 전 지역·전 엔드포인트 ConnectTimeout 발생).
@@ -378,10 +379,13 @@ def fetch_forecast_kma(nx: int, ny: int, now: datetime) -> dict:
             iso_date = f"{fdate[:4]}-{fdate[4:6]}-{fdate[6:8]}"
             min_ta = entry["minTa"]
             max_ta = entry["maxTa"]
-            if min_ta is None and entry["tmp_list"]:
-                min_ta = min(entry["tmp_list"])
-            if max_ta is None and entry["tmp_list"]:
-                max_ta = max(entry["tmp_list"])
+            # 예보 창 끝에 한두 시간만 걸친 날은 TMP로 채우면 최저=최고가 되어
+            # 하루 기온처럼 보이지 않는다. 시간대가 어느 정도 모인 날만 채운다.
+            usable_tmp = entry["tmp_list"] if len(entry["tmp_list"]) >= MIN_TMP_SAMPLES else []
+            if min_ta is None and usable_tmp:
+                min_ta = min(usable_tmp)
+            if max_ta is None and usable_tmp:
+                max_ta = max(usable_tmp)
             if min_ta is None and max_ta is None:
                 continue  # 값이 하나도 없는 날은 담지 않는다 ('최저 –/최고 –' 방지)
             result[iso_date] = {
@@ -437,6 +441,12 @@ def fetch_forecast_openmeteo(lat: float, lon: float) -> dict:
     return result
 
 
+def has_temp(entry: dict) -> bool:
+    """최저/최고 중 하나라도 값이 있는지. 둘 다 없으면 화면에 '–'만 남는다."""
+    return isinstance(entry, dict) and (
+        entry.get("minTa") is not None or entry.get("maxTa") is not None)
+
+
 def carry_over_past(region_code: str, existing: dict, fresh: dict, today: str) -> dict:
     """새 예보 창(오늘~글피) + '아직 ASOS 관측이 없는 지난 날'만 남긴다.
 
@@ -466,6 +476,8 @@ def carry_over_past(region_code: str, existing: dict, fresh: dict, today: str) -
             continue  # 오늘 이후는 새 예보로 갈아끼운다
         if asos_has(date_str):
             continue  # 실제 관측이 들어왔으니 예보값은 버린다
+        if not has_temp(entry):
+            continue  # 기온이 없는 껍데기는 '최저 –/최고 –'로만 보이니 버린다
         merged[date_str] = entry
 
     return merged
