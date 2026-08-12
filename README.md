@@ -100,18 +100,37 @@ hdhs/
 |---|---|---|
 | ① 재시도 | `tools/scrape_guard.py` | 타임아웃·5xx·429·WAF의 HTML 응답 같은 **일시적** 실패. 지수 백오프(1→2→4초 + 지터), 429는 `Retry-After` 존중, 404/403은 재시도 없이 즉시 포기 |
 | ② 산출물 검사 | `tools/check_scrape_health.py` | 재시도로도 안 되는 **진짜 장애**. 수집 직전 `--mark`로 시각을 찍고, 수집 후 산출물이 ⓐ존재하는지 ⓑJSON으로 읽히는지 ⓒ**이번 실행에서 다시 쓰였는지** ⓓ최소 건수를 넘는지 ⓔ직전 커밋 대비 40% 밑으로 급감하지 않았는지 검사. 하나라도 걸리면 종료코드 1 |
-| ③ 알림 | `notify/send_alert.py` | 빨간불을 **못 보고 지나가는 것**. 검사 실패 시 텔레그램으로 실패 파일과 실행 로그 링크 발송 |
+| ③ 알림 | `tools/run_step.py` + `notify/send_alert.py` | 빨간불을 **못 보고 지나가는 것**. 스크래퍼를 `run_step.py`로 감싸 예외 종류·메시지·발생 위치를 잡아두고, 검사 실패 시 텔레그램으로 **코드명 / 오류내용 / 수정권장사항**을 발송 |
 
 핵심은 ⓒ다. 내용이 그대로여도 파일은 매번 다시 쓰이므로, 스크래퍼가 죽으면 그 회사 파일만 mtime이 안 바뀌어 즉시 잡힌다.
 
 검사는 커밋 **직전**에 돌리되 `continue-on-error: true`로 둔다 — 살아남은 회사 데이터는 커밋해서 살리고, 잡 실패 처리는 마지막 스텝에서 한다. 적용된 워크플로우는 `rep-pgm-scrape.yml`, `scrape-fixed-pgm.yml`, `scrape-celebpgm.yml` 3개.
+
+알림 형식 (텔레그램):
+
+```
+⛔️HDHS 오류감지
+
+▶️fixed/recj.py
+-AttributeError: 'NoneType' object has no attribute 'get' @ recj.py:175
+-API가 해당 필드를 null로 준 경우 - 응답 접근부에 `or {}` 방어 추가
+
+▶️rep-pgm-scrape.yml (셀럽PGM)
+-celeb 산출물 4건 실패 (코드 2곳)
+-수정 후 워크플로우 수동 재실행 필요
+```
+
+코드(스크립트) 블록은 어느 파일을 열어야 하는지, 워크플로우 블록은 이 실행을 어떻게 처리하면 되는지를 알려준다. 산출물 실패는 `PRODUCER` 매핑으로 담당 스크래퍼에 귀속되고, 권장사항은 예외 종류/실패 사유별로 `advise*()`가 만든다.
 
 ```bash
 # 로컬에서 수동 점검
 python tools/check_scrape_health.py --mark      # 수집 직전
 python tools/check_scrape_health.py --group celeb   # 또는 --group fixed
 python tools/test_scrape_guard.py               # 재시도 로직 자체 테스트 (네트워크 불필요)
+DRY_RUN=1 python notify/send_alert.py --test    # 알림 형식만 출력 (발송 안 함)
 ```
+
+알림이 실제로 도착하는지는 `alert-test.yml` 워크플로우를 수동 실행해 예시 메시지를 쏴보면 된다 (봇 토큰/수신자 설정 점검용).
 
 기대 산출물 목록·최소 건수는 `check_scrape_health.py`의 `SPECS`에 있다. **셀럽PGM/고정PGM에 프로그램을 추가하면 여기에도 추가해야** 그 프로그램의 수집 실패가 잡힌다.
 

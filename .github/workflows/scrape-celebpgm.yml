@@ -44,16 +44,16 @@ jobs:
     - name: Run Scrapers in fixed folder
       run: |
         echo "GS 지금 백지연 수집 시작..."
-        python fixed/regs.py || echo "GS 수집 중 실패 발생"
+        python tools/run_step.py fixed/regs.py
 
         echo "CJ 대표 PGM(강주은, 최화정, 김창옥) 수집 시작..."
-        python fixed/recj.py || echo "CJ 수집 중 실패 발생"
+        python tools/run_step.py fixed/recj.py
 
         echo "HD 대표 PGM(황정민쇼, 오감쇼) 수집 시작..."
-        python fixed/rehd.py || echo "HD 수집 중 실패 발생"
+        python tools/run_step.py fixed/rehd.py
 
         echo "LT 최유라쇼 수집 시작..."
-        python fixed/relt.py || echo "LT 수집 중 실패 발생"
+        python tools/run_step.py fixed/relt.py
 
         echo "셀럽PGM merged.json 갱신..."
         python fixed/build_representative_programs.py || echo "merged.json 갱신 중 실패 발생"
@@ -93,7 +93,7 @@ jobs:
       env:
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        ALERT_TITLE: 셀럽PGM 수집 실패 (새벽 3시 정기)
+        ALERT_WORKFLOW: scrape-celebpgm.yml (셀럽PGM 새벽 3시)
         ALERT_DETAIL: ${{ steps.health.outputs.failures }}
         ALERT_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
       run: python notify/send_alert.py

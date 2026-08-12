@@ -40,6 +40,16 @@ import time
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MARK_PATH = os.path.join(ROOT, ".scrape_run_mark")
+# 알림 스크립트(notify/send_alert.py)가 읽어갈 구조화된 실패 내역
+ALERT_PATH = os.path.join(ROOT, ".scrape_alert.json")
+
+
+def run_url() -> str:
+    """현재 GitHub Actions 실행 URL (로컬 실행이면 빈 문자열)."""
+    server = os.environ.get("GITHUB_SERVER_URL", "")
+    repo = os.environ.get("GITHUB_REPOSITORY", "")
+    run_id = os.environ.get("GITHUB_RUN_ID", "")
+    return f"{server}/{repo}/actions/runs/{run_id}" if all((server, repo, run_id)) else ""
 
 # 직전 커밋 대비 이 비율 미만으로 줄면 이상 신호로 본다
 # (방송 편성상 상품 수는 원래 오르내리므로 여유를 크게 둔다)
@@ -96,6 +106,75 @@ SPECS = {
         (f"{FIX}/merged.json", count_slots, 20, True),
     ],
 }
+
+# 산출물 -> 그 파일을 만드는 코드. 알림에 "▶️코드명"으로 찍기 위한 매핑.
+# (파일 하나가 어느 스크래퍼 책임인지 알아야 담당자가 바로 열어볼 수 있다)
+PRODUCER = {
+    "HD_HJM": "fixed/rehd.py", "HD_OGS": "fixed/rehd.py", "HD_WYE": "fixed/rehd.py",
+    "GS_BJY": "fixed/regs.py", "GS_SYJ": "fixed/regs.py",
+    "LT_CYR": "fixed/relt.py",
+    "CJ_KJE": "fixed/recj.py", "CJ_CHJ": "fixed/recj.py",
+    "CJ_KCO": "fixed/recj.py", "CJ_SIH": "fixed/recj.py", "CJ_KSY": "fixed/recj.py",
+    "HD": "fixed/hd_fixed_programs.py", "GS": "fixed/gs_fixed_programs.py",
+    "CJ": "fixed/cj_fixed_programs.py", "LT": "fixed/lt_fixed_programs.py",
+}
+BUILDER = {
+    "celeb": "fixed/build_representative_programs.py",
+    "fixed": "fixed/build_fixed_pgm.py",
+}
+
+
+def producer_of(rel_path: str, group: str) -> str:
+    stem = os.path.basename(rel_path).replace(".json", "")
+    if stem == "merged":
+        return BUILDER.get(group, "")
+    return PRODUCER.get(stem, "")
+
+
+def advise(reason: str, script: str) -> str:
+    """실패 사유별 수정권장사항. 알림에서 '그래서 뭘 하면 되는지'를 준다."""
+    if "갱신 안 됨" in reason:
+        return (f"{script or '해당 스크래퍼'} 실행 로그에서 예외 확인 후 재실행. "
+                f"예외가 없으면 저장 경로/조건문 점검")
+    if "JSON 파싱 실패" in reason:
+        return "저장 중 중단됐을 가능성 - 재실행 후에도 깨지면 저장 로직(쓰기 도중 예외) 점검"
+    if "파일 없음" in reason:
+        return f"{script or '해당 스크래퍼'}가 한 번도 저장에 성공하지 못함 - 대상 URL/식별자부터 확인"
+    if "건수 부족" in reason or "급감" in reason:
+        return "사이트 구조 변경 의심 - 모듈코드/셀렉터가 아직 유효한지 확인 (일시적이면 재실행)"
+    return "실행 로그 확인 후 재실행"
+
+
+def advise_exception(exc_type: str, message: str) -> str:
+    """스크래퍼가 던진 예외 종류별 수정권장사항."""
+    blob = f"{exc_type} {message}"
+    if "NoneType" in blob and "has no attribute" in blob:
+        return "API가 해당 필드를 null로 준 경우 - 응답 접근부에 `or {}` 방어 추가"
+    if exc_type == "KeyError":
+        return "API 응답 스키마 변경 의심 - 해당 키 경로를 실제 응답과 대조"
+    if exc_type in ("IndexError", "TypeError"):
+        return "응답 형태가 기대와 다름 - 빈 리스트/None 케이스 방어 추가"
+    if "FetchError" in blob or "재시도" in blob:
+        return "재시도까지 소진된 사이트 장애/차단 - 잠시 후 재실행, 반복되면 UA·헤더 점검"
+    if "JSONDecode" in blob:
+        return "JSON이 아닌 응답(차단 페이지 등) - 헤더/쿠키 점검 후 재실행"
+    if "Timeout" in blob or "Connection" in blob:
+        return "네트워크 일시 장애 - 재실행. 반복되면 타임아웃 상향 검토"
+    if "Playwright" in blob or "playwright" in blob:
+        return "브라우저 자동화 실패 - 셀렉터 변경 또는 브라우저 설치 상태 확인"
+    return "실행 로그의 트레이스백 위치부터 확인"
+
+
+def load_run_report() -> list:
+    """run_step.py가 남긴 스크래퍼별 실행 결과."""
+    path = os.path.join(ROOT, ".scrape_run_report.json")
+    if not os.path.exists(path):
+        return []
+    try:
+        with open(path, encoding="utf-8") as f:
+            return (json.load(f) or {}).get("steps", []) or []
+    except (OSError, ValueError):
+        return []
 
 
 def read_json(path):
@@ -183,6 +262,29 @@ def main():
         print("[health] [경고] 시작 시각 마크가 없어 '이번 실행 갱신' 검사를 건너뜁니다 "
               "(워크플로우에 --mark 스텝이 빠졌을 수 있음)")
 
+    # 코드명(스크립트) 단위로 모은다: {script: [{"오류내용", "수정권장사항"}, ...]}
+    # 알림이 "▶️코드명 / -오류내용 / -수정권장사항" 형태라서 이 단위가 맞다.
+    findings = {}
+
+    def add_finding(script, problem, suggestion):
+        key = script or "(코드 불명)"
+        items = findings.setdefault(key, [])
+        if not any(i["problem"] == problem for i in items):
+            items.append({"problem": problem, "suggestion": suggestion})
+
+    # 1) 스크래퍼가 예외로 죽은 경우 - run_step.py가 잡아둔 실제 오류 내용
+    for step in load_run_report():
+        if step.get("exitCode", 0) == 0:
+            continue
+        exc_type = step.get("excType", "")
+        exc_msg = (step.get("excMessage") or "").strip()
+        where = step.get("where", "")
+        problem = f"{exc_type}: {exc_msg}" if exc_type else exc_msg or "비정상 종료"
+        if where:
+            problem += f" @ {where}"
+        add_finding(step.get("script", ""), problem, advise_exception(exc_type, exc_msg))
+
+    # 2) 산출물 검사
     print(f"\n===== 수집 건전성 검사: {args.group} =====")
     fails, warns = [], []
     for rel_path, counter, min_count, required in SPECS[args.group]:
@@ -191,24 +293,40 @@ def main():
         print(f"  {icon} {rel_path}: {message}")
         if status == "fail":
             fails.append(f"{rel_path}: {message}")
+            script = producer_of(rel_path, args.group)
+            add_finding(script, f"{os.path.basename(rel_path)} - {message}",
+                        advise(message, script))
         elif status == "warn":
             warns.append(f"{rel_path}: {message}")
 
     print(f"\n  정상 {len(SPECS[args.group]) - len(fails) - len(warns)}건 / "
           f"경고 {len(warns)}건 / 실패 {len(fails)}건")
 
-    if fails:
+    if fails or findings:
         print("\n[health] 수집 실패 항목이 있습니다:")
         for line in fails:
             print(f"  - {line}")
         print("\n  -> 위 스크래퍼의 로그를 확인하세요. 사이트 구조 변경이면 "
               "해당 스크래퍼를, 일시적 장애면 재실행으로 해결됩니다.")
-        # 알림 스텝이 본문에 넣을 수 있게 GitHub Actions 출력으로도 넘긴다
-        summary = "; ".join(fails)
+
+        # 알림 스크립트가 읽어갈 구조화 결과
+        payload = {
+            "group": args.group,
+            "workflow": os.environ.get("GITHUB_WORKFLOW", ""),
+            "workflowFile": os.environ.get("WORKFLOW_FILE", ""),
+            "runUrl": run_url(),
+            "codes": [{"name": name, "items": items} for name, items in findings.items()],
+            "summary": f"{args.group} 산출물 {len(fails)}건 실패",
+        }
+        with open(ALERT_PATH, "w", encoding="utf-8") as f:
+            json.dump(payload, f, ensure_ascii=False, indent=2)
+        print(f"[health] 알림 본문 저장: {ALERT_PATH}")
+
+        # 워크플로우 로그/스텝 출력용 한 줄 요약
         gh_out = os.environ.get("GITHUB_OUTPUT")
         if gh_out:
             with open(gh_out, "a", encoding="utf-8") as f:
-                f.write(f"failures={summary}\n")
+                f.write(f"failures={'; '.join(fails) or payload['summary']}\n")
         return 0 if args.warn_only else 1
 
     print("[health] 이상 없음")

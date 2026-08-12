@@ -38,19 +38,19 @@ jobs:
       # 스텝이 산출물을 검사해 문제가 있으면 잡(job)을 실패시킨다.
       - name: Scrape HD (Playwright)
         continue-on-error: true
-        run: python fixed/rehd.py
+        run: python tools/run_step.py fixed/rehd.py
 
       - name: Scrape GS
         continue-on-error: true
-        run: python fixed/regs.py
+        run: python tools/run_step.py fixed/regs.py
 
       - name: Scrape LT
         continue-on-error: true
-        run: python fixed/relt.py
+        run: python tools/run_step.py fixed/relt.py
 
       - name: Scrape CJ
         continue-on-error: true
-        run: python fixed/recj.py
+        run: python tools/run_step.py fixed/recj.py
 
       - name: Build merged.json
         run: python fixed/build_representative_programs.py
@@ -120,7 +120,7 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          ALERT_TITLE: 셀럽PGM 수집 실패
+          ALERT_WORKFLOW: rep-pgm-scrape.yml (셀럽PGM)
           ALERT_DETAIL: ${{ steps.health.outputs.failures }}
           ALERT_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: python notify/send_alert.py
