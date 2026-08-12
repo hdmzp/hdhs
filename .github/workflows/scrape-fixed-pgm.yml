@@ -95,16 +95,6 @@ jobs:
             -d '{"ref":"main"}'
 
       # 살아남은 데이터는 이미 커밋·배포됐다. 이제 실패를 드러낸다.
-      - name: 수집 실패 알림 (텔레그램)
-        if: steps.health.outcome == 'failure'
-        continue-on-error: true   # 알림 실패가 원인 진단을 가리면 안 된다
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          ALERT_WORKFLOW: scrape-fixed-pgm.yml (고정PGM)
-          ALERT_DETAIL: ${{ steps.health.outputs.failures }}
-          ALERT_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        run: python notify/send_alert.py
 
       - name: 건전성 검사 실패 시 잡 실패 처리
         if: steps.health.outcome == 'failure'
