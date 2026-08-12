@@ -112,18 +112,8 @@ jobs:
             -d '{"ref":"main"}'
 
       # 여기까지 오면 살아남은 데이터는 이미 커밋·배포됐다.
-      # 이제 실패를 드러낸다: 텔레그램으로 알리고 잡을 빨간불로 만든다.
+      # 이제 실패를 드러낸다: 잡을 빨간불로 만들어 Actions 목록에서 보이게 한다.
       # (초록불로 넘어가면 2026-08 CJ 사고처럼 며칠간 아무도 모른다)
-      - name: 수집 실패 알림 (텔레그램)
-        if: steps.health.outcome == 'failure'
-        continue-on-error: true   # 알림 실패가 원인 진단을 가리면 안 된다
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          ALERT_WORKFLOW: rep-pgm-scrape.yml (셀럽PGM)
-          ALERT_DETAIL: ${{ steps.health.outputs.failures }}
-          ALERT_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        run: python notify/send_alert.py
 
       - name: 건전성 검사 실패 시 잡 실패 처리
         if: steps.health.outcome == 'failure'

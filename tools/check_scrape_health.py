@@ -40,8 +40,6 @@ import time
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MARK_PATH = os.path.join(ROOT, ".scrape_run_mark")
-# 알림 스크립트(notify/send_alert.py)가 읽어갈 구조화된 실패 내역
-ALERT_PATH = os.path.join(ROOT, ".scrape_alert.json")
 
 
 def run_url() -> str:
@@ -309,18 +307,19 @@ def main():
         print("\n  -> 위 스크래퍼의 로그를 확인하세요. 사이트 구조 변경이면 "
               "해당 스크래퍼를, 일시적 장애면 재실행으로 해결됩니다.")
 
-        # 알림 스크립트가 읽어갈 구조화 결과
-        payload = {
-            "group": args.group,
-            "workflow": os.environ.get("GITHUB_WORKFLOW", ""),
-            "workflowFile": os.environ.get("WORKFLOW_FILE", ""),
-            "runUrl": run_url(),
-            "codes": [{"name": name, "items": items} for name, items in findings.items()],
-            "summary": f"{args.group} 산출물 {len(fails)}건 실패",
-        }
-        with open(ALERT_PATH, "w", encoding="utf-8") as f:
-            json.dump(payload, f, ensure_ascii=False, indent=2)
-        print(f"[health] 알림 본문 저장: {ALERT_PATH}")
+        # 코드(스크립트)별 원인·조치 요약. 실행 로그 맨 아래에서 이것만 보면
+        # 어느 파일을 열어야 하는지와 무엇을 하면 되는지가 바로 나온다.
+        if findings:
+            print("\n===== 원인·조치 요약 =====")
+            for name, items in findings.items():
+                print(f"\n▶ {name}")
+                for item in items:
+                    print(f"  - {item['problem']}")
+                    if item["suggestion"]:
+                        print(f"    -> {item['suggestion']}")
+            url = run_url()
+            if url:
+                print(f"\n  실행 로그: {url}")
 
         # 워크플로우 로그/스텝 출력용 한 줄 요약
         gh_out = os.environ.get("GITHUB_OUTPUT")
