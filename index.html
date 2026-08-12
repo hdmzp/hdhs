@@ -3390,6 +3390,23 @@ async function fetchJsonSafe(path) {
 async function getWeatherForDate(dateStr) {
   if (location.protocol === 'file:') return null;
 
+  const yearMonth = dateStr.slice(0, 7);
+  const loadAsos = async () => {
+    if (!(yearMonth in _weatherCache.asosMonths)) {
+      _weatherCache.asosMonths[yearMonth] = await fetchJsonSafe(`./weather/asos/${SCHEDULE_WEATHER_REGION}/${yearMonth}.json`);
+    }
+    const monthData = _weatherCache.asosMonths[yearMonth];
+    return (monthData && monthData[dateStr]) ? { ...monthData[dateStr], kind: 'asos' } : null;
+  };
+
+  // 지난 날짜는 실제 관측(ASOS)이 우선. 예보 파일에 지난 날짜가 남아 있는 것은
+  // 관측이 아직 안 들어온 날을 임시로 채워둔 값이다.
+  const isPast = dateStr < todayStr();
+  if (isPast) {
+    const observed = await loadAsos();
+    if (observed) return observed;
+  }
+
   if (_weatherCache.forecast === null) {
     _weatherCache.forecast = await fetchJsonSafe(`./weather/forecast/${SCHEDULE_WEATHER_REGION}/latest.json`) || {};
   }
@@ -3398,17 +3415,7 @@ async function getWeatherForDate(dateStr) {
     return { ...w, kind: 'forecast' };
   }
 
-  const yearMonth = dateStr.slice(0, 7);
-  if (!(yearMonth in _weatherCache.asosMonths)) {
-    _weatherCache.asosMonths[yearMonth] = await fetchJsonSafe(`./weather/asos/${SCHEDULE_WEATHER_REGION}/${yearMonth}.json`);
-  }
-  const monthData = _weatherCache.asosMonths[yearMonth];
-  if (monthData && monthData[dateStr]) {
-    const w = monthData[dateStr];
-    return { ...w, kind: 'asos' };
-  }
-
-  return null;
+  return isPast ? null : await loadAsos();
 }
 
 function renderWeatherBar(weather) {
@@ -3594,6 +3601,12 @@ async function loadMonthData(year, month, region) {
 }
 
 function getDayData(dateStr, monthData) {
+  // 지난 날짜는 실제 관측(ASOS)이 우선. 예보 파일에 남아 있는 지난 날짜는
+  // 관측이 아직 안 들어온 날을 임시로 채워둔 값이다.
+  const isPast = dateStr < todayStr();
+  if (isPast && monthData.asos[dateStr]) {
+    return { ...monthData.asos[dateStr], kind: 'asos' };
+  }
   if (monthData.forecast[dateStr]) {
     return { ...monthData.forecast[dateStr], kind: 'forecast' };
   }
