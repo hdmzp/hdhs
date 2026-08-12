@@ -129,55 +129,6 @@ def extract_gs_price(soup: BeautifulSoup, html: str):
     return None
 
 
-_price_stats = {"ok": 0, "fail": 0}   # 가격 추출 성공/실패 집계
-_price_diag_left = 2  # 진단 대상은 앞 2건까지만 (로그 폭주 방지)
-_price_diag_lines = []   # 실행 마지막에 한 번에 출력 (로그에서 찾기 쉽게)
-
-
-def dump_price_diagnosis(prd_id, soup, html):
-    """가격 추출이 실패했을 때 '왜 실패했는지'를 로그에 남긴다.
-
-    셀렉터 후보들이 실측 없이 추정으로 들어가 있어서, 실패하면 페이지가
-    어떻게 생겼는지를 봐야 고칠 수 있다. 매번 전부 찍으면 로그가 터지므로
-    앞 2건만, 그것도 판단에 필요한 단서만 남긴다."""
-    global _price_diag_left
-    if _price_diag_left <= 0:
-        return
-    _price_diag_left -= 1
-
-    def print(*args, **kwargs):  # noqa: A001 - 이 함수 안에서만 버퍼로 우회
-        _price_diag_lines.append(" ".join(str(a) for a in args))
-
-    print(f"       [진단] prdid={prd_id} 응답 {len(html):,}자")
-    print(f"       [진단] ld+json {len(soup.find_all('script', type='application/ld+json'))}개 / "
-          f"meta[itemprop=price] {'있음' if soup.find('meta', attrs={'itemprop': 'price'}) else '없음'} / "
-          f"meta[product:price:amount] {'있음' if soup.find('meta', attrs={'property': 'product:price:amount'}) else '없음'}")
-
-    # 가격으로 보이는 숫자 주변을 몇 개 떠본다 (어떤 태그/클래스에 담겨 있는지 확인용)
-    hits = 0
-    for m in re.finditer(r"(\d{1,3}(?:,\d{3})+)\s*원", html):
-        start = max(0, m.start() - 160)
-        window = re.sub(r"\s+", " ", html[start:m.end() + 20])
-        print(f"       [진단] 가격후보 {m.group(1)}원 <- ...{window[-200:]}")
-        hits += 1
-        if hits >= 3:
-            break
-    if not hits:
-        print("       [진단] '숫자,숫자원' 패턴이 본문에 아예 없음 "
-              "-> 가격을 JS로 나중에 그리는 페이지일 가능성 (별도 API 필요)")
-
-    # class 이름에 price가 들어간 요소들 (셀렉터 후보 확보용)
-    price_cls = []
-    for tag in soup.find_all(attrs={"class": True}):
-        cls = " ".join(tag.get("class"))
-        if "price" in cls.lower() or "pric" in cls.lower():
-            text = re.sub(r"\s+", " ", tag.get_text(strip=True))[:40]
-            if text:
-                price_cls.append(f"{tag.name}.{cls.replace(' ', '.')}='{text}'")
-        if len(price_cls) >= 8:
-            break
-    print(f"       [진단] price 계열 클래스: {price_cls or '없음'}")
-
 
 def parse_broaddate(raw: str) -> dict:
     """'20260716204500' -> {'label': '7월 16일(목) 20:45 방송', 'iso': '2026-07-16T20:45:00'}"""
@@ -211,10 +162,9 @@ def fetch_gs_product_details_fixed(prd_id):
         if res.status_code == 200:
             soup = BeautifulSoup(res.text, "html.parser")
             price = extract_gs_price(soup, res.text)
-            _price_stats["ok" if price is not None else "fail"] += 1
             if price is None:
-                print(f"       [디버그] prdid={prd_id}: 가격 추출 실패 (셀렉터/패턴이 실제 페이지와 안 맞을 수 있음)")
-                dump_price_diagnosis(prd_id, soup, res.text)
+                print(f"       [디버그] prdid={prd_id}: 가격 추출 실패 "
+                      f"(상태 JSON의 salePrc 경로가 바뀌었을 수 있음)")
 
             og_title = soup.find("meta", property="og:title")
 
@@ -400,33 +350,6 @@ def main():
         print(f"  - 총 수집된 예고 상품 수: {len(result['products'])}개")
 
 
-DIAG_FILE = ".gs_price_diag.txt"
-
-
-def print_price_diagnosis_summary():
-    """가격 진단은 상품별 로그 사이에 묻히면 찾기 어려워서 맨 마지막에 모아 찍고,
-    워크플로우 마지막 스텝이 다시 출력할 수 있게 파일로도 남긴다."""
-    total = _price_stats["ok"] + _price_stats["fail"]
-    summary = (f"가격 추출: 성공 {_price_stats['ok']}건 / 실패 {_price_stats['fail']}건"
-               f" (전체 {total}건)")
-    print(f"\n===== GS 가격 추출 결과 =====\n{summary}")
-    if not _price_diag_lines:
-        try:
-            with open(DIAG_FILE, "w", encoding="utf-8") as f:
-                f.write(summary)
-        except OSError:
-            pass
-        return
-    body = summary + "\n" + "\n".join(_price_diag_lines)
-    print("\n===== GS 가격 추출 진단 =====")
-    print(body)
-    try:
-        with open(DIAG_FILE, "w", encoding="utf-8") as f:
-            f.write(body)
-    except OSError:
-        pass
-
 
 if __name__ == "__main__":
     main()
-    print_price_diagnosis_summary()

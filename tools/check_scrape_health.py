@@ -121,6 +121,33 @@ BUILDER = {
     "fixed": "fixed/build_fixed_pgm.py",
 }
 
+# ── 필드 결손 검사 ──────────────────────────────────────────────────────
+# "건수는 맞는데 내용이 빈" 경우를 잡는다. 실제 사례: GS 셀럽PGM이 첫 수집부터
+# 45건 전부 가격 없이 수집됐는데(가격 DOM을 JS로 그리는 페이지라 셀렉터가
+# 애초에 안 맞았음), 스크립트는 정상 종료하고 건수도 정상이라 기존 검사(존재/
+# 갱신/건수/급감)를 전부 통과했다.
+#
+# 임계는 넉넉하게 잡는다 - 방송 예고 단계라 가격이 아직 없는 항목이 섞이는 건
+# 정상이고, 그걸로 매일 빨간불이 뜨면 검사 자체를 신뢰하지 않게 된다.
+# 수정 직후 실측은 229건 중 결손 0건이라 50%면 충분히 여유가 있다.
+FIELD_MISSING_LIMIT = 0.5
+FIELD_CHECK_MIN_ITEMS = 5   # 상품이 이보다 적으면 비율이 튀므로 검사하지 않는다
+REQUIRED_ITEM_FIELDS = ("price", "link")
+
+
+def field_missing_report(data) -> str:
+    """상품 리스트의 필수 필드 결손률을 본다. 문제가 없으면 빈 문자열."""
+    products = data.get("products") or []
+    if len(products) < FIELD_CHECK_MIN_ITEMS:
+        return ""
+    problems = []
+    for field in REQUIRED_ITEM_FIELDS:
+        missing = sum(1 for p in products if not p.get(field))
+        ratio = missing / len(products)
+        if ratio > FIELD_MISSING_LIMIT:
+            problems.append(f"{field} 결손 {missing}/{len(products)}건 ({ratio:.0%})")
+    return " / ".join(problems)
+
 
 def producer_of(rel_path: str, group: str) -> str:
     stem = os.path.basename(rel_path).replace(".json", "")
@@ -140,6 +167,9 @@ def advise(reason: str, script: str) -> str:
         return f"{script or '해당 스크래퍼'}가 한 번도 저장에 성공하지 못함 - 대상 URL/식별자부터 확인"
     if "건수 부족" in reason or "급감" in reason:
         return "사이트 구조 변경 의심 - 모듈코드/셀렉터가 아직 유효한지 확인 (일시적이면 재실행)"
+    if "필드 결손" in reason:
+        return ("건수는 정상인데 값이 비었다 - 해당 필드 추출부가 페이지 구조와 "
+                "안 맞을 가능성 (예: 값을 JS로 그리는 페이지면 응답 본문의 상태 JSON에서 읽어야 함)")
     return "실행 로그 확인 후 재실행"
 
 
@@ -226,6 +256,11 @@ def check_one(rel_path, counter, min_count, required, mark_ts):
         if count < prev * DROP_RATIO_LIMIT:
             return "fail", (f"급감: {prev} -> {count} "
                             f"(직전의 {count / prev:.0%}, 임계 {DROP_RATIO_LIMIT:.0%})")
+
+    # 건수는 정상인데 내용이 비어 있는 경우 (가격/링크 결손)
+    missing = field_missing_report(data)
+    if missing:
+        return "fail", f"필드 결손: {missing}"
 
     return "ok", " / ".join(notes)
 

@@ -99,10 +99,12 @@ hdhs/
 | 층 | 구현 | 막는 것 |
 |---|---|---|
 | ① 재시도 | `tools/scrape_guard.py` | 타임아웃·5xx·429·WAF의 HTML 응답 같은 **일시적** 실패. 지수 백오프(1→2→4초 + 지터), 429는 `Retry-After` 존중, 404/403은 재시도 없이 즉시 포기 |
-| ② 산출물 검사 | `tools/check_scrape_health.py` | 재시도로도 안 되는 **진짜 장애**. 수집 직전 `--mark`로 시각을 찍고, 수집 후 산출물이 ⓐ존재하는지 ⓑJSON으로 읽히는지 ⓒ**이번 실행에서 다시 쓰였는지** ⓓ최소 건수를 넘는지 ⓔ직전 커밋 대비 40% 밑으로 급감하지 않았는지 검사. 하나라도 걸리면 종료코드 1 |
+| ② 산출물 검사 | `tools/check_scrape_health.py` | 재시도로도 안 되는 **진짜 장애**. 수집 직전 `--mark`로 시각을 찍고, 수집 후 산출물이 ⓐ존재하는지 ⓑJSON으로 읽히는지 ⓒ**이번 실행에서 다시 쓰였는지** ⓓ최소 건수를 넘는지 ⓔ직전 커밋 대비 40% 밑으로 급감하지 않았는지 ⓕ**가격·링크 결손이 50%를 넘지 않는지** 검사. 하나라도 걸리면 종료코드 1 |
 | ③ 원인 요약 | `tools/run_step.py` | 로그를 뒤지는 수고. 스크래퍼를 `run_step.py`로 감싸 예외 종류·메시지·발생 위치(`파일:줄 (함수)`)를 잡아두고, 검사 실패 시 실행 로그 맨 아래에 **코드명 / 오류내용 / 수정권장사항**을 정리해 출력 |
 
 핵심은 ⓒ다. 내용이 그대로여도 파일은 매번 다시 쓰이므로, 스크래퍼가 죽으면 그 회사 파일만 mtime이 안 바뀌어 즉시 잡힌다.
+
+ⓕ는 "실행은 됐는데 내용이 빈" 경우를 잡는다. 실제로 GS 셀럽PGM이 첫 수집(2026-08-11)부터 45건 전부 가격 없이 수집됐는데, 스크립트는 정상 종료하고 건수도 정상이라 ⓐ~ⓔ를 전부 통과했다(원인은 아래 GS 항목 참고). 임계 50%는 넉넉하게 잡은 값이다 — 방송 예고 단계라 가격이 아직 없는 항목이 섞이는 건 정상이고, 그걸로 매일 빨간불이 뜨면 검사 자체를 신뢰하지 않게 된다. 상품이 5건 미만인 파일은 비율이 튀므로 검사하지 않는다.
 
 검사는 커밋 **직전**에 돌리되 `continue-on-error: true`로 둔다 — 살아남은 회사 데이터는 커밋해서 살리고, 잡 실패 처리는 마지막 스텝에서 한다. 적용된 워크플로우는 `rep-pgm-scrape.yml`, `scrape-fixed-pgm.yml`, `scrape-celebpgm.yml` 3개.
 
@@ -180,6 +182,7 @@ python tools/test_scrape_guard.py               # 재시도 로직 자체 테스
 - 회사별로 각각 `homeshopping/fixed_programs/{사}.json`에 저장 후, `build_fixed_pgm.py`가 하나의 `merged.json`으로 통합해 프론트가 참조
 
 ### ⭐ 셀럽PGM — `fixed/re{hd|gs|cj|lt}.py` + `fixed/build_representative_programs.py`
+- **GS 가격은 상태 JSON에서 읽는다**: `m.gsshop.com` 상품 페이지는 가격 DOM을 JS로 나중에 그려서, 정적 HTML의 `.totalPrice`/`.totalPriceWrap`은 항상 `0원`이다. ld+json에도 `offers.price`가 없고 `product:price:amount`/`itemprop=price` 메타도 없다. 실제 판매가는 응답 본문에 박힌 상태 JSON의 `"prc":{"salePrc":98900,...}`에 있어서 여기서 뽑는다 (추천/연관상품 가격을 잘못 집지 않게 `"prc"` 블록에 붙은 `salePrc`를 우선 사용)
 - 강주은 굿라이프(CJ)·오감쇼(HD)·더 김창옥 라이브(CJ)·최화정쇼(CJ)·황정민쇼(HD)·지금 백지연(GS)·최유라쇼(LT)·소유진쇼(GS) 등 8개 셀럽 호스트 프로그램의 회차별 판매 상품을 수집
 - `rehd.py`만 Playwright 사용(나머지는 정적 파싱), 프로그램별 결과 파일(`{사}_{코드}.json`)을 `build_representative_programs.py`가 `merged.json`으로 통합
 
