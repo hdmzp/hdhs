@@ -114,7 +114,8 @@ def extract_gs_price(soup: BeautifulSoup, html: str):
     return None
 
 
-_price_diag_left = 2  # 진단 출력은 앞 2건까지만 (로그 폭주 방지)
+_price_diag_left = 2  # 진단 대상은 앞 2건까지만 (로그 폭주 방지)
+_price_diag_lines = []   # 실행 마지막에 한 번에 출력 (로그에서 찾기 쉽게)
 
 
 def dump_price_diagnosis(prd_id, soup, html):
@@ -127,6 +128,9 @@ def dump_price_diagnosis(prd_id, soup, html):
     if _price_diag_left <= 0:
         return
     _price_diag_left -= 1
+
+    def print(*args, **kwargs):  # noqa: A001 - 이 함수 안에서만 버퍼로 우회
+        _price_diag_lines.append(" ".join(str(a) for a in args))
 
     print(f"       [진단] prdid={prd_id} 응답 {len(html):,}자")
     print(f"       [진단] ld+json {len(soup.find_all('script', type='application/ld+json'))}개 / "
@@ -379,5 +383,15 @@ def main():
         print(f"  - 총 수집된 예고 상품 수: {len(result['products'])}개")
 
 
+def print_price_diagnosis_summary():
+    """가격 진단은 상품별 로그 사이에 묻히면 찾기 어려워서 맨 마지막에 모아 찍는다."""
+    if not _price_diag_lines:
+        return
+    print("\n===== GS 가격 추출 진단 =====")
+    for line in _price_diag_lines:
+        print(line)
+
+
 if __name__ == "__main__":
     main()
+    print_price_diagnosis_summary()
