@@ -41,6 +41,9 @@ import json
 import time
 import requests
 from collections import deque
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from tools import scrape_guard
 from datetime import datetime, timezone, timedelta
 from urllib.parse import urljoin
 
@@ -90,17 +93,9 @@ def parse_price(text) -> int:
 
 def fetch_json(session: requests.Session, url: str):
     """JSON 응답이면 dict를, 에러페이지(HTML) 등 JSON이 아니면 None을 반환."""
-    for attempt in range(MAX_RETRIES + 1):
-        try:
-            resp = session.get(url, timeout=REQUEST_TIMEOUT_SEC)
-            resp.raise_for_status()
-            return resp.json()
-        except (requests.RequestException, ValueError):
-            if attempt < MAX_RETRIES:
-                time.sleep(0.5)
-                continue
-            return None
-    return None
+    # 고정 0.5초 간격 재시도였던 것을 공용 지수 백오프(+429 Retry-After 존중)로 통일
+    return scrape_guard.fetch_json(url, session=session, timeout=REQUEST_TIMEOUT_SEC,
+                                   retries=MAX_RETRIES)
 
 
 def extract_goods_list(section_data: dict) -> list:

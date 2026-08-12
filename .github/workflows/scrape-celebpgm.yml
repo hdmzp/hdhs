@@ -34,7 +34,13 @@ jobs:
         playwright install chromium
         playwright install-deps chromium
 
+    # 4-1. 건전성 검사 기준 시각 기록 (수집 직전)
+    - name: 수집 시작 시각 기록
+      run: python tools/check_scrape_health.py --mark
+
     # 5. fixed 폴더 내 4개 파이썬 스크립트 가동 (오류 발생해도 다음 스크립트 계속 실행)
+    #    개별 실패를 '|| echo'로 삼키므로, 아래 건전성 검사가 산출물을 보고
+    #    실제 수집 여부를 판정한다.
     - name: Run Scrapers in fixed folder
       run: |
         echo "GS 지금 백지연 수집 시작..."
@@ -49,8 +55,18 @@ jobs:
         echo "LT 최유라쇼 수집 시작..."
         python fixed/relt.py || echo "LT 수집 중 실패 발생"
 
+        echo "셀럽PGM merged.json 갱신..."
+        python fixed/build_representative_programs.py || echo "merged.json 갱신 중 실패 발생"
+
         echo "셀럽PGM 월별 누적(history) 갱신..."
         python fixed/build_celeb_history.py || echo "월별 누적 갱신 중 실패 발생"
+
+    # 5-1. 산출물 검사 - 갱신 안 된 파일/빈 파일/급감을 잡는다.
+    #      성공한 회사 데이터는 커밋해서 살리고, 잡은 마지막에 실패 처리한다.
+    - name: 수집 건전성 검사
+      id: health
+      continue-on-error: true
+      run: python tools/check_scrape_health.py --group celeb
 
     # 6. 생성된 JSON 데이터를 깃허브 레포지토리에 자동으로 Commit & Push
     - name: Commit and Push JSON Data
@@ -69,3 +85,22 @@ jobs:
         else
           echo "업데이트된 데이터 변경 사항이 없습니다."
         fi
+
+    # 7. 실패를 드러낸다 - 텔레그램 알림 + 잡 실패 처리
+    - name: 수집 실패 알림 (텔레그램)
+      if: steps.health.outcome == 'failure'
+      continue-on-error: true
+      env:
+        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        ALERT_TITLE: 셀럽PGM 수집 실패 (새벽 3시 정기)
+        ALERT_DETAIL: ${{ steps.health.outputs.failures }}
+        ALERT_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      run: python notify/send_alert.py
+
+    - name: 건전성 검사 실패 시 잡 실패 처리
+      if: steps.health.outcome == 'failure'
+      run: |
+        echo "수집 건전성 검사에서 문제가 발견됐습니다:"
+        echo "${{ steps.health.outputs.failures }}"
+        exit 1

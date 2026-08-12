@@ -76,9 +76,13 @@ homeshopping/representative_programs/HD_OGS.json (오감쇼)
 
 import os
 import re
+import sys
 import json
 import requests
 from datetime import datetime, timezone, timedelta
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from tools import scrape_guard
 from playwright.sync_api import sync_playwright
 from bs4 import BeautifulSoup
 
@@ -203,10 +207,11 @@ def fetch_broadcast_lineup(brod_dt: str, start_hm: str, end_hm: str = None) -> l
     for page in range(0, 8):
         url = TV_LIST_API.format(brod_dt=brod_dt, page=page)
         try:
-            r = requests.get(url, headers=headers, timeout=12)
-            if r.status_code != 200:
+            data = scrape_guard.fetch_json(url, headers=headers, timeout=12,
+                                           label=f"HD tv-list p{page}")
+            if not data:
                 continue
-            items = r.json().get("respData", {}).get("broadItemList", []) or []
+            items = data.get("respData", {}).get("broadItemList", []) or []
         except Exception as e:
             print(f"    -> [경고] tv-list page {page} 오류: {e}")
             continue
@@ -278,12 +283,12 @@ def extract_next_data(html: str) -> dict:
 def fetch_list_page_map() -> dict:
     """searchSpexSectItem에서 spexSectNm -> {schedule_raw, itemList} 매핑."""
     try:
-        resp = requests.get(
+        resp = scrape_guard.get(
             LIST_PAGE_URL,
             headers={"User-Agent": UA_DESKTOP, "Referer": "https://www.hmall.com/"},
             timeout=15,
+            label="HD 셀럽PGM 목록페이지",
         )
-        resp.raise_for_status()
         next_data = extract_next_data(resp.text)
         pgm_list = next_data["props"]["pageProps"]["data"]["holiInfo"]["pgmShowList"]
         return {

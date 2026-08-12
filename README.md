@@ -75,14 +75,14 @@ hdhs/
 | 워크플로우 | 실행 시각(KST) | 대상 | 실패 허용 |
 |---|---|---|---|
 | `schedule.yml` | 05:00 | 지상파·종편 편성표 | - |
-| `scrape-fixed-pgm.yml` | 04:30 | 고정PGM 4사 | 스크래퍼별 `continue-on-error` |
+| `scrape-fixed-pgm.yml` | 04:30 | 고정PGM 4사 | 스크래퍼별 `continue-on-error` + 건전성 검사(2-1) |
 | `weather.yml` | 05:30 | 날씨(ASOS+단기예보) | - |
 | `homeshopping.yml` | 05:50, 12:20 (하루 2회) | 홈쇼핑 4사(HD/GS/CJ/LT) | 스크래퍼별 `continue-on-error` |
 | `etc-scrape.yml` | 06:10, 12:40 (하루 2회) | 홈쇼핑 기타 7개사 | `continue-on-error` |
 | `scrape-ranking.yml` | 07:00 | 홈쇼핑 랭킹 18개 카테고리 | - |
 | `promotion.yml` | 06:20, 12:50 (하루 2회) | 프로모션 카드할인 4사(HD/GS/CJ/LT) | 회사별 실패는 스크립트 내부에서 격리 |
-| `rep-pgm-scrape.yml` | 08:10 | 셀럽PGM 대표프로그램 메타 병합 | 회사별 `continue-on-error` |
-| `scrape-celebpgm.yml` | 03:00 | 셀럽PGM(8개 프로그램) 상품 데이터 | 스크립트별 `|| echo` |
+| `rep-pgm-scrape.yml` | 08:10 | 셀럽PGM 대표프로그램 메타 병합 | 회사별 `continue-on-error` + 건전성 검사(2-1) |
+| `scrape-celebpgm.yml` | 03:00 | 셀럽PGM(11개 프로그램) 상품 데이터 | 스크립트별 `|| echo` + 건전성 검사(2-1) |
 | `scrape-dramavariety.yml` | 02:00, 08:30, 12:10, 21:00 (하루 4회) | 드라마/예능 시청률 | - |
 | `pages-deploy.yml` | (push 또는 API 트리거 시) | GitHub Pages 배포 | 3회까지 자동 재시도 |
 
@@ -91,6 +91,29 @@ hdhs/
 - **push 충돌 방지**: 최근 추가된 워크플로우(`scrape-dramavariety`, `scrape-fixed-pgm`, `scrape-ranking`, `rep-pgm-scrape`)는 `git pull --rebase` 후 재시도를 최대 5회까지 반복하는 루프를 둠. 반면 초기부터 있던 워크플로우(`schedule`, `homeshopping`, `etc-scrape`, `weather`)는 아직 단순 `git pull --rebase --autostash && git push` 1회뿐이라 동시 충돌 시 실패할 수 있음 — 통일 필요
 - **Pages 배포 트리거 문제**: `github-actions[bot]` 계정의 push는 GitHub 정책상 다른 워크플로우를 재귀 트리거하지 않아, `pages-deploy.yml`이 데이터 갱신 커밋에 자동 반응하지 않는다. 그래서 각 스크래퍼 워크플로우가 커밋 후 `workflow_dispatch`를 API로 직접 호출해 배포를 강제로 큐에 넣는다(`scrape-celebpgm.yml`만 이 트리거 스텝이 빠져 있어, 셀럽PGM 상품만 갱신된 날은 배포가 안 될 수 있음)
 - `pages-deploy.yml`은 GitHub Pages 배포가 일시적으로 실패(`Deployment failed, try again later.`)하는 경우를 대비해 최대 3회 자동 재시도
+
+### 2-1. 수집 안전장치 (조용한 실패 방지)
+
+`continue-on-error`/`|| echo`로 회사별 실패를 격리하면 워크플로우가 계속 초록불이라, 스크래퍼가 죽어도 아무도 모른 채 며칠이 지나간다(2026-08 CJ 셀럽PGM 사고: `recj.py`가 편성표 API의 `result: null`에 크래시하며 첫 프로그램에서 멈춰 CJ 4개 파일이 갱신되지 않았는데, 워크플로우는 매일 성공으로 표시됨). 그래서 방어를 세 층으로 둔다.
+
+| 층 | 구현 | 막는 것 |
+|---|---|---|
+| ① 재시도 | `tools/scrape_guard.py` | 타임아웃·5xx·429·WAF의 HTML 응답 같은 **일시적** 실패. 지수 백오프(1→2→4초 + 지터), 429는 `Retry-After` 존중, 404/403은 재시도 없이 즉시 포기 |
+| ② 산출물 검사 | `tools/check_scrape_health.py` | 재시도로도 안 되는 **진짜 장애**. 수집 직전 `--mark`로 시각을 찍고, 수집 후 산출물이 ⓐ존재하는지 ⓑJSON으로 읽히는지 ⓒ**이번 실행에서 다시 쓰였는지** ⓓ최소 건수를 넘는지 ⓔ직전 커밋 대비 40% 밑으로 급감하지 않았는지 검사. 하나라도 걸리면 종료코드 1 |
+| ③ 알림 | `notify/send_alert.py` | 빨간불을 **못 보고 지나가는 것**. 검사 실패 시 텔레그램으로 실패 파일과 실행 로그 링크 발송 |
+
+핵심은 ⓒ다. 내용이 그대로여도 파일은 매번 다시 쓰이므로, 스크래퍼가 죽으면 그 회사 파일만 mtime이 안 바뀌어 즉시 잡힌다.
+
+검사는 커밋 **직전**에 돌리되 `continue-on-error: true`로 둔다 — 살아남은 회사 데이터는 커밋해서 살리고, 잡 실패 처리는 마지막 스텝에서 한다. 적용된 워크플로우는 `rep-pgm-scrape.yml`, `scrape-fixed-pgm.yml`, `scrape-celebpgm.yml` 3개.
+
+```bash
+# 로컬에서 수동 점검
+python tools/check_scrape_health.py --mark      # 수집 직전
+python tools/check_scrape_health.py --group celeb   # 또는 --group fixed
+python tools/test_scrape_guard.py               # 재시도 로직 자체 테스트 (네트워크 불필요)
+```
+
+기대 산출물 목록·최소 건수는 `check_scrape_health.py`의 `SPECS`에 있다. **셀럽PGM/고정PGM에 프로그램을 추가하면 여기에도 추가해야** 그 프로그램의 수집 실패가 잡힌다.
 
 ---
 
@@ -263,6 +286,6 @@ hdhs/
 - 모든 채널/회사의 종료시각은 원본에 없는 경우 "다음 프로그램 시작 = 이전 종료"로 역산한 추정값
 - 두 파서 버전이 모두 실패하면 `data/_debug_fail_{채널명}.html`로 저장되고 그날 데이터에서 누락(구조 변경 감지용) — 셀럽PGM 쪽에도 `_debug_pgm_comm_*.json` 형태의 동일한 실패 스냅샷이 남음
 - GS와 기타 7개사(총 8개사)가 모두 라방바(`live.ecomm-data.com`) 하나에 의존해서, 그 사이트 구조가 바뀌면 한 번에 다수 채널이 영향받는 단일 장애점
-- 홈쇼핑/고정PGM 스크래퍼 대부분이 `continue-on-error`(또는 `|| echo`)라서 특정 사가 그날 실패해도 워크플로우 전체는 성공으로 표시됨 — 결과를 가끔 직접 확인할 필요
+- 홈쇼핑/고정PGM 스크래퍼 대부분이 `continue-on-error`(또는 `|| echo`)라서 특정 사가 그날 실패해도 워크플로우 전체는 성공으로 표시됨. 셀럽PGM·고정PGM 3개 워크플로우는 [2-1 수집 안전장치](#2-1-수집-안전장치-조용한-실패-방지)로 해결됨(검사 실패 시 잡 실패 + 텔레그램 알림). **아직 미적용**: `homeshopping.yml`, `etc-scrape.yml`, `promotion.yml`, `scrape-ranking.yml` — 같은 방식으로 `SPECS`에 산출물을 추가하면 확장 가능
 - `scrape-celebpgm.yml`에는 다른 워크플로우들과 달리 Pages 재배포 강제 트리거 스텝이 없어, 셀럽PGM 상품만 갱신된 날은 배포가 자동으로 안 될 수 있음
 - 워크플로우별 push 재시도 로직이 통일돼 있지 않음(초기 워크플로우는 1회, 최근 워크플로우는 5회 재시도) — 통일 필요
