@@ -36,19 +36,19 @@ jobs:
       # 수집). 격리 때문에 실패가 초록불에 묻히는 것은 아래 건전성 검사가 막는다.
       - name: 고정PGM 스크래퍼 실행 - 현대(HD)
         continue-on-error: true
-        run: python fixed/hd_fixed_programs.py
+        run: python tools/run_step.py fixed/hd_fixed_programs.py
 
       - name: 고정PGM 스크래퍼 실행 - GS
         continue-on-error: true
-        run: python fixed/gs_fixed_programs.py
+        run: python tools/run_step.py fixed/gs_fixed_programs.py
 
       - name: 고정PGM 스크래퍼 실행 - CJ온스타일(CJ)
         continue-on-error: true
-        run: python fixed/cj_fixed_programs.py
+        run: python tools/run_step.py fixed/cj_fixed_programs.py
 
       - name: 고정PGM 스크래퍼 실행 - 롯데(LT)
         continue-on-error: true
-        run: python fixed/lt_fixed_programs.py
+        run: python tools/run_step.py fixed/lt_fixed_programs.py
 
       - name: 고정PGM 데이터 병합
         continue-on-error: true
@@ -101,7 +101,7 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          ALERT_TITLE: 고정PGM 수집 실패
+          ALERT_WORKFLOW: scrape-fixed-pgm.yml (고정PGM)
           ALERT_DETAIL: ${{ steps.health.outputs.failures }}
           ALERT_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: python notify/send_alert.py

@@ -8,3 +8,5 @@ __pycache__/
 # 라방바 수집기 코드/로그인세션은 비공개 저장소(hdhs-lavangba)에서 관리 - 여기엔 data만 커밋
 lavangba/*
 !lavangba/data/
+.scrape_run_report.json
+.scrape_alert.json
