@@ -172,7 +172,9 @@ def fetch_schedule_lineup(session: requests.Session, bd_dt: str, start_hm: str, 
     data = fetch_json(session, TV_SCHEDULE_URL.format(bd_dt=bd_dt))
     if not data:
         return []
-    for pg in data.get("result", {}).get("programList", []) or []:
+    # 아직 편성이 안 잡힌 날짜(예: 2주 뒤 방송)는 200 OK에 result가 null로 온다.
+    # get("result", {})는 이 경우 {}가 아니라 None을 돌려주므로 or {}로 막는다.
+    for pg in (data.get("result") or {}).get("programList", []) or []:
         start_ms = pg.get("bdStrDtm")
         if not start_ms:
             continue
@@ -278,7 +280,7 @@ def get_tab_id(session: requests.Session, pgm_cd: str):
     if not data:
         return None, None, None, None
 
-    result = data.get("result", {})
+    result = data.get("result") or {}
     pgm_shop_info = result.get("pgmShopInfo", {}) or {}
     program_title = pgm_shop_info.get("pgmNm", "")
     schedule_parts = [
@@ -323,7 +325,7 @@ def crawl_cj_program(session: requests.Session, config: dict):
         print(f"[실패] [{tab_name}] moduleList 응답 없음")
         return None
 
-    modules = module_data.get("result", {}).get("moduleList", []) or []
+    modules = (module_data.get("result") or {}).get("moduleList", []) or []
     # 모듈 인벤토리 로그 (새 구좌 유형이 생기면 여기서 코드 확인)
     inventory = [m.get("moduleBaseInfo", {}).get("repModulTpCd") for m in modules]
     print(f"    -> 모듈 구성: {inventory}")
@@ -411,7 +413,14 @@ def main():
     session = requests.Session()
 
     for config in PROGRAMS:
-        result = crawl_cj_program(session, config)
+        # 프로그램 하나가 예상 못 한 응답 형태로 터져도(CJ API가 간헐적으로
+        # result=null을 준다) 나머지 프로그램 수집은 계속돼야 한다.
+        # 워크플로우의 회사별 continue-on-error와 같은 취지의 프로그램별 격리.
+        try:
+            result = crawl_cj_program(session, config)
+        except Exception as e:
+            print(f"[실패] [{config['tab_name']}] 수집 중 오류: {e!r}")
+            continue
         if not result:
             continue
 

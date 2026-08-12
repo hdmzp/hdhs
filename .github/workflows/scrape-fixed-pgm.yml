@@ -60,7 +60,7 @@ jobs:
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
           for i in 1 2 3 4 5; do
-            git pull --rebase origin main && git push && break
+            git pull --rebase origin "${GITHUB_REF_NAME}" && git push && break
             echo "push 실패, 재시도 ($i)"
             sleep $((RANDOM % 10 + 1))
           done
