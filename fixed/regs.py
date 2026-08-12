@@ -59,6 +59,21 @@ def extract_gs_price(soup: BeautifulSoup, html: str):
     여러 단계로 폴백한다. 전부 실패하면 None을 반환하고 상위에서
     디버그 로그를 남긴다.)"""
 
+    # 0) 페이지에 박혀 있는 상태 JSON의 "prc":{"salePrc":...} (실측으로 확인된 경로)
+    #    m.gsshop.com 상품 페이지는 가격 DOM을 JS로 나중에 그린다 - 정적 HTML의
+    #    .totalPrice 류는 항상 '0원'이라 셀렉터로는 절대 못 뽑는다.
+    #    반면 상태 JSON은 응답 본문에 그대로 들어 있어 여기서 읽는 게 정확하다.
+    #      ..."pmo":{"prc":{"salePrc":98900,"dcAmt":0,"prcDcRt":-2147483648,"minPrc":98900}...
+    #    추천/연관상품 가격을 잘못 집지 않도록 "prc" 블록에 붙은 salePrc만 본다.
+    for pattern in (r'"prc"\s*:\s*\{[^{}]*?"salePrc"\s*:\s*(\d+)',
+                    r'"salePrc"\s*:\s*(\d+)'):
+        m = re.search(pattern, html)
+        if m:
+            value = int(m.group(1))
+            # 0원(미노출)이나 비상식적인 값은 무시하고 다음 방법으로 넘어간다
+            if 100 <= value <= 100_000_000:
+                return value
+
     # 1) JSON-LD 구조화 데이터 (schema.org Product/offers.price) - 있으면 가장 정확
     for script in soup.find_all("script", type="application/ld+json"):
         try:
@@ -114,6 +129,7 @@ def extract_gs_price(soup: BeautifulSoup, html: str):
     return None
 
 
+_price_stats = {"ok": 0, "fail": 0}   # 가격 추출 성공/실패 집계
 _price_diag_left = 2  # 진단 대상은 앞 2건까지만 (로그 폭주 방지)
 _price_diag_lines = []   # 실행 마지막에 한 번에 출력 (로그에서 찾기 쉽게)
 
@@ -195,6 +211,7 @@ def fetch_gs_product_details_fixed(prd_id):
         if res.status_code == 200:
             soup = BeautifulSoup(res.text, "html.parser")
             price = extract_gs_price(soup, res.text)
+            _price_stats["ok" if price is not None else "fail"] += 1
             if price is None:
                 print(f"       [디버그] prdid={prd_id}: 가격 추출 실패 (셀렉터/패턴이 실제 페이지와 안 맞을 수 있음)")
                 dump_price_diagnosis(prd_id, soup, res.text)
@@ -389,9 +406,18 @@ DIAG_FILE = ".gs_price_diag.txt"
 def print_price_diagnosis_summary():
     """가격 진단은 상품별 로그 사이에 묻히면 찾기 어려워서 맨 마지막에 모아 찍고,
     워크플로우 마지막 스텝이 다시 출력할 수 있게 파일로도 남긴다."""
+    total = _price_stats["ok"] + _price_stats["fail"]
+    summary = (f"가격 추출: 성공 {_price_stats['ok']}건 / 실패 {_price_stats['fail']}건"
+               f" (전체 {total}건)")
+    print(f"\n===== GS 가격 추출 결과 =====\n{summary}")
     if not _price_diag_lines:
+        try:
+            with open(DIAG_FILE, "w", encoding="utf-8") as f:
+                f.write(summary)
+        except OSError:
+            pass
         return
-    body = "\n".join(_price_diag_lines)
+    body = summary + "\n" + "\n".join(_price_diag_lines)
     print("\n===== GS 가격 추출 진단 =====")
     print(body)
     try:
