@@ -41,10 +41,14 @@ CJ온스타일 대표 PGM(강주은 굿라이프, 최화정쇼, 더 김창옥 �
 
 import os
 import re
+import sys
 import json
 import time
 import requests
 from datetime import datetime, date, timedelta, timezone
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from tools import scrape_guard
 
 KST = timezone(timedelta(hours=9))
 OUTPUT_DIR = os.path.join("homeshopping", "representative_programs")
@@ -119,13 +123,9 @@ PROGRAMS = [
 
 
 def fetch_json(session: requests.Session, url: str, params: dict = None):
-    try:
-        resp = session.get(url, params=params, headers=HEADERS, timeout=10)
-        resp.raise_for_status()
-        return resp.json()
-    except (requests.RequestException, ValueError) as e:
-        print(f"    -> [실패] {url} : {e}")
-        return None
+    """CJ API 호출 (지수 백오프 재시도 포함). 최종 실패 시 None."""
+    return scrape_guard.fetch_json(url, session=session, params=params,
+                                   headers=HEADERS, timeout=10)
 
 
 def to_https(url: str) -> str:

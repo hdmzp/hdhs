@@ -65,9 +65,13 @@ homeshopping/fixed_programs/HD.json
 
 import os
 import re
+import sys
 import json
 import requests
 from datetime import datetime, timezone, timedelta
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from tools import scrape_guard
 
 KST = timezone(timedelta(hours=9))
 
@@ -132,8 +136,8 @@ def extract_next_data(html: str) -> dict:
 
 def fetch_hd_programs(include_popular: bool = False) -> list:
     headers = {"User-Agent": UA, "Referer": "https://www.hmall.com/"}
-    resp = requests.get(HD_PAGE_URL, headers=headers, timeout=15)
-    resp.raise_for_status()
+    resp = scrape_guard.get(HD_PAGE_URL, headers=headers, timeout=15,
+                            label="HD 고정PGM 페이지")
 
     next_data = extract_next_data(resp.text)
 

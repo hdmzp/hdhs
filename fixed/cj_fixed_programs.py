@@ -78,9 +78,13 @@ homeshopping/fixed_programs/CJ.json
 
 import os
 import re
+import sys
 import json
 import requests
 from datetime import datetime, timezone, timedelta
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from tools import scrape_guard
 
 KST = timezone(timedelta(hours=9))
 
@@ -159,8 +163,9 @@ def parse_price(value) -> int:
 
 
 def fetch_new_cont_list(session: requests.Session) -> dict:
-    resp = session.get(NEW_CONT_LIST_URL, params=NEW_CONT_LIST_PARAMS, timeout=REQUEST_TIMEOUT_SEC)
-    resp.raise_for_status()
+    resp = scrape_guard.get(NEW_CONT_LIST_URL, session=session, params=NEW_CONT_LIST_PARAMS,
+                            timeout=REQUEST_TIMEOUT_SEC, expect_json=True,
+                            label="CJ newContList")
     return resp.json()
 
 
@@ -265,10 +270,10 @@ def fetch_extra_program(session: requests.Session, config: dict) -> dict:
 
     try:
         # frontapi 쪽은 Origin 헤더를 봐야 정상 응답을 준다 (recj.py와 동일).
-        resp = session.get(PGM_SHOP_INFO_URL.format(pgm_cd=pgm_cd),
-                           headers={"Origin": "https://display.cjonstyle.com"},
-                           timeout=REQUEST_TIMEOUT_SEC)
-        resp.raise_for_status()
+        resp = scrape_guard.get(PGM_SHOP_INFO_URL.format(pgm_cd=pgm_cd), session=session,
+                                headers={"Origin": "https://display.cjonstyle.com"},
+                                timeout=REQUEST_TIMEOUT_SEC, expect_json=True,
+                                label=f"CJ pgmShop {pgm_cd}")
         info = (resp.json().get("result") or {}).get("pgmShopInfo") or {}
         title = (info.get("pgmNm") or title).strip()
         schedule_raw = " / ".join(

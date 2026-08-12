@@ -26,9 +26,16 @@ jobs:
           pip install requests beautifulsoup4 playwright
           playwright install --with-deps chromium
 
+      # 아래 건전성 검사가 "이번 실행에서 각 산출물이 다시 쓰였는지"를 판정하는
+      # 기준 시각. 수집 시작 직전에 찍어둔다.
+      - name: 수집 시작 시각 기록
+        run: python tools/check_scrape_health.py --mark
+
       # 회사별 스크레이퍼는 각자 독립 실행: 하나가 실패(사이트 구조 변경,
       # WAF 차단 등)해도 나머지 결과는 그대로 살아남아야 하므로
       # continue-on-error로 격리한다.
+      # 단, 격리하면 워크플로우가 초록불이라 실패를 놓치므로 아래 '건전성 검사'
+      # 스텝이 산출물을 검사해 문제가 있으면 잡(job)을 실패시킨다.
       - name: Scrape HD (Playwright)
         continue-on-error: true
         run: python fixed/rehd.py
@@ -51,6 +58,14 @@ jobs:
       # 월 조회용: 프로그램별 방송 상품을 방송일자 기준 월 파일에 누적
       - name: Build monthly celeb history
         run: python fixed/build_celeb_history.py
+
+      # 산출물 검사: 이번 실행에서 갱신 안 된 파일 / 빈 파일 / 급감을 잡는다.
+      # continue-on-error를 두는 이유 - 일부 회사만 실패했어도 성공한 회사의
+      # 데이터는 커밋해서 살려야 하기 때문. 대신 잡 마지막에서 실패 처리한다.
+      - name: 수집 건전성 검사
+        id: health
+        continue-on-error: true
+        run: python tools/check_scrape_health.py --group celeb
 
       # 다른 워크플로우(랭킹/기타채널 등)와 push 타이밍이 겹치면
       # non-fast-forward로 실패할 수 있어 pull --rebase 재시도를 둔다.
@@ -95,3 +110,24 @@ jobs:
             -H "X-GitHub-Api-Version: 2022-11-28" \
             "https://api.github.com/repos/${{ github.repository }}/actions/workflows/pages-deploy.yml/dispatches" \
             -d '{"ref":"main"}'
+
+      # 여기까지 오면 살아남은 데이터는 이미 커밋·배포됐다.
+      # 이제 실패를 드러낸다: 텔레그램으로 알리고 잡을 빨간불로 만든다.
+      # (초록불로 넘어가면 2026-08 CJ 사고처럼 며칠간 아무도 모른다)
+      - name: 수집 실패 알림 (텔레그램)
+        if: steps.health.outcome == 'failure'
+        continue-on-error: true   # 알림 실패가 원인 진단을 가리면 안 된다
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          ALERT_TITLE: 셀럽PGM 수집 실패
+          ALERT_DETAIL: ${{ steps.health.outputs.failures }}
+          ALERT_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: python notify/send_alert.py
+
+      - name: 건전성 검사 실패 시 잡 실패 처리
+        if: steps.health.outcome == 'failure'
+        run: |
+          echo "수집 건전성 검사에서 문제가 발견됐습니다:"
+          echo "${{ steps.health.outputs.failures }}"
+          exit 1
