@@ -1,7 +1,7 @@
 {
   "weekStart": "2026-08-10",
   "weekEnd": "2026-08-16",
-  "collectedAt": "2026-08-15T02:45:09.412484+09:00",
+  "collectedAt": "2026-08-15T08:52:05.931527+09:00",
   "programs": [
     {
       "id": "drama_욕망의 덫_KBS2_오후 07:50",
@@ -16,8 +16,8 @@
         "금"
       ],
       "time": "오후 07:50",
-      "rating": 6.8,
-      "ratingDate": "08.13",
+      "rating": 7.0,
+      "ratingDate": "08.14",
       "ratingByDay": {
         "월": {
           "rating": 6.4,
@@ -34,6 +34,10 @@
         "목": {
           "rating": 6.8,
           "ratingDate": "08.13"
+        },
+        "금": {
+          "rating": 7.0,
+          "ratingDate": "08.14"
         }
       },
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41574952&qvt=0&query=%EC%9A%95%EB%A7%9D%EC%9D%98%20%EB%8D%AB",
@@ -53,8 +57,8 @@
         "금"
       ],
       "time": "오후 08:30",
-      "rating": 10.9,
-      "ratingDate": "08.13",
+      "rating": 9.8,
+      "ratingDate": "08.14",
       "ratingByDay": {
         "월": {
           "rating": 10.4,
@@ -71,6 +75,10 @@
         "목": {
           "rating": 10.9,
           "ratingDate": "08.13"
+        },
+        "금": {
+          "rating": 9.8,
+          "ratingDate": "08.14"
         }
       },
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40757232&qvt=0&query=%EA%B8%B0%EC%81%9C%20%EC%9A%B0%EB%A6%AC%20%EC%A2%8B%EC%9D%80%20%EB%82%A0"
@@ -741,7 +749,181 @@
         }
       },
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41457024&qvt=0&query=%EC%9E%90%EC%8B%9D%EB%B0%A9%EC%83%9D%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20%ED%95%A9%EC%88%99%20%EB%A7%9E%EC%84%A02"
+    },
+    {
+      "id": "drama_유부녀 킬러_MBC_오후 09:50",
+      "category": "drama",
+      "channel": "MBC",
+      "title": "유부녀 킬러",
+      "days": [
+        "금",
+        "토"
+      ],
+      "time": "오후 09:50",
+      "rating": 9.8,
+      "ratingDate": "08.14",
+      "ratingByDay": {
+        "금": {
+          "rating": 9.8,
+          "ratingDate": "08.14"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40393258&qvt=0&query=%EC%9C%A0%EB%B6%80%EB%85%80%20%ED%82%AC%EB%9F%AC"
+    },
+    {
+      "id": "drama_재벌X형사 2_SBS_오후 09:50",
+      "category": "drama",
+      "channel": "SBS",
+      "title": "재벌X형사 2",
+      "days": [
+        "금",
+        "토"
+      ],
+      "time": "오후 09:50",
+      "rating": 5.1,
+      "ratingDate": "08.14",
+      "ratingByDay": {
+        "금": {
+          "rating": 5.1,
+          "ratingDate": "08.14"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40499649&qvt=0&query=%EC%9E%AC%EB%B2%8C%20%ED%98%95%EC%82%AC%202"
+    },
+    {
+      "id": "variety_해피투게더 - 혼자가 아니어서 좋아_KBS2_오후 08:30",
+      "category": "variety",
+      "channel": "KBS2",
+      "title": "해피투게더 - 혼자가 아니어서 좋아",
+      "days": [
+        "금"
+      ],
+      "time": "오후 08:30",
+      "rating": 1.5,
+      "ratingDate": "08.14",
+      "ratingByDay": {
+        "금": {
+          "rating": 1.5,
+          "ratingDate": "08.14"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41048951&qvt=0&query=%ED%95%B4%ED%94%BC%ED%88%AC%EA%B2%8C%EB%8D%94%20%ED%98%BC%EC%9E%90%EA%B0%80%20%EC%95%84%EB%8B%88%EC%96%B4%EC%84%9C%20%EC%A2%8B%EC%95%84"
+    },
+    {
+      "id": "variety_우주떡집_tvN_오후 08:35",
+      "category": "variety",
+      "channel": "tvN",
+      "title": "우주떡집",
+      "days": [
+        "금"
+      ],
+      "time": "오후 08:35",
+      "rating": 2.7,
+      "ratingDate": "08.14",
+      "ratingByDay": {
+        "금": {
+          "rating": 2.7,
+          "ratingDate": "08.14"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41656692&qvt=0&query=%EC%9A%B0%EC%A3%BC%EB%96%A1%EC%A7%91"
+    },
+    {
+      "id": "variety_전현무계획4_MBN_오후 09:10",
+      "category": "variety",
+      "channel": "MBN",
+      "title": "전현무계획4",
+      "days": [
+        "금"
+      ],
+      "time": "오후 09:10",
+      "rating": 1.0,
+      "ratingDate": "08.14",
+      "ratingByDay": {
+        "금": {
+          "rating": 1.0,
+          "ratingDate": "08.14"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41531203&qvt=0&query=%EC%A0%84%ED%98%84%EB%AC%B4%EA%B3%84%ED%9A%8D4"
+    },
+    {
+      "id": "variety_금타는 금요일_TV조선_오후 10:00",
+      "category": "variety",
+      "channel": "TV조선",
+      "title": "금타는 금요일",
+      "days": [
+        "금"
+      ],
+      "time": "오후 10:00",
+      "rating": 3.7,
+      "ratingDate": "08.14",
+      "ratingByDay": {
+        "금": {
+          "rating": 3.7,
+          "ratingDate": "08.14"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40344530&qvt=0&query=%EA%B8%88%ED%83%80%EB%8A%94%20%EA%B8%88%EC%9A%94%EC%9D%BC"
+    },
+    {
+      "id": "variety_옥탑방의 문제아들_KBS2_오후 10:10",
+      "category": "variety",
+      "channel": "KBS2",
+      "title": "옥탑방의 문제아들",
+      "days": [
+        "금"
+      ],
+      "time": "오후 10:10",
+      "rating": 1.9,
+      "ratingDate": "08.14",
+      "ratingByDay": {
+        "금": {
+          "rating": 1.9,
+          "ratingDate": "08.14"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=8724190&qvt=0&query=%EC%98%A5%ED%83%91%EB%B0%A9%EC%9D%98%20%EB%AC%B8%EC%A0%9C%EC%95%84%EB%93%A4"
+    },
+    {
+      "id": "variety_나 혼자 산다_MBC_오후 11:10",
+      "category": "variety",
+      "channel": "MBC",
+      "title": "나 혼자 산다",
+      "days": [
+        "금"
+      ],
+      "time": "오후 11:10",
+      "rating": 5.8,
+      "ratingDate": "08.14",
+      "ratingByDay": {
+        "금": {
+          "rating": 5.8,
+          "ratingDate": "08.14"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=673019&qvt=0&query=%EB%82%98%20%ED%98%BC%EC%9E%90%20%EC%82%B0%EB%8B%A4"
     }
   ],
-  "newBelowCutoff": []
+  "newBelowCutoff": [
+    {
+      "id": "variety_뮤직뱅크_KBS2_오후 05:15",
+      "category": "variety",
+      "channel": "KBS2",
+      "title": "뮤직뱅크",
+      "days": [
+        "금"
+      ],
+      "time": "오후 05:15",
+      "rating": 0.3,
+      "ratingDate": "08.14",
+      "ratingByDay": {
+        "금": {
+          "rating": 0.3,
+          "ratingDate": "08.14"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=659774&qvt=0&query=%EB%AE%A4%EC%A7%81%EB%B1%85%ED%81%AC"
+    }
+  ]
 }
