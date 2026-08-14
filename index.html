@@ -2638,7 +2638,7 @@
   }
 
   /* 신규 론칭 셀럽PGM 배지 — 론칭 전 '론칭예정'(파랑) / 론칭 후 일정 기간 'NEW'(빨강).
-     슬라이서 버튼과 밴드 헤더 제목 양쪽에 같은 배지를 쓴다. */
+     밴드 헤더 제목 옆에만 붙인다. */
   .cel-new-badge {
     display: inline-block;
     margin-left: 4px;
@@ -2653,10 +2653,6 @@
     vertical-align: 1px;
   }
   .cel-new-badge.soon { background: var(--brand-blue); }
-  /* 선택된 슬라이서 버튼은 배경이 파랑이라 배지를 흰 바탕으로 뒤집는다
-     (론칭예정/NEW 구분은 글자색으로 유지) */
-  .cel-slicer button.active .cel-new-badge { background: #fff; color: #DC2626; }
-  .cel-slicer button.active .cel-new-badge.soon { color: var(--brand-blue); }
 
   /* 프로그램별 가로 밴드: 세로 스크롤만으로 전체 프로그램을 훑는다 */
   .cel-band {
@@ -5742,13 +5738,6 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
   // 셀럽PGM 슬라이서 동작 연결 (중복 선택 가능한 비교 모드)
   const celSlicer = document.getElementById('celProgramSlicer');
   if (celSlicer) {
-    // 신규 론칭 프로그램 버튼에 배지를 붙인다. 마크업에 박아두면 기간이 지나도
-    // 남으니, 날짜로 판단하는 헬퍼를 통해 렌더 시점에 주입한다.
-    celSlicer.querySelectorAll('button[data-file]').forEach(b => {
-      const badge = celLaunchBadgeHtml(b.dataset.file);
-      if (badge) b.insertAdjacentHTML('beforeend', badge);
-    });
-
     celSlicer.addEventListener('click', (e) => {
       const btn = e.target.closest('button');
       if (!btn) return;
