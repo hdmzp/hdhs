@@ -2637,6 +2637,23 @@
     color: var(--ink);
   }
 
+  /* 신규 론칭 셀럽PGM 배지 — 론칭 전 '론칭예정'(파랑) / 론칭 후 일정 기간 'NEW'(빨강).
+     밴드 헤더 제목 옆에만 붙인다. */
+  .cel-new-badge {
+    display: inline-block;
+    margin-left: 4px;
+    padding: 0 4px;
+    border-radius: 3px;
+    background: #DC2626;
+    color: #fff;
+    font-size: 9px;
+    font-weight: 800;
+    line-height: 1.6;
+    letter-spacing: 0.3px;
+    vertical-align: 1px;
+  }
+  .cel-new-badge.soon { background: var(--brand-blue); }
+
   /* 프로그램별 가로 밴드: 세로 스크롤만으로 전체 프로그램을 훑는다 */
   .cel-band {
     display: flex;
@@ -5112,6 +5129,35 @@ const CEL_FILES = [
   "CJ_CHJ.json", "GS_BJY.json", "LT_CYR.json", "GS_SYJ.json",
   "CJ_SIH.json", "HD_WYE.json"
 ];
+// 신규 론칭 프로그램 배지. 론칭일 전에는 '론칭예정', 론칭 후
+// CEL_NEW_BADGE_DAYS일 동안 'NEW'를 붙이고 그 뒤엔 저절로 사라진다
+// (기간이 지난 뒤 배지를 지우러 다시 손댈 필요가 없게 날짜 기준으로 판단).
+const CEL_NEW_BADGE_DAYS = 60;
+const CEL_LAUNCH_INFO = {
+  'CJ_KSY.json': {
+    date: '2026-08-18',
+    note: '2026-08-18(화) 21:45 첫 방송 · 연간 10회 내외 비정기 편성',
+  },
+};
+
+// 배지를 붙일 상태면 {cls, text, title}, 아니면 null
+function celLaunchBadgeOf(file) {
+  const info = CEL_LAUNCH_INFO[file];
+  if (!info) return null;
+  if (toLocalDateStr(new Date()) < info.date) {
+    return { cls: 'soon', text: '론칭예정', title: info.note };
+  }
+  const [y, m, d] = info.date.split('-').map(Number);
+  const days = Math.floor((new Date().setHours(0, 0, 0, 0) - new Date(y, m - 1, d).getTime()) / 86400000);
+  return days <= CEL_NEW_BADGE_DAYS ? { cls: '', text: 'NEW', title: info.note } : null;
+}
+
+function celLaunchBadgeHtml(file) {
+  const b = celLaunchBadgeOf(file);
+  if (!b) return '';
+  return `<span class="cel-new-badge${b.cls ? ' ' + b.cls : ''}" title="${b.title}">${b.text}</span>`;
+}
+
 let celRawDataFull = [];       // 전체 상품(프로그램 태그 포함)
 let celProgramMeta = {};       // file -> {title, company, schedule_raw, detail_link}
 let celSelectedFiles = new Set(CEL_FILES); // 기본값: 전체 선택 상태로 시작
@@ -5456,9 +5502,10 @@ function celRenderBand(file) {
       ? `<img src="${thumb}" alt="" loading="lazy" onerror="this.parentNode.innerHTML='<span class=cel-thumb-ph>${(meta.title || '?')[0]}</span>'">`
       : `<span class="cel-thumb-ph">${(meta.title || '?')[0]}</span>`) +
     `</div>`;
+  const newBadge = celLaunchBadgeHtml(file);
   const titleHtml = meta.detail_link
-    ? `<a class="cel-col-title" href="${meta.detail_link}" target="_blank" rel="noopener noreferrer">${meta.title} ↗</a>`
-    : `<div class="cel-col-title">${meta.title}</div>`;
+    ? `<a class="cel-col-title" href="${meta.detail_link}" target="_blank" rel="noopener noreferrer">${meta.title}${newBadge} ↗</a>`
+    : `<div class="cel-col-title">${meta.title}${newBadge}</div>`;
 
   return (
     `<div class="cel-band">` +
