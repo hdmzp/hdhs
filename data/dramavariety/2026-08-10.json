@@ -1,7 +1,7 @@
 {
   "weekStart": "2026-08-10",
   "weekEnd": "2026-08-16",
-  "collectedAt": "2026-08-18T02:20:50.956001+09:00",
+  "collectedAt": "2026-08-18T08:52:17.298711+09:00",
   "programs": [
     {
       "id": "drama_욕망의 덫_KBS2_오후 07:50",
@@ -748,7 +748,9 @@
           "ratingDate": "08.13"
         }
       },
-      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41457024&qvt=0&query=%EC%9E%90%EC%8B%9D%EB%B0%A9%EC%83%9D%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20%ED%95%A9%EC%88%99%20%EB%A7%9E%EC%84%A02"
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41457024&qvt=0&query=%EC%9E%90%EC%8B%9D%EB%B0%A9%EC%83%9D%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20%ED%95%A9%EC%88%99%20%EB%A7%9E%EC%84%A02",
+      "isEnded": true,
+      "endDate": "2026-08-13"
     },
     {
       "id": "drama_유부녀 킬러_MBC_오후 09:50",
@@ -975,9 +977,15 @@
         "토": {
           "rating": 5.4,
           "ratingDate": "08.15"
+        },
+        "일": {
+          "rating": 7.7,
+          "ratingDate": "08.16"
         }
       },
-      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40275988&qvt=0&query=%EC%95%84%ED%8C%8C%ED%8A%B8"
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40275988&qvt=0&query=%EC%95%84%ED%8C%8C%ED%8A%B8",
+      "isEnded": true,
+      "endDate": "2026-08-16"
     },
     {
       "id": "drama_아파트_JTBC_오후 10:30",
@@ -996,7 +1004,9 @@
           "ratingDate": "08.16"
         }
       },
-      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40275988&qvt=0&query=%EC%95%84%ED%8C%8C%ED%8A%B8"
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40275988&qvt=0&query=%EC%95%84%ED%8C%8C%ED%8A%B8",
+      "isEnded": true,
+      "endDate": "2026-08-16"
     },
     {
       "id": "variety_최수종의 여행사담3_KBS2_오전 07:30",
@@ -1493,6 +1503,27 @@
         }
       },
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=659774&qvt=0&query=%EB%AE%A4%EC%A7%81%EB%B1%85%ED%81%AC"
+    },
+    {
+      "id": "variety_왕은 무얼 자셨는가_TV조선_오후 10:00",
+      "category": "variety",
+      "channel": "TV조선",
+      "title": "왕은 무얼 자셨는가",
+      "days": [
+        "수"
+      ],
+      "time": "오후 10:00",
+      "rating": 0.8,
+      "ratingDate": "08.12",
+      "ratingByDay": {
+        "수": {
+          "rating": 0.8,
+          "ratingDate": "08.12"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=41531863&qvt=0&query=%EC%99%95%EC%9D%80%20%EB%AC%B4%EC%96%BC%20%EC%9E%90%EC%85%A8%EB%8A%94%EA%B0%80",
+      "isEnded": true,
+      "endDate": "2026-08-12"
     }
   ]
 }
