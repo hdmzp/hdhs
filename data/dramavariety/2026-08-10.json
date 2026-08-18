@@ -1,7 +1,7 @@
 {
   "weekStart": "2026-08-10",
   "weekEnd": "2026-08-16",
-  "collectedAt": "2026-08-18T08:52:17.298711+09:00",
+  "collectedAt": "2026-08-18T12:56:06.538059+09:00",
   "programs": [
     {
       "id": "drama_욕망의 덫_KBS2_오후 07:50",
@@ -1524,6 +1524,27 @@
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=41531863&qvt=0&query=%EC%99%95%EC%9D%80%20%EB%AC%B4%EC%96%BC%20%EC%9E%90%EC%85%A8%EB%8A%94%EA%B0%80",
       "isEnded": true,
       "endDate": "2026-08-12"
+    },
+    {
+      "id": "variety_웰컴 투 수근스쿨_KBS2_오후 10:00",
+      "category": "variety",
+      "channel": "KBS2",
+      "title": "웰컴 투 수근스쿨",
+      "days": [
+        "목"
+      ],
+      "time": "오후 10:00",
+      "rating": 0.6,
+      "ratingDate": "08.13",
+      "ratingByDay": {
+        "목": {
+          "rating": 0.6,
+          "ratingDate": "08.13"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=bjkw&pkid=57&os=41339470&qvt=0&query=%EC%9B%B0%EC%BB%B4%20%ED%88%AC%20%EC%88%98%EA%B7%BC%EC%8A%A4%EC%BF%A8",
+      "isEnded": true,
+      "endDate": "2026-08-13"
     }
   ]
 }
