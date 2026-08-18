@@ -58,6 +58,24 @@ def count_products(data) -> int:
     return len(data.get("products") or [])
 
 
+def broadcast_counts(data):
+    """상품 산출물을 '방송 회차별 건수'로 쪼갠다 ({라벨: 건수}).
+    셀럽PGM 산출물은 "다음 방송" 기준으로 매번 덮어써지므로, 방송이 끝나
+    다음 회차로 넘어가면 파일 전체 건수가 뚝 떨어진다 (예: 8/17 방송 3개 ->
+    이제 막 예고가 열린 8/24 방송 1개). 이건 수집 고장이 아니라 정상 교체라,
+    급감 검사는 파일 전체가 아니라 '양쪽에 다 있는 같은 회차'끼리만 비교한다.
+    방송 라벨이 없는 산출물이면 None (기존처럼 전체 건수로 비교)."""
+    if not isinstance(data, dict):
+        return None
+    products = data.get("products") or []
+    counts = {}
+    for p in products:
+        label = str((p or {}).get("broadcast_date_label") or "").strip()
+        if label:
+            counts[label] = counts.get(label, 0) + 1
+    return counts or None
+
+
 def count_programs(data) -> int:
     return len(data.get("programs") or [])
 
@@ -180,18 +198,50 @@ def read_json(path):
         return json.load(f)
 
 
-def previous_count(rel_path: str, counter) -> int:
-    """직전 커밋(HEAD) 버전의 건수. 못 읽으면 -1 (검사 생략)."""
+def previous_data(rel_path: str):
+    """직전 커밋(HEAD) 버전의 JSON. 못 읽으면 None (급감 검사 생략)."""
     try:
         blob = subprocess.run(
             ["git", "show", f"HEAD:{rel_path}"],
             cwd=ROOT, capture_output=True, timeout=30,
         )
         if blob.returncode != 0:
-            return -1
-        return counter(json.loads(blob.stdout.decode("utf-8")))
+            return None
+        return json.loads(blob.stdout.decode("utf-8"))
     except (OSError, ValueError, subprocess.SubprocessError):
-        return -1
+        return None
+
+
+def drop_reason(data, prev_data, count, prev):
+    """급감이면 실패 사유 문자열, 아니면 None. 두 번째 반환값은 메모.
+
+    방송 라벨이 있는 산출물은 '양쪽에 다 있는 같은 방송 회차'끼리만 비교한다.
+    회차가 통째로 바뀌었거나(다음 방송으로 넘어감) 끝난 회차가 빠진 것은
+    정상이라 건드리지 않는다. 다만 상품이 0개가 되는 건 회차와 무관하게
+    수집 고장이므로 그대로 잡는다."""
+    if count == 0:
+        return f"급감: {prev} -> 0 (산출물이 비었다)", None
+
+    now_by_bcast = broadcast_counts(data)
+    prev_by_bcast = broadcast_counts(prev_data)
+
+    # 방송 라벨이 없는 산출물(merged.json 등)은 기존대로 전체 건수로 비교
+    if not now_by_bcast or not prev_by_bcast:
+        if count < prev * DROP_RATIO_LIMIT:
+            return (f"급감: {prev} -> {count} "
+                    f"(직전의 {count / prev:.0%}, 임계 {DROP_RATIO_LIMIT:.0%})"), None
+        return None, None
+
+    shared = sorted(set(now_by_bcast) & set(prev_by_bcast))
+    if not shared:
+        return None, "방송 회차 교체됨 - 급감 검사 생략"
+
+    for label in shared:
+        was, now = prev_by_bcast[label], now_by_bcast[label]
+        if now < was * DROP_RATIO_LIMIT:
+            return (f"급감: [{label}] {was} -> {now} "
+                    f"(직전의 {now / was:.0%}, 임계 {DROP_RATIO_LIMIT:.0%})"), None
+    return None, f"동일 회차 {len(shared)}건 유지"
 
 
 def check_one(rel_path, counter, min_count, required, mark_ts):
@@ -220,12 +270,15 @@ def check_one(rel_path, counter, min_count, required, mark_ts):
     if min_count and count < min_count:
         return "fail", f"건수 부족: {count} < 최소 {min_count}"
 
-    prev = previous_count(rel_path, counter)
+    prev_data = previous_data(rel_path)
+    prev = counter(prev_data) if prev_data is not None else -1
     if prev > 0:
         notes.append(f"직전 {prev}건")
-        if count < prev * DROP_RATIO_LIMIT:
-            return "fail", (f"급감: {prev} -> {count} "
-                            f"(직전의 {count / prev:.0%}, 임계 {DROP_RATIO_LIMIT:.0%})")
+        reason, note = drop_reason(data, prev_data, count, prev)
+        if reason:
+            return "fail", reason
+        if note:
+            notes.append(note)
 
     return "ok", " / ".join(notes)
 
