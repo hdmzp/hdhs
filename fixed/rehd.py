@@ -364,6 +364,24 @@ def capture_pgm_comm_responses(page, detail_link: str, sect_id: str, timeout_ms:
     return captured
 
 
+def find_swiper_html(obj, depth: int = 0):
+    """중첩된 JSON 어디에 들어있든 스와이퍼 마크업 문자열을 찾아낸다.
+
+    기존에는 respData 바로 아래 한 겹만 뒤졌는데, 응답 구조가 바뀌면서
+    (2026-08 기준 HD 3개 프로그램 전부) 마크업을 못 찾고 있다. 한 단계
+    스키마 변경 정도는 견디도록 재귀로 훑는다."""
+    if depth > 6:
+        return None
+    if isinstance(obj, str):
+        return obj if ("swiper-slide" in obj or "data-slitm-cd" in obj) else None
+    values = obj.values() if isinstance(obj, dict) else (obj if isinstance(obj, list) else [])
+    for v in values:
+        found = find_swiper_html(v, depth + 1)
+        if found:
+            return found
+    return None
+
+
 def parse_swiper_items_from_html(html: str, date_label: str) -> list:
     """pgm-comm-html 응답(또는 그 안의 html 필드)에서 swiper-slide 카드들을 파싱.
     DOM에서 확인된 구조: <div class="swiper-slide ..."><img alt="상품명" src="...">
@@ -433,20 +451,8 @@ def crawl_hd_program(page, config: dict, list_map: dict):
     if "html_text" in captured:
         html_content = captured["html_text"]
     elif "html_data" in captured:
-        hd = captured["html_data"]
-        # respData 자체가 HTML 문자열이거나, 그 안의 특정 키가 HTML일 수 있음
-        if isinstance(hd, str):
-            html_content = hd
-        elif isinstance(hd, dict):
-            resp_data_html = hd.get("respData")
-            if isinstance(resp_data_html, str):
-                html_content = resp_data_html
-            else:
-                # respData가 dict인데 그 안에 html 필드가 있을 수도 있음
-                for v in (resp_data_html or {}).values() if isinstance(resp_data_html, dict) else []:
-                    if isinstance(v, str) and "swiper-slide" in v:
-                        html_content = v
-                        break
+        # 응답 어디에 박혀 있든(respData 바로 아래든 더 깊은 곳이든) 찾아낸다
+        html_content = find_swiper_html(captured["html_data"])
 
     if html_content:
         debug_html_path = os.path.join(OUTPUT_DIR, f"_debug_pgm_comm_html_{sect_id}.html")
@@ -462,6 +468,15 @@ def crawl_hd_program(page, config: dict, list_map: dict):
     elif "html_url" in captured:
         print(f"    -> [경고] pgm-comm-html 응답은 잡았는데 파싱 가능한 HTML을 못 찾음")
         print(f"       캡처된 키: {list(captured.keys())}")
+        # 응답 구조가 바뀌었다는 뜻이라, 원본을 남겨야 다음에 고칠 수 있다.
+        # (경고만 찍고 끝내면 실제 응답이 어떻게 생겼는지 영영 알 수 없다)
+        dump_path = os.path.join(OUTPUT_DIR, f"_debug_pgm_comm_html_{sect_id}.json")
+        try:
+            with open(dump_path, "w", encoding="utf-8") as f:
+                json.dump(captured.get("html_data"), f, ensure_ascii=False, indent=2)
+            print(f"       -> [디버그] 원본 응답 저장: {dump_path}")
+        except (OSError, TypeError, ValueError) as e:
+            print(f"       -> [경고] 원본 응답 저장 실패: {e}")
     else:
         print(f"    -> [경고] pgm-comm-html 응답을 못 잡음")
 
