@@ -2707,6 +2707,27 @@
     padding: 2px 10px;
     margin-bottom: 8px;
   }
+  /* 주차별 방송 상태 배지 — 아직 남은 방송이 있으면 '예정'(노랑),
+     그 주 방송이 모두 지났으면 '종료'(회색). 날짜 기준이라 손댈 필요 없이 저절로 바뀐다. */
+  .cel-week-status {
+    display: inline-block;
+    font-size: 10.5px;
+    font-weight: 800;
+    border-radius: 20px;
+    padding: 2px 10px;
+    margin: 0 0 8px 6px;
+  }
+  .cel-week-status.upcoming {
+    color: #4A3200;
+    background: #FCD34D;
+    border: 1px solid #E0A400;
+  }
+  .cel-week-status.done {
+    color: #6B7280;
+    background: var(--paper-dim2);
+    border: 1px solid var(--rule);
+  }
+
   .cel-week-cols { display: flex; align-items: flex-start; }
   .cel-bcast { flex: 0 0 auto; width: 215px; padding: 0 12px; border-right: 1px dashed var(--rule); }
   .cel-bcast:first-child { padding-left: 0; }
@@ -5414,6 +5435,18 @@ function celDateFromLabel(label) {
   return `${year}-${m[1]}-${m[2]}`;
 }
 
+// 주차 묶음의 방송 상태 배지. 그 주에 아직 방송하지 않은 회차가 하나라도
+// 남아 있으면 '예정'(노랑), 전부 지났으면 '종료'(회색). 방송일을 못 뽑은
+// 묶음('기타')은 판단 근거가 없어 배지를 붙이지 않는다.
+function celWeekStatusHtml(broadcasts) {
+  const dates = (broadcasts || []).map(b => b.date).filter(Boolean);
+  if (dates.length === 0) return '';
+  const today = toLocalDateStr(new Date());
+  return dates.some(d => d >= today)
+    ? '<span class="cel-week-status upcoming">예정</span>'
+    : '<span class="cel-week-status done">종료</span>';
+}
+
 function celRenderBand(file) {
   const programKey = file.replace(/\.json$/, '');
   const hist = celHistoryCache[celMonth];
@@ -5482,6 +5515,7 @@ function celRenderBand(file) {
         ).join('');
         return `<div class="cel-week">` +
           `<span class="cel-week-label">${w === 0 ? '기타' : monthNum + '월 ' + w + '주차'}</span>` +
+          celWeekStatusHtml(items) +
           `<div class="cel-week-cols">${cols}</div></div>`;
       }).join('');
 
