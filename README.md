@@ -23,7 +23,7 @@ hdhs/
 │   ├── scrape-celebpgm.yml             # 셀럽PGM 상품 데이터
 │   ├── rep-pgm-scrape.yml              # 셀럽PGM 대표프로그램 메타(merge)
 │   ├── scrape-ranking.yml              # 홈쇼핑 랭킹(18개 카테고리)
-│   ├── weather.yml                     # 날씨(ASOS 과거 + 단기예보)
+│   ├── weather.yml                     # 날씨(ASOS 과거 + 단기예보 + 공휴일)
 │   └── pages-deploy.yml                # 위 워크플로우들이 커밋 후 강제 트리거하는 배포 전용 워크플로우
 │
 ├── naver_schedule_scraper.py        # [편성표] 지상파·종편 8채널 수집
@@ -31,7 +31,7 @@ hdhs/
 ├── cj_scraper.py / lt_scraper.py     # [홈쇼핑] CJ온스타일 / 롯데
 ├── etc_scraper.py                    # [홈쇼핑] 기타 7개사(공영/홈앤/K쇼핑/신세계/NS/쇼핑엔티/SK스토아, 라방바 경유)
 ├── promotion_scraper.py              # [프로모션] 4사(HD/GS/CJ/LT) 카드할인 일정
-├── weather.py                        # [날씨] ASOS 과거 + 단기예보
+├── weather.py                        # [날씨] ASOS 과거 + 단기예보 + 공휴일
 │
 ├── scraper/scrape_naver.py           # [드라마/예능] 시청률 편성 (Playwright)
 ├── scraper/naver_parser.py           # 위 스크립트의 파싱 로직 보조 모듈
@@ -63,7 +63,7 @@ hdhs/
 ├── homeshopping/promotions/card_discounts.json  # 프로모션(카드할인) 일정
 ├── homeshopping/fixed_programs/{사}.json, merged.json         # 고정PGM
 ├── homeshopping/representative_programs/{사}_{코드}.json, merged.json  # 셀럽PGM
-└── weather/asos|forecast/...                    # 날씨 결과
+└── weather/asos|forecast|holiday/...            # 날씨 결과 + 공휴일
 ```
 
 ---
@@ -76,7 +76,7 @@ hdhs/
 |---|---|---|---|
 | `schedule.yml` | 05:00 | 지상파·종편 편성표 | - |
 | `scrape-fixed-pgm.yml` | 04:30 | 고정PGM 4사 | 스크래퍼별 `continue-on-error` + 건전성 검사(2-1) |
-| `weather.yml` | 05:30 | 날씨(ASOS+단기예보) | - |
+| `weather.yml` | 05:30 | 날씨(ASOS+단기예보)+공휴일 | - |
 | `homeshopping.yml` | 05:50, 12:20 (하루 2회) | 홈쇼핑 4사(HD/GS/CJ/LT) | 스크래퍼별 `continue-on-error` |
 | `etc-scrape.yml` | 06:10, 12:40 (하루 2회) | 홈쇼핑 기타 7개사 | `continue-on-error` |
 | `scrape-ranking.yml` | 07:00 | 홈쇼핑 랭킹 18개 카테고리 | - |
@@ -213,6 +213,9 @@ python tools/test_scrape_guard.py               # 재시도 로직 자체 테스
 - 과거(ASOS): 확정된 지난 달까지는 `weather/asos/{YYYY-MM}.json`에 한 번만 저장하고 재수집 안 함. 진행 중인 현재 달은 매일 1일~어제까지 통째로 재수집
 - 미래(단기예보): `weather/forecast/latest.json`에 오늘~글피 매번 갱신
 - 최초 실행 시 2023-01부터 백필
+- **공휴일**: 한국천문연구원 특일 정보(`getRestDeInfo`, 날씨와 같은 공공데이터포털 키)로 관공서 공휴일을 함께 수집해 `weather/holiday/{YYYY}.json`에 `{"2026-08-15": "광복절"}` 형태로 저장. 지역과 무관하므로 지역 디렉토리 없음
+  - 대상: 2023년 ~ **내년**(연말에 다음 해 날짜를 조회해도 비지 않도록)
+  - 지난 연도는 확정 과거라 건너뛰고, 올해·내년만 매일 재수집 후 병합 → 연중에 새로 지정되는 **임시공휴일**을 잡는다. 어떤 달이든 수집에 실패하면 그 지난 연도는 부분 데이터로 굳히지 않고 저장을 보류한다(다음 실행에서 재수집)
 
 ---
 
@@ -271,6 +274,8 @@ python tools/test_scrape_guard.py               # 재시도 로직 자체 테스
 ### 🌤 날씨 탭
 - 월 단위 캘린더, 최저/최고기온 + 강수(과거 mm / 예보 확률%)
 - **작년 같은 날** 최저/최고기온을 함께 표시(과거 데이터 있을 때만)
+- **공휴일**은 요일과 무관하게 날짜를 빨간색으로 표시하고 옆에 이름을 붙이며 칸 배경을 옅은 붉은 톤으로 깐다(이름이 길면 말줄임 + `title` 툴팁). 오늘 강조가 공휴일 배경보다 우선
+- 편성표 탭 상단 날씨 바에도 `🎌 공휴일명`을 덧붙인다. 예보 범위 밖 미래 날짜처럼 기온이 없는 날도 공휴일만 있으면 표시
 
 ### 📊 랭킹 탭
 - 18개 카테고리(대/소분류) 선택형 주간 랭킹, 순위 변동 표시(▲▼)와 인기/HOT/RISING 배지

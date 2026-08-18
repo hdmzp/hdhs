@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-전국 광역시 날씨 데이터 수집기 (ASOS 과거 관측 + 단기예보 미래)
+전국 광역시 날씨 데이터 수집기 (ASOS 과거 관측 + 단기예보 미래 + 공휴일)
 
 == 수집 지역 (8곳, 광역시 단위) ==
 서울(seoul) · 부산(busan) · 대구(daegu) · 인천(incheon) ·
@@ -11,8 +11,10 @@ weather/
 ├── asos/{지역코드}/
 │   ├── 2025-01.json ~ {전월}.json   : 확정된 과거 (한 번 받고 다시 안 건드림)
 │   └── {현재월}.json                 : 진행 중인 달 (매일 그 달 1일~어제까지 통째로 재수집)
-└── forecast/{지역코드}/
-    └── latest.json                  : 오늘~글피 (매일 갱신)
+├── forecast/{지역코드}/
+│   └── latest.json                  : 오늘~글피 (매일 갱신)
+└── holiday/
+    └── {YYYY}.json                  : 공휴일 (지역 무관, 2023~내년)
 
 (서울은 기존 정책과 동일하게 유지, 나머지 7개 지역도 동일한 정책으로 동작)
 
@@ -24,6 +26,11 @@ asos/{지역코드}/{YYYY-MM}.json:
 forecast/{지역코드}/latest.json:
   { "YYYY-MM-DD": {"minTa": 18.0, "maxTa": 29.0, "pop_max": 60}, ... }
   - pop_max: 그날 시간대별 강수확률(POP) 중 최댓값
+
+holiday/{YYYY}.json:
+  { "YYYY-MM-DD": "광복절", ... }
+  - 한국천문연구원 특일 정보의 관공서 공휴일(isHoliday=Y)만 담는다
+  - 지난 연도는 확정 -> 재수집 안 함 / 올해·내년은 매일 재수집 후 병합(임시공휴일 대응)
 
 == 백필(backfill) 정책 (지역 공통) ==
 - 시작일: 2023-01-01 (BACKFILL_START)
@@ -67,6 +74,9 @@ REGIONS = {
 
 ASOS_PATH = "/1360000/AsosDalyInfoService/getWthrDataList"
 FORECAST_PATH = "/1360000/VilageFcstInfoService_2.0/getVilageFcst"
+# 한국천문연구원 특일 정보 - 관공서 공휴일(실제 쉬는 날)만 반환.
+# 음력 명절/대체공휴일/임시공휴일이 모두 포함되므로 이 엔드포인트 하나면 충분하다.
+HOLIDAY_PATH = "/B090041/openapi/service/SpcdeInfoService/getRestDeInfo"
 
 # 평문 http(80)로만 붙으면 실행 환경에 따라 연결 자체가 타임아웃 난다
 # (GitHub Actions 러너에서 전 지역·전 엔드포인트 ConnectTimeout 발생).
@@ -347,6 +357,109 @@ def collect_forecast(region_code: str, nx: int, ny: int) -> bool:
         return False
 
 
+def normalize_items(body: dict) -> list:
+    """공공데이터포털 JSON의 items를 항상 list로 정규화.
+
+    결과가 0건이면 items가 dict가 아니라 빈 문자열("")로 오고,
+    1건이면 item이 list가 아니라 dict 하나로 온다. 둘 다 그대로 순회하면
+    터지거나 문자열을 한 글자씩 도는 사고가 난다.
+    """
+    items = body.get("items")
+    if not isinstance(items, dict):
+        return []
+    item = items.get("item")
+    if isinstance(item, dict):
+        return [item]
+    if isinstance(item, list):
+        return item
+    return []
+
+
+def fetch_holidays_month(year: int, month: int) -> dict:
+    """해당 연월의 공휴일을 {YYYY-MM-DD: "공휴일명"} 형태로 반환."""
+    params = {
+        "serviceKey": API_KEY,
+        "solYear": f"{year:04d}",
+        "solMonth": f"{month:02d}",
+        "numOfRows": "100",
+        "_type": "json",  # 이 API는 dataType이 아니라 _type을 본다 (빼면 XML이 온다)
+    }
+    data = request_json(HOLIDAY_PATH, params)
+
+    header = data.get("response", {}).get("header", {})
+    if header.get("resultCode") != "00":
+        raise RuntimeError(f"공휴일 API 오류: {header.get('resultCode')} {header.get('resultMsg')}")
+
+    result = {}
+    for it in normalize_items(data.get("response", {}).get("body", {})):
+        if it.get("isHoliday") != "Y":
+            continue
+        locdate = str(it.get("locdate") or "")
+        if len(locdate) != 8:
+            continue
+        iso_date = f"{locdate[:4]}-{locdate[4:6]}-{locdate[6:8]}"
+        name = (it.get("dateName") or "").strip()
+        if not name:
+            continue
+        # 같은 날에 이름이 둘 이상 걸리는 경우(연휴 겹침 등)는 이어붙인다
+        prev = result.get(iso_date)
+        result[iso_date] = f"{prev} · {name}" if prev and name not in prev else (prev or name)
+    return result
+
+
+def collect_holidays() -> bool:
+    """공휴일: 2023년 ~ 내년까지 연도별 파일로 저장. (지역과 무관하므로 한 번만 수집)
+
+    지난 연도는 확정된 과거라 파일이 있으면 건너뛴다. 올해와 내년은 임시공휴일이
+    연중에 새로 지정될 수 있어 매번 재수집하되, 기존 데이터와 병합해서 응답이
+    비어도 이미 받아둔 날짜를 잃지 않게 한다. (ASOS 수집과 동일한 정책)
+    """
+    holiday_dir = os.path.join(WEATHER_ROOT, "holiday")
+    os.makedirs(holiday_dir, exist_ok=True)
+
+    now = datetime.now()
+    # 내년까지 받아둬야 12월에 다음 해 달력을 넘겨봤을 때 공휴일이 비지 않는다
+    last_year = now.year + 1
+    failed = False
+
+    for year in range(BACKFILL_START.year, last_year + 1):
+        out_path = os.path.join(holiday_dir, f"{year}.json")
+        existing = load_month_file(out_path) if os.path.exists(out_path) else {}
+
+        if year < now.year and existing:
+            continue  # 확정된 과거 -> 건너뜀
+
+        print(f"  [공휴일] {year} 수집 중...")
+        fetched = {}
+        year_failed = False
+        for month in range(1, 13):
+            try:
+                fetched.update(fetch_holidays_month(year, month))
+            except Exception as e:
+                print(f"    [실패] {year}-{month:02d}: {e}")
+                year_failed = True
+            time.sleep(REQUEST_DELAY_SEC)
+
+        failed = failed or year_failed
+
+        if year_failed and year < now.year:
+            # 지난 연도를 부분 데이터로 저장해 버리면 '파일 있음 -> 건너뜀' 규칙에
+            # 걸려 빠진 달이 영구 결손된다. 저장하지 않고 다음 실행에서 통째로
+            # 다시 받는다. (ASOS 백필이 missing_days로 막는 것과 같은 사고)
+            print("    -> 일부 월 실패 -> 저장 보류 (다음 실행에서 재수집)")
+            continue
+
+        merged = {**existing, **fetched}
+        if merged != existing:
+            with open(out_path, "w", encoding="utf-8") as f:
+                json.dump(dict(sorted(merged.items())), f, ensure_ascii=False, indent=2)
+            print(f"    -> {len(merged)}일 저장: {out_path}")
+        else:
+            print(f"    -> 새로 채운 날짜 없음: {out_path}")
+
+    return not failed
+
+
 def main():
     ok = 0
     total = 0
@@ -360,6 +473,11 @@ def main():
             total += 1
             ok += 1 if result else 0
         time.sleep(REQUEST_DELAY_SEC)
+
+    # 공휴일은 지역과 무관하므로 지역 루프 밖에서 한 번만 수집한다
+    print("\n=== [공휴일] 수집 시작 ===")
+    total += 1
+    ok += 1 if collect_holidays() else 0
 
     print(f"\n완료. 성공 {ok}/{total}")
     if ok == 0:
