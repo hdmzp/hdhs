@@ -31,6 +31,8 @@ holiday/{YYYY}.json:
   { "YYYY-MM-DD": "광복절", ... }
   - 한국천문연구원 특일 정보의 관공서 공휴일(isHoliday=Y)만 담는다
   - 지난 연도는 확정 -> 재수집 안 함 / 올해·내년은 매일 재수집 후 병합(임시공휴일 대응)
+  - 연 단위로 한 번에 조회(평상시 하루 2회 요청). API 접속이 안 되면 즉시 중단해
+    요청당 연결 타임아웃이 쌓여 워크플로우 전체가 죽는 것을 막는다
 
 == 백필(backfill) 정책 (지역 공통) ==
 - 시작일: 2023-01-01 (BACKFILL_START)
@@ -375,15 +377,21 @@ def normalize_items(body: dict) -> list:
     return []
 
 
-def fetch_holidays_month(year: int, month: int) -> dict:
-    """해당 연월의 공휴일을 {YYYY-MM-DD: "공휴일명"} 형태로 반환."""
+def fetch_holidays(year: int, month: int = None) -> dict:
+    """공휴일을 {YYYY-MM-DD: "공휴일명"} 형태로 반환. month=None이면 그 해 전체.
+
+    solMonth는 선택 파라미터라 연 단위로 한 번에 받을 수 있다. 월별로 12번
+    도는 것보다 요청이 12분의 1이고, API가 죽어 요청마다 연결 타임아웃(20초)이
+    걸리는 상황에서 워크플로우 시간을 통째로 잡아먹지 않는다.
+    """
     params = {
         "serviceKey": API_KEY,
         "solYear": f"{year:04d}",
-        "solMonth": f"{month:02d}",
         "numOfRows": "100",
         "_type": "json",  # 이 API는 dataType이 아니라 _type을 본다 (빼면 XML이 온다)
     }
+    if month is not None:
+        params["solMonth"] = f"{month:02d}"
     data = request_json(HOLIDAY_PATH, params)
 
     header = data.get("response", {}).get("header", {})
@@ -432,15 +440,33 @@ def collect_holidays() -> bool:
         print(f"  [공휴일] {year} 수집 중...")
         fetched = {}
         year_failed = False
-        for month in range(1, 13):
-            try:
-                fetched.update(fetch_holidays_month(year, month))
-            except Exception as e:
-                print(f"    [실패] {year}-{month:02d}: {e}")
-                year_failed = True
-            time.sleep(REQUEST_DELAY_SEC)
+        try:
+            fetched = fetch_holidays(year)
+        except Exception as e:
+            print(f"    [실패] {year}: {e}")
+            year_failed = True
+        time.sleep(REQUEST_DELAY_SEC)
+
+        if not year_failed and not fetched:
+            # 연 단위 조회를 못 쓰는 경우(파라미터 미지원 등)를 위한 폴백.
+            # 공휴일이 한 건도 없는 해는 없으므로 빈 응답은 조회 실패로 본다.
+            print("    연 단위 응답이 비어 월별로 재조회")
+            for month in range(1, 13):
+                try:
+                    fetched.update(fetch_holidays(year, month))
+                except Exception as e:
+                    print(f"    [실패] {year}-{month:02d}: {e}")
+                    year_failed = True
+                time.sleep(REQUEST_DELAY_SEC)
 
         failed = failed or year_failed
+
+        if year_failed and _consecutive_failures >= FAILFAST_AFTER:
+            # API 호스트 접속 자체가 안 되는 상태(러너에서 종종 발생).
+            # 남은 연도를 계속 두드려 봐야 요청당 연결 타임아웃만 쌓여
+            # 워크플로우가 통째로 죽고 날씨 결과까지 커밋되지 못한다.
+            print("    -> API 접속 불가로 판단, 공휴일 수집 중단")
+            return False
 
         if year_failed and year < now.year:
             # 지난 연도를 부분 데이터로 저장해 버리면 '파일 있음 -> 건너뜀' 규칙에
