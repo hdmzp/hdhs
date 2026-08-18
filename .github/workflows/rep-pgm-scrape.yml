@@ -98,9 +98,20 @@ jobs:
               exit 0
             fi
             echo "push 실패, rebase 후 재시도 ($i/5)"
-            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git pull --rebase origin "${GITHUB_REF_NAME}" || git rebase --abort || true
             sleep $((RANDOM % 5 + 1))
           done
+
+          # 재시도를 다 소진했을 때의 마지막 1회. rebase가 어중간하게 남아있거나
+          # 로컬 ref가 원격보다 뒤처진 상태면 위 루프가 계속 같은 이유로 실패한다.
+          # 원격을 새로 받아 그 위에 확실히 얹은 뒤 한 번 더 시도한다.
+          echo "재시도 소진 - 원격 재동기화 후 마지막 1회 시도"
+          git rebase --abort 2>/dev/null || true
+          git fetch origin "${GITHUB_REF_NAME}"
+          if git rebase "origin/${GITHUB_REF_NAME}" && git push; then
+            echo "추가 시도에서 push 성공"
+            exit 0
+          fi
 
           echo "push 최종 실패"
           exit 1
