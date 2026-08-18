@@ -2830,6 +2830,14 @@
     padding: 80px 0;
   }
 
+  /* 데이터 신선도 표기 (고정PGM 탭의 .fp-updated와 같은 역할·모양) */
+  .cel-updated {
+    text-align: center;
+    font-size: 11px;
+    color: var(--ink-faint);
+    padding: 10px 0 4px;
+  }
+
   .cel-sample-notice {
     margin-bottom: 14px;
     padding: 8px 14px;
@@ -3082,6 +3090,7 @@
     </div>
   </div>
   <div class="cel-sample-notice" id="celSampleNotice" style="display:none;">⚠️ 아직 수집된 데이터가 없어 레이아웃 미리보기용 예시 데이터를 보여주고 있습니다.</div>
+  <div class="cel-updated" id="celUpdated"></div>
   <div id="celGridWrap"></div>
 </div>
 
@@ -5569,9 +5578,21 @@ function celRenderBand(file) {
   );
 }
 
+// 최근 갱신 시각. 조회 중인 달의 누적 파일이 마지막으로 쓰인 시각을 쓴다
+// (지난 달을 보면 그 달 데이터가 마지막으로 갱신된 시각이 나온다).
+// 누적 파일이 없어 라이브 데이터로 폴백한 달은 이번 달 수집 시각을 쓴다.
+function celRenderUpdated() {
+  const el = document.getElementById('celUpdated');
+  if (!el) return;
+  const hist = celHistoryCache[celMonth] || celHistoryCache[celThisMonth()];
+  el.textContent = (hist && hist.updated_at) ? fpFormatUpdated(hist.updated_at) : '';
+}
+
 function celRenderCompare() {
   const wrap = document.getElementById('celGridWrap');
   if (!wrap) return;
+
+  celRenderUpdated();
 
   const selected = CEL_FILES.filter(f => celSelectedFiles.has(f));
   if (selected.length === 0) {
