@@ -3498,7 +3498,7 @@ function renderWeatherBar(weather) {
   }
 
   const holidayHtml = weather.holidayName
-    ? `<span class="w-sep">·</span><span class="w-holiday">🎌 ${fpEscapeHtml(weather.holidayName)}</span>`
+    ? `<span class="w-sep">·</span><span class="w-holiday">${fpEscapeHtml(weather.holidayName)}</span>`
     : '';
 
   // 기온·강수는 없고 공휴일만 있는 날(예보 범위 밖 미래 공휴일)
