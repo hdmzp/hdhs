@@ -5435,14 +5435,26 @@ function celDateFromLabel(label) {
   return `${year}-${m[1]}-${m[2]}`;
 }
 
-// 주차 묶음의 방송 상태 배지. 그 주에 아직 방송하지 않은 회차가 하나라도
-// 남아 있으면 '예정'(노랑), 전부 지났으면 '종료'(회색). 방송일을 못 뽑은
-// 묶음('기타')은 판단 근거가 없어 배지를 붙이지 않는다.
+// 한 회차가 아직 방송 전인지 판단한다. 날짜뿐 아니라 방송 시각까지 본다 -
+// 라벨('08/18(화) 19:35 방송')에 시:분이 들어 있어서, 그 시각이 지나면
+// 같은 날이라도 종료로 넘어간다. 시각을 못 뽑은 회차는 그날 자정까지
+// 예정으로 둔다 (아직 안 한 방송을 종료로 보여주는 쪽이 더 나쁜 오류라서).
+function celBroadcastIsUpcoming(b) {
+  if (!b || !b.date) return false;
+  const m = String(b.label || '').match(/(\d{1,2}):(\d{2})/);
+  const at = m ? `${m[1].padStart(2, '0')}:${m[2]}` : '23:59';
+  const now = new Date();
+  const nowAt = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+  return `${b.date} ${at}` > `${toLocalDateStr(now)} ${nowAt}`;
+}
+
+// 주차 묶음의 방송 상태 배지. 그 주에 아직 방송 시각이 지나지 않은 회차가
+// 하나라도 남아 있으면 '예정'(노랑), 전부 지났으면 '종료'(회색). 방송일을
+// 못 뽑은 묶음('기타')은 판단 근거가 없어 배지를 붙이지 않는다.
 function celWeekStatusHtml(broadcasts) {
-  const dates = (broadcasts || []).map(b => b.date).filter(Boolean);
-  if (dates.length === 0) return '';
-  const today = toLocalDateStr(new Date());
-  return dates.some(d => d >= today)
+  const dated = (broadcasts || []).filter(b => b.date);
+  if (dated.length === 0) return '';
+  return dated.some(celBroadcastIsUpcoming)
     ? '<span class="cel-week-status upcoming">예정</span>'
     : '<span class="cel-week-status done">종료</span>';
 }
