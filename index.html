@@ -3341,6 +3341,7 @@ const TAB_TIPS = {
     items: [
       '홈쇼핑 탭 편성 데이터(자체 카테고리 분류모델 적용)를 요일×시간대로 집계해요',
       '<b>방송 시작시각</b> 기준으로 시간대를 나눠요 (09:20도 09:45도 09시대)',
+      '한 방송에 상품코드가 여러 개여도 <b>브랜드 단위 1건</b>으로 세요 (같은 채널·같은 시작시각 기준)',
       '데이터는 <b>2026-06-22</b>부터예요 (기타 채널은 06-26부터)',
       '셀을 클릭하면 채널별 횟수·고정/셀럽PGM 정보를 보여줘요',
     ],
@@ -6900,7 +6901,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
   let inCatSel = new Set(IN_CATS);     // 다중선택, 풀세트 = 전체
   let inSel = null;                    // 선택 { h, w } (셀 모드) 또는 { h, w:null } (행 모드)
   let inSelToken = 0;                  // 선택이 바뀔 때마다 증가 - 늦게 도착한 지상파 fetch 응답 무시용
-  let inRows = [];                     // 조회 기간 평탄화 편성: { d, w, h, cat, label, main }
+  let inRows = [];                     // 조회 기간 평탄화 편성(브랜드 단위 중복제거): { d, w, h, cat, label, main, items }
   const inCache = {};                  // 월별 JSON 캐시 (dir|YYYY-MM)
   let inFixedSlots = null;             // 고정PGM merged.json slots
   let inCelebs = null;                 // 셀럽PGM merged.json programs (+파싱된 요일/시)
@@ -6942,6 +6943,19 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
   }
 
   // 조회 기간의 모든 채널 편성을 { 날짜, 요일, 시간대, 카테고리, 채널 } 로 평탄화
+  //
+  // 편성 파일 1행 = 방송 1회가 아니라 '상품코드 1개'다. 현대홈쇼핑 <플렉스샵>처럼 한 방송에서
+  // 여러 브랜드를 파는 편성은 상품코드가 60개 넘게 붙어, 행을 그대로 세면 그 셀만 몇 배로 부풀고
+  // (금 22시대 235회 같은 값) 카테고리 비중도 왜곡된다. 그래서 '날짜+채널+시작시각+브랜드'로
+  // 중복을 제거해 브랜드 단위 1건으로 집계한다.
+  //   - 브랜드가 비어 있으면(라방바 기반 채널에 흔하다) 상품명으로 대체해 서로 다른 방송이 뭉치지 않게 한다
+  //   - 같은 브랜드가 같은 시간대라도 시작시각이 다르면 별도 방송으로 센다
+  //   - SK스토아처럼 동일 상품이 여러 번 실린 스크랩 중복도 함께 걸러진다
+  const inDedupKey = (d, label, e) => {
+    const name = String(e.brand || '').trim() || String(e.product || '').trim();
+    return d + '|' + label + '|' + String(e.start || '') + '|' + name.replace(/\s+/g, ' ');
+  };
+
   async function inLoadRange() {
     const months = new Set();
     for (let d = inStart; d <= inEnd; d = inAddDays(d, 1)) months.add(d.slice(0, 7));
@@ -6951,7 +6965,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     )));
     const loaded = await Promise.all(jobs);
 
-    const rows = [];
+    const byKey = new Map(); // 중복 제거 키 -> 행 (묶인 상품들의 카테고리 분포를 함께 들고 있는다)
     loaded.forEach(({ ch, data }) => {
       const days = (data || {}).days || {};
       for (const d in days) {
@@ -6960,9 +6974,24 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
         days[d].forEach(e => {
           const h = parseInt(String(e.start || '').slice(0, 2), 10);
           if (isNaN(h) || (h >= 2 && h < 5)) return; // 02~04시 생략
-          rows.push({ d: d, w: w, h: h, cat: inCatOf(e), label: ch.label, main: !!ch.main });
+          const key = inDedupKey(d, ch.label, e);
+          const cat = inCatOf(e);
+          let r = byKey.get(key);
+          if (!r) {
+            r = { d: d, w: w, h: h, cat: cat, label: ch.label, main: !!ch.main, items: 0, cats: {} };
+            byKey.set(key, r);
+          }
+          r.items++;
+          r.cats[cat] = (r.cats[cat] || 0) + 1;
         });
       }
+    });
+
+    // 한 브랜드 방송에 카테고리가 섞여 있으면(분류모델 편차) 상품 수가 가장 많은 카테고리를 대표로 쓴다
+    const rows = [...byKey.values()];
+    rows.forEach(r => {
+      r.cat = Object.entries(r.cats).sort((a, b) => b[1] - a[1])[0][0];
+      delete r.cats;
     });
     inRows = rows;
   }
