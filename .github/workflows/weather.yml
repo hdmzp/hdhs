@@ -29,6 +29,9 @@ jobs:
       - name: 날씨 스크래퍼 실행
         env:
           API_KEY: ${{ secrets.WEATHER_API_KEY }}
+          # 공휴일(천문연)은 기상청과 활용신청이 별도라 키를 따로 둔다.
+          # 시크릿이 없으면 weather.py가 API_KEY로 폴백한다.
+          HOLIDAY_API_KEY: ${{ secrets.HOLIDAY_API_KEY }}
         run: python weather.py
 
       - name: 결과 커밋 & 푸시
