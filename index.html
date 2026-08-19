@@ -328,12 +328,13 @@
     border-bottom: 1px dotted var(--ink-soft);
   }
   .weather-bar a:hover { color: var(--ink); border-bottom-color: var(--ink); }
-  .weather-bar .w-temp-max { color: var(--comprehensive); font-weight: 700; }
-  .weather-bar .w-temp-min { color: var(--terrestrial); font-weight: 700; }
-  .weather-bar .w-rain { color: var(--now-accent); font-weight: 600; }
-  .weather-bar .w-holiday { color: #DC2626; font-weight: 700; }
-  .weather-bar .w-sep { margin: 0 8px; opacity: 0.4; }
-  .weather-bar .w-empty { font-style: italic; opacity: 0.6; }
+  /* w-* 조각은 편성표 날씨 바와 홈쇼핑 헤더가 공유한다 */
+  .weather-bar .w-temp-max, .hs-daymeta .w-temp-max { color: var(--comprehensive); font-weight: 700; }
+  .weather-bar .w-temp-min, .hs-daymeta .w-temp-min { color: var(--terrestrial); font-weight: 700; }
+  .weather-bar .w-rain, .hs-daymeta .w-rain { color: var(--now-accent); font-weight: 600; }
+  .weather-bar .w-holiday, .hs-daymeta .w-holiday { color: #DC2626; font-weight: 700; }
+  .weather-bar .w-sep, .hs-daymeta .w-sep { margin: 0 8px; opacity: 0.4; }
+  .weather-bar .w-empty, .hs-daymeta .w-empty { font-style: italic; opacity: 0.6; }
 
   .grid-wrap {
     max-width: 1400px;
@@ -1779,6 +1780,27 @@
     border-bottom: 1px solid var(--rule);
   }
 
+  /* 비어 있던 왼쪽 1fr 칸. 날짜 컨트롤 바로 왼쪽에 붙도록 우측 정렬한다.
+     색/구분자 클래스(w-*)는 편성표 날씨 바와 공유한다. */
+  .hs-daymeta {
+    grid-column: 1;
+    justify-self: end;
+    font-family: 'Pretendard', -apple-system, sans-serif;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+  .hs-daymeta a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px dotted var(--ink-soft);
+  }
+  .hs-daymeta a:hover { color: var(--ink); border-bottom-color: var(--ink); }
+  .hs-daymeta .w-sep { margin: 0 6px; }
+
   .hs-controls-center {
     grid-column: 2;
     display: flex;
@@ -2099,6 +2121,7 @@
   @media (max-width: 700px) {
     .hs-controls { grid-template-columns: 1fr; }
     .hs-controls-center { grid-column: 1; }
+    .hs-daymeta { grid-column: 1; justify-self: center; font-size: 11.5px; }
     .hs-time-note { grid-column: 1; justify-self: center; }
     .hs-grid-wrap { padding: 0 8px 40px; }
     table.hs-table thead th { font-size: 12px; }
@@ -3032,6 +3055,8 @@
 <div id="tabHomeshop" class="tab-panel active">
 
 <div class="hs-controls">
+  <div class="hs-daymeta" id="hsDayMeta"></div>
+
   <div class="hs-controls-center">
     <div class="date-nav">
       <button class="arrow" id="hsPrevDay" aria-label="이전 날짜">‹</button>
@@ -3511,27 +3536,53 @@ function renderWeatherBar(weather) {
     return;
   }
 
+  bar.innerHTML =
+    `<a href="#" onclick="switchTab('weather'); return false;" title="날씨 탭으로 이동">` +
+    weatherMetricsHtml(weather) +
+    holidayHtml +
+    `</a>`;
+}
+
+// 최저/최고/강수 조각. 편성표 날씨 바와 홈쇼핑 헤더가 함께 쓴다.
+function weatherMetricsHtml(weather) {
   const minTa = weather.minTa;
   const maxTa = weather.maxTa;
   const minStr = (minTa === null || minTa === undefined) ? '–' : `${minTa.toFixed(0)}°`;
   const maxStr = (maxTa === null || maxTa === undefined) ? '–' : `${maxTa.toFixed(0)}°`;
+  const rainStr = weather.kind === 'forecast'
+    ? `비 ${Math.round(weather.pop_max)}%`
+    : `비 ${weather.sumRn.toFixed(1)}mm`;
 
-  let rainStr;
-  if (weather.kind === 'forecast') {
-    rainStr = `비 ${Math.round(weather.pop_max)}%`;
-  } else {
-    rainStr = `비 ${weather.sumRn.toFixed(1)}mm`;
+  return `최저 <span class="w-temp-min">${minStr}</span>` +
+         `<span class="w-sep">·</span>` +
+         `최고 <span class="w-temp-max">${maxStr}</span>` +
+         `<span class="w-sep">·</span>` +
+         `<span class="w-rain">${rainStr}</span>`;
+}
+
+// 홈쇼핑 탭 헤더 왼쪽 칸: 선택한 날짜의 날씨 + 공휴일
+let _hsDayMetaSeq = 0;
+async function hsRenderDayMeta(dateStr) {
+  const el = document.getElementById('hsDayMeta');
+  if (!el) return;
+
+  // 날짜를 빠르게 넘기면 먼저 보낸 요청이 늦게 도착해 최신 표시를 덮어쓸 수 있다
+  const seq = ++_hsDayMetaSeq;
+  const weather = await getWeatherForDate(dateStr);
+  if (seq !== _hsDayMetaSeq) return;
+
+  const parts = [];
+  if (weather && weather.kind !== 'none') parts.push(weatherMetricsHtml(weather));
+  if (weather && weather.holidayName) {
+    parts.push(`<span class="w-holiday">${fpEscapeHtml(weather.holidayName)}</span>`);
   }
 
-  bar.innerHTML =
-    `<a href="#" onclick="switchTab('weather'); return false;" title="날씨 탭으로 이동">` +
-    `최저 <span class="w-temp-min">${minStr}</span>` +
-    `<span class="w-sep">·</span>` +
-    `최고 <span class="w-temp-max">${maxStr}</span>` +
-    `<span class="w-sep">·</span>` +
-    `<span class="w-rain">${rainStr}</span>` +
-    holidayHtml +
-    `</a>`;
+  // 기온도 공휴일도 없으면 빈 칸으로 둔다 (의미 없는 "정보 없음" 문구 대신)
+  el.innerHTML = parts.length
+    ? `<a href="#" onclick="switchTab('weather'); return false;" title="날씨 탭으로 이동">` +
+      parts.join('<span class="w-sep">·</span>') +
+      `</a>`
+    : '';
 }
 
 function isToday(dateStr) {
@@ -4534,6 +4585,7 @@ async function hsRefresh(dateStr) {
   hsRenderCategoryLegend();
   document.getElementById('hsDateText').textContent = formatDateLabel(dateStr);
   document.getElementById('hsPrevDay').disabled = (dateStr <= HS_MIN_DATE);
+  hsRenderDayMeta(dateStr);  // 날씨/공휴일은 편성 로딩을 막지 않도록 await하지 않는다
   const wrap = document.getElementById('hsGridWrap');
   wrap.innerHTML = '<div style="text-align:center;padding:30px;color:var(--ink-soft);font-size:12px;">불러오는 중…</div>';
 
@@ -4722,12 +4774,18 @@ const MONTH_NAMES = ['1월','2월','3월','4월','5월','6월','7월','8월','9�
 const DATA_MIN_YEAR = 2023;
 const DATA_MIN_MONTH = 1;
 
+// 조회 가능한 미래 경계: 내년 12월.
+// weather.py의 collect_holidays()가 공휴일을 '내년까지' 모으는 것과 맞춘다.
+// 예보는 글피까지뿐이라 미래 달에는 기온이 없지만, 공휴일과 '작년 같은 날'
+// 비교는 그대로 볼 수 있어서 편성 계획용으로 의미가 있다.
+const DATA_MAX_MONTH = 12;
+function dataMaxYear() { return new Date().getFullYear() + 1; }
+
 function renderMonthPickerPanel() {
   document.getElementById('mppYearLabel').textContent = pickerPanelYear;
 
-  const now = new Date();
-  const maxYear = now.getFullYear();
-  const maxMonth = now.getMonth() + 1;
+  const maxYear = dataMaxYear();
+  const maxMonth = DATA_MAX_MONTH;
 
   let html = '';
   for (let m = 1; m <= 12; m++) {
@@ -5790,8 +5848,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     renderMonth(currentYear, currentMonth);
   });
   document.getElementById('nextMonth').addEventListener('click', () => {
-    const now = new Date();
-    if (currentYear === now.getFullYear() && currentMonth === now.getMonth() + 1) return;
+    if (currentYear === dataMaxYear() && currentMonth === DATA_MAX_MONTH) return;
     currentMonth += 1;
     if (currentMonth > 12) { currentMonth = 1; currentYear += 1; }
     renderMonth(currentYear, currentMonth);
