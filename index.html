@@ -333,6 +333,7 @@
   .weather-bar .w-temp-min, .hs-daymeta .w-temp-min { color: var(--terrestrial); font-weight: 700; }
   .weather-bar .w-rain, .hs-daymeta .w-rain { color: var(--now-accent); font-weight: 600; }
   .weather-bar .w-holiday, .hs-daymeta .w-holiday { color: #DC2626; font-weight: 700; }
+  .weather-bar .w-term, .hs-daymeta .w-term { color: var(--ink-soft); font-weight: 600; opacity: 0.9; }
   .weather-bar .w-sep, .hs-daymeta .w-sep { margin: 0 8px; opacity: 0.4; }
   .weather-bar .w-empty, .hs-daymeta .w-empty { font-style: italic; opacity: 0.6; }
 
@@ -1184,6 +1185,19 @@
   .day-num.sun { color: var(--hot); }
   .day-num.sat { color: var(--cold); }
 
+  /* 절기(입추·초복 등)는 쉬는 날이 아니다. 공휴일 빨강에 묻히지 않도록
+     같은 자리에 두되 회색으로 낮춰 위계를 준다. */
+  .term-name {
+    font-size: 9.5px;
+    font-weight: 500;
+    color: var(--ink-soft);
+    opacity: 0.8;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   /* 공휴일 이름: 칸 폭이 좁으므로 한 줄 말줄임 + 전체 이름은 title 툴팁 */
   .holiday-name {
     font-size: 9.5px;
@@ -1230,6 +1244,7 @@
     .day-stats { font-size: 9.5px; }
     .day-num { font-size: 11px; }
     .holiday-name { font-size: 8.5px; }
+    .term-name { font-size: 8.5px; }
   }
 
   /* ============ 드라마/예능 탭 ============ */
@@ -3467,7 +3482,7 @@ function formatDateLabel(dateStr) {
 
 // 편성표 상단 날씨 바는 서울 기준으로 표시한다.
 const SCHEDULE_WEATHER_REGION = 'seoul';
-const _weatherCache = { forecast: null, asosMonths: {}, holidayYears: {} };
+const _weatherCache = { forecast: null, asosMonths: {}, holidayYears: {}, termYears: {} };
 
 async function fetchJsonSafe(path) {
   try {
@@ -3486,17 +3501,28 @@ async function getHolidayName(dateStr) {
   return _weatherCache.holidayYears[year][dateStr] || '';
 }
 
+async function getTermName(dateStr) {
+  const year = dateStr.slice(0, 4);
+  if (!(year in _weatherCache.termYears)) {
+    _weatherCache.termYears[year] = await fetchJsonSafe(`./weather/term/${year}.json`) || {};
+  }
+  return _weatherCache.termYears[year][dateStr] || '';
+}
+
 async function getWeatherForDate(dateStr) {
   if (location.protocol === 'file:') return null;
 
-  const holidayName = await getHolidayName(dateStr);
+  const [holidayName, termName] = await Promise.all([
+    getHolidayName(dateStr),
+    getTermName(dateStr),
+  ]);
 
   if (_weatherCache.forecast === null) {
     _weatherCache.forecast = await fetchJsonSafe(`./weather/forecast/${SCHEDULE_WEATHER_REGION}/latest.json`) || {};
   }
   if (_weatherCache.forecast[dateStr]) {
     const w = _weatherCache.forecast[dateStr];
-    return { ...w, kind: 'forecast', holidayName };
+    return { ...w, kind: 'forecast', holidayName, termName };
   }
 
   const yearMonth = dateStr.slice(0, 7);
@@ -3506,11 +3532,11 @@ async function getWeatherForDate(dateStr) {
   const monthData = _weatherCache.asosMonths[yearMonth];
   if (monthData && monthData[dateStr]) {
     const w = monthData[dateStr];
-    return { ...w, kind: 'asos', holidayName };
+    return { ...w, kind: 'asos', holidayName, termName };
   }
 
-  // 예보 범위 밖의 미래 날짜는 기온이 없다. 그래도 공휴일은 알려준다.
-  if (holidayName) return { kind: 'none', holidayName };
+  // 예보 범위 밖의 미래 날짜는 기온이 없다. 그래도 공휴일·절기는 알려준다.
+  if (holidayName || termName) return { kind: 'none', holidayName, termName };
 
   return null;
 }
@@ -3522,9 +3548,13 @@ function renderWeatherBar(weather) {
     return;
   }
 
-  const holidayHtml = weather.holidayName
-    ? `<span class="w-sep">·</span><span class="w-holiday">${fpEscapeHtml(weather.holidayName)}</span>`
-    : '';
+  const holidayHtml =
+    (weather.holidayName
+      ? `<span class="w-sep">·</span><span class="w-holiday">${fpEscapeHtml(weather.holidayName)}</span>`
+      : '') +
+    (weather.termName
+      ? `<span class="w-sep">·</span><span class="w-term">${fpEscapeHtml(weather.termName)}</span>`
+      : '');
 
   // 기온·강수는 없고 공휴일만 있는 날(예보 범위 밖 미래 공휴일)
   if (weather.kind === 'none') {
@@ -3575,6 +3605,9 @@ async function hsRenderDayMeta(dateStr) {
   if (weather && weather.kind !== 'none') parts.push(weatherMetricsHtml(weather));
   if (weather && weather.holidayName) {
     parts.push(`<span class="w-holiday">${fpEscapeHtml(weather.holidayName)}</span>`);
+  }
+  if (weather && weather.termName) {
+    parts.push(`<span class="w-term">${fpEscapeHtml(weather.termName)}</span>`);
   }
 
   // 기온도 공휴일도 없으면 빈 칸으로 둔다 (의미 없는 "정보 없음" 문구 대신)
@@ -3727,11 +3760,12 @@ async function loadMonthData(year, month, region) {
 
   // 공휴일은 지역과 무관하고 연도별 파일이다. 달력 한 화면은 한 달 = 한 연도라
   // 해당 연도 파일 하나만 받으면 된다.
-  const [asos, forecast, lastYearAsos, holiday] = await Promise.all([
+  const [asos, forecast, lastYearAsos, holiday, term] = await Promise.all([
     fetchJsonSafe(`./weather/asos/${region}/${ym}.json`),
     fetchJsonSafe(`./weather/forecast/${region}/latest.json`),
     fetchJsonSafe(`./weather/asos/${region}/${lastYearYm}.json`),
     fetchJsonSafe(`./weather/holiday/${year}.json`),
+    fetchJsonSafe(`./weather/term/${year}.json`),
   ]);
 
   return {
@@ -3739,6 +3773,7 @@ async function loadMonthData(year, month, region) {
     forecast: forecast || {},
     lastYearAsos: lastYearAsos || {},
     holiday: holiday || {},
+    term: term || {},
   };
 }
 
@@ -3781,6 +3816,7 @@ function renderDayCell(year, month, day, monthData, today) {
   const isFuture = dateStr > today;
 
   const holidayName = monthData.holiday[dateStr] || '';
+  const termName = monthData.term[dateStr] || '';
 
   const cellClasses = ['cal-cell'];
   if (holidayName) cellClasses.push('holiday-cell');
@@ -3791,6 +3827,10 @@ function renderDayCell(year, month, day, monthData, today) {
   const dowClass = holidayName ? 'sun' : (dow === 0 ? 'sun' : (dow === 6 ? 'sat' : ''));
   const holidayHtml = holidayName
     ? `<span class="holiday-name" title="${fpEscapeHtml(holidayName)}">${fpEscapeHtml(holidayName)}</span>`
+    : '';
+  // 절기(입추·초복 등)는 쉬는 날이 아니라 공휴일보다 눈에 덜 띄게 회색으로 둔다
+  const termHtml = termName
+    ? `<span class="term-name" title="${fpEscapeHtml(termName)}">${fpEscapeHtml(termName)}</span>`
     : '';
 
   const data = getDayData(dateStr, monthData);
@@ -3825,7 +3865,7 @@ function renderDayCell(year, month, day, monthData, today) {
   }
 
   return `<td class="${cellClasses.join(' ')}">` +
-         `<div class="day-num ${dowClass}"><span>${day}</span>${holidayHtml}</div>` +
+         `<div class="day-num ${dowClass}"><span>${day}</span>${holidayHtml}${termHtml}</div>` +
          statsHtml +
          `</td>`;
 }

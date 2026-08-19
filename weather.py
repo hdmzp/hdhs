@@ -85,6 +85,10 @@ FORECAST_PATH = "/1360000/VilageFcstInfoService_2.0/getVilageFcst"
 # 한국천문연구원 특일 정보 - 관공서 공휴일(실제 쉬는 날)만 반환.
 # 음력 명절/대체공휴일/임시공휴일이 모두 포함되므로 이 엔드포인트 하나면 충분하다.
 HOLIDAY_PATH = "/B090041/openapi/service/SpcdeInfoService/getRestDeInfo"
+# 절기: 24절기(입춘·입추·동지...)와 잡절(초복·중복·말복·한식...)은 분류가 달라
+# 엔드포인트가 따로다. 쉬는 날이 아니므로 isHoliday로 거르지 않는다.
+DIVISIONS_PATH = "/B090041/openapi/service/SpcdeInfoService/get24DivisionsInfo"
+SUNDRY_PATH = "/B090041/openapi/service/SpcdeInfoService/getSundryDayInfo"
 
 # 평문 http(80)로만 붙으면 실행 환경에 따라 연결 자체가 타임아웃 난다
 # (GitHub Actions 러너에서 전 지역·전 엔드포인트 ConnectTimeout 발생).
@@ -383,12 +387,16 @@ def normalize_items(body: dict) -> list:
     return []
 
 
-def fetch_holidays(year: int, month: int = None) -> dict:
-    """공휴일을 {YYYY-MM-DD: "공휴일명"} 형태로 반환. month=None이면 그 해 전체.
+def fetch_special_days(path: str, label: str, year: int, month: int = None,
+                      holiday_only: bool = False) -> dict:
+    """특일 정보를 {YYYY-MM-DD: "이름"} 형태로 반환. month=None이면 그 해 전체.
 
     solMonth는 선택 파라미터라 연 단위로 한 번에 받을 수 있다. 월별로 12번
     도는 것보다 요청이 12분의 1이고, API가 죽어 요청마다 연결 타임아웃(20초)이
     걸리는 상황에서 워크플로우 시간을 통째로 잡아먹지 않는다.
+
+    holiday_only=True면 실제로 쉬는 날(isHoliday=Y)만 남긴다. 절기는 쉬는 날이
+    아니라 이 값이 N으로 오므로 걸러내면 안 된다.
     """
     params = {
         "serviceKey": HOLIDAY_API_KEY,
@@ -398,15 +406,15 @@ def fetch_holidays(year: int, month: int = None) -> dict:
     }
     if month is not None:
         params["solMonth"] = f"{month:02d}"
-    data = request_json(HOLIDAY_PATH, params)
+    data = request_json(path, params)
 
     header = data.get("response", {}).get("header", {})
     if header.get("resultCode") != "00":
-        raise RuntimeError(f"공휴일 API 오류: {header.get('resultCode')} {header.get('resultMsg')}")
+        raise RuntimeError(f"{label} API 오류: {header.get('resultCode')} {header.get('resultMsg')}")
 
     result = {}
     for it in normalize_items(data.get("response", {}).get("body", {})):
-        if it.get("isHoliday") != "Y":
+        if holiday_only and it.get("isHoliday") != "Y":
             continue
         locdate = str(it.get("locdate") or "")
         if len(locdate) != 8:
@@ -415,39 +423,63 @@ def fetch_holidays(year: int, month: int = None) -> dict:
         name = (it.get("dateName") or "").strip()
         if not name:
             continue
-        # 같은 날에 이름이 둘 이상 걸리는 경우(연휴 겹침 등)는 이어붙인다
+        # 같은 날에 이름이 둘 이상 걸리는 경우(연휴 겹침, 절기와 잡절이 같은 날 등)
         prev = result.get(iso_date)
         result[iso_date] = f"{prev} · {name}" if prev and name not in prev else (prev or name)
     return result
 
 
-def collect_holidays() -> bool:
-    """공휴일: 2023년 ~ 내년까지 연도별 파일로 저장. (지역과 무관하므로 한 번만 수집)
+def fetch_holidays(year: int, month: int = None) -> dict:
+    """공휴일(관공서 공휴일)."""
+    return fetch_special_days(HOLIDAY_PATH, "공휴일", year, month, holiday_only=True)
 
-    지난 연도는 확정된 과거라 파일이 있으면 건너뛴다. 올해와 내년은 임시공휴일이
-    연중에 새로 지정될 수 있어 매번 재수집하되, 기존 데이터와 병합해서 응답이
-    비어도 이미 받아둔 날짜를 잃지 않게 한다. (ASOS 수집과 동일한 정책)
+
+def fetch_terms(year: int, month: int = None) -> dict:
+    """절기: 24절기 + 잡절을 한 묶음으로 반환.
+
+    입춘·입추·동지는 24절기, 초복·중복·말복·한식은 잡절로 분류가 달라
+    엔드포인트가 나뉘어 있다. 화면에서는 구분 없이 같은 방식으로 보여주므로
+    합쳐서 한 파일에 담는다.
     """
-    holiday_dir = os.path.join(WEATHER_ROOT, "holiday")
-    os.makedirs(holiday_dir, exist_ok=True)
+    result = fetch_special_days(DIVISIONS_PATH, "24절기", year, month)
+    for iso_date, name in fetch_special_days(SUNDRY_PATH, "잡절", year, month).items():
+        prev = result.get(iso_date)
+        result[iso_date] = f"{prev} · {name}" if prev and name not in prev else (prev or name)
+    return result
+
+
+def collect_yearly(label: str, subdir: str, fetch_fn) -> bool:
+    """연 단위 특일 데이터를 weather/{subdir}/{YYYY}.json으로 저장. (지역 무관)
+
+    공휴일과 절기가 같은 정책을 쓴다:
+    - 지난 연도는 확정된 과거라 파일이 있으면 건너뛴다.
+    - 올해·내년은 매번 재수집하되 기존 데이터와 병합해서, 응답이 비어도
+      이미 받아둔 날짜를 잃지 않는다. (ASOS 수집과 동일한 안전장치)
+    - 지난 연도가 부분 실패하면 저장을 보류한다. 결손 상태로 저장하면
+      '파일 있음 -> 건너뜀' 규칙에 걸려 영구 결손이 된다.
+    - API 접속 자체가 안 되면 즉시 포기한다. 남은 연도를 계속 두드리면
+      요청당 연결 타임아웃만 쌓여 워크플로우가 통째로 죽는다.
+    """
+    out_dir = os.path.join(WEATHER_ROOT, subdir)
+    os.makedirs(out_dir, exist_ok=True)
 
     now = datetime.now()
-    # 내년까지 받아둬야 12월에 다음 해 달력을 넘겨봤을 때 공휴일이 비지 않는다
+    # 내년까지 받아둬야 12월에 다음 해 달력을 넘겨봤을 때 비지 않는다
     last_year = now.year + 1
     failed = False
 
     for year in range(BACKFILL_START.year, last_year + 1):
-        out_path = os.path.join(holiday_dir, f"{year}.json")
+        out_path = os.path.join(out_dir, f"{year}.json")
         existing = load_month_file(out_path) if os.path.exists(out_path) else {}
 
         if year < now.year and existing:
             continue  # 확정된 과거 -> 건너뜀
 
-        print(f"  [공휴일] {year} 수집 중...")
+        print(f"  [{label}] {year} 수집 중...")
         fetched = {}
         year_failed = False
         try:
-            fetched = fetch_holidays(year)
+            fetched = fetch_fn(year)
         except Exception as e:
             print(f"    [실패] {year}: {e}")
             year_failed = True
@@ -455,11 +487,11 @@ def collect_holidays() -> bool:
 
         if not year_failed and not fetched:
             # 연 단위 조회를 못 쓰는 경우(파라미터 미지원 등)를 위한 폴백.
-            # 공휴일이 한 건도 없는 해는 없으므로 빈 응답은 조회 실패로 본다.
+            # 해당 항목이 한 건도 없는 해는 없으므로 빈 응답은 조회 실패로 본다.
             print("    연 단위 응답이 비어 월별로 재조회")
             for month in range(1, 13):
                 try:
-                    fetched.update(fetch_holidays(year, month))
+                    fetched.update(fetch_fn(year, month))
                 except Exception as e:
                     print(f"    [실패] {year}-{month:02d}: {e}")
                     year_failed = True
@@ -468,17 +500,11 @@ def collect_holidays() -> bool:
         failed = failed or year_failed
 
         if year_failed and _consecutive_failures >= FAILFAST_AFTER:
-            # API 호스트 접속 자체가 안 되는 상태(러너에서 종종 발생).
-            # 남은 연도를 계속 두드려 봐야 요청당 연결 타임아웃만 쌓여
-            # 워크플로우가 통째로 죽고 날씨 결과까지 커밋되지 못한다.
-            print("    -> API 접속 불가로 판단, 공휴일 수집 중단")
+            print(f"    -> API 접속 불가로 판단, {label} 수집 중단")
             return False
 
         if year_failed and year < now.year:
-            # 지난 연도를 부분 데이터로 저장해 버리면 '파일 있음 -> 건너뜀' 규칙에
-            # 걸려 빠진 달이 영구 결손된다. 저장하지 않고 다음 실행에서 통째로
-            # 다시 받는다. (ASOS 백필이 missing_days로 막는 것과 같은 사고)
-            print("    -> 일부 월 실패 -> 저장 보류 (다음 실행에서 재수집)")
+            print("    -> 일부 실패 -> 저장 보류 (다음 실행에서 재수집)")
             continue
 
         merged = {**existing, **fetched}
@@ -506,10 +532,14 @@ def main():
             ok += 1 if result else 0
         time.sleep(REQUEST_DELAY_SEC)
 
-    # 공휴일은 지역과 무관하므로 지역 루프 밖에서 한 번만 수집한다
+    # 공휴일·절기는 지역과 무관하므로 지역 루프 밖에서 한 번만 수집한다
     print("\n=== [공휴일] 수집 시작 ===")
     total += 1
-    ok += 1 if collect_holidays() else 0
+    ok += 1 if collect_yearly("공휴일", "holiday", fetch_holidays) else 0
+
+    print("\n=== [절기] 수집 시작 ===")
+    total += 1
+    ok += 1 if collect_yearly("절기", "term", fetch_terms) else 0
 
     print(f"\n완료. 성공 {ok}/{total}")
     if ok == 0:
