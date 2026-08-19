@@ -45,7 +45,8 @@ holiday/{YYYY}.json:
 
 == 사용법 ==
   pip install requests
-  API_KEY="발급받은_서비스키(Decoding)" python weather.py
+  API_KEY="기상청_서비스키(Decoding)" python weather.py
+  # 공휴일 키가 따로면: HOLIDAY_API_KEY="천문연_서비스키(Decoding)" 도 함께 지정
 """
 
 import os
@@ -60,6 +61,11 @@ API_KEY = os.environ.get("API_KEY", "")
 if not API_KEY:
     print("환경변수 API_KEY가 비어있습니다.")
     sys.exit(1)
+
+# 공공데이터포털은 서비스별로 활용신청이 따로다. 기상청(1360000)과
+# 천문연(B090041)에 서로 다른 키를 쓸 수 있도록 분리해 두고,
+# HOLIDAY_API_KEY가 없으면 기존 키를 그대로 쓴다(하위호환).
+HOLIDAY_API_KEY = os.environ.get("HOLIDAY_API_KEY", "") or API_KEY
 
 # 지역코드: {ASOS 관측소ID(stn), 단기예보 격자(nx, ny)}
 # 좌표는 기상청 공식 ASOS 지점코드 및 단기예보 격자표 기준 (광역시 대표 지점)
@@ -385,7 +391,7 @@ def fetch_holidays(year: int, month: int = None) -> dict:
     걸리는 상황에서 워크플로우 시간을 통째로 잡아먹지 않는다.
     """
     params = {
-        "serviceKey": API_KEY,
+        "serviceKey": HOLIDAY_API_KEY,
         "solYear": f"{year:04d}",
         "numOfRows": "100",
         "_type": "json",  # 이 API는 dataType이 아니라 _type을 본다 (빼면 XML이 온다)
