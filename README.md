@@ -23,7 +23,7 @@ hdhs/
 │   ├── scrape-celebpgm.yml             # 셀럽PGM 상품 데이터
 │   ├── rep-pgm-scrape.yml              # 셀럽PGM 대표프로그램 메타(merge)
 │   ├── scrape-ranking.yml              # 홈쇼핑 랭킹(18개 카테고리)
-│   ├── weather.yml                     # 날씨(ASOS 과거 + 단기예보 + 공휴일)
+│   ├── weather.yml                     # 날씨(ASOS 과거 + 단기예보) + 공휴일 + 절기
 │   └── pages-deploy.yml                # 위 워크플로우들이 커밋 후 강제 트리거하는 배포 전용 워크플로우
 │
 ├── naver_schedule_scraper.py        # [편성표] 지상파·종편 8채널 수집
@@ -31,7 +31,7 @@ hdhs/
 ├── cj_scraper.py / lt_scraper.py     # [홈쇼핑] CJ온스타일 / 롯데
 ├── etc_scraper.py                    # [홈쇼핑] 기타 7개사(공영/홈앤/K쇼핑/신세계/NS/쇼핑엔티/SK스토아, 라방바 경유)
 ├── promotion_scraper.py              # [프로모션] 4사(HD/GS/CJ/LT) 카드할인 일정
-├── weather.py                        # [날씨] ASOS 과거 + 단기예보 + 공휴일
+├── weather.py                        # [날씨] ASOS 과거 + 단기예보 + 공휴일 + 절기
 │
 ├── scraper/scrape_naver.py           # [드라마/예능] 시청률 편성 (Playwright)
 ├── scraper/naver_parser.py           # 위 스크립트의 파싱 로직 보조 모듈
@@ -76,7 +76,7 @@ hdhs/
 |---|---|---|---|
 | `schedule.yml` | 05:00 | 지상파·종편 편성표 | - |
 | `scrape-fixed-pgm.yml` | 04:30 | 고정PGM 4사 | 스크래퍼별 `continue-on-error` + 건전성 검사(2-1) |
-| `weather.yml` | 05:30 | 날씨(ASOS+단기예보)+공휴일 | - |
+| `weather.yml` | 05:30 | 날씨(ASOS+단기예보)+공휴일+절기 | - |
 | `homeshopping.yml` | 05:50, 12:20 (하루 2회) | 홈쇼핑 4사(HD/GS/CJ/LT) | 스크래퍼별 `continue-on-error` |
 | `etc-scrape.yml` | 06:10, 12:40 (하루 2회) | 홈쇼핑 기타 7개사 | `continue-on-error` |
 | `scrape-ranking.yml` | 07:00 | 홈쇼핑 랭킹 18개 카테고리 | - |
