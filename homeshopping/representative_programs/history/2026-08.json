@@ -1,6 +1,6 @@
 {
   "month": "2026-08",
-  "updated_at": "2026-08-20T20:30:52.412002+09:00",
+  "updated_at": "2026-08-20T22:30:18.922262+09:00",
   "programs": [
     {
       "program_key": "HD_HJM",
@@ -13,7 +13,7 @@
         {
           "date": "2026-08-24",
           "label": "08/24(월) 19:30 방송",
-          "collected_at": "2026-08-20T20:30:52.409435+09:00",
+          "collected_at": "2026-08-20T22:30:18.919760+09:00",
           "products": [
             {
               "broadcast_date_label": "08/24(월) 19:30 방송",
@@ -156,7 +156,7 @@
         {
           "date": "2026-08-25",
           "label": "08/25(화) 19:30 방송",
-          "collected_at": "2026-08-20T20:30:52.409435+09:00",
+          "collected_at": "2026-08-20T22:30:18.919760+09:00",
           "products": [
             {
               "broadcast_date_label": "08/25(화) 19:30 방송",
@@ -339,7 +339,7 @@
         {
           "date": "2026-08-22",
           "label": "08/22(토) 08:20 방송",
-          "collected_at": "2026-08-20T20:30:52.409435+09:00",
+          "collected_at": "2026-08-20T22:30:18.919760+09:00",
           "products": [
             {
               "broadcast_date_label": "08/22(토) 08:20 방송",
@@ -494,6 +494,32 @@
         }
       ],
       "program_image": ""
+    },
+    {
+      "program_key": "HD_CEK",
+      "company": "HD",
+      "tab_name": "최은경",
+      "program_title": "최은경쇼",
+      "schedule_raw": "매주 수요일 19시 30분",
+      "detail_link": "https://www.hmall.com/md/dpa/pgmComm?sectId=3142330",
+      "program_image": "",
+      "broadcasts": [
+        {
+          "date": "2026-08-26",
+          "label": "08/26(수) 19:30 방송",
+          "collected_at": "2026-08-20T22:30:18.919760+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "08/26(수) 19:30 방송",
+              "brand": "금강제화",
+              "name": "[지아니콘티] 이태리 레더 토트백 (스카프 증정)",
+              "price": 358000,
+              "image": "https://image.hmall.com/2252507538_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252507538"
+            }
+          ]
+        }
+      ]
     },
     {
       "program_key": "GS_BJY",
@@ -1085,7 +1111,7 @@
         {
           "date": "2026-08-29",
           "label": "08/29(토) 08:20 방송",
-          "collected_at": "2026-08-20T20:30:52.409435+09:00",
+          "collected_at": "2026-08-20T22:30:18.919760+09:00",
           "products": [
             {
               "broadcast_date_label": "08/29 토요일 08:20",
@@ -1116,7 +1142,7 @@
         {
           "date": "2026-08-27",
           "label": "08/27(목) 20:45 방송",
-          "collected_at": "2026-08-20T20:30:52.409435+09:00",
+          "collected_at": "2026-08-20T22:30:18.919760+09:00",
           "products": [
             {
               "broadcast_date_label": "08/27 목요일 20:45",
@@ -1139,7 +1165,7 @@
         {
           "date": "2026-08-22",
           "label": "08/22(토) 08:20 방송",
-          "collected_at": "2026-08-20T20:30:52.409435+09:00",
+          "collected_at": "2026-08-20T22:30:18.919760+09:00",
           "products": [
             {
               "broadcast_date_label": "08/22 토요일 08:20",
@@ -1185,25 +1211,9 @@
         },
         {
           "date": "2026-08-20",
-          "label": "08/20(목) 20:45 방송",
-          "collected_at": "2026-08-20T20:30:52.409435+09:00",
+          "label": "08/20(목) 21:45 방송",
+          "collected_at": "2026-08-20T22:30:18.919760+09:00",
           "products": [
-            {
-              "broadcast_date_label": "08/20 목요일 20:45",
-              "brand": "와이즈바이옴",
-              "name": "[와이즈바이옴] 단독!전고객 혈당측정기 증정 [9개월패키지]유한양행 당큐락 9개월분(190mg*30캡슐*9개입)+8주분(190mg*14캡슐*4박스)",
-              "price": 526000,
-              "image": "https://image2.lotteimall.com/goods/84/88/90/12908884_1.jpg/dims/resizemc/640x360/optimize",
-              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12908884"
-            },
-            {
-              "broadcast_date_label": "08/20 목요일 20:45",
-              "brand": "와이즈바이옴",
-              "name": "[와이즈바이옴] [6개월패키지]유한양행 당큐락 6개월분(190mg*30캡슐*6개입)+4주분(190mg*14캡슐*2박스)",
-              "price": 364000,
-              "image": "https://image2.lotteimall.com/goods/28/58/86/12865828_1.jpg/dims/resizemc/640x360/optimize",
-              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12865828"
-            },
             {
               "broadcast_date_label": "08/20 목요일 21:45",
               "brand": "꾸띠잔",
@@ -1511,7 +1521,7 @@
         {
           "date": "2026-08-24",
           "label": "08/24(월) 19:35 방송",
-          "collected_at": "2026-08-20T20:30:52.409435+09:00",
+          "collected_at": "2026-08-20T22:30:18.919760+09:00",
           "products": [
             {
               "broadcast_date_label": "08/24(월) 19:35",
@@ -1671,7 +1681,7 @@
         {
           "date": "2026-08-26",
           "label": "08/26(수) 20:45 방송",
-          "collected_at": "2026-08-20T20:30:52.409435+09:00",
+          "collected_at": "2026-08-20T22:30:18.919760+09:00",
           "products": [
             {
               "broadcast_date_label": "08/26(수) 20:45",
@@ -2590,7 +2600,7 @@
         {
           "date": "2026-08-24",
           "label": "08/24(월) 19:00 방송",
-          "collected_at": "2026-08-20T20:30:52.409435+09:00",
+          "collected_at": "2026-08-20T22:30:18.919760+09:00",
           "products": [
             {
               "broadcast_date_label": "08/24(월) 19:00",
@@ -2733,7 +2743,7 @@
         {
           "date": "2026-08-21",
           "label": "08/21(금) 22:45 방송",
-          "collected_at": "2026-08-20T20:30:52.409435+09:00",
+          "collected_at": "2026-08-20T22:30:18.919760+09:00",
           "products": [
             {
               "broadcast_date_label": "08/21(금) 22:45",
