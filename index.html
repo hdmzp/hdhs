@@ -2694,8 +2694,8 @@
     color: var(--ink);
   }
 
-  /* 신규 론칭 셀럽PGM 배지 — 론칭 전 '론칭예정'(파랑) / 론칭 후 일정 기간 'NEW'(빨강).
-     밴드 헤더 제목 옆에만 붙인다. */
+  /* 신규 론칭 PGM 배지 — 론칭 전 '론칭예정'(파랑) / 론칭 후 일정 기간 'NEW'(빨강).
+     셀럽PGM 밴드 헤더·슬라이서 버튼과 고정PGM 카드 제목에 공통으로 붙인다. */
   .cel-new-badge {
     display: inline-block;
     margin-left: 4px;
@@ -3140,6 +3140,7 @@
       <button class="active" data-file="HD_OGS.json">오감쇼</button>
       <button class="active" data-file="CJ_KCO.json">더 김창옥 라이브</button>
       <button class="active" data-file="CJ_KSY.json">김신영이 산다</button>
+      <button class="active" data-file="HD_CEK.json">최은경쇼</button>
       <button class="active" data-file="CJ_CHJ.json">최화정쇼</button>
       <button class="active" data-file="GS_BJY.json">지금 백지연</button>
       <button class="active" data-file="LT_CYR.json">최유라쇼</button>
@@ -3330,7 +3331,10 @@ const TAB_TIPS = {
   },
   fixedpgm: {
     title: '고정PGM 탭은?',
-    items: ['홈쇼핑 4사의 고정 프로그램을 각 사 사이트에서 수집해요'],
+    items: [
+      '홈쇼핑 4사의 고정 프로그램을 각 사 사이트에서 수집해요',
+      '<span class="cel-new-badge">NEW</span> 는 최근 신규 론칭한 프로그램이에요',
+    ],
   },
   schedule: {
     title: '지상파·종편 탭은?',
@@ -4507,6 +4511,7 @@ const HS_PGM_BADGE_RULES = [
   ['HIT THE STYLE', '힛스'], ['힛더스', '힛스'], ['김지애', '김지애'], ['수정SHOP', '이수정'],
   ['L.SHOW', '엘쇼'], ['쇼미', '쇼미'], ['신상뷰티', '찬스'], ['지완스', '더지완스'],
   ['김창옥', '김창옥'], ['지금 여행', '지금여행'], ['김신영', '김신영'],
+  ['최은경', '최은경'],
 ];
 
 function hsPgmBadgeLabel(pgm) {
@@ -4973,7 +4978,7 @@ function fpRenderCard(slot, compact) {
       thumbBlock +
       `<div class="fp-body">` +
         (compact ? `<span class="fp-co-badge-inline ${co}">${fpEscapeHtml(slot.company)}</span> ` : '') +
-        `<div class="fp-title">${fpEscapeHtml(slot.title)}</div>` +
+        `<div class="fp-title">${fpEscapeHtml(slot.title)}${launchBadgeHtmlByTitle(slot.title)}</div>` +
         `<div class="fp-schedule">${fpFormatSchedule(slot)}</div>` +
       `</div>` +
     `</a>`
@@ -5306,24 +5311,34 @@ document.getElementById('pmMonthPicker').addEventListener('change', (e) => {
 // 상품 라인업을 나란히 비교하는 화면. 이미지는 참고용일 뿐이라 굳이
 // 안 불러도 되고, 브랜드+상품명이 핵심이라 텍스트 위주 리스트로 구성한다.
 // 프로그램 순서는 방송 요일·시작시간 기준 월화수목금토일 순으로 정렬한다.
-// (황정민=월 19:30, 강주은=월 19:35, 오감쇼=화 19:30, 김창옥=화 19:35, 최화정=수,
-//  백지연=목, 최유라=목/토, 소유진=금 20:35, 소이현=금 21:45, 왕영은=토 08:20)
+// (황정민=월 19:30, 강주은=월 19:35, 오감쇼=화 19:30, 김창옥=화 19:35,
+//  최은경=수 19:30, 최화정=수 20:45, 백지연=목, 최유라=목/토,
+//  소유진=금 20:35, 소이현=금 21:45, 왕영은=토 08:20)
 // ※ 황정민쇼는 목요일이었다가 월요일로 이동함 (2026-08 기준)
 // ※ 김신영이 산다는 8/18(화) 21:45 론칭 후 연간 10회 내외 비정기 편성이라
 //   요일·시간대가 유동적 - 우선 론칭 시간대(화 21:45) 자리에 둔다.
+// ※ 최은경쇼는 2026-08 신규 편성 (HD, 수 19:30)
 const CEL_FILES = [
   "HD_HJM.json", "CJ_KJE.json", "HD_OGS.json", "CJ_KCO.json", "CJ_KSY.json",
-  "CJ_CHJ.json", "GS_BJY.json", "LT_CYR.json", "GS_SYJ.json",
+  "HD_CEK.json", "CJ_CHJ.json", "GS_BJY.json", "LT_CYR.json", "GS_SYJ.json",
   "CJ_SIH.json", "HD_WYE.json"
 ];
 // 신규 론칭 프로그램 배지. 론칭일 전에는 '론칭예정', 론칭 후
 // CEL_NEW_BADGE_DAYS일 동안 'NEW'를 붙이고 그 뒤엔 저절로 사라진다
 // (기간이 지난 뒤 배지를 지우러 다시 손댈 필요가 없게 날짜 기준으로 판단).
 const CEL_NEW_BADGE_DAYS = 60;
+// title은 고정PGM 탭에서 역참조하는 키다 (고정PGM 슬롯엔 파일명이 없고
+// 프로그램명만 있어서, 같은 표를 제목으로 찾아 같은 배지를 붙인다).
 const CEL_LAUNCH_INFO = {
   'CJ_KSY.json': {
+    title: '김신영이 산다',
     date: '2026-08-18',
     note: '2026-08-18(화) 21:45 첫 방송 · 연간 10회 내외 비정기 편성',
+  },
+  'HD_CEK.json': {
+    title: '최은경쇼',
+    date: '2026-08-20',
+    note: '2026-08 신규 편성 · 매주 수요일 19:30',
   },
 };
 
@@ -5343,6 +5358,19 @@ function celLaunchBadgeHtml(file) {
   const b = celLaunchBadgeOf(file);
   if (!b) return '';
   return `<span class="cel-new-badge${b.cls ? ' ' + b.cls : ''}" title="${b.title}">${b.text}</span>`;
+}
+
+// 고정PGM 탭용: 프로그램명으로 CEL_LAUNCH_INFO를 찾아 같은 배지를 돌려준다.
+// 회사/수집 경로마다 표기가 조금씩 달라서("최은경쇼" vs "최은경 쇼")
+// 공백을 무시하고 부분일치로 비교한다.
+function launchBadgeHtmlByTitle(title) {
+  const name = String(title || '').replace(/\s+/g, '');
+  if (!name) return '';
+  for (const file in CEL_LAUNCH_INFO) {
+    const t = String(CEL_LAUNCH_INFO[file].title || '').replace(/\s+/g, '');
+    if (t && (name.includes(t) || t.includes(name))) return celLaunchBadgeHtml(file);
+  }
+  return '';
 }
 
 let celRawDataFull = [];       // 전체 상품(프로그램 태그 포함)
@@ -5961,6 +5989,13 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
   // 셀럽PGM 슬라이서 동작 연결 (중복 선택 가능한 비교 모드)
   const celSlicer = document.getElementById('celProgramSlicer');
   if (celSlicer) {
+    // 신규 론칭 프로그램 버튼에도 밴드 헤더와 같은 배지를 붙인다
+    celSlicer.querySelectorAll('button').forEach(b => {
+      const badge = b.dataset.file && b.dataset.file !== 'all'
+        ? celLaunchBadgeHtml(b.dataset.file) : '';
+      if (badge) b.insertAdjacentHTML('beforeend', badge);
+    });
+
     celSlicer.addEventListener('click', (e) => {
       const btn = e.target.closest('button');
       if (!btn) return;

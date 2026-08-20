@@ -51,6 +51,8 @@ schedule_raw("매주 화요일 19시 30분")에서 다음 방송 날짜/시각�
 == 출력 ==
 homeshopping/representative_programs/HD_HJM.json (황정민)
 homeshopping/representative_programs/HD_OGS.json (오감쇼)
+homeshopping/representative_programs/HD_WYE.json (왕영은의 톡투게더)
+homeshopping/representative_programs/HD_CEK.json (최은경쇼)
 
 메인 JSON은 "다음 방송" 기준으로 매번 덮어쓴다.
 월별 누적(월 조회용)은 fixed/build_celeb_history.py가 전 회사(HD/GS/LT/CJ)
@@ -126,10 +128,15 @@ IMAGE_FIELD_CANDIDATES = ["orglImgNm", "simgNm", "imgUrl", "image", "thumbnail"]
 CODE_FIELD_CANDIDATES = ["slitmCd", "itemCd", "goodsCd"]
 
 # ============ 여기에 프로그램 추가 ============
+# sect_id는 목록 API(searchSpexSectItem)의 spexSectId에서 이름으로 자동 조회되므로
+# 새 프로그램을 넣을 땐 생략(None)해도 된다. 목록에서 이름이 안 잡히는 경우를
+# 대비해 이미 확인된 ID는 그대로 박아둔다.
 PROGRAMS = [
     {"tab_name": "황정민", "spex_sect_nm": "황정민쇼", "sect_id": "3094173", "output_file": "HD_HJM.json"},
     {"tab_name": "오감쇼", "spex_sect_nm": "오감쇼", "sect_id": "3094172", "output_file": "HD_OGS.json"},
     {"tab_name": "왕영은", "spex_sect_nm": "왕영은의 톡투게더", "sect_id": "2683513", "output_file": "HD_WYE.json"},
+    # 최은경쇼: 2026-08 신규 편성(수 19:30). 고정PGM 수집분에서 확인된 ID.
+    {"tab_name": "최은경", "spex_sect_nm": "최은경쇼", "sect_id": "3142330", "output_file": "HD_CEK.json"},
     # TODO: 오윤아 등 추가되면 여기에
 ]
 # ==============================================
@@ -293,6 +300,7 @@ def fetch_list_page_map() -> dict:
         pgm_list = next_data["props"]["pageProps"]["data"]["holiInfo"]["pgmShowList"]
         return {
             p.get("spexSectNm"): {
+                "sect_id": str(p.get("spexSectId") or "") or None,
                 "schedule_raw": p.get("sectLbl", ""),
                 "itemList": p.get("itemList", []) or [],
             }
@@ -301,6 +309,22 @@ def fetch_list_page_map() -> dict:
     except Exception as e:
         print(f"[경고] 목록 API(searchSpexSectItem) 실패: {e}")
         return {}
+
+
+def find_list_info(list_map: dict, spex_sect_nm: str) -> dict:
+    """목록 API 매핑에서 프로그램명으로 항목을 찾는다. 완전일치가 우선이고,
+    표기 흔들림("최은경쇼" vs "최은경 쇼")에 대비해 공백을 뺀 부분일치까지
+    허용한다. 못 찾으면 빈 dict."""
+    if spex_sect_nm in list_map:
+        return list_map[spex_sect_nm]
+    target = re.sub(r"\s+", "", spex_sect_nm or "")
+    if not target:
+        return {}
+    for name, info in list_map.items():
+        compact = re.sub(r"\s+", "", name or "")
+        if compact and (compact == target or target in compact or compact in target):
+            return info
+    return {}
 
 
 def normalize_item(item: dict, date_label: str) -> dict:
@@ -423,10 +447,17 @@ def parse_swiper_items_from_html(html: str, date_label: str) -> list:
 
 def crawl_hd_program(page, config: dict, list_map: dict):
     tab_name = config["tab_name"]
-    sect_id = config["sect_id"]
-    detail_link = f"https://www.hmall.com/md/dpa/pgmComm?sectId={sect_id}"
 
-    list_info = list_map.get(config["spex_sect_nm"], {})
+    list_info = find_list_info(list_map, config["spex_sect_nm"])
+    # sect_id는 설정값 우선, 없으면 목록 API가 알려준 spexSectId를 쓴다
+    # (신규 프로그램은 ID를 미리 알 수 없으므로 이름으로 찾아온다).
+    sect_id = config.get("sect_id") or list_info.get("sect_id")
+    if not sect_id:
+        print(f"\n===== [{tab_name}] sectId를 찾지 못해 건너뜀 "
+              f"(목록 API에 '{config['spex_sect_nm']}' 없음) =====")
+        return None
+
+    detail_link = f"https://www.hmall.com/md/dpa/pgmComm?sectId={sect_id}"
     schedule_raw = list_info.get("schedule_raw", "")
     fallback_label = compute_this_week_date_label(schedule_raw) if schedule_raw else "방송상품"
 
@@ -597,6 +628,10 @@ def main():
 
         for config in PROGRAMS:
             result = crawl_hd_program(page, config, list_map)
+            if result is None:
+                # sectId 미확인(아직 목록에 안 올라온 신규 PGM 등).
+                # 기존 파일이 있으면 덮어쓰지 않고 그대로 둔다.
+                continue
 
             output_path = os.path.join(OUTPUT_DIR, config["output_file"])
             with open(output_path, "w", encoding="utf-8") as f:
