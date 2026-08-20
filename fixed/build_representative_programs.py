@@ -36,6 +36,7 @@ SOURCE_FILES = [
     "HD_HJM.json",
     "HD_OGS.json",
     "HD_WYE.json",   # 왕영은의 톡투게더
+    "HD_CEK.json",   # 최은경쇼 (2026-08 신규)
     "GS_BJY.json",   # 백지연 (regs.py 완성되면 생성됨)
     "GS_SYJ.json",   # 소유진 (regs.py 완성되면 생성됨)
     "LT_CYR.json",

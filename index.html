@@ -2090,6 +2090,22 @@
     .hs-prog .hs-price { font-size: 9.5px; }
   }
 
+  /* 신규 편성 PGM 표시 — 고정PGM/셀럽PGM 탭 공용 (드라마·예능 탭의
+     .dv-new-badge와 같은 톤이지만 카드 제목 옆에 붙어서 살짝 크다) */
+  .pgm-new-badge {
+    display: inline-block;
+    margin-left: 4px;
+    padding: 0 4px;
+    border-radius: 3px;
+    background: #DC2626;
+    color: #fff;
+    font-size: 9.5px;
+    font-weight: 800;
+    line-height: 1.6;
+    letter-spacing: 0.3px;
+    vertical-align: 1px;
+  }
+
   /* ============ 고정PGM 탭 ============ */
   #tabFixedPgm {
     --hd: #003C82;
@@ -3034,6 +3050,7 @@
       <button class="active" data-file="CJ_KJE.json">강주은 굿라이프</button>
       <button class="active" data-file="HD_OGS.json">오감쇼</button>
       <button class="active" data-file="CJ_KCO.json">더 김창옥 라이브</button>
+      <button class="active" data-file="HD_CEK.json">최은경쇼</button>
       <button class="active" data-file="CJ_CHJ.json">최화정쇼</button>
       <button class="active" data-file="GS_BJY.json">지금 백지연</button>
       <button class="active" data-file="LT_CYR.json">최유라쇼</button>
@@ -3223,7 +3240,10 @@ const TAB_TIPS = {
   },
   fixedpgm: {
     title: '고정PGM 탭은?',
-    items: ['홈쇼핑 4사의 고정 프로그램을 각 사 사이트에서 수집해요'],
+    items: [
+      '홈쇼핑 4사의 고정 프로그램을 각 사 사이트에서 수집해요',
+      '<span class="pgm-new-badge">New</span> 는 최근 신규 편성된 프로그램이에요',
+    ],
   },
   schedule: {
     title: '지상파·종편 탭은?',
@@ -4308,7 +4328,7 @@ const HS_PGM_BADGE_RULES = [
   ['더컬렉션', '더컬렉션'], ['유민', '장유민'], ['조윤주', '조윤주'], ['이승연', '이승연'],
   ['HIT THE STYLE', '힛스'], ['힛더스', '힛스'], ['김지애', '김지애'], ['수정SHOP', '이수정'],
   ['L.SHOW', '엘쇼'], ['쇼미', '쇼미'], ['신상뷰티', '찬스'], ['지완스', '더지완스'],
-  ['김창옥', '김창옥'], ['지금 여행', '지금여행'],
+  ['김창옥', '김창옥'], ['지금 여행', '지금여행'], ['최은경', '최은경'],
 ];
 
 function hsPgmBadgeLabel(pgm) {
@@ -4711,6 +4731,36 @@ async function fpLoadData() {
   return fpData;
 }
 
+// ============ 신규 편성 PGM 'New' 배지 ============
+// 고정PGM/셀럽PGM 탭에서 새로 생긴 프로그램을 눈에 띄게 표시한다.
+//   key   = 프로그램명. 회사/수집 경로마다 표기가 조금씩 달라서
+//           ("최은경쇼" vs "최은경 쇼") 공백을 무시하고 부분일치로 비교한다.
+//   value = 편성 시작일(YYYY-MM-DD). 이 날로부터 NEW_PGM_DAYS일이 지나면
+//           배지가 자동으로 사라지므로 나중에 지워줄 필요가 없다.
+const NEW_PGM_SINCE = {
+  '최은경쇼': '2026-08-20',   // 현대(HD) 신규 편성 (수 19:30)
+};
+const NEW_PGM_DAYS = 45;
+
+function isNewPgm(title) {
+  const name = String(title || '').replace(/\s+/g, '');
+  if (!name) return false;
+  for (const key in NEW_PGM_SINCE) {
+    const k = key.replace(/\s+/g, '');
+    if (!k || !(name.includes(k) || k.includes(name))) continue;
+    const since = new Date(NEW_PGM_SINCE[key] + 'T00:00:00');
+    if (isNaN(since)) return true;   // 날짜를 못 읽으면 일단 표시
+    return (Date.now() - since.getTime()) / 86400000 <= NEW_PGM_DAYS;
+  }
+  return false;
+}
+
+function pgmNewBadgeHtml(title) {
+  return isNewPgm(title)
+    ? `<span class="pgm-new-badge" title="신규 편성 프로그램">New</span>`
+    : '';
+}
+
 function fpFormatUpdated(collectedAt) {
   if (!collectedAt) return '';
   try {
@@ -4768,7 +4818,7 @@ function fpRenderCard(slot, compact) {
       thumbBlock +
       `<div class="fp-body">` +
         (compact ? `<span class="fp-co-badge-inline ${co}">${fpEscapeHtml(slot.company)}</span> ` : '') +
-        `<div class="fp-title">${fpEscapeHtml(slot.title)}</div>` +
+        `<div class="fp-title">${fpEscapeHtml(slot.title)}${pgmNewBadgeHtml(slot.title)}</div>` +
         `<div class="fp-schedule">${fpFormatSchedule(slot)}</div>` +
       `</div>` +
     `</a>`
@@ -5101,13 +5151,15 @@ document.getElementById('pmMonthPicker').addEventListener('change', (e) => {
 // 상품 라인업을 나란히 비교하는 화면. 이미지는 참고용일 뿐이라 굳이
 // 안 불러도 되고, 브랜드+상품명이 핵심이라 텍스트 위주 리스트로 구성한다.
 // 프로그램 순서는 방송 요일·시작시간 기준 월화수목금토일 순으로 정렬한다.
-// (황정민=월 19:30, 강주은=월 19:35, 오감쇼=화 19:30, 김창옥=화 19:35, 최화정=수,
-//  백지연=목, 최유라=목/토, 소유진=금 20:35, 소이현=금 21:45, 왕영은=토 08:20)
+// (황정민=월 19:30, 강주은=월 19:35, 오감쇼=화 19:30, 김창옥=화 19:35,
+//  최은경=수 19:30, 최화정=수 20:45, 백지연=목, 최유라=목/토,
+//  소유진=금 20:35, 소이현=금 21:45, 왕영은=토 08:20)
 // ※ 황정민쇼는 목요일이었다가 월요일로 이동함 (2026-08 기준)
+// ※ 최은경쇼는 2026-08 신규 편성 (HD)
 const CEL_FILES = [
   "HD_HJM.json", "CJ_KJE.json", "HD_OGS.json", "CJ_KCO.json",
-  "CJ_CHJ.json", "GS_BJY.json", "LT_CYR.json", "GS_SYJ.json",
-  "CJ_SIH.json", "HD_WYE.json"
+  "HD_CEK.json", "CJ_CHJ.json", "GS_BJY.json", "LT_CYR.json",
+  "GS_SYJ.json", "CJ_SIH.json", "HD_WYE.json"
 ];
 let celRawDataFull = [];       // 전체 상품(프로그램 태그 포함)
 let celProgramMeta = {};       // file -> {title, company, schedule_raw, detail_link}
@@ -5453,9 +5505,10 @@ function celRenderBand(file) {
       ? `<img src="${thumb}" alt="" loading="lazy" onerror="this.parentNode.innerHTML='<span class=cel-thumb-ph>${(meta.title || '?')[0]}</span>'">`
       : `<span class="cel-thumb-ph">${(meta.title || '?')[0]}</span>`) +
     `</div>`;
+  const newBadge = pgmNewBadgeHtml(meta.title);
   const titleHtml = meta.detail_link
-    ? `<a class="cel-col-title" href="${meta.detail_link}" target="_blank" rel="noopener noreferrer">${meta.title} ↗</a>`
-    : `<div class="cel-col-title">${meta.title}</div>`;
+    ? `<a class="cel-col-title" href="${meta.detail_link}" target="_blank" rel="noopener noreferrer">${meta.title}${newBadge} ↗</a>`
+    : `<div class="cel-col-title">${meta.title}${newBadge}</div>`;
 
   return (
     `<div class="cel-band">` +
@@ -5688,6 +5741,14 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
   // 셀럽PGM 슬라이서 동작 연결 (중복 선택 가능한 비교 모드)
   const celSlicer = document.getElementById('celProgramSlicer');
   if (celSlicer) {
+    // 신규 편성 프로그램 버튼에 New 배지 부착 (라벨 텍스트로 판정하므로
+    // 버튼을 추가할 때 따로 손댈 필요가 없다)
+    celSlicer.querySelectorAll('button').forEach(b => {
+      if (b.dataset.file !== 'all' && isNewPgm(b.textContent)) {
+        b.insertAdjacentHTML('beforeend', pgmNewBadgeHtml(b.textContent));
+      }
+    });
+
     celSlicer.addEventListener('click', (e) => {
       const btn = e.target.closest('button');
       if (!btn) return;
