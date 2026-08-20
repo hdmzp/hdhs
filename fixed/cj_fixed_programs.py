@@ -39,6 +39,12 @@ newContList 응답 자체에는 dpModuleCd가 "DMTV03" 하나만 있다고 보�
 모듈을 못 찾으면 빈 리스트를 반환하고 경고만 남긴다
 (daily-scrape.yml에 continue-on-error가 걸려있어 전체 파이프라인은 안전).
 
+(업데이트 - 2026-08)
+신규 론칭 PGM은 pgmShop 페이지만 먼저 열리고 DMTV03 모듈엔 아직 안 올라오는
+경우가 있어(예: 김신영이 산다), EXTRA_PROGRAMS에 pgmCd를 등록해두면
+pgmShop 기본정보 API로 제목/편성/썸네일을 따로 읽어 목록에 덧붙인다.
+나중에 모듈에 등재되면 모듈 데이터가 우선이고 보강 항목은 자동 무시된다.
+
 == 출력 ==
 homeshopping/fixed_programs/CJ.json
 {
@@ -72,9 +78,13 @@ homeshopping/fixed_programs/CJ.json
 
 import os
 import re
+import sys
 import json
 import requests
 from datetime import datetime, timezone, timedelta
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from tools import scrape_guard
 
 KST = timezone(timedelta(hours=9))
 
@@ -91,6 +101,28 @@ MAIN_PAGE_URL = "https://display.cjonstyle.com/m/homeTab/main?hmtabMenuId=004389
 # "대표프로그램" 모듈을 식별하는 코드. 메인 구성이 바뀌면 이 목록에
 # 추가하면 된다 (예전 dpDesc 텍스트는 "■  기획PGM 게이트"였음).
 TARGET_MODULE_CODES = {"DMTV03"}
+
+# ============ 메인 모듈 미등재 프로그램 보강 ============
+# 신규 론칭 PGM은 pgmShop 페이지가 먼저 열리고 메인페이지 대표프로그램 모듈
+# (DMTV03)에는 한참 뒤에(또는 끝까지) 안 올라오는 경우가 있다. 그런 프로그램을
+# 여기에 등록해두면 pgmShop 기본정보 API로 제목/편성/썸네일을 따로 읽어와
+# 고정PGM 목록에 합친다. 나중에 모듈에 올라오면 모듈 쪽 데이터가 우선이고
+# 여기 항목은 자동으로 무시된다(pgm_cd 중복 제거).
+#
+#   fallback_schedule: API 편성 텍스트가 비어 있을 때만 쓰는 임시 편성.
+#                      요일+HH:MM 형태여야 build_fixed_pgm.py 그리드에 올라간다.
+EXTRA_PROGRAMS = [
+    # 2026-08-18(화) 21:45 론칭. <나혼자산다> 컨셉 식품·리빙 라이프스타일 PGM.
+    # 연간 10회 내외 비정기 편성이라 요일·시간대가 상품에 따라 바뀐다.
+    {"pgm_cd": "100078", "title": "김신영이 산다", "fallback_schedule": "화 21:45"},
+]
+
+PGM_SHOP_INFO_URL = (
+    "https://display-frontapi.cjonstyle.com/pgmShop"
+    "?pgmCd={pgm_cd}&pmType=M&includeOpnPreplnYn=Y&isEmployee=false"
+)
+
+_IMG_URL_RE = re.compile(r"^(?:https?:)?//\S+\.(?:png|jpe?g|webp)(?:\?\S*)?$", re.I)
 
 OUTPUT_DIR = os.path.join("homeshopping", "fixed_programs")
 OUTPUT_PATH = os.path.join(OUTPUT_DIR, "CJ.json")
@@ -131,8 +163,9 @@ def parse_price(value) -> int:
 
 
 def fetch_new_cont_list(session: requests.Session) -> dict:
-    resp = session.get(NEW_CONT_LIST_URL, params=NEW_CONT_LIST_PARAMS, timeout=REQUEST_TIMEOUT_SEC)
-    resp.raise_for_status()
+    resp = scrape_guard.get(NEW_CONT_LIST_URL, session=session, params=NEW_CONT_LIST_PARAMS,
+                            timeout=REQUEST_TIMEOUT_SEC, expect_json=True,
+                            label="CJ newContList")
     return resp.json()
 
 
@@ -204,6 +237,85 @@ def extract_fixed_programs(new_cont_list_json: dict) -> list:
     return programs
 
 
+def find_first_image_url(obj):
+    """중첩 dict/list에서 이미지로 보이는 첫 URL을 찾는다 (recj.py와 동일 접근).
+    img/image/bnr/banner/thumb 계열 키를 먼저 본다."""
+    if isinstance(obj, str):
+        return obj if _IMG_URL_RE.match(obj.strip()) else None
+    if isinstance(obj, dict):
+        for key in obj:
+            if re.search(r"img|image|bnr|banner|thumb", key, re.I):
+                found = find_first_image_url(obj[key])
+                if found:
+                    return found
+        for value in obj.values():
+            found = find_first_image_url(value)
+            if found:
+                return found
+    if isinstance(obj, list):
+        for value in obj:
+            found = find_first_image_url(value)
+            if found:
+                return found
+    return None
+
+
+def fetch_extra_program(session: requests.Session, config: dict) -> dict:
+    """EXTRA_PROGRAMS 한 건을 pgmShop 기본정보 API로 조회해 모듈 항목과
+    같은 스키마로 만든다. 실패하면 하드코딩 값만으로 최소 항목을 만든다."""
+    pgm_cd = config["pgm_cd"]
+    title = config.get("title", "")
+    schedule_raw = ""
+    thumbnail = ""
+
+    try:
+        # frontapi 쪽은 Origin 헤더를 봐야 정상 응답을 준다 (recj.py와 동일).
+        resp = scrape_guard.get(PGM_SHOP_INFO_URL.format(pgm_cd=pgm_cd), session=session,
+                                headers={"Origin": "https://display.cjonstyle.com"},
+                                timeout=REQUEST_TIMEOUT_SEC, expect_json=True,
+                                label=f"CJ pgmShop {pgm_cd}")
+        info = (resp.json().get("result") or {}).get("pgmShopInfo") or {}
+        title = (info.get("pgmNm") or title).strip()
+        schedule_raw = " / ".join(
+            t.get("bdTmCnts", "") for t in (info.get("bdTmCntsList") or [])
+            if t.get("bdTmCnts")
+        )
+        thumbnail = to_https(find_first_image_url(info) or "")
+    except Exception as e:
+        print(f"  [CJ] [경고] 보강 프로그램 {pgm_cd}({title}) 조회 실패: {e}")
+
+    if not schedule_raw:
+        schedule_raw = config.get("fallback_schedule", "")
+
+    if not title:
+        return None
+
+    return {
+        "pgm_cd": pgm_cd,
+        "title": title,
+        "schedule_raw": schedule_raw,
+        "thumbnail": thumbnail,
+        "pgmshop_link": f"https://display.cjonstyle.com/m/pgmShop/{pgm_cd}",
+        # 기본정보 API에는 모듈처럼 정리된 '다음 방송 소개상품'이 없다.
+        # 상품 라인업은 셀럽PGM(fixed/recj.py)이 별도로 수집한다.
+        "upcoming_products": [],
+    }
+
+
+def append_extra_programs(session: requests.Session, programs: list) -> None:
+    """모듈에 없는 EXTRA_PROGRAMS만 뒤에 덧붙인다."""
+    existing = {p["pgm_cd"] for p in programs}
+    for config in EXTRA_PROGRAMS:
+        if config["pgm_cd"] in existing:
+            print(f"  [CJ] 보강 대상 {config['pgm_cd']}({config.get('title', '')})는 "
+                  f"이미 대표프로그램 모듈에 있음 - 건너뜀")
+            continue
+        extra = fetch_extra_program(session, config)
+        if extra:
+            programs.append(extra)
+            print(f"  [CJ] 보강 추가: {extra['title']} | {extra['schedule_raw'] or '(편성 미상)'}")
+
+
 def main():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
@@ -217,6 +329,7 @@ def main():
         data = {}
 
     programs = extract_fixed_programs(data)
+    append_extra_programs(session, programs)
 
     payload = {
         "company": "CJ",

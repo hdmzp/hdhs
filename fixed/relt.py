@@ -34,10 +34,14 @@ fixed/lt_fixed_programs.py에서 이미 밝혀낸 API 구조를 그대로 재사
 
 import os
 import re
+import sys
 import json
 import time
 import requests
 from urllib.parse import urljoin
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from tools import scrape_guard
 
 OUTPUT_DIR = os.path.join("homeshopping", "representative_programs")
 BASE_DOMAIN = "https://www.lotteimall.com"
@@ -86,13 +90,9 @@ def parse_price(text) -> int:
 
 
 def fetch_json(session: requests.Session, url: str):
-    """JSON 응답이면 dict를, 에러페이지(HTML) 등 JSON이 아니면 None을 반환."""
-    try:
-        resp = session.get(url, timeout=REQUEST_TIMEOUT_SEC)
-        resp.raise_for_status()
-        return resp.json()
-    except (requests.RequestException, ValueError):
-        return None
+    """JSON 응답이면 dict를, 에러페이지(HTML) 등 JSON이 아니면 None을 반환.
+    (일시적 장애는 scrape_guard가 지수 백오프로 재시도한다)"""
+    return scrape_guard.fetch_json(url, session=session, timeout=REQUEST_TIMEOUT_SEC)
 
 
 def extract_upcoming_products(section_data: dict) -> list:

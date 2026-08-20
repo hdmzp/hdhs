@@ -328,11 +328,14 @@
     border-bottom: 1px dotted var(--ink-soft);
   }
   .weather-bar a:hover { color: var(--ink); border-bottom-color: var(--ink); }
-  .weather-bar .w-temp-max { color: var(--comprehensive); font-weight: 700; }
-  .weather-bar .w-temp-min { color: var(--terrestrial); font-weight: 700; }
-  .weather-bar .w-rain { color: var(--now-accent); font-weight: 600; }
-  .weather-bar .w-sep { margin: 0 8px; opacity: 0.4; }
-  .weather-bar .w-empty { font-style: italic; opacity: 0.6; }
+  /* w-* 조각은 편성표 날씨 바와 홈쇼핑 헤더가 공유한다 */
+  .weather-bar .w-temp-max, .hs-daymeta .w-temp-max { color: var(--comprehensive); font-weight: 700; }
+  .weather-bar .w-temp-min, .hs-daymeta .w-temp-min { color: var(--terrestrial); font-weight: 700; }
+  .weather-bar .w-rain, .hs-daymeta .w-rain { color: var(--now-accent); font-weight: 600; }
+  .weather-bar .w-holiday, .hs-daymeta .w-holiday { color: #DC2626; font-weight: 700; }
+  .weather-bar .w-term, .hs-daymeta .w-term { color: var(--ink-soft); font-weight: 600; opacity: 0.9; }
+  .weather-bar .w-sep, .hs-daymeta .w-sep { margin: 0 8px; opacity: 0.4; }
+  .weather-bar .w-empty, .hs-daymeta .w-empty { font-style: italic; opacity: 0.6; }
 
   .grid-wrap {
     max-width: 1400px;
@@ -972,6 +975,7 @@
     --today-bg: #EFF4FF;
     --today-border: #2563EB;
     --future-bg: #FAFAFB;
+    --holiday-bg: #FEF2F2;
     font-family: 'Pretendard', -apple-system, sans-serif;
   }
 
@@ -1163,6 +1167,8 @@
   }
   table.calendar td.empty { background: var(--paper-dim); border: none; }
   table.calendar td.future-cell { background: var(--future-bg); }
+  table.calendar td.holiday-cell { background: var(--holiday-bg); }
+  /* 오늘 강조가 최우선이라 holiday-cell보다 뒤에 둔다 */
   table.calendar td.today-cell {
     background: var(--today-bg);
     border: 1.5px solid var(--today-border);
@@ -1172,9 +1178,36 @@
     font-size: 13px;
     font-weight: 700;
     margin-bottom: 4px;
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
   }
   .day-num.sun { color: var(--hot); }
   .day-num.sat { color: var(--cold); }
+
+  /* 절기(입추·초복 등)는 쉬는 날이 아니다. 공휴일 빨강에 묻히지 않도록
+     같은 자리에 두되 회색으로 낮춰 위계를 준다. */
+  .term-name {
+    font-size: 9.5px;
+    font-weight: 500;
+    color: var(--ink-soft);
+    opacity: 0.8;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* 공휴일 이름: 칸 폭이 좁으므로 한 줄 말줄임 + 전체 이름은 title 툴팁 */
+  .holiday-name {
+    font-size: 9.5px;
+    font-weight: 600;
+    color: var(--hot);
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 
   .day-stats { font-size: 11px; line-height: 1.5; }
   .day-stats .row { display: flex; justify-content: space-between; gap: 4px; }
@@ -1210,6 +1243,8 @@
     table.calendar td { height: 72px; padding: 4px; font-size: 10px; }
     .day-stats { font-size: 9.5px; }
     .day-num { font-size: 11px; }
+    .holiday-name { font-size: 8.5px; }
+    .term-name { font-size: 8.5px; }
   }
 
   /* ============ 드라마/예능 탭 ============ */
@@ -1760,6 +1795,27 @@
     border-bottom: 1px solid var(--rule);
   }
 
+  /* 비어 있던 왼쪽 1fr 칸. 날짜 컨트롤 바로 왼쪽에 붙도록 우측 정렬한다.
+     색/구분자 클래스(w-*)는 편성표 날씨 바와 공유한다. */
+  .hs-daymeta {
+    grid-column: 1;
+    justify-self: end;
+    font-family: 'Pretendard', -apple-system, sans-serif;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+  .hs-daymeta a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px dotted var(--ink-soft);
+  }
+  .hs-daymeta a:hover { color: var(--ink); border-bottom-color: var(--ink); }
+  .hs-daymeta .w-sep { margin: 0 6px; }
+
   .hs-controls-center {
     grid-column: 2;
     display: flex;
@@ -2080,6 +2136,7 @@
   @media (max-width: 700px) {
     .hs-controls { grid-template-columns: 1fr; }
     .hs-controls-center { grid-column: 1; }
+    .hs-daymeta { grid-column: 1; justify-self: center; font-size: 11.5px; }
     .hs-time-note { grid-column: 1; justify-self: center; }
     .hs-grid-wrap { padding: 0 8px 40px; }
     table.hs-table thead th { font-size: 12px; }
@@ -2088,22 +2145,6 @@
     .hs-prog { padding: 5px 6px 5px 8px; }
     .hs-prog .hs-title { font-size: 10.5px; }
     .hs-prog .hs-price { font-size: 9.5px; }
-  }
-
-  /* 신규 편성 PGM 표시 — 고정PGM/셀럽PGM 탭 공용 (드라마·예능 탭의
-     .dv-new-badge와 같은 톤이지만 카드 제목 옆에 붙어서 살짝 크다) */
-  .pgm-new-badge {
-    display: inline-block;
-    margin-left: 4px;
-    padding: 0 4px;
-    border-radius: 3px;
-    background: #DC2626;
-    color: #fff;
-    font-size: 9.5px;
-    font-weight: 800;
-    line-height: 1.6;
-    letter-spacing: 0.3px;
-    vertical-align: 1px;
   }
 
   /* ============ 고정PGM 탭 ============ */
@@ -2653,6 +2694,23 @@
     color: var(--ink);
   }
 
+  /* 신규 론칭 PGM 배지 — 론칭 전 '론칭예정'(파랑) / 론칭 후 일정 기간 'NEW'(빨강).
+     셀럽PGM 밴드 헤더·슬라이서 버튼과 고정PGM 카드 제목에 공통으로 붙인다. */
+  .cel-new-badge {
+    display: inline-block;
+    margin-left: 4px;
+    padding: 0 4px;
+    border-radius: 3px;
+    background: #DC2626;
+    color: #fff;
+    font-size: 9px;
+    font-weight: 800;
+    line-height: 1.6;
+    letter-spacing: 0.3px;
+    vertical-align: 1px;
+  }
+  .cel-new-badge.soon { background: var(--brand-blue); }
+
   /* 프로그램별 가로 밴드: 세로 스크롤만으로 전체 프로그램을 훑는다 */
   .cel-band {
     display: flex;
@@ -2706,6 +2764,27 @@
     padding: 2px 10px;
     margin-bottom: 8px;
   }
+  /* 주차별 방송 상태 배지 — 아직 남은 방송이 있으면 '예정'(노랑),
+     그 주 방송이 모두 지났으면 '종료'(회색). 날짜 기준이라 손댈 필요 없이 저절로 바뀐다. */
+  .cel-week-status {
+    display: inline-block;
+    font-size: 10.5px;
+    font-weight: 800;
+    border-radius: 20px;
+    padding: 2px 10px;
+    margin: 0 0 8px 6px;
+  }
+  .cel-week-status.upcoming {
+    color: #4A3200;
+    background: #FCD34D;
+    border: 1px solid #E0A400;
+  }
+  .cel-week-status.done {
+    color: #6B7280;
+    background: var(--paper-dim2);
+    border: 1px solid var(--rule);
+  }
+
   .cel-week-cols { display: flex; align-items: flex-start; }
   .cel-bcast { flex: 0 0 auto; width: 215px; padding: 0 12px; border-right: 1px dashed var(--rule); }
   .cel-bcast:first-child { padding-left: 0; }
@@ -2806,6 +2885,14 @@
     color: var(--ink-faint);
     font-size: 14px;
     padding: 80px 0;
+  }
+
+  /* 데이터 신선도 표기 (고정PGM 탭의 .fp-updated와 같은 역할·모양) */
+  .cel-updated {
+    text-align: center;
+    font-size: 11px;
+    color: var(--ink-faint);
+    padding: 10px 0 4px;
   }
 
   .cel-sample-notice {
@@ -2983,6 +3070,8 @@
 <div id="tabHomeshop" class="tab-panel active">
 
 <div class="hs-controls">
+  <div class="hs-daymeta" id="hsDayMeta"></div>
+
   <div class="hs-controls-center">
     <div class="date-nav">
       <button class="arrow" id="hsPrevDay" aria-label="이전 날짜">‹</button>
@@ -3050,6 +3139,7 @@
       <button class="active" data-file="CJ_KJE.json">강주은 굿라이프</button>
       <button class="active" data-file="HD_OGS.json">오감쇼</button>
       <button class="active" data-file="CJ_KCO.json">더 김창옥 라이브</button>
+      <button class="active" data-file="CJ_KSY.json">김신영이 산다</button>
       <button class="active" data-file="HD_CEK.json">최은경쇼</button>
       <button class="active" data-file="CJ_CHJ.json">최화정쇼</button>
       <button class="active" data-file="GS_BJY.json">지금 백지연</button>
@@ -3060,6 +3150,7 @@
     </div>
   </div>
   <div class="cel-sample-notice" id="celSampleNotice" style="display:none;">⚠️ 아직 수집된 데이터가 없어 레이아웃 미리보기용 예시 데이터를 보여주고 있습니다.</div>
+  <div class="cel-updated" id="celUpdated"></div>
   <div id="celGridWrap"></div>
 </div>
 
@@ -3242,7 +3333,7 @@ const TAB_TIPS = {
     title: '고정PGM 탭은?',
     items: [
       '홈쇼핑 4사의 고정 프로그램을 각 사 사이트에서 수집해요',
-      '<span class="pgm-new-badge">New</span> 는 최근 신규 편성된 프로그램이에요',
+      '<span class="cel-new-badge">NEW</span> 는 최근 신규 론칭한 프로그램이에요',
     ],
   },
   schedule: {
@@ -3269,6 +3360,7 @@ const TAB_TIPS = {
     items: [
       '홈쇼핑 탭 편성 데이터(자체 카테고리 분류모델 적용)를 요일×시간대로 집계해요',
       '<b>방송 시작시각</b> 기준으로 시간대를 나눠요 (09:20도 09:45도 09시대)',
+      '한 방송에 상품코드가 여러 개여도 <b>브랜드 단위 1건</b>으로 세요 (같은 채널·같은 시작시각 기준)',
       '데이터는 <b>2026-06-22</b>부터예요 (기타 채널은 06-26부터)',
       '셀을 클릭하면 채널별 횟수·고정/셀럽PGM 정보를 보여줘요',
     ],
@@ -3395,7 +3487,7 @@ function formatDateLabel(dateStr) {
 
 // 편성표 상단 날씨 바는 서울 기준으로 표시한다.
 const SCHEDULE_WEATHER_REGION = 'seoul';
-const _weatherCache = { forecast: null, asosMonths: {} };
+const _weatherCache = { forecast: null, asosMonths: {}, holidayYears: {}, termYears: {} };
 
 async function fetchJsonSafe(path) {
   try {
@@ -3406,15 +3498,36 @@ async function fetchJsonSafe(path) {
   return null;
 }
 
+async function getHolidayName(dateStr) {
+  const year = dateStr.slice(0, 4);
+  if (!(year in _weatherCache.holidayYears)) {
+    _weatherCache.holidayYears[year] = await fetchJsonSafe(`./weather/holiday/${year}.json`) || {};
+  }
+  return _weatherCache.holidayYears[year][dateStr] || '';
+}
+
+async function getTermName(dateStr) {
+  const year = dateStr.slice(0, 4);
+  if (!(year in _weatherCache.termYears)) {
+    _weatherCache.termYears[year] = await fetchJsonSafe(`./weather/term/${year}.json`) || {};
+  }
+  return _weatherCache.termYears[year][dateStr] || '';
+}
+
 async function getWeatherForDate(dateStr) {
   if (location.protocol === 'file:') return null;
+
+  const [holidayName, termName] = await Promise.all([
+    getHolidayName(dateStr),
+    getTermName(dateStr),
+  ]);
 
   if (_weatherCache.forecast === null) {
     _weatherCache.forecast = await fetchJsonSafe(`./weather/forecast/${SCHEDULE_WEATHER_REGION}/latest.json`) || {};
   }
   if (_weatherCache.forecast[dateStr]) {
     const w = _weatherCache.forecast[dateStr];
-    return { ...w, kind: 'forecast' };
+    return { ...w, kind: 'forecast', holidayName, termName };
   }
 
   const yearMonth = dateStr.slice(0, 7);
@@ -3424,8 +3537,11 @@ async function getWeatherForDate(dateStr) {
   const monthData = _weatherCache.asosMonths[yearMonth];
   if (monthData && monthData[dateStr]) {
     const w = monthData[dateStr];
-    return { ...w, kind: 'asos' };
+    return { ...w, kind: 'asos', holidayName, termName };
   }
+
+  // 예보 범위 밖의 미래 날짜는 기온이 없다. 그래도 공휴일·절기는 알려준다.
+  if (holidayName || termName) return { kind: 'none', holidayName, termName };
 
   return null;
 }
@@ -3437,26 +3553,74 @@ function renderWeatherBar(weather) {
     return;
   }
 
-  const minTa = weather.minTa;
-  const maxTa = weather.maxTa;
-  const minStr = (minTa === null || minTa === undefined) ? '–' : `${minTa.toFixed(0)}°`;
-  const maxStr = (maxTa === null || maxTa === undefined) ? '–' : `${maxTa.toFixed(0)}°`;
+  const holidayHtml =
+    (weather.holidayName
+      ? `<span class="w-sep">·</span><span class="w-holiday">${fpEscapeHtml(weather.holidayName)}</span>`
+      : '') +
+    (weather.termName
+      ? `<span class="w-sep">·</span><span class="w-term">${fpEscapeHtml(weather.termName)}</span>`
+      : '');
 
-  let rainStr;
-  if (weather.kind === 'forecast') {
-    rainStr = `비 ${Math.round(weather.pop_max)}%`;
-  } else {
-    rainStr = `비 ${weather.sumRn.toFixed(1)}mm`;
+  // 기온·강수는 없고 공휴일만 있는 날(예보 범위 밖 미래 공휴일)
+  if (weather.kind === 'none') {
+    bar.innerHTML =
+      `<a href="#" onclick="switchTab('weather'); return false;" title="날씨 탭으로 이동">` +
+      `<span class="w-empty">이 날짜의 날씨 정보가 없습니다</span>` +
+      holidayHtml +
+      `</a>`;
+    return;
   }
 
   bar.innerHTML =
     `<a href="#" onclick="switchTab('weather'); return false;" title="날씨 탭으로 이동">` +
-    `최저 <span class="w-temp-min">${minStr}</span>` +
-    `<span class="w-sep">·</span>` +
-    `최고 <span class="w-temp-max">${maxStr}</span>` +
-    `<span class="w-sep">·</span>` +
-    `<span class="w-rain">${rainStr}</span>` +
+    weatherMetricsHtml(weather) +
+    holidayHtml +
     `</a>`;
+}
+
+// 최저/최고/강수 조각. 편성표 날씨 바와 홈쇼핑 헤더가 함께 쓴다.
+function weatherMetricsHtml(weather) {
+  const minTa = weather.minTa;
+  const maxTa = weather.maxTa;
+  const minStr = (minTa === null || minTa === undefined) ? '–' : `${minTa.toFixed(0)}°`;
+  const maxStr = (maxTa === null || maxTa === undefined) ? '–' : `${maxTa.toFixed(0)}°`;
+  const rainStr = weather.kind === 'forecast'
+    ? `비 ${Math.round(weather.pop_max)}%`
+    : `비 ${weather.sumRn.toFixed(1)}mm`;
+
+  return `최저 <span class="w-temp-min">${minStr}</span>` +
+         `<span class="w-sep">·</span>` +
+         `최고 <span class="w-temp-max">${maxStr}</span>` +
+         `<span class="w-sep">·</span>` +
+         `<span class="w-rain">${rainStr}</span>`;
+}
+
+// 홈쇼핑 탭 헤더 왼쪽 칸: 선택한 날짜의 날씨 + 공휴일
+let _hsDayMetaSeq = 0;
+async function hsRenderDayMeta(dateStr) {
+  const el = document.getElementById('hsDayMeta');
+  if (!el) return;
+
+  // 날짜를 빠르게 넘기면 먼저 보낸 요청이 늦게 도착해 최신 표시를 덮어쓸 수 있다
+  const seq = ++_hsDayMetaSeq;
+  const weather = await getWeatherForDate(dateStr);
+  if (seq !== _hsDayMetaSeq) return;
+
+  const parts = [];
+  if (weather && weather.kind !== 'none') parts.push(weatherMetricsHtml(weather));
+  if (weather && weather.holidayName) {
+    parts.push(`<span class="w-holiday">${fpEscapeHtml(weather.holidayName)}</span>`);
+  }
+  if (weather && weather.termName) {
+    parts.push(`<span class="w-term">${fpEscapeHtml(weather.termName)}</span>`);
+  }
+
+  // 기온도 공휴일도 없으면 빈 칸으로 둔다 (의미 없는 "정보 없음" 문구 대신)
+  el.innerHTML = parts.length
+    ? `<a href="#" onclick="switchTab('weather'); return false;" title="날씨 탭으로 이동">` +
+      parts.join('<span class="w-sep">·</span>') +
+      `</a>`
+    : '';
 }
 
 function isToday(dateStr) {
@@ -3599,16 +3763,22 @@ async function loadMonthData(year, month, region) {
   const ym = `${year}-${String(month).padStart(2, '0')}`;
   const lastYearYm = `${year - 1}-${String(month).padStart(2, '0')}`;
 
-  const [asos, forecast, lastYearAsos] = await Promise.all([
+  // 공휴일은 지역과 무관하고 연도별 파일이다. 달력 한 화면은 한 달 = 한 연도라
+  // 해당 연도 파일 하나만 받으면 된다.
+  const [asos, forecast, lastYearAsos, holiday, term] = await Promise.all([
     fetchJsonSafe(`./weather/asos/${region}/${ym}.json`),
     fetchJsonSafe(`./weather/forecast/${region}/latest.json`),
     fetchJsonSafe(`./weather/asos/${region}/${lastYearYm}.json`),
+    fetchJsonSafe(`./weather/holiday/${year}.json`),
+    fetchJsonSafe(`./weather/term/${year}.json`),
   ]);
 
   return {
     asos: asos || {},
     forecast: forecast || {},
     lastYearAsos: lastYearAsos || {},
+    holiday: holiday || {},
+    term: term || {},
   };
 }
 
@@ -3650,11 +3820,23 @@ function renderDayCell(year, month, day, monthData, today) {
   const isToday = dateStr === today;
   const isFuture = dateStr > today;
 
+  const holidayName = monthData.holiday[dateStr] || '';
+  const termName = monthData.term[dateStr] || '';
+
   const cellClasses = ['cal-cell'];
+  if (holidayName) cellClasses.push('holiday-cell');
   if (isToday) cellClasses.push('today-cell');
   else if (isFuture) cellClasses.push('future-cell');
 
-  const dowClass = dow === 0 ? 'sun' : (dow === 6 ? 'sat' : '');
+  // 공휴일은 무슨 요일이든 일요일과 같은 빨간 날짜로 표시한다
+  const dowClass = holidayName ? 'sun' : (dow === 0 ? 'sun' : (dow === 6 ? 'sat' : ''));
+  const holidayHtml = holidayName
+    ? `<span class="holiday-name" title="${fpEscapeHtml(holidayName)}">${fpEscapeHtml(holidayName)}</span>`
+    : '';
+  // 절기(입추·초복 등)는 쉬는 날이 아니라 공휴일보다 눈에 덜 띄게 회색으로 둔다
+  const termHtml = termName
+    ? `<span class="term-name" title="${fpEscapeHtml(termName)}">${fpEscapeHtml(termName)}</span>`
+    : '';
 
   const data = getDayData(dateStr, monthData);
   // 예보 범위 밖의 미래 날짜는 올해 값이 없다. 그래도 작년 비교는 보여준다.
@@ -3688,7 +3870,7 @@ function renderDayCell(year, month, day, monthData, today) {
   }
 
   return `<td class="${cellClasses.join(' ')}">` +
-         `<div class="day-num ${dowClass}">${day}</div>` +
+         `<div class="day-num ${dowClass}"><span>${day}</span>${holidayHtml}${termHtml}</div>` +
          statsHtml +
          `</td>`;
 }
@@ -4328,7 +4510,8 @@ const HS_PGM_BADGE_RULES = [
   ['더컬렉션', '더컬렉션'], ['유민', '장유민'], ['조윤주', '조윤주'], ['이승연', '이승연'],
   ['HIT THE STYLE', '힛스'], ['힛더스', '힛스'], ['김지애', '김지애'], ['수정SHOP', '이수정'],
   ['L.SHOW', '엘쇼'], ['쇼미', '쇼미'], ['신상뷰티', '찬스'], ['지완스', '더지완스'],
-  ['김창옥', '김창옥'], ['지금 여행', '지금여행'], ['최은경', '최은경'],
+  ['김창옥', '김창옥'], ['지금 여행', '지금여행'], ['김신영', '김신영'],
+  ['최은경', '최은경'],
 ];
 
 function hsPgmBadgeLabel(pgm) {
@@ -4448,6 +4631,7 @@ async function hsRefresh(dateStr) {
   hsRenderCategoryLegend();
   document.getElementById('hsDateText').textContent = formatDateLabel(dateStr);
   document.getElementById('hsPrevDay').disabled = (dateStr <= HS_MIN_DATE);
+  hsRenderDayMeta(dateStr);  // 날씨/공휴일은 편성 로딩을 막지 않도록 await하지 않는다
   const wrap = document.getElementById('hsGridWrap');
   wrap.innerHTML = '<div style="text-align:center;padding:30px;color:var(--ink-soft);font-size:12px;">불러오는 중…</div>';
 
@@ -4636,12 +4820,18 @@ const MONTH_NAMES = ['1월','2월','3월','4월','5월','6월','7월','8월','9�
 const DATA_MIN_YEAR = 2023;
 const DATA_MIN_MONTH = 1;
 
+// 조회 가능한 미래 경계: 내년 12월.
+// weather.py의 collect_holidays()가 공휴일을 '내년까지' 모으는 것과 맞춘다.
+// 예보는 글피까지뿐이라 미래 달에는 기온이 없지만, 공휴일과 '작년 같은 날'
+// 비교는 그대로 볼 수 있어서 편성 계획용으로 의미가 있다.
+const DATA_MAX_MONTH = 12;
+function dataMaxYear() { return new Date().getFullYear() + 1; }
+
 function renderMonthPickerPanel() {
   document.getElementById('mppYearLabel').textContent = pickerPanelYear;
 
-  const now = new Date();
-  const maxYear = now.getFullYear();
-  const maxMonth = now.getMonth() + 1;
+  const maxYear = dataMaxYear();
+  const maxMonth = DATA_MAX_MONTH;
 
   let html = '';
   for (let m = 1; m <= 12; m++) {
@@ -4731,36 +4921,6 @@ async function fpLoadData() {
   return fpData;
 }
 
-// ============ 신규 편성 PGM 'New' 배지 ============
-// 고정PGM/셀럽PGM 탭에서 새로 생긴 프로그램을 눈에 띄게 표시한다.
-//   key   = 프로그램명. 회사/수집 경로마다 표기가 조금씩 달라서
-//           ("최은경쇼" vs "최은경 쇼") 공백을 무시하고 부분일치로 비교한다.
-//   value = 편성 시작일(YYYY-MM-DD). 이 날로부터 NEW_PGM_DAYS일이 지나면
-//           배지가 자동으로 사라지므로 나중에 지워줄 필요가 없다.
-const NEW_PGM_SINCE = {
-  '최은경쇼': '2026-08-20',   // 현대(HD) 신규 편성 (수 19:30)
-};
-const NEW_PGM_DAYS = 45;
-
-function isNewPgm(title) {
-  const name = String(title || '').replace(/\s+/g, '');
-  if (!name) return false;
-  for (const key in NEW_PGM_SINCE) {
-    const k = key.replace(/\s+/g, '');
-    if (!k || !(name.includes(k) || k.includes(name))) continue;
-    const since = new Date(NEW_PGM_SINCE[key] + 'T00:00:00');
-    if (isNaN(since)) return true;   // 날짜를 못 읽으면 일단 표시
-    return (Date.now() - since.getTime()) / 86400000 <= NEW_PGM_DAYS;
-  }
-  return false;
-}
-
-function pgmNewBadgeHtml(title) {
-  return isNewPgm(title)
-    ? `<span class="pgm-new-badge" title="신규 편성 프로그램">New</span>`
-    : '';
-}
-
 function fpFormatUpdated(collectedAt) {
   if (!collectedAt) return '';
   try {
@@ -4818,7 +4978,7 @@ function fpRenderCard(slot, compact) {
       thumbBlock +
       `<div class="fp-body">` +
         (compact ? `<span class="fp-co-badge-inline ${co}">${fpEscapeHtml(slot.company)}</span> ` : '') +
-        `<div class="fp-title">${fpEscapeHtml(slot.title)}${pgmNewBadgeHtml(slot.title)}</div>` +
+        `<div class="fp-title">${fpEscapeHtml(slot.title)}${launchBadgeHtmlByTitle(slot.title)}</div>` +
         `<div class="fp-schedule">${fpFormatSchedule(slot)}</div>` +
       `</div>` +
     `</a>`
@@ -5155,12 +5315,64 @@ document.getElementById('pmMonthPicker').addEventListener('change', (e) => {
 //  최은경=수 19:30, 최화정=수 20:45, 백지연=목, 최유라=목/토,
 //  소유진=금 20:35, 소이현=금 21:45, 왕영은=토 08:20)
 // ※ 황정민쇼는 목요일이었다가 월요일로 이동함 (2026-08 기준)
-// ※ 최은경쇼는 2026-08 신규 편성 (HD)
+// ※ 김신영이 산다는 8/18(화) 21:45 론칭 후 연간 10회 내외 비정기 편성이라
+//   요일·시간대가 유동적 - 우선 론칭 시간대(화 21:45) 자리에 둔다.
+// ※ 최은경쇼는 2026-08 신규 편성 (HD, 수 19:30)
 const CEL_FILES = [
-  "HD_HJM.json", "CJ_KJE.json", "HD_OGS.json", "CJ_KCO.json",
-  "HD_CEK.json", "CJ_CHJ.json", "GS_BJY.json", "LT_CYR.json",
-  "GS_SYJ.json", "CJ_SIH.json", "HD_WYE.json"
+  "HD_HJM.json", "CJ_KJE.json", "HD_OGS.json", "CJ_KCO.json", "CJ_KSY.json",
+  "HD_CEK.json", "CJ_CHJ.json", "GS_BJY.json", "LT_CYR.json", "GS_SYJ.json",
+  "CJ_SIH.json", "HD_WYE.json"
 ];
+// 신규 론칭 프로그램 배지. 론칭일 전에는 '론칭예정', 론칭 후
+// CEL_NEW_BADGE_DAYS일 동안 'NEW'를 붙이고 그 뒤엔 저절로 사라진다
+// (기간이 지난 뒤 배지를 지우러 다시 손댈 필요가 없게 날짜 기준으로 판단).
+const CEL_NEW_BADGE_DAYS = 60;
+// title은 고정PGM 탭에서 역참조하는 키다 (고정PGM 슬롯엔 파일명이 없고
+// 프로그램명만 있어서, 같은 표를 제목으로 찾아 같은 배지를 붙인다).
+const CEL_LAUNCH_INFO = {
+  'CJ_KSY.json': {
+    title: '김신영이 산다',
+    date: '2026-08-18',
+    note: '2026-08-18(화) 21:45 첫 방송 · 연간 10회 내외 비정기 편성',
+  },
+  'HD_CEK.json': {
+    title: '최은경쇼',
+    date: '2026-08-20',
+    note: '2026-08 신규 편성 · 매주 수요일 19:30',
+  },
+};
+
+// 배지를 붙일 상태면 {cls, text, title}, 아니면 null
+function celLaunchBadgeOf(file) {
+  const info = CEL_LAUNCH_INFO[file];
+  if (!info) return null;
+  if (toLocalDateStr(new Date()) < info.date) {
+    return { cls: 'soon', text: '론칭예정', title: info.note };
+  }
+  const [y, m, d] = info.date.split('-').map(Number);
+  const days = Math.floor((new Date().setHours(0, 0, 0, 0) - new Date(y, m - 1, d).getTime()) / 86400000);
+  return days <= CEL_NEW_BADGE_DAYS ? { cls: '', text: 'NEW', title: info.note } : null;
+}
+
+function celLaunchBadgeHtml(file) {
+  const b = celLaunchBadgeOf(file);
+  if (!b) return '';
+  return `<span class="cel-new-badge${b.cls ? ' ' + b.cls : ''}" title="${b.title}">${b.text}</span>`;
+}
+
+// 고정PGM 탭용: 프로그램명으로 CEL_LAUNCH_INFO를 찾아 같은 배지를 돌려준다.
+// 회사/수집 경로마다 표기가 조금씩 달라서("최은경쇼" vs "최은경 쇼")
+// 공백을 무시하고 부분일치로 비교한다.
+function launchBadgeHtmlByTitle(title) {
+  const name = String(title || '').replace(/\s+/g, '');
+  if (!name) return '';
+  for (const file in CEL_LAUNCH_INFO) {
+    const t = String(CEL_LAUNCH_INFO[file].title || '').replace(/\s+/g, '');
+    if (t && (name.includes(t) || t.includes(name))) return celLaunchBadgeHtml(file);
+  }
+  return '';
+}
+
 let celRawDataFull = [];       // 전체 상품(프로그램 태그 포함)
 let celProgramMeta = {};       // file -> {title, company, schedule_raw, detail_link}
 let celSelectedFiles = new Set(CEL_FILES); // 기본값: 전체 선택 상태로 시작
@@ -5417,6 +5629,30 @@ function celDateFromLabel(label) {
   return `${year}-${m[1]}-${m[2]}`;
 }
 
+// 한 회차가 아직 방송 전인지 판단한다. 날짜뿐 아니라 방송 시각까지 본다 -
+// 라벨('08/18(화) 19:35 방송')에 시:분이 들어 있어서, 그 시각이 지나면
+// 같은 날이라도 종료로 넘어간다. 시각을 못 뽑은 회차는 그날 자정까지
+// 예정으로 둔다 (아직 안 한 방송을 종료로 보여주는 쪽이 더 나쁜 오류라서).
+function celBroadcastIsUpcoming(b) {
+  if (!b || !b.date) return false;
+  const m = String(b.label || '').match(/(\d{1,2}):(\d{2})/);
+  const at = m ? `${m[1].padStart(2, '0')}:${m[2]}` : '23:59';
+  const now = new Date();
+  const nowAt = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+  return `${b.date} ${at}` > `${toLocalDateStr(now)} ${nowAt}`;
+}
+
+// 주차 묶음의 방송 상태 배지. 그 주에 아직 방송 시각이 지나지 않은 회차가
+// 하나라도 남아 있으면 '예정'(노랑), 전부 지났으면 '종료'(회색). 방송일을
+// 못 뽑은 묶음('기타')은 판단 근거가 없어 배지를 붙이지 않는다.
+function celWeekStatusHtml(broadcasts) {
+  const dated = (broadcasts || []).filter(b => b.date);
+  if (dated.length === 0) return '';
+  return dated.some(celBroadcastIsUpcoming)
+    ? '<span class="cel-week-status upcoming">예정</span>'
+    : '<span class="cel-week-status done">종료</span>';
+}
+
 function celRenderBand(file) {
   const programKey = file.replace(/\.json$/, '');
   const hist = celHistoryCache[celMonth];
@@ -5485,6 +5721,7 @@ function celRenderBand(file) {
         ).join('');
         return `<div class="cel-week">` +
           `<span class="cel-week-label">${w === 0 ? '기타' : monthNum + '월 ' + w + '주차'}</span>` +
+          celWeekStatusHtml(items) +
           `<div class="cel-week-cols">${cols}</div></div>`;
       }).join('');
 
@@ -5505,7 +5742,7 @@ function celRenderBand(file) {
       ? `<img src="${thumb}" alt="" loading="lazy" onerror="this.parentNode.innerHTML='<span class=cel-thumb-ph>${(meta.title || '?')[0]}</span>'">`
       : `<span class="cel-thumb-ph">${(meta.title || '?')[0]}</span>`) +
     `</div>`;
-  const newBadge = pgmNewBadgeHtml(meta.title);
+  const newBadge = celLaunchBadgeHtml(file);
   const titleHtml = meta.detail_link
     ? `<a class="cel-col-title" href="${meta.detail_link}" target="_blank" rel="noopener noreferrer">${meta.title}${newBadge} ↗</a>`
     : `<div class="cel-col-title">${meta.title}${newBadge}</div>`;
@@ -5526,9 +5763,21 @@ function celRenderBand(file) {
   );
 }
 
+// 최근 갱신 시각. 조회 중인 달의 누적 파일이 마지막으로 쓰인 시각을 쓴다
+// (지난 달을 보면 그 달 데이터가 마지막으로 갱신된 시각이 나온다).
+// 누적 파일이 없어 라이브 데이터로 폴백한 달은 이번 달 수집 시각을 쓴다.
+function celRenderUpdated() {
+  const el = document.getElementById('celUpdated');
+  if (!el) return;
+  const hist = celHistoryCache[celMonth] || celHistoryCache[celThisMonth()];
+  el.textContent = (hist && hist.updated_at) ? fpFormatUpdated(hist.updated_at) : '';
+}
+
 function celRenderCompare() {
   const wrap = document.getElementById('celGridWrap');
   if (!wrap) return;
+
+  celRenderUpdated();
 
   const selected = CEL_FILES.filter(f => celSelectedFiles.has(f));
   if (selected.length === 0) {
@@ -5668,8 +5917,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     renderMonth(currentYear, currentMonth);
   });
   document.getElementById('nextMonth').addEventListener('click', () => {
-    const now = new Date();
-    if (currentYear === now.getFullYear() && currentMonth === now.getMonth() + 1) return;
+    if (currentYear === dataMaxYear() && currentMonth === DATA_MAX_MONTH) return;
     currentMonth += 1;
     if (currentMonth > 12) { currentMonth = 1; currentYear += 1; }
     renderMonth(currentYear, currentMonth);
@@ -5741,12 +5989,11 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
   // 셀럽PGM 슬라이서 동작 연결 (중복 선택 가능한 비교 모드)
   const celSlicer = document.getElementById('celProgramSlicer');
   if (celSlicer) {
-    // 신규 편성 프로그램 버튼에 New 배지 부착 (라벨 텍스트로 판정하므로
-    // 버튼을 추가할 때 따로 손댈 필요가 없다)
+    // 신규 론칭 프로그램 버튼에도 밴드 헤더와 같은 배지를 붙인다
     celSlicer.querySelectorAll('button').forEach(b => {
-      if (b.dataset.file !== 'all' && isNewPgm(b.textContent)) {
-        b.insertAdjacentHTML('beforeend', pgmNewBadgeHtml(b.textContent));
-      }
+      const badge = b.dataset.file && b.dataset.file !== 'all'
+        ? celLaunchBadgeHtml(b.dataset.file) : '';
+      if (badge) b.insertAdjacentHTML('beforeend', badge);
     });
 
     celSlicer.addEventListener('click', (e) => {
@@ -6729,7 +6976,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
   let inCatSel = new Set(IN_CATS);     // 다중선택, 풀세트 = 전체
   let inSel = null;                    // 선택 { h, w } (셀 모드) 또는 { h, w:null } (행 모드)
   let inSelToken = 0;                  // 선택이 바뀔 때마다 증가 - 늦게 도착한 지상파 fetch 응답 무시용
-  let inRows = [];                     // 조회 기간 평탄화 편성: { d, w, h, cat, label, main }
+  let inRows = [];                     // 조회 기간 평탄화 편성(브랜드 단위 중복제거): { d, w, h, cat, label, main, items }
   const inCache = {};                  // 월별 JSON 캐시 (dir|YYYY-MM)
   let inFixedSlots = null;             // 고정PGM merged.json slots
   let inCelebs = null;                 // 셀럽PGM merged.json programs (+파싱된 요일/시)
@@ -6771,6 +7018,19 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
   }
 
   // 조회 기간의 모든 채널 편성을 { 날짜, 요일, 시간대, 카테고리, 채널 } 로 평탄화
+  //
+  // 편성 파일 1행 = 방송 1회가 아니라 '상품코드 1개'다. 현대홈쇼핑 <플렉스샵>처럼 한 방송에서
+  // 여러 브랜드를 파는 편성은 상품코드가 60개 넘게 붙어, 행을 그대로 세면 그 셀만 몇 배로 부풀고
+  // (금 22시대 235회 같은 값) 카테고리 비중도 왜곡된다. 그래서 '날짜+채널+시작시각+브랜드'로
+  // 중복을 제거해 브랜드 단위 1건으로 집계한다.
+  //   - 브랜드가 비어 있으면(라방바 기반 채널에 흔하다) 상품명으로 대체해 서로 다른 방송이 뭉치지 않게 한다
+  //   - 같은 브랜드가 같은 시간대라도 시작시각이 다르면 별도 방송으로 센다
+  //   - SK스토아처럼 동일 상품이 여러 번 실린 스크랩 중복도 함께 걸러진다
+  const inDedupKey = (d, label, e) => {
+    const name = String(e.brand || '').trim() || String(e.product || '').trim();
+    return d + '|' + label + '|' + String(e.start || '') + '|' + name.replace(/\s+/g, ' ');
+  };
+
   async function inLoadRange() {
     const months = new Set();
     for (let d = inStart; d <= inEnd; d = inAddDays(d, 1)) months.add(d.slice(0, 7));
@@ -6780,7 +7040,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     )));
     const loaded = await Promise.all(jobs);
 
-    const rows = [];
+    const byKey = new Map(); // 중복 제거 키 -> 행 (묶인 상품들의 카테고리 분포를 함께 들고 있는다)
     loaded.forEach(({ ch, data }) => {
       const days = (data || {}).days || {};
       for (const d in days) {
@@ -6789,9 +7049,24 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
         days[d].forEach(e => {
           const h = parseInt(String(e.start || '').slice(0, 2), 10);
           if (isNaN(h) || (h >= 2 && h < 5)) return; // 02~04시 생략
-          rows.push({ d: d, w: w, h: h, cat: inCatOf(e), label: ch.label, main: !!ch.main });
+          const key = inDedupKey(d, ch.label, e);
+          const cat = inCatOf(e);
+          let r = byKey.get(key);
+          if (!r) {
+            r = { d: d, w: w, h: h, cat: cat, label: ch.label, main: !!ch.main, items: 0, cats: {} };
+            byKey.set(key, r);
+          }
+          r.items++;
+          r.cats[cat] = (r.cats[cat] || 0) + 1;
         });
       }
+    });
+
+    // 한 브랜드 방송에 카테고리가 섞여 있으면(분류모델 편차) 상품 수가 가장 많은 카테고리를 대표로 쓴다
+    const rows = [...byKey.values()];
+    rows.forEach(r => {
+      r.cat = Object.entries(r.cats).sort((a, b) => b[1] - a[1])[0][0];
+      delete r.cats;
     });
     inRows = rows;
   }

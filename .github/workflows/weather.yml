@@ -1,4 +1,4 @@
-name: 날씨 수집
+name: 날씨·공휴일·절기 수집
 
 on:
   schedule:
@@ -29,6 +29,9 @@ jobs:
       - name: 날씨 스크래퍼 실행
         env:
           API_KEY: ${{ secrets.WEATHER_API_KEY }}
+          # 공휴일(천문연)은 기상청과 활용신청이 별도라 키를 따로 둔다.
+          # 시크릿이 없으면 weather.py가 API_KEY로 폴백한다.
+          HOLIDAY_API_KEY: ${{ secrets.HOLIDAY_API_KEY }}
         run: python weather.py
 
       - name: 결과 커밋 & 푸시
@@ -37,6 +40,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add weather/asos/*.json weather/forecast/*.json
+          # 공휴일·절기 수집이 통째로 실패해 파일이 하나도 없으면 pathspec 에러로
+          # 스텝이 죽어 날씨 데이터까지 커밋되지 않는다. 없으면 그냥 넘어간다.
+          git add weather/holiday/*.json || true
+          git add weather/term/*.json || true
           if git diff --staged --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else

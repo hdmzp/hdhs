@@ -23,7 +23,7 @@ hdhs/
 │   ├── scrape-celebpgm.yml             # 셀럽PGM 상품 데이터
 │   ├── rep-pgm-scrape.yml              # 셀럽PGM 대표프로그램 메타(merge)
 │   ├── scrape-ranking.yml              # 홈쇼핑 랭킹(18개 카테고리)
-│   ├── weather.yml                     # 날씨(ASOS 과거 + 단기예보)
+│   ├── weather.yml                     # 날씨(ASOS 과거 + 단기예보) + 공휴일 + 절기
 │   └── pages-deploy.yml                # 위 워크플로우들이 커밋 후 강제 트리거하는 배포 전용 워크플로우
 │
 ├── naver_schedule_scraper.py        # [편성표] 지상파·종편 8채널 수집
@@ -31,7 +31,7 @@ hdhs/
 ├── cj_scraper.py / lt_scraper.py     # [홈쇼핑] CJ온스타일 / 롯데
 ├── etc_scraper.py                    # [홈쇼핑] 기타 7개사(공영/홈앤/K쇼핑/신세계/NS/쇼핑엔티/SK스토아, 라방바 경유)
 ├── promotion_scraper.py              # [프로모션] 4사(HD/GS/CJ/LT) 카드할인 일정
-├── weather.py                        # [날씨] ASOS 과거 + 단기예보
+├── weather.py                        # [날씨] ASOS 과거 + 단기예보 + 공휴일 + 절기
 │
 ├── scraper/scrape_naver.py           # [드라마/예능] 시청률 편성 (Playwright)
 ├── scraper/naver_parser.py           # 위 스크립트의 파싱 로직 보조 모듈
@@ -63,7 +63,7 @@ hdhs/
 ├── homeshopping/promotions/card_discounts.json  # 프로모션(카드할인) 일정
 ├── homeshopping/fixed_programs/{사}.json, merged.json         # 고정PGM
 ├── homeshopping/representative_programs/{사}_{코드}.json, merged.json  # 셀럽PGM
-└── weather/asos|forecast/...                    # 날씨 결과
+└── weather/asos|forecast|holiday|term/...       # 날씨 결과 + 공휴일 + 절기
 ```
 
 ---
@@ -75,14 +75,14 @@ hdhs/
 | 워크플로우 | 실행 시각(KST) | 대상 | 실패 허용 |
 |---|---|---|---|
 | `schedule.yml` | 05:00 | 지상파·종편 편성표 | - |
-| `scrape-fixed-pgm.yml` | 04:30 | 고정PGM 4사 | 스크래퍼별 `continue-on-error` |
-| `weather.yml` | 05:30 | 날씨(ASOS+단기예보) | - |
+| `scrape-fixed-pgm.yml` | 04:30 | 고정PGM 4사 | 스크래퍼별 `continue-on-error` + 건전성 검사(2-1) |
+| `weather.yml` | 05:30 | 날씨(ASOS+단기예보)+공휴일+절기 | - |
 | `homeshopping.yml` | 05:50, 12:20 (하루 2회) | 홈쇼핑 4사(HD/GS/CJ/LT) | 스크래퍼별 `continue-on-error` |
 | `etc-scrape.yml` | 06:10, 12:40 (하루 2회) | 홈쇼핑 기타 7개사 | `continue-on-error` |
 | `scrape-ranking.yml` | 07:00 | 홈쇼핑 랭킹 18개 카테고리 | - |
 | `promotion.yml` | 06:20, 12:50 (하루 2회) | 프로모션 카드할인 4사(HD/GS/CJ/LT) | 회사별 실패는 스크립트 내부에서 격리 |
-| `rep-pgm-scrape.yml` | 08:10 | 셀럽PGM 대표프로그램 메타 병합 | 회사별 `continue-on-error` |
-| `scrape-celebpgm.yml` | 03:00 | 셀럽PGM(8개 프로그램) 상품 데이터 | 스크립트별 `|| echo` |
+| `rep-pgm-scrape.yml` | 08:10 | 셀럽PGM 대표프로그램 메타 병합 | 회사별 `continue-on-error` + 건전성 검사(2-1) |
+| `scrape-celebpgm.yml` | 03:00 | 셀럽PGM(11개 프로그램) 상품 데이터 | 스크립트별 `|| echo` + 건전성 검사(2-1) |
 | `scrape-dramavariety.yml` | 02:00, 08:30, 12:10, 21:00 (하루 4회) | 드라마/예능 시청률 | - |
 | `pages-deploy.yml` | (push 또는 API 트리거 시) | GitHub Pages 배포 | 3회까지 자동 재시도 |
 
@@ -91,6 +91,45 @@ hdhs/
 - **push 충돌 방지**: 최근 추가된 워크플로우(`scrape-dramavariety`, `scrape-fixed-pgm`, `scrape-ranking`, `rep-pgm-scrape`)는 `git pull --rebase` 후 재시도를 최대 5회까지 반복하는 루프를 둠. 반면 초기부터 있던 워크플로우(`schedule`, `homeshopping`, `etc-scrape`, `weather`)는 아직 단순 `git pull --rebase --autostash && git push` 1회뿐이라 동시 충돌 시 실패할 수 있음 — 통일 필요
 - **Pages 배포 트리거 문제**: `github-actions[bot]` 계정의 push는 GitHub 정책상 다른 워크플로우를 재귀 트리거하지 않아, `pages-deploy.yml`이 데이터 갱신 커밋에 자동 반응하지 않는다. 그래서 각 스크래퍼 워크플로우가 커밋 후 `workflow_dispatch`를 API로 직접 호출해 배포를 강제로 큐에 넣는다(`scrape-celebpgm.yml`만 이 트리거 스텝이 빠져 있어, 셀럽PGM 상품만 갱신된 날은 배포가 안 될 수 있음)
 - `pages-deploy.yml`은 GitHub Pages 배포가 일시적으로 실패(`Deployment failed, try again later.`)하는 경우를 대비해 최대 3회 자동 재시도
+
+### 2-1. 수집 안전장치 (조용한 실패 방지)
+
+`continue-on-error`/`|| echo`로 회사별 실패를 격리하면 워크플로우가 계속 초록불이라, 스크래퍼가 죽어도 아무도 모른 채 며칠이 지나간다(2026-08 CJ 셀럽PGM 사고: `recj.py`가 편성표 API의 `result: null`에 크래시하며 첫 프로그램에서 멈춰 CJ 4개 파일이 갱신되지 않았는데, 워크플로우는 매일 성공으로 표시됨). 그래서 방어를 세 층으로 둔다.
+
+| 층 | 구현 | 막는 것 |
+|---|---|---|
+| ① 재시도 | `tools/scrape_guard.py` | 타임아웃·5xx·429·WAF의 HTML 응답 같은 **일시적** 실패. 지수 백오프(1→2→4초 + 지터), 429는 `Retry-After` 존중, 404/403은 재시도 없이 즉시 포기 |
+| ② 산출물 검사 | `tools/check_scrape_health.py` | 재시도로도 안 되는 **진짜 장애**. 수집 직전 `--mark`로 시각을 찍고, 수집 후 산출물이 ⓐ존재하는지 ⓑJSON으로 읽히는지 ⓒ**이번 실행에서 다시 쓰였는지** ⓓ최소 건수를 넘는지 ⓔ직전 커밋 대비 40% 밑으로 급감하지 않았는지 검사. 하나라도 걸리면 종료코드 1 |
+| ③ 원인 요약 | `tools/run_step.py` | 로그를 뒤지는 수고. 스크래퍼를 `run_step.py`로 감싸 예외 종류·메시지·발생 위치(`파일:줄 (함수)`)를 잡아두고, 검사 실패 시 실행 로그 맨 아래에 **코드명 / 오류내용 / 수정권장사항**을 정리해 출력 |
+
+핵심은 ⓒ다. 내용이 그대로여도 파일은 매번 다시 쓰이므로, 스크래퍼가 죽으면 그 회사 파일만 mtime이 안 바뀌어 즉시 잡힌다.
+
+검사는 커밋 **직전**에 돌리되 `continue-on-error: true`로 둔다 — 살아남은 회사 데이터는 커밋해서 살리고, 잡 실패 처리는 마지막 스텝에서 한다. 적용된 워크플로우는 `rep-pgm-scrape.yml`, `scrape-fixed-pgm.yml`, `scrape-celebpgm.yml` 3개.
+
+검사 실패 시 실행 로그 마지막에 나오는 요약:
+
+```
+===== 원인·조치 요약 =====
+
+▶ fixed/recj.py
+  - AttributeError: 'NoneType' object has no attribute 'get' @ recj.py:175 (fetch_schedule_lineup)
+    -> API가 해당 필드를 null로 준 경우 - 응답 접근부에 `or {}` 방어 추가
+  - CJ_KJE.json - 이번 실행에서 갱신 안 됨 (마지막 기록 180분 전)
+    -> fixed/recj.py 실행 로그에서 예외 확인 후 재실행
+```
+
+산출물 실패는 `PRODUCER` 매핑으로 담당 스크래퍼에 귀속되고, 권장사항은 예외 종류/실패 사유별로 `advise*()`가 만든다.
+
+**텔레그램 알림은 두지 않는다.** 한때 붙였다가 걷어냈다 — 알림이 잡을 수 있는 범위(코드가 죽는 부류)가 실제로 놓치고 있던 범위(필드 결손 같은 조용한 누락)를 다 덮지 못해서다. 실패 감지는 Actions의 빨간불로만 한다.
+
+```bash
+# 로컬에서 수동 점검
+python tools/check_scrape_health.py --mark      # 수집 직전
+python tools/check_scrape_health.py --group celeb   # 또는 --group fixed
+python tools/test_scrape_guard.py               # 재시도 로직 자체 테스트 (네트워크 불필요)
+```
+
+기대 산출물 목록·최소 건수는 `check_scrape_health.py`의 `SPECS`에 있다. **셀럽PGM/고정PGM에 프로그램을 추가하면 여기에도 추가해야** 그 프로그램의 수집 실패가 잡힌다.
 
 ---
 
@@ -174,6 +213,13 @@ hdhs/
 - 과거(ASOS): 확정된 지난 달까지는 `weather/asos/{YYYY-MM}.json`에 한 번만 저장하고 재수집 안 함. 진행 중인 현재 달은 매일 1일~어제까지 통째로 재수집
 - 미래(단기예보): `weather/forecast/latest.json`에 오늘~글피 매번 갱신
 - 최초 실행 시 2023-01부터 백필
+- **공휴일**: 한국천문연구원 특일 정보(`getRestDeInfo`)로 관공서 공휴일을 함께 수집해 `weather/holiday/{YYYY}.json`에 `{"2026-08-15": "광복절"}` 형태로 저장. 지역과 무관하므로 지역 디렉토리 없음
+  - 대상: 2023년 ~ **내년**(연말에 다음 해 날짜를 조회해도 비지 않도록)
+  - 지난 연도는 확정 과거라 건너뛰고, 올해·내년만 매일 재수집 후 병합 → 연중에 새로 지정되는 **임시공휴일**을 잡는다. 수집에 실패하면 그 지난 연도는 부분 데이터로 굳히지 않고 저장을 보류한다(다음 실행에서 재수집)
+  - 키는 **`HOLIDAY_API_KEY` 시크릿**을 쓴다. 공공데이터포털은 서비스별로 활용신청이 따로라 기상청 키로 천문연 API를 부르면 403으로 막힌다. 시크릿이 없으면 `API_KEY`로 폴백
+- **절기**: 24절기(`get24DivisionsInfo` — 입춘·입추·동지…)와 잡절(`getSundryDayInfo` — 초복·중복·말복·한식…)을 합쳐 `weather/term/{YYYY}.json`에 저장. 분류가 달라 엔드포인트가 나뉘어 있고, 쉬는 날이 아니라 `isHoliday=N`으로 오므로 공휴일과 달리 그 값으로 거르지 않는다
+  - 공휴일과 저장 정책이 같아 `collect_yearly()` 한 함수를 조회 함수만 바꿔 재사용한다
+  - 연 단위로 한 번에 조회해 평상시 하루 2회 요청(최초 백필 5회). `apis.data.go.kr` 접속이 아예 안 되면 첫 실패에서 바로 중단한다 — 요청마다 20초 연결 타임아웃이 쌓이면 워크플로우(`timeout-minutes: 20`)가 통째로 죽어 날씨 결과까지 커밋되지 못한다
 
 ---
 
@@ -214,8 +260,9 @@ hdhs/
 - 4사(HD/GS/CJ/LT) 고정 편성 프로그램을 요일별 그리드로 비교
 
 ### ⭐ 셀럽PGM 탭
-- 8개 셀럽 프로그램(강주은/오감쇼/김창옥/최화정/황정민/백지연/최유라/소유진, 요일 순서로 정렬)을 **다중 선택해 동시 비교**하는 레이아웃
+- 11개 셀럽 프로그램(황정민/강주은/오감쇼/김창옥/김신영/최화정/백지연/최유라/소유진/소이현/왕영은, 요일 순서로 정렬)을 **다중 선택해 동시 비교**하는 레이아웃
 - 프로그램별 상품 데이터를 처음 열 때 한 번만 불러오는 캐시(`_celebrityTabLoaded`) 적용
+- **신규 론칭 배지**: `CEL_LAUNCH_INFO`에 론칭일을 등록한 프로그램은 밴드 헤더 제목 옆에 배지가 붙는다. 론칭일 전에는 `론칭예정`(파랑), 론칭 후 `CEL_NEW_BADGE_DAYS`(60일) 동안 `NEW`(빨강), 그 뒤엔 자동으로 사라진다(날짜 기준 판단이라 배지를 지우러 다시 손댈 필요 없음). 현재 등록: `CJ_KSY.json`(김신영이 산다, 2026-08-18 론칭)
 
 ### 📅 지상파·종편 탭
 - 일 단위 조회, 24시간 × 8채널 그리드
@@ -231,6 +278,11 @@ hdhs/
 ### 🌤 날씨 탭
 - 월 단위 캘린더, 최저/최고기온 + 강수(과거 mm / 예보 확률%)
 - **작년 같은 날** 최저/최고기온을 함께 표시(과거 데이터 있을 때만)
+- **공휴일**은 요일과 무관하게 날짜를 빨간색으로 표시하고 옆에 이름을 붙이며 칸 배경을 옅은 붉은 톤으로 깐다(이름이 길면 말줄임 + `title` 툴팁). 오늘 강조가 공휴일 배경보다 우선
+- **절기**(입추·초복 등)는 쉬는 날이 아니므로 같은 자리에 회색으로 표시해 공휴일 빨강에 묻히지 않게 위계를 준다
+- 편성표 탭 상단 날씨 바에도 공휴일명을 덧붙인다. 예보 범위 밖 미래 날짜처럼 기온이 없는 날도 공휴일만 있으면 표시
+- 홈쇼핑 탭 헤더의 날짜 왼쪽에도 같은 요약(최저/최고/강수 + 공휴일)을 표시. 클릭하면 날씨 탭으로 이동
+- 달력은 **내년 12월까지** 넘길 수 있다(공휴일 수집 범위와 동일). 미래 달은 기온이 없지만 공휴일과 '작년 같은 날' 비교로 편성 계획에 쓴다
 
 ### 📊 랭킹 탭
 - 18개 카테고리(대/소분류) 선택형 주간 랭킹, 순위 변동 표시(▲▼)와 인기/HOT/RISING 배지
@@ -263,6 +315,6 @@ hdhs/
 - 모든 채널/회사의 종료시각은 원본에 없는 경우 "다음 프로그램 시작 = 이전 종료"로 역산한 추정값
 - 두 파서 버전이 모두 실패하면 `data/_debug_fail_{채널명}.html`로 저장되고 그날 데이터에서 누락(구조 변경 감지용) — 셀럽PGM 쪽에도 `_debug_pgm_comm_*.json` 형태의 동일한 실패 스냅샷이 남음
 - GS와 기타 7개사(총 8개사)가 모두 라방바(`live.ecomm-data.com`) 하나에 의존해서, 그 사이트 구조가 바뀌면 한 번에 다수 채널이 영향받는 단일 장애점
-- 홈쇼핑/고정PGM 스크래퍼 대부분이 `continue-on-error`(또는 `|| echo`)라서 특정 사가 그날 실패해도 워크플로우 전체는 성공으로 표시됨 — 결과를 가끔 직접 확인할 필요
+- 홈쇼핑/고정PGM 스크래퍼 대부분이 `continue-on-error`(또는 `|| echo`)라서 특정 사가 그날 실패해도 워크플로우 전체는 성공으로 표시됨. 셀럽PGM·고정PGM 3개 워크플로우는 [2-1 수집 안전장치](#2-1-수집-안전장치-조용한-실패-방지)로 해결됨(검사 실패 시 잡 실패). **아직 미적용**: `homeshopping.yml`, `etc-scrape.yml`, `promotion.yml`, `scrape-ranking.yml` — 같은 방식으로 `SPECS`에 산출물을 추가하면 확장 가능
 - `scrape-celebpgm.yml`에는 다른 워크플로우들과 달리 Pages 재배포 강제 트리거 스텝이 없어, 셀럽PGM 상품만 갱신된 날은 배포가 자동으로 안 될 수 있음
 - 워크플로우별 push 재시도 로직이 통일돼 있지 않음(초기 워크플로우는 1회, 최근 워크플로우는 5회 재시도) — 통일 필요

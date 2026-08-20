@@ -129,6 +129,7 @@ def fetch_repbrand_batch(item_cds):
 CJ_PGM_KEYWORDS = (
     "최화정", "굿 라이프", "굿라이프", "강주은", "김창옥",
     "이승연", "조윤주", "지완스", "스튜디오B", "탑쇼",
+    "김신영",
 )
 
 

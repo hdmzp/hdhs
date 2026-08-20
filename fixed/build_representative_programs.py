@@ -44,6 +44,7 @@ SOURCE_FILES = [
     "CJ_CHJ.json",
     "CJ_KCO.json",
     "CJ_SIH.json",   # 소이현의 겟잇스타일
+    "CJ_KSY.json",   # 김신영이 산다 (2026-08-18 론칭)
 ]
 
 

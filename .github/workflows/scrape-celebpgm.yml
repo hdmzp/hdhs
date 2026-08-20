@@ -34,38 +34,92 @@ jobs:
         playwright install chromium
         playwright install-deps chromium
 
+    # 4-1. 건전성 검사 기준 시각 기록 (수집 직전)
+    - name: 수집 시작 시각 기록
+      run: python tools/check_scrape_health.py --mark
+
     # 5. fixed 폴더 내 4개 파이썬 스크립트 가동 (오류 발생해도 다음 스크립트 계속 실행)
+    #    개별 실패를 '|| echo'로 삼키므로, 아래 건전성 검사가 산출물을 보고
+    #    실제 수집 여부를 판정한다.
     - name: Run Scrapers in fixed folder
       run: |
         echo "GS 지금 백지연 수집 시작..."
-        python fixed/regs.py || echo "GS 수집 중 실패 발생"
+        python tools/run_step.py fixed/regs.py
 
         echo "CJ 대표 PGM(강주은, 최화정, 김창옥) 수집 시작..."
-        python fixed/recj.py || echo "CJ 수집 중 실패 발생"
+        python tools/run_step.py fixed/recj.py
 
         echo "HD 대표 PGM(황정민쇼, 오감쇼) 수집 시작..."
-        python fixed/rehd.py || echo "HD 수집 중 실패 발생"
+        python tools/run_step.py fixed/rehd.py
 
         echo "LT 최유라쇼 수집 시작..."
-        python fixed/relt.py || echo "LT 수집 중 실패 발생"
+        python tools/run_step.py fixed/relt.py
+
+        echo "셀럽PGM merged.json 갱신..."
+        python fixed/build_representative_programs.py || echo "merged.json 갱신 중 실패 발생"
 
         echo "셀럽PGM 월별 누적(history) 갱신..."
         python fixed/build_celeb_history.py || echo "월별 누적 갱신 중 실패 발생"
 
+    # 5-1. 산출물 검사 - 갱신 안 된 파일/빈 파일/급감을 잡는다.
+    #      성공한 회사 데이터는 커밋해서 살리고, 잡은 마지막에 실패 처리한다.
+    - name: 수집 건전성 검사
+      id: health
+      continue-on-error: true
+      run: python tools/check_scrape_health.py --group celeb
+
     # 6. 생성된 JSON 데이터를 깃허브 레포지토리에 자동으로 Commit & Push
+    #    다른 워크플로우(랭킹/기타채널 등)와 push 타이밍이 겹치면
+    #    non-fast-forward로 거부된다. 2026-08-12 실행이 이걸로 죽었다
+    #    (수집은 다 성공했는데 push만 실패해서 데이터가 통째로 날아감).
+    #    그래서 rebase 재시도 루프 + 소진 시 재동기화 1회를 둔다.
     - name: Commit and Push JSON Data
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        
+
         # 변경되거나 새롭게 생성된 JSON 파일이 있는지 확인 후 스테이징
         # (history/ 하위 방송회차별 누적 파일 포함)
         git add homeshopping/representative_programs/ || true
-        
-        # 변경사항이 있을 때만 커밋 및 푸시 진행
-        if ! git diff --cached --quiet; then
-          git commit -m "🤖 [Automated] 새벽 3시 셀럽 PGM 데이터 정기 업데이트"
-          git push
-        else
+
+        # 변경사항이 없으면 커밋할 것도 없다
+        if git diff --cached --quiet; then
           echo "업데이트된 데이터 변경 사항이 없습니다."
+          exit 0
         fi
+
+        git commit -m "🤖 [Automated] 새벽 3시 셀럽 PGM 데이터 정기 업데이트"
+
+        for i in 1 2 3 4 5; do
+          if git push; then
+            echo "push 성공"
+            exit 0
+          fi
+          echo "push 실패, rebase 후 재시도 ($i/5)"
+          git pull --rebase origin "${GITHUB_REF_NAME}" || git rebase --abort || true
+          sleep $((RANDOM % 5 + 1))
+        done
+
+        # 재시도를 다 소진했을 때의 마지막 1회.
+        # 루프가 실패하는 흔한 원인이 rebase가 어중간하게 남아있거나 로컬
+        # ref가 원격보다 뒤처진 상태라, 원격을 새로 받아 그 위에 확실히
+        # 얹은 뒤 한 번 더 시도한다.
+        echo "재시도 소진 - 원격 재동기화 후 마지막 1회 시도"
+        git rebase --abort 2>/dev/null || true
+        git fetch origin "${GITHUB_REF_NAME}"
+        if git rebase "origin/${GITHUB_REF_NAME}" && git push; then
+          echo "추가 시도에서 push 성공"
+          exit 0
+        fi
+
+        echo "push 최종 실패"
+        exit 1
+
+    # 7. 실패를 드러낸다 - 잡 실패 처리
+
+    - name: 건전성 검사 실패 시 잡 실패 처리
+      if: steps.health.outcome == 'failure'
+      run: |
+        echo "수집 건전성 검사에서 문제가 발견됐습니다:"
+        echo "${{ steps.health.outputs.failures }}"
+        exit 1

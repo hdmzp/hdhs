@@ -78,9 +78,13 @@ homeshopping/representative_programs/HD_CEK.json (최은경쇼)
 
 import os
 import re
+import sys
 import json
 import requests
 from datetime import datetime, timezone, timedelta
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from tools import scrape_guard
 from playwright.sync_api import sync_playwright
 from bs4 import BeautifulSoup
 
@@ -131,8 +135,8 @@ PROGRAMS = [
     {"tab_name": "황정민", "spex_sect_nm": "황정민쇼", "sect_id": "3094173", "output_file": "HD_HJM.json"},
     {"tab_name": "오감쇼", "spex_sect_nm": "오감쇼", "sect_id": "3094172", "output_file": "HD_OGS.json"},
     {"tab_name": "왕영은", "spex_sect_nm": "왕영은의 톡투게더", "sect_id": "2683513", "output_file": "HD_WYE.json"},
-    # 최은경쇼: 2026-08 신규 편성(수 19:30). sectId는 목록 API에서 이름으로 조회한다.
-    {"tab_name": "최은경", "spex_sect_nm": "최은경쇼", "sect_id": None, "output_file": "HD_CEK.json"},
+    # 최은경쇼: 2026-08 신규 편성(수 19:30). 고정PGM 수집분에서 확인된 ID.
+    {"tab_name": "최은경", "spex_sect_nm": "최은경쇼", "sect_id": "3142330", "output_file": "HD_CEK.json"},
     # TODO: 오윤아 등 추가되면 여기에
 ]
 # ==============================================
@@ -210,10 +214,11 @@ def fetch_broadcast_lineup(brod_dt: str, start_hm: str, end_hm: str = None) -> l
     for page in range(0, 8):
         url = TV_LIST_API.format(brod_dt=brod_dt, page=page)
         try:
-            r = requests.get(url, headers=headers, timeout=12)
-            if r.status_code != 200:
+            data = scrape_guard.fetch_json(url, headers=headers, timeout=12,
+                                           label=f"HD tv-list p{page}")
+            if not data:
                 continue
-            items = r.json().get("respData", {}).get("broadItemList", []) or []
+            items = data.get("respData", {}).get("broadItemList", []) or []
         except Exception as e:
             print(f"    -> [경고] tv-list page {page} 오류: {e}")
             continue
@@ -285,12 +290,12 @@ def extract_next_data(html: str) -> dict:
 def fetch_list_page_map() -> dict:
     """searchSpexSectItem에서 spexSectNm -> {schedule_raw, itemList} 매핑."""
     try:
-        resp = requests.get(
+        resp = scrape_guard.get(
             LIST_PAGE_URL,
             headers={"User-Agent": UA_DESKTOP, "Referer": "https://www.hmall.com/"},
             timeout=15,
+            label="HD 셀럽PGM 목록페이지",
         )
-        resp.raise_for_status()
         next_data = extract_next_data(resp.text)
         pgm_list = next_data["props"]["pageProps"]["data"]["holiInfo"]["pgmShowList"]
         return {
@@ -383,6 +388,24 @@ def capture_pgm_comm_responses(page, detail_link: str, sect_id: str, timeout_ms:
     return captured
 
 
+def find_swiper_html(obj, depth: int = 0):
+    """중첩된 JSON 어디에 들어있든 스와이퍼 마크업 문자열을 찾아낸다.
+
+    기존에는 respData 바로 아래 한 겹만 뒤졌는데, 응답 구조가 바뀌면서
+    (2026-08 기준 HD 3개 프로그램 전부) 마크업을 못 찾고 있다. 한 단계
+    스키마 변경 정도는 견디도록 재귀로 훑는다."""
+    if depth > 6:
+        return None
+    if isinstance(obj, str):
+        return obj if ("swiper-slide" in obj or "data-slitm-cd" in obj) else None
+    values = obj.values() if isinstance(obj, dict) else (obj if isinstance(obj, list) else [])
+    for v in values:
+        found = find_swiper_html(v, depth + 1)
+        if found:
+            return found
+    return None
+
+
 def parse_swiper_items_from_html(html: str, date_label: str) -> list:
     """pgm-comm-html 응답(또는 그 안의 html 필드)에서 swiper-slide 카드들을 파싱.
     DOM에서 확인된 구조: <div class="swiper-slide ..."><img alt="상품명" src="...">
@@ -459,20 +482,8 @@ def crawl_hd_program(page, config: dict, list_map: dict):
     if "html_text" in captured:
         html_content = captured["html_text"]
     elif "html_data" in captured:
-        hd = captured["html_data"]
-        # respData 자체가 HTML 문자열이거나, 그 안의 특정 키가 HTML일 수 있음
-        if isinstance(hd, str):
-            html_content = hd
-        elif isinstance(hd, dict):
-            resp_data_html = hd.get("respData")
-            if isinstance(resp_data_html, str):
-                html_content = resp_data_html
-            else:
-                # respData가 dict인데 그 안에 html 필드가 있을 수도 있음
-                for v in (resp_data_html or {}).values() if isinstance(resp_data_html, dict) else []:
-                    if isinstance(v, str) and "swiper-slide" in v:
-                        html_content = v
-                        break
+        # 응답 어디에 박혀 있든(respData 바로 아래든 더 깊은 곳이든) 찾아낸다
+        html_content = find_swiper_html(captured["html_data"])
 
     if html_content:
         debug_html_path = os.path.join(OUTPUT_DIR, f"_debug_pgm_comm_html_{sect_id}.html")
@@ -488,6 +499,15 @@ def crawl_hd_program(page, config: dict, list_map: dict):
     elif "html_url" in captured:
         print(f"    -> [경고] pgm-comm-html 응답은 잡았는데 파싱 가능한 HTML을 못 찾음")
         print(f"       캡처된 키: {list(captured.keys())}")
+        # 응답 구조가 바뀌었다는 뜻이라, 원본을 남겨야 다음에 고칠 수 있다.
+        # (경고만 찍고 끝내면 실제 응답이 어떻게 생겼는지 영영 알 수 없다)
+        dump_path = os.path.join(OUTPUT_DIR, f"_debug_pgm_comm_html_{sect_id}.json")
+        try:
+            with open(dump_path, "w", encoding="utf-8") as f:
+                json.dump(captured.get("html_data"), f, ensure_ascii=False, indent=2)
+            print(f"       -> [디버그] 원본 응답 저장: {dump_path}")
+        except (OSError, TypeError, ValueError) as e:
+            print(f"       -> [경고] 원본 응답 저장 실패: {e}")
     else:
         print(f"    -> [경고] pgm-comm-html 응답을 못 잡음")
 

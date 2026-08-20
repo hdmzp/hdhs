@@ -34,11 +34,15 @@ decompose()로 통째로 제거함 (이중 안전장치로 텍스트 스톱 조�
 
 import os
 import re
+import sys
 import json
 import time
 import requests
 from datetime import datetime
 from bs4 import BeautifulSoup
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from tools import scrape_guard
 
 WEEKDAY_KR = ["월", "화", "수", "목", "금", "토", "일"]
 
@@ -190,8 +194,8 @@ def crawl_gs_program(config: dict):
     print(f"\n===== [{tab_name}] 수집 시작 =====")
 
     try:
-        res = requests.get(url, headers=headers, timeout=10)
-        res.raise_for_status()
+        res = scrape_guard.get(url, headers=headers, timeout=10,
+                               label=f"GS {tab_name} 페이지")
         html = res.text
     except Exception as e:
         print(f"[실패] [{tab_name}] 페이지 접근 불가: {e}")

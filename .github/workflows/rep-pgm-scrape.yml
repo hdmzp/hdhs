@@ -4,6 +4,13 @@ on:
   schedule:
     # 매일 KST 08:10 (UTC 23:10 전날) — 고정PGM/랭킹 크론과 겹치지 않게 분산
     - cron: '10 23 * * *'
+    # 매일 KST 20:00 (UTC 11:00) — 낮에 추가된 편성을 당일에 반영하기 위한 실행.
+    # 홈쇼핑사는 "다음 방송" 라인업을 하루 중에도 조금씩 채워넣는다 (예: 2026-08-18
+    # 황정민쇼 8/24 편성 - 아침 08:10 수집 땐 알레보 1개뿐이었고 빌레로이앤보흐가
+    # 그 뒤에 등록됨). 새벽 실행(03:00/08:10)만으로는 그런 추가분이 다음날 아침까지
+    # 안 보인다. 편성표 수집(hd_scraper, KST 18:30)이 끝난 뒤라 HD_live 보충분도
+    # 최신으로 받는다.
+    - cron: '0 11 * * *'
   workflow_dispatch: {}
 
 permissions:
@@ -26,24 +33,31 @@ jobs:
           pip install requests beautifulsoup4 playwright
           playwright install --with-deps chromium
 
+      # 아래 건전성 검사가 "이번 실행에서 각 산출물이 다시 쓰였는지"를 판정하는
+      # 기준 시각. 수집 시작 직전에 찍어둔다.
+      - name: 수집 시작 시각 기록
+        run: python tools/check_scrape_health.py --mark
+
       # 회사별 스크레이퍼는 각자 독립 실행: 하나가 실패(사이트 구조 변경,
       # WAF 차단 등)해도 나머지 결과는 그대로 살아남아야 하므로
       # continue-on-error로 격리한다.
+      # 단, 격리하면 워크플로우가 초록불이라 실패를 놓치므로 아래 '건전성 검사'
+      # 스텝이 산출물을 검사해 문제가 있으면 잡(job)을 실패시킨다.
       - name: Scrape HD (Playwright)
         continue-on-error: true
-        run: python fixed/rehd.py
+        run: python tools/run_step.py fixed/rehd.py
 
       - name: Scrape GS
         continue-on-error: true
-        run: python fixed/regs.py
+        run: python tools/run_step.py fixed/regs.py
 
       - name: Scrape LT
         continue-on-error: true
-        run: python fixed/relt.py
+        run: python tools/run_step.py fixed/relt.py
 
       - name: Scrape CJ
         continue-on-error: true
-        run: python fixed/recj.py
+        run: python tools/run_step.py fixed/recj.py
 
       - name: Build merged.json
         run: python fixed/build_representative_programs.py
@@ -51,6 +65,14 @@ jobs:
       # 월 조회용: 프로그램별 방송 상품을 방송일자 기준 월 파일에 누적
       - name: Build monthly celeb history
         run: python fixed/build_celeb_history.py
+
+      # 산출물 검사: 이번 실행에서 갱신 안 된 파일 / 빈 파일 / 급감을 잡는다.
+      # continue-on-error를 두는 이유 - 일부 회사만 실패했어도 성공한 회사의
+      # 데이터는 커밋해서 살려야 하기 때문. 대신 잡 마지막에서 실패 처리한다.
+      - name: 수집 건전성 검사
+        id: health
+        continue-on-error: true
+        run: python tools/check_scrape_health.py --group celeb
 
       # 다른 워크플로우(랭킹/기타채널 등)와 push 타이밍이 겹치면
       # non-fast-forward로 실패할 수 있어 pull --rebase 재시도를 둔다.
@@ -76,9 +98,20 @@ jobs:
               exit 0
             fi
             echo "push 실패, rebase 후 재시도 ($i/5)"
-            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git pull --rebase origin "${GITHUB_REF_NAME}" || git rebase --abort || true
             sleep $((RANDOM % 5 + 1))
           done
+
+          # 재시도를 다 소진했을 때의 마지막 1회. rebase가 어중간하게 남아있거나
+          # 로컬 ref가 원격보다 뒤처진 상태면 위 루프가 계속 같은 이유로 실패한다.
+          # 원격을 새로 받아 그 위에 확실히 얹은 뒤 한 번 더 시도한다.
+          echo "재시도 소진 - 원격 재동기화 후 마지막 1회 시도"
+          git rebase --abort 2>/dev/null || true
+          git fetch origin "${GITHUB_REF_NAME}"
+          if git rebase "origin/${GITHUB_REF_NAME}" && git push; then
+            echo "추가 시도에서 push 성공"
+            exit 0
+          fi
 
           echo "push 최종 실패"
           exit 1
@@ -95,3 +128,14 @@ jobs:
             -H "X-GitHub-Api-Version: 2022-11-28" \
             "https://api.github.com/repos/${{ github.repository }}/actions/workflows/pages-deploy.yml/dispatches" \
             -d '{"ref":"main"}'
+
+      # 여기까지 오면 살아남은 데이터는 이미 커밋·배포됐다.
+      # 이제 실패를 드러낸다: 잡을 빨간불로 만들어 Actions 목록에서 보이게 한다.
+      # (초록불로 넘어가면 2026-08 CJ 사고처럼 며칠간 아무도 모른다)
+
+      - name: 건전성 검사 실패 시 잡 실패 처리
+        if: steps.health.outcome == 'failure'
+        run: |
+          echo "수집 건전성 검사에서 문제가 발견됐습니다:"
+          echo "${{ steps.health.outputs.failures }}"
+          exit 1
