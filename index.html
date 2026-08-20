@@ -2695,7 +2695,7 @@
   }
 
   /* 신규 론칭 PGM 배지 — 론칭 전 '론칭예정'(파랑) / 론칭 후 일정 기간 'NEW'(빨강).
-     셀럽PGM 밴드 헤더·슬라이서 버튼과 고정PGM 카드 제목에 공통으로 붙인다. */
+     셀럽PGM 밴드 헤더와 고정PGM 카드 제목에 붙인다 (슬라이서 버튼엔 안 붙임). */
   .cel-new-badge {
     display: inline-block;
     margin-left: 4px;
@@ -5989,13 +5989,6 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
   // 셀럽PGM 슬라이서 동작 연결 (중복 선택 가능한 비교 모드)
   const celSlicer = document.getElementById('celProgramSlicer');
   if (celSlicer) {
-    // 신규 론칭 프로그램 버튼에도 밴드 헤더와 같은 배지를 붙인다
-    celSlicer.querySelectorAll('button').forEach(b => {
-      const badge = b.dataset.file && b.dataset.file !== 'all'
-        ? celLaunchBadgeHtml(b.dataset.file) : '';
-      if (badge) b.insertAdjacentHTML('beforeend', badge);
-    });
-
     celSlicer.addEventListener('click', (e) => {
       const btn = e.target.closest('button');
       if (!btn) return;
