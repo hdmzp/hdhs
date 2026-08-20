@@ -1,6 +1,6 @@
 {
   "month": "2026-08",
-  "updated_at": "2026-08-20T08:33:03.490080+09:00",
+  "updated_at": "2026-08-20T20:30:52.412002+09:00",
   "programs": [
     {
       "program_key": "HD_HJM",
@@ -13,7 +13,7 @@
         {
           "date": "2026-08-24",
           "label": "08/24(월) 19:30 방송",
-          "collected_at": "2026-08-20T08:33:03.487506+09:00",
+          "collected_at": "2026-08-20T20:30:52.409435+09:00",
           "products": [
             {
               "broadcast_date_label": "08/24(월) 19:30 방송",
@@ -25,11 +25,27 @@
             },
             {
               "broadcast_date_label": "08/24(월) 19:30 방송",
+              "brand": "영주마실",
+              "name": "영주 특등급 홍로사과 2.5kg x 2박스(총 5kg / 20∼24과)",
+              "price": 54900,
+              "image": "https://image.hmall.com/2252697911_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252697911"
+            },
+            {
+              "broadcast_date_label": "08/24(월) 19:30 방송",
               "brand": "빌레로이앤보흐",
               "name": "[백화점동일/공식수입원] 빌레로이앤보흐 프렌치가든 4인조 디너세트(21p)",
               "price": 729000,
               "image": "https://image.hmall.com/2252559246_0.jpg",
               "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252559246"
+            },
+            {
+              "broadcast_date_label": "08/24(월) 19:30 방송",
+              "brand": "빌레로이앤보흐",
+              "name": "[8/24일 순차출고] 빌레로이앤보흐 프렌치가든 4인조 디너세트(21p)",
+              "price": 729000,
+              "image": "https://image.hmall.com/2252559086_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252559086"
             }
           ]
         },
@@ -140,15 +156,23 @@
         {
           "date": "2026-08-25",
           "label": "08/25(화) 19:30 방송",
-          "collected_at": "2026-08-20T08:33:03.487506+09:00",
+          "collected_at": "2026-08-20T20:30:52.409435+09:00",
           "products": [
             {
               "broadcast_date_label": "08/25(화) 19:30 방송",
               "brand": "카사리날디",
               "name": "[방송에서만]카사리날디 DOP 12년산 모데나 발사믹 100ml x2병+화이트 와인 비니거 250ml",
               "price": 219900,
-              "image": "https://image.hmall.com/2252314131_0.jpg",
+              "image": "https://image.hmall.com/2252314131_0.png",
               "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252314131"
+            },
+            {
+              "broadcast_date_label": "08/25(화) 19:30 방송",
+              "brand": "유한양행",
+              "name": "유한양행 원더씬 다이어트 유산균",
+              "price": 459000,
+              "image": "https://image.hmall.com/2252765953_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252765953&preview=true"
             },
             {
               "broadcast_date_label": "8/25(화) 방송상품",
@@ -315,7 +339,7 @@
         {
           "date": "2026-08-22",
           "label": "08/22(토) 08:20 방송",
-          "collected_at": "2026-08-20T08:33:03.487506+09:00",
+          "collected_at": "2026-08-20T20:30:52.409435+09:00",
           "products": [
             {
               "broadcast_date_label": "08/22(토) 08:20 방송",
@@ -482,7 +506,7 @@
         {
           "date": "2026-08-27",
           "label": "08/27(목) 20:45 방송",
-          "collected_at": "2026-08-19T08:32:21.057009+09:00",
+          "collected_at": "2026-08-20T20:30:52.409435+09:00",
           "products": [
             {
               "prd_id": "1102774073",
@@ -492,14 +516,68 @@
               "name": "알텐바흐 엑스쿠첸 통5중 저압냄비 7L",
               "price": null,
               "link": "https://m.gsshop.com/prd/prd.gs?prdid=1102774073"
+            },
+            {
+              "prd_id": "1102774379",
+              "broadcast_date_label": "8월 27일(목) 20:45 방송",
+              "broadcast_iso": "2026-08-27T20:45:00",
+              "brand": "GS SHOP",
+              "name": "알텐바흐 엑스쿠첸 통5중 저압냄비 11L",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1102774379"
+            },
+            {
+              "prd_id": "1102772046",
+              "broadcast_date_label": "8월 27일(목) 20:45 방송",
+              "broadcast_iso": "2026-08-27T20:45:00",
+              "brand": "GS SHOP",
+              "name": "알텐바흐 엑스쿠첸 통5중 저압냄비 4L",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1102772046"
             }
           ]
         },
         {
           "date": "2026-08-20",
           "label": "08/20(목) 20:45 방송",
-          "collected_at": "2026-08-20T08:33:03.487506+09:00",
+          "collected_at": "2026-08-20T20:30:52.409435+09:00",
           "products": [
+            {
+              "prd_id": "1132615453",
+              "broadcast_date_label": "8월 20일(목) 20:45 방송",
+              "broadcast_iso": "2026-08-20T20:45:00",
+              "brand": "GS SHOP",
+              "name": "[올해단한번]  다비네스 리밸런싱샴푸3개+트리트먼트2개 단독구성",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1132615453"
+            },
+            {
+              "prd_id": "1133072580",
+              "broadcast_date_label": "8월 20일(목) 20:45 방송",
+              "broadcast_iso": "2026-08-20T20:45:00",
+              "brand": "GS SHOP",
+              "name": "[다비네스]살롱패키지 리밸런싱샴푸250ml 1 +트리트먼트250ml 1",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1133072580"
+            },
+            {
+              "prd_id": "1132627155",
+              "broadcast_date_label": "8월 20일(목) 20:45 방송",
+              "broadcast_iso": "2026-08-20T20:45:00",
+              "brand": "GS SHOP",
+              "name": "[다비네스]프리미엄헤어케어 리밸런싱샴푸250ml",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1132627155"
+            },
+            {
+              "prd_id": "1132637174",
+              "broadcast_date_label": "8월 20일(목) 20:45 방송",
+              "broadcast_iso": "2026-08-20T20:45:00",
+              "brand": "GS SHOP",
+              "name": "[다비네스]프리미엄헤어케어 리밸런싱트리트먼트250ml",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1132637174"
+            },
             {
               "prd_id": "1132773929",
               "broadcast_date_label": "8월 20일(목) 20:45 방송",
@@ -589,42 +667,6 @@
               "name": "트리쳐 티크 컷팅 보드 - 오발 M",
               "price": null,
               "link": "https://m.gsshop.com/prd/prd.gs?prdid=1134118857"
-            },
-            {
-              "prd_id": "1132615453",
-              "broadcast_date_label": "8월 20일(목) 20:45 방송",
-              "broadcast_iso": "2026-08-20T20:45:00",
-              "brand": "GS SHOP",
-              "name": "[올해단한번]  다비네스 리밸런싱샴푸3개+트리트먼트2개 단독구성",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1132615453"
-            },
-            {
-              "prd_id": "1133072580",
-              "broadcast_date_label": "8월 20일(목) 20:45 방송",
-              "broadcast_iso": "2026-08-20T20:45:00",
-              "brand": "GS SHOP",
-              "name": "[다비네스]살롱패키지 리밸런싱샴푸250ml 1 +트리트먼트250ml 1",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1133072580"
-            },
-            {
-              "prd_id": "1132627155",
-              "broadcast_date_label": "8월 20일(목) 20:45 방송",
-              "broadcast_iso": "2026-08-20T20:45:00",
-              "brand": "GS SHOP",
-              "name": "[다비네스]프리미엄헤어케어 리밸런싱샴푸250ml",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1132627155"
-            },
-            {
-              "prd_id": "1132637174",
-              "broadcast_date_label": "8월 20일(목) 20:45 방송",
-              "broadcast_iso": "2026-08-20T20:45:00",
-              "brand": "GS SHOP",
-              "name": "[다비네스]프리미엄헤어케어 리밸런싱트리트먼트250ml",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1132637174"
             }
           ]
         },
@@ -829,26 +871,8 @@
         {
           "date": "2026-08-28",
           "label": "08/28(금) 20:35 방송",
-          "collected_at": "2026-08-20T08:33:03.487506+09:00",
+          "collected_at": "2026-08-20T20:30:52.409435+09:00",
           "products": [
-            {
-              "prd_id": "1133308222",
-              "broadcast_date_label": "8월 28일(금) 20:35 방송",
-              "broadcast_iso": "2026-08-28T20:35:00",
-              "brand": "GS SHOP",
-              "name": "테팔 에어로스팀S DT9322K0",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1133308222"
-            },
-            {
-              "prd_id": "1133308250",
-              "broadcast_date_label": "8월 28일(금) 20:35 방송",
-              "broadcast_iso": "2026-08-28T20:35:00",
-              "brand": "GS SHOP",
-              "name": "테팔 에어로스팀S DT9322K0",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1133308250"
-            },
             {
               "prd_id": "1129138470",
               "broadcast_date_label": "8월 28일(금) 20:35 방송",
@@ -866,6 +890,24 @@
               "name": "헤르츠아뜰리에 Air오브제 고체 탈취제 실내 화장실 300g",
               "price": null,
               "link": "https://m.gsshop.com/prd/prd.gs?prdid=1110390776"
+            },
+            {
+              "prd_id": "1133308222",
+              "broadcast_date_label": "8월 28일(금) 20:35 방송",
+              "broadcast_iso": "2026-08-28T20:35:00",
+              "brand": "GS SHOP",
+              "name": "테팔 에어로스팀S DT9322K0",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1133308222"
+            },
+            {
+              "prd_id": "1133308250",
+              "broadcast_date_label": "8월 28일(금) 20:35 방송",
+              "broadcast_iso": "2026-08-28T20:35:00",
+              "brand": "GS SHOP",
+              "name": "테팔 에어로스팀S DT9322K0",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1133308250"
             }
           ]
         },
@@ -1041,10 +1083,49 @@
       "detail_link": "https://www.lotteimall.com/contstmpl/viewContsTmplDetail.lotte?conts_no=73",
       "broadcasts": [
         {
-          "date": "2026-08-27",
-          "label": "08/27(목) 21:45 방송",
-          "collected_at": "2026-08-20T08:33:03.487506+09:00",
+          "date": "2026-08-29",
+          "label": "08/29(토) 08:20 방송",
+          "collected_at": "2026-08-20T20:30:52.409435+09:00",
           "products": [
+            {
+              "broadcast_date_label": "08/29 토요일 08:20",
+              "brand": "밥스누",
+              "name": "[방송에서만]밥스누 파이토100 생식14포x9박스 + 전용쉐이커 2개(총 30g x 126포)",
+              "price": 298000,
+              "image": "https://image2.lotteimall.com/goods/14/30/90/12903014_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12903014"
+            },
+            {
+              "broadcast_date_label": "08/29 토요일 10:20",
+              "brand": "가와이",
+              "name": "[가와이] 단독 우루시 옻칠 젓가락 6종 풀세트 (개나리색+주황색+어린잎색+짙은초록색+밝은청색+옥색)",
+              "price": 79000,
+              "image": "https://image2.lotteimall.com/goods/79/99/91/12919979_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12919979"
+            },
+            {
+              "broadcast_date_label": "08/29 토요일 10:20",
+              "brand": "가와이",
+              "name": "[가와이] 단독 우루시 옻칠 젓가락 2종 세트 (가지색+벚꽃색)",
+              "price": 29000,
+              "image": "https://image2.lotteimall.com/goods/78/99/91/12919978_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12919978"
+            }
+          ]
+        },
+        {
+          "date": "2026-08-27",
+          "label": "08/27(목) 20:45 방송",
+          "collected_at": "2026-08-20T20:30:52.409435+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "08/27 목요일 20:45",
+              "brand": "라카루트",
+              "name": "[칫솔세트] 라카루트 칫솔 20개 (부드러운모 10개 + 중간모 5개 + 강한모 5개)",
+              "price": 49000,
+              "image": "https://image2.lotteimall.com/goods/55/90/86/12869055_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12869055"
+            },
             {
               "broadcast_date_label": "08/27 목요일 21:45",
               "brand": "스틸웍스",
@@ -1058,8 +1139,16 @@
         {
           "date": "2026-08-22",
           "label": "08/22(토) 08:20 방송",
-          "collected_at": "2026-08-20T08:33:03.487506+09:00",
+          "collected_at": "2026-08-20T20:30:52.409435+09:00",
           "products": [
+            {
+              "broadcast_date_label": "08/22 토요일 08:20",
+              "brand": "영암 햇 무화과",
+              "name": "[영암 햇 무화과] GAP인증 영암 햇 무화과 500gx4팩, 총2kg(24-32과)",
+              "price": 39900,
+              "image": "https://image2.lotteimall.com/goods/46/77/91/12917746_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12917746"
+            },
             {
               "broadcast_date_label": "08/22 토요일 08:20",
               "brand": "휘슬러",
@@ -1097,7 +1186,7 @@
         {
           "date": "2026-08-20",
           "label": "08/20(목) 20:45 방송",
-          "collected_at": "2026-08-20T08:33:03.487506+09:00",
+          "collected_at": "2026-08-20T20:30:52.409435+09:00",
           "products": [
             {
               "broadcast_date_label": "08/20 목요일 20:45",
@@ -1422,7 +1511,7 @@
         {
           "date": "2026-08-24",
           "label": "08/24(월) 19:35 방송",
-          "collected_at": "2026-08-20T08:33:03.487506+09:00",
+          "collected_at": "2026-08-20T20:30:52.409435+09:00",
           "products": [
             {
               "broadcast_date_label": "08/24(월) 19:35",
@@ -1434,11 +1523,67 @@
             },
             {
               "broadcast_date_label": "08/24(월) 19:35",
+              "brand": "까사리빙",
+              "name": "SK_모달100% 피그먼트 워싱 스프레드+베개커버",
+              "price": 289900,
+              "image": "https://image.cjonstyle.net/goods_images/20/455/2090535455L.jpg?timestamp=20260820083043",
+              "link": "https://item.cjonstyle.com/item/2090535455?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/24(월) 19:35",
+              "brand": "까사리빙",
+              "name": "K_모달100% 피그먼트 워싱 스프레드+베개커버",
+              "price": 269900,
+              "image": "https://image.cjonstyle.net/goods_images/20/690/2090537690L.jpg?timestamp=20260820083011",
+              "link": "https://item.cjonstyle.com/item/2090537690?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/24(월) 19:35",
+              "brand": "까사리빙",
+              "name": "Q_모달100% 피그먼트 워싱 스프레드+베개커버",
+              "price": 249900,
+              "image": "https://image.cjonstyle.net/goods_images/20/743/2090537743L.jpg?timestamp=20260820082937",
+              "link": "https://item.cjonstyle.com/item/2090537743?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/24(월) 19:35",
+              "brand": "까사리빙",
+              "name": "SS_모달100% 피그먼트 워싱 스프레드+베개커버",
+              "price": 229900,
+              "image": "https://image.cjonstyle.net/goods_images/20/782/2090537782L.jpg?timestamp=20260820082955",
+              "link": "https://item.cjonstyle.com/item/2090537782?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/24(월) 19:35",
+              "brand": null,
+              "name": "굿라이프 단독 호주직수입 베지 크리스프 오리지널 * 3봉+브로콜리 플로렛츠 * 3봉+표고버섯 크리스프 * 3봉+ 스냅피 * 3봉",
+              "price": 68900,
+              "image": "https://image.cjonstyle.net/goods_images/20/389/2091248389L.jpg?timestamp=20260820172123",
+              "link": "https://item.cjonstyle.com/item/2091248389?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/24(월) 19:35",
+              "brand": null,
+              "name": "[더블]굿라이프단독 호주직수입 베지 크리스프 오리지널 * 6봉+브로콜리 플로렛츠 * 6봉+표고버섯 크리스프 * 6봉+ 스냅피 * 6봉",
+              "price": 135800,
+              "image": "https://image.cjonstyle.net/goods_images/20/299/2091729299L.jpg?timestamp=20260820151302",
+              "link": "https://item.cjonstyle.com/item/2091729299?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/24(월) 19:35",
               "brand": "하라다 키요이",
               "name": "하라다 키요이 일본 카야 7겹 행주 키친크로스 30x40cm",
               "price": 10500,
               "image": "goods_images/20/772/2083416772L.jpg?timestamp=20260618154638",
               "link": "https://display.cjonstyle.com/p/item/2083416772?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "08/24(월) 19:35",
+              "brand": "",
+              "name": "호주직수입 베지 크리스프 오리지널 * 2봉+브로콜리 플로렛츠 * 2봉+표고버섯 크리스프 * 2봉+ 스냅피 * 2봉",
+              "price": 59900,
+              "image": "goods_images/20/138/2091729138L.jpg?timestamp=20260820150745",
+              "link": "https://display.cjonstyle.com/p/item/2091729138?channelCode=30002002"
             }
           ]
         },
@@ -1513,7 +1658,7 @@
           ]
         }
       ],
-      "program_image": "https://image.cjonstyle.net/public/confirm/assets/pgm/shop/100009/2026/5/15/c5565d190bc574bc98733af8af168385c67ad11a.jpg"
+      "program_image": "https://image.cjonstyle.net/public/confirm/assets/pgm/shop/100009/2026/8/20/93586ef267914bef9090c0155edc2d6e39e9d887.jpg"
     },
     {
       "program_key": "CJ_CHJ",
@@ -1526,7 +1671,7 @@
         {
           "date": "2026-08-26",
           "label": "08/26(수) 20:45 방송",
-          "collected_at": "2026-08-20T08:33:03.487506+09:00",
+          "collected_at": "2026-08-20T20:30:52.409435+09:00",
           "products": [
             {
               "broadcast_date_label": "08/26(수) 20:45",
@@ -2445,7 +2590,7 @@
         {
           "date": "2026-08-24",
           "label": "08/24(월) 19:00 방송",
-          "collected_at": "2026-08-20T08:33:03.487506+09:00",
+          "collected_at": "2026-08-20T20:30:52.409435+09:00",
           "products": [
             {
               "broadcast_date_label": "08/24(월) 19:00",
@@ -2588,7 +2733,7 @@
         {
           "date": "2026-08-21",
           "label": "08/21(금) 22:45 방송",
-          "collected_at": "2026-08-20T08:33:03.487506+09:00",
+          "collected_at": "2026-08-20T20:30:52.409435+09:00",
           "products": [
             {
               "broadcast_date_label": "08/21(금) 22:45",

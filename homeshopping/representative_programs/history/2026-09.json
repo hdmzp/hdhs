@@ -1,7 +1,33 @@
 {
   "month": "2026-09",
-  "updated_at": "2026-08-20T08:33:03.495120+09:00",
+  "updated_at": "2026-08-20T20:30:52.417105+09:00",
   "programs": [
+    {
+      "program_key": "CJ_KCO",
+      "company": "CJ",
+      "tab_name": "김창옥",
+      "program_title": "더 김창옥 라이브",
+      "schedule_raw": "화요일 19시 35분",
+      "detail_link": "https://display.cjonstyle.com/m/pgmShop/563907",
+      "program_image": "https://image.cjonstyle.net/public/confirm/assets/pgm/shop/563907/2026/2/3/7041270f12d2ab6e9d229dc91dfb95dcd41518e7.png",
+      "broadcasts": [
+        {
+          "date": "2026-09-01",
+          "label": "09/01(화) 19:35 방송",
+          "collected_at": "2026-08-20T20:30:52.409435+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "09/01(화) 19:35",
+              "brand": "정관장",
+              "name": "홍삼정 센스(10ml*30포) 1박스",
+              "price": 81500,
+              "image": "https://image.cjonstyle.net/goods_images/20/396/2082778396L.jpg?timestamp=20260819091814",
+              "link": "https://item.cjonstyle.com/item/2082778396?channelCode=30002002"
+            }
+          ]
+        }
+      ]
+    },
     {
       "program_key": "CJ_KSY",
       "company": "CJ",
@@ -14,7 +40,7 @@
         {
           "date": "2026-09-08",
           "label": "09/08(화) 18:30 방송",
-          "collected_at": "2026-08-20T08:33:03.487506+09:00",
+          "collected_at": "2026-08-20T20:30:52.409435+09:00",
           "products": [
             {
               "broadcast_date_label": "09/08(화) 18:30",
