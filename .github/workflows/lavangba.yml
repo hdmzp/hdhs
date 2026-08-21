@@ -1,0 +1,99 @@
+name: 라방바 방송 수집 (11개사)
+
+# 라방바(live.ecomm-data.com) 11개사 방송 목록 + 각 사 편성표를 합쳐
+# lavangba/data/{YYYYMM}.json 을 갱신한다 (index.html '라방바' 표의 원본).
+#
+# v1(비공개 저장소 lavangba_scraper.py)은 라방바 로그인 세션이 필요해서 집 PC의
+# 작업 스케줄러로만 돌릴 수 있었는데, 2026-08 보안정책 변경으로 로그인 매출
+# 데이터(총주문) 자체를 못 긁게 됐다. 로그인 경로를 들어낸 v2는 공개 API +
+# 이 저장소의 편성표만 쓰므로 Actions에서 자동화가 된다.
+#   - 총주문/순주문은 수집 불가 -> sales_amt에 "-"
+#   - 복합 PGM은 상품별 분리 불가 -> 방송 1건 = 1행(대표 단일코드)
+#   - 목표(target)/pgmsales 연동은 없앴다 (시크릿 불필요)
+
+on:
+  schedule:
+    # KST 06:40 = UTC 21:40 (전날). 편성표 워크플로우(homeshopping 05:50 /
+    # etc-scrape 06:10 KST) 뒤에 돌아야 그날치 편성표 최신본을 쓴다.
+    - cron: "40 21 * * *"
+  workflow_dispatch:      # 수동 실행 (기간 지정 백필용)
+    inputs:
+      start_date:
+        description: "시작일 YYYYMMDD (비우면 최근 30일 중 빠진 날짜만 자동 수집)"
+        required: false
+        default: ""
+      end_date:
+        description: "종료일 YYYYMMDD (비우면 시작일 하루만)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+  actions: write   # pages-deploy 워크플로우를 API로 dispatch하려면 필요
+
+concurrency:
+  group: lavangba-scrape
+  cancel-in-progress: false
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Python 설치
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 패키지 설치
+        run: pip install requests
+
+      - name: 라방바 수집기 실행 (v2, 로그인 불필요)
+        continue-on-error: true
+        env:
+          # 수동 실행 입력값은 셸에 직접 끼워넣지 않고 환경변수로 받아서 검증한다.
+          START_DATE: ${{ github.event.inputs.start_date }}
+          END_DATE: ${{ github.event.inputs.end_date }}
+        run: |
+          args=""
+          for d in "$START_DATE" "$END_DATE"; do
+            [ -z "$d" ] && continue
+            case "$d" in
+              [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]) args="$args $d" ;;
+              *) echo "날짜 형식은 YYYYMMDD 여야 합니다: $d"; exit 1 ;;
+            esac
+          done
+          python lavangba_scraper_v2.py $args
+
+      - name: 결과 커밋 & 푸시
+        id: commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # 수집 스텝은 continue-on-error: true라서 실패해도 여기까지 온다.
+          # 그 경우 디렉토리가 없어 git add가 fatal 종료할 수 있으므로 먼저 보장.
+          mkdir -p lavangba/data
+          git add -A -- lavangba/data
+          if git diff --staged --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "chore: 라방바 방송 데이터 자동 갱신 $(date -u -d '+9 hours' +%Y-%m-%d)"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+          git pull --rebase --autostash origin main
+          git push
+
+      - name: Pages 재배포 트리거
+        # github-actions[bot](GITHUB_TOKEN)이 만든 push는 다른 워크플로우를
+        # 재귀 트리거하지 않으므로 배포를 직접 큐에 넣는다.
+        if: steps.commit.outputs.changed == 'true'
+        run: |
+          curl -L -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/pages-deploy.yml/dispatches" \
+            -d '{"ref":"main"}'

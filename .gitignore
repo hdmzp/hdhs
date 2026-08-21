@@ -5,7 +5,9 @@ __pycache__/
 # 수집 건전성 검사(tools/check_scrape_health.py)가 실행 중에만 쓰는 시각 마크
 .scrape_run_mark
 
-# 라방바 수집기 코드/로그인세션은 비공개 저장소(hdhs-lavangba)에서 관리 - 여기엔 data만 커밋
+# 라방바 폴더에는 결과(data)만 둔다. 수집기 코드는 저장소 루트의
+# lavangba_scraper_v2.py (로그인 불필요 버전). 로그인이 필요한 v1과 로그인 세션은
+# 계속 비공개 저장소(hdmzp/hdhs_private)에서만 관리한다
 lavangba/*
 !lavangba/data/
 .scrape_run_report.json
