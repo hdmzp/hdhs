@@ -716,6 +716,18 @@
   .lv-summary { font-size: 12.5px; color: var(--ink-soft); margin: 0 0 8px; }
   .lv-summary b { color: var(--ink); }
   .lv-table-note { font-size: 11.5px; color: var(--ink-faint); margin: 8px 0 0; }
+  /* 라방바 매출 수집 중단 안내 (2026-08-21 보안정책 변경) */
+  .lv-notice {
+    margin: 0 0 10px;
+    padding: 9px 13px;
+    font-size: 12px;
+    line-height: 1.65;
+    color: #8a5a06;
+    background: #fff8e8;
+    border-left: 3px solid #e0a91b;
+    border-radius: 6px;
+  }
+  .lv-notice b { color: #6f4805; }
 
   .in-trk { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--rule); }
   .in-trk-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
@@ -3287,9 +3299,10 @@
       </div>
       <div class="lv-slicer" id="lvChannelSlicer" style="margin-bottom:8px;"></div>
       <div class="lv-slicer" id="lvCatSlicer" style="margin-bottom:12px;"></div>
+      <p class="lv-notice">⚠️ 2026-08-21 라방바 보안정책 변경으로 <b>매출 수집 중단</b> — 8/20 방송분부터 총주문·순주문 <b>-</b> 표시, 복합 방송은 대표 상품 1행 집계 (8/19 이전은 그대로)</p>
       <p class="lv-summary" id="lvSummary"></p>
       <div class="sec-table-wrap" id="lvTableWrap"></div>
-      <p class="lv-table-note">금액: 1억 이상 O.O억 / 미만 백만 단위 · 총주문: 라방바 매출액(클릭 시 라방바 이동) · 순주문: 총주문 × 예상전환율(카테고리·가격대 평균) · 판매가: 100만원 미만 천원 / 이상 만원 단위 · 심야(방송시작 01:00~05:00) 방송은 회색 행 표시 · 헤더 클릭 시 정렬, 오른쪽 경계 드래그 시 열 너비 조정 · 조회 기간 최대 31일 · <b>2026-08-20 이후</b>는 라방바 보안정책 변경으로 매출 데이터를 받을 수 없어 총주문·순주문이 <b>-</b> 로 표시되고, 복합 방송도 상품별 분리 없이 방송 1건 = 1행(대표 상품)으로 집계됩니다</p>
+      <p class="lv-table-note">금액: 1억 이상 O.O억 / 미만 백만 단위 · 총주문: 라방바 매출액(클릭 시 라방바 이동) · 순주문: 총주문 × 예상전환율(카테고리·가격대 평균) · 판매가: 100만원 미만 천원 / 이상 만원 단위 · 심야(방송시작 01:00~05:00) 방송은 회색 행 표시 · 헤더 클릭 시 정렬, 오른쪽 경계 드래그 시 열 너비 조정 · 조회 기간 최대 31일 · 총주문·순주문의 <b>-</b> 는 수집 불가(위 안내 참고)</p>
     </div>
 
     <div class="lv-section" id="pwSection" style="display:none;">
