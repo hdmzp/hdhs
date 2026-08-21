@@ -83,7 +83,7 @@ hdhs/
 | `homeshopping.yml` | 05:50, 12:20 (하루 2회) | 홈쇼핑 4사(HD/GS/CJ/LT) | 스크래퍼별 `continue-on-error` |
 | `etc-scrape.yml` | 06:10, 12:40 (하루 2회) | 홈쇼핑 기타 7개사 | `continue-on-error` |
 | `scrape-ranking.yml` | 07:00 | 홈쇼핑 랭킹 18개 카테고리 | - |
-| `lavangba.yml` | 06:40 | 라방바 11개사 방송 데이터(v2) | `continue-on-error` |
+| `lavangba.yml` | 07:50 | 라방바 11개사 방송 데이터(v2) | `continue-on-error` |
 | `promotion.yml` | 06:20, 12:50 (하루 2회) | 프로모션 카드할인 4사(HD/GS/CJ/LT) | 회사별 실패는 스크립트 내부에서 격리 |
 | `rep-pgm-scrape.yml` | 08:10 | 셀럽PGM 대표프로그램 메타 병합 | 회사별 `continue-on-error` + 건전성 검사(2-1) |
 | `scrape-celebpgm.yml` | 03:00 | 셀럽PGM(11개 프로그램) 상품 데이터 | 스크립트별 `|| echo` + 건전성 검사(2-1) |
@@ -183,7 +183,7 @@ python tools/test_scrape_guard.py               # 재시도 로직 자체 테스
 v1은 라방바 **로그인 세션**으로 매출 API(`hsshow/items`)를 호출해야 해서 집 PC의 크롬
 프로필 + 작업 스케줄러로만 돌릴 수 있었다. 보안정책이 바뀌면서 그 경로가 막혀
 (로그인해도 매출이 마스킹) 로그인 부분을 통째로 들어낸 v2로 교체했고, 로그인이
-없어진 덕분에 **Actions 자동화가 가능해졌다**(`lavangba.yml`, KST 06:40).
+없어진 덕분에 **Actions 자동화가 가능해졌다**(`lavangba.yml`, KST 07:50).
 
 | | v1 | v2 |
 |---|---|---|
