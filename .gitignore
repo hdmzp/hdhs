@@ -12,6 +12,3 @@ lavangba/*
 !lavangba/data/
 .scrape_run_report.json
 .scrape_alert.json
-
-# 분당목표 원본은 비공개 저장소에서만 관리. lavangba.yml이 실행 중에만 임시로 내려받는다
-pgmsales/*.enc

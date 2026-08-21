@@ -9,6 +9,7 @@ name: 라방바 방송 수집 (11개사)
 # 이 저장소의 편성표만 쓰므로 Actions에서 자동화가 된다.
 #   - 총주문/순주문은 수집 불가 -> sales_amt에 "-"
 #   - 복합 PGM은 상품별 분리 불가 -> 방송 1건 = 1행(대표 단일코드)
+#   - 목표(target)/pgmsales 연동은 없앴다 (시크릿 불필요)
 
 on:
   schedule:
@@ -38,9 +39,6 @@ jobs:
   scrape:
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    # step의 if에서는 secrets 컨텍스트를 못 쓰므로 job env로 한 번 받아둔다.
-    env:
-      PGMSALES_TOKEN: ${{ secrets.PGMSALES_TOKEN }}
     steps:
       - name: 저장소 체크아웃
         uses: actions/checkout@v4
@@ -51,39 +49,11 @@ jobs:
           python-version: "3.11"
 
       - name: 패키지 설치
-        run: pip install requests cryptography
-
-      # 분당목표(pgmsales/*.enc)는 비공개 저장소에만 둔다. 아래 두 시크릿이 설정돼
-      # 있을 때만 이번/다음 달 파일을 임시로 내려받아 target을 계산한다.
-      # (없으면 이 스텝을 건너뛰고 target만 비운 채 수집 - 나머지는 정상)
-      #   PGMSALES_TOKEN    : hdmzp/hdhs_private 읽기 권한 PAT
-      #   PGM_SALES_PASSWORD: .enc 복호화 비밀번호
-      # 받은 .enc는 커밋 대상(lavangba/data)이 아니라서 저장소에 남지 않는다.
-      - name: 분당목표(pgmsales) 내려받기 - 선택
-        if: env.PGMSALES_TOKEN != ''
-        run: |
-          mkdir -p pgmsales
-          # 수집 대상이 전월 말일일 수도 있고(매월 1일 실행), 영업월이 다음 달
-          # 파일에 들어있을 수도 있어서 전월/당월/익월 3개를 시도한다.
-          for YM in $(date -u -d "+9 hours -1 month" +%Y%m) \
-                    $(date -u -d "+9 hours" +%Y%m) \
-                    $(date -u -d "+9 hours +1 month" +%Y%m); do
-            code=$(curl -sS -w "%{http_code}" -o "pgmsales/${YM}_pgmsales.enc" \
-              -H "Authorization: Bearer $PGMSALES_TOKEN" \
-              -H "Accept: application/vnd.github.raw" \
-              "https://api.github.com/repos/hdmzp/hdhs_private/contents/pgmsales/${YM}_pgmsales.enc")
-            if [ "$code" != "200" ]; then
-              echo "pgmsales ${YM}: HTTP $code - 건너뜀"
-              rm -f "pgmsales/${YM}_pgmsales.enc"
-            else
-              echo "pgmsales ${YM}: 받음"
-            fi
-          done
+        run: pip install requests
 
       - name: 라방바 수집기 실행 (v2, 로그인 불필요)
         continue-on-error: true
         env:
-          PGM_SALES_PASSWORD: ${{ secrets.PGM_SALES_PASSWORD }}
           # 수동 실행 입력값은 셸에 직접 끼워넣지 않고 환경변수로 받아서 검증한다.
           START_DATE: ${{ github.event.inputs.start_date }}
           END_DATE: ${{ github.event.inputs.end_date }}

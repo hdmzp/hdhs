@@ -200,17 +200,9 @@ v1은 라방바 **로그인 세션**으로 매출 API(`hsshow/items`)를 호출�
 - JSON 필드명·구조는 v1과 동일 — `index.html`은 `lvFmtAmt`/`lvFmtPrice`에서 숫자 변환을
   먼저 해 `"-"`가 그대로 `-`로 표시되게만 보정했다. 2026-08-19 이전 데이터(실매출 포함)는
   그대로 남아있고 계속 정상 표시된다
-
-#### 목표(target) — 선택 사항
-
-`target`(순주문목표)은 비공개 저장소의 `pgmsales/{YYYYMM}_pgmsales.enc`(분당목표,
-AES-256-GCM)에서 계산한다. 이 파일은 공개 저장소에 두지 않으므로, 워크플로우에 아래 두
-시크릿이 설정돼 있을 때만 임시로 내려받아 계산한다(없으면 `target`만 비고 나머지는 정상).
-
-| 시크릿 | 용도 |
-|---|---|
-| `PGMSALES_TOKEN` | `hdmzp/hdhs_private` 읽기 권한 PAT (`pgmsales/*.enc` 다운로드용) |
-| `PGM_SALES_PASSWORD` | `.enc` 복호화 비밀번호 |
+- 목표(`target`, 분당목표 합산)는 v2에서 빠졌다. 비공개 저장소의 `pgmsales/*.enc`에
+  의존하던 기능이라 자동화하면서 정리했고, 이전 데이터에 들어있는 `target` 값은 그대로 둔다
+- 필요 패키지는 `requests` 하나 (로그인/암복호화 의존성 없음)
 
 #### 수동 실행 / 백필
 

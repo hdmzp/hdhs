@@ -21,46 +21,35 @@ v1(lavangba_scraper.py)과의 차이 - 왜 v2가 필요한가:
      - 상품명 / 브랜드 / 판매가 / 상품링크 / 카테고리
 
 출력:
-  data/{YYYYMM}.json - v1과 **완전히 같은 구조/필드명**({"YYYYMMDD": [행...]}).
+  data/{YYYYMM}.json - v1과 **같은 구조/필드명**({"YYYYMMDD": [행...]}).
   index.html이 그대로 읽을 수 있게 필드를 유지하고, 이제 못 긁는 값만 "-"로 채운다.
+  (목표 target 필드는 더 이상 안 넣는다 - pgmsales 연동 제거)
 
-  주의: index.html의 lvFmtAmt()/합계 계산은 sales_amt가 숫자인 것을 전제로 한다.
-  "-"가 들어간 행을 정상적으로 '-'로 표시하려면 공개 저장소 index.html에서
-    - function lvFmtAmt(v) { ... }            -> 첫 줄에 v = +v; 추가
-    - filtered.reduce((s, r) => s + (r.sales_amt || 0), 0)
-                                              -> s + (+r.sales_amt || 0)
-  두 군데만 숫자 변환을 넣어주면 된다 (README 참고).
+  index.html은 sales_amt/price가 숫자인 것을 전제로 했었기 때문에, "-"가 그대로
+  '-'로 표시되도록 lvFmtAmt()/lvFmtPrice()/총주문 합계에 숫자 변환을 넣어뒀다
+  (공개 저장소 index.html에 적용 완료).
 
 사용법:
     python lavangba_scraper_v2.py                    # 마지막 저장일 다음날~어제 자동 백필
     python lavangba_scraper_v2.py 20260819           # 특정 날짜 하루
     python lavangba_scraper_v2.py 20260801 20260819  # 기간 지정
 
-필요 패키지: requests, cryptography (playwright 불필요)
-
-환경변수:
-    PGM_SALES_PASSWORD - pgmsales/{YYYYMM}_pgmsales.enc(분당목표) 복호화 비밀번호.
-                         없으면 목표(target) 계산만 건너뛰고 나머지는 그대로 수집한다.
+필요 패키지: requests (playwright / cryptography 불필요)
 
 이 파일은 비공개 저장소(hdmzp/hdhs_private)와 공개 저장소(hdmzp/hdhs)에 같은 내용으로
 둔다. 저장 경로(data/ vs lavangba/data/)와 편성표 위치(로컬 homeshopping/ vs GitHub raw)는
 실행 위치를 보고 자동으로 고른다.
 """
 
-import base64
 import json
 import os
 import re
 import sys
 import time
-import unicodedata
 from datetime import datetime, timedelta, timezone
 from difflib import SequenceMatcher
 
 import requests
-from cryptography.hazmat.primitives import hashes
-from cryptography.hazmat.primitives.ciphers.aead import AESGCM
-from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
 # 콘솔/리다이렉트 인코딩이 cp949일 때 상품명의 특수문자(∙ 등)로 print가 죽는 것 방지
 for _stream in (sys.stdout, sys.stderr):
@@ -83,7 +72,6 @@ def _pick_dir(*candidates):
 
 # 공개 저장소(hdmzp/hdhs)는 lavangba/data/, 비공개 저장소는 data/ 에 결과를 쌓는다.
 DATA_DIR = _pick_dir(os.path.join(BASE_DIR, "lavangba", "data"), os.path.join(BASE_DIR, "data"))
-PGM_SALES_DIR = os.path.join(BASE_DIR, "pgmsales")
 # 각 사 편성표. 공개 저장소 안에서 돌 때는 같은 저장소의 파일을 그대로 읽고
 # (같은 워크플로우에서 방금 갱신된 최신본을 쓰게 됨), 없으면 GitHub raw로 받는다.
 HOMESHOPPING_DIR = os.path.join(BASE_DIR, "homeshopping")
@@ -110,15 +98,6 @@ GITHUB_CODE = {
 #       hs_cjonstyleplus (TV 11개사 외 데이터홈쇼핑/플러스 채널 - 필요하면 위 맵에 추가)
 
 API_HEADERS = {"content-type": "application/json", "domain": "ecomm-data.com"}
-
-# pgmsales/{YYYYMM}_pgmsales.enc(분당목표)를 복호화하기 위한 비밀번호.
-# 이 스크립트는 공개 저장소에도 올라가므로 코드에 박아두지 않고 환경변수로 받는다
-# (index.html 보안탭 로그인 비밀번호와는 별개 - pgmsales 파일 전용).
-#   PowerShell: $env:PGM_SALES_PASSWORD = "..."
-#   Actions   : env: PGM_SALES_PASSWORD: ${{ secrets.PGM_SALES_PASSWORD }}
-# 비어 있으면 목표(target) 계산만 건너뛰고 수집 자체는 정상 진행된다.
-PGM_SALES_PASSWORD = os.environ.get("PGM_SALES_PASSWORD", "")
-PGM_SALES_ITER_DEFAULT = 310000
 
 HTTP_TIMEOUT_SEC = 20
 HTTP_RETRIES = 4
@@ -188,134 +167,6 @@ def fetch_github_month(code, yyyy_mm):
 
     _github_cache[key] = data
     return data
-
-
-# ============================== 목표(pgmsales) ==============================
-
-_pgm_targets_cache = {}
-
-PGM_TARGET_SHEET_NAME = "순주문목표"  # pgmsales.enc 안의 시트들 중 분당목표가 들어있는 시트명
-
-# 목표(분당목표)는 당사 기준이라 본채널 4사에만 적용. 그 외 채널은 target을 계산하지 않는다.
-PGM_TARGET_CHANNELS = {"현대홈쇼핑", "GS홈쇼핑", "CJ온스타일", "롯데홈쇼핑"}
-
-
-def _decrypt_pgm_enc(enc):
-    """PBKDF2-SHA256 + AES-256-GCM(v1: salt/iv/data 단일키)으로 복호화한다.
-    복호화 결과는 {updated, source, sheets:[{name, columns, rows}]}(엑셀 시트 그대로) -
-    '순주문목표' 시트의 columns는 [순번, 시작시분, 종료시분, '월요일 (2026-06-29)', ...]
-    형태로 날짜가 괄호 안에 들어있고, rows는 분 단위 행이다.
-    (파일 하나가 그 달 앞뒤로 며칠씩 걸친 5주 롤링 구간을 담고 있어서 파일명이 아니라
-    헤더의 실제 날짜를 그대로 쓴다.)
-    {'YYYYMMDD': {'HH:MM': 분당목표}} 로 재구성해 반환."""
-    pw = unicodedata.normalize("NFC", PGM_SALES_PASSWORD.strip())
-    salt = base64.b64decode(enc["salt"])
-    iv = base64.b64decode(enc["iv"])
-    ciphertext = base64.b64decode(enc["data"])
-    iterations = enc.get("iter", PGM_SALES_ITER_DEFAULT)
-
-    key = PBKDF2HMAC(algorithm=hashes.SHA256(), length=32, salt=salt, iterations=iterations).derive(
-        pw.encode("utf-8")
-    )
-    plaintext = AESGCM(key).decrypt(iv, ciphertext, None)
-    data = json.loads(plaintext.decode("utf-8"))
-
-    sheets = data.get("sheets") or []
-    sheet = next((s for s in sheets if s.get("name") == PGM_TARGET_SHEET_NAME), None)
-    if sheet is None and sheets:
-        sheet = sheets[0]  # 시트명이 바뀌었을 때를 대비한 폴백
-    if not sheet:
-        return {}
-
-    cols = sheet.get("columns") or []
-    rows = sheet.get("rows") or []
-    # 앞 3열(순번/시작시분/종료시분) 다음부터가 날짜별 값. 헤더 "월요일 (2026-06-29)"에서
-    # 괄호 안 날짜만 뽑는다.
-    date_keys = []
-    for c in cols[3:]:
-        m = re.search(r"(\d{4})-(\d{2})-(\d{2})", str(c or ""))
-        date_keys.append(f"{m.group(1)}{m.group(2)}{m.group(3)}" if m else None)
-
-    targets = {}
-    for row in rows:
-        if len(row) < 4:
-            continue
-        hhmm = str(row[1]).strip()
-        if not re.fullmatch(r"\d{2}:\d{2}", hhmm):
-            continue
-        for i in range(3, len(row)):
-            dk = date_keys[i - 3] if i - 3 < len(date_keys) else None
-            if not dk:
-                continue
-            try:
-                v = float(str(row[i]).replace(",", ""))
-            except (TypeError, ValueError):
-                continue
-            if not v:
-                continue
-            targets.setdefault(dk, {})[hhmm] = v  # 표 마지막에 같은 시각이 중복돼도 값은 동일
-    return targets
-
-
-def fetch_pgm_targets(yyyy_mm):
-    """pgmsales/{yyyymm}_pgmsales.enc(이 저장소 로컬 파일)를 복호화해서
-    {'YYYYMMDD': {'HH:MM': 분당목표}}를 반환. 파일이 없거나 복호화에 실패하면 빈 dict."""
-    ym6 = str(yyyy_mm).replace("-", "")[:6]
-    if ym6 in _pgm_targets_cache:
-        return _pgm_targets_cache[ym6]
-    result = {}
-    enc_path = os.path.join(PGM_SALES_DIR, f"{ym6}_pgmsales.enc")
-    if os.path.exists(enc_path) and not PGM_SALES_PASSWORD:
-        print(f"[pgmsales] PGM_SALES_PASSWORD 환경변수가 없어 {ym6} 목표(target) 계산을 건너뜁니다.")
-        _pgm_targets_cache[ym6] = result
-        return result
-    try:
-        if os.path.exists(enc_path):
-            with open(enc_path, encoding="utf-8") as f:
-                enc = json.load(f)
-            result = _decrypt_pgm_enc(enc)
-    except Exception as e:
-        print(f"[pgmsales] {ym6} 목표 데이터 로드/복호화 실패: {e}")
-    _pgm_targets_cache[ym6] = result
-    return result
-
-
-def _next_month(ym6):
-    y, m = int(ym6[:4]), int(ym6[4:6])
-    return f"{y + (m == 12):04d}{m % 12 + 1:02d}"
-
-
-def pgm_target_for_row(row):
-    """행의 상품 노출 구간(item_start~item_duration_min)에 해당하는 분당목표를 합산.
-    v2는 방송 1건 = 1행이므로 사실상 방송 전체 구간의 목표가 된다.
-    본채널 4사가 아니거나 그 달 목표 데이터가 없으면 None.
-
-    영업월이 전월 말에 시작하는 경우(예: 7월 목표 파일에 6/29~30 포함)를 위해,
-    날짜의 달 파일에 그 날짜가 없으면 다음 달 목표 파일도 한 번 더 찾아본다."""
-    if row.get("channel") not in PGM_TARGET_CHANNELS:
-        return None
-    date_str = row.get("date")
-    item_start = row.get("item_start")
-    dur = row.get("item_duration_min")
-    if not date_str or not item_start or not dur:
-        return None
-    ym6 = date_str[:6]
-    day_map = fetch_pgm_targets(ym6).get(date_str) or fetch_pgm_targets(_next_month(ym6)).get(date_str)
-    if not day_map:
-        return None
-    h, m = (int(x) for x in item_start.split(":"))
-    total = 0.0
-    found = False
-    for _ in range(int(dur)):
-        v = day_map.get(f"{h:02d}:{m:02d}")
-        if v is not None:
-            total += v
-            found = True
-        m += 1
-        if m >= 60:
-            m = 0
-            h = (h + 1) % 24
-    return round(total) if found else None
 
 
 # ============================== 시간/문자열 유틸 ==============================
@@ -647,9 +498,6 @@ def scrape_dates(target_dates):
         for prep in prepared:
             hshow_count += 1
             row = build_row(prep, date_str)
-            t = pgm_target_for_row(row)  # 본채널 4사 + 그 달 목표 데이터가 있을 때만
-            if t:
-                row["target"] = t
             date_rows.append(row)
             print(f"  {row['type']} | {row['channel']} {row['item_start']} | "
                   f"{row['item_name'][:24]} | 판매가 {format_price(row['price'])}")
