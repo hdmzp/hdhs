@@ -30,7 +30,7 @@ v1(lavangba_scraper.py)과의 차이 - 왜 v2가 필요한가:
   (공개 저장소 index.html에 적용 완료).
 
 사용법:
-    python lavangba_scraper_v2.py                    # 마지막 저장일 다음날~어제 자동 백필
+    python lavangba_scraper_v2.py                    # 최근 30일 중 아직 없는 날짜만 자동 수집
     python lavangba_scraper_v2.py 20260819           # 특정 날짜 하루
     python lavangba_scraper_v2.py 20260801 20260819  # 기간 지정
 
@@ -98,6 +98,10 @@ GITHUB_CODE = {
 #       hs_cjonstyleplus (TV 11개사 외 데이터홈쇼핑/플러스 채널 - 필요하면 위 맵에 추가)
 
 API_HEADERS = {"content-type": "application/json", "domain": "ecomm-data.com"}
+
+# 인자 없이 실행할 때 "빠진 날짜"를 찾아볼 기간(어제 기준 과거 며칠).
+# 하루 실패해서 생긴 구멍도 메우되, 한 번에 너무 긴 기간을 긁지 않도록 상한 역할도 한다.
+BACKFILL_LOOKBACK_DAYS = 30
 
 HTTP_TIMEOUT_SEC = 20
 HTTP_RETRIES = 4
@@ -544,24 +548,42 @@ def save_rows(rows):
         print(f"저장됨: {json_path} <- {updated}")
 
 
-def latest_saved_date():
-    """data/를 스캔해서 가장 최근에 저장된 날짜(YYYYMMDD)를 찾는다.
-    월별 파일(YYYYMM.json)의 날짜 키와 예전 일별 파일(YYYYMMDD.json) 파일명을 모두 인식."""
-    dates = []
-    if os.path.isdir(DATA_DIR):
-        for fname in os.listdir(DATA_DIR):
-            if re.fullmatch(r"\d{8}\.json", fname):
-                dates.append(fname[:8])
-                continue
-            if not re.fullmatch(r"\d{6}\.json", fname):
-                continue
-            try:
-                with open(os.path.join(DATA_DIR, fname), encoding="utf-8") as f:
-                    month_data = json.load(f)
-            except Exception:
-                continue
-            dates.extend(k for k in month_data if re.fullmatch(r"\d{8}", k))
-    return max(dates) if dates else None
+def saved_dates():
+    """data/에 이미 저장돼 있는 날짜(YYYYMMDD) 집합.
+    월별 파일(YYYYMM.json)의 날짜 키와 예전 일별 파일(YYYYMMDD.json) 파일명을 모두 인식하고,
+    행이 0개인 날짜 키는 수집 실패로 보고 "저장 안 됨"으로 취급한다."""
+    dates = set()
+    if not os.path.isdir(DATA_DIR):
+        return dates
+    for fname in os.listdir(DATA_DIR):
+        if re.fullmatch(r"\d{8}\.json", fname):
+            dates.add(fname[:8])
+            continue
+        if not re.fullmatch(r"\d{6}\.json", fname):
+            continue
+        try:
+            with open(os.path.join(DATA_DIR, fname), encoding="utf-8") as f:
+                month_data = json.load(f)
+        except Exception:
+            continue
+        dates.update(k for k, v in month_data.items() if re.fullmatch(r"\d{8}", k) and v)
+    return dates
+
+
+def missing_dates(lookback_days=BACKFILL_LOOKBACK_DAYS):
+    """어제부터 과거 lookback_days일 사이에서 아직 수집 안 된 날짜들을 오름차순으로 반환.
+
+    "마지막 저장일 다음날부터"가 아니라 "빠진 날짜 전부"를 보기 때문에, 중간에 하루
+    실패해서 구멍이 난 경우(예: 워크플로우가 실패한 날)도 다음 실행 때 알아서 메운다.
+    이미 있는 날짜는 건너뛰고, 수집한 날짜만 월별 JSON에 덧씌운다."""
+    yesterday = kst_today() - timedelta(days=1)
+    have = saved_dates()
+    out = []
+    for i in range(lookback_days, 0, -1):
+        d = (yesterday - timedelta(days=i - 1)).strftime("%Y%m%d")
+        if d not in have:
+            out.append(d)
+    return out
 
 
 def main():
@@ -576,16 +598,12 @@ def main():
             sys.exit(1)
         target_dates = date_range(start, end)
     else:
-        yesterday = (kst_today() - timedelta(days=1)).strftime("%Y%m%d")
-        last = latest_saved_date()
-        if last is None:
-            target_dates = [yesterday]
-        elif last >= yesterday:
-            print(f"이미 {last}까지 수집되어 있음 - 수집할 날짜 없음")
+        # 인자가 없으면 data/의 월별 파일을 훑어서 "아직 없는 날짜"만 고른다.
+        target_dates = missing_dates()
+        if not target_dates:
+            print(f"최근 {BACKFILL_LOOKBACK_DAYS}일 내 빠진 날짜 없음 - 수집할 날짜 없음")
             return
-        else:
-            start = (datetime.strptime(last, "%Y%m%d").date() + timedelta(days=1)).strftime("%Y%m%d")
-            target_dates = date_range(start, yesterday)
+        print(f"빠진 날짜 {len(target_dates)}일: {', '.join(target_dates)}")
     print(f"수집 대상: {target_dates[0]} ~ {target_dates[-1]} ({len(target_dates)}일)")
 
     rows = scrape_dates(target_dates)

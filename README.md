@@ -207,9 +207,14 @@ v1은 라방바 **로그인 세션**으로 매출 API(`hsshow/items`)를 호출�
 #### 수동 실행 / 백필
 
 Actions → "라방바 방송 수집 (11개사)" → Run workflow 에서 `start_date`/`end_date`
-(YYYYMMDD)를 넣으면 그 기간을 다시 수집한다. 비워두면 `lavangba/data`에 저장된 마지막
-날짜 다음날부터 어제까지 자동 백필. 로컬에서도 `python lavangba_scraper_v2.py 20260820`
-처럼 그대로 돌릴 수 있다.
+(YYYYMMDD)를 넣으면 그 기간을 다시 수집해 덮어쓴다.
+
+비워두면 `lavangba/data`의 월별 파일을 훑어서 **어제까지 30일 중 아직 없는 날짜만** 골라
+수집한다. 마지막 날짜 이후만 보는 게 아니라 빠진 날짜 전부를 보기 때문에, 중간에 하루
+실패해서 구멍이 나도(그날 행이 0개로 남은 경우 포함) 다음 실행 때 알아서 메워진다.
+이미 있는 날짜는 건드리지 않고, 수집한 날짜만 월별 JSON에 덧씌운다.
+
+로컬에서도 `python lavangba_scraper_v2.py 20260820`처럼 그대로 돌릴 수 있다.
 
 ### 🎬 드라마/예능 — `scraper/scrape_naver.py`
 - Playwright(headless Chromium)로 네이버 "방영중한국드라마"/"방영예능" 위젯을 직접 조작해 수집

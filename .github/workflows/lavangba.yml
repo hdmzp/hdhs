@@ -19,7 +19,7 @@ on:
   workflow_dispatch:      # 수동 실행 (기간 지정 백필용)
     inputs:
       start_date:
-        description: "시작일 YYYYMMDD (비우면 마지막 저장일 다음날부터 자동 백필)"
+        description: "시작일 YYYYMMDD (비우면 최근 30일 중 빠진 날짜만 자동 수집)"
         required: false
         default: ""
       end_date:
