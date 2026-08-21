@@ -1,6 +1,6 @@
 {
   "month": "2026-08",
-  "updated_at": "2026-08-21T18:31:33.295646+09:00",
+  "updated_at": "2026-08-21T20:31:38.231711+09:00",
   "programs": [
     {
       "program_key": "HD_HJM",
@@ -13,7 +13,7 @@
         {
           "date": "2026-08-24",
           "label": "08/24(월) 19:30 방송",
-          "collected_at": "2026-08-21T18:31:33.294205+09:00",
+          "collected_at": "2026-08-21T20:31:38.229115+09:00",
           "products": [
             {
               "broadcast_date_label": "08/24(월) 19:30 방송",
@@ -156,7 +156,7 @@
         {
           "date": "2026-08-25",
           "label": "08/25(화) 19:30 방송",
-          "collected_at": "2026-08-21T18:31:33.294205+09:00",
+          "collected_at": "2026-08-21T20:31:38.229115+09:00",
           "products": [
             {
               "broadcast_date_label": "08/25(화) 19:30 방송",
@@ -189,6 +189,14 @@
               "price": 169000,
               "image": "https://image.hmall.com/2252316454_0.jpg",
               "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252316454"
+            },
+            {
+              "broadcast_date_label": "08/25(화) 19:30 방송",
+              "brand": "셰퍼",
+              "name": "헬시쿡 저당밥솥",
+              "price": 249000,
+              "image": "https://image.hmall.com/2252813068_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252813068&preview=true"
             },
             {
               "broadcast_date_label": "08/25(화) 19:30 방송",
@@ -355,7 +363,7 @@
         {
           "date": "2026-08-22",
           "label": "08/22(토) 08:20 방송",
-          "collected_at": "2026-08-21T18:31:33.294205+09:00",
+          "collected_at": "2026-08-21T20:31:38.229115+09:00",
           "products": [
             {
               "broadcast_date_label": "08/22(토) 08:20 방송",
@@ -499,23 +507,31 @@
         {
           "date": "2026-08-26",
           "label": "08/26(수) 19:30 방송",
-          "collected_at": "2026-08-21T18:31:33.294205+09:00",
+          "collected_at": "2026-08-21T20:31:38.229115+09:00",
           "products": [
             {
               "broadcast_date_label": "08/26(수) 19:30 방송",
               "brand": "금강제화",
-              "name": "[지아니콘티] 이태리 레더 토트백 (스카프 증정)",
+              "name": "이태리 레더 토트백",
               "price": 358000,
               "image": "https://image.hmall.com/2252507538_0.jpg",
-              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252507538"
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252507538&preview=true"
             },
             {
-              "broadcast_date_label": "8/26(수) 방송상품",
-              "brand": "",
-              "name": "로얄메르 26FW 체크 후디 셔츠",
+              "broadcast_date_label": "08/26(수) 19:30 방송",
+              "brand": "로얄메르",
+              "name": "26FW 체크 후디 셔츠",
               "price": 99000,
-              "image": "https://image.hmall.com/2252775178_0.png",
-              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252775178"
+              "image": "https://image.hmall.com/2252775178_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252775178&preview=true"
+            },
+            {
+              "broadcast_date_label": "08/26(수) 19:30 방송",
+              "brand": "로얄메르",
+              "name": "자카드 스트라이프 양말",
+              "price": 49900,
+              "image": "https://image.hmall.com/2241432553_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2241432553&preview=true"
             }
           ]
         }
@@ -532,7 +548,7 @@
         {
           "date": "2026-08-27",
           "label": "08/27(목) 20:45 방송",
-          "collected_at": "2026-08-21T18:31:33.294205+09:00",
+          "collected_at": "2026-08-21T20:31:38.229115+09:00",
           "products": [
             {
               "prd_id": "1102774073",
@@ -897,8 +913,26 @@
         {
           "date": "2026-08-28",
           "label": "08/28(금) 20:35 방송",
-          "collected_at": "2026-08-21T18:31:33.294205+09:00",
+          "collected_at": "2026-08-21T20:31:38.229115+09:00",
           "products": [
+            {
+              "prd_id": "1133308222",
+              "broadcast_date_label": "8월 28일(금) 20:35 방송",
+              "broadcast_iso": "2026-08-28T20:35:00",
+              "brand": "GS SHOP",
+              "name": "테팔 에어로스팀S DT9322K0",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1133308222"
+            },
+            {
+              "prd_id": "1133308250",
+              "broadcast_date_label": "8월 28일(금) 20:35 방송",
+              "broadcast_iso": "2026-08-28T20:35:00",
+              "brand": "GS SHOP",
+              "name": "테팔 에어로스팀S DT9322K0",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1133308250"
+            },
             {
               "prd_id": "1129138470",
               "broadcast_date_label": "8월 28일(금) 20:35 방송",
@@ -961,24 +995,6 @@
               "name": "프렌들리 프리미엄 뱀부 3겹 티슈 12롤x1팩 먼지없는 대나무 화장지",
               "price": null,
               "link": "https://m.gsshop.com/prd/prd.gs?prdid=1105959615"
-            },
-            {
-              "prd_id": "1133308222",
-              "broadcast_date_label": "8월 28일(금) 20:35 방송",
-              "broadcast_iso": "2026-08-28T20:35:00",
-              "brand": "GS SHOP",
-              "name": "테팔 에어로스팀S DT9322K0",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1133308222"
-            },
-            {
-              "prd_id": "1133308250",
-              "broadcast_date_label": "8월 28일(금) 20:35 방송",
-              "broadcast_iso": "2026-08-28T20:35:00",
-              "brand": "GS SHOP",
-              "name": "테팔 에어로스팀S DT9322K0",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1133308250"
             }
           ]
         },
@@ -1156,7 +1172,7 @@
         {
           "date": "2026-08-29",
           "label": "08/29(토) 08:20 방송",
-          "collected_at": "2026-08-21T18:31:33.294205+09:00",
+          "collected_at": "2026-08-21T20:31:38.229115+09:00",
           "products": [
             {
               "broadcast_date_label": "08/29 토요일 08:20",
@@ -1203,7 +1219,7 @@
         {
           "date": "2026-08-27",
           "label": "08/27(목) 20:45 방송",
-          "collected_at": "2026-08-21T18:31:33.294205+09:00",
+          "collected_at": "2026-08-21T20:31:38.229115+09:00",
           "products": [
             {
               "broadcast_date_label": "08/27 목요일 20:45",
@@ -1234,7 +1250,7 @@
         {
           "date": "2026-08-22",
           "label": "08/22(토) 08:20 방송",
-          "collected_at": "2026-08-21T18:31:33.294205+09:00",
+          "collected_at": "2026-08-21T20:31:38.229115+09:00",
           "products": [
             {
               "broadcast_date_label": "08/22 토요일 08:20",
@@ -1590,7 +1606,7 @@
         {
           "date": "2026-08-24",
           "label": "08/24(월) 19:35 방송",
-          "collected_at": "2026-08-21T18:31:33.294205+09:00",
+          "collected_at": "2026-08-21T20:31:38.229115+09:00",
           "products": [
             {
               "broadcast_date_label": "08/24(월) 19:35",
@@ -1758,7 +1774,7 @@
         {
           "date": "2026-08-26",
           "label": "08/26(수) 20:45 방송",
-          "collected_at": "2026-08-21T18:31:33.294205+09:00",
+          "collected_at": "2026-08-21T20:31:38.229115+09:00",
           "products": [
             {
               "broadcast_date_label": "08/26(수) 20:45",
@@ -2693,7 +2709,7 @@
         {
           "date": "2026-08-24",
           "label": "08/24(월) 19:00 방송",
-          "collected_at": "2026-08-21T18:31:33.294205+09:00",
+          "collected_at": "2026-08-21T20:31:38.229115+09:00",
           "products": [
             {
               "broadcast_date_label": "08/24(월) 19:00",
@@ -2836,7 +2852,7 @@
         {
           "date": "2026-08-21",
           "label": "08/21(금) 22:45 방송",
-          "collected_at": "2026-08-21T18:31:33.294205+09:00",
+          "collected_at": "2026-08-21T20:31:38.229115+09:00",
           "products": [
             {
               "broadcast_date_label": "08/21(금) 22:45",
