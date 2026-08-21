@@ -1,7 +1,7 @@
 {
   "weekStart": "2026-08-17",
   "weekEnd": "2026-08-23",
-  "collectedAt": "2026-08-21T12:59:15.163894+09:00",
+  "collectedAt": "2026-08-21T21:44:03.926806+09:00",
   "programs": [
     {
       "id": "drama_욕망의 덫_KBS2_오후 07:50",
@@ -718,6 +718,27 @@
         }
       },
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=28613338&qvt=0&query=%EB%82%98%EB%8A%94%20%EC%86%94%EB%A1%9C%20%EA%B7%B8%20%ED%9B%84%20%EC%82%AC%EB%9E%91%EC%9D%80%20%EA%B3%84%EC%86%8D%EB%90%9C%EB%8B%A4%20%EB%82%98%EC%86%94%EC%82%AC%EA%B3%84"
+    },
+    {
+      "id": "variety_나의 AI 파트너 - 기이안 연애_SBS_오후 09:00",
+      "category": "variety",
+      "channel": "SBS",
+      "title": "나의 AI 파트너 - 기이안 연애",
+      "days": [
+        "목"
+      ],
+      "time": "오후 09:00",
+      "rating": 1.7,
+      "ratingDate": "08.20",
+      "ratingByDay": {
+        "목": {
+          "rating": 1.7,
+          "ratingDate": "08.20"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41825702&qvt=0&query=%EB%82%98%EC%9D%98%20AI%20%ED%8C%8C%ED%8A%B8%EB%84%88%20%EA%B8%B0%EC%9D%B4%EC%95%88%20%EC%97%B0%EC%95%A0",
+      "isNew": true,
+      "newReason": "firstAir"
     }
   ],
   "newBelowCutoff": [
