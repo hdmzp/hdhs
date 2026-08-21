@@ -14,7 +14,7 @@
 hdhs/
 ├── index.html                       # 웹사이트 본체 (8개 탭, 전부 JSON fetch로 렌더링, GA4 연동)
 │
-├── .github/workflows/                # 자동화 파이프라인 (기능별로 분리된 9개 워크플로우)
+├── .github/workflows/                # 자동화 파이프라인 (기능별로 분리된 워크플로우)
 │   ├── schedule.yml                    # 지상파·종편 편성표
 │   ├── homeshopping.yml                # 홈쇼핑 4사(HD/GS/CJ/LT)
 │   ├── etc-scrape.yml                  # 홈쇼핑 기타 7개사
@@ -23,6 +23,7 @@ hdhs/
 │   ├── scrape-celebpgm.yml             # 셀럽PGM 상품 데이터
 │   ├── rep-pgm-scrape.yml              # 셀럽PGM 대표프로그램 메타(merge)
 │   ├── scrape-ranking.yml              # 홈쇼핑 랭킹(18개 카테고리)
+│   ├── lavangba.yml                    # 라방바 11개사 방송 데이터(v2, 로그인 불필요)
 │   ├── weather.yml                     # 날씨(ASOS 과거 + 단기예보) + 공휴일 + 절기
 │   └── pages-deploy.yml                # 위 워크플로우들이 커밋 후 강제 트리거하는 배포 전용 워크플로우
 │
@@ -31,6 +32,7 @@ hdhs/
 ├── cj_scraper.py / lt_scraper.py     # [홈쇼핑] CJ온스타일 / 롯데
 ├── etc_scraper.py                    # [홈쇼핑] 기타 7개사(공영/홈앤/K쇼핑/신세계/NS/쇼핑엔티/SK스토아, 라방바 경유)
 ├── promotion_scraper.py              # [프로모션] 4사(HD/GS/CJ/LT) 카드할인 일정
+├── lavangba_scraper_v2.py            # [라방바] 11개사 방송 데이터 수집 v2 (로그인 불필요, 매출 제외)
 ├── weather.py                        # [날씨] ASOS 과거 + 단기예보 + 공휴일 + 절기
 │
 ├── scraper/scrape_naver.py           # [드라마/예능] 시청률 편성 (Playwright)
@@ -61,6 +63,7 @@ hdhs/
 ├── data/ranking/{YYYY-MM-DD}.json, latest.json  # 랭킹 결과 (일 단위 + 최신 스냅샷)
 ├── homeshopping/{사}_{live|data|plus}/{YYYY-MM}.json  # 홈쇼핑 편성 결과 (월별 파일, 11개사)
 ├── homeshopping/promotions/card_discounts.json  # 프로모션(카드할인) 일정
+├── lavangba/data/{YYYYMM}.json                  # 라방바 방송 데이터 (월별 파일, {"YYYYMMDD":[행...]})
 ├── homeshopping/fixed_programs/{사}.json, merged.json         # 고정PGM
 ├── homeshopping/representative_programs/{사}_{코드}.json, merged.json  # 셀럽PGM
 └── weather/asos|forecast|holiday|term/...       # 날씨 결과 + 공휴일 + 절기
@@ -80,6 +83,7 @@ hdhs/
 | `homeshopping.yml` | 05:50, 12:20 (하루 2회) | 홈쇼핑 4사(HD/GS/CJ/LT) | 스크래퍼별 `continue-on-error` |
 | `etc-scrape.yml` | 06:10, 12:40 (하루 2회) | 홈쇼핑 기타 7개사 | `continue-on-error` |
 | `scrape-ranking.yml` | 07:00 | 홈쇼핑 랭킹 18개 카테고리 | - |
+| `lavangba.yml` | 06:40 | 라방바 11개사 방송 데이터(v2) | `continue-on-error` |
 | `promotion.yml` | 06:20, 12:50 (하루 2회) | 프로모션 카드할인 4사(HD/GS/CJ/LT) | 회사별 실패는 스크립트 내부에서 격리 |
 | `rep-pgm-scrape.yml` | 08:10 | 셀럽PGM 대표프로그램 메타 병합 | 회사별 `continue-on-error` + 건전성 검사(2-1) |
 | `scrape-celebpgm.yml` | 03:00 | 셀럽PGM(11개 프로그램) 상품 데이터 | 스크립트별 `|| echo` + 건전성 검사(2-1) |
@@ -160,6 +164,60 @@ python tools/test_scrape_guard.py               # 재시도 로직 자체 테스
 | **CJ** | `display.cjonstyle.com` API | API의 `brandName`이 거의 항상 비어서, itemCd로 `repBrandTag`라는 별도 REST 엔드포인트를 호출해 대표 브랜드를 보강. 실패 시 상품명 기반 추론으로 백업 |
 | **GS** | gsshop.com 직접 차단(클라우드 IP 차단) → **라방바(`live.ecomm-data.com`) 경유**, 2단계 fetch: 1단계 목록 API로 `hsshow_id` 획득 → 2단계 `report/hsshow/{id}` 페이지의 `__NEXT_DATA__` JSON에서 가격·링크 추출. 브랜드 필드는 항상 빈 값이라 상품명에서 추론 |
 | **공영·홈앤·K쇼핑·신세계·NS·쇼핑엔티·SK스토아** (기타 7개사) | 라방바(`live.ecomm-data.com`) API 경유, 회사별 `hs_*` 코드로 구분 | GS와 동일한 라방바 의존 구조를 공유해서, 라방바 사이트가 바뀌면 이 7개사와 GS가 한꺼번에 영향받음 |
+
+### 📊 라방바 방송 데이터 — `lavangba_scraper_v2.py` (v2)
+
+`index.html`의 **라방바 표**(`lavangba/data/{YYYYMM}.json`)를 만드는 수집기. 월별 파일에
+`{"YYYYMMDD": [행...]}` 구조로 저장하고, 수집한 날짜만 갈아끼운다.
+
+- 소스 ① 라방바 `api/schedule/list_hs` (공개 API) → 방송 목록·시작/종료시각·방송제목·라방바 대분류
+- 소스 ② 이 저장소의 `homeshopping/{코드}_live/{YYYY-MM}.json` (각 사 편성표)
+  → 상품명·브랜드·**판매가**·상품링크·카테고리. 저장소 안에서 돌 때는 로컬 파일을 그대로
+  읽으므로, 같은 날 아침 편성 수집 워크플로우가 갱신한 최신본이 반영된다
+- 편성 항목 ↔ 방송 매칭: 편성 항목에 `hsshow_id`가 있으면(GS/기타 7개사) 1:1 정확 매칭,
+  없으면(HD/CJ/LT 자사몰 편성표) 시간 겹침 + 제목 유사도로 **한 방송에만** 배타 배정
+  (같은 시간대 병행 편성 시 서로 상대 상품 정보를 가져가 오염되는 것 방지)
+
+#### v1(비공개 저장소) 대비 달라진 점 — 2026-08 라방바 보안정책 변경
+
+v1은 라방바 **로그인 세션**으로 매출 API(`hsshow/items`)를 호출해야 해서 집 PC의 크롬
+프로필 + 작업 스케줄러로만 돌릴 수 있었다. 보안정책이 바뀌면서 그 경로가 막혀
+(로그인해도 매출이 마스킹) 로그인 부분을 통째로 들어낸 v2로 교체했고, 로그인이
+없어진 덕분에 **Actions 자동화가 가능해졌다**(`lavangba.yml`, KST 06:40).
+
+| | v1 | v2 |
+|---|---|---|
+| 로그인/브라우저 | 필요 (Playwright + 로그인 세션) | 불필요 (requests만) |
+| 총주문(`sales_amt`) | 라방바 실매출 | **수집 불가 → `"-"`** |
+| 순주문 | 총주문 × 예상전환율 | 총주문이 없어 자동으로 `-` |
+| 복합 PGM | 분당 매출 시계열로 상품별 분리(행 여러 개) | **방송 1건 = 1행(대표 단일코드)** |
+| 판매가 | 편성표/라방바 | 편성표에서 그대로 수집 |
+| 실행 | 집 PC 작업 스케줄러 | GitHub Actions |
+
+- 복합 방송의 대표 상품은 **편성 노출시간이 가장 긴 항목**, 시간이 같으면(HD/CJ/LT
+  편성표는 복합 방송의 모든 항목을 방송 전체 시간으로 기재) 방송 제목과 가장 비슷한 항목
+- `item_start`/`item_end`/`노출분`은 방송 1건 = 1행이므로 **방송 전체 구간**
+- JSON 필드명·구조는 v1과 동일 — `index.html`은 `lvFmtAmt`/`lvFmtPrice`에서 숫자 변환을
+  먼저 해 `"-"`가 그대로 `-`로 표시되게만 보정했다. 2026-08-19 이전 데이터(실매출 포함)는
+  그대로 남아있고 계속 정상 표시된다
+
+#### 목표(target) — 선택 사항
+
+`target`(순주문목표)은 비공개 저장소의 `pgmsales/{YYYYMM}_pgmsales.enc`(분당목표,
+AES-256-GCM)에서 계산한다. 이 파일은 공개 저장소에 두지 않으므로, 워크플로우에 아래 두
+시크릿이 설정돼 있을 때만 임시로 내려받아 계산한다(없으면 `target`만 비고 나머지는 정상).
+
+| 시크릿 | 용도 |
+|---|---|
+| `PGMSALES_TOKEN` | `hdmzp/hdhs_private` 읽기 권한 PAT (`pgmsales/*.enc` 다운로드용) |
+| `PGM_SALES_PASSWORD` | `.enc` 복호화 비밀번호 |
+
+#### 수동 실행 / 백필
+
+Actions → "라방바 방송 수집 (11개사)" → Run workflow 에서 `start_date`/`end_date`
+(YYYYMMDD)를 넣으면 그 기간을 다시 수집한다. 비워두면 `lavangba/data`에 저장된 마지막
+날짜 다음날부터 어제까지 자동 백필. 로컬에서도 `python lavangba_scraper_v2.py 20260820`
+처럼 그대로 돌릴 수 있다.
 
 ### 🎬 드라마/예능 — `scraper/scrape_naver.py`
 - Playwright(headless Chromium)로 네이버 "방영중한국드라마"/"방영예능" 위젯을 직접 조작해 수집
