@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-08-22T16:56:36+09:00",
+  "checked_at": "2026-08-23T11:48:20+09:00",
   "items": {
     "HD|2252609433": {
       "co": "HD",
@@ -305,12 +305,15 @@
       "pid": "2251021170",
       "name": "카사베르디 레드와인비니거 1병",
       "price": 29000,
-      "soldout": false,
+      "soldout": true,
       "src": "hd_html",
       "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2251021170&preview=true",
       "prev_price": null,
       "prev_date": null,
-      "last_change": null
+      "last_change": {
+        "type": "sold_out",
+        "date": "2026-08-23"
+      }
     },
     "HD|2251021152": {
       "co": "HD",
@@ -2673,12 +2676,15 @@
       "pid": "2233848991",
       "name": "[위바이옴] 두뇌엔 닥터 PS 맥스 3박스 (3개월분)",
       "price": 198000,
-      "soldout": false,
+      "soldout": true,
       "src": "hd_html",
       "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2233848991&preview=true",
       "prev_price": null,
       "prev_date": null,
-      "last_change": null
+      "last_change": {
+        "type": "sold_out",
+        "date": "2026-08-23"
+      }
     },
     "HD|2252557440": {
       "co": "HD",
@@ -3121,12 +3127,15 @@
       "pid": "2252773139",
       "name": "[최초공개/프랑스 직수입] 캐롤프랑크 전신특수관리 사우나크림 375ml",
       "price": 168000,
-      "soldout": false,
+      "soldout": true,
       "src": "hd_html",
       "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252773139&preview=true",
       "prev_price": null,
       "prev_date": null,
-      "last_change": null
+      "last_change": {
+        "type": "sold_out",
+        "date": "2026-08-23"
+      }
     },
     "HD|2247565700": {
       "co": "HD",
@@ -3996,10 +4005,10 @@
       "co": "CJ",
       "brand": "LG전자",
       "pid": "2082821622",
-      "name": "LG 퓨리케어 AI 오브제 360 공기청정기 M7 35형 +무빙휠",
+      "name": "LG 퓨리케어 AI 오브제 360 공기청정기 M7 35형 무빙휠",
       "price": 2050000,
       "soldout": false,
-      "src": "cj_html",
+      "src": "schedule",
       "link": "https://display.cjonstyle.com/p/item/2082821622?channelCode=30002002",
       "prev_price": null,
       "prev_date": null,
@@ -4012,7 +4021,7 @@
       "name": "LG 디오스 AI 오브제 글라스 4도어 냉장고 1등급_H876GBB031",
       "price": 3290000,
       "soldout": false,
-      "src": "cj_html",
+      "src": "schedule",
       "link": "https://display.cjonstyle.com/p/item/2084000980?channelCode=30002002",
       "prev_price": null,
       "prev_date": null,
@@ -4419,10 +4428,10 @@
       "co": "CJ",
       "brand": "다이슨",
       "pid": "2090530440",
-      "name": "[역대최저가] 에어랩 오리진 블루코퍼+트래블백",
+      "name": "에어랩 오리진 블루코퍼 트래블백",
       "price": 489000,
       "soldout": false,
-      "src": "cj_html",
+      "src": "schedule",
       "link": "https://display.cjonstyle.com/p/item/2090530440?channelCode=30002002",
       "prev_price": null,
       "prev_date": null,
@@ -4458,10 +4467,10 @@
       "co": "CJ",
       "brand": "닥터린",
       "pid": "2089761865",
-      "name": "콘드로이친 1200 콘레이티 MBP",
+      "name": "[50% SALE] 콘드로이친 1200 콘레이티 MBP 12개월분+비타민K2 2박스",
       "price": 164500,
       "soldout": false,
-      "src": "schedule",
+      "src": "cj_html",
       "link": "https://display.cjonstyle.com/p/item/2089761865?channelCode=30002002",
       "prev_price": null,
       "prev_date": null,
@@ -4484,10 +4493,10 @@
       "co": "CJ",
       "brand": "닥터린",
       "pid": "2090732259",
-      "name": "[방송에서만] 하이퍼셀 식물성 멜라토닌 함유 멜라바인 18박스",
+      "name": "하이퍼셀 식물성 멜라토닌 함유 멜라바인",
       "price": 299000,
       "soldout": false,
-      "src": "cj_html",
+      "src": "schedule",
       "link": "https://display.cjonstyle.com/p/item/2090732259?channelCode=30002002",
       "prev_price": null,
       "prev_date": null,
@@ -4614,10 +4623,10 @@
       "co": "CJ",
       "brand": "데이즈온",
       "pid": "2084101395",
-      "name": "파라다이스그레인버닝",
+      "name": "[방송에서만 6+3] 파라다이스그레인버닝 9박스 (18주분)",
       "price": 248000,
       "soldout": false,
-      "src": "schedule",
+      "src": "cj_html",
       "link": "https://display.cjonstyle.com/p/item/2084101395?channelCode=30002002",
       "prev_price": null,
       "prev_date": null,
@@ -4876,7 +4885,7 @@
       "name": "Qrevo 2 Pro 로봇청소기",
       "price": 1390000,
       "soldout": false,
-      "src": "schedule",
+      "src": "cj_html",
       "link": "https://display.cjonstyle.com/p/item/2090747465?channelCode=30002002",
       "prev_price": null,
       "prev_date": null,
@@ -4902,7 +4911,7 @@
       "name": "S9 MaxV Ultra 로봇 청소기",
       "price": 1740000,
       "soldout": false,
-      "src": "schedule",
+      "src": "cj_html",
       "link": "https://display.cjonstyle.com/p/item/2059574319?channelCode=30002002",
       "prev_price": null,
       "prev_date": null,
@@ -5224,10 +5233,10 @@
       "co": "CJ",
       "brand": "베네통",
       "pid": "2084109958",
-      "name": "[공식정품] 26SS 시어 메쉬 점퍼",
+      "name": "26SS 시어 메쉬 점퍼",
       "price": 129000,
       "soldout": false,
-      "src": "cj_html",
+      "src": "schedule",
       "link": "https://display.cjonstyle.com/p/item/2084109958?channelCode=30002002",
       "prev_price": null,
       "prev_date": null,
@@ -5257,10 +5266,10 @@
       "co": "CJ",
       "brand": "베라왕",
       "pid": "2079558364",
-      "name": "26SS 티타늄 컬러 변색 선글라스_아이콘 ICON _LIVE",
-      "price": 0,
+      "name": "26SS 티타늄 컬러 변색 선글라스_아이콘 ICON [VW537]_LIVE",
+      "price": 99000,
       "soldout": false,
-      "src": "schedule",
+      "src": "cj_html",
       "link": "https://display.cjonstyle.com/p/item/2079558364?channelCode=30002002",
       "prev_price": 59000,
       "prev_date": "2026-08-14",
@@ -5468,10 +5477,10 @@
       "co": "CJ",
       "brand": "빅마마",
       "pid": "2062015929",
-      "name": "이혜정의 포기김치 총각김치2kg 깻잎김치",
-      "price": 60900,
+      "name": "이혜정의 포기김치 8kg + 총각김치2kg + 깻잎김치 500g",
+      "price": 64900,
       "soldout": false,
-      "src": "schedule",
+      "src": "cj_html",
       "link": "https://display.cjonstyle.com/p/item/2062015929?channelCode=30002002",
       "prev_price": null,
       "prev_date": null,
@@ -5511,10 +5520,10 @@
       "co": "CJ",
       "brand": "세인트프랑",
       "pid": "2091247315",
-      "name": "링클크림 브러시 마스크팩",
+      "name": "[8월단한번/VIP패키지] 링클크림 150ml 3통+250ml 1통+브러시 1개+(전고객) 마스크팩 1박스",
       "price": 249000,
       "soldout": false,
-      "src": "schedule",
+      "src": "cj_html",
       "link": "https://display.cjonstyle.com/p/item/2091247315?channelCode=30002002",
       "prev_price": null,
       "prev_date": null,
@@ -5563,10 +5572,10 @@
       "co": "CJ",
       "brand": "세포랩",
       "pid": "2090747746",
-      "name": "바이오제닉 하이드레이션 에센스 스프레이캡",
+      "name": "[T매니아패키지] 바이오제닉 하이드레이션 에센스 155ml 4통+100ml 1통+ 30ml 4통 + 스프레이캡",
       "price": 289000,
       "soldout": false,
-      "src": "schedule",
+      "src": "cj_html",
       "link": "https://display.cjonstyle.com/p/item/2090747746?channelCode=30002002",
       "prev_price": null,
       "prev_date": null,
@@ -5589,10 +5598,10 @@
       "co": "CJ",
       "brand": "셀폰즈",
       "pid": "2087628275",
-      "name": "[CJ단독패키지] 녹는실 리프팅 앰플6박스",
+      "name": "녹는실 리프팅 앰플6박스",
       "price": 349000,
       "soldout": false,
-      "src": "cj_html",
+      "src": "schedule",
       "link": "https://display.cjonstyle.com/p/item/2087628275?channelCode=30002002",
       "prev_price": null,
       "prev_date": null,
@@ -5621,7 +5630,7 @@
       "name": "26FW 여성 맥스 플렉스 슬립인스 워킹화",
       "price": 139000,
       "soldout": false,
-      "src": "cj_html",
+      "src": "schedule",
       "link": "https://display.cjonstyle.com/p/item/2090293707?channelCode=30002002",
       "prev_price": null,
       "prev_date": null,
@@ -5660,7 +5669,7 @@
       "name": "라이크라 360º 올인원 바디수트 패키지",
       "price": 169900,
       "soldout": false,
-      "src": "cj_html",
+      "src": "schedule",
       "link": "https://display.cjonstyle.com/p/item/2046817365?channelCode=30002002",
       "prev_price": null,
       "prev_date": null,
@@ -5670,10 +5679,10 @@
       "co": "CJ",
       "brand": "신영와코루",
       "pid": "2076606367",
-      "name": "젤리브라 26최신상 모아핏 브라팬티 후크형 4세트",
+      "name": "젤리브라 26 모아핏 브라팬티 후크형",
       "price": 109900,
       "soldout": false,
-      "src": "cj_html",
+      "src": "schedule",
       "link": "https://display.cjonstyle.com/p/item/2076606367?channelCode=30002002",
       "prev_price": null,
       "prev_date": null,
@@ -5751,10 +5760,10 @@
       "co": "CJ",
       "brand": "아임고트",
       "pid": "2079772196",
-      "name": "아임고트 뉴질랜드 프리미엄 산양유 츄어블1박스",
+      "name": "아임고트 뉴질랜드 프리미엄 산양유 12통 + 츄어블1박스",
       "price": 396000,
       "soldout": false,
-      "src": "schedule",
+      "src": "cj_html",
       "link": "https://display.cjonstyle.com/p/item/2079772196?channelCode=30002002",
       "prev_price": null,
       "prev_date": null,
@@ -5814,7 +5823,7 @@
       "name": "디펜더스S 프라이팬 인덕션 스테인레스 후라이팬 28팬",
       "price": 105900,
       "soldout": false,
-      "src": "cj_html",
+      "src": "schedule",
       "link": "https://display.cjonstyle.com/p/item/2059015342?channelCode=30002002",
       "prev_price": null,
       "prev_date": null,
@@ -5829,6 +5838,19 @@
       "soldout": false,
       "src": "schedule",
       "link": "https://display.cjonstyle.com/p/item/2077508583?channelCode=30002002",
+      "prev_price": null,
+      "prev_date": null,
+      "last_change": null
+    },
+    "CJ|2083269890": {
+      "co": "CJ",
+      "brand": "에스까다",
+      "pid": "2083269890",
+      "name": "'26 퍼펙트 더블V 퓨징 브라팬티 1차 4세트(런닝형)",
+      "price": 109900,
+      "soldout": false,
+      "src": "cj_html",
+      "link": "https://display.cjonstyle.com/p/item/2083269890?channelCode=30002002",
       "prev_price": null,
       "prev_date": null,
       "last_change": null
@@ -5855,19 +5877,6 @@
       "soldout": false,
       "src": "cj_html",
       "link": "https://display.cjonstyle.com/p/item/2082476702?channelCode=30002002",
-      "prev_price": null,
-      "prev_date": null,
-      "last_change": null
-    },
-    "CJ|2083273735": {
-      "co": "CJ",
-      "brand": "에스까다",
-      "pid": "2083273735",
-      "name": "'26 퓨징 브라팬티 2차",
-      "price": 109900,
-      "soldout": false,
-      "src": "schedule",
-      "link": "https://display.cjonstyle.com/p/item/2083273735?channelCode=30002002",
       "prev_price": null,
       "prev_date": null,
       "last_change": null
@@ -5941,10 +5950,10 @@
       "co": "CJ",
       "brand": "에이엠",
       "pid": "2086309857",
-      "name": "선택1) 통3중 스텐 저압냄비(6L+4L)",
+      "name": "선택1 통3중 스텐 저압냄비",
       "price": 129000,
       "soldout": false,
-      "src": "cj_html",
+      "src": "schedule",
       "link": "https://display.cjonstyle.com/p/item/2086309857?channelCode=30002002",
       "prev_price": null,
       "prev_date": null,
@@ -6006,7 +6015,7 @@
       "co": "CJ",
       "brand": "오라틱스",
       "pid": "2086744445",
-      "name": "잇몸유산균CMU 오라틱스  (1000mg x 30정) 12개월분",
+      "name": "잇몸유산균CMU (1000mg x 30정) 12개월분",
       "price": 359000,
       "soldout": false,
       "src": "cj_html",
@@ -6014,8 +6023,8 @@
       "prev_price": null,
       "prev_date": null,
       "last_change": {
-        "type": "restock",
-        "date": "2026-08-20"
+        "type": "name_change",
+        "date": "2026-08-23"
       }
     },
     "CJ|2086743955": {
@@ -6035,10 +6044,10 @@
       "co": "CJ",
       "brand": "오모떼",
       "pid": "2076568611",
-      "name": "26SS 시그니처 미라클 쉐이핑 팬티",
+      "name": "26SS 시그니처 미라클 쉐이핑 팬티 8종",
       "price": 59900,
       "soldout": false,
-      "src": "schedule",
+      "src": "cj_html",
       "link": "https://display.cjonstyle.com/p/item/2076568611?channelCode=30002002",
       "prev_price": null,
       "prev_date": null,
@@ -6199,10 +6208,10 @@
       "co": "CJ",
       "brand": "위바이옴",
       "pid": "2082678893",
-      "name": "두뇌엔 닥터 PS MAX 9+1개월",
+      "name": "두뇌엔 닥터 PS MAX",
       "price": 514000,
       "soldout": false,
-      "src": "cj_html",
+      "src": "schedule",
       "link": "https://display.cjonstyle.com/p/item/2082678893?channelCode=30002002",
       "prev_price": null,
       "prev_date": null,
@@ -6273,6 +6282,19 @@
       "prev_date": null,
       "last_change": null
     },
+    "CJ|2086477943": {
+      "co": "CJ",
+      "brand": "이지듀",
+      "pid": "2086477943",
+      "name": "대웅제약 EGF 코어 탈모 앰플 10병+스칼프샴푸1개",
+      "price": 328000,
+      "soldout": false,
+      "src": "cj_html",
+      "link": "https://display.cjonstyle.com/p/item/2086477943?channelCode=30002002",
+      "prev_price": null,
+      "prev_date": null,
+      "last_change": null
+    },
     "CJ|2073483675": {
       "co": "CJ",
       "brand": "이지듀",
@@ -6295,19 +6317,6 @@
       "soldout": false,
       "src": "cj_html",
       "link": "https://display.cjonstyle.com/p/item/2089663340?channelCode=30002002",
-      "prev_price": null,
-      "prev_date": null,
-      "last_change": null
-    },
-    "CJ|2091299798": {
-      "co": "CJ",
-      "brand": "이지듀",
-      "pid": "2091299798",
-      "name": "대웅제약 아이스 메쉬쿠션 본품2+리필2+글로우 겔마스크",
-      "price": 99000,
-      "soldout": false,
-      "src": "cj_html",
-      "link": "https://display.cjonstyle.com/p/item/2091299798?channelCode=30002002",
       "prev_price": null,
       "prev_date": null,
       "last_change": null
@@ -6385,10 +6394,10 @@
       "co": "CJ",
       "brand": "주영엔에스",
       "pid": "2086573356",
-      "name": "모발콜라겐 3270 24주분 오메가3",
+      "name": "[남궁민모발콜라겐] 모발콜라겐 3270 6박스 24주분+오메가3 1박스",
       "price": 205000,
       "soldout": false,
-      "src": "schedule",
+      "src": "cj_html",
       "link": "https://display.cjonstyle.com/p/item/2086573356?channelCode=30002002",
       "prev_price": null,
       "prev_date": null,
@@ -6551,10 +6560,10 @@
       "co": "CJ",
       "brand": "코이",
       "pid": "2090806042",
-      "name": "[최초공개패키지] 단백질크림5+파우더워시2+마사저+체험분3",
+      "name": "단백질크림5 파우더워시2 마사저",
       "price": 169000,
       "soldout": false,
-      "src": "cj_html",
+      "src": "schedule",
       "link": "https://display.cjonstyle.com/p/item/2090806042?channelCode=30002002",
       "prev_price": null,
       "prev_date": null,
@@ -6740,10 +6749,10 @@
       "co": "CJ",
       "brand": "토리든",
       "pid": "2089665587",
-      "name": "다이브인 프로 저분자 히알루론산 앰플 대용량 6병 히알루론산 앰플 여행용 세럼미스트1병 대용량토너1",
+      "name": "다이브인 프로 저분자 히알루론산 앰플 대용량 6병+히알루론산 앰플 여행용+세럼미스트1병 1개+대용량토너1+리뷰시 비타토닝패드",
       "price": 149000,
       "soldout": false,
-      "src": "schedule",
+      "src": "cj_html",
       "link": "https://display.cjonstyle.com/p/item/2089665587?channelCode=30002002",
       "prev_price": null,
       "prev_date": null,
@@ -6766,10 +6775,10 @@
       "co": "CJ",
       "brand": "토비콤",
       "pid": "2075417492",
-      "name": "안국약품 토비콤 루테인 지아잔틴 아스타잔틴",
+      "name": "[50% SALE] 토비콤 루테인 지아잔틴 아스타잔틴 12개월",
       "price": 149000,
       "soldout": false,
-      "src": "schedule",
+      "src": "cj_html",
       "link": "https://display.cjonstyle.com/p/item/2075417492?channelCode=30002002",
       "prev_price": null,
       "prev_date": null,
@@ -7041,10 +7050,10 @@
       "co": "CJ",
       "brand": "홀베리",
       "pid": "2086734280",
-      "name": "유기농 레몬즙 20",
+      "name": "유기농 레몬즙 20+10박스(10포x30박스 총 300포)",
       "price": 198000,
       "soldout": false,
-      "src": "schedule",
+      "src": "cj_html",
       "link": "https://display.cjonstyle.com/p/item/2086734280?channelCode=30002002",
       "prev_price": null,
       "prev_date": null,
@@ -7054,10 +7063,10 @@
       "co": "CJ",
       "brand": "휘슬러",
       "pid": "2091147437",
-      "name": "[냄비4종 50만원대 이가격마지막] 라인컬렉션 스텐냄비 풀세트",
+      "name": "라인컬렉션 스텐냄비 풀세트",
       "price": 599000,
       "soldout": false,
-      "src": "cj_html",
+      "src": "schedule",
       "link": "https://display.cjonstyle.com/p/item/2091147437?channelCode=30002002",
       "prev_price": null,
       "prev_date": null,
@@ -7353,7 +7362,7 @@
       "co": "LT",
       "brand": "고려은단",
       "pid": "12919132",
-      "name": "[고려은단]2)[4개월] 고려은단 관절 올케어(60포 X 2개)",
+      "name": "2)[4개월] 고려은단 관절 올케어(60포 X 2개)",
       "price": 280000,
       "soldout": false,
       "src": "lt_html",
@@ -7362,7 +7371,7 @@
       "prev_date": null,
       "last_change": {
         "type": "name_change",
-        "date": "2026-08-22"
+        "date": "2026-08-23"
       }
     },
     "LT|12902578": {
@@ -7457,16 +7466,16 @@
       "brand": "구찌",
       "pid": "12893351",
       "name": "GG 인터로킹 선글라스 (Made in Italy)(GG1338S)",
-      "price": 319000,
+      "price": 255200,
       "soldout": false,
       "src": "lt_html",
       "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12893351",
-      "prev_price": 255200,
-      "prev_date": "2026-08-22",
+      "prev_price": 319000,
+      "prev_date": "2026-08-23",
       "last_change": {
-        "type": "price_raise",
-        "date": "2026-08-22",
-        "pct": 25.0
+        "type": "price_drop",
+        "date": "2026-08-23",
+        "pct": -20.0
       }
     },
     "LT|12919743": {
@@ -7474,13 +7483,17 @@
       "brand": "구찌",
       "pid": "12919743",
       "name": "GG 엠블럼 숄더백 (Made in Italy) (815218)",
-      "price": 2280000,
+      "price": 1938000,
       "soldout": false,
       "src": "lt_html",
       "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12919743",
-      "prev_price": null,
-      "prev_date": null,
-      "last_change": null
+      "prev_price": 2280000,
+      "prev_date": "2026-08-23",
+      "last_change": {
+        "type": "price_drop",
+        "date": "2026-08-23",
+        "pct": -15.0
+      }
     },
     "LT|12918895": {
       "co": "LT",
@@ -7596,6 +7609,19 @@
         "date": "2026-08-05"
       }
     },
+    "LT|12901630": {
+      "co": "LT",
+      "brand": "나에노",
+      "pid": "12901630",
+      "name": "[재]★방송중에만 30L / 본품한달 무료체험★ 프리미엄 퓨어머스크향 세탁세제 3L x 8개 + 섬유유연제 3L x 2개",
+      "price": 59800,
+      "soldout": true,
+      "src": "lt_html",
+      "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12901630",
+      "prev_price": null,
+      "prev_date": null,
+      "last_change": null
+    },
     "LT|12889962": {
       "co": "LT",
       "brand": "나에노",
@@ -7611,19 +7637,6 @@
         "type": "sold_out",
         "date": "2026-08-17"
       }
-    },
-    "LT|12901630": {
-      "co": "LT",
-      "brand": "나에노",
-      "pid": "12901630",
-      "name": "[재]★방송중에만 30L / 본품한달 무료체험★ 프리미엄 퓨어머스크향 세탁세제 3L x 8개 + 섬유유연제 3L x 2개",
-      "price": 59800,
-      "soldout": true,
-      "src": "lt_html",
-      "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12901630",
-      "prev_price": null,
-      "prev_date": null,
-      "last_change": null
     },
     "LT|12889972": {
       "co": "LT",
@@ -7709,12 +7722,15 @@
       "pid": "12920170",
       "name": "☆[투명피부핵심패키지] 뉴트리코어 하이퍼셀 멜라토닌 화이트닝 앰플 30ml*8병 + 톤업 선크림 30ml*2통",
       "price": 298000,
-      "soldout": true,
+      "soldout": false,
       "src": "lt_html",
       "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12920170",
       "prev_price": null,
       "prev_date": null,
-      "last_change": null
+      "last_change": {
+        "type": "restock",
+        "date": "2026-08-23"
+      }
     },
     "LT|12918854": {
       "co": "LT",
@@ -7722,15 +7738,28 @@
       "pid": "12918854",
       "name": "☆[싱글패키지]뉴트리코어 하이퍼셀 멜라토닌 화이트닝 앰플 30ml*4병",
       "price": 169000,
-      "soldout": true,
+      "soldout": false,
       "src": "lt_html",
       "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12918854",
       "prev_price": null,
       "prev_date": null,
       "last_change": {
-        "type": "sold_out",
-        "date": "2026-08-21"
+        "type": "restock",
+        "date": "2026-08-23"
       }
+    },
+    "LT|12885517": {
+      "co": "LT",
+      "brand": "닥터린",
+      "pid": "12885517",
+      "name": "■[12박스] 닥터린 콘드로이친 1200 콘레이티+MBP+K2 12박스 (1박스:1,200mgX30정)",
+      "price": 329000,
+      "soldout": false,
+      "src": "lt_html",
+      "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12885517",
+      "prev_price": null,
+      "prev_date": null,
+      "last_change": null
     },
     "LT|12881357": {
       "co": "LT",
@@ -7754,19 +7783,6 @@
       "soldout": true,
       "src": "lt_html",
       "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12893306",
-      "prev_price": null,
-      "prev_date": null,
-      "last_change": null
-    },
-    "LT|12917681": {
-      "co": "LT",
-      "brand": "닥터린",
-      "pid": "12917681",
-      "name": "★반값세일특별구성[12개월+비타민K2]닥터린 콘드로이친 1200 콘레이티+MBP+K2 12박스+닥터린 초임계 비타민K2 2박스",
-      "price": 164500,
-      "soldout": false,
-      "src": "lt_html",
-      "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12917681",
       "prev_price": null,
       "prev_date": null,
       "last_change": null
@@ -8256,16 +8272,16 @@
       "brand": "로보락",
       "pid": "12903970",
       "name": "[로보락]Q Revo C Pro 로봇청소기",
-      "price": 890000,
+      "price": 1290000,
       "soldout": false,
       "src": "lt_html",
       "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12903970",
-      "prev_price": 1290000,
-      "prev_date": "2026-08-22",
+      "prev_price": 890000,
+      "prev_date": "2026-08-23",
       "last_change": {
-        "type": "price_drop",
-        "date": "2026-08-22",
-        "pct": -31.0
+        "type": "price_raise",
+        "date": "2026-08-23",
+        "pct": 44.9
       }
     },
     "LT|12914008": {
@@ -8606,16 +8622,16 @@
       "brand": "버버리",
       "pid": "12916111",
       "name": "옥스클로즈 후드 트렌치 코트 (81041851/ 81041861)",
-      "price": 1590000,
+      "price": 1272000,
       "soldout": false,
       "src": "lt_html",
       "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12916111",
-      "prev_price": 1272000,
-      "prev_date": "2026-08-22",
+      "prev_price": 1590000,
+      "prev_date": "2026-08-23",
       "last_change": {
-        "type": "price_raise",
-        "date": "2026-08-22",
-        "pct": 25.0
+        "type": "price_drop",
+        "date": "2026-08-23",
+        "pct": -20.0
       }
     },
     "LT|12919613": {
@@ -8834,6 +8850,19 @@
       "prev_date": null,
       "last_change": null
     },
+    "LT|12885055": {
+      "co": "LT",
+      "brand": "베키아에누보",
+      "pid": "12885055",
+      "name": "[백화점동일 브랜드]신세계 베키아에누보 치아바타 총24개",
+      "price": 59900,
+      "soldout": true,
+      "src": "lt_html",
+      "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12885055",
+      "prev_price": null,
+      "prev_date": null,
+      "last_change": null
+    },
     "LT|12918951": {
       "co": "LT",
       "brand": "베키아에누보",
@@ -8856,19 +8885,6 @@
       "soldout": true,
       "src": "lt_html",
       "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12891823",
-      "prev_price": null,
-      "prev_date": null,
-      "last_change": null
-    },
-    "LT|12913968": {
-      "co": "LT",
-      "brand": "베키아에누보",
-      "pid": "12913968",
-      "name": "베키아에누보 수크레 크레이프 케이크",
-      "price": 29900,
-      "soldout": false,
-      "src": "schedule",
-      "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12913968",
       "prev_price": null,
       "prev_date": null,
       "last_change": null
@@ -8993,6 +9009,19 @@
       "prev_date": null,
       "last_change": null
     },
+    "LT|12890800": {
+      "co": "LT",
+      "brand": "비에날씬",
+      "pid": "12890800",
+      "name": "☆슬림플러스 3박스 더☆ 비에날 씬 프로 9개월 (425mg x 30캡슐 x 9박스) + 슬림플러스 3박스 (10포 x 3박스)",
+      "price": 548000,
+      "soldout": true,
+      "src": "lt_html",
+      "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12890800",
+      "prev_price": null,
+      "prev_date": null,
+      "last_change": null
+    },
     "LT|12917777": {
       "co": "LT",
       "brand": "비에날씬",
@@ -9020,23 +9049,6 @@
       "last_change": {
         "type": "sold_out",
         "date": "2026-08-22"
-      }
-    },
-    "LT|12917594": {
-      "co": "LT",
-      "brand": "비에날씬",
-      "pid": "12917594",
-      "name": "★[더블_6개월][김희선 다이어트]BNR17 비에날 씬 프로 (425mg x 30캡슐 x 6박스)",
-      "price": 300800,
-      "soldout": false,
-      "src": "lt_html",
-      "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12917594",
-      "prev_price": 376000,
-      "prev_date": "2026-08-22",
-      "last_change": {
-        "type": "price_drop",
-        "date": "2026-08-22",
-        "pct": -20.0
       }
     },
     "LT|12895558": {
@@ -9100,13 +9112,17 @@
       "brand": "서포트라이트",
       "pid": "12917978",
       "name": "○ HAPPER 티타늄 선글라스+가방",
-      "price": 99000,
+      "price": 59000,
       "soldout": false,
       "src": "lt_html",
       "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12917978",
-      "prev_price": null,
-      "prev_date": null,
-      "last_change": null
+      "prev_price": 99000,
+      "prev_date": "2026-08-23",
+      "last_change": {
+        "type": "price_drop",
+        "date": "2026-08-23",
+        "pct": -40.4
+      }
     },
     "LT|12896528": {
       "co": "LT",
@@ -9249,6 +9265,19 @@
       "prev_date": null,
       "last_change": null
     },
+    "LT|12915960": {
+      "co": "LT",
+      "brand": "스케쳐스",
+      "pid": "12915960",
+      "name": "○ 스케쳐스 26FW 여성 맥스쿠셔닝 엔디버 슬립온",
+      "price": 129000,
+      "soldout": false,
+      "src": "lt_html",
+      "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12915960",
+      "prev_price": null,
+      "prev_date": null,
+      "last_change": null
+    },
     "LT|12920041": {
       "co": "LT",
       "brand": "스케쳐스",
@@ -9271,19 +9300,6 @@
       "soldout": false,
       "src": "lt_html",
       "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12919765",
-      "prev_price": null,
-      "prev_date": null,
-      "last_change": null
-    },
-    "LT|12917803": {
-      "co": "LT",
-      "brand": "스케쳐스",
-      "pid": "12917803",
-      "name": "★스케쳐스 26FW 여성 고런 아치핏 슬립인스",
-      "price": 149000,
-      "soldout": false,
-      "src": "lt_html",
-      "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12917803",
       "prev_price": null,
       "prev_date": null,
       "last_change": null
@@ -9903,10 +9919,10 @@
       "co": "LT",
       "brand": "와이즈바이옴",
       "pid": "12908884",
-      "name": "★단독!전고객 혈당측정기 증정★[9개월패키지]유한양행 당큐락 9개월분(190mg*30캡슐*9개입)+8주분(190mg*14캡슐*4박스)",
+      "name": "유한양행 당큐락",
       "price": 526000,
-      "soldout": true,
-      "src": "lt_html",
+      "soldout": false,
+      "src": "schedule",
       "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12908884",
       "prev_price": null,
       "prev_date": null,
@@ -10243,6 +10259,19 @@
       "prev_date": null,
       "last_change": null
     },
+    "LT|12915634": {
+      "co": "LT",
+      "brand": "종근당건강",
+      "pid": "12915634",
+      "name": "● [전고객 스텝퍼 ] 관절연골엔 NEM 12개월 + 휴라이프 천국의 계단 스텝퍼",
+      "price": 648000,
+      "soldout": true,
+      "src": "lt_html",
+      "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12915634",
+      "prev_price": null,
+      "prev_date": null,
+      "last_change": null
+    },
     "LT|12918378": {
       "co": "LT",
       "brand": "종근당건강",
@@ -10275,19 +10304,6 @@
         "type": "sold_out",
         "date": "2026-08-03"
       }
-    },
-    "LT|12915634": {
-      "co": "LT",
-      "brand": "종근당건강",
-      "pid": "12915634",
-      "name": "● [전고객 스텝퍼 ] 관절연골엔 NEM 12개월 + 휴라이프 천국의 계단 스텝퍼",
-      "price": 648000,
-      "soldout": true,
-      "src": "lt_html",
-      "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12915634",
-      "prev_price": null,
-      "prev_date": null,
-      "last_change": null
     },
     "LT|12907987": {
       "co": "LT",
@@ -10375,29 +10391,33 @@
       "brand": "지프",
       "pid": "12891652",
       "name": "JEEP 남성 에센셜 긴팔티셔츠 3종",
-      "price": 39900,
+      "price": 33910,
       "soldout": false,
       "src": "lt_html",
       "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12891652",
-      "prev_price": null,
-      "prev_date": null,
-      "last_change": null
+      "prev_price": 39900,
+      "prev_date": "2026-08-23",
+      "last_change": {
+        "type": "price_drop",
+        "date": "2026-08-23",
+        "pct": -15.0
+      }
     },
     "LT|12891654": {
       "co": "LT",
       "brand": "지프",
       "pid": "12891654",
       "name": "JEEP 여성 에센셜 긴팔티셔츠 3종",
-      "price": 39900,
+      "price": 33910,
       "soldout": false,
       "src": "lt_html",
       "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12891654",
-      "prev_price": 33910,
-      "prev_date": "2026-08-21",
+      "prev_price": 39900,
+      "prev_date": "2026-08-23",
       "last_change": {
-        "type": "price_raise",
-        "date": "2026-08-21",
-        "pct": 17.7
+        "type": "price_drop",
+        "date": "2026-08-23",
+        "pct": -15.0
       }
     },
     "LT|12919131": {
@@ -10445,14 +10465,14 @@
       "pid": "12912707",
       "name": "★역대 최다★캐롤프랑크 리스트럭처링 세럼 4병(80ml*4)",
       "price": 168000,
-      "soldout": false,
+      "soldout": true,
       "src": "lt_html",
       "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12912707",
       "prev_price": null,
       "prev_date": null,
       "last_change": {
-        "type": "restock",
-        "date": "2026-08-22"
+        "type": "sold_out",
+        "date": "2026-08-23"
       }
     },
     "LT|12916853": {
@@ -10665,6 +10685,19 @@
         "date": "2026-07-31"
       }
     },
+    "LT|12919671": {
+      "co": "LT",
+      "brand": "클랍",
+      "pid": "12919671",
+      "name": "[올해 단한번]클랍 색소 특화 스팟코렉터  앰플 20ml * 6 + 파워 이팩트 크림50ml",
+      "price": 299000,
+      "soldout": true,
+      "src": "lt_html",
+      "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12919671",
+      "prev_price": null,
+      "prev_date": null,
+      "last_change": null
+    },
     "LT|12917387": {
       "co": "LT",
       "brand": "클랍",
@@ -10787,12 +10820,15 @@
       "pid": "12920260",
       "name": "[수분폭탄패키지] 토리든 다이브인 프로 앰플 35ml*6통+앰플 15ml+ 세럼 120ml+다이브인 토너 500ml+화장솜 60매+(리뷰시)비타 토닝 패드",
       "price": 149000,
-      "soldout": true,
+      "soldout": false,
       "src": "lt_html",
       "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12920260",
       "prev_price": null,
       "prev_date": null,
-      "last_change": null
+      "last_change": {
+        "type": "restock",
+        "date": "2026-08-23"
+      }
     },
     "LT|12920276": {
       "co": "LT",
@@ -10800,12 +10836,15 @@
       "pid": "12920276",
       "name": "[단품] 토리든 다이브인 프로 앰플 35ml",
       "price": 45000,
-      "soldout": true,
+      "soldout": false,
       "src": "lt_html",
       "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12920276",
       "prev_price": null,
       "prev_date": null,
-      "last_change": null
+      "last_change": {
+        "type": "restock",
+        "date": "2026-08-23"
+      }
     },
     "LT|12917667": {
       "co": "LT",
@@ -11372,12 +11411,15 @@
       "pid": "1106941559",
       "name": "NFL 26SS 최신상 여성용 블루종 자켓 1종",
       "price": 39000,
-      "soldout": false,
+      "soldout": true,
       "src": "gs_html",
       "link": "https://www.gsshop.com/prd/prd.gs?prdid=1106941559&brddate=20260820235500&pgmID=13146&ordChannel=WE&tveshop=Y",
       "prev_price": null,
       "prev_date": null,
-      "last_change": null
+      "last_change": {
+        "type": "sold_out",
+        "date": "2026-08-23"
+      }
     },
     "GS|1133392810": {
       "co": "GS",
@@ -11517,7 +11559,7 @@
       "price": 358000,
       "soldout": false,
       "src": "gs_html",
-      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1132350893&brddate=20260827123500&pgmID=6997&ordChannel=WE&tveshop=Y",
+      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1132350893&brddate=20260828010000&pgmID=6997&ordChannel=WE&tveshop=Y",
       "prev_price": null,
       "prev_date": null,
       "last_change": null
@@ -11742,16 +11784,16 @@
       "brand": "뉴트리원",
       "pid": "1071310432",
       "name": "뉴트리원 이병헌 루테인지아잔틴164 GR 12박스(12개월분)",
-      "price": 60000,
+      "price": 115100,
       "soldout": false,
       "src": "gs_html",
       "link": "https://www.gsshop.com/prd/prd.gs?prdid=1071310432&brddate=20260824063600&pgmID=13352&ordChannel=WE&tveshop=Y",
-      "prev_price": 44000,
-      "prev_date": "2026-08-21",
+      "prev_price": 60000,
+      "prev_date": "2026-08-23",
       "last_change": {
         "type": "price_raise",
-        "date": "2026-08-21",
-        "pct": 36.4
+        "date": "2026-08-23",
+        "pct": 91.8
       }
     },
     "GS|1050098870": {
@@ -11759,16 +11801,16 @@
       "brand": "뉴트리원",
       "pid": "1050098870",
       "name": "뉴트리원 이병헌 루테인지아잔틴164 GR 15박스(15개월분)",
-      "price": 60000,
+      "price": 115100,
       "soldout": false,
       "src": "gs_html",
       "link": "https://www.gsshop.com/prd/prd.gs?prdid=1050098870&brddate=20260820163500&pgmID=13352&ordChannel=WE&tveshop=Y",
-      "prev_price": 44000,
-      "prev_date": "2026-08-21",
+      "prev_price": 60000,
+      "prev_date": "2026-08-23",
       "last_change": {
         "type": "price_raise",
-        "date": "2026-08-21",
-        "pct": 36.4
+        "date": "2026-08-23",
+        "pct": 91.8
       }
     },
     "GS|1050097623": {
@@ -11776,16 +11818,16 @@
       "brand": "뉴트리원",
       "pid": "1050097623",
       "name": "뉴트리원 이병헌 루테인지아잔틴164 GR 5박스(5개월분)",
-      "price": 60000,
+      "price": 115100,
       "soldout": false,
       "src": "gs_html",
       "link": "https://www.gsshop.com/prd/prd.gs?prdid=1050097623&brddate=20260820163500&pgmID=13352&ordChannel=WE&tveshop=Y",
-      "prev_price": 44000,
-      "prev_date": "2026-08-21",
+      "prev_price": 60000,
+      "prev_date": "2026-08-23",
       "last_change": {
         "type": "price_raise",
-        "date": "2026-08-21",
-        "pct": 36.4
+        "date": "2026-08-23",
+        "pct": 91.8
       }
     },
     "GS|1129034101": {
@@ -11796,7 +11838,7 @@
       "price": 648000,
       "soldout": false,
       "src": "gs_html",
-      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1129034101&brddate=20260826053000&pgmID=13352&ordChannel=WE&tveshop=Y",
+      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1129034101&brddate=20260828053000&pgmID=13352&ordChannel=WE&tveshop=Y",
       "prev_price": null,
       "prev_date": null,
       "last_change": null
@@ -11827,6 +11869,19 @@
       "prev_date": null,
       "last_change": null
     },
+    "GS|1117818009": {
+      "co": "GS",
+      "brand": "다이슨",
+      "pid": "1117818009",
+      "name": "다이슨 에어랩 오리진 블루코퍼 + 트래블백",
+      "price": 489000,
+      "soldout": false,
+      "src": "gs_html",
+      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1117818009&brddate=20260828183000&pgmID=872&ordChannel=WE&tveshop=Y",
+      "prev_price": null,
+      "prev_date": null,
+      "last_change": null
+    },
     "GS|1124309276": {
       "co": "GS",
       "brand": "다이슨",
@@ -11849,19 +11904,6 @@
       "soldout": false,
       "src": "gs_html",
       "link": "https://www.gsshop.com/prd/prd.gs?prdid=1133570707&brddate=20260815213500&pgmID=872&ordChannel=WE&tveshop=Y",
-      "prev_price": null,
-      "prev_date": null,
-      "last_change": null
-    },
-    "GS|1133563398": {
-      "co": "GS",
-      "brand": "다이슨",
-      "pid": "1133563398",
-      "name": "다이슨 에어랩 오리진 블루코퍼",
-      "price": 499000,
-      "soldout": false,
-      "src": "gs_html",
-      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1133563398&brddate=20260815213500&pgmID=872&ordChannel=WE&tveshop=Y",
       "prev_price": null,
       "prev_date": null,
       "last_change": null
@@ -11909,6 +11951,19 @@
       "prev_date": null,
       "last_change": null
     },
+    "GS|1133318885": {
+      "co": "GS",
+      "brand": "달바",
+      "pid": "1133318885",
+      "name": "[8월단한번]달바 엑소세럼 160ml*4+아쿠아세럼 160ml*2+60ml*2+카밍패드 / 2년만의 최신상",
+      "price": 134900,
+      "soldout": false,
+      "src": "gs_html",
+      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1133318885&brddate=20260828235500&pgmID=6737&ordChannel=WE&tveshop=Y",
+      "prev_price": null,
+      "prev_date": null,
+      "last_change": null
+    },
     "GS|1133319208": {
       "co": "GS",
       "brand": "달바",
@@ -11918,19 +11973,6 @@
       "soldout": false,
       "src": "gs_html",
       "link": "https://www.gsshop.com/prd/prd.gs?prdid=1133319208&brddate=20260815203000&pgmID=6737&ordChannel=WE&tveshop=Y",
-      "prev_price": null,
-      "prev_date": null,
-      "last_change": null
-    },
-    "GS|1133318885": {
-      "co": "GS",
-      "brand": "달바",
-      "pid": "1133318885",
-      "name": "[8월단한번]달바 엑소세럼 160ml*4+아쿠아세럼 160ml*2+60ml*2+카밍패드 / 2년만의 최신상",
-      "price": 134900,
-      "soldout": false,
-      "src": "gs_html",
-      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1133318885&brddate=20260815203000&pgmID=6737&ordChannel=WE&tveshop=Y",
       "prev_price": null,
       "prev_date": null,
       "last_change": null
@@ -12041,7 +12083,7 @@
       "price": 139000,
       "soldout": false,
       "src": "gs_html",
-      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1126813987&brddate=20260826143500&pgmID=872&ordChannel=WE&tveshop=Y",
+      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1126813987&brddate=20260828043000&pgmID=9613&ordChannel=WE&tveshop=Y",
       "prev_price": null,
       "prev_date": null,
       "last_change": null
@@ -12055,19 +12097,6 @@
       "soldout": false,
       "src": "gs_html",
       "link": "https://www.gsshop.com/prd/prd.gs?prdid=1126846267&brddate=20260703042800&pgmID=872&ordChannel=WE&tveshop=Y",
-      "prev_price": null,
-      "prev_date": null,
-      "last_change": null
-    },
-    "GS|1129392136": {
-      "co": "GS",
-      "brand": "도미나스",
-      "pid": "1129392136",
-      "name": "2026년[최신상] 도미나스 크림 시즌7(7세대) VIP 패키지+ 체험분까지",
-      "price": 159000,
-      "soldout": false,
-      "src": "gs_html",
-      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1129392136&brddate=20260824081500&pgmID=6737&ordChannel=WE&tveshop=Y",
       "prev_price": null,
       "prev_date": null,
       "last_change": null
@@ -12094,6 +12123,19 @@
       "soldout": false,
       "src": "gs_html",
       "link": "https://www.gsshop.com/prd/prd.gs?prdid=1133511210&brddate=20260821081500&pgmID=6737&ordChannel=WE&tveshop=Y",
+      "prev_price": null,
+      "prev_date": null,
+      "last_change": null
+    },
+    "GS|1133327825": {
+      "co": "GS",
+      "brand": "도미나스",
+      "pid": "1133327825",
+      "name": "트라넥삼산 크림 [최신상] 도미나스 크림 시즌7(7세대) VIP 패키지+에센스+마스크+체험분까지",
+      "price": 159000,
+      "soldout": false,
+      "src": "gs_html",
+      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1133327825&brddate=20260819102500&pgmID=6737&ordChannel=WE&tveshop=Y",
       "prev_price": null,
       "prev_date": null,
       "last_change": null
@@ -12190,14 +12232,14 @@
       "pid": "1057738615",
       "name": "[3만원 SALE] 라페어 썸머왈츠 인견 파자마 3세트 (총 6종)",
       "price": 49900,
-      "soldout": false,
+      "soldout": true,
       "src": "gs_html",
       "link": "https://www.gsshop.com/prd/prd.gs?prdid=1057738615&brddate=20260824093600&pgmID=6753&ordChannel=WE&tveshop=Y",
       "prev_price": null,
       "prev_date": null,
       "last_change": {
-        "type": "restock",
-        "date": "2026-08-14"
+        "type": "sold_out",
+        "date": "2026-08-23"
       }
     },
     "GS|1117333007": {
@@ -12232,6 +12274,19 @@
         "date": "2026-08-11"
       }
     },
+    "GS|1119114955": {
+      "co": "GS",
+      "brand": "라포레",
+      "pid": "1119114955",
+      "name": "라포레 글라스팝 밥용기 12개+찜기 1개(채반 포함)",
+      "price": 59800,
+      "soldout": false,
+      "src": "gs_html",
+      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1119114955&brddate=20260828133700&pgmID=6995&ordChannel=WE&tveshop=Y",
+      "prev_price": null,
+      "prev_date": null,
+      "last_change": null
+    },
     "GS|1118101409": {
       "co": "GS",
       "brand": "라포레",
@@ -12254,19 +12309,6 @@
       "soldout": false,
       "src": "gs_html",
       "link": "https://www.gsshop.com/prd/prd.gs?prdid=1123829485&brddate=20260821173800&pgmID=6995&ordChannel=WE&tveshop=Y",
-      "prev_price": null,
-      "prev_date": null,
-      "last_change": null
-    },
-    "GS|1117917325": {
-      "co": "GS",
-      "brand": "라포레",
-      "pid": "1117917325",
-      "name": "라포레 플레이팅팬 풀세트",
-      "price": 189000,
-      "soldout": false,
-      "src": "gs_html",
-      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1117917325&brddate=20260817043000&pgmID=9613&ordChannel=WE&tveshop=Y",
       "prev_price": null,
       "prev_date": null,
       "last_change": null
@@ -12314,6 +12356,23 @@
       "prev_date": null,
       "last_change": null
     },
+    "GS|1121222074": {
+      "co": "GS",
+      "brand": "락토핏",
+      "pid": "1121222074",
+      "name": "[종근당건강] 락토핏 맥스19 (HN019) 유산균 6통+60포",
+      "price": 129000,
+      "soldout": false,
+      "src": "gs_html",
+      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1121222074&brddate=20260828063600&pgmID=13352&ordChannel=WE&tveshop=Y",
+      "prev_price": 129000,
+      "prev_date": "2026-08-17",
+      "last_change": {
+        "type": "price_drop",
+        "date": "2026-08-17",
+        "pct": -21.8
+      }
+    },
     "GS|1128223881": {
       "co": "GS",
       "brand": "락토핏",
@@ -12323,23 +12382,6 @@
       "soldout": false,
       "src": "gs_html",
       "link": "https://www.gsshop.com/prd/prd.gs?prdid=1128223881&brddate=20260810173500&pgmID=13352&ordChannel=WE&tveshop=Y",
-      "prev_price": 129000,
-      "prev_date": "2026-08-17",
-      "last_change": {
-        "type": "price_drop",
-        "date": "2026-08-17",
-        "pct": -21.8
-      }
-    },
-    "GS|1121222074": {
-      "co": "GS",
-      "brand": "락토핏",
-      "pid": "1121222074",
-      "name": "[종근당건강] 락토핏 맥스19 (HN019) 유산균 6통+60포",
-      "price": 129000,
-      "soldout": false,
-      "src": "gs_html",
-      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1121222074&brddate=20260727113600&pgmID=13352&ordChannel=WE&tveshop=Y",
       "prev_price": 129000,
       "prev_date": "2026-08-17",
       "last_change": {
@@ -12383,16 +12425,16 @@
       "brand": "로보",
       "pid": "1093853850",
       "name": "로보 25FW 무스탕 하프코트 1종",
-      "price": 849900,
+      "price": 999900,
       "soldout": false,
       "src": "gs_html",
       "link": "https://www.gsshop.com/prd/prd.gs?prdid=1093853850&brddate=20260823021000&pgmID=13307&ordChannel=WE&tveshop=Y",
-      "prev_price": 999900,
-      "prev_date": "2026-08-22",
+      "prev_price": 849900,
+      "prev_date": "2026-08-23",
       "last_change": {
-        "type": "price_drop",
-        "date": "2026-08-22",
-        "pct": -15.0
+        "type": "price_raise",
+        "date": "2026-08-23",
+        "pct": 17.6
       }
     },
     "GS|1098264609": {
@@ -12400,16 +12442,16 @@
       "brand": "로보",
       "pid": "1098264609",
       "name": "로보 25FW 후드 무스탕 롱코트 1종",
-      "price": 849900,
+      "price": 999900,
       "soldout": true,
       "src": "gs_html",
       "link": "https://www.gsshop.com/prd/prd.gs?prdid=1098264609&brddate=20260820025100&pgmID=13307&ordChannel=WE&tveshop=Y",
-      "prev_price": 999900,
-      "prev_date": "2026-08-22",
+      "prev_price": 849900,
+      "prev_date": "2026-08-23",
       "last_change": {
-        "type": "price_drop",
-        "date": "2026-08-22",
-        "pct": -15.0
+        "type": "price_raise",
+        "date": "2026-08-23",
+        "pct": 17.6
       }
     },
     "GS|1100737063": {
@@ -12417,16 +12459,16 @@
       "brand": "로보",
       "pid": "1100737063",
       "name": "로보 25FW 후드 무스탕 숏코트 1종",
-      "price": 849900,
+      "price": 999900,
       "soldout": false,
       "src": "gs_html",
       "link": "https://www.gsshop.com/prd/prd.gs?prdid=1100737063&brddate=20260816000500&pgmID=13438&ordChannel=WE&tveshop=Y",
-      "prev_price": 999900,
-      "prev_date": "2026-08-22",
+      "prev_price": 849900,
+      "prev_date": "2026-08-23",
       "last_change": {
-        "type": "price_drop",
-        "date": "2026-08-22",
-        "pct": -15.0
+        "type": "price_raise",
+        "date": "2026-08-23",
+        "pct": 17.6
       }
     },
     "GS|1130335516": {
@@ -12512,16 +12554,16 @@
       "brand": "루이까또즈",
       "pid": "1120456554",
       "name": "루이까또즈 보태니컬 암막 우양산 2종(+리유저블백)",
-      "price": 113760,
+      "price": 49000,
       "soldout": false,
       "src": "gs_html",
       "link": "https://www.gsshop.com/prd/prd.gs?prdid=1120456554&brddate=20260727031000&pgmID=9613&ordChannel=WE&tveshop=Y",
-      "prev_price": 69900,
-      "prev_date": "2026-08-22",
+      "prev_price": 113760,
+      "prev_date": "2026-08-23",
       "last_change": {
-        "type": "price_raise",
-        "date": "2026-08-22",
-        "pct": 62.7
+        "type": "price_drop",
+        "date": "2026-08-23",
+        "pct": -56.9
       }
     },
     "GS|1124791313": {
@@ -12576,6 +12618,19 @@
       "prev_date": null,
       "last_change": null
     },
+    "GS|1131884988": {
+      "co": "GS",
+      "brand": "매스티나",
+      "pid": "1131884988",
+      "name": "매스티나 3배 패키지",
+      "price": 249000,
+      "soldout": false,
+      "src": "gs_html",
+      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1131884988&brddate=20260828153000&pgmID=6737&ordChannel=WE&tveshop=Y",
+      "prev_price": null,
+      "prev_date": null,
+      "last_change": null
+    },
     "GS|1115771530": {
       "co": "GS",
       "brand": "매스티나",
@@ -12598,19 +12653,6 @@
       "soldout": false,
       "src": "gs_html",
       "link": "https://www.gsshop.com/prd/prd.gs?prdid=1124911534&brddate=20260821113500&pgmID=6737&ordChannel=WE&tveshop=Y",
-      "prev_price": null,
-      "prev_date": null,
-      "last_change": null
-    },
-    "GS|1134093697": {
-      "co": "GS",
-      "brand": "매스티나",
-      "pid": "1134093697",
-      "name": "[매스티나] 최신상 시즌4 기미 앰플 3배 패키지",
-      "price": 249000,
-      "soldout": false,
-      "src": "gs_html",
-      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1134093697&brddate=20260821113500&pgmID=6737&ordChannel=WE&tveshop=Y",
       "prev_price": null,
       "prev_date": null,
       "last_change": null
@@ -12677,14 +12719,14 @@
       "pid": "1075764942",
       "name": "버버리 벌리 BIRLEY 숏자켓",
       "price": 1380000,
-      "soldout": false,
+      "soldout": true,
       "src": "gs_html",
       "link": "https://www.gsshop.com/prd/prd.gs?prdid=1075764942&brddate=20260822225000&pgmID=13392&ordChannel=WE&tveshop=Y",
       "prev_price": null,
       "prev_date": null,
       "last_change": {
-        "type": "restock",
-        "date": "2026-08-21"
+        "type": "sold_out",
+        "date": "2026-08-23"
       }
     },
     "GS|1080571126": {
@@ -12702,6 +12744,19 @@
         "type": "restock",
         "date": "2026-08-22"
       }
+    },
+    "GS|1106604938": {
+      "co": "GS",
+      "brand": "베네통",
+      "pid": "1106604938",
+      "name": "베네통 여성 하프 카라스웨터 3종",
+      "price": 99000,
+      "soldout": false,
+      "src": "gs_html",
+      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1106604938&brddate=20260828102500&pgmID=12557&ordChannel=WE&tveshop=Y",
+      "prev_price": null,
+      "prev_date": null,
+      "last_change": null
     },
     "GS|1132134867": {
       "co": "GS",
@@ -12734,19 +12789,6 @@
         "type": "name_change",
         "date": "2026-08-19"
       }
-    },
-    "GS|1076664810": {
-      "co": "GS",
-      "brand": "베네통",
-      "pid": "1076664810",
-      "name": "[BEST] 베네통 시그니처 남녀공용 반팔티셔츠 5종세트",
-      "price": 89900,
-      "soldout": true,
-      "src": "gs_html",
-      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1076664810&brddate=20260714040000&pgmID=9613&ordChannel=WE&tveshop=Y",
-      "prev_price": null,
-      "prev_date": null,
-      "last_change": null
     },
     "GS|1124816349": {
       "co": "GS",
@@ -12790,6 +12832,19 @@
       "prev_date": null,
       "last_change": null
     },
+    "GS|1132023712": {
+      "co": "GS",
+      "brand": "베리솔",
+      "pid": "1132023712",
+      "name": "베리솔 더 콜라겐구미 클래식 16주(총16봉)",
+      "price": 269000,
+      "soldout": false,
+      "src": "gs_html",
+      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1132023712&brddate=20260824031000&pgmID=9613&ordChannel=WE&tveshop=Y",
+      "prev_price": null,
+      "prev_date": null,
+      "last_change": null
+    },
     "GS|1132014537": {
       "co": "GS",
       "brand": "베리솔",
@@ -12799,19 +12854,6 @@
       "soldout": false,
       "src": "gs_html",
       "link": "https://www.gsshop.com/prd/prd.gs?prdid=1132014537&brddate=20260824031000&pgmID=9613&ordChannel=WE&tveshop=Y",
-      "prev_price": null,
-      "prev_date": null,
-      "last_change": null
-    },
-    "GS|1132023712": {
-      "co": "GS",
-      "brand": "베리솔",
-      "pid": "1132023712",
-      "name": "베리솔 더 콜라겐구미 클래식 16주(총16봉)",
-      "price": 269000,
-      "soldout": false,
-      "src": "gs_html",
-      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1132023712&brddate=20260731010000&pgmID=13352&ordChannel=WE&tveshop=Y",
       "prev_price": null,
       "prev_date": null,
       "last_change": null
@@ -12976,6 +13018,19 @@
       "prev_date": null,
       "last_change": null
     },
+    "GS|1110348998": {
+      "co": "GS",
+      "brand": "비에날씬",
+      "pid": "1110348998",
+      "name": "비에날씬 프로 다이어트 유산균 9박스 + 플러스 60포",
+      "price": 548000,
+      "soldout": false,
+      "src": "gs_html",
+      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1110348998&brddate=20260828071500&pgmID=13352&ordChannel=WE&tveshop=Y",
+      "prev_price": null,
+      "prev_date": null,
+      "last_change": null
+    },
     "GS|1116587687": {
       "co": "GS",
       "brand": "비에날씬",
@@ -12989,19 +13044,6 @@
       "prev_date": null,
       "last_change": null
     },
-    "GS|1110348998": {
-      "co": "GS",
-      "brand": "비에날씬",
-      "pid": "1110348998",
-      "name": "비에날씬 프로 다이어트 유산균 9박스 + 플러스 60포",
-      "price": 548000,
-      "soldout": false,
-      "src": "gs_html",
-      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1110348998&brddate=20260824092500&pgmID=13352&ordChannel=WE&tveshop=Y",
-      "prev_price": null,
-      "prev_date": null,
-      "last_change": null
-    },
     "GS|1061229354": {
       "co": "GS",
       "brand": "비에날씬",
@@ -13010,7 +13052,7 @@
       "price": 548000,
       "soldout": false,
       "src": "gs_html",
-      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1061229354&brddate=20260824092500&pgmID=13352&ordChannel=WE&tveshop=Y",
+      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1061229354&brddate=20260828071500&pgmID=13352&ordChannel=WE&tveshop=Y",
       "prev_price": null,
       "prev_date": null,
       "last_change": null
@@ -13135,22 +13177,6 @@
       "prev_date": null,
       "last_change": null
     },
-    "GS|1129919062": {
-      "co": "GS",
-      "brand": "세포랩",
-      "pid": "1129919062",
-      "name": "세포랩 스페셜 에디션 93% 155ml 4병+30ml 4병+100ml 1병+스프레이캡",
-      "price": 289000,
-      "soldout": false,
-      "src": "gs_html",
-      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1129919062&brddate=20260823100000&pgmID=6737&ordChannel=WE&tveshop=Y",
-      "prev_price": null,
-      "prev_date": null,
-      "last_change": {
-        "type": "name_change",
-        "date": "2026-08-07"
-      }
-    },
     "GS|1133662581": {
       "co": "GS",
       "brand": "세포랩",
@@ -13173,6 +13199,22 @@
       "soldout": false,
       "src": "gs_html",
       "link": "https://www.gsshop.com/prd/prd.gs?prdid=1129921305&brddate=20260817203800&pgmID=6737&ordChannel=WE&tveshop=Y",
+      "prev_price": null,
+      "prev_date": null,
+      "last_change": {
+        "type": "name_change",
+        "date": "2026-08-07"
+      }
+    },
+    "GS|1129919062": {
+      "co": "GS",
+      "brand": "세포랩",
+      "pid": "1129919062",
+      "name": "세포랩 스페셜 에디션 93% 155ml 4병+30ml 4병+100ml 1병+스프레이캡",
+      "price": 289000,
+      "soldout": false,
+      "src": "gs_html",
+      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1129919062&brddate=20260814193000&pgmID=6737&ordChannel=WE&tveshop=Y",
       "prev_price": null,
       "prev_date": null,
       "last_change": {
@@ -13275,15 +13317,15 @@
         "pct": 16.8
       }
     },
-    "GS|1116781038": {
+    "GS|1116779752": {
       "co": "GS",
       "brand": "스케쳐스",
-      "pid": "1116781038",
-      "name": "스케쳐스 26FW 최신상 남성용 맥스쿠셔닝 엔데버 슬립인스 워킹화",
+      "pid": "1116779752",
+      "name": "스케쳐스 26FW 최신상 여성용 맥스쿠셔닝 엔데버 슬립인스 워킹화",
       "price": 139000,
       "soldout": false,
       "src": "gs_html",
-      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1116781038&brddate=20260823203000&pgmID=12502&ordChannel=WE&tveshop=Y",
+      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1116779752&brddate=20260823203000&pgmID=12502&ordChannel=WE&tveshop=Y",
       "prev_price": null,
       "prev_date": null,
       "last_change": null
@@ -13413,16 +13455,16 @@
       "brand": "아쿠아스큐텀",
       "pid": "1103207260",
       "name": "아쿠아스큐텀 트렌치 원피스 [런칭 가격 109,900원]",
-      "price": 47940,
+      "price": 69900,
       "soldout": true,
       "src": "gs_html",
       "link": "https://www.gsshop.com/prd/prd.gs?prdid=1103207260&brddate=20260814145700&pgmID=13307&ordChannel=WE&tveshop=Y",
-      "prev_price": 69900,
-      "prev_date": "2026-08-22",
+      "prev_price": 47940,
+      "prev_date": "2026-08-23",
       "last_change": {
-        "type": "price_drop",
-        "date": "2026-08-22",
-        "pct": -31.4
+        "type": "price_raise",
+        "date": "2026-08-23",
+        "pct": 45.8
       }
     },
     "GS|1106364331": {
@@ -13430,16 +13472,16 @@
       "brand": "아쿠아스큐텀",
       "pid": "1106364331",
       "name": "아쿠아스큐텀 여성 헤리티지 윈콜 점퍼 [런칭 가격 99,900원]",
-      "price": 89900,
+      "price": 53940,
       "soldout": true,
       "src": "gs_html",
       "link": "https://www.gsshop.com/prd/prd.gs?prdid=1106364331&brddate=20260731183800&pgmID=13403&ordChannel=WE&tveshop=Y",
-      "prev_price": 62930,
-      "prev_date": "2026-08-01",
+      "prev_price": 89900,
+      "prev_date": "2026-08-23",
       "last_change": {
-        "type": "price_raise",
-        "date": "2026-08-01",
-        "pct": 42.9
+        "type": "price_drop",
+        "date": "2026-08-23",
+        "pct": -40.0
       }
     },
     "GS|1112286420": {
@@ -13997,6 +14039,36 @@
       "prev_date": null,
       "last_change": null
     },
+    "GS|1128329694": {
+      "co": "GS",
+      "brand": "종근당건강",
+      "pid": "1128329694",
+      "name": "종근당건강 관절연골엔 NEM 12개월+방송중 스텝퍼 사은품",
+      "price": 648000,
+      "soldout": false,
+      "src": "gs_html",
+      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1128329694&brddate=20260828163800&pgmID=13352&ordChannel=WE&tveshop=Y",
+      "prev_price": 198000,
+      "prev_date": "2026-08-22",
+      "last_change": {
+        "type": "price_raise",
+        "date": "2026-08-22",
+        "pct": 227.3
+      }
+    },
+    "GS|1133507480": {
+      "co": "GS",
+      "brand": "종근당건강",
+      "pid": "1133507480",
+      "name": "[99특가]종근당건강 락토핏다이어트 6통(6개월분)+핸디청소기",
+      "price": 129000,
+      "soldout": false,
+      "src": "gs_html",
+      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1133507480&brddate=20260823145500&pgmID=13352&ordChannel=WE&tveshop=Y",
+      "prev_price": null,
+      "prev_date": null,
+      "last_change": null
+    },
     "GS|1132048235": {
       "co": "GS",
       "brand": "종근당건강",
@@ -14006,40 +14078,6 @@
       "soldout": false,
       "src": "gs_html",
       "link": "https://www.gsshop.com/prd/prd.gs?prdid=1132048235&brddate=20260818102500&pgmID=13352&ordChannel=WE&tveshop=Y",
-      "prev_price": 198000,
-      "prev_date": "2026-08-22",
-      "last_change": {
-        "type": "price_raise",
-        "date": "2026-08-22",
-        "pct": 227.3
-      }
-    },
-    "GS|1132048437": {
-      "co": "GS",
-      "brand": "종근당건강",
-      "pid": "1132048437",
-      "name": "종근당건강 관절연골엔 난각막NEM 6개월",
-      "price": 648000,
-      "soldout": false,
-      "src": "gs_html",
-      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1132048437&brddate=20260818102500&pgmID=13352&ordChannel=WE&tveshop=Y",
-      "prev_price": 198000,
-      "prev_date": "2026-08-22",
-      "last_change": {
-        "type": "price_raise",
-        "date": "2026-08-22",
-        "pct": 227.3
-      }
-    },
-    "GS|1128329694": {
-      "co": "GS",
-      "brand": "종근당건강",
-      "pid": "1128329694",
-      "name": "종근당건강 관절연골엔 NEM 12개월+방송중 스텝퍼 사은품",
-      "price": 648000,
-      "soldout": false,
-      "src": "gs_html",
-      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1128329694&brddate=20260729093600&pgmID=13352&ordChannel=WE&tveshop=Y",
       "prev_price": 198000,
       "prev_date": "2026-08-22",
       "last_change": {
@@ -14247,16 +14285,16 @@
       "brand": "코지마",
       "pid": "1128224837",
       "name": "[코지마]코지마 목어깨마사지기 CMN-850WL",
-      "price": 198000,
+      "price": 1690000,
       "soldout": false,
       "src": "gs_html",
       "link": "https://www.gsshop.com/prd/prd.gs?prdid=1128224837&brddate=20260809173800&pgmID=872&ordChannel=WE&tveshop=Y",
-      "prev_price": 1690000,
-      "prev_date": "2026-08-22",
+      "prev_price": 198000,
+      "prev_date": "2026-08-23",
       "last_change": {
-        "type": "price_drop",
-        "date": "2026-08-22",
-        "pct": -88.3
+        "type": "price_raise",
+        "date": "2026-08-23",
+        "pct": 753.5
       }
     },
     "GS|1071537779": {
@@ -14267,7 +14305,7 @@
       "price": 338000,
       "soldout": false,
       "src": "gs_html",
-      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1071537779&brddate=20260823183800&pgmID=872&ordChannel=WE&tveshop=Y",
+      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1071537779&brddate=20260828183800&pgmID=872&ordChannel=WE&tveshop=Y",
       "prev_price": 281600,
       "prev_date": "2026-08-19",
       "last_change": {
@@ -14532,6 +14570,19 @@
       "prev_date": null,
       "last_change": null
     },
+    "GS|1112958708": {
+      "co": "GS",
+      "brand": "프리메로",
+      "pid": "1112958708",
+      "name": "프리메로 블루베리 리얼 100% 10박스+2박스(방송에서만) 총 12박스 (1박스 10포)",
+      "price": 129000,
+      "soldout": false,
+      "src": "gs_html",
+      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1112958708&brddate=20260823040000&pgmID=9613&ordChannel=WE&tveshop=Y",
+      "prev_price": null,
+      "prev_date": null,
+      "last_change": null
+    },
     "GS|1119903752": {
       "co": "GS",
       "brand": "프리메로",
@@ -14554,19 +14605,6 @@
       "soldout": false,
       "src": "gs_html",
       "link": "https://www.gsshop.com/prd/prd.gs?prdid=1113064247&brddate=20260823040000&pgmID=9613&ordChannel=WE&tveshop=Y",
-      "prev_price": null,
-      "prev_date": null,
-      "last_change": null
-    },
-    "GS|1122707101": {
-      "co": "GS",
-      "brand": "프리메로",
-      "pid": "1122707101",
-      "name": "D)프리메로 레몬즙 10박스",
-      "price": 98000,
-      "soldout": false,
-      "src": "gs_html",
-      "link": "https://www.gsshop.com/prd/prd.gs?prdid=1122707101&brddate=20260807073600&pgmID=13352&ordChannel=WE&tveshop=Y",
       "prev_price": null,
       "prev_date": null,
       "last_change": null
