@@ -20,6 +20,11 @@ recj.py가 매일 첫 프로그램에서 죽으면서 CJ 셀럽PGM 4개 파일�
   3) 이번 실행에서 갱신됨 (--mark로 찍어둔 시각 이후 mtime)
   4) 최소 건수 충족 (빈 껍데기 커밋 방지)
   5) 급감 감지 - 직전 커밋(git HEAD) 대비 건수가 임계 비율 밑으로 떨어졌는지
+  6) 누적기록 훼손 감지 (celeb) - history/{YYYY-MM}.json에서 '이미 방송된
+     회차'의 상품이 직전 커밋보다 줄거나 통째로 사라졌는지.
+     2026-08-22 왕영은의 톡투게더(08:20 방송) 기록 3건이 같은 날 저녁
+     수집분에 덮여 1건으로 줄어든 적이 있는데, 산출물 검사만으로는
+     아무도 못 잡았다 (per-program 파일은 정상이었다).
 
 == 사용법 ==
   # 수집 시작 직전
@@ -283,6 +288,80 @@ def check_one(rel_path, counter, min_count, required, mark_ts):
     return "ok", " / ".join(notes)
 
 
+HISTORY_DIR = f"{REP}/history"
+HISTORY_BUILDER = "fixed/build_celeb_history.py"
+
+
+def _already_started_fn():
+    """build_celeb_history.py의 '방송 시작' 판정을 그대로 빌려온다.
+    누적 규칙과 검사 기준이 갈라지면 검사가 무의미해지므로 재구현하지 않는다."""
+    import importlib.util
+    path = os.path.join(ROOT, "fixed", "build_celeb_history.py")
+    spec = importlib.util.spec_from_file_location("_celeb_history", path)
+    if spec is None or spec.loader is None:
+        return None
+    module = importlib.util.module_from_spec(spec)
+    try:
+        spec.loader.exec_module(module)
+    except Exception:  # 빌더가 깨졌으면 이 검사는 생략 (다른 검사로 잡힌다)
+        return None
+    return getattr(module, "already_started", None)
+
+
+def history_broadcasts(data):
+    """{(program_key, date): (건수, 라벨, 편성문구)}"""
+    out = {}
+    for prog in (data or {}).get("programs") or []:
+        key = prog.get("program_key")
+        schedule = prog.get("schedule_raw", "")
+        for b in prog.get("broadcasts") or []:
+            out[(key, b.get("date"))] = (len(b.get("products") or []),
+                                         b.get("label", ""), schedule)
+    return out
+
+
+def check_history_regressions():
+    """확정된(이미 시작된) 방송 기록이 줄거나 사라졌으면 실패 사유 리스트를 낸다."""
+    from datetime import datetime, timezone, timedelta
+
+    already_started = _already_started_fn()
+    if already_started is None:
+        return ["누적기록 검사 생략: fixed/build_celeb_history.py를 읽을 수 없음"]
+
+    now = datetime.now(timezone(timedelta(hours=9)))
+    problems = []
+    hist_dir = os.path.join(ROOT, HISTORY_DIR)
+    if not os.path.isdir(hist_dir):
+        return problems
+
+    for name in sorted(os.listdir(hist_dir)):
+        if not name.endswith(".json"):
+            continue
+        rel_path = f"{HISTORY_DIR}/{name}"
+        prev_data = previous_data(rel_path)
+        if prev_data is None:
+            continue  # 새로 생긴 월 파일
+        try:
+            now_data = read_json(os.path.join(hist_dir, name))
+        except (OSError, ValueError) as e:
+            problems.append(f"{rel_path}: JSON 파싱 실패 ({type(e).__name__})")
+            continue
+
+        before, after = history_broadcasts(prev_data), history_broadcasts(now_data)
+        for key, (was, label, schedule) in sorted(before.items()):
+            program_key, date_iso = key
+            if not already_started(date_iso, now, label, schedule):
+                continue  # 아직 시작 안 한 방송은 라인업이 바뀌는 게 정상
+            if key not in after:
+                problems.append(
+                    f"{rel_path}: [{program_key} {date_iso}] 확정 기록 {was}건이 통째로 사라짐")
+            elif after[key][0] < was:
+                problems.append(
+                    f"{rel_path}: [{program_key} {date_iso}] 확정 기록 {was} -> "
+                    f"{after[key][0]}건으로 줄어듦 (방송 후 잔여 노출에 덮였을 가능성)")
+    return problems
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--mark", action="store_true",
@@ -350,8 +429,19 @@ def main():
         elif status == "warn":
             warns.append(f"{rel_path}: {message}")
 
-    print(f"\n  정상 {len(SPECS[args.group]) - len(fails) - len(warns)}건 / "
-          f"경고 {len(warns)}건 / 실패 {len(fails)}건")
+    # 누적기록(history) 훼손 검사 - 산출물이 멀쩡해도 과거 기록이 덮이는 사고를 잡는다
+    if args.group == "celeb":
+        for problem in check_history_regressions():
+            print(f"  \u274c {problem}")
+            fails.append(problem)
+            add_finding(HISTORY_BUILDER, problem,
+                        "덮어쓰기 규칙(merge_into_month) 점검. 기록은 "
+                        "git에서 직전 정상 커밋의 회차를 되살려 복구한다")
+        if not fails:
+            print(f"  \u2705 {HISTORY_DIR}: 확정 방송 기록 유지됨")
+
+    ok_count = max(len(SPECS[args.group]) - len(fails) - len(warns), 0)
+    print(f"\n  정상 {ok_count}건 / 경고 {len(warns)}건 / 실패 {len(fails)}건")
 
     if fails or findings:
         print("\n[health] 수집 실패 항목이 있습니다:")

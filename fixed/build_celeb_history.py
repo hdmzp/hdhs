@@ -27,9 +27,16 @@ homeshopping/representative_programs/history/{YYYY-MM}.json
 }
 
 == 누적 규칙 ==
-- 같은 프로그램의 같은 방송일: 방송일이 오늘(KST) 이후면 최신 수집분으로
-  교체(방송 전에는 라인업이 바뀔 수 있음), 오늘보다 과거면 기존 기록을
-  절대 덮어쓰지 않는다(이미 확정된 지난 방송).
+- 같은 프로그램의 같은 방송일: '아직 시작 안 한 방송'만 최신 수집분으로
+  교체하고(방송 전에는 라인업이 바뀔 수 있다), 이미 시작한 방송은 기존
+  기록을 절대 덮어쓰지 않는다(확정된 기록).
+  판정 기준은 날짜가 아니라 '방송 시작 시각'이다. 날짜만 보면 방송 당일
+  저녁 수집분이 그날 아침 방송의 확정 기록을 덮어써서 날려버린다.
+  실제로 2026-08-22 왕영은의 톡투게더(08:20 방송) 기록 3건이, 같은 날
+  20:24 수집분에서 다음 회차 잔여 노출("8/22(토) 방송상품") 1건으로
+  교체되면서 통째로 사라졌다.
+  시작 시각은 기존 기록 라벨 -> 새 수집분 라벨 -> 편성문구(schedule_raw)
+  순으로 찾고, 어디서도 못 읽으면 '이미 시작함'으로 본다(보존 우선).
 - 상품 라벨에서 월/일을 못 읽는 상품은 건너뛴다(어느 방송인지 알 수 없음).
 - 라벨에 연도가 없으므로 "오늘과 가장 가까운 해석"으로 연도를 정한다
   (12월에 1/5 라벨 -> 내년, 1월에 12/28 라벨 -> 작년).
@@ -72,6 +79,53 @@ WEEKDAY_ABBR = ["월", "화", "수", "목", "금", "토", "일"]
 #   CJ: "07/20(월) 19:35"
 DATE_PATTERN = re.compile(r"(\d{1,2})\s*[/월]\s*(\d{1,2})")
 TIME_PATTERN = re.compile(r"(\d{1,2}:\d{2})")
+
+# 방송 시작 시각을 읽을 수 있는 표기들:
+#   라벨 "08/22(토) 08:20 방송", 편성문구 "매주 토요일 08시 20분" / "매주 월요일 19시"
+HM_PATTERNS = (
+    re.compile(r"(\d{1,2}):(\d{2})"),
+    re.compile(r"(\d{1,2})\s*시\s*(\d{1,2})\s*분"),
+    re.compile(r"(\d{1,2})\s*시"),
+)
+
+
+def parse_hm(text):
+    """문자열에서 (시, 분)을 뽑는다. 못 읽으면 None."""
+    if not text:
+        return None
+    for pattern in HM_PATTERNS:
+        m = pattern.search(text)
+        if not m:
+            continue
+        hour = int(m.group(1))
+        minute = int(m.group(2)) if m.lastindex >= 2 else 0
+        if 0 <= hour < 24 and 0 <= minute < 60:
+            return hour, minute
+    return None
+
+
+def already_started(date_iso: str, now: datetime, *time_hints) -> bool:
+    """해당 방송이 이미 시작됐는지. 시작한 방송의 기록은 확정으로 본다.
+
+    time_hints는 시작 시각을 읽을 후보 문자열들(앞에 올수록 우선).
+    어디서도 시각을 못 읽으면 True를 돌려 기존 기록을 보존한다 - 라인업이
+    조금 낡는 것보다 확정 기록이 날아가는 쪽이 훨씬 큰 손실이다."""
+    try:
+        brod_date = date.fromisoformat(date_iso)
+    except ValueError:
+        return True
+    if brod_date > now.date():
+        return False
+    if brod_date < now.date():
+        return True
+
+    for hint in time_hints:
+        hm = parse_hm(hint)
+        if hm:
+            start = datetime(brod_date.year, brod_date.month, brod_date.day,
+                             hm[0], hm[1], tzinfo=KST)
+            return now >= start
+    return True
 
 
 def parse_label_date(label: str, today: date):
@@ -166,9 +220,10 @@ def collect_current_broadcasts(today: date) -> dict:
 
 
 def merge_into_month(existing: dict, program_key: str, meta: dict,
-                     new_broadcasts: dict, today: date):
+                     new_broadcasts: dict, now: datetime):
     """월 파일의 프로그램 항목에 새 방송분을 병합한다.
-    오늘 이후 방송일은 최신 수집분으로 교체, 과거 방송일은 기존 기록 보존."""
+    아직 시작 안 한 방송만 최신 수집분으로 교체하고, 이미 시작한 방송의
+    기록은 보존한다(위 '누적 규칙' 참고)."""
     programs = existing.setdefault("programs", [])
     prog = next((p for p in programs if p.get("program_key") == program_key), None)
     if prog is None:
@@ -179,10 +234,18 @@ def merge_into_month(existing: dict, program_key: str, meta: dict,
         prog.update(meta)
 
     by_date = {b["date"]: b for b in prog.get("broadcasts") or []}
-    today_iso = today.isoformat()
     for date_iso, broadcast in new_broadcasts.items():
-        if date_iso in by_date and date_iso < today_iso:
-            continue  # 지난 방송 확정 기록은 보존
+        kept = by_date.get(date_iso)
+        # 시작 시각은 기존 기록 라벨을 가장 신뢰한다. 방송이 끝나면 사이트
+        # 라벨이 "8/22(토) 방송상품"처럼 시각 없는 잔여 표기로 바뀐다.
+        if kept and already_started(date_iso, now, kept.get("label"),
+                                    broadcast.get("label"),
+                                    meta.get("schedule_raw")):
+            kept_n, new_n = len(kept.get("products") or []), len(broadcast.get("products") or [])
+            if kept_n != new_n:  # 같은 건수면 조용히 넘어간다 (매 실행 반복되는 정상 상황)
+                print(f"[보존] {program_key} {date_iso}: 이미 시작된 방송이라 "
+                      f"기존 기록 {kept_n}건 유지 (수집분 {new_n}건 무시)")
+            continue
         by_date[date_iso] = broadcast
 
     # 최신 방송이 맨 위로 오도록 내림차순 정렬
@@ -195,7 +258,8 @@ def main():
         return
     os.makedirs(HISTORY_DIR, exist_ok=True)
 
-    today = datetime.now(KST).date()
+    now = datetime.now(KST)
+    today = now.date()
     collected = collect_current_broadcasts(today)
     if not collected:
         print("[경고] 누적할 셀럽PGM 데이터가 없음")
@@ -217,7 +281,7 @@ def main():
 
         for program_key, new_broadcasts in months[ym].items():
             merge_into_month(existing, program_key, collected[program_key]["meta"],
-                             new_broadcasts, today)
+                             new_broadcasts, now)
 
         # 프로그램 순서를 SOURCE_FILES 순서로 고정
         order = {f[:-len(".json")]: i for i, f in enumerate(SOURCE_FILES)}
