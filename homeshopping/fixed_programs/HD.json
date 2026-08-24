@@ -1,6 +1,6 @@
 {
   "company": "HD",
-  "collectedAt": "2026-08-24T04:46:37.459046+09:00",
+  "collectedAt": "2026-08-25T04:56:06.761919+09:00",
   "programs": [
     {
       "title": "왕영은의 톡투게더",
@@ -53,13 +53,20 @@
     {
       "title": "클럽 노블레스",
       "broadcast_title": "클럽노블레스",
-      "schedule_raw": "매주 토요일 11시 20분",
-      "day": "토",
-      "time": "11:20",
+      "schedule_raw": "매주 목요일 20시 45분 | 토요일 11시 20분",
+      "day": "목",
+      "time": "20:45",
       "desc": "#명품 방송 No.1 #예술이 된 일상",
       "thumbnail": "https://image.hmall.com/MH/HM005_SL/20260818/174548/disp3142330172433.png",
       "detail_link": "https://www.hmall.com/md/dpa/pgmComm?sectId=2718248",
-      "upcoming_products": []
+      "upcoming_products": [
+        {
+          "name": "페라가모 선글라스(SF600/S)",
+          "price": 168000,
+          "image": "https://image.hmall.com/2227706409_0.jpg",
+          "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2227706409"
+        }
+      ]
     },
     {
       "title": "서아랑의 쇼핑라이브",
@@ -96,16 +103,16 @@
       "detail_link": "https://www.hmall.com/md/dpa/pgmComm?sectId=3094173",
       "upcoming_products": [
         {
-          "name": "알레보 오브 파밀리아 키친툴 7P",
-          "price": 79800,
-          "image": "https://image.hmall.com/2251329848_0.jpg",
-          "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2251329848"
+          "name": "[단독/체험찬스] 에비스 칫솔 더프리미엄케어 24개 치주포켓",
+          "price": 99900,
+          "image": "https://image.hmall.com/2239375022_0.png",
+          "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2239375022"
         },
         {
-          "name": "영주 홍로사과 2.5kg x 2박스(총 5kg / 20∼24과)",
-          "price": 54900,
-          "image": "https://image.hmall.com/2252697911_0.jpg",
-          "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252697911"
+          "name": "[단독/체험찬스] 에비스 칫솔 더프리미엄케어 14개 치주포켓",
+          "price": 59800,
+          "image": "https://image.hmall.com/2239375019_0.png",
+          "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2239375019"
         }
       ]
     },
@@ -122,7 +129,7 @@
         {
           "name": "[방송에서만]카사리날디 DOP 12년산 모데나 발사믹 100ml x2병+화이트 와인 비니거 250ml",
           "price": 209900,
-          "image": "https://image.hmall.com/2252314131_0.jpg",
+          "image": "https://image.hmall.com/2252314131_0.png",
           "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252314131"
         },
         {
@@ -142,18 +149,20 @@
       "desc": "#평범하지만 특별한 #우리들의 패션 이야기",
       "thumbnail": "https://image.hmall.com/MH/HM005_SL/20260818/174625/disp3142330172433.png",
       "detail_link": "https://www.hmall.com/md/dpa/pgmComm?sectId=3131034",
-      "upcoming_products": []
-    },
-    {
-      "title": "플렉스샵",
-      "broadcast_title": "플렉스샵",
-      "schedule_raw": "매주 금요일 22시 40분",
-      "day": "금",
-      "time": "22:40",
-      "desc": "#금요일 밤, 취향이 깨어나는 순간 #프라이데이엔 FLEX!",
-      "thumbnail": "https://image.hmall.com/MH/HM005_SL/20260818/174633/disp3142330172433.png",
-      "detail_link": "https://www.hmall.com/md/dpa/pgmComm?sectId=3047038",
-      "upcoming_products": []
+      "upcoming_products": [
+        {
+          "name": "프리마클라쎄 호주산 울 100 체크 셔츠재킷 1종",
+          "price": 149000,
+          "image": "https://image.hmall.com/2252812907_0.png",
+          "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252812907"
+        },
+        {
+          "name": "프리마클라쎄 원턱 배럴 팬츠 1종",
+          "price": 129000,
+          "image": "https://image.hmall.com/2252813060_0.png",
+          "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252813060"
+        }
+      ]
     }
   ]
 }
