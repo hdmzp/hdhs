@@ -1,7 +1,41 @@
 {
   "month": "2026-09",
-  "updated_at": "2026-08-25T20:33:13.500120+09:00",
+  "updated_at": "2026-08-26T03:26:12.027415+09:00",
   "programs": [
+    {
+      "program_key": "HD_OGS",
+      "company": "HD",
+      "tab_name": "오감쇼",
+      "program_title": "오감쇼",
+      "schedule_raw": "매주 화요일 19시 30분",
+      "detail_link": "https://www.hmall.com/md/dpa/pgmComm?sectId=3094172",
+      "program_image": "",
+      "broadcasts": [
+        {
+          "date": "2026-09-01",
+          "label": "09/01(화) 19:30 방송",
+          "collected_at": "2026-08-26T03:26:12.018126+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "09/01(화) 19:30 방송",
+              "brand": "베스트넛츠",
+              "name": "베스트넛츠 프리미엄 견과 100봉 (20g x 20봉 x 5박스)",
+              "price": 89900,
+              "image": "https://image.hmall.com/2238849307_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2238849307"
+            },
+            {
+              "broadcast_date_label": "9/1(화) 방송상품",
+              "brand": "",
+              "name": "베스트넛츠 프리미엄 견과 1박스 (20g x 20봉)",
+              "price": 35000,
+              "image": "https://image.hmall.com/2240065284_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2240065284"
+            }
+          ]
+        }
+      ]
+    },
     {
       "program_key": "GS_SYJ",
       "company": "GS",
@@ -14,44 +48,8 @@
         {
           "date": "2026-09-04",
           "label": "09/04(금) 20:35 방송",
-          "collected_at": "2026-08-25T20:33:13.489759+09:00",
+          "collected_at": "2026-08-26T03:26:12.018126+09:00",
           "products": [
-            {
-              "prd_id": "1104929041",
-              "broadcast_date_label": "9월 4일(금) 20:35 방송",
-              "broadcast_iso": "2026-09-04T20:35:00",
-              "brand": "GS SHOP",
-              "name": "비에날씬 프로 다이어트 유산균(9박스)+상온보관 슬림 3박스(30포)",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1104929041"
-            },
-            {
-              "prd_id": "1061229354",
-              "broadcast_date_label": "9월 4일(금) 20:35 방송",
-              "broadcast_iso": "2026-09-04T20:35:00",
-              "brand": "GS SHOP",
-              "name": "비에날씬 프로 다이어트 유산균(6박스)",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1061229354"
-            },
-            {
-              "prd_id": "1061229467",
-              "broadcast_date_label": "9월 4일(금) 20:35 방송",
-              "broadcast_iso": "2026-09-04T20:35:00",
-              "brand": "GS SHOP",
-              "name": "비에날씬 프로 다이어트 유산균(3박스)",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1061229467"
-            },
-            {
-              "prd_id": "1061252928",
-              "broadcast_date_label": "9월 4일(금) 20:35 방송",
-              "broadcast_iso": "2026-09-04T20:35:00",
-              "brand": "GS SHOP",
-              "name": "비에날씬 프로 다이어트 유산균(1박스)",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1061252928"
-            },
             {
               "prd_id": "1134243238",
               "broadcast_date_label": "9월 4일(금) 20:35 방송",
@@ -141,6 +139,42 @@
               "name": "VASAK 바삭 김부각 시그니처 보리새우 김부각(손종원 셰프 에디션)",
               "price": null,
               "link": "https://m.gsshop.com/prd/prd.gs?prdid=1134244645"
+            },
+            {
+              "prd_id": "1104929041",
+              "broadcast_date_label": "9월 4일(금) 20:35 방송",
+              "broadcast_iso": "2026-09-04T20:35:00",
+              "brand": "GS SHOP",
+              "name": "비에날씬 프로 다이어트 유산균(9박스)+상온보관 슬림 3박스(30포)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1104929041"
+            },
+            {
+              "prd_id": "1061229354",
+              "broadcast_date_label": "9월 4일(금) 20:35 방송",
+              "broadcast_iso": "2026-09-04T20:35:00",
+              "brand": "GS SHOP",
+              "name": "비에날씬 프로 다이어트 유산균(6박스)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1061229354"
+            },
+            {
+              "prd_id": "1061229467",
+              "broadcast_date_label": "9월 4일(금) 20:35 방송",
+              "broadcast_iso": "2026-09-04T20:35:00",
+              "brand": "GS SHOP",
+              "name": "비에날씬 프로 다이어트 유산균(3박스)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1061229467"
+            },
+            {
+              "prd_id": "1061252928",
+              "broadcast_date_label": "9월 4일(금) 20:35 방송",
+              "broadcast_iso": "2026-09-04T20:35:00",
+              "brand": "GS SHOP",
+              "name": "비에날씬 프로 다이어트 유산균(1박스)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1061252928"
             }
           ]
         }
@@ -156,9 +190,48 @@
       "program_image": "",
       "broadcasts": [
         {
+          "date": "2026-09-05",
+          "label": "09/05(토) 08:20 방송",
+          "collected_at": "2026-08-26T03:26:12.018126+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "09/05 토요일 08:20",
+              "brand": "고트만",
+              "name": "[17종 기본풀세트] NEW 고트만 네오 크리스탈락 트라이탄 밀폐용기 17종 세트",
+              "price": 154000,
+              "image": "https://image2.lotteimall.com/goods/53/67/85/12856753_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12856753"
+            },
+            {
+              "broadcast_date_label": "09/05 토요일 08:20",
+              "brand": "고트만",
+              "name": "[4종 대용량세트] NEW 고트만 네오 크리스탈락 트라이탄 밀폐용기 대용량 핸들형 4종",
+              "price": 94000,
+              "image": "https://image2.lotteimall.com/goods/89/14/90/12901489_12.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12901489"
+            },
+            {
+              "broadcast_date_label": "09/05 토요일 09:20",
+              "brand": "에피큐리언",
+              "name": "[에피큐리언] 도마 4종 와이드 프로 논슬립 도마 세트 (대+중+소+거치대)",
+              "price": 159000,
+              "image": "https://image2.lotteimall.com/goods/99/80/88/12888099_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12888099"
+            },
+            {
+              "broadcast_date_label": "09/05 토요일 09:20",
+              "brand": "에피큐리언",
+              "name": "[에피큐리언] 조리도구 2종 나일론 조리도구 2종 (뒤집개+스푼)",
+              "price": 65000,
+              "image": "https://image2.lotteimall.com/goods/06/81/88/12888106_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12888106"
+            }
+          ]
+        },
+        {
           "date": "2026-09-03",
           "label": "09/03(목) 20:45 방송",
-          "collected_at": "2026-08-25T20:33:13.489759+09:00",
+          "collected_at": "2026-08-26T03:26:12.018126+09:00",
           "products": [
             {
               "broadcast_date_label": "09/03 목요일 20:45",
@@ -192,7 +265,7 @@
         {
           "date": "2026-09-01",
           "label": "09/01(화) 19:35 방송",
-          "collected_at": "2026-08-25T20:33:13.489759+09:00",
+          "collected_at": "2026-08-26T03:26:12.018126+09:00",
           "products": [
             {
               "broadcast_date_label": "09/01(화) 19:35",
