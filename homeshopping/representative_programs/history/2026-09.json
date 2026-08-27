@@ -1,6 +1,6 @@
 {
   "month": "2026-09",
-  "updated_at": "2026-08-27T13:30:46.408056+09:00",
+  "updated_at": "2026-08-28T05:57:46.102550+09:00",
   "programs": [
     {
       "program_key": "HD_OGS",
@@ -14,7 +14,7 @@
         {
           "date": "2026-09-01",
           "label": "09/01(화) 19:30 방송",
-          "collected_at": "2026-08-27T13:30:46.399181+09:00",
+          "collected_at": "2026-08-28T05:57:46.093994+09:00",
           "products": [
             {
               "broadcast_date_label": "09/01(화) 19:30 방송",
@@ -47,24 +47,158 @@
       "broadcasts": [
         {
           "date": "2026-09-02",
-          "label": "09/02(수) 방송",
-          "collected_at": "2026-08-27T13:30:46.399181+09:00",
+          "label": "09/02(수) 19:30 방송",
+          "collected_at": "2026-08-28T05:57:46.093994+09:00",
           "products": [
             {
-              "broadcast_date_label": "9/2(수) 방송상품",
-              "brand": "",
+              "broadcast_date_label": "09/02(수) 19:30 방송",
+              "brand": "머티리얼랩",
               "name": "[2종] 머티리얼랩 26FW 소프트 딥브이넥 스웻셔츠+레이스 뷔스티에",
               "price": 79900,
               "image": "https://image.hmall.com/2252267471_0.png",
               "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252267471"
             },
             {
+              "broadcast_date_label": "09/02(수) 19:30 방송",
+              "brand": "머티리얼랩",
+              "name": "머티리얼랩 26FW 울캐시 하트 스트라이프 카라 니트",
+              "price": 89900,
+              "image": "https://image.hmall.com/2251997644_0.png",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2251997644"
+            },
+            {
               "broadcast_date_label": "9/2(수) 방송상품",
               "brand": "",
-              "name": "머티리얼랩 26FW FAUX레더 멜로우 트렌치 자켓",
-              "price": 149000,
-              "image": "https://image.hmall.com/2252754819_0.jpeg",
-              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252754819"
+              "name": "[Handmade] 머티리얼랩 26FW 젬스톤 마그네틱 굿럭 목걸이",
+              "price": 189000,
+              "image": "https://image.hmall.com/2252831953_0.png",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252831953"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "program_key": "GS_BJY",
+      "company": "GS",
+      "tab_name": "백지연",
+      "program_title": "지금 백지연",
+      "schedule_raw": "매주 목요일 저녁 8시 45분",
+      "detail_link": "https://m.gsshop.com/section/broad/specialPgm/13437?mseq=W00618-TV_PRO_BB-1",
+      "program_image": "",
+      "broadcasts": [
+        {
+          "date": "2026-09-03",
+          "label": "09/03(목) 20:45 방송",
+          "collected_at": "2026-08-28T05:57:46.093994+09:00",
+          "products": [
+            {
+              "prd_id": "1134117198",
+              "broadcast_date_label": "9월 3일(목) 20:45 방송",
+              "broadcast_iso": "2026-09-03T20:45:00",
+              "brand": "GS SHOP",
+              "name": "[파이토리진] 유기농 야생 빌베리 12박스+6박스 더+보틀2개+쇼핑백",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1134117198"
+            },
+            {
+              "prd_id": "1134117738",
+              "broadcast_date_label": "9월 3일(목) 20:45 방송",
+              "broadcast_iso": "2026-09-03T20:45:00",
+              "brand": "GS SHOP",
+              "name": "파이토리진 유기농 NFC 착즙 야생 빌베리 6박스",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1134117738"
+            },
+            {
+              "prd_id": "1133728434",
+              "broadcast_date_label": "9월 3일(목) 20:45 방송",
+              "broadcast_iso": "2026-09-03T20:45:00",
+              "brand": "GS SHOP",
+              "name": "[HL사이언스] 닥터 프리바이오틱스 플러스 30포*6박스",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1133728434"
+            },
+            {
+              "prd_id": "1133267671",
+              "broadcast_date_label": "9월 3일(목) 20:45 방송",
+              "broadcast_iso": "2026-09-03T20:45:00",
+              "brand": "GS SHOP",
+              "name": "[HL사이언스] 의사가 성분배합한 PS300 60캡슐*6박스",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1133267671"
+            },
+            {
+              "prd_id": "1133267680",
+              "broadcast_date_label": "9월 3일(목) 20:45 방송",
+              "broadcast_iso": "2026-09-03T20:45:00",
+              "brand": "GS SHOP",
+              "name": "[HL사이언스] 닥터슈퍼칸 레이디 30캡슐*6박스",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1133267680"
+            },
+            {
+              "prd_id": "1133267691",
+              "broadcast_date_label": "9월 3일(목) 20:45 방송",
+              "broadcast_iso": "2026-09-03T20:45:00",
+              "brand": "GS SHOP",
+              "name": "[HL사이언스] 닥터슈퍼칸 에디션 30정*6박스",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1133267691"
+            },
+            {
+              "prd_id": "1133728462",
+              "broadcast_date_label": "9월 3일(목) 20:45 방송",
+              "broadcast_iso": "2026-09-03T20:45:00",
+              "brand": "GS SHOP",
+              "name": "[HL사이언스] 닥터슈퍼칸 밀크씨슬&루테인 4개월",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1133728462"
+            },
+            {
+              "prd_id": "1133728574",
+              "broadcast_date_label": "9월 3일(목) 20:45 방송",
+              "broadcast_iso": "2026-09-03T20:45:00",
+              "brand": "GS SHOP",
+              "name": "[HL사이언스] 닥터슈퍼칸 밀크씨슬&루테인 12개월",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1133728574"
+            },
+            {
+              "prd_id": "1133345433",
+              "broadcast_date_label": "9월 3일(목) 20:45 방송",
+              "broadcast_iso": "2026-09-03T20:45:00",
+              "brand": "GS SHOP",
+              "name": "원핏 밸런스미 콜린 미오 이노시톨 1박스 (총 14포)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1133345433"
+            },
+            {
+              "prd_id": "1133345435",
+              "broadcast_date_label": "9월 3일(목) 20:45 방송",
+              "broadcast_iso": "2026-09-03T20:45:00",
+              "brand": "GS SHOP",
+              "name": "원핏 밸런스미 콜린 미오 이노시톨 2박스 (총 28포)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1133345435"
+            },
+            {
+              "prd_id": "1133752679",
+              "broadcast_date_label": "9월 3일(목) 20:45 방송",
+              "broadcast_iso": "2026-09-03T20:45:00",
+              "brand": "GS SHOP",
+              "name": "웨지우드 원더러스트 티세트 2인조(6P)+2단스탠드",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1133752679"
+            },
+            {
+              "prd_id": "1133754216",
+              "broadcast_date_label": "9월 3일(목) 20:45 방송",
+              "broadcast_iso": "2026-09-03T20:45:00",
+              "brand": "GS SHOP",
+              "name": "웨지우드 원더러스트 티잔 2인조(4P)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1133754216"
             }
           ]
         }
@@ -82,7 +216,7 @@
         {
           "date": "2026-09-04",
           "label": "09/04(금) 20:35 방송",
-          "collected_at": "2026-08-27T13:30:46.399181+09:00",
+          "collected_at": "2026-08-28T05:57:46.093994+09:00",
           "products": [
             {
               "prd_id": "1104929041",
@@ -226,7 +360,7 @@
         {
           "date": "2026-09-05",
           "label": "09/05(토) 08:20 방송",
-          "collected_at": "2026-08-27T13:30:46.399181+09:00",
+          "collected_at": "2026-08-28T05:57:46.093994+09:00",
           "products": [
             {
               "broadcast_date_label": "09/05 토요일 08:20",
@@ -273,7 +407,7 @@
         {
           "date": "2026-09-03",
           "label": "09/03(목) 20:45 방송",
-          "collected_at": "2026-08-27T13:30:46.399181+09:00",
+          "collected_at": "2026-08-28T05:57:46.093994+09:00",
           "products": [
             {
               "broadcast_date_label": "09/03 목요일 20:45",
@@ -315,7 +449,7 @@
         {
           "date": "2026-09-02",
           "label": "09/02(수) 20:45 방송",
-          "collected_at": "2026-08-27T13:30:46.399181+09:00",
+          "collected_at": "2026-08-28T05:57:46.093994+09:00",
           "products": [
             {
               "broadcast_date_label": "09/02(수) 20:45",
@@ -362,7 +496,7 @@
               "brand": "온모락",
               "name": "[최화정쇼 최초공개] 100% 1등급 한우 사태로 만든 진짜 사태 곰탕 8팩 + 보냉백",
               "price": 84900,
-              "image": "goods_images/20/881/2092134881L.jpg?timestamp=20260826133742",
+              "image": "goods_images/20/881/2092134881L.jpg?timestamp=20260827140738",
               "link": "https://display.cjonstyle.com/p/item/2092134881?channelCode=30002002"
             },
             {
@@ -370,7 +504,7 @@
               "brand": "온모락",
               "name": "[최화정쇼 최초공개] 100% 1등급 한우 사태로 만든 진짜 사태 곰탕 8팩",
               "price": 84900,
-              "image": "goods_images/20/200/2092135200L.jpg?timestamp=20260826133824",
+              "image": "goods_images/20/200/2092135200L.jpg?timestamp=20260827140709",
               "link": "https://display.cjonstyle.com/p/item/2092135200?channelCode=30002002"
             },
             {
@@ -386,7 +520,7 @@
               "brand": "온모락",
               "name": "100% 1등급 한우 사태로 만든 진짜 사태 곰탕 4팩",
               "price": 54800,
-              "image": "goods_images/20/238/2092133238L.jpg?timestamp=20260826122209",
+              "image": "goods_images/20/238/2092133238L.jpg?timestamp=20260827140613",
               "link": "https://display.cjonstyle.com/p/item/2092133238?channelCode=30002002"
             },
             {
@@ -394,7 +528,7 @@
               "brand": "온모락",
               "name": "100% 1등급 한우 사태로 만든 진짜 사태 곰탕 8팩",
               "price": 105000,
-              "image": "goods_images/20/027/2092134027L.jpg?timestamp=20260826123039",
+              "image": "goods_images/20/027/2092134027L.jpg?timestamp=20260827140628",
               "link": "https://display.cjonstyle.com/p/item/2092134027?channelCode=30002002"
             }
           ]
@@ -413,7 +547,7 @@
         {
           "date": "2026-09-01",
           "label": "09/01(화) 19:35 방송",
-          "collected_at": "2026-08-27T13:30:46.399181+09:00",
+          "collected_at": "2026-08-28T05:57:46.093994+09:00",
           "products": [
             {
               "broadcast_date_label": "09/01(화) 19:35",
