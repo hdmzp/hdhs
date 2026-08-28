@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-08-28T15:13:01+09:00",
+  "collected_at": "2026-08-29T00:41:13+09:00",
   "companies": {
     "HD": {
       "name": "현대홈쇼핑",
@@ -278,7 +278,7 @@
       "source": "https://m.gsshop.com/index.gs",
       "status": "ok",
       "error": "",
-      "last_success": "2026-08-28T15:13:01+09:00",
+      "last_success": "2026-08-29T00:41:13+09:00",
       "days": {
         "2026-08-02": [
           {
@@ -597,7 +597,7 @@
       "source": "https://display.cjonstyle.com/p/homeTab/main?hmtabMenuId=H00009",
       "status": "ok",
       "error": "",
-      "last_success": "2026-08-28T15:13:01+09:00",
+      "last_success": "2026-08-29T00:41:13+09:00",
       "days": {
         "2026-08-02": [
           {
@@ -976,6 +976,20 @@
             "rate": 7,
             "max": true
           }
+        ],
+        "2026-08-29": [
+          {
+            "card": "KB국민카드",
+            "type": "즉시할인",
+            "rate": 5,
+            "max": true
+          },
+          {
+            "card": "토스페이 롯데카드",
+            "type": "즉시할인",
+            "rate": 7,
+            "max": true
+          }
         ]
       }
     },
@@ -984,7 +998,7 @@
       "source": "https://www.lotteimall.com/main/viewMain.lotte?dpml_no=1",
       "status": "ok",
       "error": "",
-      "last_success": "2026-08-28T15:13:01+09:00",
+      "last_success": "2026-08-29T00:41:13+09:00",
       "days": {
         "2026-08-02": [
           {
@@ -1213,6 +1227,18 @@
         "2026-08-29": [
           {
             "card": "삼성카드",
+            "type": "청구할인",
+            "rate": 5
+          }
+        ],
+        "2026-08-30": [
+          {
+            "card": "하나카드",
+            "type": "청구할인",
+            "rate": 5
+          },
+          {
+            "card": "NH농협카드",
             "type": "청구할인",
             "rate": 5
           }
