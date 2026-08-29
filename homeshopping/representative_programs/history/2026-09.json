@@ -1,6 +1,6 @@
 {
   "month": "2026-09",
-  "updated_at": "2026-08-29T10:20:57.548546+09:00",
+  "updated_at": "2026-08-29T13:07:57.387634+09:00",
   "programs": [
     {
       "program_key": "HD_OGS",
@@ -14,7 +14,7 @@
         {
           "date": "2026-09-01",
           "label": "09/01(화) 19:30 방송",
-          "collected_at": "2026-08-29T10:20:57.538985+09:00",
+          "collected_at": "2026-08-29T13:07:57.379044+09:00",
           "products": [
             {
               "broadcast_date_label": "09/01(화) 19:30 방송",
@@ -64,7 +64,7 @@
         {
           "date": "2026-09-02",
           "label": "09/02(수) 19:30 방송",
-          "collected_at": "2026-08-29T10:20:57.538985+09:00",
+          "collected_at": "2026-08-29T13:07:57.379044+09:00",
           "products": [
             {
               "broadcast_date_label": "09/02(수) 19:30 방송",
@@ -114,8 +114,26 @@
         {
           "date": "2026-09-03",
           "label": "09/03(목) 20:45 방송",
-          "collected_at": "2026-08-29T10:20:57.538985+09:00",
+          "collected_at": "2026-08-29T13:07:57.379044+09:00",
           "products": [
+            {
+              "prd_id": "1133752679",
+              "broadcast_date_label": "9월 3일(목) 20:45 방송",
+              "broadcast_iso": "2026-09-03T20:45:00",
+              "brand": "GS SHOP",
+              "name": "웨지우드 원더러스트 티세트 2인조(6P)+2단스탠드",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1133752679"
+            },
+            {
+              "prd_id": "1133754216",
+              "broadcast_date_label": "9월 3일(목) 20:45 방송",
+              "broadcast_iso": "2026-09-03T20:45:00",
+              "brand": "GS SHOP",
+              "name": "웨지우드 원더러스트 티잔 2인조(4P)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1133754216"
+            },
             {
               "prd_id": "1134117198",
               "broadcast_date_label": "9월 3일(목) 20:45 방송",
@@ -205,24 +223,6 @@
               "name": "원핏 밸런스미 콜린 미오 이노시톨 2박스 (총 28포)",
               "price": null,
               "link": "https://m.gsshop.com/prd/prd.gs?prdid=1133345435"
-            },
-            {
-              "prd_id": "1133752679",
-              "broadcast_date_label": "9월 3일(목) 20:45 방송",
-              "broadcast_iso": "2026-09-03T20:45:00",
-              "brand": "GS SHOP",
-              "name": "웨지우드 원더러스트 티세트 2인조(6P)+2단스탠드",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1133752679"
-            },
-            {
-              "prd_id": "1133754216",
-              "broadcast_date_label": "9월 3일(목) 20:45 방송",
-              "broadcast_iso": "2026-09-03T20:45:00",
-              "brand": "GS SHOP",
-              "name": "웨지우드 원더러스트 티잔 2인조(4P)",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1133754216"
             }
           ]
         }
@@ -240,7 +240,7 @@
         {
           "date": "2026-09-04",
           "label": "09/04(금) 20:35 방송",
-          "collected_at": "2026-08-29T10:20:57.538985+09:00",
+          "collected_at": "2026-08-29T13:07:57.379044+09:00",
           "products": [
             {
               "prd_id": "1134243238",
@@ -384,7 +384,7 @@
         {
           "date": "2026-09-05",
           "label": "09/05(토) 08:20 방송",
-          "collected_at": "2026-08-29T10:20:57.538985+09:00",
+          "collected_at": "2026-08-29T13:07:57.379044+09:00",
           "products": [
             {
               "broadcast_date_label": "09/05 토요일 08:20",
@@ -431,7 +431,7 @@
         {
           "date": "2026-09-03",
           "label": "09/03(목) 20:45 방송",
-          "collected_at": "2026-08-29T10:20:57.538985+09:00",
+          "collected_at": "2026-08-29T13:07:57.379044+09:00",
           "products": [
             {
               "broadcast_date_label": "09/03 목요일 20:45",
@@ -473,7 +473,7 @@
         {
           "date": "2026-09-02",
           "label": "09/02(수) 20:45 방송",
-          "collected_at": "2026-08-29T10:20:57.538985+09:00",
+          "collected_at": "2026-08-29T13:07:57.379044+09:00",
           "products": [
             {
               "broadcast_date_label": "09/02(수) 20:45",
@@ -563,7 +563,7 @@
         {
           "date": "2026-09-01",
           "label": "09/01(화) 19:35 방송",
-          "collected_at": "2026-08-29T10:20:57.538985+09:00",
+          "collected_at": "2026-08-29T13:07:57.379044+09:00",
           "products": [
             {
               "broadcast_date_label": "09/01(화) 19:35",
@@ -669,7 +669,7 @@
         {
           "date": "2026-09-08",
           "label": "09/08(화) 18:30 방송",
-          "collected_at": "2026-08-29T10:20:57.538985+09:00",
+          "collected_at": "2026-08-29T13:07:57.379044+09:00",
           "products": [
             {
               "broadcast_date_label": "09/08(화) 18:30",
