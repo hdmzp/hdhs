@@ -54,8 +54,21 @@ import sys
 import json
 import time
 import requests
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from calendar import monthrange
+
+KST = timezone(timedelta(hours=9))
+
+
+def now_kst() -> datetime:
+    """한국 시간 기준 현재 시각(naive).
+
+    GitHub Actions 러너는 UTC라 datetime.now()를 그대로 쓰면 한국 날짜와
+    하루 어긋난다(KST 05:30 실행 = UTC 전날 20:30). 그러면 예보를 전날
+    발표분으로 받아와 '오늘·미래 기온'이 비어 버린다. 날짜 계산은 모두 KST로.
+    """
+    return datetime.now(KST).replace(tzinfo=None)
+
 
 API_KEY = os.environ.get("API_KEY", "")
 if not API_KEY:
@@ -223,7 +236,7 @@ def collect_backfill(region_code: str, stn_id: str) -> bool:
     asos_dir = os.path.join(WEATHER_ROOT, "asos", region_code)
     os.makedirs(asos_dir, exist_ok=True)
 
-    now = datetime.now()
+    now = now_kst()
     # 전월의 마지막날까지가 백필 대상 (현재월은 별도 로직으로 처리)
     cursor = datetime(BACKFILL_START.year, BACKFILL_START.month, 1)
     failed = False
@@ -275,7 +288,7 @@ def collect_current_month(region_code: str, stn_id: str) -> bool:
     asos_dir = os.path.join(WEATHER_ROOT, "asos", region_code)
     os.makedirs(asos_dir, exist_ok=True)
 
-    now = datetime.now()
+    now = now_kst()
     yesterday = now - timedelta(days=1)
 
     # 이번 달 1일이 아직 안 지났으면(즉 오늘이 1일이면) 수집할 게 없음
@@ -303,70 +316,140 @@ def collect_current_month(region_code: str, stn_id: str) -> bool:
         return False
 
 
+# 단기예보 발표 시각(KST). 발표 후 10분쯤 뒤부터 조회가 안정적이다.
+FORECAST_BASE_TIMES = ["2300", "2000", "1700", "1400", "1100", "0800", "0500", "0200"]
+FORECAST_PUBLISH_DELAY_MIN = 15
+
+
+def forecast_base_candidates(now: datetime, count: int = 4) -> list:
+    """지금 시점에서 조회 가능한 (base_date, base_time)을 최신순으로 만든다.
+
+    발표 직후라 아직 응답이 없거나 특정 회차가 결측일 수 있으므로 몇 회차
+    앞까지 후보를 만들어 두고 순서대로 시도한다.
+    """
+    cutoff = now - timedelta(minutes=FORECAST_PUBLISH_DELAY_MIN)
+    candidates = []
+    day = 0
+    while len(candidates) < count and day < 2:
+        d = cutoff - timedelta(days=day)
+        for bt in FORECAST_BASE_TIMES:
+            if day == 0 and int(bt) > int(d.strftime("%H%M")):
+                continue  # 아직 발표되지 않은 회차
+            candidates.append((d.strftime("%Y%m%d"), bt))
+            if len(candidates) >= count:
+                break
+        day += 1
+    return candidates
+
+
+def summarize_forecast_items(items: list) -> dict:
+    """예보 항목을 날짜별 {minTa, maxTa, pop_max}로 요약.
+
+    TMN/TMX는 하루 한 번만 실리기 때문에, 이미 지난 시각의 회차이거나
+    예보 마지막 날처럼 잘린 구간에서는 빠진다. 그 경우 시간별 기온(TMP)의
+    최저/최고로 채워서 '기온이 아예 안 보이는' 상황을 막는다.
+    """
+    by_date = {}
+    for it in items:
+        fdate = it.get("fcstDate")
+        category = it.get("category")
+        value = it.get("fcstValue")
+        if not fdate:
+            continue
+        entry = by_date.setdefault(
+            fdate, {"minTa": None, "maxTa": None, "pop_list": [], "tmp_list": []}
+        )
+        if category == "TMN":
+            entry["minTa"] = safe_float(value, None)
+        elif category == "TMX":
+            entry["maxTa"] = safe_float(value, None)
+        elif category == "TMP":
+            tmp = safe_float(value, None)
+            if tmp is not None:
+                entry["tmp_list"].append(tmp)
+        elif category == "POP":
+            entry["pop_list"].append(safe_float(value))
+
+    result = {}
+    for fdate, entry in by_date.items():
+        iso_date = f"{fdate[:4]}-{fdate[4:6]}-{fdate[6:8]}"
+        min_ta = entry["minTa"]
+        max_ta = entry["maxTa"]
+        if min_ta is None and entry["tmp_list"]:
+            min_ta = min(entry["tmp_list"])
+        if max_ta is None and entry["tmp_list"]:
+            max_ta = max(entry["tmp_list"])
+        result[iso_date] = {
+            "minTa": min_ta,
+            "maxTa": max_ta,
+            "pop_max": max(entry["pop_list"]) if entry["pop_list"] else 0.0,
+        }
+    return result
+
+
 def collect_forecast(region_code: str, nx: int, ny: int) -> bool:
     """단기예보: 오늘~글피, 일자별 최저/최고/강수확률 최댓값 요약. (지역별 디렉토리)"""
     forecast_dir = os.path.join(WEATHER_ROOT, "forecast", region_code)
     os.makedirs(forecast_dir, exist_ok=True)
 
-    now = datetime.now()
-    base_date = now.strftime("%Y%m%d")
-    base_time = "0200"  # 가장 안정적으로 발표 완료된 시각 기준
-
-    params = {
-        "serviceKey": API_KEY,
-        "pageNo": "1",
-        "numOfRows": "1000",
-        "dataType": "JSON",
-        "base_date": base_date,
-        "base_time": base_time,
-        "nx": nx,
-        "ny": ny,
-    }
+    now = now_kst()
+    today = now.strftime("%Y-%m-%d")
+    out_path = os.path.join(forecast_dir, "latest.json")
 
     print(f"  [예보][{region_code}] 단기예보 수집 중...")
-    try:
-        data = request_json(FORECAST_PATH, params)
+    fetched = {}
+    last_err = None
+    for base_date, base_time in forecast_base_candidates(now):
+        params = {
+            "serviceKey": API_KEY,
+            "pageNo": "1",
+            "numOfRows": "1000",
+            "dataType": "JSON",
+            "base_date": base_date,
+            "base_time": base_time,
+            "nx": nx,
+            "ny": ny,
+        }
+        try:
+            data = request_json(FORECAST_PATH, params)
+            header = data.get("response", {}).get("header", {})
+            if header.get("resultCode") != "00":
+                raise RuntimeError(
+                    f"예보 API 오류: {header.get('resultCode')} {header.get('resultMsg')}"
+                )
+            items = normalize_items(data.get("response", {}).get("body", {}))
+            summarized = summarize_forecast_items(items)
+            if not summarized:
+                raise RuntimeError("예보 항목이 비어 있음")
+            fetched = summarized
+            print(f"    발표기준 {base_date} {base_time}")
+            break
+        except Exception as e:
+            last_err = e
+            print(f"    [재시도] {base_date} {base_time}: {e}")
 
-        header = data.get("response", {}).get("header", {})
-        if header.get("resultCode") != "00":
-            raise RuntimeError(f"예보 API 오류: {header.get('resultCode')} {header.get('resultMsg')}")
-
-        items = data.get("response", {}).get("body", {}).get("items", {}).get("item", [])
-
-        by_date = {}  # {fcstDate: {"minTa":.., "maxTa":.., "pop_list":[...]}}
-        for it in items:
-            fdate = it.get("fcstDate")
-            category = it.get("category")
-            value = it.get("fcstValue")
-            if not fdate:
-                continue
-            entry = by_date.setdefault(fdate, {"minTa": None, "maxTa": None, "pop_list": []})
-            if category == "TMN":
-                entry["minTa"] = safe_float(value)
-            elif category == "TMX":
-                entry["maxTa"] = safe_float(value)
-            elif category == "POP":
-                entry["pop_list"].append(safe_float(value))
-
-        result = {}
-        for fdate, entry in by_date.items():
-            iso_date = f"{fdate[:4]}-{fdate[4:6]}-{fdate[6:8]}"
-            pop_max = max(entry["pop_list"]) if entry["pop_list"] else 0.0
-            result[iso_date] = {
-                "minTa": entry["minTa"],
-                "maxTa": entry["maxTa"],
-                "pop_max": pop_max,
-            }
-
-        out_path = os.path.join(forecast_dir, "latest.json")
-        with open(out_path, "w", encoding="utf-8") as f:
-            json.dump(result, f, ensure_ascii=False, indent=2)
-        print(f"    -> {len(result)}일 저장: {out_path}")
-        return True
-
-    except Exception as e:
-        print(f"    [실패] 예보 수집: {e}")
+    if not fetched:
+        print(f"    [실패] 예보 수집: {last_err}")
         return False
+
+    # 응답이 일부만 와도 이미 받아둔 값을 잃지 않도록 병합한다.
+    # 지난 날짜는 ASOS 실측이 대신하므로 예보 파일에서 정리한다.
+    existing = load_month_file(out_path) if os.path.exists(out_path) else {}
+    merged = {k: v for k, v in existing.items() if k >= today}
+    for date_str, new in fetched.items():
+        if date_str < today:
+            continue
+        old = merged.get(date_str) or {}
+        merged[date_str] = {
+            "minTa": new["minTa"] if new["minTa"] is not None else old.get("minTa"),
+            "maxTa": new["maxTa"] if new["maxTa"] is not None else old.get("maxTa"),
+            "pop_max": new["pop_max"],
+        }
+
+    with open(out_path, "w", encoding="utf-8") as f:
+        json.dump(dict(sorted(merged.items())), f, ensure_ascii=False, indent=2)
+    print(f"    -> {len(merged)}일 저장: {out_path}")
+    return True
 
 
 def normalize_items(body: dict) -> list:
@@ -463,7 +546,7 @@ def collect_yearly(label: str, subdir: str, fetch_fn) -> bool:
     out_dir = os.path.join(WEATHER_ROOT, subdir)
     os.makedirs(out_dir, exist_ok=True)
 
-    now = datetime.now()
+    now = now_kst()
     # 내년까지 받아둬야 12월에 다음 해 달력을 넘겨봤을 때 비지 않는다
     last_year = now.year + 1
     failed = False
