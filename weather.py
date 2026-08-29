@@ -24,8 +24,19 @@ asos/{지역코드}/{YYYY-MM}.json:
   - sumRn은 강수 없는 날 0.0으로 정규화
 
 forecast/{지역코드}/latest.json:
-  { "YYYY-MM-DD": {"minTa": 18.0, "maxTa": 29.0, "pop_max": 60}, ... }
+  { "YYYY-MM-DD": {"minTa": 18.0, "maxTa": 29.0, "pop_max": 60, "source": "kma"}, ... }
   - pop_max: 그날 시간대별 강수확률(POP) 중 최댓값
+  - source: 이 값을 어디서 받았는지 (kma / open-meteo)
+
+== 예보 수집 폴백 ==
+- 기상청(apis.data.go.kr)이 GitHub Actions 러너에서 통째로 막히는 날이 있다
+  (전 요청 ConnectTimeout). 그날은 예보가 갱신되지 않아 날씨 탭에 오늘·미래
+  기온이 비어 보인다. 기상청이 실패하면 Open-Meteo(무료/키 불필요)로 같은
+  형식의 예보를 받아 채우고, 둘 다 실패하면 기존 파일을 건드리지 않는다.
+
+== 시간대 ==
+- 모든 날짜 계산은 한국시간(KST) 기준. 워크플로우는 UTC 20:30(=KST 05:30)에
+  도는데 UTC로 '오늘'을 잡으면 하루 전 날짜로 예보를 요청하게 된다.
 
 holiday/{YYYY}.json:
   { "YYYY-MM-DD": "광복절", ... }
@@ -80,18 +91,25 @@ if not API_KEY:
 # HOLIDAY_API_KEY가 없으면 기존 키를 그대로 쓴다(하위호환).
 HOLIDAY_API_KEY = os.environ.get("HOLIDAY_API_KEY", "") or API_KEY
 
-# 지역코드: {ASOS 관측소ID(stn), 단기예보 격자(nx, ny)}
+# 지역코드: {ASOS 관측소ID(stn), 단기예보 격자(nx, ny), 폴백용 위경도(lat, lon)}
 # 좌표는 기상청 공식 ASOS 지점코드 및 단기예보 격자표 기준 (광역시 대표 지점)
 REGIONS = {
-    "seoul":   {"name": "서울", "stn": "108", "nx": 60,  "ny": 127},
-    "busan":   {"name": "부산", "stn": "159", "nx": 98,  "ny": 76},
-    "daegu":   {"name": "대구", "stn": "143", "nx": 89,  "ny": 90},
-    "incheon": {"name": "인천", "stn": "112", "nx": 55,  "ny": 124},
-    "gwangju": {"name": "광주", "stn": "156", "nx": 58,  "ny": 74},
-    "daejeon": {"name": "대전", "stn": "133", "nx": 67,  "ny": 100},
-    "ulsan":   {"name": "울산", "stn": "152", "nx": 102, "ny": 84},
-    "sejong":  {"name": "세종", "stn": "239", "nx": 66,  "ny": 103},
+    "seoul":   {"name": "서울", "stn": "108", "nx": 60,  "ny": 127, "lat": 37.5665, "lon": 126.978},
+    "busan":   {"name": "부산", "stn": "159", "nx": 98,  "ny": 76, "lat": 35.1796, "lon": 129.0756},
+    "daegu":   {"name": "대구", "stn": "143", "nx": 89,  "ny": 90, "lat": 35.8714, "lon": 128.6014},
+    "incheon": {"name": "인천", "stn": "112", "nx": 55,  "ny": 124, "lat": 37.4563, "lon": 126.7052},
+    "gwangju": {"name": "광주", "stn": "156", "nx": 58,  "ny": 74, "lat": 35.1595, "lon": 126.8526},
+    "daejeon": {"name": "대전", "stn": "133", "nx": 67,  "ny": 100, "lat": 36.3504, "lon": 127.3845},
+    "ulsan":   {"name": "울산", "stn": "152", "nx": 102, "ny": 84, "lat": 35.5384, "lon": 129.3114},
+    "sejong":  {"name": "세종", "stn": "239", "nx": 66,  "ny": 103, "lat": 36.48, "lon": 127.289},
 }
+
+# 기상청(apis.data.go.kr)이 러너에서 통째로 막히는 날이 있다(ConnectTimeout).
+# 그날은 예보가 갱신되지 않아 날씨 탭에 오늘·미래 기온이 비어 보인다.
+# 키가 필요 없는 Open-Meteo를 예비 출처로 둔다.
+OPEN_METEO_URL = "https://api.open-meteo.com/v1/forecast"
+FORECAST_DAYS = 4        # 오늘 + 앞으로 3일
+FALLBACK_PAST_DAYS = 3   # 폴백 시 최근 며칠도 같이 받아 ASOS 공백을 임시로 메움
 
 ASOS_PATH = "/1360000/AsosDalyInfoService/getWthrDataList"
 FORECAST_PATH = "/1360000/VilageFcstInfoService_2.0/getVilageFcst"
@@ -113,8 +131,11 @@ WEATHER_ROOT = "weather"
 BACKFILL_START = datetime(2023, 1, 1)
 REQUEST_DELAY_SEC = 0.5
 REQUEST_TIMEOUT_SEC = 20
+REQUEST_CONNECT_TIMEOUT_SEC = 5  # 접속 제한. 막힌 호스트에 20초씩 매달리면
+                                 # 지역 8곳 x 요청 2종에 15분이 날아가 잡 타임아웃에 닿는다
 MAX_RETRIES = 3
 RETRY_BACKOFF_SEC = 2
+MIN_TMP_SAMPLES = 3  # TMN/TMX 없는 날을 시간별 기온으로 채울 최소 표본 수
 FAILFAST_AFTER = 3  # 연속 실패가 이만큼 쌓이면 재시도 없이 즉시 포기
 
 
@@ -128,37 +149,45 @@ def safe_float(v, default=0.0):
         return default
 
 
-_consecutive_failures = 0
+# 출처(기상청/Open-Meteo)별 연속 실패 횟수. 기상청이 죽었다고 폴백까지
+# 재시도 없이 포기해 버리면 폴백이 폴백 역할을 못 한다.
+_consecutive_failures = {}
 
 
-def request_json(path: str, params: dict) -> dict:
-    """공공데이터포털 API 호출. https 우선 + http 폴백, 실패 시 백오프 재시도.
+def request_json_urls(urls: list, params: dict, group: str) -> dict:
+    """주어진 URL 후보들을 순서대로 호출. 실패 시 백오프 재시도.
 
-    API 전면 장애 시 (지역 8곳 x 요청 3종)에 매번 재시도를 다 돌면 워크플로우
-    타임아웃을 넘긴다. 연속 실패가 쌓이면 재시도 없이 바로 포기한다(성공하면 해제).
+    API 전면 장애 시 (지역 8곳 x 요청 여러 종)에 매번 재시도를 다 돌면
+    워크플로우 타임아웃을 넘긴다. 같은 출처에서 연속 실패가 쌓이면 재시도 없이
+    바로 포기한다(성공하면 해제).
     """
-    global _consecutive_failures
-
-    failfast = _consecutive_failures >= FAILFAST_AFTER
+    failfast = _consecutive_failures.get(group, 0) >= FAILFAST_AFTER
     attempts = 1 if failfast else MAX_RETRIES
-    hosts = API_HOSTS[:1] if failfast else API_HOSTS
+    targets = urls[:1] if failfast else urls
 
     last_err = None
     for attempt in range(attempts):
-        for host in hosts:
+        for url in targets:
             try:
-                resp = requests.get(host + path, params=params, timeout=REQUEST_TIMEOUT_SEC)
+                resp = requests.get(
+                    url, params=params,
+                    timeout=(REQUEST_CONNECT_TIMEOUT_SEC, REQUEST_TIMEOUT_SEC))
                 resp.raise_for_status()
                 data = resp.json()
-                _consecutive_failures = 0
+                _consecutive_failures[group] = 0
                 return data
             except Exception as e:  # 연결 실패 / HTTP 에러 / JSON 아닌 응답
                 last_err = e
         if attempt < attempts - 1:
             time.sleep(RETRY_BACKOFF_SEC * (2 ** attempt))
 
-    _consecutive_failures += 1
-    raise RuntimeError(f"요청 실패 ({path}): {last_err}")
+    _consecutive_failures[group] = _consecutive_failures.get(group, 0) + 1
+    raise RuntimeError(f"요청 실패 ({urls[0]}): {last_err}")
+
+
+def request_json(path: str, params: dict) -> dict:
+    """공공데이터포털 API 호출. https 우선 + http 폴백."""
+    return request_json_urls([host + path for host in API_HOSTS], params, "kma")
 
 
 def fetch_asos_range(start_dt: str, end_dt: str, stn_id: str) -> dict:
@@ -375,29 +404,26 @@ def summarize_forecast_items(items: list) -> dict:
         iso_date = f"{fdate[:4]}-{fdate[4:6]}-{fdate[6:8]}"
         min_ta = entry["minTa"]
         max_ta = entry["maxTa"]
-        if min_ta is None and entry["tmp_list"]:
-            min_ta = min(entry["tmp_list"])
-        if max_ta is None and entry["tmp_list"]:
-            max_ta = max(entry["tmp_list"])
+        # 예보 창 끝에 한두 시간만 걸친 날은 TMP로 채우면 최저=최고가 되어
+        # 하루 기온처럼 보이지 않는다. 표본이 충분한 날만 채운다.
+        usable_tmp = entry["tmp_list"] if len(entry["tmp_list"]) >= MIN_TMP_SAMPLES else []
+        if min_ta is None and usable_tmp:
+            min_ta = min(usable_tmp)
+        if max_ta is None and usable_tmp:
+            max_ta = max(usable_tmp)
+        if min_ta is None and max_ta is None:
+            continue  # 기온 없는 껍데기는 화면에 '최저 –/최고 –'로만 보인다
         result[iso_date] = {
             "minTa": min_ta,
             "maxTa": max_ta,
             "pop_max": max(entry["pop_list"]) if entry["pop_list"] else 0.0,
+            "source": "kma",
         }
     return result
 
 
-def collect_forecast(region_code: str, nx: int, ny: int) -> bool:
-    """단기예보: 오늘~글피, 일자별 최저/최고/강수확률 최댓값 요약. (지역별 디렉토리)"""
-    forecast_dir = os.path.join(WEATHER_ROOT, "forecast", region_code)
-    os.makedirs(forecast_dir, exist_ok=True)
-
-    now = now_kst()
-    today = now.strftime("%Y-%m-%d")
-    out_path = os.path.join(forecast_dir, "latest.json")
-
-    print(f"  [예보][{region_code}] 단기예보 수집 중...")
-    fetched = {}
+def fetch_forecast_kma(nx: int, ny: int, now: datetime) -> dict:
+    """기상청 단기예보. 발표 회차를 최신순으로 시도해 첫 성공분을 요약해 돌려준다."""
     last_err = None
     for base_date, base_time in forecast_base_candidates(now):
         params = {
@@ -417,38 +443,135 @@ def collect_forecast(region_code: str, nx: int, ny: int) -> bool:
                 raise RuntimeError(
                     f"예보 API 오류: {header.get('resultCode')} {header.get('resultMsg')}"
                 )
-            items = normalize_items(data.get("response", {}).get("body", {}))
-            summarized = summarize_forecast_items(items)
+            summarized = summarize_forecast_items(
+                normalize_items(data.get("response", {}).get("body", {})))
             if not summarized:
                 raise RuntimeError("예보 항목이 비어 있음")
-            fetched = summarized
             print(f"    발표기준 {base_date} {base_time}")
-            break
+            return summarized
         except Exception as e:
             last_err = e
             print(f"    [재시도] {base_date} {base_time}: {e}")
+    raise RuntimeError(f"기상청 예보 실패: {last_err}")
 
-    if not fetched:
-        print(f"    [실패] 예보 수집: {last_err}")
+
+def fetch_forecast_openmeteo(lat: float, lon: float) -> dict:
+    """폴백 예보(Open-Meteo). 기상청과 같은 형식으로 반환.
+
+    기상청 API가 막힌 날에도 미래 예보가 비지 않도록 쓰는 예비 출처다.
+    최근 며칠(FALLBACK_PAST_DAYS)도 같이 받아, ASOS 관측이 아직 안 들어온
+    날의 임시 표시에 쓴다.
+    """
+    params = {
+        "latitude": lat,
+        "longitude": lon,
+        "daily": "temperature_2m_min,temperature_2m_max,precipitation_probability_max",
+        "timezone": "Asia/Seoul",
+        "forecast_days": FORECAST_DAYS,
+        "past_days": FALLBACK_PAST_DAYS,
+    }
+    data = request_json_urls([OPEN_METEO_URL], params, "open-meteo")
+
+    daily = data.get("daily") or {}
+    dates = daily.get("time") or []
+    mins = daily.get("temperature_2m_min") or []
+    maxs = daily.get("temperature_2m_max") or []
+    pops = daily.get("precipitation_probability_max") or []
+
+    result = {}
+    for i, iso_date in enumerate(dates):
+        min_ta = safe_float(mins[i], None) if i < len(mins) else None
+        max_ta = safe_float(maxs[i], None) if i < len(maxs) else None
+        if min_ta is None and max_ta is None:
+            continue
+        result[iso_date] = {
+            "minTa": min_ta,
+            "maxTa": max_ta,
+            "pop_max": safe_float(pops[i]) if i < len(pops) else 0.0,
+            "source": "open-meteo",
+        }
+    if not result:
+        raise RuntimeError("Open-Meteo 응답에 일자료가 없음")
+    return result
+
+
+def has_temp(entry: dict) -> bool:
+    """최저/최고 중 하나라도 값이 있는지. 둘 다 없으면 화면에 '–'만 남는다."""
+    return isinstance(entry, dict) and (
+        entry.get("minTa") is not None or entry.get("maxTa") is not None)
+
+
+def carry_over_past(region_code: str, existing: dict, fresh: dict, today: str) -> dict:
+    """새 예보 창(오늘~글피) + '아직 ASOS 관측이 없는 지난 날'만 남긴다.
+
+    프론트는 같은 날짜에 대해 예보를 관측보다 먼저 쓴다. 지난 날짜를 무한정
+    들고 있으면 나중에 들어온 실제 관측값을 계속 가리므로, ASOS에 이미 있는
+    날은 버린다. 반대로 ASOS가 아직 비어 있는 최근 며칠은 남겨야 달력에
+    '정보없음' 구멍이 생기지 않는다.
+    """
+    asos_cache = {}
+
+    def asos_has(date_str: str) -> bool:
+        ym = date_str[:7]
+        if ym not in asos_cache:
+            asos_cache[ym] = load_month_file(
+                os.path.join(WEATHER_ROOT, "asos", region_code, f"{ym}.json"))
+        return date_str in asos_cache[ym]
+
+    merged = {}
+    for date_str, entry in fresh.items():
+        # 폴백 출처는 지난 며칠도 같이 주는데, 실제 관측이 있는 날은 그쪽이 우선이다
+        if date_str < today and asos_has(date_str):
+            continue
+        merged[date_str] = entry
+
+    for date_str, entry in existing.items():
+        if date_str >= today or date_str in merged:
+            continue  # 오늘 이후는 새 예보로 갈아끼운다
+        if asos_has(date_str) or not has_temp(entry):
+            continue
+        merged[date_str] = entry
+
+    return merged
+
+
+def collect_forecast(region_code: str, info: dict) -> bool:
+    """단기예보: 오늘~글피, 일자별 최저/최고/강수확률 최댓값 요약. (지역별 디렉토리)
+
+    기상청 -> Open-Meteo 순으로 시도하고, 둘 다 실패하면 기존 파일을 그대로 둔다
+    (빈 결과로 덮어써서 미래 예보가 통째로 사라지는 것을 막는다).
+    """
+    forecast_dir = os.path.join(WEATHER_ROOT, "forecast", region_code)
+    os.makedirs(forecast_dir, exist_ok=True)
+
+    now = now_kst()
+    print(f"  [예보][{region_code}] 단기예보 수집 중...")
+
+    fresh = None
+    try:
+        fresh = fetch_forecast_kma(info["nx"], info["ny"], now)
+    except Exception as e:
+        print(f"    [기상청 실패] {e}")
+
+    if not fresh:
+        print(f"    [폴백][{region_code}] Open-Meteo로 재시도...")
+        try:
+            fresh = fetch_forecast_openmeteo(info["lat"], info["lon"])
+        except Exception as e:
+            print(f"    [폴백 실패] {e}")
+
+    if not fresh:
+        print("    [실패] 예보 수집: 모든 출처 실패 (기존 파일 유지)")
         return False
 
-    # 응답이 일부만 와도 이미 받아둔 값을 잃지 않도록 병합한다.
-    # 지난 날짜는 ASOS 실측이 대신하므로 예보 파일에서 정리한다.
+    out_path = os.path.join(forecast_dir, "latest.json")
     existing = load_month_file(out_path) if os.path.exists(out_path) else {}
-    merged = {k: v for k, v in existing.items() if k >= today}
-    for date_str, new in fetched.items():
-        if date_str < today:
-            continue
-        old = merged.get(date_str) or {}
-        merged[date_str] = {
-            "minTa": new["minTa"] if new["minTa"] is not None else old.get("minTa"),
-            "maxTa": new["maxTa"] if new["maxTa"] is not None else old.get("maxTa"),
-            "pop_max": new["pop_max"],
-        }
+    merged = carry_over_past(region_code, existing, fresh, now.strftime("%Y-%m-%d"))
 
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(dict(sorted(merged.items())), f, ensure_ascii=False, indent=2)
-    print(f"    -> {len(merged)}일 저장: {out_path}")
+    source = next(iter(fresh.values())).get("source", "?")
+    print(f"    -> {len(merged)}일 저장 (출처 {source}): {out_path}")
     return True
 
 
@@ -582,7 +705,7 @@ def collect_yearly(label: str, subdir: str, fetch_fn) -> bool:
 
         failed = failed or year_failed
 
-        if year_failed and _consecutive_failures >= FAILFAST_AFTER:
+        if year_failed and _consecutive_failures.get("kma", 0) >= FAILFAST_AFTER:
             print(f"    -> API 접속 불가로 판단, {label} 수집 중단")
             return False
 
@@ -609,7 +732,7 @@ def main():
         for result in (
             collect_backfill(region_code, info["stn"]),
             collect_current_month(region_code, info["stn"]),
-            collect_forecast(region_code, info["nx"], info["ny"]),
+            collect_forecast(region_code, info),
         ):
             total += 1
             ok += 1 if result else 0
