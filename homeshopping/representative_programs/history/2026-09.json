@@ -1,7 +1,33 @@
 {
   "month": "2026-09",
-  "updated_at": "2026-09-01T10:49:06.227127+09:00",
+  "updated_at": "2026-09-02T00:27:19.683285+09:00",
   "programs": [
+    {
+      "program_key": "HD_HJM",
+      "company": "HD",
+      "tab_name": "황정민",
+      "program_title": "황정민쇼",
+      "schedule_raw": "매주 월요일 19시 30분",
+      "detail_link": "https://www.hmall.com/md/dpa/pgmComm?sectId=3094173",
+      "program_image": "",
+      "broadcasts": [
+        {
+          "date": "2026-09-07",
+          "label": "09/07(월) 19:30 방송",
+          "collected_at": "2026-09-02T00:27:19.680968+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "09/07(월) 19:30 방송",
+              "brand": "알텐바흐",
+              "name": "알텐바흐 디펜더스S 프라이팬 4종세트",
+              "price": 241000,
+              "image": "https://image.hmall.com/2252955289_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252955289"
+            }
+          ]
+        }
+      ]
+    },
     {
       "program_key": "HD_OGS",
       "company": "HD",
@@ -11,6 +37,21 @@
       "detail_link": "https://www.hmall.com/md/dpa/pgmComm?sectId=3094172",
       "program_image": "",
       "broadcasts": [
+        {
+          "date": "2026-09-08",
+          "label": "09/08(화) 19:30 방송",
+          "collected_at": "2026-09-02T00:27:19.680968+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "09/08(화) 19:30 방송",
+              "brand": "신세계푸드",
+              "name": "[방송에서만]신세계푸드 호주산 LA갈비 꽃갈비 원육 5kg",
+              "price": 249800,
+              "image": "https://image.hmall.com/2245488878_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2245488878"
+            }
+          ]
+        },
         {
           "date": "2026-09-01",
           "label": "09/01(화) 19:30 방송",
@@ -64,7 +105,7 @@
         {
           "date": "2026-09-05",
           "label": "09/05(토) 08:20 방송",
-          "collected_at": "2026-09-01T10:49:06.225197+09:00",
+          "collected_at": "2026-09-02T00:27:19.680968+09:00",
           "products": [
             {
               "broadcast_date_label": "09/05(토) 08:20 방송",
@@ -90,7 +131,7 @@
         {
           "date": "2026-09-02",
           "label": "09/02(수) 19:30 방송",
-          "collected_at": "2026-09-01T10:49:06.225197+09:00",
+          "collected_at": "2026-09-02T00:27:19.680968+09:00",
           "products": [
             {
               "broadcast_date_label": "09/02(수) 19:30 방송",
@@ -111,16 +152,16 @@
             {
               "broadcast_date_label": "09/02(수) 19:30 방송",
               "brand": "리드볼트",
-              "name": "[세트] 리드볼트 플랩20인치 + 오딧29인치",
+              "name": "[세트] 리드볼트 29인치 & 플랩 20인치(2종)",
               "price": 585000,
-              "image": "https://image.hmall.com/2253036400_0.png",
-              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253036400"
+              "image": "https://image.hmall.com/2253155605_0.png",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253155605"
             },
             {
               "broadcast_date_label": "9/2(수) 방송상품",
               "brand": "",
               "name": "[Handmade] 머티리얼랩 26FW 젬스톤 마그네틱 굿럭 목걸이",
-              "price": 189000,
+              "price": 189900,
               "image": "https://image.hmall.com/2252831953_0.png",
               "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252831953"
             }
@@ -140,26 +181,8 @@
         {
           "date": "2026-09-03",
           "label": "09/03(목) 20:45 방송",
-          "collected_at": "2026-09-01T10:49:06.225197+09:00",
+          "collected_at": "2026-09-02T00:27:19.680968+09:00",
           "products": [
-            {
-              "prd_id": "1133752679",
-              "broadcast_date_label": "9월 3일(목) 20:45 방송",
-              "broadcast_iso": "2026-09-03T20:45:00",
-              "brand": "GS SHOP",
-              "name": "웨지우드 원더러스트 티세트 2인조(6P)+2단스탠드",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1133752679"
-            },
-            {
-              "prd_id": "1133754216",
-              "broadcast_date_label": "9월 3일(목) 20:45 방송",
-              "broadcast_iso": "2026-09-03T20:45:00",
-              "brand": "GS SHOP",
-              "name": "웨지우드 원더러스트 티잔 2인조(4P)",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1133754216"
-            },
             {
               "prd_id": "1134117198",
               "broadcast_date_label": "9월 3일(목) 20:45 방송",
@@ -249,6 +272,24 @@
               "name": "원핏 밸런스미 콜린 미오 이노시톨 2박스 (총 28포)",
               "price": null,
               "link": "https://m.gsshop.com/prd/prd.gs?prdid=1133345435"
+            },
+            {
+              "prd_id": "1133752679",
+              "broadcast_date_label": "9월 3일(목) 20:45 방송",
+              "broadcast_iso": "2026-09-03T20:45:00",
+              "brand": "GS SHOP",
+              "name": "웨지우드 원더러스트 티세트 2인조(6P)+2단스탠드",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1133752679"
+            },
+            {
+              "prd_id": "1133754216",
+              "broadcast_date_label": "9월 3일(목) 20:45 방송",
+              "broadcast_iso": "2026-09-03T20:45:00",
+              "brand": "GS SHOP",
+              "name": "웨지우드 원더러스트 티잔 2인조(4P)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1133754216"
             }
           ]
         }
@@ -266,7 +307,7 @@
         {
           "date": "2026-09-11",
           "label": "09/11(금) 20:35 방송",
-          "collected_at": "2026-09-01T10:49:06.225197+09:00",
+          "collected_at": "2026-09-02T00:27:19.680968+09:00",
           "products": [
             {
               "prd_id": "1120171341",
@@ -363,7 +404,7 @@
         {
           "date": "2026-09-04",
           "label": "09/04(금) 20:35 방송",
-          "collected_at": "2026-09-01T10:49:06.225197+09:00",
+          "collected_at": "2026-09-02T00:27:19.680968+09:00",
           "products": [
             {
               "prd_id": "1104929041",
@@ -559,9 +600,56 @@
       "program_image": "",
       "broadcasts": [
         {
+          "date": "2026-09-12",
+          "label": "09/12(토) 09:40 방송",
+          "collected_at": "2026-09-02T00:27:19.680968+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "09/12 토요일 09:40",
+              "brand": "파이나밀",
+              "name": "[스텐] 무선 전동 그라인더 2.0 풀세트 (본품+전용팟 4종+트레이+알후추+히말라야 화이트솔트)",
+              "price": 119000,
+              "image": "https://image2.lotteimall.com/goods/80/33/87/12873380_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12873380"
+            },
+            {
+              "broadcast_date_label": "09/12 토요일 09:40",
+              "brand": "파이나밀",
+              "name": "[화이트] 무선 전동 그라인더 2.0 풀세트 (본품+전용팟 4종+트레이+알후추+히말라야 화이트솔트)",
+              "price": 99000,
+              "image": "https://image2.lotteimall.com/goods/69/33/87/12873369_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12873369"
+            },
+            {
+              "broadcast_date_label": "09/12 토요일 09:40",
+              "brand": "파이나밀",
+              "name": "[레드] 무선 전동 그라인더 2.0 풀세트 (본품+전용팟 4종+트레이+알후추+히말라야 화이트솔트)",
+              "price": 99000,
+              "image": "https://image2.lotteimall.com/goods/79/33/87/12873379_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12873379"
+            },
+            {
+              "broadcast_date_label": "09/12 토요일 09:40",
+              "brand": "파이나밀",
+              "name": "[블랙] 무선 전동 그라인더 2.0 풀세트 (본품+전용팟 4종+트레이+알후추+히말라야 화이트솔트)",
+              "price": 99000,
+              "image": "https://image2.lotteimall.com/goods/83/18/92/12921883_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12921883"
+            },
+            {
+              "broadcast_date_label": "09/12 토요일 10:10",
+              "brand": "숙이의 뿌리효소 이야기",
+              "name": "[숙이의 뿌리효소 이야기] 더덕 목련 쌍화차 2병(500g)+맥문동 더덕 쌍화차 1병(300g)",
+              "price": 179000,
+              "image": "https://image2.lotteimall.com/goods/14/02/92/12920214_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12920214"
+            }
+          ]
+        },
+        {
           "date": "2026-09-10",
           "label": "09/10(목) 19:35 방송",
-          "collected_at": "2026-09-01T10:49:06.225197+09:00",
+          "collected_at": "2026-09-02T00:27:19.680968+09:00",
           "products": [
             {
               "broadcast_date_label": "09/10 목요일 19:35",
@@ -592,7 +680,7 @@
         {
           "date": "2026-09-05",
           "label": "09/05(토) 08:20 방송",
-          "collected_at": "2026-09-01T10:49:06.225197+09:00",
+          "collected_at": "2026-09-02T00:27:19.680968+09:00",
           "products": [
             {
               "broadcast_date_label": "09/05 토요일 08:20",
@@ -639,7 +727,7 @@
         {
           "date": "2026-09-03",
           "label": "09/03(목) 20:45 방송",
-          "collected_at": "2026-09-01T10:49:06.225197+09:00",
+          "collected_at": "2026-09-02T00:27:19.680968+09:00",
           "products": [
             {
               "broadcast_date_label": "09/03 목요일 20:45",
@@ -681,23 +769,23 @@
         {
           "date": "2026-09-07",
           "label": "09/07(월) 19:35 방송",
-          "collected_at": "2026-09-01T10:49:06.225197+09:00",
+          "collected_at": "2026-09-02T00:27:19.680968+09:00",
           "products": [
             {
               "broadcast_date_label": "09/07(월) 19:35",
               "brand": "드시모네",
-              "name": "[장면역유산균]듀얼스틱 프로+프리 200억 10박스",
+              "name": "[장면역유산균]듀얼스틱 프로+프리 200억 10+1박스",
               "price": 299000,
-              "image": "https://image.cjonstyle.net/goods_images/20/549/2070525549L.jpg?timestamp=20251014185721",
-              "link": "https://item.cjonstyle.com/item/2070525549?channelCode=30002002"
+              "image": "https://image.cjonstyle.net/goods_images/20/171/2092561171L.jpg?timestamp=20260901131920",
+              "link": "https://item.cjonstyle.com/item/2092561171?channelCode=30002002"
             },
             {
               "broadcast_date_label": "09/07(월) 19:35",
               "brand": "드시모네",
-              "name": "[CJ단독] 키즈스텝1 딸기바나나 2박스 100포",
-              "price": 155000,
-              "image": "goods_images/20/131/2085074131L.jpg?timestamp=20260520172308",
-              "link": "https://display.cjonstyle.com/p/item/2085074131?channelCode=30002002"
+              "name": "듀얼스틱 장면역유산균 프로+프리 200억 1박스",
+              "price": 69900,
+              "image": "https://image.cjonstyle.net/goods_images/20/193/2069165193L.jpg?timestamp=20250917181103",
+              "link": "https://item.cjonstyle.com/item/2069165193?channelCode=30002002"
             },
             {
               "broadcast_date_label": "09/07(월) 19:35",
@@ -706,6 +794,14 @@
               "price": 349500,
               "image": "goods_images/20/538/2073913538L.jpg?timestamp=20260106093912",
               "link": "https://display.cjonstyle.com/p/item/2073913538?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "09/07(월) 19:35",
+              "brand": "드시모네",
+              "name": "[CJ단독] 키즈스텝1 딸기바나나 2박스 100포",
+              "price": 155000,
+              "image": "goods_images/20/131/2085074131L.jpg?timestamp=20260520172308",
+              "link": "https://display.cjonstyle.com/p/item/2085074131?channelCode=30002002"
             },
             {
               "broadcast_date_label": "09/07(월) 19:35",
@@ -755,7 +851,7 @@
         {
           "date": "2026-09-02",
           "label": "09/02(수) 20:45 방송",
-          "collected_at": "2026-09-01T10:49:06.225197+09:00",
+          "collected_at": "2026-09-02T00:27:19.680968+09:00",
           "products": [
             {
               "broadcast_date_label": "09/02(수) 20:45",
@@ -785,24 +881,24 @@
               "broadcast_date_label": "09/02(수) 20:45",
               "brand": "마지스",
               "name": "360 5단 트롤리 / MGS-AC250",
-              "price": 1450900,
-              "image": "https://image.cjonstyle.net/goods_images/20/172/2091782172L.jpg?timestamp=20260831161304",
+              "price": 1233270,
+              "image": "https://image.cjonstyle.net/goods_images/20/172/2091782172L.jpg?timestamp=20260901144718",
               "link": "https://item.cjonstyle.com/item/2091782172?channelCode=30002002"
             },
             {
               "broadcast_date_label": "09/02(수) 20:45",
               "brand": "마지스",
               "name": "360 10단 트롤리 / MGS-AC270",
-              "price": 2457400,
-              "image": "https://image.cjonstyle.net/goods_images/20/258/2091782258L.jpg?timestamp=20260831103759",
+              "price": 2088790,
+              "image": "https://image.cjonstyle.net/goods_images/20/258/2091782258L.jpg?timestamp=20260901163428",
               "link": "https://item.cjonstyle.com/item/2091782258?channelCode=30002002"
             },
             {
               "broadcast_date_label": "09/02(수) 20:45",
               "brand": "마지스",
               "name": "[Magis] 퍼피체어 미디움 달마시안 M/MGS-MT282",
-              "price": 377300,
-              "image": "https://image.cjonstyle.net/goods_images/20/136/2091781136L.jpg?timestamp=20260821094054",
+              "price": 320700,
+              "image": "https://image.cjonstyle.net/goods_images/20/136/2091781136L.jpg?timestamp=20260901150944",
               "link": "https://item.cjonstyle.com/item/2091781136?channelCode=30002002"
             },
             {
@@ -810,7 +906,7 @@
               "brand": "온모락",
               "name": "100% 1등급 한우 사태로 만든 진짜 사태 곰탕 1팩",
               "price": 15000,
-              "image": "goods_images/20/799/2091790799L.jpg?timestamp=20260831102438",
+              "image": "goods_images/20/799/2091790799L.jpg?timestamp=20260901114512",
               "link": "https://display.cjonstyle.com/p/item/2091790799?channelCode=30002002"
             },
             {
@@ -818,7 +914,7 @@
               "brand": "온모락",
               "name": "100% 1등급 한우 사태로 만든 진짜 사태 곰탕 4팩",
               "price": 54800,
-              "image": "goods_images/20/238/2092133238L.jpg?timestamp=20260831102422",
+              "image": "goods_images/20/238/2092133238L.jpg?timestamp=20260901114715",
               "link": "https://display.cjonstyle.com/p/item/2092133238?channelCode=30002002"
             },
             {
@@ -959,14 +1055,14 @@
         {
           "date": "2026-09-04",
           "label": "09/04(금) 22:45 방송",
-          "collected_at": "2026-09-01T10:49:06.225197+09:00",
+          "collected_at": "2026-09-02T00:27:19.680968+09:00",
           "products": [
             {
               "broadcast_date_label": "09/04(금) 22:45",
               "brand": "더말로지카",
               "name": "[겟스단독/올해마지막] 데일리슈퍼폴리언트 대용량 4통+중용량 1통+클렌징젤 500ml 1통+볼/브러쉬+헤어밴드",
               "price": 189000,
-              "image": "https://image.cjonstyle.net/goods_images/20/960/2083412960L.jpg?timestamp=20260424112018",
+              "image": "https://image.cjonstyle.net/goods_images/20/960/2083412960L.jpg?timestamp=20260901142240",
               "link": "https://item.cjonstyle.com/item/2083412960?channelCode=30002002"
             },
             {
@@ -976,6 +1072,14 @@
               "price": 139000,
               "image": "https://image.cjonstyle.net/goods_images/20/358/2062337358L.jpg?timestamp=20250715204752",
               "link": "https://item.cjonstyle.com/item/2062337358?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "09/04(금) 22:45",
+              "brand": "더말로지카",
+              "name": "[매니아패키지] 데일리 슈퍼폴리언트 대용량 6통+볼+브러쉬",
+              "price": 279000,
+              "image": "goods_images/20/279/2092132279L.jpg?timestamp=20260826120830",
+              "link": "https://display.cjonstyle.com/p/item/2092132279?channelCode=30002002"
             },
             {
               "broadcast_date_label": "09/04(금) 22:45",
@@ -1129,7 +1233,7 @@
         {
           "date": "2026-09-08",
           "label": "09/08(화) 18:30 방송",
-          "collected_at": "2026-09-01T10:49:06.225197+09:00",
+          "collected_at": "2026-09-02T00:27:19.680968+09:00",
           "products": [
             {
               "broadcast_date_label": "09/08(화) 18:30",
@@ -1138,6 +1242,14 @@
               "price": 149000,
               "image": "https://image.cjonstyle.net/goods_images/20/176/2092068176L.jpg?timestamp=20260826182036",
               "link": "https://item.cjonstyle.com/item/2092068176?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "09/08(화) 18:30",
+              "brand": "바다숲",
+              "name": "[김신영이 산다 단독구성] 백년소상공인 감태 세트(구운감태 4봉, 생감태 5봉, 종이가방)",
+              "price": 50900,
+              "image": "https://image.cjonstyle.net/goods_images/20/495/2092485495L.jpg?timestamp=20260831165228",
+              "link": "https://item.cjonstyle.com/item/2092485495?channelCode=30002002"
             },
             {
               "broadcast_date_label": "09/08(화) 18:30",
@@ -1210,6 +1322,14 @@
               "price": 109000,
               "image": "goods_images/20/852/2090400852L.jpg?timestamp=20260821160624",
               "link": "https://display.cjonstyle.com/p/item/2090400852?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "09/08(화) 18:30",
+              "brand": "바다숲",
+              "name": "백년소공인의  감태 세트(구운감태 3봉, 생감태 4봉)",
+              "price": 44900,
+              "image": "goods_images/20/809/2092563809L.jpg?timestamp=20260901134331",
+              "link": "https://display.cjonstyle.com/p/item/2092563809?channelCode=30002002"
             },
             {
               "broadcast_date_label": "09/08(화) 18:30",
