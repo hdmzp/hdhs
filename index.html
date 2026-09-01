@@ -72,6 +72,17 @@
     color: var(--ink);
   }
 
+  /* 바로가기 아이콘(icons/icon-512.png)의 H 마크만 배경 없이 뽑아 쓴다.
+     h1을 flex로 바꾸면 masthead의 align-items:baseline이 h1 텍스트가 아니라
+     이미지 기준으로 잡혀 탭 줄이 3px 밀린다 -> 인라인 흐름 그대로 두고
+     vertical-align으로만 맞춘다. */
+  .masthead h1 .brand-logo {
+    height: 22px;
+    width: auto;
+    vertical-align: -5px;
+    margin-right: 5px;
+  }
+
   .masthead .sub {
     font-family: 'Pretendard', -apple-system, sans-serif;
     font-size: 11.5px;
@@ -2954,7 +2965,7 @@
 <body>
 
 <header class="masthead">
-  <h1>📺 시청환경 조회</h1>
+  <h1><img class="brand-logo" src="./icons/logo-h.png" alt="" aria-hidden="true">시청환경조회</h1>
   <div class="main-tabs">
     <button id="tabBtnHomeshop" class="active">홈쇼핑</button>
     <button id="tabBtnFixedPgm">고정PGM</button>
