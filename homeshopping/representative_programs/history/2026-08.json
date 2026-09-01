@@ -223,19 +223,21 @@
             },
             {
               "broadcast_date_label": "08/25(화) 19:30 방송",
-              "brand": "셰퍼",
-              "name": "헬시쿡 저당밥솥",
-              "price": 249000,
-              "image": "https://image.hmall.com/2252813068_0.jpg",
-              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252813068&preview=true"
-            },
-            {
-              "broadcast_date_label": "08/25(화) 19:30 방송",
               "brand": "유한양행",
               "name": "원더씬 다이어트 유산균",
               "price": 81000,
               "image": "https://image.hmall.com/2251743721_0.jpg",
               "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2251743721&preview=true"
+            }
+          ],
+          "reconciled_at": "2026-09-01T11:00:00+09:00",
+          "revisions": [
+            {
+              "at": "2026-09-01T11:00:00+09:00",
+              "removed": [
+                "헬시쿡 저당밥솥"
+              ],
+              "note": "방송 전 편성표(HD_live) 수집분에서 라인업에서 빠진 것이 확인됨 (제외 관측 2026-08-25T19:12:33+09:00, 셀럽PGM 수집 2026-08-25T08:31:33.561741+09:00). 해당 상품코드는 그달 편성표 어디에도 다시 나타나지 않음. 당시 누적 규칙이 방송 시작 후 수집분을 전부 무시해 남아 있던 건."
             }
           ]
         },
@@ -355,28 +357,23 @@
               "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2250509270"
             },
             {
-              "broadcast_date_label": "08/04(화) 19:30 방송",
-              "brand": "프로티원",
-              "name": "프로티원 단백질 쉐이크 490g 4통 (곡물 초코 녹차 흑임자 커피 딸기 밀크티)",
-              "price": 88800,
-              "image": "https://image.hmall.com/2252059730_0.jpg",
-              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252059730"
-            },
-            {
-              "broadcast_date_label": "08/04(화) 19:30 방송",
-              "brand": "프로티원",
-              "name": "단백질 쉐이크",
-              "price": 53200,
-              "image": "https://image.hmall.com/2252024283_0.jpg",
-              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252024283&preview=true"
-            },
-            {
               "broadcast_date_label": "8/4(화) 방송상품",
               "brand": "",
               "name": "[허닭] 허경환의 마녀스프 300gx19팩 (총 5.7kg)",
               "price": 89900,
               "image": "https://image.hmall.com/2252339031_0.jpg",
               "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252339031"
+            }
+          ],
+          "reconciled_at": "2026-09-01T11:00:00+09:00",
+          "revisions": [
+            {
+              "at": "2026-09-01T11:00:00+09:00",
+              "removed": [
+                "프로티원 단백질 쉐이크 490g 4통 (곡물 초코 녹차 흑임자 커피 딸기 밀크티)",
+                "단백질 쉐이크"
+              ],
+              "note": "방송 전 편성표(HD_live) 수집분에서 라인업에서 빠진 것이 확인됨 (제외 관측 2026-08-04T17:12:27+09:00, 셀럽PGM 수집 2026-08-04T09:15:53.249061+09:00). 해당 상품코드는 그달 편성표 어디에도 다시 나타나지 않음. 당시 누적 규칙이 방송 시작 후 수집분을 전부 무시해 남아 있던 건."
             }
           ]
         }
@@ -605,30 +602,6 @@
             },
             {
               "broadcast_date_label": "08/26(수) 19:30 방송",
-              "brand": "스노야",
-              "name": "스노야 26FW 메리노울 100% V넥 투웨이 풀오버",
-              "price": 99000,
-              "image": "https://image.hmall.com/2252783490_0.jpg",
-              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252783490&preview=true"
-            },
-            {
-              "broadcast_date_label": "08/26(수) 19:30 방송",
-              "brand": "스노야",
-              "name": "스노야 26FW 입체 절개 데님",
-              "price": 129000,
-              "image": "https://image.hmall.com/2252757659_0.jpg",
-              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252757659&preview=true"
-            },
-            {
-              "broadcast_date_label": "08/26(수) 19:30 방송",
-              "brand": "스노야",
-              "name": "스노야 에어 펀칭 버킷백",
-              "price": 289000,
-              "image": "https://image.hmall.com/2249943516_0.jpg",
-              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2249943516&preview=true"
-            },
-            {
-              "broadcast_date_label": "08/26(수) 19:30 방송",
               "brand": "로얄메르",
               "name": "26FW 쿠디에르 스트라이프 가디건",
               "price": 119000,
@@ -650,6 +623,18 @@
               "price": 159000,
               "image": "https://image.hmall.com/2252773687_0.jpg",
               "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252773687&preview=true"
+            }
+          ],
+          "reconciled_at": "2026-09-01T11:00:00+09:00",
+          "revisions": [
+            {
+              "at": "2026-09-01T11:00:00+09:00",
+              "removed": [
+                "스노야 26FW 메리노울 100% V넥 투웨이 풀오버",
+                "스노야 26FW 입체 절개 데님",
+                "스노야 에어 펀칭 버킷백"
+              ],
+              "note": "방송 전 편성표(HD_live) 수집분에서 라인업에서 빠진 것이 확인됨 (제외 관측 2026-08-26T09:11:05+09:00, 셀럽PGM 수집 2026-08-26T08:34:32.838745+09:00). 해당 상품코드는 그달 편성표 어디에도 다시 나타나지 않음. 당시 누적 규칙이 방송 시작 후 수집분을 전부 무시해 남아 있던 건."
             }
           ]
         }

@@ -151,6 +151,7 @@ python tools/check_scrape_health.py --mark      # 수집 직전
 python tools/check_scrape_health.py --group celeb   # 또는 --group fixed
 python tools/test_scrape_guard.py               # 재시도 로직 자체 테스트 (네트워크 불필요)
 python tools/test_build_celeb_history.py        # 셀럽PGM 누적/정정 규칙 테스트 (네트워크 불필요)
+python tools/audit_celeb_history.py             # 지난 회차에 낡은 상품코드가 남아있는지 감사
 ```
 
 기대 산출물 목록·최소 건수는 `check_scrape_health.py`의 `SPECS`에 있다. **셀럽PGM/고정PGM에 프로그램을 추가하면 여기에도 추가해야** 그 프로그램의 수집 실패가 잡힌다.
@@ -265,6 +266,8 @@ Actions → "라방바 방송 수집 (11개사)" → Run workflow 에서 `start_
   | `before` | 방송 시작 전 | 라인업이 계속 바뀌므로 **최신 수집분으로 통째 교체** |
   | `reconcile` | 시작 ~ +`RECONCILE_HOURS`(12h) | **상품 단위 정정** — 추가 / 제외 / 상품코드 변경을 반영하고 `revisions[]`에 남긴다 |
   | `final` | 그 뒤 | 확정 기록 — 무슨 일이 있어도 안 건드린다 |
+
+  이미 굳어버린 지난 회차는 `tools/audit_celeb_history.py`로 감사한다 — 편성표(`{사}_live`) git 이력에서 **방송 시작 전에** 슬롯에서 빠졌는데 셀럽PGM 기록엔 남아 있는 상품코드를 찾는다. 방송 *후* 편성표는 지난 슬롯의 대표상품이 계속 교체돼 증인이 못 되고, GS처럼 슬롯당 대표상품을 1개만 싣는 회사도 판정 대상에서 뺀다
 
   정정 창을 둔 이유는 **방송 직전 라인업 변경**이다. 2026-08-31 강주은 굿라이프(19:35)에서 `농협 영암 햇 생 무화과`가 방송 29분 전(19:06 편성표 수집분)에 빠졌는데, 그날 마지막 셀럽PGM 수집이 10:22였고 이후 수집분은 '이미 시작한 방송'이라 전부 무시돼 무화과가 확정 기록에 남았다(실제 방송은 유러피안 데일리 베지믹스 / 프리메로 야생빌베리 / 더스텐 3개 브랜드만 진행). 그래서 `rep-pgm-scrape.yml`에 정정 창 안에서 도는 크론 2개(KST 22:00 / 10:00)를 추가했다
 
