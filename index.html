@@ -3313,7 +3313,7 @@
       <p class="lv-notice">⚠️ 2026-08-21 라방바 보안정책 변경으로 <b>매출 수집 중단</b> — 8/20 방송분부터 총주문·순주문 <b>-</b> 표시, 복합 방송은 대표 상품 1행 집계 (8/19 이전은 그대로)</p>
       <p class="lv-summary" id="lvSummary"></p>
       <div class="sec-table-wrap" id="lvTableWrap"></div>
-      <p class="lv-table-note">금액: 1억 이상 O.O억 / 미만 백만 단위 · 총주문: 라방바 매출액(클릭 시 라방바 이동) · 순주문: 총주문 × 예상전환율(카테고리·가격대 평균) · 판매가: 100만원 미만 천원 / 이상 만원 단위 · 심야(방송시작 01:00~05:00) 방송은 회색 행 표시 · 헤더 클릭 시 정렬, 오른쪽 경계 드래그 시 열 너비 조정 · 조회 기간 최대 31일 · 총주문·순주문의 <b>-</b> 는 수집 불가(위 안내 참고)</p>
+      <p class="lv-table-note">금액: 1억 이상 O.O억 / 미만 백만 단위 · 총주문: 라방바 매출액(클릭 시 라방바 이동) · 순주문: 총주문 × 예상전환율(카테고리·가격대 평균) · 판매가: 100만원 미만 천원 / 이상 만원 단위 · 심야(방송시작 01:00~05:00) 방송은 회색 행 표시 · 헤더 클릭 시 정렬, 오른쪽 경계 드래그 시 열 너비 조정 · 조회 기간 최대 62일 · 총주문·순주문의 <b>-</b> 는 수집 불가(위 안내 참고)</p>
     </div>
 
     <div class="lv-section" id="pwSection" style="display:none;">
@@ -6192,7 +6192,8 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
   const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
 
   let lvStart = null, lvEnd = null;                           // 기간 'YYYYMMDD' (시작~종료)
-  const LV_MAX_DAYS = 31;                                     // 한 번에 조회 가능한 최대 기간
+  const LV_MAX_DAYS = 62;                                     // 한 번에 조회 가능한 최대 기간
+  const LV_BUSY_DAYS = 7;                                     // 이 기간을 넘으면 진행 표시를 띄운다
   let lvActive = new Set(LV_CHANNELS.map(c => c.name));       // 선택 채널 (기본 전체)
   let lvTime = 'all';                                         // all | normal | night
   let lvCatSel = null;                                        // 선택 카테고리 (null = 전체)
@@ -6380,8 +6381,11 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
           lvMonthCache[ym] = null;
         }
       }
-      if (lvMonthCache[ym] && lvMonthCache[ym][d8]) {
-        lvCache[d8] = lvMonthCache[ym][d8];
+      if (lvMonthCache[ym]) {
+        // 월 파일을 정상적으로 받았으면 그게 그달의 전부다. 날짜가 없으면
+        // '그날 데이터 없음'이지 일별 파일을 찾아볼 일이 아니다 - 예전엔 여기서
+        // 없는 날마다 404 왕복을 한 번씩 더 했다(62일 조회면 최대 62번).
+        lvCache[d8] = lvMonthCache[ym][d8] || null;
       } else {
         // 월별 파일 도입 전의 일별 파일(YYYYMMDD.json) 폴백
         try {
@@ -6450,17 +6454,67 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     });
   }
 
+  // ---- 진행 표시 ----
+  // 조회 기간을 최대 62일까지 늘리면서 한 번에 그리는 표가 두 배로 커졌다.
+  // 그런데 showBusy()만 부르고 바로 무거운 작업을 시작하면 스피너가 화면에
+  // 안 나온다 - await는 마이크로태스크라 브라우저가 페인트할 틈이 없다.
+  // 그래서 진행 표시를 켠 뒤 실제로 한 프레임 그려질 때까지 기다렸다가 시작한다.
+  const lvPaintFrame = () => new Promise(r =>
+    requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(r, 0))));
+
+  // 아직 안 받은 월 파일이 있는지 (있으면 네트워크 대기가 생긴다)
+  function lvNeedsFetch() {
+    for (let d8 = lvStart, i = 0; d8 <= lvEnd && i < LV_MAX_DAYS; d8 = d8AddDays(d8, 1), i++) {
+      if (!(d8 in lvCache) && !(d8.slice(0, 6) in lvMonthCache)) return true;
+    }
+    return false;
+  }
+
+  // 기간이 여러 달에 걸치면 월 파일을 병렬로 먼저 받아둔다. lvRenderInner의
+  // 날짜 루프는 await가 순차라 62일이 3개 달에 걸치면 왕복이 그만큼 직렬로 쌓인다.
+  async function lvPrefetchMonths() {
+    const yms = [];
+    for (let d8 = lvStart, i = 0; d8 <= lvEnd && i < LV_MAX_DAYS; d8 = d8AddDays(d8, 1), i++) {
+      const ym = d8.slice(0, 6);
+      if (!(ym in lvMonthCache) && !yms.includes(ym)) yms.push(ym);
+    }
+    await Promise.all(yms.map(async ym => {
+      try {
+        const r = await fetch('./lavangba/data/' + ym + '.json?t=' + Date.now());
+        lvMonthCache[ym] = r.ok ? await r.json() : null;
+      } catch (e) {
+        lvMonthCache[ym] = null;
+      }
+    }));
+  }
+
+  // 짧은 조회에서까지 스피너가 깜빡이면 더 거슬리므로, 오래 걸릴 때만 띄운다.
   async function lvRender() {
+    const heavy = lvNeedsFetch() || d8DiffDays(lvStart, lvEnd) + 1 > LV_BUSY_DAYS;
+    if (!heavy) return lvRenderInner();
+    if (window.showBusy) showBusy('방송 실적 조회 중...');
+    try {
+      await lvPaintFrame();
+      await lvRenderInner();
+    } finally {
+      if (window.hideBusy) hideBusy();
+    }
+  }
+
+  async function lvRenderInner() {
     $('lvStartPicker').value = d8ToHyphen(lvStart);
     $('lvEndPicker').value = d8ToHyphen(lvEnd);
     const wrap = $('lvTableWrap');
     const summary = $('lvSummary');
 
-    let rows = [];
+    await lvPrefetchMonths(); // 날짜 루프 전에 월 파일을 병렬로 확보 (중복 fetch 방지 겸용)
+    const dates = [];
     for (let d8 = lvStart, i = 0; d8 <= lvEnd && i < LV_MAX_DAYS; d8 = d8AddDays(d8, 1), i++) {
-      const day = await lvLoad(d8);
-      if (day) rows = rows.concat(day);
+      dates.push(d8);
     }
+    const loaded = await Promise.all(dates.map(lvLoad));
+    let rows = [];
+    loaded.forEach(day => { if (day) rows = rows.concat(day); });
     await lvLoadConvMap(); // 예상전환율 계산에 필요 (최초 1회만 실제로 fetch)
 
     if (!rows.length) {
@@ -6651,10 +6705,9 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
       btn.disabled = true;
       btn.textContent = '조회 중...';
       $('lvTableWrap').innerHTML = '<div class="lv-empty">불러오는 중...</div>';
-      if (window.showBusy) showBusy('방송 실적 조회 중...');
+      // 진행 표시는 lvRender가 '오래 걸릴 때만' 띄운다 (여기서 또 부르면 이중 관리)
       try { await lvRender(); } finally {
         btn.disabled = false; btn.textContent = '조회';
-        if (window.hideBusy) hideBusy();
       }
     });
     // 상품명 검색: 검색어를 포함하는 상품명만 표시 (대소문자 무시)
