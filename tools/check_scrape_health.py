@@ -20,11 +20,15 @@ recj.py가 매일 첫 프로그램에서 죽으면서 CJ 셀럽PGM 4개 파일�
   3) 이번 실행에서 갱신됨 (--mark로 찍어둔 시각 이후 mtime)
   4) 최소 건수 충족 (빈 껍데기 커밋 방지)
   5) 급감 감지 - 직전 커밋(git HEAD) 대비 건수가 임계 비율 밑으로 떨어졌는지
-  6) 누적기록 훼손 감지 (celeb) - history/{YYYY-MM}.json에서 '이미 방송된
+  6) 누적기록 훼손 감지 (celeb) - history/{YYYY-MM}.json에서 '확정된
      회차'의 상품이 직전 커밋보다 줄거나 통째로 사라졌는지.
      2026-08-22 왕영은의 톡투게더(08:20 방송) 기록 3건이 같은 날 저녁
      수집분에 덮여 1건으로 줄어든 적이 있는데, 산출물 검사만으로는
      아무도 못 잡았다 (per-program 파일은 정상이었다).
+     단, '방송 시작 = 확정'이 아니다. 방송 시작 후 정정 창(빌더의
+     RECONCILE_HOURS) 안에서는 상품 제외/코드 변경이 정상적으로 반영되므로
+     그 구간의 감소는 사고가 아니다 - 판정은 빌더의 record_is_final()을
+     그대로 쓴다.
 
 == 사용법 ==
   # 수집 시작 직전
@@ -292,9 +296,10 @@ HISTORY_DIR = f"{REP}/history"
 HISTORY_BUILDER = "fixed/build_celeb_history.py"
 
 
-def _already_started_fn():
-    """build_celeb_history.py의 '방송 시작' 판정을 그대로 빌려온다.
-    누적 규칙과 검사 기준이 갈라지면 검사가 무의미해지므로 재구현하지 않는다."""
+def _record_is_final_fn():
+    """build_celeb_history.py의 '기록 확정' 판정을 그대로 빌려온다.
+    누적 규칙과 검사 기준이 갈라지면 검사가 무의미해지므로 재구현하지 않는다.
+    (구버전 빌더에는 record_is_final이 없어 already_started로 폴백한다)"""
     import importlib.util
     path = os.path.join(ROOT, "fixed", "build_celeb_history.py")
     spec = importlib.util.spec_from_file_location("_celeb_history", path)
@@ -305,7 +310,7 @@ def _already_started_fn():
         spec.loader.exec_module(module)
     except Exception:  # 빌더가 깨졌으면 이 검사는 생략 (다른 검사로 잡힌다)
         return None
-    return getattr(module, "already_started", None)
+    return getattr(module, "record_is_final", None) or getattr(module, "already_started", None)
 
 
 def history_broadcasts(data):
@@ -324,8 +329,8 @@ def check_history_regressions():
     """확정된(이미 시작된) 방송 기록이 줄거나 사라졌으면 실패 사유 리스트를 낸다."""
     from datetime import datetime, timezone, timedelta
 
-    already_started = _already_started_fn()
-    if already_started is None:
+    record_is_final = _record_is_final_fn()
+    if record_is_final is None:
         return ["누적기록 검사 생략: fixed/build_celeb_history.py를 읽을 수 없음"]
 
     now = datetime.now(timezone(timedelta(hours=9)))
@@ -350,8 +355,8 @@ def check_history_regressions():
         before, after = history_broadcasts(prev_data), history_broadcasts(now_data)
         for key, (was, label, schedule) in sorted(before.items()):
             program_key, date_iso = key
-            if not already_started(date_iso, now, label, schedule):
-                continue  # 아직 시작 안 한 방송은 라인업이 바뀌는 게 정상
+            if not record_is_final(date_iso, now, label, schedule):
+                continue  # 방송 전 라인업 변경 / 정정 창 안의 정정은 정상
             if key not in after:
                 problems.append(
                     f"{rel_path}: [{program_key} {date_iso}] 확정 기록 {was}건이 통째로 사라짐")
