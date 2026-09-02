@@ -92,7 +92,7 @@ hdhs/
 | `schedule.yml` | 05:00, 21:00 (하루 2회) | 지상파·종편 편성표 | - |
 | `weather.yml` | 05:30 | 날씨(ASOS+단기예보)+공휴일+절기 | - |
 | `homeshopping.yml` | 05:50, 08:50, 12:20, 14:30, 18:30 (하루 5회) | 홈쇼핑 4사(HD/GS/CJ/LT) | 스크래퍼별 `continue-on-error` |
-| `etc-scrape.yml` | 06:10, 12:40 (하루 2회) | 홈쇼핑 기타 7개사 | `continue-on-error` |
+| `etc-scrape.yml` | 06:10, 09:30, 12:40, 15:00, 17:00 (하루 5회) | 홈쇼핑 기타 7개사 | `continue-on-error` |
 | `scrape-ranking.yml` | 07:00 | 홈쇼핑 랭킹 18개 카테고리 | - |
 | `promotion.yml` | 07:30, 12:50 (하루 2회) | 프로모션 카드할인 4사(HD/GS/CJ/LT) | 회사별 실패는 스크립트 내부에서 격리 |
 | `lavangba.yml` | 07:50 | 라방바 11개사 방송 데이터(v2) | `continue-on-error` |
@@ -109,7 +109,7 @@ hdhs/
 
 공통 사항:
 - 실행 주체는 모두 `github-actions[bot]`, 데이터 변경이 있을 때만 커밋(`git diff --staged/cached --quiet ||`)해서 빈 커밋 방지
-- **push 충돌 방지**: `scrape-dramavariety`, `scrape-fixed-pgm`, `scrape-ranking`, `rep-pgm-scrape`, `scrape-celebpgm`, `promotion` 6개는 `git pull --rebase` 후 재시도를 최대 5회까지 반복하는 루프를 둠(`rep-pgm-scrape`·`scrape-celebpgm`은 재시도 소진 시 원격 재동기화 후 마지막 1회까지). 반면 `schedule`, `homeshopping`, `etc-scrape`, `weather`, `lavangba`, `pricewatch` 6개는 아직 단순 `git pull --rebase --autostash && git push` 1회뿐이라 동시 충돌 시 실패할 수 있음 — 통일 필요
+- **push 충돌 방지**: `scrape-dramavariety`, `scrape-fixed-pgm`, `scrape-ranking`, `rep-pgm-scrape`, `scrape-celebpgm`, `promotion`, `etc-scrape` 7개는 `git pull --rebase` 후 재시도를 최대 5회까지 반복하는 루프를 둠(`rep-pgm-scrape`·`scrape-celebpgm`은 재시도 소진 시 원격 재동기화 후 마지막 1회까지). 반면 `schedule`, `homeshopping`, `weather`, `lavangba`, `pricewatch` 5개는 아직 단순 `git pull --rebase --autostash && git push` 1회뿐이라 동시 충돌 시 실패할 수 있음 — 통일 필요
 - **Pages 배포 트리거 문제**: `github-actions[bot]` 계정의 push는 GitHub 정책상 다른 워크플로우를 재귀 트리거하지 않아, `pages-deploy.yml`이 데이터 갱신 커밋에 자동 반응하지 않는다. 그래서 각 스크래퍼 워크플로우가 커밋 후 `workflow_dispatch`를 API로 직접 호출해 배포를 강제로 큐에 넣는다. 데이터를 커밋하는 워크플로우 12개 모두에 이 스텝이 들어가 있다(마지막까지 빠져 있던 `scrape-celebpgm.yml`도 2026-08-20 사고 — 최은경쇼 첫 수집분이 push까지 되고도 배포가 안 돼 화면에 안 보였다 — 이후 추가됨). 데이터를 커밋하지 않는 `telegram-daily-food.yml`에는 필요 없다
 - `pages-deploy.yml`은 GitHub Pages 배포가 일시적으로 실패(`Deployment failed, try again later.`)하는 경우를 대비해 최대 3회 자동 재시도
 
@@ -406,4 +406,4 @@ Actions → "라방바 방송 수집 (11개사)" → Run workflow 에서 `start_
 - 두 파서 버전이 모두 실패하면 `data/_debug_fail_{채널명}.html`로 저장되고 그날 데이터에서 누락(구조 변경 감지용) — 셀럽PGM 쪽에도 `_debug_pgm_comm_*.json` 형태의 동일한 실패 스냅샷이 남음
 - GS와 기타 7개사(총 8개사)가 모두 라방바(`live.ecomm-data.com`) 하나에 의존해서, 그 사이트 구조가 바뀌면 한 번에 다수 채널이 영향받는 단일 장애점
 - 홈쇼핑/고정PGM 스크래퍼 대부분이 `continue-on-error`(또는 `|| echo`)라서 특정 사가 그날 실패해도 워크플로우 전체는 성공으로 표시됨. 셀럽PGM·고정PGM 3개 워크플로우는 [2-1 수집 안전장치](#2-1-수집-안전장치-조용한-실패-방지)로 해결됨(검사 실패 시 잡 실패). **아직 미적용**: `homeshopping.yml`, `etc-scrape.yml`, `promotion.yml`, `scrape-ranking.yml` — 같은 방식으로 `SPECS`에 산출물을 추가하면 확장 가능
-- 워크플로우별 push 재시도 로직이 통일돼 있지 않음(`schedule`/`homeshopping`/`etc-scrape`/`weather`/`lavangba`/`pricewatch`는 1회, 나머지 6개는 5회 재시도) — 통일 필요
+- 워크플로우별 push 재시도 로직이 통일돼 있지 않음(`schedule`/`homeshopping`/`weather`/`lavangba`/`pricewatch`는 1회, 나머지 7개는 5회 재시도) — 통일 필요
