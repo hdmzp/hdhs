@@ -148,13 +148,80 @@ def close_browser():
         _playwright = None
 
 
+def _sel_count(page, selector):
+    try:
+        return page.locator(selector).count()
+    except Exception:
+        return 0
+
+
+def drive_infinite_scroll(page, wait_selector=None, anchor_selector=None,
+                          max_rounds=25, settle_ms=600, stale_limit=3,
+                          max_seconds=75):
+    """무한 스크롤(react-infinite-scroll-component) 페이지를 목표 섹션이
+    DOM에 붙을 때까지 끝까지 내린다.
+
+    hmall 모바일 메인이 2026-08 말 개편되면서 섹션들이 한 번에 렌더되지 않고
+    스크롤에 따라 순차적으로 추가되는 구조로 바뀌었다. 이때
+    window.scrollBy 만 반복하면 문서 바닥에 닿는 순간 더 이상 scroll 이벤트가
+    발생하지 않아(스크롤 위치가 변하지 않으므로) 다음 배치가 영영 로드되지
+    않는다. 그래서 바닥으로 내린 뒤 살짝 위로 올렸다 다시 내려 scroll 이벤트를
+    한 번 더 강제로 발생시키고, 문서 높이가 더 이상 자라지 않을 때까지 반복한다.
+
+    Actions 잡 전체 타임아웃(20분)을 지키려고 회차 수와 총 시간을 함께 제한한다.
+    목표 셀렉터를 찾았으면 True, 못 찾고 끝났으면 False."""
+    deadline = time.monotonic() + max_seconds
+    stale = 0
+    for _ in range(max_rounds):
+        if time.monotonic() > deadline:
+            break
+        if wait_selector and _sel_count(page, wait_selector):
+            return True
+        # 섹션 컨테이너만 먼저 붙고 내용물이 lazy인 경우: 그 위치로 끌어당긴다
+        if anchor_selector and _sel_count(page, anchor_selector):
+            try:
+                page.locator(anchor_selector).first.scroll_into_view_if_needed(timeout=3000)
+                page.wait_for_timeout(1200)
+            except Exception:
+                pass
+            if wait_selector and _sel_count(page, wait_selector):
+                return True
+
+        try:
+            before = page.evaluate("document.documentElement.scrollHeight")
+            page.evaluate("window.scrollTo(0, document.documentElement.scrollHeight)")
+            page.wait_for_timeout(settle_ms)
+            # 바닥에서 한 번 튕겨 scroll 이벤트를 다시 발생시킨다
+            page.evaluate("window.scrollBy(0, -400)")
+            page.wait_for_timeout(200)
+            page.evaluate("window.scrollTo(0, document.documentElement.scrollHeight)")
+            page.wait_for_timeout(settle_ms)
+            after = page.evaluate("document.documentElement.scrollHeight")
+        except Exception:
+            break
+
+        stale = stale + 1 if after <= before else 0
+        if stale >= stale_limit:
+            break
+    return bool(wait_selector and _sel_count(page, wait_selector))
+
+
+def rendered_anchors(html):
+    """렌더된 섹션 앵커 목록 (실패 원인 진단용)."""
+    found = set(re.findall(r'data-(?:scroll-)?anchor="([^"]+)"', html))
+    return sorted(found)
+
+
 def fetch_rendered(url, wait_selector=None, mobile=False, timeout_ms=30000,
-                   scroll_steps=8, anchor_selector=None):
+                   scroll_steps=8, anchor_selector=None, click_selector=None,
+                   infinite=False):
     """Playwright로 페이지를 렌더링해 HTML을 반환한다.
     카드혜택 영역이 lazy-load(스크롤로 화면에 가까워져야 렌더)인 경우가 많아
     화면 높이 단위로 단계적으로 스크롤한다. anchor_selector가 주어지면
     (섹션 컨테이너는 DOM에 있는데 내용물이 lazy인 케이스) 해당 요소를
     scroll_into_view로 강제 노출시킨다.
+    click_selector가 주어지면 로딩 후 그 요소를 먼저 클릭한다(탭 전환).
+    infinite=True면 단순 스크롤 대신 무한 스크롤 드라이버를 쓴다.
     wait_selector가 끝내 안 나타나도 예외를 던지지 않고 현재 HTML을 반환한다
     (호출부의 파서가 빈 결과를 내면 그때 실패 처리)."""
     browser = _ensure_browser()
@@ -176,25 +243,36 @@ def fetch_rendered(url, wait_selector=None, mobile=False, timeout_ms=30000,
         except Exception as e:
             print(f"    -> [경고] goto 타임아웃/오류({type(e).__name__}) - 로딩된 상태로 계속 진행")
         page.wait_for_timeout(2000)
-        for i in range(scroll_steps):
-            if wait_selector:
-                try:
-                    if page.locator(wait_selector).count() > 0:
-                        break
-                except Exception:
-                    pass
-            # 앵커 컨테이너가 이미 DOM에 있으면 그 위치로 바로 스크롤
-            if anchor_selector:
-                try:
-                    loc = page.locator(anchor_selector)
-                    if loc.count() > 0:
-                        loc.first.scroll_into_view_if_needed(timeout=3000)
-                        page.wait_for_timeout(1200)
-                        continue
-                except Exception:
-                    pass
-            page.evaluate("window.scrollBy(0, window.innerHeight * 0.9)")
-            page.wait_for_timeout(600)
+        if click_selector:
+            try:
+                page.locator(click_selector).first.click(timeout=5000)
+                page.wait_for_timeout(2500)
+            except Exception as e:
+                print(f"    -> [경고] 탭 클릭 실패({type(e).__name__}) - 현재 페이지로 계속 진행")
+        if infinite:
+            drive_infinite_scroll(page, wait_selector=wait_selector,
+                                  anchor_selector=anchor_selector,
+                                  max_rounds=scroll_steps)
+        else:
+            for i in range(scroll_steps):
+                if wait_selector:
+                    try:
+                        if page.locator(wait_selector).count() > 0:
+                            break
+                    except Exception:
+                        pass
+                # 앵커 컨테이너가 이미 DOM에 있으면 그 위치로 바로 스크롤
+                if anchor_selector:
+                    try:
+                        loc = page.locator(anchor_selector)
+                        if loc.count() > 0:
+                            loc.first.scroll_into_view_if_needed(timeout=3000)
+                            page.wait_for_timeout(1200)
+                            continue
+                    except Exception:
+                        pass
+                page.evaluate("window.scrollBy(0, window.innerHeight * 0.9)")
+                page.wait_for_timeout(600)
         if wait_selector:
             try:
                 page.wait_for_selector(wait_selector, timeout=5000)
@@ -240,6 +318,18 @@ DEBUG_SNAPSHOTS = os.environ.get("PROMO_DEBUG", "").lower() in ("1", "true", "ye
 # data-anchor 속성과 태그 구조(p 2개 = 카드명/할인유형, 텍스트의 'N %')로만 파싱한다.
 
 HD_URL = "https://www.hmall.com/md/dpl/index"
+# 상단 탭 '혜택'(mainDispSeq=7 / mblMainTmplGbcd=07). 예전에는 /md/dpl/index가 이 탭을
+# 바로 열어줘서 evnt_card_new 앵커가 정적으로 잡혔는데, 2026-08 말 개편 이후
+# 기본 탭이 '현대홈쇼핑'(홈)으로 바뀌었다.
+HD_BENEFIT_URL = "https://www.hmall.com/md/dpl/index?mainDispSeq=7&mblMainTmplGbcd=07"
+HD_BENEFIT_TAB_SELECTOR = 'a[data-rel="혜택"], a[data-disptrtynmcd="event"]'
+
+HD_WAIT_SELECTOR = ('[data-anchor="evnt_card_new"] .swiper-slide, '
+                    '[data-scroll-anchor="evnt_card_new"] .swiper-slide, '
+                    '[data-anchor="home_card"] .swiper-slide, '
+                    '[data-scroll-anchor="home_card"] .swiper-slide')
+HD_ANCHOR_SELECTOR = ('[data-anchor="evnt_card_new"], [data-scroll-anchor="evnt_card_new"], '
+                      '[data-anchor="home_card"], [data-scroll-anchor="home_card"]')
 
 
 def parse_hd(html):
@@ -248,14 +338,17 @@ def parse_hd(html):
     #  - /md/dpl/index (혜택 페이지): evnt_card_new
     #  - 모바일 메인:               home_card  (data-scroll-anchor만 있는 경우도 있음)
     container = None
-    for sel in ('[data-anchor="evnt_card_new"]', '[data-scroll-anchor="evnt_card_new"]',
-                '[data-anchor="home_card"]', '[data-scroll-anchor="home_card"]'):
-        container = soup.select_one(sel)
+    for name in ("evnt_card_new", "home_card", "event_card", "evnt_card"):
+        for sel in (f'[data-anchor="{name}"]', f'[data-scroll-anchor="{name}"]'):
+            container = soup.select_one(sel)
+            if container is not None:
+                break
         if container is not None:
             break
     if container is None:
         # 앵커명이 또 바뀌었을 때의 폴백: 섹션 제목 텍스트로 역추적
-        title = soup.find(string=re.compile("한눈에 보는 카드 혜택"))
+        # (개편으로 제목이 '한눈에 보는 카드 혜택' -> '카드 즉시할인' 등으로 바뀔 수 있다)
+        title = soup.find(string=re.compile(r"한눈에 보는 카드 혜택|카드 즉시할인|카드혜택|카드 혜택"))
         if title:
             node = title.parent
             for _ in range(6):
@@ -286,8 +379,19 @@ def parse_hd(html):
         if cur_date is None:
             continue
 
+        # 마크업이 p 태그가 아닌 경우(개편 후 div/span)도 있어, p가 없으면
+        # 슬라이드 안의 짧은 텍스트 줄들을 순서대로 훑어 카드명/할인유형을 잡는다.
         ps = [p.get_text(strip=True) for p in slide.find_all("p")]
         ps = [t for t in ps if t]
+        if not ps:
+            ps = [t.strip() for t in slide.stripped_strings]
+            # 날짜 라벨('08.04(월)', '오늘')과 버튼 텍스트는 카드명이 아니다
+            ps = [t for t in ps
+                  if t and len(t) <= 20
+                  and "오늘" not in t
+                  and not re.match(r"^\d{1,2}\.\d{1,2}", t)
+                  and not re.fullmatch(r"[\d.%\s]+", t)
+                  and "알림" not in t]
         if not ps:
             continue
         card = ps[0]
@@ -304,32 +408,44 @@ def parse_hd(html):
 
 
 def scrape_hd():
-    try:
-        html = fetch_static(HD_URL, referer="https://www.hmall.com/", mobile=True)
-        days = parse_hd(html)
-        if days:
-            return days
-        print("    [HD] 정적 HTML에 카드혜택 영역 없음 -> Playwright 렌더링 시도")
-    except Exception as e:
-        print(f"    [HD] 정적 요청 실패({e}) -> Playwright 렌더링 시도")
+    for url in (HD_BENEFIT_URL, HD_URL):
+        try:
+            html = fetch_static(url, referer="https://www.hmall.com/", mobile=True)
+            days = parse_hd(html)
+            if days:
+                return days
+        except Exception as e:
+            print(f"    [HD] 정적 요청 실패({url}: {e})")
+    print("    [HD] 정적 HTML에 카드혜택 영역 없음 -> Playwright 렌더링 시도")
 
     # /md/* 는 모바일 웹이라 모바일 컨텍스트로 연다 (rehd.py와 동일 접근).
-    # 카드혜택 섹션은 스크롤로 화면에 가까워져야 렌더링되는 lazy 섹션이고
-    # 페이지가 길어서 스크롤 단계를 넉넉히 준다. 섹션 컨테이너(data-anchor)가
-    # DOM에 먼저 생기는 경우 scroll_into_view로 강제 노출시킨다.
-    html = fetch_rendered(
-        HD_URL, mobile=True, scroll_steps=30,
-        wait_selector=('[data-anchor="evnt_card_new"] .swiper-slide, '
-                       '[data-scroll-anchor="home_card"] .swiper-slide'),
-        anchor_selector=('[data-anchor="evnt_card_new"], [data-scroll-anchor="evnt_card_new"], '
-                         '[data-anchor="home_card"], [data-scroll-anchor="home_card"]'))
-    days = parse_hd(html)
-    if DEBUG_SNAPSHOTS and days:
-        save_debug("HD", html)
-    if not days:
-        save_debug("HD", html)
-        raise RuntimeError("카드혜택 스와이퍼 파싱 결과 0건 (구조 변경 의심)")
-    return days
+    # 카드혜택 섹션은 스크롤로 화면에 가까워져야 렌더링되는 lazy 섹션이다.
+    # 2026-08 말 개편으로 메인이 무한 스크롤(react-infinite-scroll-component)로 바뀌어
+    # 섹션들이 스크롤에 따라 순차적으로 붙는다. 카드행사(home_card)는 목록 중간쯤이라
+    # 바닥까지 반복해서 내려야 DOM에 나타난다 -> infinite=True.
+    attempts = (
+        ("혜택탭 URL", dict(url=HD_BENEFIT_URL, click_selector=None)),
+        ("홈 + 무한스크롤", dict(url=HD_URL, click_selector=None)),
+        ("홈 -> 혜택탭 클릭", dict(url=HD_URL, click_selector=HD_BENEFIT_TAB_SELECTOR)),
+    )
+    html = ""
+    for label, kw in attempts:
+        print(f"    [HD] 렌더링 시도: {label}")
+        html = fetch_rendered(
+            kw["url"], mobile=True, scroll_steps=25, infinite=True,
+            click_selector=kw["click_selector"],
+            wait_selector=HD_WAIT_SELECTOR, anchor_selector=HD_ANCHOR_SELECTOR)
+        days = parse_hd(html)
+        if days:
+            if DEBUG_SNAPSHOTS:
+                save_debug("HD", html)
+            return days
+        print(f"    [HD] {label} 실패 - 렌더된 섹션: {rendered_anchors(html)}")
+
+    save_debug("HD", html)
+    raise RuntimeError(
+        "카드혜택 스와이퍼 파싱 결과 0건 (구조 변경 의심) - 렌더된 섹션: "
+        + ", ".join(rendered_anchors(html)))
 
 
 # ============ LT (롯데홈쇼핑) ============
