@@ -1801,6 +1801,11 @@
     --shinsegae: #C8102E;
     --ns: #1F6FEB;
     --nsplus: #6CA0F2;
+    /* 전체(16) 탭의 본채널 데이터방송(HD+/GS+/CJ+/LT+) - 본채널 색의 밝은 톤 */
+    --hdplus: #4A78B0;
+    --gsplus: #57C79B;
+    --cjplus: #8B6BA8;
+    --ltplus: #E8756C;
     --shoppingnt: #B8860B;
     --skstoa: #2E8B57;
     font-family: 'Pretendard', -apple-system, sans-serif;
@@ -1933,6 +1938,49 @@
       width: auto;
     }
   }
+  /* 전체(16) 탭: 16개 열을 모두 표시.
+     - 화면 폭에 맞추지 않고 항상 가로 스크롤(.hs-scroll)로 본다 (고정PGM 탭과 동일한 사용감)
+     - 열 너비는 라이브(4열, PC 기준 약 330px)의 절반 수준인 168px 고정
+     - 시간 열은 좌측 고정(sticky)해 우측으로 스크롤해도 몇 시 행인지 알 수 있게 한다 */
+  table.hs-table.hs-table-all {
+    width: max-content;
+    min-width: 100%;
+  }
+  table.hs-table.hs-table-all th:not(.hs-time-col),
+  table.hs-table.hs-table-all td:not(.hs-time-cell) {
+    width: 168px;
+  }
+  table.hs-table.hs-table-all th.hs-time-col,
+  table.hs-table.hs-table-all td.hs-time-cell {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background: var(--paper-dim);
+  }
+  table.hs-table.hs-table-all thead th.hs-time-col { z-index: 4; background: var(--paper); }
+
+  /* 좁아진 열에 맞춰 글자 크기를 줄이고(상품명 12px -> 9.6px = 80%)
+     긴 상품명이 잘리지 않도록 줄바꿈을 확실히 건다. */
+  .hs-table-all .hs-prog { padding: 6px 7px 6px 9px; }
+  .hs-table-all .hs-prog .hs-time { font-size: 9.5px; }
+  .hs-table-all .hs-prog.has-pgm .hs-time { padding-right: 40px; }
+  .hs-table-all .hs-prog .hs-pgm-badge { font-size: 8.5px; padding: 0 5px; }
+  .hs-table-all .hs-prog .hs-title {
+    font-size: 9.6px;
+    line-height: 1.45;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+  /* 시간 / 브랜드 / 상품명 / 가격·바로가기가 각각 한 줄이 되도록 브랜드를 분리 */
+  .hs-table-all .hs-prog .hs-brand { display: block; }
+  .hs-table-all .hs-prog .hs-brand-sep { display: none; }
+  .hs-table-all .hs-prog .hs-price,
+  .hs-table-all .hs-prog .hs-goto { font-size: 9.5px; }
+  .hs-table-all .hs-prog .hs-price .won { font-size: 9px; }
+  .hs-table-all .hs-hitbest { font-size: 9.5px; min-height: 36px; }
+  .hs-table-all .hs-more-btn { font-size: 9.5px; }
+
   table.hs-table thead th .hs-co-tag {
     display: inline-block;
     font-size: 13px;
@@ -1951,6 +1999,10 @@
   table.hs-table thead th.shinsegae .hs-co-tag { background: var(--shinsegae); }
   table.hs-table thead th.ns .hs-co-tag { background: var(--ns); }
   table.hs-table thead th.nsplus .hs-co-tag { background: var(--nsplus); }
+  table.hs-table thead th.hdplus .hs-co-tag { background: var(--hdplus); }
+  table.hs-table thead th.gsplus .hs-co-tag { background: var(--gsplus); }
+  table.hs-table thead th.cjplus .hs-co-tag { background: var(--cjplus); }
+  table.hs-table thead th.ltplus .hs-co-tag { background: var(--ltplus); }
   table.hs-table thead th.shoppingnt .hs-co-tag { background: var(--shoppingnt); }
   table.hs-table thead th.skstoa .hs-co-tag { background: var(--skstoa); }
 
@@ -1981,6 +2033,10 @@
   table.hs-table td.hs-co-cell.shinsegae { background: color-mix(in srgb, var(--shinsegae) 4%, white); }
   table.hs-table td.hs-co-cell.ns { background: color-mix(in srgb, var(--ns) 4%, white); }
   table.hs-table td.hs-co-cell.nsplus { background: color-mix(in srgb, var(--nsplus) 4%, white); }
+  table.hs-table td.hs-co-cell.hdplus { background: color-mix(in srgb, var(--hdplus) 4%, white); }
+  table.hs-table td.hs-co-cell.gsplus { background: color-mix(in srgb, var(--gsplus) 4%, white); }
+  table.hs-table td.hs-co-cell.cjplus { background: color-mix(in srgb, var(--cjplus) 4%, white); }
+  table.hs-table td.hs-co-cell.ltplus { background: color-mix(in srgb, var(--ltplus) 4%, white); }
   table.hs-table td.hs-co-cell.shoppingnt { background: color-mix(in srgb, var(--shoppingnt) 4%, white); }
   table.hs-table td.hs-co-cell.skstoa { background: color-mix(in srgb, var(--skstoa) 4%, white); }
 
@@ -2168,6 +2224,10 @@
     .hs-prog { padding: 5px 6px 5px 8px; }
     .hs-prog .hs-title { font-size: 10.5px; }
     .hs-prog .hs-price { font-size: 9.5px; }
+    /* 전체(16)은 모바일에서도 화면 폭에 맞추지 않고 가로 스크롤로 본다 */
+    table.hs-table.hs-table-all th:not(.hs-time-col),
+    table.hs-table.hs-table-all td:not(.hs-time-cell) { width: 150px; }
+    .hs-table-all .hs-prog .hs-title { font-size: 9.6px; }
   }
 
   /* ============ 고정PGM 탭 ============ */
@@ -3110,6 +3170,7 @@
       <button class="hs-toggle-btn active" data-bc="live">라이브방송</button>
       <button class="hs-toggle-btn" data-bc="data">데이터방송</button>
       <button class="hs-toggle-btn" data-bc="etc">기타</button>
+      <button class="hs-toggle-btn" data-bc="all">전체(16)</button>
     </div>
 
     <div class="hs-toggle" id="hsTimeToggle">
@@ -4431,12 +4492,28 @@ const HS_COMPANIES_ETC = [
   { code: 'SKSTOA',     name: 'SK',       cls: 'skstoa',      bc: 'live' },
 ];
 
+// 전체(16): 본채널 4 + 데이터방송(플러스) 4 + 기타 8 = 16개 채널을 한 표에 모두 표시.
+// 각 항목에 bc를 못박아 두어 hsCurrentBc('all')와 무관하게 올바른 데이터를 읽는다.
+const HS_COMPANIES_ALL = [
+  ...HS_COMPANIES_MAIN.map(c => ({ ...c, bc: 'live' })),
+  ...HS_COMPANIES_MAIN.map(c => ({ ...c, name: c.name + '+', cls: c.cls + 'plus', bc: 'data' })),
+  ...HS_COMPANIES_ETC,
+];
+
 function hsActiveCompanies() {
+  if (hsCurrentBc === 'all') return HS_COMPANIES_ALL;
   if (hsCurrentBc === 'etc') return HS_COMPANIES_ETC;
   // 데이터방송은 플러스 채널이므로 헤더에 +를 붙여 본채널과 구분한다 (HD+ 등)
   if (hsCurrentBc === 'data') return HS_COMPANIES_MAIN.map(c => ({ ...c, name: c.name + '+' }));
   return HS_COMPANIES_MAIN;
 }
+// 슬라이서에 따라 표 폭/열 너비를 바꾸는 변형 클래스
+function hsTableVariantCls() {
+  if (hsCurrentBc === 'all') return ' hs-table-all';
+  if (hsCurrentBc === 'etc') return ' hs-table-etc';
+  return '';
+}
+
 const _hsCache = {};
 
 async function hsLoadCompanyDate(code, bc, dateStr) {
@@ -4763,7 +4840,7 @@ function hsRenderGridView(datasets, nowMin) {
     }
   });
 
-  const tableCls = `hs-table${hsCurrentBc === 'etc' ? ' hs-table-etc' : ''}`;
+  const tableCls = `hs-table${hsTableVariantCls()}`;
   let html = `<div class="hs-scroll"><table class="${tableCls}"><thead><tr>`;
   html += '<th class="hs-time-col">시간</th>';
   companies.forEach(c => {
@@ -4816,7 +4893,7 @@ function hsRenderListView(datasets, nowMin) {
     return '<div style="text-align:center;padding:40px;color:var(--ink-soft);font-size:13px;">해당 카테고리의 편성이 없습니다.</div>';
   }
 
-  const tableCls = `hs-table hs-table-list${hsCurrentBc === 'etc' ? ' hs-table-etc' : ''}`;
+  const tableCls = `hs-table hs-table-list${hsTableVariantCls()}`;
   let html = `<div class="hs-scroll"><table class="${tableCls}"><thead><tr>`;
   html += '<th class="hs-time-col"></th>';
   companies.forEach(c => {
