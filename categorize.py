@@ -15,6 +15,7 @@
 2) 브랜드명이 학습데이터에서 단일 카테고리로만 운영된 브랜드면 바로 확정
 3) 브랜드가 비어있으면 상품명에서 브랜드 추론해서 보강 (infer_brand)
    - 추론된 브랜드도 BRAND_FORCE_MAP 검사
+   - 추론까지 실패하면 상품명 강제 매핑(NO_BRAND_PRODUCT_FORCE) 검사
 4) 모델 분류
 
 == 카테고리 그룹 ==
@@ -170,6 +171,29 @@ def _predict_with_model(brand: str, product: str) -> str:
     return _to_group(model.classes_[idx])
 
 
+# 브랜드 추론까지 실패했을 때만 적용하는 상품명 기반 강제 매핑.
+# BRAND_FORCE_MAP은 브랜드명 완전일치라서, 브랜드 칸이 비어 있고 infer_brand도
+# 못 잡는 상품은 아무리 뻔해도 그냥 모델 분류로 넘어가 오분류가 난다.
+# (예: NS샵플러스 '한국금자산1' - 브랜드 없음 -> 모델이 '일반식품'으로 분류)
+# 키워드 규칙(1)·브랜드 확정(2)보다 뒤에 두므로 기존 분류 결과는 바꾸지 않는다.
+# 비교 전에 공백을 제거하므로 '한국금자산 관리'처럼 띄어쓴 표기도 걸린다.
+NO_BRAND_PRODUCT_FORCE = [
+    (("한국금자산관리", "한국금자산"), "잡화/주얼리"),
+]
+
+
+def _no_brand_product_force(product: str) -> str:
+    """브랜드를 못 잡은 상품의 상품명 키워드 강제 매핑. 없으면 빈 문자열."""
+    text = (product or "").replace(" ", "")
+    if not text:
+        return ""
+    for keywords, category in NO_BRAND_PRODUCT_FORCE:
+        for keyword in keywords:
+            if keyword.replace(" ", "") in text:
+                return category
+    return ""
+
+
 def _brand_force(brand: str) -> str:
     """BRAND_FORCE_MAP 완전일치 검사. 매칭되면 확정 카테고리, 아니면 빈 문자열."""
     return BRAND_FORCE_MAP.get(brand, "")
@@ -223,6 +247,10 @@ def classify(brand: str, product: str) -> str:
             forced = _brand_force(effective_brand)
             if forced:
                 return forced
+        else:
+            forced = _no_brand_product_force(product)
+            if forced:
+                return forced
 
     # 4) 모델 분류
     return _predict_with_model(effective_brand, product)
@@ -264,6 +292,11 @@ def classify_batch(items: list) -> list:
             effective_brand = infer_brand(product)
             if effective_brand:
                 forced = _brand_force(effective_brand)
+                if forced:
+                    results[i] = forced
+                    continue
+            else:
+                forced = _no_brand_product_force(product)
                 if forced:
                     results[i] = forced
                     continue

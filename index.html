@@ -1879,10 +1879,20 @@
   .hs-time-note {
     grid-column: 3;
     justify-self: end;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
     font-size: 11px;
     color: var(--ink-soft);
     white-space: nowrap;
   }
+  /* 심야 고지 밑에 붙는 편성 데이터 최종 갱신 시각 (조회 중인 채널들 중 가장 최근) */
+  .hs-time-note .hs-updated {
+    font-size: 10px;
+    color: var(--ink-faint);
+  }
+  .hs-time-note .hs-updated:empty { display: none; }
 
   .hs-grid-wrap {
     max-width: 1400px;
@@ -2216,7 +2226,7 @@
     .hs-controls { grid-template-columns: 1fr; }
     .hs-controls-center { grid-column: 1; }
     .hs-daymeta { grid-column: 1; justify-self: center; font-size: 11.5px; }
-    .hs-time-note { grid-column: 1; justify-self: center; }
+    .hs-time-note { grid-column: 1; justify-self: center; align-items: center; }
     .hs-grid-wrap { padding: 0 8px 40px; }
     table.hs-table thead th { font-size: 12px; }
     table.hs-table thead th .hs-co-tag { font-size: 11px; padding: 3px 10px; }
@@ -3180,7 +3190,10 @@
     </div>
   </div>
 
-  <span class="hs-time-note">※ 심야: 01:00~05:00</span>
+  <div class="hs-time-note">
+    <span>※ 심야: 01:00~05:00</span>
+    <span class="hs-updated" id="hsUpdated"></span>
+  </div>
 </div>
 
 <div class="hs-cat-legend" id="hsCatLegend"></div>
@@ -4524,9 +4537,22 @@ async function hsLoadCompanyDate(code, bc, dateStr) {
   }
   const monthData = _hsCache[key];
   if (monthData && monthData.days && monthData.days[dateStr]) {
-    return { programs: monthData.days[dateStr] };
+    return { programs: monthData.days[dateStr], updatedAt: monthData.updated_at || '' };
   }
   return null;
+}
+
+// 조회 중인 채널들의 월 파일 updated_at 중 가장 최근 값을 심야 고지 밑에 표시한다.
+// (스크래퍼가 월 파일을 쓸 때 KST ISO로 남긴다. 그 필드가 아직 없는 예전
+//  파일만 조회되면 표기를 비워 둔다 - .hs-updated:empty 로 줄 자체가 사라진다.)
+function hsRenderUpdated(datasets) {
+  const el = document.getElementById('hsUpdated');
+  if (!el) return;
+  let latest = '';
+  for (const d of datasets || []) {
+    if (d && d.updatedAt && d.updatedAt > latest) latest = d.updatedAt;
+  }
+  el.textContent = latest ? fpFormatUpdated(latest) : '';
 }
 
 function hsNowMinutes(dateStr) {
@@ -4743,6 +4769,7 @@ async function hsRefresh(dateStr) {
   _hsLastDatasets = datasets;
   _hsLastDateStr = dateStr;
 
+  hsRenderUpdated(datasets);
   hsRenderBody();
 }
 

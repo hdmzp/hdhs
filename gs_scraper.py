@@ -357,7 +357,8 @@ def main():
             with open(out_path, "w", encoding="utf-8") as f:
                 json.dump({
                     "company": "GS", "broadcast": broadcast,
-                    "month": ym, "days": sorted_days,
+                    "month": ym, "updated_at": datetime.now(KST).isoformat(timespec="seconds"),
+                    "days": sorted_days,
                 }, f, ensure_ascii=False, indent=2)
             print(f"  저장: {out_path} ({len(sorted_days)}일)")
 

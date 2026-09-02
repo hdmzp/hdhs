@@ -272,7 +272,9 @@ def main():
             out_path = os.path.join(sub_dir, f"{ym}.json")
             sorted_days = {k: days[k] for k in sorted(days)}
             with open(out_path, "w", encoding="utf-8") as f:
-                json.dump({"company": "CJ", "broadcast": broadcast, "month": ym, "days": sorted_days}, 
+                json.dump({"company": "CJ", "broadcast": broadcast, "month": ym,
+                           "updated_at": datetime.now(KST).isoformat(timespec="seconds"),
+                           "days": sorted_days},
                           f, ensure_ascii=False, indent=2)
             print(f"  저장: {out_path}")
     print("\n완료.")
