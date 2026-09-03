@@ -2,7 +2,7 @@
   "company": "KTALPHA",
   "broadcast": "live",
   "month": "2026-09",
-  "updated_at": "2026-09-03T13:59:26+09:00",
+  "updated_at": "2026-09-03T17:23:22+09:00",
   "days": {
     "2026-09-01": [
       {
@@ -737,7 +737,7 @@
       },
       {
         "start": "13:28",
-        "end": "14:28",
+        "end": "14:33",
         "brand": "슈리오",
         "product": "슈리오_스니커즈",
         "price": 59800,
@@ -748,7 +748,7 @@
       },
       {
         "start": "14:29",
-        "end": "15:29",
+        "end": "15:32",
         "brand": "테디크루",
         "product": "테디크루_점퍼 팬츠",
         "price": 49900,
@@ -759,7 +759,7 @@
       },
       {
         "start": "15:29",
-        "end": "16:29",
+        "end": "16:30",
         "brand": "이자녹스",
         "product": "이자녹스_듀얼커버쿠션",
         "price": 40000,
@@ -784,8 +784,8 @@
         "end": "18:30",
         "brand": "임성근",
         "product": "임성근_LA갈비",
-        "price": 39900,
-        "link": "https://m.kshop.co.kr/display/product/4238739",
+        "price": 25900,
+        "link": "https://m.kshop.co.kr/display/product/10674926",
         "category": "일반식품",
         "lavangba_category": "식품",
         "hsshow_id": "64c91d8a2a9f6c00d4bed7edac9484cb"
@@ -806,8 +806,8 @@
         "end": "20:31",
         "brand": "비에날씬",
         "product": "비에날씬_다이어트유산균",
-        "price": 376000,
-        "link": "https://m.kshop.co.kr/display/product/5215468",
+        "price": 548000,
+        "link": "https://m.kshop.co.kr/display/product/10489932",
         "category": "건강식품",
         "lavangba_category": "식품",
         "hsshow_id": "e549ff6856c9764644d48cf3d13c6131"
@@ -870,6 +870,17 @@
         "hsshow_id": "5aab978cb5666a7391a848224c1de4df"
       },
       {
+        "start": "01:33",
+        "end": "02:33",
+        "brand": "온바디",
+        "product": "온바디_의료기기",
+        "price": 108000,
+        "link": "https://m.kshop.co.kr/display/product/11192167",
+        "category": "가전",
+        "lavangba_category": "생활/건강",
+        "hsshow_id": "5ee4d57c5c08d885644427b51ee19d1e"
+      },
+      {
         "start": "02:33",
         "end": "03:33",
         "brand": "일동후디스",
@@ -886,7 +897,7 @@
         "brand": "",
         "product": "리자데이/복합",
         "price": 398000,
-        "link": "https://m.kshop.co.kr/display/product/7797386",
+        "link": "https://m.kshop.co.kr/display/product/5684482",
         "category": "미용",
         "lavangba_category": "패션잡화",
         "hsshow_id": "f34911c9d708bca3f988ba0f84b09c0c"
@@ -918,8 +929,8 @@
         "end": "05:39",
         "brand": "",
         "product": "핏테라_무릎보호대",
-        "price": 49800,
-        "link": "https://m.kshop.co.kr/display/product/10190211",
+        "price": 39900,
+        "link": "https://m.kshop.co.kr/display/product/10190210",
         "category": "리빙/주방",
         "lavangba_category": "생활/건강",
         "hsshow_id": "bd0a36f4394e570abfbb938958795469"
@@ -930,10 +941,153 @@
         "brand": "펠틱스",
         "product": "펠틱스_수트셋업",
         "price": 39900,
-        "link": "https://m.kshop.co.kr/display/product/11185534",
+        "link": "https://m.kshop.co.kr/display/product/11185581",
         "category": "의류",
         "lavangba_category": "패션의류",
         "hsshow_id": "92328eb906b8b04527eb7c2ac41ac005"
+      },
+      {
+        "start": "06:40",
+        "end": "07:40",
+        "brand": "",
+        "product": "네스트_의료기기",
+        "price": 0,
+        "link": "https://m.kshop.co.kr/display/product/10636058",
+        "category": "가전",
+        "lavangba_category": "여가/생활편의",
+        "hsshow_id": "e721f78a29d88817840ea3d983d1d0a4"
+      },
+      {
+        "start": "07:40",
+        "end": "08:40",
+        "brand": "알레스버",
+        "product": "알레스버_탈모샴푸",
+        "price": 199000,
+        "link": "https://m.kshop.co.kr/display/product/9674952",
+        "category": "미용",
+        "lavangba_category": "화장품/미용",
+        "hsshow_id": "1fad6127912a7a29417e5733f70f095a"
+      },
+      {
+        "start": "10:41",
+        "end": "11:41",
+        "brand": "시슬리",
+        "product": "시슬리_점퍼 티셔츠 팬츠",
+        "price": 99000,
+        "link": "https://m.kshop.co.kr/display/product/10648586",
+        "category": "의류",
+        "lavangba_category": "패션의류",
+        "hsshow_id": "1a2a821a51ee833704553353d40cdd63"
+      },
+      {
+        "start": "11:42",
+        "end": "12:42",
+        "brand": "닥터루템",
+        "product": "닥터루템_마그네슘",
+        "price": 279000,
+        "link": "https://m.kshop.co.kr/display/product/10603082",
+        "category": "건강식품",
+        "lavangba_category": "식품",
+        "hsshow_id": "7d1f8d787dec2f6f149beacc874b5ad9"
+      },
+      {
+        "start": "14:42",
+        "end": "15:42",
+        "brand": "DB손해보험",
+        "product": "DB손해보험_생활안심",
+        "price": 0,
+        "link": "https://m.kshop.co.kr/display/product/10867047",
+        "category": "보험",
+        "lavangba_category": "여가/생활편의",
+        "hsshow_id": "28c83dd1d988c35e62bfbdebd6466ed4"
+      },
+      {
+        "start": "15:42",
+        "end": "16:42",
+        "brand": "",
+        "product": "안동제비원_고추장담그기",
+        "price": 92900,
+        "link": "https://m.kshop.co.kr/display/product/3440686",
+        "category": "일반식품",
+        "lavangba_category": "식품",
+        "hsshow_id": "1706075ad4374abd87f2482deb7beae4"
+      },
+      {
+        "start": "16:42",
+        "end": "17:42",
+        "brand": "",
+        "product": "여에스더_글루타치온",
+        "price": 259000,
+        "link": "https://m.kshop.co.kr/display/product/11195035",
+        "category": "건강식품",
+        "lavangba_category": "식품",
+        "hsshow_id": "1a03b5823b4d4855ac468852b49de39e"
+      },
+      {
+        "start": "17:42",
+        "end": "18:42",
+        "brand": "",
+        "product": "오르셰_보정코르셋",
+        "price": 29900,
+        "link": "https://m.kshop.co.kr/display/product/10168306",
+        "category": "일반식품",
+        "lavangba_category": "패션의류",
+        "hsshow_id": "e90047ae0e3a58be9b21c1afd600b8c9"
+      },
+      {
+        "start": "18:42",
+        "end": "19:42",
+        "brand": "",
+        "product": "오늘제주_은갈치",
+        "price": 59900,
+        "link": "https://m.kshop.co.kr/display/product/5908732",
+        "category": "일반식품",
+        "lavangba_category": "식품",
+        "hsshow_id": "08d32aa963b5be9684c28df64d3bbc81"
+      },
+      {
+        "start": "19:42",
+        "end": "20:42",
+        "brand": "코지마",
+        "product": "코지마_오블리크",
+        "price": 2080000,
+        "link": "https://m.kshop.co.kr/display/product/3946857",
+        "category": "가전",
+        "lavangba_category": "디지털/가전",
+        "hsshow_id": "80f2894471a18a37e81950b2d183c4d0"
+      },
+      {
+        "start": "20:42",
+        "end": "21:42",
+        "brand": "코지마",
+        "product": "코지마_오블리크",
+        "price": 2080000,
+        "link": "https://m.kshop.co.kr/display/product/6445007",
+        "category": "가전",
+        "lavangba_category": "디지털/가전",
+        "hsshow_id": "39c46a59642c89deebb5156ea102d9ea"
+      },
+      {
+        "start": "21:43",
+        "end": "22:43",
+        "brand": "DB손해보험",
+        "product": "DB손해보험_안심케어",
+        "price": 0,
+        "link": "https://m.kshop.co.kr/display/product/10346016",
+        "category": "보험",
+        "lavangba_category": "여가/생활편의",
+        "hsshow_id": "cf795d3499e95a1f86243ab59bcda2cf"
+      },
+      {
+        "start": "22:43",
+        "end": "23:43",
+        "brand": "",
+        "product": "아르데코_파운데이션",
+        "price": 109000,
+        "link": "https://m.kshop.co.kr/display/product/7998774",
+        "category": "잡화/주얼리",
+        "lavangba_category": "화장품/미용",
+        "hsshow_id": "4b73a51306d287440ed8cad7a5a5bc56"
       }
     ],
     "2026-09-05": [
@@ -942,8 +1096,8 @@
         "end": "03:43",
         "brand": "크린위즈",
         "product": "크린위즈_방수왕",
-        "price": 79800,
-        "link": "https://m.kshop.co.kr/display/product/9292371",
+        "price": 49800,
+        "link": "https://m.kshop.co.kr/display/product/9292372",
         "category": "리빙/주방",
         "lavangba_category": "생활/건강",
         "hsshow_id": "db2efb2f52c369dca2d291f8227058f6"
@@ -954,7 +1108,7 @@
         "brand": "",
         "product": "발렌티노크리스티_남성언더웨어",
         "price": 69900,
-        "link": "https://m.kshop.co.kr/display/product/10126938",
+        "link": "https://m.kshop.co.kr/display/product/10126937",
         "category": "언더웨어",
         "lavangba_category": "패션의류",
         "hsshow_id": "fb7cc4d5eec88a0cdf6c9c3b35b8f4d3"
@@ -975,8 +1129,8 @@
         "end": "07:29",
         "brand": "비버리힐즈폴로클럽",
         "product": "비버리힐즈폴로클럽_셔츠 팬츠",
-        "price": 49900,
-        "link": "https://m.kshop.co.kr/display/product/10325315",
+        "price": 69900,
+        "link": "https://m.kshop.co.kr/display/product/10325314",
         "category": "의류",
         "lavangba_category": "패션의류",
         "hsshow_id": "8a035b6f146fa77296db1fb52f0db97f"
@@ -986,8 +1140,8 @@
         "end": "08:29",
         "brand": "프롬바이오",
         "product": "프롬바이오_위건강엔매스틱",
-        "price": 599000,
-        "link": "https://m.kshop.co.kr/display/product/10054221",
+        "price": 499000,
+        "link": "https://m.kshop.co.kr/display/product/10054245",
         "category": "건강식품",
         "lavangba_category": "식품",
         "hsshow_id": "c622b96366d8635dc61f532806f7156e"
@@ -1030,8 +1184,8 @@
         "end": "14:32",
         "brand": "",
         "product": "성분에디터_녹는실앰플",
-        "price": 109000,
-        "link": "https://m.kshop.co.kr/display/product/9111363",
+        "price": 79900,
+        "link": "https://m.kshop.co.kr/display/product/7990428",
         "category": "미용",
         "lavangba_category": "화장품/미용",
         "hsshow_id": "126c635d929712be228bbff9b075e55f"
@@ -1087,8 +1241,8 @@
         "end": "10:39",
         "brand": "",
         "product": "꾸띄르_새치샴푸",
-        "price": 109800,
-        "link": "https://m.kshop.co.kr/display/product/5442638",
+        "price": 69900,
+        "link": "https://m.kshop.co.kr/display/product/3473729",
         "category": "미용",
         "lavangba_category": "화장품/미용",
         "hsshow_id": "bcc038fe21f1a8e7527f14d26ce8d93d"
