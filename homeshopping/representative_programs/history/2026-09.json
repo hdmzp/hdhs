@@ -1,6 +1,6 @@
 {
   "month": "2026-09",
-  "updated_at": "2026-09-03T14:35:19.143208+09:00",
+  "updated_at": "2026-09-03T23:57:22.829028+09:00",
   "programs": [
     {
       "program_key": "HD_HJM",
@@ -14,7 +14,7 @@
         {
           "date": "2026-09-07",
           "label": "09/07(월) 19:30 방송",
-          "collected_at": "2026-09-03T14:35:19.139936+09:00",
+          "collected_at": "2026-09-03T23:57:22.826671+09:00",
           "products": [
             {
               "broadcast_date_label": "09/07(월) 19:30 방송",
@@ -31,6 +31,14 @@
               "price": 241000,
               "image": "https://image.hmall.com/2252955289_0.jpg",
               "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252955289"
+            },
+            {
+              "broadcast_date_label": "09/07(월) 19:30 방송",
+              "brand": "산과들에",
+              "name": "[9월 로스팅 / 순수견과 7종] 마스터블렌드7 20봉세트x4박스 +1박스 더",
+              "price": 87900,
+              "image": "https://image.hmall.com/2252896959_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252896959"
             },
             {
               "broadcast_date_label": "09/07(월) 19:30 방송",
@@ -55,16 +63,24 @@
       "broadcasts": [
         {
           "date": "2026-09-08",
-          "label": "09/08(화) 19:30 방송",
-          "collected_at": "2026-09-03T14:35:19.139936+09:00",
+          "label": "09/08(화) 08:15 방송",
+          "collected_at": "2026-09-03T23:57:22.826671+09:00",
           "products": [
             {
-              "broadcast_date_label": "09/08(화) 19:30 방송",
-              "brand": "신세계푸드",
-              "name": "[방송에서만]신세계푸드 호주산 LA갈비 꽃갈비 원육 5kg",
-              "price": 249800,
-              "image": "https://image.hmall.com/2245488878_0.jpg",
-              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2245488878"
+              "broadcast_date_label": "09/08(화) 08:15 방송",
+              "brand": "세포랩",
+              "name": "[5병 특집] 세포랩 바이오제닉 에센스 오오 패키지 (155mlX5+100mlX2+스프레이캡1)",
+              "price": 299000,
+              "image": "https://image.hmall.com/2253069033_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253069033"
+            },
+            {
+              "broadcast_date_label": "9/8(화) 방송상품",
+              "brand": "",
+              "name": "[기본 패키지] 세포랩 바이오제닉 에센스(155ml 1병 + 30ml 1병)",
+              "price": 129000,
+              "image": "https://image.hmall.com/2253069512_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253069512"
             }
           ]
         },
@@ -121,7 +137,7 @@
         {
           "date": "2026-09-05",
           "label": "09/05(토) 08:20 방송",
-          "collected_at": "2026-09-03T14:35:19.139936+09:00",
+          "collected_at": "2026-09-03T23:57:22.826671+09:00",
           "products": [
             {
               "broadcast_date_label": "09/05(토) 08:20 방송",
@@ -155,11 +171,11 @@
         {
           "date": "2026-09-09",
           "label": "09/09(수) 19:30 방송",
-          "collected_at": "2026-09-03T14:35:19.139936+09:00",
+          "collected_at": "2026-09-03T23:57:22.826671+09:00",
           "products": [
             {
               "broadcast_date_label": "09/09(수) 19:30 방송",
-              "brand": "",
+              "brand": "누캐시미어",
               "name": "누캐시미어 26FW 울캐시 폼폼 하프풀오버",
               "price": 139000,
               "image": "https://image.hmall.com/2252941489_0.png",
@@ -426,7 +442,7 @@
         {
           "date": "2026-09-11",
           "label": "09/11(금) 20:35 방송",
-          "collected_at": "2026-09-03T14:35:19.139936+09:00",
+          "collected_at": "2026-09-03T23:57:22.826671+09:00",
           "products": [
             {
               "prd_id": "1120171341",
@@ -523,8 +539,17 @@
         {
           "date": "2026-09-04",
           "label": "09/04(금) 20:35 방송",
-          "collected_at": "2026-09-03T14:35:19.139936+09:00",
+          "collected_at": "2026-09-03T23:57:22.826671+09:00",
           "products": [
+            {
+              "prd_id": "1104929041",
+              "broadcast_date_label": "9월 4일(금) 20:35 방송",
+              "broadcast_iso": "2026-09-04T20:35:00",
+              "brand": "GS SHOP",
+              "name": "비에날씬 프로 다이어트 유산균(9박스)+상온보관 슬림 3박스(30포)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1104929041"
+            },
             {
               "prd_id": "1061229354",
               "broadcast_date_label": "9월 4일(금) 20:35 방송",
@@ -605,15 +630,6 @@
               "name": "비에날씬 슬림플러스 1박스",
               "price": null,
               "link": "https://m.gsshop.com/prd/prd.gs?prdid=1105098249"
-            },
-            {
-              "prd_id": "1017243377",
-              "broadcast_date_label": "9월 4일(금) 20:35 방송",
-              "broadcast_iso": "2026-09-04T20:35:00",
-              "brand": "GS SHOP",
-              "name": "비에날씬 프로틴 1박스(14포) + 텀블러1개",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1017243377"
             },
             {
               "prd_id": "1133817176",
@@ -721,7 +737,7 @@
         {
           "date": "2026-09-12",
           "label": "09/12(토) 09:40 방송",
-          "collected_at": "2026-09-03T14:35:19.139936+09:00",
+          "collected_at": "2026-09-03T23:57:22.826671+09:00",
           "products": [
             {
               "broadcast_date_label": "09/12 토요일 09:40",
@@ -768,7 +784,7 @@
         {
           "date": "2026-09-10",
           "label": "09/10(목) 19:35 방송",
-          "collected_at": "2026-09-03T14:35:19.139936+09:00",
+          "collected_at": "2026-09-03T23:57:22.826671+09:00",
           "products": [
             {
               "broadcast_date_label": "09/10 목요일 19:35",
@@ -777,6 +793,14 @@
               "price": 79900,
               "image": "https://image2.lotteimall.com/goods/83/60/91/12916083_1.jpg/dims/resizemc/640x360/optimize",
               "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12916083"
+            },
+            {
+              "broadcast_date_label": "09/10 목요일 19:35",
+              "brand": "설아래",
+              "name": "[설아래] 설아래 캔디3구세트(홍도라지 2구, 홍생강레몬 1구)x2세트+홍도라지캔디+홍매실캔디",
+              "price": 79900,
+              "image": "https://image2.lotteimall.com/goods/87/10/92/12921087_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12921087"
             },
             {
               "broadcast_date_label": "09/10 목요일 19:35",
@@ -807,7 +831,7 @@
         {
           "date": "2026-09-05",
           "label": "09/05(토) 08:20 방송",
-          "collected_at": "2026-09-03T14:35:19.139936+09:00",
+          "collected_at": "2026-09-03T23:57:22.826671+09:00",
           "products": [
             {
               "broadcast_date_label": "09/05 토요일 08:20",
@@ -896,7 +920,7 @@
         {
           "date": "2026-09-07",
           "label": "09/07(월) 19:35 방송",
-          "collected_at": "2026-09-03T14:35:19.139936+09:00",
+          "collected_at": "2026-09-03T23:57:22.826671+09:00",
           "products": [
             {
               "broadcast_date_label": "09/07(월) 19:35",
@@ -925,18 +949,18 @@
             {
               "broadcast_date_label": "09/07(월) 19:35",
               "brand": "드시모네",
-              "name": "[CJ단독] 키즈스텝1 딸기바나나 2박스 100포",
-              "price": 155000,
-              "image": "goods_images/20/131/2085074131L.jpg?timestamp=20260520172308",
-              "link": "https://display.cjonstyle.com/p/item/2085074131?channelCode=30002002"
-            },
-            {
-              "broadcast_date_label": "09/07(월) 19:35",
-              "brand": "드시모네",
               "name": "[장면역 유산균] 듀얼스틱 프로+프리 200억 5박스",
               "price": 349500,
               "image": "goods_images/20/538/2073913538L.jpg?timestamp=20260106093912",
               "link": "https://display.cjonstyle.com/p/item/2073913538?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "09/07(월) 19:35",
+              "brand": "드시모네",
+              "name": "[CJ단독] 키즈스텝1 딸기바나나 2박스 100포",
+              "price": 155000,
+              "image": "goods_images/20/131/2085074131L.jpg?timestamp=20260520172308",
+              "link": "https://display.cjonstyle.com/p/item/2085074131?channelCode=30002002"
             },
             {
               "broadcast_date_label": "09/07(월) 19:35",
@@ -986,15 +1010,15 @@
         {
           "date": "2026-09-09",
           "label": "09/09(수) 20:45 방송",
-          "collected_at": "2026-09-03T14:35:19.139936+09:00",
+          "collected_at": "2026-09-03T23:57:22.826671+09:00",
           "products": [
             {
               "broadcast_date_label": "09/09(수) 20:45",
-              "brand": "오로바일렌",
-              "name": "[최화정쇼픽] 최초공개 25/26수확 유기농 올리브오일 4병+미니 3병",
-              "price": 179900,
-              "image": "https://image.cjonstyle.net/goods_images/20/715/2082922715L.jpg?timestamp=20260805135324",
-              "link": "https://item.cjonstyle.com/item/2082922715?channelCode=30002002"
+              "brand": "라이프밀",
+              "name": "[최화정쇼PICK] 리얼 프룻 동결건조칩 15팩",
+              "price": 59900,
+              "image": "https://image.cjonstyle.net/goods_images/20/126/2092651126L.jpg?timestamp=20260902160203",
+              "link": "https://item.cjonstyle.com/item/2092651126?channelCode=30002002"
             },
             {
               "broadcast_date_label": "09/09(수) 20:45",
@@ -1011,6 +1035,22 @@
               "price": 109000,
               "image": "https://image.cjonstyle.net/goods_images/20/989/2086474989L.jpg?timestamp=20260703181842",
               "link": "https://item.cjonstyle.com/item/2086474989?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "09/09(수) 20:45",
+              "brand": "오로바일렌",
+              "name": "[최화정쇼픽] 최초공개 25/26수확 유기농 올리브오일 4병+미니 3병",
+              "price": 179900,
+              "image": "goods_images/20/715/2082922715L.jpg?timestamp=20260805135324",
+              "link": "https://display.cjonstyle.com/p/item/2082922715?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "09/09(수) 20:45",
+              "brand": "오로바일렌",
+              "name": "[다다살림pick][쇼핑백미포함] 유기농 아르베키나 엑스트라버진 올리브오일 2병 + 미니 100ml 1병",
+              "price": 99000,
+              "image": "goods_images/20/980/2091971980L.jpg?timestamp=20260827112142",
+              "link": "https://display.cjonstyle.com/p/item/2091971980?channelCode=30002002"
             },
             {
               "broadcast_date_label": "09/09(수) 20:45",
@@ -1229,7 +1269,7 @@
         {
           "date": "2026-09-07",
           "label": "09/07(월) 20:00 방송",
-          "collected_at": "2026-09-03T14:35:19.139936+09:00",
+          "collected_at": "2026-09-03T23:57:22.826671+09:00",
           "products": [
             {
               "broadcast_date_label": "09/07(월) 20:00",
@@ -1258,9 +1298,9 @@
             {
               "broadcast_date_label": "09/07(월) 20:00",
               "brand": "메트로시티",
-              "name": "[9/4 출고예정]부오나 숄더백 미듐 M253MQ6364Z",
+              "name": "부오나 숄더백 미듐 M253MQ6364Z",
               "price": 619000,
-              "image": "https://image.cjonstyle.net/goods_images/20/898/2065467898L.jpg?timestamp=20260827144454",
+              "image": "https://image.cjonstyle.net/goods_images/20/898/2065467898L.jpg?timestamp=20260903192853",
               "link": "https://item.cjonstyle.com/item/2065467898?channelCode=30002002"
             },
             {
@@ -1634,9 +1674,9 @@
             {
               "broadcast_date_label": "09/07(월) 20:00",
               "brand": "메트로시티",
-              "name": "[9/4 출고][비밀코드] 카드지갑 M193WF1003Z",
+              "name": "[비밀코드] 카드지갑 M193WF1003Z",
               "price": 67000,
-              "image": "https://image.cjonstyle.net/goods_images/20/888/2052010888L.jpg?timestamp=20260827144536",
+              "image": "https://image.cjonstyle.net/goods_images/20/888/2052010888L.jpg?timestamp=20260903192920",
               "link": "https://item.cjonstyle.com/item/2052010888?channelCode=30002002"
             },
             {
@@ -1700,7 +1740,7 @@
         {
           "date": "2026-09-04",
           "label": "09/04(금) 22:45 방송",
-          "collected_at": "2026-09-03T14:35:19.139936+09:00",
+          "collected_at": "2026-09-03T23:57:22.826671+09:00",
           "products": [
             {
               "broadcast_date_label": "09/04(금) 22:45",
@@ -1713,18 +1753,18 @@
             {
               "broadcast_date_label": "09/04(금) 22:45",
               "brand": "더말로지카",
-              "name": "[기본패키지] 데일리 슈퍼폴리언트 대용량 2통",
-              "price": 139000,
-              "image": "https://image.cjonstyle.net/goods_images/20/358/2062337358L.jpg?timestamp=20250715204752",
-              "link": "https://item.cjonstyle.com/item/2062337358?channelCode=30002002"
+              "name": "[매니아패키지] 데일리 슈퍼폴리언트 대용량 6통+볼+브러쉬",
+              "price": 279000,
+              "image": "https://image.cjonstyle.net/goods_images/20/279/2092132279L.jpg?timestamp=20260826120830",
+              "link": "https://item.cjonstyle.com/item/2092132279?channelCode=30002002"
             },
             {
               "broadcast_date_label": "09/04(금) 22:45",
               "brand": "더말로지카",
-              "name": "[매니아패키지] 데일리 슈퍼폴리언트 대용량 6통+볼+브러쉬",
-              "price": 279000,
-              "image": "goods_images/20/279/2092132279L.jpg?timestamp=20260826120830",
-              "link": "https://display.cjonstyle.com/p/item/2092132279?channelCode=30002002"
+              "name": "[기본패키지] 데일리 슈퍼폴리언트 대용량 2통",
+              "price": 139000,
+              "image": "https://image.cjonstyle.net/goods_images/20/358/2062337358L.jpg?timestamp=20250715204752",
+              "link": "https://item.cjonstyle.com/item/2062337358?channelCode=30002002"
             },
             {
               "broadcast_date_label": "09/04(금) 22:45",
@@ -1878,7 +1918,7 @@
         {
           "date": "2026-09-08",
           "label": "09/08(화) 18:30 방송",
-          "collected_at": "2026-09-03T14:35:19.139936+09:00",
+          "collected_at": "2026-09-03T23:57:22.826671+09:00",
           "products": [
             {
               "broadcast_date_label": "09/08(화) 18:30",
@@ -1947,18 +1987,18 @@
             {
               "broadcast_date_label": "09/08(화) 18:30",
               "brand": "바이탈플랜트",
-              "name": "롤팬 NEW 오리지널 자동회전냄비 6종 택1",
-              "price": 129000,
-              "image": "goods_images/20/584/2083807584L.jpg?timestamp=20260429161009",
-              "link": "https://display.cjonstyle.com/p/item/2083807584?channelCode=30002002"
-            },
-            {
-              "broadcast_date_label": "09/08(화) 18:30",
-              "brand": "바이탈플랜트",
               "name": "바이탈플랜트 롤팬 크림 뉴오리지널 자동회전냄비",
               "price": 129000,
               "image": "goods_images/20/815/2083863815L.jpg?timestamp=20260430154940",
               "link": "https://display.cjonstyle.com/p/item/2083863815?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "09/08(화) 18:30",
+              "brand": "바이탈플랜트",
+              "name": "롤팬 NEW 오리지널 자동회전냄비 6종 택1",
+              "price": 129000,
+              "image": "goods_images/20/584/2083807584L.jpg?timestamp=20260429161009",
+              "link": "https://display.cjonstyle.com/p/item/2083807584?channelCode=30002002"
             },
             {
               "broadcast_date_label": "09/08(화) 18:30",
