@@ -1,38 +1,26 @@
 {
-  "2026-09-01": {
-    "minTa": 24.5,
-    "maxTa": 30.8,
-    "pop_max": 88.0,
-    "source": "open-meteo"
-  },
-  "2026-09-02": {
-    "minTa": 24.1,
-    "maxTa": 30.9,
-    "pop_max": 71.0,
-    "source": "open-meteo"
-  },
-  "2026-09-03": {
-    "minTa": 24.7,
-    "maxTa": 29.0,
-    "pop_max": 14.0,
-    "source": "open-meteo"
-  },
   "2026-09-04": {
-    "minTa": 25.0,
-    "maxTa": 28.5,
-    "pop_max": 12.0,
-    "source": "open-meteo"
+    "minTa": 24.0,
+    "maxTa": 28.0,
+    "pop_max": 30.0,
+    "source": "kma"
   },
   "2026-09-05": {
-    "minTa": 24.1,
-    "maxTa": 27.7,
-    "pop_max": 23.0,
-    "source": "open-meteo"
+    "minTa": 22.0,
+    "maxTa": 28.0,
+    "pop_max": 30.0,
+    "source": "kma"
   },
   "2026-09-06": {
-    "minTa": 21.6,
-    "maxTa": 23.8,
-    "pop_max": 57.0,
-    "source": "open-meteo"
+    "minTa": 22.0,
+    "maxTa": 27.0,
+    "pop_max": 30.0,
+    "source": "kma"
+  },
+  "2026-09-07": {
+    "minTa": 22.0,
+    "maxTa": 28.0,
+    "pop_max": 30.0,
+    "source": "kma"
   }
 }
