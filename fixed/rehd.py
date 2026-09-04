@@ -99,7 +99,7 @@ from datetime import datetime, timezone, timedelta
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from tools import scrape_guard
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from celeb_day_sweep import supplement_missing_slots
+from celeb_day_sweep import supplement_missing_slots, merge_continuous_slots
 from playwright.sync_api import sync_playwright
 from bs4 import BeautifulSoup
 
@@ -750,6 +750,7 @@ def crawl_hd_program(page, config: dict, list_map: dict):
     # 실패한 경우를 대비해, 나머지 3사와 같은 공통 보강(편성표에서 이
     # 프로그램의 빠진 회차 채우기)을 한 번 더 돌린다.
     supplement_missing_slots("HD", [config["spex_sect_nm"], tab_name], deduped)
+    merge_continuous_slots("HD", [config["spex_sect_nm"], tab_name], deduped)
 
     print(f"    -> 최종 상품 {len(deduped)}개 (병합/중복 제거 후)")
 
