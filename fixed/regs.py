@@ -44,7 +44,7 @@ from bs4 import BeautifulSoup
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from tools import scrape_guard
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from celeb_day_sweep import supplement_missing_slots
+from celeb_day_sweep import supplement_missing_slots, merge_continuous_slots
 
 WEEKDAY_KR = ["월", "화", "수", "목", "금", "토", "일"]
 
@@ -291,6 +291,7 @@ def crawl_gs_program(config: dict):
     # 2026-09-05 최유라쇼 08:20/09:20/10:20) 상세페이지가 그 회차를 다 안
     # 보여줄 수 있다. 편성표(GS_live)를 훑어 수집분에 없는 회차를 채운다.
     supplement_missing_slots("GS", [config["program_title"], tab_name], final_products)
+    merge_continuous_slots("GS", [config["program_title"], tab_name], final_products)
 
     return {
         "company": "GS",

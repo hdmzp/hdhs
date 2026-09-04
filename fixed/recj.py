@@ -50,7 +50,7 @@ from datetime import datetime, date, timedelta, timezone
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from tools import scrape_guard
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from celeb_day_sweep import supplement_missing_slots
+from celeb_day_sweep import supplement_missing_slots, merge_continuous_slots
 
 KST = timezone(timedelta(hours=9))
 OUTPUT_DIR = os.path.join("homeshopping", "representative_programs")
@@ -405,6 +405,13 @@ def crawl_cj_program(session: requests.Session, config: dict):
     # 2026-09-05 최유라쇼 08:20/09:20/10:20) pgmShop이 그 회차를 다 안 보여줄
     # 수 있다. 편성표(CJ_live)를 훑어 수집분에 없는 회차를 채운다.
     supplement_missing_slots(
+        "CJ",
+        [program_title or config["program_title"], config["program_title"],
+         tab_name, *config.get("keywords", ())],
+        products)
+
+    # 이어지는 구간으로 쪼개져 온 회차는 한 방송으로 묶는다
+    merge_continuous_slots(
         "CJ",
         [program_title or config["program_title"], config["program_title"],
          tab_name, *config.get("keywords", ())],

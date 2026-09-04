@@ -436,6 +436,26 @@ def merge_into_month(existing: dict, program_key: str, meta: dict,
         prog.update(meta)
 
     by_date = {broadcast_key_of(b): b for b in prog.get("broadcasts") or []}
+
+    # 새 수집분이 다루는 날짜에 대해, 수집분에 없는 '방송 전' 회차는 지운다.
+    # 방송 전 회차는 어차피 최신 수집분이 진실이라(교체 규칙) 남겨둘 이유가
+    # 없고, 남기면 없어진 회차가 화면에 유령으로 남는다. 실제 사례:
+    # 최유라쇼가 한 방송을 구간별로 쪼개 주던 것을(09/05 08:20/09:20/10:20)
+    # 한 회차(08:20)로 묶게 됐는데, 09:20/10:20 항목이 그대로 남아 방송이
+    # 3회처럼 보였다. 편성 취소로 사라진 회차도 같은 규칙으로 정리된다.
+    # 정정 창(reconcile)/확정(final) 회차는 절대 안 건드린다.
+    new_days = {b.get("date") for b in new_broadcasts.values()}
+    for stale_key in [k for k in by_date if k not in new_broadcasts]:
+        stale = by_date[stale_key]
+        if stale.get("date") not in new_days:
+            continue  # 이번 수집분이 다루지 않는 날 - 판단 근거가 없다
+        if broadcast_phase(stale.get("date"), now, stale.get("label"),
+                           meta.get("schedule_raw")) != "before":
+            continue
+        print(f"[정리] {program_key} {stale.get('label')}: 새 수집분에 없는 "
+              f"방송 전 회차라 제거 (상품 {len(stale.get('products') or [])}건)")
+        del by_date[stale_key]
+
     for slot_key, broadcast in new_broadcasts.items():
         date_iso = broadcast.get("date") or slot_key.split("#", 1)[0]
         kept = by_date.get(slot_key)

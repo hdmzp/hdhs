@@ -248,6 +248,51 @@ def test_same_day_two_broadcasts():
     check("시각 없는 상품은 첫 회차로", len(morning["products"]), 2)
 
 
+def test_stale_before_slot_removed():
+    """회차 병합/편성 취소로 사라진 '방송 전' 회차가 유령으로 안 남는지.
+
+    최유라쇼가 한 방송을 구간별로 쪼개 주던 걸(09/05 08:20/09:20/10:20)
+    한 회차(08:20)로 묶게 됐는데, 옛 09:20/10:20 항목이 그대로 남아 화면에
+    방송이 3회처럼 보였다. 단, 정정 창/확정 회차는 절대 안 지운다."""
+    print("[8] 새 수집분에 없는 '방송 전' 회차는 정리된다")
+    meta = {"program_key": "LT_CYR", "schedule_raw": "매주 토 08시 20분"}
+
+    def three_slots():
+        return [
+            {"date": "2026-09-05", "label": "09/05 토요일 08:20",
+             "collected_at": "2026-09-04T03:00:00+09:00", "products": [product("A", "1")]},
+            {"date": "2026-09-05", "label": "09/05 토요일 09:20",
+             "collected_at": "2026-09-04T03:00:00+09:00", "products": [product("B", "2")]},
+            {"date": "2026-09-05", "label": "09/05 토요일 10:20",
+             "collected_at": "2026-09-04T03:00:00+09:00", "products": [product("C", "3")]},
+        ]
+
+    merged_new = {bch.broadcast_key("2026-09-05", "08:20"): {
+        "date": "2026-09-05", "label": "09/05 토요일 08:20",
+        "collected_at": "2026-09-04T04:00:00+09:00",
+        "products": [product("A", "1"), product("B", "2"), product("C", "3")]}}
+
+    # 방송 전(09/04) - 쪼개졌던 회차가 정리되고 한 회차만 남아야 한다
+    existing = {"programs": [{**meta, "broadcasts": three_slots()}]}
+    bch.merge_into_month(existing, "LT_CYR", meta, merged_new, at("2026-09-04T04:00:00"))
+    broadcasts = existing["programs"][0]["broadcasts"]
+    check("회차 1개로 정리", len(broadcasts), 1)
+    check("상품 3건 유지", len(broadcasts[0]["products"]), 3)
+
+    # 이미 지난 회차(확정)는 새 수집분에 없어도 안 지운다
+    existing2 = {"programs": [{**meta, "broadcasts": three_slots()}]}
+    bch.merge_into_month(existing2, "LT_CYR", meta, merged_new, at("2026-09-07T04:00:00"))
+    check("확정 회차는 보존", len(existing2["programs"][0]["broadcasts"]), 3)
+
+    # 이번 수집분이 다루지 않는 날짜의 회차도 안 건드린다
+    other_day = {"date": "2026-09-12", "label": "09/12 토요일 09:40",
+                 "collected_at": "2026-09-04T03:00:00+09:00", "products": [product("D", "4")]}
+    existing3 = {"programs": [{**meta, "broadcasts": three_slots() + [other_day]}]}
+    bch.merge_into_month(existing3, "LT_CYR", meta, merged_new, at("2026-09-04T04:00:00"))
+    kept_dates = [b["date"] for b in existing3["programs"][0]["broadcasts"]]
+    check("다른 날 회차는 유지", "2026-09-12" in kept_dates, True)
+
+
 def main():
     test_phase()
     test_reconcile_removal()
@@ -256,6 +301,7 @@ def main():
     test_gate_retention()
     test_merge_into_month()
     test_same_day_two_broadcasts()
+    test_stale_before_slot_removed()
 
     print()
     if FAILURES:

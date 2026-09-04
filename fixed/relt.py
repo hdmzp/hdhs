@@ -43,7 +43,7 @@ from urllib.parse import urljoin
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from tools import scrape_guard
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from celeb_day_sweep import supplement_missing_slots
+from celeb_day_sweep import supplement_missing_slots, merge_continuous_slots
 
 OUTPUT_DIR = os.path.join("homeshopping", "representative_programs")
 BASE_DOMAIN = "https://www.lotteimall.com"
@@ -167,6 +167,11 @@ def crawl_lt_program(config: dict):
     # 상세 API가 그 회차를 다 안 준 경우를 대비해 편성표(LT_live)를 훑어
     # 수집분에 없는 회차를 채운다.
     supplement_missing_slots("LT", [program_title, tab_name], upcoming_products)
+
+    # 롯데는 한 방송을 상품 구간별로 쪼개서 준다(2026-09-05 최유라쇼
+    # 08:20~09:20 / 09:20~10:20 / 10:20~10:35 = 이어지는 한 방송).
+    # 이어지는 구간은 첫 구간 시각의 한 회차로 묶는다.
+    merge_continuous_slots("LT", [program_title, tab_name], upcoming_products)
 
     print(f"    -> 방송예정 상품 {len(upcoming_products)}개 수집됨")
     for p in upcoming_products:

@@ -17,6 +17,20 @@ HD(rehd.py)는 편성표를 직접 훑는 방식으로 이미 바뀌었고, 이 
 나머지 3사(GS/CJ/LT)가 같은 가정("어느 셀럽PGM이든 하루 2회 방송할 수
 있다")을 갖게 해주는 공통 안전망이다.
 
+== 반대편 문제: 한 방송이 여러 회차로 쪼개져 보이는 것 ==
+롯데(LT)는 편성표도 상세페이지도 **한 방송을 상품 구간별로 쪼개서** 준다.
+  2026-09-05 최유라쇼: 08:20~09:20 / 09:20~10:20 / 10:20~10:35
+  (끊김 없이 이어지는 08:20~10:35 한 방송이다. 다른 3사는 방송당 구간 1개)
+이걸 그대로 두면 화면에 회차 3개로 보인다. merge_continuous_slots()가
+**이어지는 구간을 한 회차로 묶어** 첫 구간 시각을 그 방송의 라벨로 쓴다.
+묶는 기준은 두 단계다:
+  1순위 편성표의 종료시각 - 앞 구간 끝과 뒤 구간 시작이 붙어 있으면 한 방송
+        (SEGMENT_GAP_MIN 분까지 허용)
+  2순위 편성표에 아직 없는 날(편성표는 오늘~+5일뿐)은 시작시각 간격만 보고
+        FALLBACK_GAP_MIN 분 이내면 한 방송으로 본다. 방송이 가까워져
+        편성표에 들어오면 1순위로 정확히 다시 계산된다.
+하루 2회 방송(오감쇼 08:15/19:30 = 675분 간격)은 어느 기준으로도 안 묶인다.
+
 == 규칙 ==
 - 채우는 건 **회차 단위**다. 이미 수집된 회차(같은 날짜+시각)는 절대
   안 건드린다 - 편성표의 상품명은 화면 표시용으로 정제돼 있어서
@@ -45,6 +59,17 @@ LIVE_DIR_TEMPLATE = os.path.join("homeshopping", "{company}_live", "{ym}.json")
 
 # 편성표에 들어있는 범위(오늘~+5일)만 볼 수 있다. 여유를 조금 더 둔다.
 SWEEP_DAYS = 7
+
+# 앞 구간 종료 ~ 뒤 구간 시작이 이만큼(분) 이내면 이어지는 한 방송으로 본다.
+# 편성표는 보통 딱 붙여서 주지만(09:20 끝 -> 09:20 시작) 1~2분씩 어긋나는
+# 경우가 있어 여유를 둔다.
+SEGMENT_GAP_MIN = 10
+
+# 편성표에 아직 없는 날(오늘+6일 이후)의 폴백 기준. 시작시각 간격이 이만큼
+# 이내면 같은 방송의 구간으로 본다. 실측 근거: 최유라쇼 2026-09-10 회차가
+# 19:35 / 21:45(130분 간격) 두 구간으로 왔다. 하루 2회 방송은 몇 시간씩
+# 떨어져 있어(오감쇼 08:15/19:30 = 675분) 이 값에 안 걸린다.
+FALLBACK_GAP_MIN = 150
 
 WEEKDAY_ABBR = ["월", "화", "수", "목", "금", "토", "일"]
 WEEKDAY_FULL = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"]
@@ -167,6 +192,90 @@ def to_product(item: dict) -> dict:
         "link": item.get("link") or None,
         "from_schedule": True,  # 편성표로 채운 회차라는 표시(디버깅용)
     }
+
+
+def to_minutes(hm: str) -> int:
+    h, m = hm.split(":")
+    return int(h) * 60 + int(m)
+
+
+def schedule_blocks(company: str, program_names, brod_date: date,
+                    days_ahead: int = SWEEP_DAYS):
+    """편성표에서 그 날 이 프로그램의 '방송 블록'(이어지는 구간 묶음)을 만든다.
+    반환: [[시작 'HH:MM', ...], ...] - 블록별 구간 시작시각 목록.
+    그 날 편성이 아직 없으면 빈 리스트."""
+    segments = {}
+    for (day, start), items in find_program_slots(company, program_names, days_ahead).items():
+        if day != brod_date.isoformat():
+            continue
+        end = next((i.get("end") for i in items if i.get("end")), None)
+        segments[start] = end
+
+    blocks = []
+    prev_end = None
+    for start in sorted(segments):
+        gap = None if prev_end is None else to_minutes(start) - to_minutes(prev_end)
+        if blocks and gap is not None and gap <= SEGMENT_GAP_MIN:
+            blocks[-1].append(start)
+        else:
+            blocks.append([start])
+        prev_end = segments[start] or start
+    return blocks
+
+
+def merge_continuous_slots(company: str, program_names, products: list,
+                           label_fn=None, days_ahead: int = SWEEP_DAYS) -> int:
+    """이어지는 구간으로 쪼개져 들어온 회차를 한 방송으로 묶는다(제자리 수정).
+
+    라벨만 첫 구간 시각으로 바꾸므로 상품은 하나도 잃지 않는다.
+    반환: 라벨이 바뀐 상품 수. (규칙은 모듈 docstring 참고)"""
+    if not products:
+        return 0
+
+    label_fn = label_fn or LABEL_FNS.get(company)
+    if label_fn is None:
+        raise ValueError(f"라벨 형식을 모르는 회사: {company}")
+
+    today = datetime.now(KST).date()
+    by_day = {}
+    for product in products:
+        d, hm = parse_label(product.get("broadcast_date_label"), today)
+        if d and hm:
+            by_day.setdefault(d, {}).setdefault(hm, []).append(product)
+
+    changed = 0
+    for brod_date, slots in by_day.items():
+        if len(slots) < 2:
+            continue
+
+        blocks = schedule_blocks(company, program_names, brod_date, days_ahead)
+        # 편성표에 있는 날은 종료시각으로 정확히 묶고, 없는 날은 시작시각
+        # 간격만 보고 잠정으로 묶는다 (방송이 가까워지면 정확해진다).
+        starts = sorted(slots)
+        if blocks:
+            start_to_block = {s: block[0] for block in blocks for s in block}
+            source = "편성표"
+        else:
+            start_to_block = {}
+            block_start = starts[0]
+            for i, start in enumerate(starts):
+                if i and to_minutes(start) - to_minutes(starts[i - 1]) > FALLBACK_GAP_MIN:
+                    block_start = start
+                start_to_block[start] = block_start
+            source = "시작시각 간격"
+
+        for start in starts:
+            block_start = start_to_block.get(start)
+            if not block_start or block_start == start:
+                continue
+            label = label_fn(brod_date, block_start)
+            print(f"    -> [회차 병합/{source}] {brod_date} {start} 구간을 "
+                  f"{block_start} 방송으로 묶음 ({len(slots[start])}개 상품)")
+            for product in slots[start]:
+                product["broadcast_date_label"] = label
+                changed += 1
+
+    return changed
 
 
 def supplement_missing_slots(company: str, program_names, products: list,
