@@ -437,23 +437,50 @@ def merge_into_month(existing: dict, program_key: str, meta: dict,
 
     by_date = {broadcast_key_of(b): b for b in prog.get("broadcasts") or []}
 
-    # 새 수집분이 다루는 날짜에 대해, 수집분에 없는 '방송 전' 회차는 지운다.
-    # 방송 전 회차는 어차피 최신 수집분이 진실이라(교체 규칙) 남겨둘 이유가
-    # 없고, 남기면 없어진 회차가 화면에 유령으로 남는다. 실제 사례:
+    # 회차 병합으로 '흡수된' 옛 회차만 지운다.
     # 최유라쇼가 한 방송을 구간별로 쪼개 주던 것을(09/05 08:20/09:20/10:20)
-    # 한 회차(08:20)로 묶게 됐는데, 09:20/10:20 항목이 그대로 남아 방송이
-    # 3회처럼 보였다. 편성 취소로 사라진 회차도 같은 규칙으로 정리된다.
+    # 한 회차(08:20)로 묶게 됐는데, 09:20/10:20 항목이 그대로 남아 화면에
+    # 방송이 3회처럼 보였다.
+    #
+    # 단, "새 수집분에 없으면 지운다"로 하면 안 된다 - 수집이 한 회차를
+    # 일시적으로 놓치면(HD 편성표의 brodTitl이 비어 오는 시간대가 있다)
+    # 멀쩡한 기록이 날아간다. 실제로 2026-09-08 오감쇼 08:15 기록이 그렇게
+    # 지워졌다. 그래서 옛 회차의 시작시각이 새 회차의 '방송 구간' 안에
+    # 들어갈 때만(= 그 회차로 흡수된 게 확실할 때만) 지운다.
+    # 구간은 상품의 segment_time("08:20-09:20(60')")에서 읽는다.
     # 정정 창(reconcile)/확정(final) 회차는 절대 안 건드린다.
-    new_days = {b.get("date") for b in new_broadcasts.values()}
+    spans = {}   # 날짜 -> [(블록 시작 분, 블록 끝 분)]
+    for broadcast in new_broadcasts.values():
+        start_hm = parse_hm(broadcast.get("label"))
+        if not start_hm:
+            continue
+        start_min = start_hm[0] * 60 + start_hm[1]
+        end_min = start_min
+        for product in broadcast.get("products") or []:
+            segment = product.get("segment_time") or ""
+            times = TIME_PATTERN.findall(segment)
+            for t in times:
+                hm = parse_hm(t)
+                if hm:
+                    end_min = max(end_min, hm[0] * 60 + hm[1])
+        if end_min > start_min:
+            spans.setdefault(broadcast.get("date"), []).append((start_min, end_min))
+
     for stale_key in [k for k in by_date if k not in new_broadcasts]:
         stale = by_date[stale_key]
-        if stale.get("date") not in new_days:
-            continue  # 이번 수집분이 다루지 않는 날 - 판단 근거가 없다
+        stale_hm = parse_hm(stale.get("label"))
+        if not stale_hm:
+            continue
+        stale_min = stale_hm[0] * 60 + stale_hm[1]
+        absorbed = any(start < stale_min <= end
+                       for start, end in spans.get(stale.get("date"), []))
+        if not absorbed:
+            continue
         if broadcast_phase(stale.get("date"), now, stale.get("label"),
                            meta.get("schedule_raw")) != "before":
             continue
-        print(f"[정리] {program_key} {stale.get('label')}: 새 수집분에 없는 "
-              f"방송 전 회차라 제거 (상품 {len(stale.get('products') or [])}건)")
+        print(f"[정리] {program_key} {stale.get('label')}: 새 회차의 방송 구간에 "
+              f"흡수돼 제거 (상품 {len(stale.get('products') or [])}건)")
         del by_date[stale_key]
 
     for slot_key, broadcast in new_broadcasts.items():

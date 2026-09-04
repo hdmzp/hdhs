@@ -129,6 +129,33 @@ def test_withitemlist_expanded():
     check("서브상품이 부모 방송제목을 물려받음", sub["brodTitl"], "오감쇼")
 
 
+def test_local_names_rescue_nameless_tvlist():
+    """tv-list에 방송 제목이 안 붙어 와도 로컬 편성이 아는 회차 시각으로 건진다.
+
+    2026-09-04 낮 수집에서 HD tv-list의 brodTitl이 9/8 편성 전체에서
+    사라졌고, 그 바람에 오감쇼 08:15 회차를 통째로 놓쳤다."""
+    print("[3-1] tv-list에 방송 제목이 없으면 로컬 편성의 회차 시각으로 고른다")
+    nameless = [dict(it, brodTitl="") for it in DAY_0908]
+    local = [
+        ("08:15", "09:25", "오감쇼",
+         {"broadcast_date_label": None, "brand": "세포랩", "name": "세포랩 에센스",
+          "price": 1, "image": None, "link": None, "_code": "2253069033"}),
+        ("19:30", "21:45", "오감쇼",
+         {"broadcast_date_label": None, "brand": "신세계푸드", "name": "원육",
+          "price": 2, "image": None, "link": None, "_code": "2262058812"}),
+    ]
+    # pgm-comm은 08:15만 알려준 상태
+    products = run_collect(nameless, ["오감쇼"], "08:15", "09:25", local_entries=local)
+    labels = sorted({p["broadcast_date_label"] for p in products})
+    check("회차 2개 다 수집", labels,
+          ["09/08(화) 08:15 방송", "09/08(화) 19:30 방송"])
+    check("저녁 회차에 tv-list 상품(원육) 포함",
+          any("신세계푸드" in (p["name"] or "") and "19:30" in p["broadcast_date_label"]
+              for p in products), True)
+    check("다른 프로그램(11:20)은 안 섞임",
+          any((p["name"] or "") == "다른상품" for p in products), False)
+
+
 def test_fallback_to_time_window():
     print("[4] 편성표에 프로그램명이 없으면 시간대 필터로 폴백")
     nameless = [dict(it, brodTitl="") for it in DAY_0908]
@@ -159,6 +186,7 @@ def main():
     test_two_broadcasts_same_day()
     test_same_product_in_both_slots()
     test_withitemlist_expanded()
+    test_local_names_rescue_nameless_tvlist()
     test_fallback_to_time_window()
     test_local_schedule_supplement()
 
