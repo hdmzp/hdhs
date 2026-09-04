@@ -2953,6 +2953,19 @@
     margin-right: 3px;
   }
 
+  /* 한 방송이 상품 구간별로 쪼개져 편성되는 회사(롯데)의 구간 시간.
+     회차는 하나로 묶어 보여주되, 어느 구간에 나온 상품인지는 남긴다. */
+  .cel-prod-time {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--ink-faint);
+    background: var(--paper-dim);
+    border-radius: 4px;
+    padding: 1px 4px;
+    margin-right: 4px;
+    white-space: nowrap;
+  }
+
   .cel-prod-name {
     font-size: 12px;
     font-weight: 600;
@@ -5674,9 +5687,12 @@ function celRenderProductRow(p) {
   // 자리표시자 브랜드('GS SHOP')는 태그로도 안 보여준다 (전 상품 동일해서 정보가 없음)
   const brandShown = (p.brand && !CEL_BRAND_PLACEHOLDER.test(String(p.brand).trim())) ? p.brand : '';
   const brandTag = brandShown ? `<span class="cel-prod-brand">${brandShown}</span>` : '';
+  // 롯데처럼 한 방송이 구간별로 쪼개져 편성되는 경우, 묶인 회차 안에서
+  // 이 상품이 나온 구간을 표시한다 ("08:20-09:20(60')").
+  const timeTag = p.segment_time ? `<span class="cel-prod-time">${p.segment_time}</span>` : '';
   return (
     `<a class="cel-prod-row" href="${p.link || '#'}" target="_blank" rel="noopener noreferrer">` +
-      `<div class="cel-prod-name">${brandTag}${p.name || ''}</div>` +
+      `<div class="cel-prod-name">${timeTag}${brandTag}${p.name || ''}</div>` +
       (priceText ? `<div class="cel-prod-price">${priceText}</div>` : '') +
     `</a>`
   );

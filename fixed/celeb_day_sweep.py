@@ -30,6 +30,9 @@ HD(rehd.py)는 편성표를 직접 훑는 방식으로 이미 바뀌었고, 이 
         FALLBACK_GAP_MIN 분 이내면 한 방송으로 본다. 방송이 가까워져
         편성표에 들어오면 1순위로 정확히 다시 계산된다.
 하루 2회 방송(오감쇼 08:15/19:30 = 675분 간격)은 어느 기준으로도 안 묶인다.
+묶인 회차의 상품에는 원래 구간을 `segment_time`("08:20-09:20(60')")으로
+남긴다 - 한 회차로 보되 어느 구간에 나온 상품인지는 알 수 있게 한다.
+(구간이 하나뿐인 방송은 회차 라벨과 같은 말이라 안 붙인다)
 
 == 규칙 ==
 - 채우는 건 **회차 단위**다. 이미 수집된 회차(같은 날짜+시각)는 절대
@@ -223,11 +226,33 @@ def schedule_blocks(company: str, program_names, brod_date: date,
     return blocks
 
 
+def format_segment(start: str, end) -> str:
+    """구간 표기: "08:20-09:20(60')". 종료시각을 모르면 "10:10~"."""
+    if not end:
+        return f"{start}~"
+    minutes = to_minutes(end) - to_minutes(start)
+    if minutes <= 0:
+        return f"{start}-{end}"
+    return f"{start}-{end}({minutes}')"
+
+
+def segment_ends(company: str, program_names, brod_date: date,
+                 days_ahead: int = SWEEP_DAYS) -> dict:
+    """편성표에서 그 날 이 프로그램의 {구간 시작: 구간 종료}."""
+    ends = {}
+    for (day, start), items in find_program_slots(company, program_names, days_ahead).items():
+        if day != brod_date.isoformat():
+            continue
+        ends[start] = next((i.get("end") for i in items if i.get("end")), None)
+    return ends
+
+
 def merge_continuous_slots(company: str, program_names, products: list,
                            label_fn=None, days_ahead: int = SWEEP_DAYS) -> int:
     """이어지는 구간으로 쪼개져 들어온 회차를 한 방송으로 묶는다(제자리 수정).
 
-    라벨만 첫 구간 시각으로 바꾸므로 상품은 하나도 잃지 않는다.
+    라벨만 첫 구간 시각으로 바꾸므로 상품은 하나도 잃지 않는다. 묶인 회차의
+    상품에는 원래 구간을 segment_time으로 남긴다.
     반환: 라벨이 바뀐 상품 수. (규칙은 모듈 docstring 참고)"""
     if not products:
         return 0
@@ -249,11 +274,12 @@ def merge_continuous_slots(company: str, program_names, products: list,
             continue
 
         blocks = schedule_blocks(company, program_names, brod_date, days_ahead)
+        starts = sorted(slots)
         # 편성표에 있는 날은 종료시각으로 정확히 묶고, 없는 날은 시작시각
         # 간격만 보고 잠정으로 묶는다 (방송이 가까워지면 정확해진다).
-        starts = sorted(slots)
         if blocks:
             start_to_block = {s: block[0] for block in blocks for s in block}
+            ends = segment_ends(company, program_names, brod_date, days_ahead)
             source = "편성표"
         else:
             start_to_block = {}
@@ -262,11 +288,26 @@ def merge_continuous_slots(company: str, program_names, products: list,
                 if i and to_minutes(start) - to_minutes(starts[i - 1]) > FALLBACK_GAP_MIN:
                     block_start = start
                 start_to_block[start] = block_start
+            # 종료시각을 모르니 "다음 구간 시작"을 끝으로 본다(마지막 구간은 미상).
+            ends = {s: (starts[i + 1] if i + 1 < len(starts)
+                        and start_to_block[starts[i + 1]] == start_to_block[s] else None)
+                    for i, s in enumerate(starts)}
             source = "시작시각 간격"
+
+        # 실제로 묶인 회차(구간 2개 이상)에만 구간 시간을 붙인다
+        block_sizes = {}
+        for start in starts:
+            block_sizes[start_to_block[start]] = block_sizes.get(start_to_block[start], 0) + 1
 
         for start in starts:
             block_start = start_to_block.get(start)
-            if not block_start or block_start == start:
+            if not block_start:
+                continue
+            if block_sizes.get(block_start, 1) > 1:
+                segment = format_segment(start, ends.get(start))
+                for product in slots[start]:
+                    product["segment_time"] = segment
+            if block_start == start:
                 continue
             label = label_fn(brod_date, block_start)
             print(f"    -> [회차 병합/{source}] {brod_date} {start} 구간을 "
