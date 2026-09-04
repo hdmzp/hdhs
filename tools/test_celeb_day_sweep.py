@@ -131,6 +131,33 @@ def test_skips_empty_scrape():
     check("여전히 0건", len(products), 0)
 
 
+def test_skips_started_slot_today():
+    """오늘 이미 시작한 회차를 채우면 안 된다 (2026-09-04 소유진쇼 사고).
+
+    방송이 시작되면 상세페이지가 그 회차를 목록에서 빼는데, 편성표는
+    슬롯당 대표상품 1개뿐이라 '빠진 회차'로 보고 채우면 20건짜리 회차가
+    1건으로 쪼그라든다. 실제로 방송 12분 뒤 수집에서 급감 경보가 났다."""
+    print("[4-1] 오늘이라도 이미 시작한 회차는 안 채운다")
+    now = datetime.now(KST)
+    started = f"{max(now.hour - 1, 0):02d}:00"
+    upcoming = f"{min(now.hour + 2, 23):02d}:00"
+    days = {TODAY.isoformat(): [
+        slot(started, "23:00", "소유진쇼", "바삭", "김부각(편성표 대표상품)"),
+        slot(upcoming, "23:59", "소유진쇼", "올록담", "올리브오일"),
+    ]}
+    products = [collected(sweep.label_gs(TODAY, "23:59"), "다른 회차 상품")]
+
+    added = with_live_data("GS", days, lambda: sweep.supplement_missing_slots(
+        "GS", ["소유진쇼"], products))
+
+    names = [p["name"] for p in products]
+    check("시작한 회차는 안 채움",
+          any("김부각" in n for n in names), False)
+    # 아직 시작 안 한 회차는 정상적으로 채운다 (시간대 경계에서만 유효한 검사)
+    if int(upcoming[:2]) > now.hour:
+        check("남은 회차는 채움", added, 1)
+
+
 def test_skips_past_slot():
     print("[4] 지난 회차는 새로 만들지 않는다")
     past = TODAY - timedelta(days=1)
@@ -259,6 +286,7 @@ def main():
     test_fills_missing_slot()
     test_keeps_collected_slot()
     test_skips_empty_scrape()
+    test_skips_started_slot_today()
     test_skips_past_slot()
     test_label_formats()
     test_title_matching()
