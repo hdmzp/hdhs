@@ -127,6 +127,25 @@ def add_categories(programs):
     return programs
 
 
+def keep_known_pgm(new_programs, old_programs):
+    """새 수집분에 프로그램명(pgm)이 비어 있으면 기존 값을 물려준다.
+
+    tv-list의 brodTitl은 시점에 따라 통째로 비어서 온다 (2026-09-04 낮
+    수집에서 9/8 편성 전체의 brodTitl이 사라졌다). 셀럽PGM 수집이 이
+    이름으로 방송 회차를 찾기 때문에, 한 번이라도 확인된 이름은 지킨다.
+    (같은 시간대의 이름을 쓰므로 상품이 바뀌어도 방송 자체는 같다)"""
+    known = {}
+    for p in old_programs or []:
+        if p.get("pgm") and p.get("start"):
+            known.setdefault(p["start"], p["pgm"])
+    if not known:
+        return new_programs
+    for p in new_programs:
+        if not p.get("pgm") and known.get(p.get("start")):
+            p["pgm"] = known[p["start"]]
+    return new_programs
+
+
 def new_session():
     """쿠키를 물고 다니는 세션. 먼저 메인 페이지를 한 번 열어 WAF가 발급하는
     세션 쿠키를 받아둔다 - 쿠키 없는 생요청만 계속 날리면 tv-list가 JSON 대신
@@ -360,7 +379,8 @@ def main():
                 time.sleep(REQUEST_DELAY)
                 continue
 
-            days[date_dash] = add_categories(programs)
+            days[date_dash] = add_categories(
+                keep_known_pgm(programs, days.get(date_dash)))
             collected += len(programs)
             print(f"  -> {len(programs)}개 편성")
             time.sleep(REQUEST_DELAY)

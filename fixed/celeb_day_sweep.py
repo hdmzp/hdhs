@@ -201,6 +201,21 @@ def to_product(item: dict) -> dict:
     }
 
 
+def select_slots_by_starts(entries, starts) -> dict:
+    """시작시각 목록으로 회차를 고른다. 편성표에 프로그램명이 비어 오는
+    시간대가 있어(HD tv-list의 brodTitl) 이름으로 못 고를 때, 이름이 살아
+    있는 다른 소스(로컬 편성)가 알려준 회차 시각으로 고르는 용도."""
+    slots = {}
+    for start, end, _title, payload in entries:
+        if not start or start not in starts:
+            continue
+        slot = slots.setdefault(start, {"end": end, "items": []})
+        if end and not slot["end"]:
+            slot["end"] = end
+        slot["items"].append(payload)
+    return slots
+
+
 def to_minutes(hm: str) -> int:
     h, m = hm.split(":")
     return int(h) * 60 + int(m)

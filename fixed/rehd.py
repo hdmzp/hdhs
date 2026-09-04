@@ -99,7 +99,8 @@ from datetime import datetime, timezone, timedelta
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from tools import scrape_guard
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from celeb_day_sweep import supplement_missing_slots, merge_continuous_slots
+from celeb_day_sweep import (supplement_missing_slots, merge_continuous_slots,
+                             select_slots_by_starts)
 from playwright.sync_api import sync_playwright
 from bs4 import BeautifulSoup
 
@@ -536,7 +537,16 @@ def collect_lineup_products(brod_date, program_names, brod_start=None, brod_end=
     pgm-comm은 '가장 가까운 회차' 하나만 알려주기 때문에, 그 시간대만 보면
     같은 날 2회 방송하는 날의 나머지 회차가 통째로 빠진다
     (2026-09-08 오감쇼: 08:15 세포랩은 수집됐는데 19:30 신세계푸드 원육 누락).
-    그래서 하루치 편성을 다 받아 방송 제목으로 이 프로그램 회차를 고른다."""
+    그래서 하루치 편성을 다 받아 방송 제목으로 이 프로그램 회차를 고른다.
+
+    회차를 고르는 순서 (앞이 실패하면 다음으로):
+      1. tv-list의 방송 제목(brodTitl)
+      2. 로컬 편성(HD_live)의 프로그램명(pgm)이 알려준 회차 시각
+         - tv-list의 brodTitl은 시점에 따라 통째로 비어서 온다
+           (2026-09-04 낮 수집에서 9/8 편성 전체의 이름이 사라졌고,
+            그 바람에 08:15 회차를 통째로 놓쳤다)
+      3. pgm-comm이 알려준 방송 시간대 (둘 다 이름을 못 찾을 때)
+    """
     products = []
 
     api_entries = [
@@ -544,8 +554,21 @@ def collect_lineup_products(brod_date, program_names, brod_start=None, brod_end=
          it.get("brodTitl") or "", it)
         for it in fetch_day_items(brod_date.strftime("%Y%m%d"))
     ]
-    api_slots = select_program_slots(api_entries, program_names, brod_start, brod_end)
-    print(f"    -> tv-list {brod_date} 편성에서 '{program_names[0]}' 회차 "
+    local_entries = load_local_day_entries(brod_date)
+
+    api_slots = select_program_slots(api_entries, program_names)
+    local_slots = select_program_slots(local_entries, program_names)
+
+    if not api_slots and local_slots:
+        # tv-list에 방송 제목이 안 붙은 경우 - 로컬 편성이 아는 회차 시각으로 고른다
+        api_slots = select_slots_by_starts(api_entries, set(local_slots))
+        print(f"    -> tv-list에 방송 제목이 없어 로컬 편성이 알려준 회차 시각으로 선택")
+    if not api_slots and not local_slots:
+        # 어느 소스에도 프로그램명이 없다 - 예전처럼 pgm-comm 시간대로 폴백
+        api_slots = select_program_slots(api_entries, [], brod_start, brod_end)
+        local_slots = select_program_slots(local_entries, [], brod_start, brod_end)
+
+    print(f"    -> {brod_date} 편성에서 '{program_names[0]}' 회차 "
           f"{len(api_slots)}개 선택: {', '.join(sorted(api_slots)) or '없음'}")
     for start_hm in sorted(api_slots):
         exact_label = make_exact_label(brod_date, start_hm)
@@ -558,9 +581,7 @@ def collect_lineup_products(brod_date, program_names, brod_start=None, brod_end=
         print(f"    -> [경고] tv-list에서 이 프로그램 방송을 못 찾음 (편성 미공개일 수 있음)")
 
     # 로컬 편성(HD_live)으로 보충 - 새벽 실행 시점엔 tv-list에 라인업이
-    # 다 공개되기 전이라 일부만 잡히는 경우가 있다. 여기도 하루치를 훑는다.
-    local_entries = load_local_day_entries(brod_date)
-    local_slots = select_program_slots(local_entries, program_names, brod_start, brod_end)
+    # 다 공개되기 전이라 일부만 잡히는 경우가 있다.
     for start_hm in sorted(local_slots):
         exact_label = make_exact_label(brod_date, start_hm)
         slot_items = local_slots[start_hm]["items"]

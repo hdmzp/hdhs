@@ -248,13 +248,15 @@ def test_same_day_two_broadcasts():
     check("시각 없는 상품은 첫 회차로", len(morning["products"]), 2)
 
 
-def test_stale_before_slot_removed():
-    """회차 병합/편성 취소로 사라진 '방송 전' 회차가 유령으로 안 남는지.
+def test_absorbed_slot_removed():
+    """회차 병합으로 흡수된 옛 회차만 지우고, 수집이 놓친 회차는 지키는지.
 
-    최유라쇼가 한 방송을 구간별로 쪼개 주던 걸(09/05 08:20/09:20/10:20)
-    한 회차(08:20)로 묶게 됐는데, 옛 09:20/10:20 항목이 그대로 남아 화면에
-    방송이 3회처럼 보였다. 단, 정정 창/확정 회차는 절대 안 지운다."""
-    print("[8] 새 수집분에 없는 '방송 전' 회차는 정리된다")
+    - 최유라쇼가 한 방송을 구간별로 쪼개 주던 걸(09/05 08:20/09:20/10:20)
+      한 회차(08:20)로 묶으면서 옛 09:20/10:20이 유령으로 남았다 -> 제거
+    - 반대로 2026-09-08 오감쇼 08:15 기록은, 편성표 brodTitl이 비어 오는
+      바람에 수집이 그 회차를 놓친 것뿐인데 지워졌다 -> 보존해야 한다
+    """
+    print("[8] 병합으로 흡수된 회차만 지우고, 놓친 회차는 지킨다")
     meta = {"program_key": "LT_CYR", "schedule_raw": "매주 토 08시 20분"}
 
     def three_slots():
@@ -267,30 +269,39 @@ def test_stale_before_slot_removed():
              "collected_at": "2026-09-04T03:00:00+09:00", "products": [product("C", "3")]},
         ]
 
+    def seg(p, segment_time):
+        return {**p, "segment_time": segment_time}
+
     merged_new = {bch.broadcast_key("2026-09-05", "08:20"): {
         "date": "2026-09-05", "label": "09/05 토요일 08:20",
         "collected_at": "2026-09-04T04:00:00+09:00",
-        "products": [product("A", "1"), product("B", "2"), product("C", "3")]}}
+        "products": [seg(product("A", "1"), "08:20-09:20(60')"),
+                     seg(product("B", "2"), "09:20-10:20(60')"),
+                     seg(product("C", "3"), "10:20-10:35(15')")]}}
 
-    # 방송 전(09/04) - 쪼개졌던 회차가 정리되고 한 회차만 남아야 한다
     existing = {"programs": [{**meta, "broadcasts": three_slots()}]}
     bch.merge_into_month(existing, "LT_CYR", meta, merged_new, at("2026-09-04T04:00:00"))
     broadcasts = existing["programs"][0]["broadcasts"]
-    check("회차 1개로 정리", len(broadcasts), 1)
+    check("흡수된 회차 정리 -> 1개", len(broadcasts), 1)
     check("상품 3건 유지", len(broadcasts[0]["products"]), 3)
 
-    # 이미 지난 회차(확정)는 새 수집분에 없어도 안 지운다
+    # 확정 회차는 흡수 대상이어도 안 지운다
     existing2 = {"programs": [{**meta, "broadcasts": three_slots()}]}
     bch.merge_into_month(existing2, "LT_CYR", meta, merged_new, at("2026-09-07T04:00:00"))
     check("확정 회차는 보존", len(existing2["programs"][0]["broadcasts"]), 3)
 
-    # 이번 수집분이 다루지 않는 날짜의 회차도 안 건드린다
-    other_day = {"date": "2026-09-12", "label": "09/12 토요일 09:40",
-                 "collected_at": "2026-09-04T03:00:00+09:00", "products": [product("D", "4")]}
-    existing3 = {"programs": [{**meta, "broadcasts": three_slots() + [other_day]}]}
-    bch.merge_into_month(existing3, "LT_CYR", meta, merged_new, at("2026-09-04T04:00:00"))
-    kept_dates = [b["date"] for b in existing3["programs"][0]["broadcasts"]]
-    check("다른 날 회차는 유지", "2026-09-12" in kept_dates, True)
+    # 수집이 놓친 회차(구간 밖)는 지키기 - 2026-09-08 오감쇼 08:15 사고
+    hd_meta = {"program_key": "HD_OGS", "schedule_raw": "매주 화요일 19시 30분"}
+    hd_existing = {"programs": [{**hd_meta, "broadcasts": [
+        {"date": "2026-09-08", "label": "09/08(화) 08:15 방송",
+         "collected_at": "2026-09-04T03:00:00+09:00", "products": [product("아침", "9")]}]}]}
+    hd_new = {bch.broadcast_key("2026-09-08", "19:30"): {
+        "date": "2026-09-08", "label": "09/08(화) 19:30 방송",
+        "collected_at": "2026-09-04T20:00:00+09:00", "products": [product("저녁", "8")]}}
+    bch.merge_into_month(hd_existing, "HD_OGS", hd_meta, hd_new, at("2026-09-04T20:00:00"))
+    labels = sorted(b["label"] for b in hd_existing["programs"][0]["broadcasts"])
+    check("수집이 놓친 아침 회차 보존", labels,
+          ["09/08(화) 08:15 방송", "09/08(화) 19:30 방송"])
 
 
 def main():
@@ -301,7 +312,7 @@ def main():
     test_gate_retention()
     test_merge_into_month()
     test_same_day_two_broadcasts()
-    test_stale_before_slot_removed()
+    test_absorbed_slot_removed()
 
     print()
     if FAILURES:
