@@ -188,6 +188,26 @@ def test_merge_continuous_segments():
           {p["broadcast_date_label"] for p in products},
           {sweep.label_lt(day, "08:20")})
     check("상품은 하나도 안 잃음", len(products), 3)
+    # 묶었어도 어느 구간에 나온 상품인지는 남긴다
+    check("구간 시간 표기", [p.get("segment_time") for p in products],
+          ["08:20-09:20(60')", "09:20-10:20(60')", "10:20-10:35(15')"])
+
+
+def test_no_segment_time_for_single_slot():
+    print("[7-1] 구간이 하나뿐인 방송엔 구간 시간을 안 붙인다")
+    day = TODAY + timedelta(days=2)
+    days = {day.isoformat(): [
+        slot("08:15", "09:25", "오감쇼", "세포랩", "에센스"),
+        slot("19:30", "21:45", "오감쇼", "신세계푸드", "원육"),
+    ]}
+    products = [collected(sweep.label_hd(day, "08:15"), "아침"),
+                collected(sweep.label_hd(day, "19:30"), "저녁")]
+
+    with_live_data("HD", days, lambda: sweep.merge_continuous_slots(
+        "HD", ["오감쇼"], products))
+
+    check("회차 라벨과 같은 말이라 생략",
+          [p.get("segment_time") for p in products], [None, None])
 
 
 def test_does_not_merge_two_broadcasts():
@@ -223,6 +243,9 @@ def test_merge_fallback_without_schedule():
     check("첫 구간 회차로 통일",
           {p["broadcast_date_label"] for p in products},
           {sweep.label_lt(far, "19:35")})
+    # 종료시각을 모르니 다음 구간 시작을 끝으로 보고, 마지막 구간은 미상으로 둔다
+    check("폴백 구간 표기", [p.get("segment_time") for p in products],
+          ["19:35-21:45(130')", "21:45~"])
 
     # 하루 2회 방송 간격(675분)은 폴백에서도 안 묶인다
     apart = [collected(sweep.label_hd(far, "08:15"), "아침"),
@@ -240,6 +263,7 @@ def main():
     test_label_formats()
     test_title_matching()
     test_merge_continuous_segments()
+    test_no_segment_time_for_single_slot()
     test_does_not_merge_two_broadcasts()
     test_merge_fallback_without_schedule()
 
