@@ -177,8 +177,8 @@ def test_merge_into_month():
             broadcast("08/31(월) 19:35 방송", [dict(p) for p in kept_products])]}]}
         bch.merge_into_month(
             existing, "CJ_KJE", meta,
-            {"2026-08-31": broadcast("08/31(월) 19:35 방송",
-                                     [dict(p) for p in new_products])},
+            {bch.broadcast_key("2026-08-31", "19:35"):
+                broadcast("08/31(월) 19:35 방송", [dict(p) for p in new_products])},
             at(now_text))
         return existing["programs"][0]["broadcasts"][0]
 
@@ -196,10 +196,56 @@ def test_merge_into_month():
     # 새 회차는 그대로 추가돼야 한다
     existing = {"programs": [{**meta, "broadcasts": []}]}
     bch.merge_into_month(existing, "CJ_KJE", meta,
-                         {"2026-08-31": broadcast("08/31(월) 19:35 방송", new_products)},
+                         {bch.broadcast_key("2026-08-31", "19:35"):
+                          broadcast("08/31(월) 19:35 방송", new_products)},
                          at("2026-09-02T09:00:00"))
     check("기존 기록이 없으면 그냥 추가",
           len(existing["programs"][0]["broadcasts"][0]["products"]), 3)
+
+
+def test_same_day_two_broadcasts():
+    """하루 2회 방송(2026-09-08 오감쇼 08:15 / 19:30)이 회차별로 나뉘는지.
+
+    날짜만으로 묶던 옛 방식에선 저녁 회차 상품이 아침 회차 기록에 섞였다."""
+    print("[7] 같은 날 2회 방송은 회차별로 분리된다")
+
+    def hd_product(name, label):
+        return {"broadcast_date_label": label, "name": name,
+                "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=1"}
+
+    src = {
+        "company": "HD", "tab_name": "오감쇼", "program_title": "오감쇼",
+        "products": [
+            hd_product("세포랩 에센스", "09/08(화) 08:15 방송"),
+            hd_product("신세계푸드 원육", "09/08(화) 19:30 방송"),
+            hd_product("세포랩 에센스(저녁)", "09/08(화) 19:30 방송"),
+            hd_product("알리미 카드 상품", "9/8(화) 방송상품"),  # 시각 없는 잔여 라벨
+        ],
+    }
+
+    import json
+    import tempfile
+    tmp = tempfile.mkdtemp()
+    with open(os.path.join(tmp, "HD_OGS.json"), "w", encoding="utf-8") as f:
+        json.dump(src, f, ensure_ascii=False)
+
+    src_dir_backup = bch.SRC_DIR
+    bch.SRC_DIR = tmp
+    try:
+        collected = bch.collect_current_broadcasts(at("2026-09-04T03:00:00").date())
+    finally:
+        bch.SRC_DIR = src_dir_backup
+
+    broadcasts = collected["HD_OGS"]["broadcasts"]
+    check("회차 2개로 분리", sorted(broadcasts),
+          ["2026-09-08#08:15", "2026-09-08#19:30"])
+    morning = broadcasts["2026-09-08#08:15"]
+    evening = broadcasts["2026-09-08#19:30"]
+    check("아침 회차 라벨", morning["label"], "09/08(화) 08:15 방송")
+    check("저녁 회차 라벨", evening["label"], "09/08(화) 19:30 방송")
+    check("저녁 회차 상품 2건", len(evening["products"]), 2)
+    # 시각 없는 라벨(잔여/알리미 카드)은 그 날 첫 회차에 붙는다
+    check("시각 없는 상품은 첫 회차로", len(morning["products"]), 2)
 
 
 def main():
@@ -209,6 +255,7 @@ def main():
     test_gate_untimed_label()
     test_gate_retention()
     test_merge_into_month()
+    test_same_day_two_broadcasts()
 
     print()
     if FAILURES:

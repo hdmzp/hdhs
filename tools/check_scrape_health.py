@@ -43,6 +43,7 @@ recj.py가 매일 첫 프로그램에서 죽으면서 CJ 셀럽PGM 4개 파일�
 import argparse
 import json
 import os
+import re
 import subprocess
 import sys
 import time
@@ -314,14 +315,19 @@ def _record_is_final_fn():
 
 
 def history_broadcasts(data):
-    """{(program_key, date): (건수, 라벨, 편성문구)}"""
+    """{(program_key, date, 시작시각): (건수, 라벨, 편성문구)}
+
+    같은 날 2회 방송하는 날이 있어서(2026-09-08 오감쇼 08:15/19:30) 날짜만
+    키로 쓰면 두 회차가 겹쳐 엉뚱한 회차끼리 비교된다. 라벨의 시각까지 넣는다."""
     out = {}
     for prog in (data or {}).get("programs") or []:
         key = prog.get("program_key")
         schedule = prog.get("schedule_raw", "")
         for b in prog.get("broadcasts") or []:
-            out[(key, b.get("date"))] = (len(b.get("products") or []),
-                                         b.get("label", ""), schedule)
+            label = b.get("label", "")
+            m = re.search(r"\d{1,2}:\d{2}", label or "")
+            out[(key, b.get("date"), m.group(0) if m else "")] = (
+                len(b.get("products") or []), label, schedule)
     return out
 
 
@@ -354,15 +360,16 @@ def check_history_regressions():
 
         before, after = history_broadcasts(prev_data), history_broadcasts(now_data)
         for key, (was, label, schedule) in sorted(before.items()):
-            program_key, date_iso = key
+            program_key, date_iso, start_hm = key
             if not record_is_final(date_iso, now, label, schedule):
                 continue  # 방송 전 라인업 변경 / 정정 창 안의 정정은 정상
             if key not in after:
                 problems.append(
-                    f"{rel_path}: [{program_key} {date_iso}] 확정 기록 {was}건이 통째로 사라짐")
+                    f"{rel_path}: [{program_key} {date_iso} {start_hm}] "
+                    f"확정 기록 {was}건이 통째로 사라짐")
             elif after[key][0] < was:
                 problems.append(
-                    f"{rel_path}: [{program_key} {date_iso}] 확정 기록 {was} -> "
+                    f"{rel_path}: [{program_key} {date_iso} {start_hm}] 확정 기록 {was} -> "
                     f"{after[key][0]}건으로 줄어듦 (방송 후 잔여 노출에 덮였을 가능성)")
     return problems
 
