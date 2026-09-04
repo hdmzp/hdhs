@@ -29,10 +29,19 @@ rehd.py
      로 필터링하면 해당 방송의 "전체 상품 라인업"(브랜드/가격 포함)이
      나온다. 검증: 2026-07-14(화) 19:30~21:45 창에서 3개,
      2026-07-09(목) 08:15~10:25 창에서 4개 확인.
+6차: 5차의 '한 시간대만 본다'가 하루 2회 방송을 놓친다는 게 드러났다.
+     2026-09-08 오감쇼는 08:15과 19:30 두 번 방송했는데, pgm-comm은 가장
+     가까운 회차(08:15 세포랩)만 알려주므로 그 시간대만 필터링한 결과
+     19:30 회차(신세계푸드 원육)가 통째로 누락됐다. 최유라쇼(relt.py)가
+     방송예정 회차를 전부 받아오는 것처럼, HD도 "방송일 하루치 편성표를
+     쭉 훑어" 방송 제목(brodTitl)이 그 프로그램인 회차를 전부 고른다.
+     편성표는 한 방송당 대표상품 1개만 노출하고 나머지는 withItemList에
+     들어있어서, 서브상품까지 펼쳐서 담는다.
 
 == 결론 ==
 소스 5개를 합쳐서 방송 라인업 전체를 수집한다 (우선순위 순):
-  - tv-list 편성 API           : 방송 시간대 전체 상품 (브랜드/가격 포함) <- 5차, 메인
+  - tv-list 편성 API           : 방송일 하루치를 훑어 이 프로그램의 모든 회차
+      (하루 2회 방송 포함)의 전체 상품 (브랜드/가격 포함) <- 6차, 메인
   - 로컬 편성 데이터(HD_live)   : hd_scraper.py가 수집해 둔 같은 편성.
       이 스크립트는 새벽 3시에 도는데, 그 시각엔 tv-list에 해당 방송의
       대표상품 1개만 있고 나머지 라인업("함께 나오는 대표상품들")은 낮에
@@ -42,11 +51,15 @@ rehd.py
   - pgm-comm.respData.pgmViewItem: 대표상품 1개, 정확한 방송일시(brodDispNm)
   - searchSpexSectItem.itemList  : 최대 2개 (날짜 라벨 없음)
   - pgm-comm-html 스와이퍼       : 알리미 캐러셀 카드 (가격 없음)
-같은 slitmCd는 중복 제거하되, 뒤 소스의 값으로 빈 필드(브랜드/가격/
-이미지 등)를 채워 병합한다. tv-list의 방송 시간대는 pgm-comm의
-brodDt/brodStrtDtm/brodEndDtm을 쓰고, pgm-comm 캡처가 실패하면
-schedule_raw("매주 화요일 19시 30분")에서 다음 방송 날짜/시각을
-계산해 폴백한다.
+중복 제거 키는 (방송회차 라벨, slitmCd)다. 같은 상품이 하루에 두 번
+편성되는 날이 있어서(2026-09-08 오감쇼의 세포랩 - 08:15/19:30 양쪽)
+상품코드만으로 묶으면 뒤 회차가 사라진다. 뒤 소스의 값으로 빈 필드
+(브랜드/가격/이미지 등)는 채워 병합한다.
+방송일(brodDt)은 pgm-comm이 알려준 값을 쓰고, pgm-comm 캡처가 실패하면
+schedule_raw("매주 화요일 19시 30분")에서 다음 방송 날짜/시각을 계산해
+폴백한다. 그 날 어느 시간대에 방송하는지는 편성표의 방송 제목으로
+찾으므로, 편성표에 프로그램명이 안 붙은 경우에만 pgm-comm의 시간대
+(brodStrtDtm~brodEndDtm)로 폴백한다.
 
 == 출력 ==
 homeshopping/representative_programs/HD_HJM.json (황정민)
@@ -205,10 +218,16 @@ def make_exact_label(brod_date, start_hm: str) -> str:
     return label + " 방송"
 
 
-def fetch_broadcast_lineup(brod_dt: str, start_hm: str, end_hm: str = None) -> list:
-    """tv-list 편성 API에서 brod_dt(YYYYMMDD)의 start_hm~end_hm 시간대에
-    시작하는 방송상품 전체를 가져온다. end_hm이 없으면 시작시각이 정확히
-    start_hm인 상품만 매칭. 반환값은 API 원본 아이템 리스트."""
+def fetch_day_items(brod_dt: str) -> list:
+    """tv-list 편성 API에서 brod_dt(YYYYMMDD) 하루치 편성 아이템을 전부 가져온다.
+    (예전에는 여기서 방송 시간대까지 걸렀는데, 그러면 같은 날 2회 방송하는 날의
+     나머지 회차를 통째로 놓친다 - 아래 select_program_slots가 프로그램명으로
+     고른다. 이 함수는 '하루 편성 전체'만 책임진다.)
+
+    대표상품(broadItemList)뿐 아니라 withItemList(같은 방송에 함께 나오는 상품)도
+    펼쳐서 담는다. 편성표는 한 방송당 대표상품 1개만 노출하고 나머지는
+    withItemList에 들어있어서, 이걸 안 펼치면 라인업이 1개로 보인다.
+    반환값은 API 원본 아이템 리스트(부모의 방송시각/프로그램명을 물려받음)."""
     headers = {"User-Agent": UA_DESKTOP, "Referer": "https://www.hmall.com/"}
     seen = {}
     for page in range(0, 8):
@@ -225,26 +244,91 @@ def fetch_broadcast_lineup(brod_dt: str, start_hm: str, end_hm: str = None) -> l
         for it in items:
             strt = it.get("brodStrtDtm") or ""
             code = it.get("slitmCd")
-            if not strt or not code:
+            if not strt:
                 continue
-            if end_hm:
-                in_window = start_hm <= strt < end_hm
-            else:
-                in_window = strt == start_hm
-            if in_window:
-                seen[str(code)] = it
+            if code:
+                seen[(strt, str(code))] = it
+            for sub in it.get("withItemList") or []:
+                sub_code = sub.get("slitmCd")
+                if not sub_code:
+                    continue
+                child = dict(sub)
+                # 서브상품엔 방송시각/프로그램명이 비어 있는 경우가 있어 부모 값을 물려준다.
+                child["brodStrtDtm"] = sub.get("brodStrtDtm") or strt
+                child["brodEndDtm"] = sub.get("brodEndDtm") or it.get("brodEndDtm")
+                child["brodTitl"] = sub.get("brodTitl") or it.get("brodTitl")
+                seen[(child["brodStrtDtm"], str(sub_code))] = child
 
     return list(seen.values())
+
+
+def compact(text: str) -> str:
+    return re.sub(r"\s+", "", text or "")
+
+
+def title_matches(title: str, program_names) -> bool:
+    """편성표의 방송 제목(brodTitl / 로컬 편성의 pgm)이 이 프로그램인지.
+    표기 흔들림("최은경쇼" vs "최은경 쇼", "오감쇼 시즌2")을 견디도록
+    공백을 뺀 뒤 포함관계까지 허용한다."""
+    compact_title = compact(title)
+    if not compact_title:
+        return False
+    for name in program_names:
+        compact_name = compact(name)
+        if compact_name and (compact_title == compact_name
+                             or compact_name in compact_title
+                             or compact_title in compact_name):
+            return True
+    return False
+
+
+def select_program_slots(entries, program_names, start_hm=None, end_hm=None) -> dict:
+    """하루 편성(entries)에서 이 프로그램의 방송 회차를 전부 골라낸다.
+
+    entries: [(시작 'HH:MM', 종료 'HH:MM', 방송제목, payload)]
+    반환: {시작시각: {"end": 종료시각, "items": [payload, ...]}}
+
+    같은 날 2회 방송(예: 2026-09-08 오감쇼 08:15 / 19:30)이 있어도 전부 잡히게
+    '방송 제목'으로 고른다. pgm-comm은 가장 가까운 회차 1개만 알려줘서,
+    그 시간대만 보던 예전 방식으로는 저녁 회차(신세계푸드 원육)가 통째로
+    누락됐다.
+
+    제목으로 한 건도 못 고르면(편성표에 프로그램명이 안 붙은 경우)
+    예전처럼 pgm-comm이 알려준 시간대로 폴백한다."""
+    slots = {}
+    for start, end, title, payload in entries:
+        if not start or not title_matches(title, program_names):
+            continue
+        slot = slots.setdefault(start, {"end": end, "items": []})
+        if end and not slot["end"]:
+            slot["end"] = end
+        slot["items"].append(payload)
+    if slots:
+        return slots
+
+    if not start_hm:
+        return {}
+    for start, end, _title, payload in entries:
+        if not start:
+            continue
+        in_window = (start_hm <= start < end_hm) if end_hm else (start == start_hm)
+        if not in_window:
+            continue
+        slot = slots.setdefault(start, {"end": end or end_hm, "items": []})
+        slot["items"].append(payload)
+    return slots
 
 
 HD_LIVE_DIR = os.path.join("homeshopping", "HD_live")
 
 
-def load_local_lineup(brod_date, start_hm: str, end_hm: str = None) -> list:
+def load_local_day_entries(brod_date) -> list:
     """hd_scraper.py가 만든 로컬 편성(homeshopping/HD_live/{YYYY-MM}.json)에서
-    brod_date의 start_hm~end_hm 시간대에 시작하는 상품을 normalize_item과 같은
-    스키마(_code 포함)로 반환한다. tv-list 실시간 조회가 라인업 공개 전이라
-    일부만 반환했을 때의 보충 소스. 파일이 없거나 날짜가 없으면 빈 리스트."""
+    brod_date 하루치를 select_program_slots용 엔트리로 반환한다.
+      [(시작, 종료, 프로그램명(pgm), normalize_item과 같은 스키마의 상품)]
+
+    tv-list 실시간 조회가 라인업 공개 전이라 일부만 반환했을 때의 보충 소스.
+    파일이 없거나 날짜가 없으면 빈 리스트."""
     path = os.path.join(HD_LIVE_DIR, f"{brod_date.strftime('%Y-%m')}.json")
     if not os.path.exists(path):
         return []
@@ -255,18 +339,15 @@ def load_local_lineup(brod_date, start_hm: str, end_hm: str = None) -> list:
         print(f"    -> [경고] 로컬 편성({path}) 읽기 실패: {e}")
         return []
 
-    items = []
+    entries = []
     for p in days.get(brod_date.strftime("%Y-%m-%d"), []):
         strt = p.get("start") or ""
         if not strt:
             continue
-        in_window = (start_hm <= strt < end_hm) if end_hm else (strt == start_hm)
-        if not in_window:
-            continue
         link = p.get("link") or ""
         m = re.search(r"slitmCd=(\d+)", link)
         code = m.group(1) if m else None
-        items.append({
+        product = {
             "broadcast_date_label": None,  # 호출부에서 정확한 방송시각 라벨로 채움
             "brand": p.get("brand") or "",
             "name": p.get("product"),
@@ -276,8 +357,9 @@ def load_local_lineup(brod_date, start_hm: str, end_hm: str = None) -> list:
             "image": to_image_url(f"{code}_0.jpg") if code else None,
             "link": link or None,
             "_code": code,
-        })
-    return items
+        }
+        entries.append((strt, p.get("end") or "", p.get("pgm") or "", product))
+    return entries
 
 
 def extract_next_data(html: str) -> dict:
@@ -445,6 +527,106 @@ def parse_swiper_items_from_html(html: str, date_label: str) -> list:
     return items
 
 
+def collect_lineup_products(brod_date, program_names, brod_start=None, brod_end=None) -> list:
+    """방송일(brod_date) 하루치 편성표를 훑어 이 프로그램의 모든 회차 상품을 모은다.
+
+    ("가까운 방송 >" 페이지가 보여주는 것과 같은 데이터. 여기가 메인 소스)
+    pgm-comm은 '가장 가까운 회차' 하나만 알려주기 때문에, 그 시간대만 보면
+    같은 날 2회 방송하는 날의 나머지 회차가 통째로 빠진다
+    (2026-09-08 오감쇼: 08:15 세포랩은 수집됐는데 19:30 신세계푸드 원육 누락).
+    그래서 하루치 편성을 다 받아 방송 제목으로 이 프로그램 회차를 고른다."""
+    products = []
+
+    api_entries = [
+        (it.get("brodStrtDtm") or "", it.get("brodEndDtm") or "",
+         it.get("brodTitl") or "", it)
+        for it in fetch_day_items(brod_date.strftime("%Y%m%d"))
+    ]
+    api_slots = select_program_slots(api_entries, program_names, brod_start, brod_end)
+    print(f"    -> tv-list {brod_date} 편성에서 '{program_names[0]}' 회차 "
+          f"{len(api_slots)}개 선택: {', '.join(sorted(api_slots)) or '없음'}")
+    for start_hm in sorted(api_slots):
+        exact_label = make_exact_label(brod_date, start_hm)
+        slot_items = api_slots[start_hm]["items"]
+        print(f"    -> [{exact_label}] 라인업 {len(slot_items)}개")
+        for it in slot_items:
+            products.append(normalize_item(it, exact_label))
+            print(f"         · [{it.get('brndNm') or ''}] {(it.get('slitmNm') or '')[:40]}")
+    if not api_slots:
+        print(f"    -> [경고] tv-list에서 이 프로그램 방송을 못 찾음 (편성 미공개일 수 있음)")
+
+    # 로컬 편성(HD_live)으로 보충 - 새벽 실행 시점엔 tv-list에 라인업이
+    # 다 공개되기 전이라 일부만 잡히는 경우가 있다. 여기도 하루치를 훑는다.
+    local_entries = load_local_day_entries(brod_date)
+    local_slots = select_program_slots(local_entries, program_names, brod_start, brod_end)
+    for start_hm in sorted(local_slots):
+        exact_label = make_exact_label(brod_date, start_hm)
+        slot_items = local_slots[start_hm]["items"]
+        print(f"    -> 로컬 편성(HD_live) [{exact_label}] {len(slot_items)}개")
+        for it in slot_items:
+            it["broadcast_date_label"] = exact_label
+            products.append(it)
+            print(f"         · [{it['brand']}] {(it['name'] or '')[:40]}")
+
+    return products
+
+
+def merge_sources(lineup_products, pgm_comm_products,
+                  itemlist_products, swiper_products) -> list:
+    """소스 간 같은 상품(같은 slitmCd)이 중복으로 오므로 병합한다.
+    우선순위: 라인업(전체+브랜드/가격) > pgm-comm(정확 라벨) > itemList > 스와이퍼.
+    앞 소스 항목이 기준이 되고, 뒤 소스의 값은 비어있는 필드만 채운다
+    (예: 라인업엔 이미지가 없을 수 있는데 itemList 이미지로 보충).
+
+    주의: 같은 상품이 하루에 두 번 편성되는 날이 있다(2026-09-08 오감쇼의
+    세포랩 - 08:15/19:30 양쪽). 그래서 라인업은 상품코드가 아니라
+    (방송회차 라벨, 상품코드)로 중복을 제거해 회차별로 남긴다."""
+
+    def fill_empty(base: dict, other: dict):
+        for field in ("brand", "name", "price", "image", "link"):
+            if not base.get(field) and other.get(field):
+                base[field] = other[field]
+        # 폴백 라벨('... 방송상품')만 있는 항목에 정확한 방송시각 라벨이 오면 교체
+        if "방송상품" in (base.get("broadcast_date_label") or "") \
+                and re.search(r"\d{1,2}:\d{2}", other.get("broadcast_date_label") or ""):
+            base["broadcast_date_label"] = other["broadcast_date_label"]
+
+    def identity(p: dict) -> str:
+        return str(p.get("_code") or p.get("name"))
+
+    merged = {}
+    order = []
+    by_identity = {}
+
+    def put(p: dict):
+        key = ((p.get("broadcast_date_label") or ""), identity(p))
+        if key in merged:
+            fill_empty(merged[key], p)
+            return
+        merged[key] = p
+        order.append(key)
+        by_identity.setdefault(identity(p), []).append(p)
+
+    for p in lineup_products:
+        put(p)
+
+    # 라인업 외 소스는 회차 정보가 없거나(itemList/스와이퍼) 대표 회차 하나뿐
+    # (pgm-comm)이라, 이미 라인업에 있는 상품이면 회차별 항목에 값만 채우고
+    # 새 항목으로는 넣지 않는다.
+    for p in pgm_comm_products + itemlist_products + swiper_products:
+        existing = by_identity.get(identity(p))
+        if existing:
+            for base in existing:
+                fill_empty(base, p)
+            continue
+        put(p)
+
+    deduped = [merged[k] for k in order]
+    for p in deduped:
+        p.pop("_code", None)
+    return deduped
+
+
 def crawl_hd_program(page, config: dict, list_map: dict):
     tab_name = config["tab_name"]
 
@@ -552,56 +734,15 @@ def crawl_hd_program(page, config: dict, list_map: dict):
         brod_date = brod_date or fb_date
         brod_start = brod_start or fb_start
 
-    # --- tv-list 편성 API: 해당 방송 시간대의 전체 상품 라인업 ---
-    # ("가까운 방송 >" 페이지가 보여주는 것과 같은 데이터. 여기가 메인 소스)
-    if brod_date and brod_start:
-        exact_label = make_exact_label(brod_date, brod_start)
-        lineup_raw = fetch_broadcast_lineup(
-            brod_date.strftime("%Y%m%d"), brod_start, brod_end)
-        print(f"    -> tv-list 라인업({brod_date} {brod_start}~{brod_end or '?'}): {len(lineup_raw)}개")
-        for it in lineup_raw:
-            lineup_products.append(normalize_item(it, exact_label))
-            print(f"         · [{it.get('brndNm') or ''}] {(it.get('slitmNm') or '')[:40]}")
-        if not lineup_raw:
-            print(f"    -> [경고] tv-list에서 해당 시간대 상품을 못 찾음 (편성 미공개일 수 있음)")
-
-        # 같은 시간대의 로컬 편성(HD_live)으로 보충 - 새벽 실행 시점엔
-        # tv-list에 라인업이 다 공개되기 전이라 일부만 잡히는 경우가 있다.
-        local_items = load_local_lineup(brod_date, brod_start, brod_end)
-        for it in local_items:
-            it["broadcast_date_label"] = exact_label
-        if local_items:
-            print(f"    -> 로컬 편성(HD_live) 라인업: {len(local_items)}개")
-            for it in local_items:
-                print(f"         · [{it['brand']}] {(it['name'] or '')[:40]}")
-        lineup_products.extend(local_items)
+    # --- 편성표(tv-list + 로컬 HD_live)에서 그 날 이 프로그램 회차를 전부 수집 ---
+    if brod_date:
+        lineup_products = collect_lineup_products(
+            brod_date, [config["spex_sect_nm"], tab_name], brod_start, brod_end)
     else:
-        print(f"    -> [경고] 방송일시를 알 수 없어 tv-list 라인업 조회 생략")
+        print(f"    -> [경고] 방송일을 알 수 없어 편성표 라인업 조회 생략")
 
-    # 소스 간 같은 상품(같은 slitmCd)이 중복으로 오므로 병합한다.
-    # 우선순위: 라인업(전체+브랜드/가격) > pgm-comm(정확 라벨) > itemList > 스와이퍼.
-    # 앞 소스 항목이 기준이 되고, 뒤 소스의 값은 비어있는 필드만 채운다
-    # (예: 라인업엔 이미지가 없을 수 있는데 itemList 이미지로 보충).
-    merged = {}
-    order = []
-    for p in lineup_products + pgm_comm_products + itemlist_products + swiper_products:
-        key = str(p.get("_code") or p.get("name"))
-        if key not in merged:
-            merged[key] = p
-            order.append(key)
-            continue
-        base = merged[key]
-        for field in ("brand", "name", "price", "image", "link"):
-            if not base.get(field) and p.get(field):
-                base[field] = p[field]
-        # 폴백 라벨('... 방송상품')만 있는 항목에 정확한 방송시각 라벨이 오면 교체
-        if "방송상품" in (base.get("broadcast_date_label") or "") \
-                and re.search(r"\d{1,2}:\d{2}", p.get("broadcast_date_label") or ""):
-            base["broadcast_date_label"] = p["broadcast_date_label"]
-
-    deduped = [merged[k] for k in order]
-    for p in deduped:
-        p.pop("_code", None)
+    deduped = merge_sources(lineup_products, pgm_comm_products,
+                            itemlist_products, swiper_products)
 
     print(f"    -> 최종 상품 {len(deduped)}개 (병합/중복 제거 후)")
 

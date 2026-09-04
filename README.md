@@ -151,6 +151,7 @@ python tools/check_scrape_health.py --mark      # 수집 직전
 python tools/check_scrape_health.py --group celeb   # 또는 --group fixed
 python tools/test_scrape_guard.py               # 재시도 로직 자체 테스트 (네트워크 불필요)
 python tools/test_build_celeb_history.py        # 셀럽PGM 누적/정정 규칙 테스트 (네트워크 불필요)
+python tools/test_rehd_lineup.py                # HD 셀럽PGM 편성표 훑기 테스트 (네트워크 불필요)
 python tools/audit_celeb_history.py             # 지난 회차에 낡은 상품코드가 남아있는지 감사
 ```
 
@@ -258,7 +259,10 @@ Actions → "라방바 방송 수집 (11개사)" → Run workflow 에서 `start_
 ### ⭐ 셀럽PGM — `fixed/re{hd|gs|cj|lt}.py` + `fixed/build_representative_programs.py`
 - 강주은 굿라이프(CJ)·오감쇼(HD)·더 김창옥 라이브(CJ)·최화정쇼(CJ)·황정민쇼(HD)·지금 백지연(GS)·최유라쇼(LT)·소유진쇼(GS) 등 8개 셀럽 호스트 프로그램의 회차별 판매 상품을 수집
 - `rehd.py`만 Playwright 사용(나머지는 정적 파싱), 프로그램별 결과 파일(`{사}_{코드}.json`)을 `build_representative_programs.py`가 `merged.json`으로 통합
+- **HD는 방송일 하루치 편성표를 통째로 훑는다.** `pgm-comm` API는 '가장 가까운 회차' 하나(대표상품 1개 + 정확한 방송일시)만 알려주는데, 그 시간대만 필터링하면 **같은 날 2회 방송하는 날의 나머지 회차가 통째로 빠진다**(2026-09-08 오감쇼: 08:15 세포랩은 수집됐는데 19:30 신세계푸드 원육 누락). 그래서 `pgm-comm`이 알려준 **날짜**만 쓰고, 그 날 `tv-list` 편성 전체에서 **방송 제목(`brodTitl`)이 그 프로그램인 회차를 전부** 고른다(최유라쇼가 방송예정 회차를 전부 받아오는 것과 같은 성격). 편성표에 프로그램명이 안 붙은 경우에만 예전처럼 시간대 필터로 폴백한다
+- 편성표는 한 방송당 대표상품 1개만 노출하고 나머지는 `withItemList`에 있어서, 서브상품까지 펼쳐 담는다. 중복 제거 키는 상품코드가 아니라 **(회차 라벨, 상품코드)** — 같은 상품이 아침/저녁 양쪽에 편성되는 날이 있다(2026-09-08 세포랩)
 - 프로그램별 결과 파일은 **"다음 방송" 기준으로 매번 덮어써지므로** 지난 회차가 사라진다. `fixed/build_celeb_history.py`가 수집 직후 돌면서 방송일 기준 월 파일(`representative_programs/history/{YYYY-MM}.json`)에 회차별로 누적한다 — 셀럽PGM 탭의 월 조회 데이터 소스
+- 누적 단위는 날짜가 아니라 **(방송일, 시작시각)** 이다(`broadcast_key`). 하루 2회 방송하는 날의 두 회차가 한 덩어리로 뭉치지 않게 하려는 것 — 라벨에 시각이 없는 잔여/알리미 상품은 그 날 첫 회차에 붙는다
 - **누적 규칙: 회차마다 `before → reconcile → final` 3단계.** 판정 기준이 날짜가 아니라 **시작 시각**인 게 핵심이다 — 날짜로만 보면 방송 당일 저녁 수집분이 그날 아침 방송의 기록을 덮어쓴다. 시작 시각은 `기존 기록 라벨 → 새 수집분 라벨 → schedule_raw` 순으로 찾고, 어디서도 못 읽으면 보존 쪽을 택한다
 
   | 단계 | 구간 | 동작 |

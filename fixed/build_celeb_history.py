@@ -321,6 +321,21 @@ def parse_label_date(label: str, today: date):
     return best, (tm.group(1) if tm else None)
 
 
+def broadcast_key(date_iso: str, start_hm) -> str:
+    """방송 회차 식별키. 같은 날 2회 방송(2026-09-08 오감쇼 08:15/19:30)을
+    따로 남기려면 날짜만으론 부족해서 시작시각까지 넣는다.
+    시각을 못 읽은 회차는 예전처럼 날짜 단위('YYYY-MM-DD#')로 잡힌다."""
+    return f"{date_iso}#{start_hm or ''}"
+
+
+def broadcast_key_of(broadcast: dict) -> str:
+    """이미 저장된 방송 항목의 식별키. 시각은 라벨에서 읽는다
+    (기존 월 파일은 날짜만으로 저장돼 있어도 라벨에 시각이 있어 같은 키가 나온다)."""
+    hm = parse_hm(broadcast.get("label"))
+    return broadcast_key(broadcast.get("date") or "",
+                         f"{hm[0]:02d}:{hm[1]:02d}" if hm else "")
+
+
 def make_broadcast_label(brod_date: date, start_hm: str) -> str:
     label = f"{brod_date.month:02d}/{brod_date.day:02d}({WEEKDAY_ABBR[brod_date.weekday()]})"
     if start_hm:
@@ -351,29 +366,43 @@ def collect_current_broadcasts(today: date) -> dict:
             continue
 
         program_key = filename[:-len(".json")]
-        by_date = {}
+        # 날짜 -> 시작시각('' = 시각 없는 라벨) -> 상품들
+        # 같은 날 2회 방송하는 날이 있어서(2026-09-08 오감쇼 08:15/19:30)
+        # 날짜만으로 묶으면 두 회차가 한 덩어리가 된다. 시작시각까지 나눈다.
+        by_slot = {}
         skipped = 0
         for product in data.get("products") or []:
             brod_date, start_hm = parse_label_date(product.get("broadcast_date_label"), today)
             if brod_date is None:
                 skipped += 1
                 continue
-            key = brod_date.isoformat()
-            entry = by_date.setdefault(key, {
-                "date": key,
-                "label": make_broadcast_label(brod_date, start_hm),
-                "collected_at": now_iso,
-                "products": [],
-            })
-            # 같은 날짜에 시각 있는 라벨과 없는 라벨이 섞여 들어오는 회사가 있다
-            # (HD: "09/02(수) 19:30 방송" + "9/2(수) 방송상품"). 정정 게이트가
-            # 라벨의 HH:MM으로 회차를 특정하므로, 시각이 있는 쪽을 라벨로 쓴다.
-            if start_hm and not parse_hm(entry["label"]):
-                entry["label"] = make_broadcast_label(brod_date, start_hm)
-            entry["products"].append(product)
+            by_slot.setdefault(brod_date, {}).setdefault(start_hm or "", []).append(product)
 
         if skipped:
             print(f"[경고] {program_key}: 날짜를 못 읽은 상품 {skipped}개 건너뜀")
+
+        by_date = {}
+        for brod_date, slots in by_slot.items():
+            timeless = slots.pop("", [])
+            # 시각 있는 회차가 하나도 없으면 예전처럼 날짜 단위 한 덩어리로 둔다.
+            if not slots:
+                slots = {None: timeless}
+                timeless = []
+            for start_hm in sorted(slots):
+                products = slots[start_hm]
+                # 같은 날짜에 시각 있는 라벨과 없는 라벨이 섞여 들어오는 회사가 있다
+                # (HD: "09/02(수) 19:30 방송" + "9/2(수) 방송상품"). 정정 게이트가
+                # 라벨의 HH:MM으로 회차를 특정하므로, 시각 없는 상품은 그 날의
+                # 첫 회차에 붙여 시각 있는 라벨을 쓰게 한다.
+                if timeless and start_hm == min(slots):
+                    products = products + timeless
+                by_date[broadcast_key(brod_date.isoformat(), start_hm)] = {
+                    "date": brod_date.isoformat(),
+                    "label": make_broadcast_label(brod_date, start_hm),
+                    "collected_at": now_iso,
+                    "products": products,
+                }
+
         if not by_date:
             continue
 
@@ -406,11 +435,12 @@ def merge_into_month(existing: dict, program_key: str, meta: dict,
         # 편성/링크가 바뀌었을 수 있으니 메타는 항상 최신으로
         prog.update(meta)
 
-    by_date = {b["date"]: b for b in prog.get("broadcasts") or []}
-    for date_iso, broadcast in new_broadcasts.items():
-        kept = by_date.get(date_iso)
+    by_date = {broadcast_key_of(b): b for b in prog.get("broadcasts") or []}
+    for slot_key, broadcast in new_broadcasts.items():
+        date_iso = broadcast.get("date") or slot_key.split("#", 1)[0]
+        kept = by_date.get(slot_key)
         if kept is None:
-            by_date[date_iso] = broadcast
+            by_date[slot_key] = broadcast
             continue
 
         # 시작 시각은 기존 기록 라벨을 가장 신뢰한다. 방송이 끝나면 사이트
@@ -422,14 +452,14 @@ def merge_into_month(existing: dict, program_key: str, meta: dict,
 
         if phase == "before":
             # 방송 전 - 라인업이 계속 바뀐다. 최신 수집분으로 통째 교체.
-            by_date[date_iso] = broadcast
+            by_date[slot_key] = broadcast
             continue
 
         if phase == "reconcile":
             merged, note = reconcile_broadcast(kept, broadcast,
                                                broadcast.get("collected_at") or now.isoformat())
             if merged is not None:
-                by_date[date_iso] = merged
+                by_date[slot_key] = merged
                 print(f"[정정] {program_key} {date_iso}: {note} "
                       f"({kept_n}건 -> {len(merged.get('products') or [])}건)")
             elif note:
@@ -463,9 +493,9 @@ def main():
     # (예: 7/31 수집분에 8/4 방송이 있으면 2026-08.json으로)
     months = {}
     for program_key, info in collected.items():
-        for date_iso, broadcast in info["broadcasts"].items():
-            ym = date_iso[:7]
-            months.setdefault(ym, {}).setdefault(program_key, {})[date_iso] = broadcast
+        for slot_key, broadcast in info["broadcasts"].items():
+            ym = (broadcast.get("date") or slot_key)[:7]
+            months.setdefault(ym, {}).setdefault(program_key, {})[slot_key] = broadcast
 
     for ym in sorted(months):
         path = os.path.join(HISTORY_DIR, f"{ym}.json")
