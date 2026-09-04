@@ -38,8 +38,12 @@ HD(rehd.py)는 편성표를 직접 훑는 방식으로 이미 바뀌었고, 이 
 - 채우는 건 **회차 단위**다. 이미 수집된 회차(같은 날짜+시각)는 절대
   안 건드린다 - 편성표의 상품명은 화면 표시용으로 정제돼 있어서
   상세페이지 수집분과 섞으면 같은 상품이 두 줄로 보일 수 있다.
-- **오늘 이후 회차만** 채운다. 지난 회차는 build_celeb_history가 확정
-  기록으로 관리하므로 뒤늦게 편성표로 새 기록을 만들지 않는다.
+- **아직 시작 안 한 회차만** 채운다. 방송이 시작되면 상세페이지가 그
+  회차를 목록에서 빼는데(GS), 편성표는 슬롯당 대표상품 1개만 실어서
+  그걸 '빠진 회차'로 보고 채우면 20건짜리 회차가 1건으로 쪼그라든다
+  (2026-09-04 소유진쇼 20:35 - 방송 12분 뒤 수집에서 실제로 발생).
+  지난 회차는 build_celeb_history가 확정 기록으로 관리하므로 뒤늦게
+  편성표로 새 기록을 만들지도 않는다.
 - **스크래퍼가 상품을 하나도 못 가져온 프로그램은 건너뛴다.** 스크래퍼가
   죽은 걸 편성표로 덮어버리면 건전성 검사(check_scrape_health)가 실패를
   못 잡는다 - 이 레포가 제일 경계하는 '조용한 실패'다.
@@ -337,7 +341,8 @@ def supplement_missing_slots(company: str, program_names, products: list,
     if label_fn is None:
         raise ValueError(f"라벨 형식을 모르는 회사: {company}")
 
-    today = datetime.now(KST).date()
+    now = datetime.now(KST)
+    today = now.date()
     known = set()
     for p in products:
         d, hm = parse_label(p.get("broadcast_date_label"), today)
@@ -352,8 +357,13 @@ def supplement_missing_slots(company: str, program_names, products: list,
             brod_date = date.fromisoformat(day)
         except ValueError:
             continue
-        if brod_date < today:
-            continue  # 지난 회차는 확정 기록의 영역
+        # 이미 시작한 회차는 채우지 않는다 (지난 날짜 + 오늘의 지난 시각).
+        # 방송이 시작되면 상세페이지가 그 회차를 목록에서 빼는데, 편성표는
+        # 슬롯당 대표상품 1개뿐이라 채우면 오히려 회차가 쪼그라든다.
+        hour, minute = int(start[:2]), int(start[3:5])
+        if datetime(brod_date.year, brod_date.month, brod_date.day,
+                    hour, minute, tzinfo=KST) <= now:
+            continue
 
         label = label_fn(brod_date, start)
         print(f"    -> [편성표 보강] 수집분에 없는 회차 {label} - 상품 {len(items)}개 추가")
