@@ -25,7 +25,11 @@ HD(rehd.py)는 편성표를 직접 훑는 방식으로 이미 바뀌었고, 이 
 **이어지는 구간을 한 회차로 묶어** 첫 구간 시각을 그 방송의 라벨로 쓴다.
 묶는 기준은 두 단계다:
   1순위 편성표의 종료시각 - 앞 구간 끝과 뒤 구간 시작이 붙어 있으면 한 방송
-        (SEGMENT_GAP_MIN 분까지 허용)
+        (SEGMENT_GAP_MIN 분까지 허용). 편성표에 구멍이 나서 더 벌어지는 날도
+        있는데(2026-09-12 최유라쇼 08:20~09:20 / 09:40~10:10 - 09:20~09:40
+        20분이 편성표에 통째로 비어 있어 한 방송이 2회차로 갈라졌다),
+        그 사이에 다른 프로그램 편성이 하나도 없으면 SEGMENT_GAP_EMPTY_MIN
+        분까지 역시 한 방송으로 본다. 다른 방송이 끼어 있으면 진짜 끊김이다.
   2순위 편성표에 아직 없는 날(편성표는 오늘~+5일뿐)은 시작시각 간격만 보고
         FALLBACK_GAP_MIN 분 이내면 한 방송으로 본다. 방송이 가까워져
         편성표에 들어오면 1순위로 정확히 다시 계산된다.
@@ -71,6 +75,16 @@ SWEEP_DAYS = 7
 # 편성표는 보통 딱 붙여서 주지만(09:20 끝 -> 09:20 시작) 1~2분씩 어긋나는
 # 경우가 있어 여유를 둔다.
 SEGMENT_GAP_MIN = 10
+
+# 앞 구간 종료 ~ 뒤 구간 시작 사이가 이만큼(분) 이내면서 **그 사이에 다른
+# 프로그램 편성이 하나도 없으면** 역시 이어지는 한 방송으로 본다.
+# 편성표에 구간이 딱 붙어 오지 않고 구멍이 나는 날이 있다. 실측 근거:
+# 2026-09-12 최유라쇼 08:20~09:20 / 09:40~10:10 / 10:10~10:35 - 09:20~09:40
+# 20분이 편성표에 통째로 비어 있어서 08:20 회차가 09:40 회차와 갈라졌다
+# (같은 한 방송인데 화면에 2회차로 보였다).
+# 다른 편성이 끼어 있으면 진짜로 끊긴 것이므로 안 묶는다. 하루 2회 방송은
+# 사이에 다른 방송이 여러 개 들어가므로 이 조건에 걸리지 않는다.
+SEGMENT_GAP_EMPTY_MIN = 60
 
 # 편성표에 아직 없는 날(오늘+6일 이후)의 폴백 기준. 시작시각 간격이 이만큼
 # 이내면 같은 방송의 구간으로 본다. 실측 근거: 최유라쇼 2026-09-10 회차가
@@ -150,10 +164,19 @@ def parse_label(label: str, today: date):
     return best, (tm.group(1) if tm else None)
 
 
+_LIVE_DAYS_CACHE = {}
+
+
 def load_live_days(company: str, days_ahead: int = SWEEP_DAYS) -> dict:
     """{'YYYY-MM-DD': [편성 항목...]} - 오늘~+days_ahead. 월 경계를 넘어가면
     두 월 파일을 다 읽는다. 파일이 없으면 그 달은 조용히 건너뛴다."""
     today = datetime.now(KST).date()
+    # 같은 실행 안에서 여러 번(회차 병합의 구간마다) 읽히므로 캐시한다.
+    # LIVE_DIR_TEMPLATE도 키에 넣는다 - 테스트가 임시 편성표로 바꿔 끼운다.
+    cache_key = (LIVE_DIR_TEMPLATE, company, days_ahead, today)
+    if cache_key in _LIVE_DAYS_CACHE:
+        return _LIVE_DAYS_CACHE[cache_key]
+
     wanted = [today + timedelta(days=i) for i in range(days_ahead + 1)]
 
     out = {}
@@ -171,6 +194,7 @@ def load_live_days(company: str, days_ahead: int = SWEEP_DAYS) -> dict:
             key = d.isoformat()
             if days.get(key):
                 out[key] = days[key]
+    _LIVE_DAYS_CACHE[cache_key] = out
     return out
 
 
@@ -221,6 +245,28 @@ def to_minutes(hm: str) -> int:
     return int(h) * 60 + int(m)
 
 
+def gap_is_empty(company: str, program_names, brod_date: date,
+                 gap_start: str, gap_end: str,
+                 days_ahead: int = SWEEP_DAYS) -> bool:
+    """편성표에서 그 날 [gap_start, gap_end) 사이에 이 프로그램이 아닌 다른
+    편성이 하나도 없으면 True. 편성표에 난 '구멍'인지 진짜 끊김인지 가른다."""
+    if to_minutes(gap_end) <= to_minutes(gap_start):
+        return False
+    items = load_live_days(company, days_ahead).get(brod_date.isoformat()) or []
+    for item in items:
+        start = item.get("start")
+        if not start:
+            continue
+        end = item.get("end") or start
+        if to_minutes(end) < to_minutes(start):
+            continue  # 자정을 넘기는 편성은 판단에서 뺀다
+        if title_matches(item.get("pgm"), program_names):
+            continue
+        if to_minutes(start) < to_minutes(gap_end) and to_minutes(end) > to_minutes(gap_start):
+            return False
+    return True
+
+
 def schedule_blocks(company: str, program_names, brod_date: date,
                     days_ahead: int = SWEEP_DAYS):
     """편성표에서 그 날 이 프로그램의 '방송 블록'(이어지는 구간 묶음)을 만든다.
@@ -237,7 +283,14 @@ def schedule_blocks(company: str, program_names, brod_date: date,
     prev_end = None
     for start in sorted(segments):
         gap = None if prev_end is None else to_minutes(start) - to_minutes(prev_end)
-        if blocks and gap is not None and gap <= SEGMENT_GAP_MIN:
+        continuous = blocks and gap is not None and (
+            gap <= SEGMENT_GAP_MIN
+            # 편성표에 구멍이 난 경우: 그 사이에 다른 방송이 없으면 이어진 방송
+            or (0 <= gap <= SEGMENT_GAP_EMPTY_MIN
+                and gap_is_empty(company, program_names, brod_date,
+                                 prev_end, start, days_ahead))
+        )
+        if continuous:
             blocks[-1].append(start)
         else:
             blocks.append([start])
@@ -266,6 +319,15 @@ def segment_ends(company: str, program_names, brod_date: date,
     return ends
 
 
+def slot_start(product: dict, label_hm: str) -> str:
+    """그 상품이 나온 '구간'의 시작시각. 이미 묶인 회차의 상품은 라벨이 블록
+    시작시각으로 바뀌어 있으므로(모든 구간이 같은 라벨) 라벨만 보면 구간을
+    구분할 수 없다. 남겨둔 segment_time을 우선 읽어 병합을 몇 번 돌려도
+    같은 결과가 나오게 한다."""
+    m = TIME_PATTERN.search(product.get("segment_time") or "")
+    return m.group(1) if m else label_hm
+
+
 def merge_continuous_slots(company: str, program_names, products: list,
                            label_fn=None, days_ahead: int = SWEEP_DAYS) -> int:
     """이어지는 구간으로 쪼개져 들어온 회차를 한 방송으로 묶는다(제자리 수정).
@@ -285,7 +347,7 @@ def merge_continuous_slots(company: str, program_names, products: list,
     for product in products:
         d, hm = parse_label(product.get("broadcast_date_label"), today)
         if d and hm:
-            by_day.setdefault(d, {}).setdefault(hm, []).append(product)
+            by_day.setdefault(d, {}).setdefault(slot_start(product, hm), []).append(product)
 
     changed = 0
     for brod_date, slots in by_day.items():

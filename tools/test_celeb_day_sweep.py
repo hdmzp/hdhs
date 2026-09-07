@@ -16,6 +16,8 @@ python tools/test_celeb_day_sweep.py)
   (F) 롯데처럼 한 방송이 구간별로 쪼개져 오면 한 회차로 묶을 것
       -> 2026-09-05 최유라쇼 08:20/09:20/10:20 = 이어지는 한 방송
       단, 하루 2회 방송(오감쇼 08:15/19:30)은 묶지 말 것
+      편성표에 구멍(09:20~09:40)이 나도 그 사이에 다른 방송이 없으면 한 회차
+      -> 2026-09-12 최유라쇼 08:20 회차가 09:40 회차와 갈라져 보이던 사고
 """
 
 import os
@@ -256,6 +258,58 @@ def test_does_not_merge_two_broadcasts():
           [sweep.label_hd(day, "08:15"), sweep.label_hd(day, "19:30")])
 
 
+def test_merge_across_empty_schedule_gap():
+    print("[7-2] 편성표에 구멍이 나도 그 사이에 다른 방송이 없으면 한 회차로 묶는다")
+    # 2026-09-12 최유라쇼: 08:20~09:20 / 09:40~10:10 / 10:10~10:35.
+    # 09:20~09:40 20분이 편성표에 통째로 비어 있어 08:20 회차가 갈라졌던 사고.
+    day = TODAY + timedelta(days=2)
+    days = {day.isoformat(): [
+        slot("07:20", "08:20", None, "닥터린", "멜라바인"),
+        slot("08:20", "09:20", "최유라쇼", "덴프스", "프로폴리스 스프레이"),
+        slot("09:40", "10:10", "최유라쇼", "파이나밀", "전동 그라인더"),
+        slot("10:10", "10:35", "최유라쇼", "숙이의 뿌리효소", "쌍화차"),
+        slot("11:40", "12:45", None, "비에날씬", "슬림플러스"),
+    ]}
+    products = [collected(sweep.label_lt(day, hm), f"{hm} 상품")
+                for hm in ("08:20", "09:40", "10:10")]
+
+    changed = with_live_data("LT", days, lambda: sweep.merge_continuous_slots(
+        "LT", ["최유라쇼"], products))
+
+    check("라벨 바뀐 상품 2건", changed, 2)
+    check("모두 첫 구간 회차로",
+          {p["broadcast_date_label"] for p in products},
+          {sweep.label_lt(day, "08:20")})
+    check("구간 시간은 원래대로", [p.get("segment_time") for p in products],
+          ["08:20-09:20(60')", "09:40-10:10(30')", "10:10-10:35(25')"])
+
+    # 두 번 돌려도 결과가 같아야 한다 (라벨이 바뀐 뒤엔 segment_time으로 구간을 본다)
+    with_live_data("LT", days, lambda: sweep.merge_continuous_slots(
+        "LT", ["최유라쇼"], products))
+    check("두 번 돌려도 그대로", [p.get("segment_time") for p in products],
+          ["08:20-09:20(60')", "09:40-10:10(30')", "10:10-10:35(25')"])
+
+
+def test_does_not_merge_gap_with_other_program():
+    print("[7-3] 구멍 사이에 다른 방송이 끼어 있으면 안 묶는다")
+    day = TODAY + timedelta(days=2)
+    days = {day.isoformat(): [
+        slot("08:20", "09:20", "최유라쇼", "덴프스", "프로폴리스 스프레이"),
+        slot("09:20", "09:40", None, "닥터린", "하이퍼셀"),  # 다른 방송이 낌
+        slot("09:40", "10:10", "최유라쇼", "파이나밀", "전동 그라인더"),
+    ]}
+    products = [collected(sweep.label_lt(day, "08:20"), "아침 상품"),
+                collected(sweep.label_lt(day, "09:40"), "오전 상품")]
+
+    changed = with_live_data("LT", days, lambda: sweep.merge_continuous_slots(
+        "LT", ["최유라쇼"], products))
+
+    check("병합 없음", changed, 0)
+    check("회차 2개 유지",
+          sorted({p["broadcast_date_label"] for p in products}),
+          [sweep.label_lt(day, "08:20"), sweep.label_lt(day, "09:40")])
+
+
 def test_merge_fallback_without_schedule():
     print("[9] 편성표에 아직 없는 날은 시작시각 간격으로 잠정 병합")
     # 편성표는 오늘~+5일뿐이라 먼 미래 방송은 근거가 없다.
@@ -292,6 +346,8 @@ def main():
     test_title_matching()
     test_merge_continuous_segments()
     test_no_segment_time_for_single_slot()
+    test_merge_across_empty_schedule_gap()
+    test_does_not_merge_gap_with_other_program()
     test_does_not_merge_two_broadcasts()
     test_merge_fallback_without_schedule()
 
