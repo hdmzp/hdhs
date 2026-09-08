@@ -43,6 +43,7 @@ from bs4 import BeautifulSoup
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from tools import scrape_guard
+from infer_brand import is_marketing_copy, pick_brand_from_prefix
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from celeb_day_sweep import supplement_missing_slots, merge_continuous_slots
 
@@ -158,6 +159,12 @@ def fetch_gs_product_details_fixed(prd_id):
                 if full_title.startswith("[") and "]" in full_title:
                     brand = full_title[1:full_title.index("]")]
                     name = full_title[full_title.index("]") + 1:].strip()
+                    # 대괄호 안이 브랜드가 아니라 가격/구성 안내문인 경우가 있다
+                    # ("[백화점가 106만원][포트메리온] ..." -> "백화점가 106만원").
+                    # 안내문이면 뒤쪽 접두어/본문에서 브랜드를 다시 찾고,
+                    # 그래도 못 찾으면 자리표시자로 되돌린다.
+                    if is_marketing_copy(brand):
+                        brand = pick_brand_from_prefix(full_title) or "GS SHOP"
                 else:
                     brand = "GS SHOP"
                     name = full_title

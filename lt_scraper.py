@@ -43,6 +43,9 @@ import requests
 from datetime import datetime, timedelta, timezone
 from categorize import classify_batch
 from clean_product import clean_product_name
+from infer_brand import pick_brand_from_prefix, is_marketing_copy
+
+_BRACKET_RE = re.compile(r"\[[^\[\]]*\]|\([^()]*\)")
 
 KST = timezone(timedelta(hours=9))
 OUTPUT_DIR = "homeshopping"
@@ -70,6 +73,26 @@ def parse_price(v):
         return int(float(s))
     except ValueError:
         return 0
+
+
+def resolve_brand(raw_brand, product_name):
+    """편성 데이터의 브랜드 값을 정제한다.
+
+    브랜드 필드에 "정상가 247,000원", "SALE" 같은 안내문이 들어오는 경우가 있어,
+    마케팅 카피면 버리고 상품명 접두어/본문에서 다시 판별한다.
+    """
+    brand = str(raw_brand or "").strip()
+    if brand and not is_marketing_copy(brand):
+        return brand
+    return pick_brand_from_prefix(product_name or "")
+
+
+def product_key(name):
+    """상품 중복 판단용 키: 괄호 안내문/공백 제거 후 소문자화.
+    "[화이트] 무선 전동 그라인더 2.0" 와 "[레드] 무선 전동 그라인더 2.0" 을
+    같은 상품으로 본다."""
+    text = _BRACKET_RE.sub(" ", str(name or ""))
+    return re.sub(r"\s+", "", text).lower()
 
 
 def add_categories(programs):
@@ -123,7 +146,7 @@ def fetch_lotte(date_compact, date_dash, endpoint):
                 "uid": uid,
                 "start": p.get("stime", ""),
                 "end": p.get("etime", ""),
-                "brand": p.get("brand", "") or "",
+                "brand": resolve_brand(p.get("brand"), p.get("name")),
                 "product": p.get("name", "") or "",
                 "price": parse_price(p.get("price_disc")),
                 "link": link,
@@ -137,19 +160,32 @@ def fetch_lotte(date_compact, date_dash, endpoint):
             # (relatedAdd는 "함께사면 좋은 상품" 단품 구성이라 방송상품이 아님 -> 제외)
             # 브랜드는 related에 별도 필드가 없어 상품명 앞 [브랜드] 접두어로 판별하고,
             # 새 브랜드의 첫 상품만 추가한다 (브랜드별 대표상품).
+            # 접두어에는 브랜드 대신 가격/구성/색상 안내문이 들어오는 경우가 많아
+            # (예: "[백화점가 106만원][포트메리온] 뉴베리에이션 4인조 홈세트")
+            # pick_brand_from_prefix로 안내문 접두어는 건너뛰고 판별한다.
             if p.get("pgmMap"):
-                slot_brands = {(p.get("brand") or "").strip()}
-                main_prefix = re.match(r"^\s*\[([^\]]+)\]", p.get("name") or "")
-                if main_prefix:
-                    slot_brands.add(main_prefix.group(1).strip())
+                slot_brands = {entry["brand"]}
+                main_brand = pick_brand_from_prefix(p.get("name") or "")
+                if main_brand:
+                    slot_brands.add(main_brand)
+                slot_names = {product_key(p.get("name") or "")}
                 for rel in p.get("related") or []:
                     rel_name = rel.get("name") or ""
-                    m = re.match(r"^\s*\[([^\]]+)\]", rel_name)
-                    rel_brand = m.group(1).strip() if m else ""
+                    rel_brand = pick_brand_from_prefix(rel_name)
                     rel_goods = rel.get("goodsNo")
-                    if not rel_brand or rel_brand in slot_brands or not rel_goods:
+                    if not rel_goods:
                         continue
-                    slot_brands.add(rel_brand)
+                    if rel_brand and rel_brand in slot_brands:
+                        continue
+                    # 브랜드를 못 잡은 상품은 브랜드 없이 담되, 같은 상품이
+                    # 색상/옵션 접두어만 바꿔 여러 번 들어오는 걸 막는다
+                    # ("[화이트]/[레드]/[블랙] 무선 전동 그라인더 2.0 풀세트")
+                    rel_key = product_key(rel_name)
+                    if not rel_brand and (not rel_key or rel_key in slot_names):
+                        continue
+                    if rel_brand:
+                        slot_brands.add(rel_brand)
+                    slot_names.add(rel_key)
                     rel_link_info = rel.get("linkInfo", "") or ""
                     rel_entry = {
                         "uid": f"{uid}_{rel_goods}",
