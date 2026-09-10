@@ -2,7 +2,7 @@
   "company": "HD",
   "broadcast": "live",
   "month": "2026-09",
-  "updated_at": "2026-09-10T18:57:23+09:00",
+  "updated_at": "2026-09-10T22:46:41+09:00",
   "days": {
     "2026-09-01": [
       {
@@ -7723,6 +7723,15 @@
         "category": "일반식품"
       },
       {
+        "start": "19:35",
+        "end": "20:45",
+        "brand": "히트락",
+        "product": "에코센스 히트락 올트라이탄 밀폐용기 풀세트",
+        "price": 139800,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2236460827&preview=true",
+        "category": "리빙/주방"
+      },
+      {
         "start": "20:45",
         "end": "22:55",
         "brand": "에르노",
@@ -7783,15 +7792,6 @@
         "product": "하프문 보 백 코냑",
         "price": 2899000,
         "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2250600208&preview=true",
-        "category": "잡화/주얼리"
-      },
-      {
-        "start": "20:45",
-        "end": "22:55",
-        "brand": "막스마라",
-        "product": "그린하 후드 패딩 재킷",
-        "price": 699000,
-        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252314358&preview=true",
         "category": "잡화/주얼리"
       },
       {
@@ -10783,60 +10783,6 @@
         "start": "08:15",
         "end": "09:25",
         "brand": "아이그너",
-        "product": "아이그너 26FW 캔터 로우 스니커즈",
-        "price": 199000,
-        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252776468&preview=true",
-        "category": "잡화/주얼리"
-      },
-      {
-        "start": "08:15",
-        "end": "09:25",
-        "brand": "아이그너",
-        "product": "알리나 호보백 S",
-        "price": 799000,
-        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253014484&preview=true",
-        "category": "잡화/주얼리"
-      },
-      {
-        "start": "08:15",
-        "end": "09:25",
-        "brand": "아이그너",
-        "product": "알리나 호보백 M",
-        "price": 999000,
-        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253014535&preview=true",
-        "category": "잡화/주얼리"
-      },
-      {
-        "start": "08:15",
-        "end": "09:25",
-        "brand": "아이그너",
-        "product": "26FW 버튼 탑 티셔츠",
-        "price": 129000,
-        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252775247&preview=true",
-        "category": "의류"
-      },
-      {
-        "start": "08:15",
-        "end": "09:25",
-        "brand": "아이그너",
-        "product": "26FW 코듀로이 팬츠",
-        "price": 159000,
-        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252775519&preview=true",
-        "category": "의류"
-      },
-      {
-        "start": "08:15",
-        "end": "09:25",
-        "brand": "아이그너",
-        "product": "26FW 아트워크 배색 후드 점퍼",
-        "price": 199000,
-        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252775350&preview=true",
-        "category": "의류"
-      },
-      {
-        "start": "08:15",
-        "end": "09:25",
-        "brand": "아이그너",
         "product": "아이그너 26FW 인조 스웨이드 아우터",
         "price": 359000,
         "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253275860&preview=true",
@@ -10864,9 +10810,63 @@
         "start": "08:15",
         "end": "09:25",
         "brand": "아이그너",
+        "product": "아이그너 26FW 캔터 로우 스니커즈",
+        "price": 199000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252776468&preview=true",
+        "category": "잡화/주얼리"
+      },
+      {
+        "start": "08:15",
+        "end": "09:25",
+        "brand": "아이그너",
+        "product": "알리나 호보백 S",
+        "price": 799000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253014484&preview=true",
+        "category": "잡화/주얼리"
+      },
+      {
+        "start": "08:15",
+        "end": "09:25",
+        "brand": "아이그너",
+        "product": "알리나 호보백 M",
+        "price": 999000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253014535&preview=true",
+        "category": "잡화/주얼리"
+      },
+      {
+        "start": "08:15",
+        "end": "09:25",
+        "brand": "아이그너",
         "product": "아이그너 26FW 부클 라운드 재킷",
         "price": 159000,
         "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253275702&preview=true",
+        "category": "의류"
+      },
+      {
+        "start": "08:15",
+        "end": "09:25",
+        "brand": "아이그너",
+        "product": "26FW 버튼 탑 티셔츠",
+        "price": 129000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252775247&preview=true",
+        "category": "의류"
+      },
+      {
+        "start": "08:15",
+        "end": "09:25",
+        "brand": "아이그너",
+        "product": "26FW 코듀로이 팬츠",
+        "price": 159000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252775519&preview=true",
+        "category": "의류"
+      },
+      {
+        "start": "08:15",
+        "end": "09:25",
+        "brand": "아이그너",
+        "product": "아이그너 26FW 아트워크 배색 후드 점퍼",
+        "price": 199000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252775350&preview=true",
         "category": "의류"
       },
       {
