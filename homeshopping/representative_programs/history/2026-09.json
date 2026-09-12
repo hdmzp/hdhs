@@ -1,6 +1,6 @@
 {
   "month": "2026-09",
-  "updated_at": "2026-09-12T22:56:50.002568+09:00",
+  "updated_at": "2026-09-13T00:55:41.430210+09:00",
   "programs": [
     {
       "program_key": "HD_HJM",
@@ -14,7 +14,7 @@
         {
           "date": "2026-09-14",
           "label": "09/14(월) 19:30 방송",
-          "collected_at": "2026-09-12T22:56:49.999155+09:00",
+          "collected_at": "2026-09-13T00:55:41.426864+09:00",
           "products": [
             {
               "broadcast_date_label": "09/14(월) 19:30 방송",
@@ -127,7 +127,7 @@
         {
           "date": "2026-09-15",
           "label": "09/15(화) 19:30 방송",
-          "collected_at": "2026-09-12T22:56:49.999155+09:00",
+          "collected_at": "2026-09-13T00:55:41.426864+09:00",
           "products": [
             {
               "broadcast_date_label": "09/15(화) 19:30 방송",
@@ -355,7 +355,7 @@
         {
           "date": "2026-09-19",
           "label": "09/19(토) 08:20 방송",
-          "collected_at": "2026-09-12T22:56:49.999155+09:00",
+          "collected_at": "2026-09-13T00:55:41.426864+09:00",
           "products": [
             {
               "broadcast_date_label": "09/19(토) 08:20 방송",
@@ -496,7 +496,7 @@
         {
           "date": "2026-09-16",
           "label": "09/16(수) 19:30 방송",
-          "collected_at": "2026-09-12T22:56:49.999155+09:00",
+          "collected_at": "2026-09-13T00:55:41.426864+09:00",
           "products": [
             {
               "broadcast_date_label": "09/16(수) 19:30 방송",
@@ -1351,7 +1351,7 @@
         {
           "date": "2026-09-19",
           "label": "09/19(토) 08:20 방송",
-          "collected_at": "2026-09-12T22:56:49.999155+09:00",
+          "collected_at": "2026-09-13T00:55:41.426864+09:00",
           "products": [
             {
               "broadcast_date_label": "09/19 토요일 08:20",
@@ -1385,7 +1385,7 @@
         {
           "date": "2026-09-17",
           "label": "09/17(목) 19:35 방송",
-          "collected_at": "2026-09-12T22:56:49.999155+09:00",
+          "collected_at": "2026-09-13T00:55:41.426864+09:00",
           "products": [
             {
               "broadcast_date_label": "09/17 목요일 19:35",
@@ -1718,7 +1718,7 @@
         {
           "date": "2026-09-14",
           "label": "09/14(월) 19:35 방송",
-          "collected_at": "2026-09-12T22:56:49.999155+09:00",
+          "collected_at": "2026-09-13T00:55:41.426864+09:00",
           "products": [
             {
               "broadcast_date_label": "09/14(월) 19:35",
@@ -2271,34 +2271,55 @@
         {
           "date": "2026-09-16",
           "label": "09/16(수) 20:45 방송",
-          "collected_at": "2026-09-12T22:56:49.999155+09:00",
+          "collected_at": "2026-09-13T00:55:41.426864+09:00",
           "products": [
             {
               "broadcast_date_label": "09/16(수) 20:45",
               "brand": "바디프랜드",
-              "name": "뉴팔콘S 단독기획가 /상품권20만",
-              "price": null,
-              "image": null,
-              "link": "https://display.cjonstyle.com/p/item/2083718817?channelCode=30002002",
-              "from_schedule": true
+              "name": "[최화정쇼] 뉴팔콘S 단독기획가 /상품권20만",
+              "price": 0,
+              "image": "https://image.cjonstyle.net/goods_images/20/817/2083718817L.jpg?timestamp=20260428131950",
+              "link": "https://item.cjonstyle.com/item/2083718817?channelCode=30002002"
             },
             {
               "broadcast_date_label": "09/16(수) 20:45",
               "brand": "락포트",
-              "name": "NEW 트루플렉스 호주산 울 램스킨 로퍼",
+              "name": "[미리주문10%][공식정품] NEW 트루플렉스 호주산 울 램스킨 로퍼",
               "price": 169000,
-              "image": null,
-              "link": "https://display.cjonstyle.com/p/item/2091040193?channelCode=30002002",
-              "from_schedule": true
+              "image": "https://image.cjonstyle.net/goods_images/20/193/2091040193L.jpg?timestamp=20260821121633",
+              "link": "https://item.cjonstyle.com/item/2091040193?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "09/16(수) 20:45",
+              "brand": "락포트",
+              "name": "[미리주문10%][공식정품] 드레스포츠 소가죽 슬립온 로퍼",
+              "price": 179000,
+              "image": "https://image.cjonstyle.net/goods_images/20/680/2089147680L.jpg?timestamp=20260812163742",
+              "link": "https://item.cjonstyle.com/item/2089147680?channelCode=30002002"
             },
             {
               "broadcast_date_label": "09/16(수) 20:45",
               "brand": "맛있는家",
-              "name": "한우 사태스지찜 3팩",
+              "name": "[삼정하누X설로인] 한우 사태스지찜 500g 3팩",
               "price": 77400,
-              "image": null,
-              "link": "https://display.cjonstyle.com/p/item/2069024784?channelCode=30002002",
-              "from_schedule": true
+              "image": "goods_images/20/784/2069024784L.jpg?timestamp=20250916134309",
+              "link": "https://display.cjonstyle.com/p/item/2069024784?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "09/16(수) 20:45",
+              "brand": "맛있는家",
+              "name": "설로인 한우 에너지 스틱 45g X 3박스 1세트/ 한우육포",
+              "price": 66000,
+              "image": "goods_images/20/442/2062672442L.jpg?timestamp=20260123191434",
+              "link": "https://display.cjonstyle.com/p/item/2062672442?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "09/16(수) 20:45",
+              "brand": "맛있는家",
+              "name": "한우사골 오백 곰탕 3BOX(15개입)",
+              "price": 102000,
+              "image": "goods_images/20/980/2036606980L.jpg?timestamp=20250624100149",
+              "link": "https://display.cjonstyle.com/p/item/2036606980?channelCode=30002002"
             }
           ]
         },
@@ -2870,7 +2891,7 @@
         {
           "date": "2026-09-18",
           "label": "09/18(금) 22:45 방송",
-          "collected_at": "2026-09-12T22:56:49.999155+09:00",
+          "collected_at": "2026-09-13T00:55:41.426864+09:00",
           "products": [
             {
               "broadcast_date_label": "09/18(금) 22:45",
@@ -2917,7 +2938,7 @@
         {
           "date": "2026-09-15",
           "label": "09/15(화) 20:00 방송",
-          "collected_at": "2026-09-12T22:56:49.999155+09:00",
+          "collected_at": "2026-09-13T00:55:41.426864+09:00",
           "products": [
             {
               "broadcast_date_label": "09/15(화) 20:00",
@@ -3574,7 +3595,7 @@
         {
           "date": "2026-09-15",
           "label": "09/15(화) 21:45 방송",
-          "collected_at": "2026-09-12T22:56:49.999155+09:00",
+          "collected_at": "2026-09-13T00:55:41.426864+09:00",
           "products": [
             {
               "broadcast_date_label": "09/15(화) 21:45",
