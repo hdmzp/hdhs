@@ -1,10 +1,4 @@
 {
-  "2026-09-11": {
-    "minTa": 18.7,
-    "maxTa": 26.1,
-    "pop_max": 2.0,
-    "source": "open-meteo"
-  },
   "2026-09-12": {
     "minTa": 18.0,
     "maxTa": 27.0,
@@ -20,13 +14,19 @@
   "2026-09-14": {
     "minTa": 20.0,
     "maxTa": 29.0,
-    "pop_max": 20.0,
+    "pop_max": 0.0,
     "source": "kma"
   },
   "2026-09-15": {
     "minTa": 19.0,
     "maxTa": 27.0,
-    "pop_max": 20.0,
+    "pop_max": 30.0,
+    "source": "kma"
+  },
+  "2026-09-16": {
+    "minTa": 18.0,
+    "maxTa": 27.0,
+    "pop_max": 30.0,
     "source": "kma"
   }
 }
