@@ -1,6 +1,6 @@
 {
   "month": "2026-09",
-  "updated_at": "2026-09-15T10:23:35.336276+09:00",
+  "updated_at": "2026-09-15T14:58:04.489728+09:00",
   "programs": [
     {
       "program_key": "HD_HJM",
@@ -127,7 +127,7 @@
         {
           "date": "2026-09-15",
           "label": "09/15(화) 19:30 방송",
-          "collected_at": "2026-09-15T10:23:35.333580+09:00",
+          "collected_at": "2026-09-15T14:58:04.486465+09:00",
           "products": [
             {
               "broadcast_date_label": "09/15(화) 19:30 방송",
@@ -363,7 +363,7 @@
         {
           "date": "2026-09-19",
           "label": "09/19(토) 08:20 방송",
-          "collected_at": "2026-09-15T10:23:35.333580+09:00",
+          "collected_at": "2026-09-15T14:58:04.486465+09:00",
           "products": [
             {
               "broadcast_date_label": "09/19(토) 08:20 방송",
@@ -512,7 +512,7 @@
         {
           "date": "2026-09-16",
           "label": "09/16(수) 19:30 방송",
-          "collected_at": "2026-09-15T10:23:35.333580+09:00",
+          "collected_at": "2026-09-15T14:58:04.486465+09:00",
           "products": [
             {
               "broadcast_date_label": "09/16(수) 19:30 방송",
@@ -545,14 +545,6 @@
               "price": 59900,
               "image": "https://image.hmall.com/2253131055_0.jpg",
               "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253131055"
-            },
-            {
-              "broadcast_date_label": "09/16(수) 19:30 방송",
-              "brand": "쿼드쎄라",
-              "name": "[무이자 최대 60개월] 쿼드쎄라 F1 펜타 유일한 5중 초음파 물방울 탄력기기 최은경쇼 단독패키지",
-              "price": 870000,
-              "image": "https://image.hmall.com/2253384355_0.jpg",
-              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253384355"
             },
             {
               "broadcast_date_label": "09/16(수) 19:30 방송",
@@ -593,6 +585,14 @@
               "price": 49900,
               "image": "https://image.hmall.com/2253371933_0.jpg",
               "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253371933"
+            },
+            {
+              "broadcast_date_label": "09/16(수) 19:30 방송",
+              "brand": "쿼드쎄라",
+              "name": "[무이자 최대 60개월] 쿼드쎄라 F1 펜타 유일한 5중 초음파 물방울 탄력기기 최은경쇼 단독패키지",
+              "price": 870000,
+              "image": "https://image.hmall.com/2253384355_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253384355"
             },
             {
               "broadcast_date_label": "09/16(수) 19:30 방송",
@@ -1407,7 +1407,7 @@
         {
           "date": "2026-09-19",
           "label": "09/19(토) 08:20 방송",
-          "collected_at": "2026-09-15T10:23:35.333580+09:00",
+          "collected_at": "2026-09-15T14:58:04.486465+09:00",
           "products": [
             {
               "broadcast_date_label": "09/19 토요일 08:20",
@@ -1417,6 +1417,33 @@
               "image": "https://image2.lotteimall.com/goods/61/26/92/12922661_1.jpg/dims/resizemc/640x360/optimize",
               "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12922661",
               "segment_time": "08:20-09:20(60')"
+            },
+            {
+              "broadcast_date_label": "09/19 토요일 08:20",
+              "brand": "횡성축협한우",
+              "name": "[횡성축협한우] 1++ 구이세트 (꽃등심 400g 1팩, 등심 400g 1팩, 갈비살 400g 1팩), 총 1.2kg",
+              "price": 249000,
+              "image": "https://image2.lotteimall.com/goods/74/33/87/12873374_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12873374",
+              "segment_time": "09:20-11:40(140')"
+            },
+            {
+              "broadcast_date_label": "09/19 토요일 08:20",
+              "brand": "횡성축협한우",
+              "name": "[횡성축협한우] 1++ 불고기세트 (불고기 600g x 4팩 / 총 2.4kg)",
+              "price": 169000,
+              "image": "https://image2.lotteimall.com/goods/57/28/78/12782857_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12782857",
+              "segment_time": "09:20-11:40(140')"
+            },
+            {
+              "broadcast_date_label": "09/19 토요일 08:20",
+              "brand": "청도 반건시",
+              "name": "[청도 반건시] 20과세트* 2세트 + 감말랭이 150g*4팩 + 쇼핑백 2장",
+              "price": 66900,
+              "image": "https://image2.lotteimall.com/goods/72/45/75/12754572_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12754572",
+              "segment_time": "09:20-11:40(140')"
             },
             {
               "broadcast_date_label": "09/19 토요일 08:20",
@@ -1435,13 +1462,22 @@
               "image": "https://image2.lotteimall.com/goods/44/26/87/12872644_2.jpg/dims/resizemc/640x360/optimize",
               "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12872644",
               "segment_time": "09:20-11:40(140')"
+            },
+            {
+              "broadcast_date_label": "09/19 토요일 08:20",
+              "brand": "파너",
+              "name": "[파너] 파너 유기농 착즙 당근주스 10병+비트주스 2병, 총 500mlx12병",
+              "price": 79900,
+              "image": "https://image2.lotteimall.com/goods/83/60/91/12916083_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12916083",
+              "segment_time": "09:20-11:40(140')"
             }
           ]
         },
         {
           "date": "2026-09-17",
           "label": "09/17(목) 19:35 방송",
-          "collected_at": "2026-09-15T10:23:35.333580+09:00",
+          "collected_at": "2026-09-15T14:58:04.486465+09:00",
           "products": [
             {
               "broadcast_date_label": "09/17 목요일 19:35",
@@ -1782,7 +1818,7 @@
         {
           "date": "2026-09-21",
           "label": "09/21(월) 19:35 방송",
-          "collected_at": "2026-09-15T10:23:35.333580+09:00",
+          "collected_at": "2026-09-15T14:58:04.486465+09:00",
           "products": [
             {
               "broadcast_date_label": "09/21(월) 19:35",
@@ -2374,7 +2410,7 @@
         {
           "date": "2026-09-16",
           "label": "09/16(수) 20:45 방송",
-          "collected_at": "2026-09-15T10:23:35.333580+09:00",
+          "collected_at": "2026-09-15T14:58:04.486465+09:00",
           "products": [
             {
               "broadcast_date_label": "09/16(수) 20:45",
@@ -2399,6 +2435,22 @@
               "price": 179000,
               "image": "https://image.cjonstyle.net/goods_images/20/680/2089147680L.jpg?timestamp=20260812163742",
               "link": "https://item.cjonstyle.com/item/2089147680?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "09/16(수) 20:45",
+              "brand": "맛있는家",
+              "name": "[싱글세트]삼정하누X설로인 1++ 한우 불고기 150g*8팩",
+              "price": 70900,
+              "image": "https://image.cjonstyle.net/goods_images/20/935/2065470935L.jpg?timestamp=20260130081900",
+              "link": "https://item.cjonstyle.com/item/2065470935?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "09/16(수) 20:45",
+              "brand": "맛있는家",
+              "name": "[더블세트]삼정하누X설로인1++ 한우 불고기 150g*16+1팩/17팩",
+              "price": 139800,
+              "image": "https://image.cjonstyle.net/goods_images/20/162/2065474162L.jpg?timestamp=20250828174944",
+              "link": "https://item.cjonstyle.com/item/2065474162?channelCode=30002002"
             },
             {
               "broadcast_date_label": "09/16(수) 20:45",
@@ -2994,7 +3046,7 @@
         {
           "date": "2026-09-18",
           "label": "09/18(금) 22:45 방송",
-          "collected_at": "2026-09-15T10:23:35.333580+09:00",
+          "collected_at": "2026-09-15T14:58:04.486465+09:00",
           "products": [
             {
               "broadcast_date_label": "09/18(금) 22:45",
@@ -3041,7 +3093,7 @@
         {
           "date": "2026-09-15",
           "label": "09/15(화) 20:00 방송",
-          "collected_at": "2026-09-15T10:23:35.333580+09:00",
+          "collected_at": "2026-09-15T14:58:04.486465+09:00",
           "products": [
             {
               "broadcast_date_label": "09/15(화) 20:00",
@@ -3746,7 +3798,7 @@
         {
           "date": "2026-09-15",
           "label": "09/15(화) 21:45 방송",
-          "collected_at": "2026-09-15T10:23:35.333580+09:00",
+          "collected_at": "2026-09-15T14:58:04.486465+09:00",
           "products": [
             {
               "broadcast_date_label": "09/15(화) 21:45",
