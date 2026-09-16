@@ -58,7 +58,15 @@ pick_brand_from_prefix()로 안내문 접두어를 건너뛰어 진짜 브랜드
 
 import os
 import re
-import pandas as pd
+
+# pandas는 training_data.xlsx(브랜드 사전)를 읽을 때만 필요하다.
+# 모듈 최상단에서 import하면, 브랜드 사전이 필요 없는 호출자
+# (fixed/regs.py, lt_scraper.py - is_marketing_copy/pick_brand_from_prefix만 사용)까지
+# pandas가 없는 환경에서 import 단계에서 통째로 죽는다.
+# 실제로 2026-09-14 regs.py에 이 모듈이 연결된 뒤, pandas를 안 까는
+# 셀럽PGM 워크플로우에서 GS 수집기가 ModuleNotFoundError로 매 실행 실패했고
+# GS_BJY/GS_SYJ가 9/14 이후 갱신되지 않았다 (9/17 백지연 방송예정 상품 누락).
+# -> 무거운 의존성은 실제로 쓰는 함수 안에서 늦게 import한다.
 
 _TRAINING_XLSX_CANDIDATES = [
     os.path.join(os.path.dirname(__file__), "training_data.xlsx"),
@@ -113,6 +121,16 @@ def _load_brand_tokens():
             break
 
     if xlsx_path is None:
+        _brand_tokens = []
+        _brand_tokens_nospace = []
+        return _brand_tokens, _brand_tokens_nospace
+
+    try:
+        import pandas as pd
+    except ImportError:
+        # 브랜드 사전 없이도 나머지 기능(마케팅 카피 판별 등)은 동작해야 한다.
+        print("[infer_brand] pandas 미설치 - 브랜드 사전 없이 동작합니다 "
+              "(브랜드 추론 결과는 항상 빈 값). 필요하면 'pip install pandas openpyxl'")
         _brand_tokens = []
         _brand_tokens_nospace = []
         return _brand_tokens, _brand_tokens_nospace

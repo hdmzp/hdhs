@@ -39,7 +39,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install requests beautifulsoup4 playwright
+          # pandas/openpyxl: infer_brand가 training_data.xlsx(브랜드 사전)를 읽는다
+          pip install requests beautifulsoup4 playwright pandas openpyxl
           playwright install --with-deps chromium
 
       # 아래 건전성 검사가 "이번 실행에서 각 산출물이 다시 쓰였는지"를 판정하는
