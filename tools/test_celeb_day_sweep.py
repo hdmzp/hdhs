@@ -336,6 +336,29 @@ def test_merge_fallback_without_schedule():
     check("멀리 떨어진 회차는 폴백에서도 분리", changed2, 0)
 
 
+def test_fills_special_slot_on_other_weekday():
+    print("[11] 진짜 특별편성(다른 요일)은 그대로 채운다")
+    # 최화정쇼는 '매주 수요일 20:45'인데 2026-09-12(토) 19:30에 실제로 방송했다.
+    # 그 시각의 다른 토요일에 일관된 주인이 없으면 오배정으로 보지 않는다.
+    saturday = TODAY + timedelta(days=(5 - TODAY.weekday()) % 7 or 7)
+    days = {
+        (saturday - timedelta(days=7)).isoformat(): [
+            slot("19:30", "21:35", "탑쇼 2부", "다른브랜드", "남의 상품"),
+        ],
+        saturday.isoformat(): [
+            slot("19:30", "21:35", "최화정쇼", "지누스", "매트리스"),
+        ],
+    }
+    products = [collected(sweep.label_cj(TODAY, "20:45"))]
+
+    added = with_live_data("CJ", days, lambda: sweep.supplement_missing_slots(
+        "CJ", ["최화정쇼", "최화정"], products))
+
+    check("특별편성 회차 채움", added, 1)
+    check("특별편성 라벨", products[-1]["broadcast_date_label"],
+          sweep.label_cj(saturday, "19:30"))
+
+
 def main():
     test_fills_missing_slot()
     test_keeps_collected_slot()
@@ -350,6 +373,7 @@ def main():
     test_does_not_merge_gap_with_other_program()
     test_does_not_merge_two_broadcasts()
     test_merge_fallback_without_schedule()
+    test_fills_special_slot_on_other_weekday()
 
     print()
     if FAILURES:

@@ -79,6 +79,9 @@ TARGET_MODULE_CODE = "MSRT06"
 # srttbNm(또는 유사 필드)을 쓰고 없으면 '방송상품'으로 둔다.
 MODULE_CODE_PREFIX = "MSRT"
 
+# 지난 방송 구좌의 라벨 (GS 수집기의 PAST_SECTION_STOP_WORDS와 같은 기준)
+PAST_LABEL_STOP_WORDS = ("지난", "놓친")
+
 LABEL_FIELD_CANDIDATES = ("srttbNm", "bdDtmNm", "bdTmNm", "broadcastDtmNm")
 
 
@@ -350,6 +353,15 @@ def crawl_cj_program(session: requests.Session, config: dict):
     seen_item_keys = set()
 
     def add_product(date_label, base):
+        # "지난방송상품" 같은 지난 방송 구좌는 방송예정으로 저장하지 않는다.
+        # 휴방이거나 다음 회차 라인업이 아직 안 올라온 프로그램(2026-09 김창옥
+        # - 9/1 이후 편성 없음, 9/15 이후 김신영)에서 pgmShop이 지난방송 구좌를
+        # 그대로 내주는데, 그걸 담으면 화면에 지난 상품이 방송예정처럼 뜨고
+        # build_celeb_history는 날짜를 못 읽어 매번 "건너뜀" 경고를 낸다.
+        # 라인업이 없으면 0건으로 두는 게 맞다 - 건전성 검사가 그걸 잡는다.
+        if any(w in (date_label or "") for w in PAST_LABEL_STOP_WORDS):
+            return False
+
         key = item_key(base)
         if not key or key in seen_item_keys:
             return False
@@ -374,6 +386,10 @@ def crawl_cj_program(session: requests.Session, config: dict):
             item_list = srttb.get("itemInfoList")
             if not item_list:
                 # "지난방송상품" 등 -> itemInfoList가 null
+                continue
+            if any(w in date_label for w in PAST_LABEL_STOP_WORDS):
+                # itemInfoList가 채워져 오는 지난방송 구좌 (휴방 주에 관측됨)
+                print(f"    -> [스킵] 지난방송 구좌 '{date_label}' - 상품 {len(item_list)}개 건너뜀")
                 continue
 
             print(f"    -> [방송 타임 진입]: {date_label} - 상품 {len(item_list)}개")
