@@ -1677,6 +1677,31 @@
     background: var(--paper-dim2); color: var(--ink-soft); border: 1px solid var(--rule);
   }
 
+  /* 종목 미니 필터 — 랭킹 탭의 카테고리 칩(.rk-subcat-chip)과 같은 형태.
+     '전체 경기'일 때만 나오고, 여러 종목을 함께 고를 수 있다. */
+  .ag-disc-chips {
+    display: none;
+    flex-wrap: wrap;
+    gap: 5px;
+    padding: 10px 2px 2px;
+  }
+  .ag-disc-chip {
+    font-family: 'Pretendard', -apple-system, sans-serif;
+    font-size: 11px; font-weight: 600;
+    background: none; border: 1px solid var(--rule); border-radius: 999px;
+    padding: 5px 11px; color: var(--ink-faint); cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .ag-disc-chip:hover:not(.active) { background: var(--now-bg); color: var(--ink-soft); }
+  .ag-disc-chip.active {
+    background: var(--brand-blue-soft); border-color: var(--brand-blue); color: var(--brand-blue);
+  }
+  .ag-disc-chip .n {
+    margin-left: 4px; font-weight: 700; font-variant-numeric: tabular-nums; opacity: 0.75;
+  }
+  /* 다른 날짜에서 고른 종목이 이 날짜엔 없을 때 — 왜 결과가 없는지 보이게 남긴다 */
+  .ag-disc-chip.absent { opacity: 0.45; }
+
   .ag-go {
     display: inline-flex; align-items: center; gap: 4px;
     font-size: 11px; font-weight: 700; color: var(--brand-blue);
@@ -3303,6 +3328,8 @@
     <div class="ag-count" id="agCount"></div>
   </div>
 
+  <div class="ag-disc-chips" id="agDiscChips"></div>
+
   <div class="ag-scroll">
     <table class="ag-table">
       <thead>
@@ -4490,6 +4517,8 @@ const AG_WD = ["일", "월", "화", "수", "목", "금", "토"];
 let agDate = AG_START;
 // 경기 범위 슬라이서: 'all' | 'kr' | 'medal' (셋 중 하나)
 let agMode = 'kr';
+// 종목 미니 필터 (중복 선택). 비어 있으면 전체 종목.
+let agDisciplines = new Set();
 let agManifest = null;        // null = 아직 안 불러옴, false = 없음
 let agCache = {};
 
@@ -4666,6 +4695,51 @@ function agRenderDates() {
   }
 }
 
+// 종목 미니 필터 칩. '전체 경기'일 때만 띄우고, 그날 열리는 종목만 보여준다.
+// 다른 날짜에서 골라둔 종목이 이 날짜엔 없더라도 흐리게 남겨서, 결과가 왜
+// 비었는지 알 수 있게 한다.
+function agRenderDiscChips(scoped) {
+  const el = document.getElementById('agDiscChips');
+  if (!el) return;
+
+  if (agMode !== 'all') {
+    el.style.display = 'none';
+    el.innerHTML = '';
+    return;
+  }
+
+  const counts = new Map();
+  for (const g of scoped) {
+    const d = g.discipline || '';
+    if (!d) continue;
+    counts.set(d, (counts.get(d) || 0) + 1);
+  }
+  for (const d of agDisciplines) {
+    if (!counts.has(d)) counts.set(d, 0);
+  }
+
+  const names = [...counts.keys()].sort((a, b) => a.localeCompare(b, 'ko'));
+  if (!names.length) {
+    el.style.display = 'none';
+    el.innerHTML = '';
+    return;
+  }
+  el.style.display = 'flex';
+
+  let html = `<button type="button" class="ag-disc-chip${agDisciplines.size === 0 ? ' active' : ''}"`
+           + ` data-disc="">전체<span class="n">${scoped.length}</span></button>`;
+  for (const name of names) {
+    const n = counts.get(name);
+    const cls = 'ag-disc-chip'
+      + (agDisciplines.has(name) ? ' active' : '')
+      + (n === 0 ? ' absent' : '');
+    const tip = (n === 0) ? ' title="이 날짜에는 이 종목 경기가 없습니다"' : '';
+    html += `<button type="button" class="${cls}" data-disc="${agEsc(name)}"${tip}>`
+          + `${agEsc(name)}<span class="n">${n}</span></button>`;
+  }
+  el.innerHTML = html;
+}
+
 function agRenderRows(data) {
   const body = document.getElementById('agBody');
   const countEl = document.getElementById('agCount');
@@ -4673,18 +4747,27 @@ function agRenderRows(data) {
   if (!body) return;
 
   const all = (data && data.games) ? data.games : [];
-  const rows = all.filter(g => {
+  const inScope = (g) => {
     if (agMode === 'medal') return g.medal === true;
     // 개·폐회식은 특정 국가의 경기가 아니지만 눈에 띄어야 하므로
     // '대한민국 출전경기만'에서도 남긴다. (메달 결정전만에서는 제외)
     if (agMode === 'kr') return g.hasKorea === true || agIsCeremony(g);
     return true;
-  });
+  };
+  // 종목 칩은 '전체 경기'에서만 쓰고, 고른 게 없으면 전 종목을 뜻한다
+  const byDiscipline = (g) =>
+    agMode !== 'all' || agDisciplines.size === 0 || agDisciplines.has(g.discipline);
+
+  const scoped = all.filter(inScope);
+  const rows = scoped.filter(byDiscipline);
+
+  agRenderDiscChips(scoped);
 
   if (!rows.length) {
     body.innerHTML = `<tr><td colspan="4"><div class="ag-empty">`
-      + (all.length ? '이 날짜에는 해당 경기가 없습니다. <strong>전체 경기</strong>로 바꿔서 보세요.'
-                    : '이 날짜의 수집 데이터가 없습니다.')
+      + (!all.length ? '이 날짜의 수집 데이터가 없습니다.'
+         : scoped.length ? '고른 종목의 경기가 이 날짜에는 없습니다. 종목 칩의 <strong>전체</strong>를 눌러 보세요.'
+                         : '이 날짜에는 해당 경기가 없습니다. <strong>전체 경기</strong>로 바꿔서 보세요.')
       + `</div></td></tr>`;
   } else {
     body.innerHTML = agGroupRows(rows).map(({ g, count }) => {
@@ -4735,8 +4818,10 @@ function agRenderRows(data) {
     const label = { all: '전체 경기', kr: '대한민국 출전경기만', medal: '메달 결정전만' }[agMode];
     const shown = agGroupRows(rows).length;
     const folded = (shown < rows.length) ? ` (${shown}줄로 묶음)` : '';
+    const picked = (agMode === 'all' && agDisciplines.size)
+      ? ` · 종목 ${agDisciplines.size}개 선택` : '';
     countEl.innerHTML = `전체 ${all.length}경기 · 대한민국 <b>${kr}</b>경기 · 메달 ${medal}경기`
-      + ` <span style="color:var(--ink-soft)">— ${label} ${rows.length}건${folded}</span>`;
+      + ` <span style="color:var(--ink-soft)">— ${label}${picked} ${rows.length}건${folded}</span>`;
   }
   if (footEl) {
     const collected = (data && data.collectedAt) ? data.collectedAt.slice(0, 16).replace('T', ' ') : '';
@@ -6649,8 +6734,32 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
       agSlicerEl.querySelectorAll('button').forEach(x => {
         x.classList.toggle('active', x.dataset.mode === agMode);
       });
+      // 종목 칩은 '전체 경기'에서만 보이므로, 거기서 나가면 선택도 비운다.
+      // (안 보이는 필터가 남아 결과가 비는 걸 막는다)
+      if (agMode !== 'all') agDisciplines.clear();
       agRenderRows(await agLoadDay(agDate));
       gaEvent('filter_click', { filter_group: 'asiangames_scope', filter_value: agMode });
+    });
+  }
+
+  const agDiscChipsEl = document.getElementById('agDiscChips');
+  if (agDiscChipsEl) {
+    agDiscChipsEl.addEventListener('click', async (e) => {
+      const b = e.target.closest('.ag-disc-chip');
+      if (!b) return;
+      const name = b.dataset.disc;
+      if (!name) {
+        agDisciplines.clear();
+      } else if (agDisciplines.has(name)) {
+        agDisciplines.delete(name);
+      } else {
+        agDisciplines.add(name);
+      }
+      agRenderRows(await agLoadDay(agDate));
+      gaEvent('filter_click', {
+        filter_group: 'asiangames_discipline',
+        filter_value: name || '전체'
+      });
     });
   }
 
