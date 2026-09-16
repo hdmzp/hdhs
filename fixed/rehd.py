@@ -100,7 +100,8 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from tools import scrape_guard
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from celeb_day_sweep import (supplement_missing_slots, merge_continuous_slots,
-                             select_slots_by_starts)
+                             select_slots_by_starts, find_program_slots,
+                             SWEEP_DAYS)
 from playwright.sync_api import sync_playwright
 from bs4 import BeautifulSoup
 
@@ -534,6 +535,29 @@ def parse_swiper_items_from_html(html: str, date_label: str) -> list:
     return items
 
 
+def upcoming_lineup_days(program_names, already_done=None) -> list:
+    """편성표(HD_live)가 아는 이 프로그램의 '앞으로 방송할 날짜'들.
+
+    pgm-comm은 가장 가까운 회차 하나만 알려줘서, 그 날짜만 훑으면 다음
+    회차는 편성표 보강(supplement_missing_slots)으로 채워지는데 편성표는
+    슬롯당 대표상품 1개뿐이라 회차가 1건으로 쪼그라든다.
+    실측: 2026-09-21(월) 최은경쇼가 1건(세렌느 후드자켓)만 남았는데, 같은
+    날 tv-list에는 머티리얼랩 4종 라인업이 다 들어 있었다.
+    그래서 편성표가 아는 다음 회차 날짜도 tv-list로 한 번 더 훑는다."""
+    today = datetime.now(KST).date()
+    days = set()
+    for (day, _start) in find_program_slots("HD", program_names, SWEEP_DAYS):
+        try:
+            d = datetime.strptime(day, "%Y-%m-%d").date()
+        except ValueError:
+            continue
+        # 오늘까지는 brod_date 훑기가 이미 하루치를 통째로 본다
+        if d <= today or d == already_done:
+            continue
+        days.add(d)
+    return sorted(days)
+
+
 def collect_lineup_products(brod_date, program_names, brod_start=None, brod_end=None) -> list:
     """방송일(brod_date) 하루치 편성표를 훑어 이 프로그램의 모든 회차 상품을 모은다.
 
@@ -780,11 +804,18 @@ def crawl_hd_program(page, config: dict, list_map: dict):
         brod_start = brod_start or fb_start
 
     # --- 편성표(tv-list + 로컬 HD_live)에서 그 날 이 프로그램 회차를 전부 수집 ---
+    program_names = [config["spex_sect_nm"], tab_name]
     if brod_date:
         lineup_products = collect_lineup_products(
-            brod_date, [config["spex_sect_nm"], tab_name], brod_start, brod_end)
+            brod_date, program_names, brod_start, brod_end)
     else:
         print(f"    -> [경고] 방송일을 알 수 없어 편성표 라인업 조회 생략")
+
+    # 편성표가 아는 '그 다음 회차' 날짜도 tv-list 라인업으로 훑는다
+    # (upcoming_lineup_days 참고 - 안 하면 다음 회차가 대표상품 1건이 된다)
+    for next_day in upcoming_lineup_days(program_names, already_done=brod_date):
+        print(f"    -> [다음 회차 훑기] {next_day}")
+        lineup_products += collect_lineup_products(next_day, program_names)
 
     deduped = merge_sources(lineup_products, pgm_comm_products,
                             itemlist_products, swiper_products)
@@ -792,8 +823,8 @@ def crawl_hd_program(page, config: dict, list_map: dict):
     # 마지막 안전망: pgm-comm이 알려준 날짜 자체가 틀렸거나 편성표 조회가
     # 실패한 경우를 대비해, 나머지 3사와 같은 공통 보강(편성표에서 이
     # 프로그램의 빠진 회차 채우기)을 한 번 더 돌린다.
-    supplement_missing_slots("HD", [config["spex_sect_nm"], tab_name], deduped)
-    merge_continuous_slots("HD", [config["spex_sect_nm"], tab_name], deduped)
+    supplement_missing_slots("HD", program_names, deduped)
+    merge_continuous_slots("HD", program_names, deduped)
 
     print(f"    -> 최종 상품 {len(deduped)}개 (병합/중복 제거 후)")
 
