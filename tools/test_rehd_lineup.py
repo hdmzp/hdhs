@@ -17,7 +17,7 @@ import os
 import sys
 import types
 import importlib.util
-from datetime import date
+from datetime import date, datetime, timedelta
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
@@ -217,6 +217,50 @@ def test_time_window_skips_other_program():
     check("이름이 비어 있으면 예전처럼 시간대로 고름", sorted(slots_nameless), ["19:30"])
 
 
+def test_sweeps_next_broadcast_day():
+    """pgm-comm이 알려준 날 말고, 편성표가 아는 다음 회차 날짜도 훑는다.
+
+    실측: 2026-09-21(월) 최은경쇼가 1건(세렌느 후드자켓)만 남았다. pgm-comm이
+    가장 가까운 회차(9/16)만 알려줘서 그 날짜만 훑었고, 9/21은 편성표
+    보강으로 채워졌는데 편성표는 슬롯당 대표상품 1개뿐이었다. 같은 날
+    tv-list에는 머티리얼랩 4종 라인업이 다 들어 있었다."""
+    print("[8] 편성표가 아는 다음 회차 날짜도 tv-list로 훑는다")
+    import json
+    import shutil
+    import tempfile
+    sweep = sys.modules["celeb_day_sweep"]
+
+    today = datetime.now(rehd.KST).date()
+    this_week = today + timedelta(days=1)
+    next_week = today + timedelta(days=5)
+    tmp = tempfile.mkdtemp()
+    try:
+        ym_days = {}
+        for d in (this_week, next_week):
+            ym_days.setdefault(d.strftime("%Y-%m"), {})[d.isoformat()] = [
+                {"start": "19:30", "end": "21:45", "pgm": "최은경쇼",
+                 "brand": "머티리얼랩", "product": "대표상품 1개뿐", "price": 1},
+            ]
+        for ym, days in ym_days.items():
+            path = os.path.join(tmp, f"HD_live_{ym}.json")
+            with open(path, "w", encoding="utf-8") as f:
+                json.dump({"days": days}, f, ensure_ascii=False)
+
+        orig_tpl = sweep.LIVE_DIR_TEMPLATE
+        sweep.LIVE_DIR_TEMPLATE = os.path.join(tmp, "{company}_live_{ym}.json")
+        sweep._LIVE_DAYS_CACHE.clear()
+        try:
+            days = rehd.upcoming_lineup_days(["최은경쇼", "최은경"],
+                                             already_done=this_week)
+        finally:
+            sweep.LIVE_DIR_TEMPLATE = orig_tpl
+            sweep._LIVE_DAYS_CACHE.clear()
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+    check("이미 훑은 날은 빼고 다음 회차만", days, [next_week])
+
+
 def main():
     test_two_broadcasts_same_day()
     test_same_product_in_both_slots()
@@ -226,6 +270,7 @@ def main():
     test_local_schedule_supplement()
     test_skips_when_program_is_off_air()
     test_time_window_skips_other_program()
+    test_sweeps_next_broadcast_day()
 
     print()
     if FAILURES:
