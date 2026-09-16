@@ -297,7 +297,8 @@ def select_program_slots(entries, program_names, start_hm=None, end_hm=None) -> 
     누락됐다.
 
     제목으로 한 건도 못 고르면(편성표에 프로그램명이 안 붙은 경우)
-    예전처럼 pgm-comm이 알려준 시간대로 폴백한다."""
+    예전처럼 pgm-comm이 알려준 시간대로 폴백한다. 단 그 시간대에 **다른
+    프로그램 이름이 붙어 있으면** 남의 방송이므로 제외한다."""
     slots = {}
     for start, end, title, payload in entries:
         if not start or not title_matches(title, program_names):
@@ -311,11 +312,14 @@ def select_program_slots(entries, program_names, start_hm=None, end_hm=None) -> 
 
     if not start_hm:
         return {}
-    for start, end, _title, payload in entries:
+    for start, end, title, payload in entries:
         if not start:
             continue
         in_window = (start_hm <= start < end_hm) if end_hm else (start == start_hm)
         if not in_window:
+            continue
+        if title and program_names and not title_matches(title, program_names):
+            # 그 시각에 이름이 붙어 있고 이 프로그램이 아니면 남의 방송이다
             continue
         slot = slots.setdefault(start, {"end": end or end_hm, "items": []})
         slot["items"].append(payload)
@@ -546,6 +550,10 @@ def collect_lineup_products(brod_date, program_names, brod_start=None, brod_end=
            (2026-09-04 낮 수집에서 9/8 편성 전체의 이름이 사라졌고,
             그 바람에 08:15 회차를 통째로 놓쳤다)
       3. pgm-comm이 알려준 방송 시간대 (둘 다 이름을 못 찾을 때)
+         - 단 그날 편성표를 이미 받아왔는데 이 프로그램 이름이 없으면
+           **휴방**으로 보고 아무것도 가져오지 않는다. 시각만 보고 고르면
+           그 자리에서 방송하는 남의 상품을 끌어온다 (2026-09-21 황정민쇼
+           휴방 -> 최은경쇼 머티리얼랩 4종을 황정민쇼 회차로 가져간 사고).
     """
     products = []
 
@@ -564,7 +572,21 @@ def collect_lineup_products(brod_date, program_names, brod_start=None, brod_end=
         api_slots = select_slots_by_starts(api_entries, set(local_slots))
         print(f"    -> tv-list에 방송 제목이 없어 로컬 편성이 알려준 회차 시각으로 선택")
     if not api_slots and not local_slots:
-        # 어느 소스에도 프로그램명이 없다 - 예전처럼 pgm-comm 시간대로 폴백
+        # 어느 소스에도 프로그램명이 없다. 여기서 시간대만 보고 고르면 그 시각에
+        # 방송하는 **남의 상품**을 끌어온다. 실제로 2026-09-21(월)은 황정민쇼가
+        # 휴방하고 그 자리(19:30)에서 최은경쇼가 방송했는데, 황정민쇼 수집기가
+        # schedule_raw('매주 월요일 19시 30분')로 날짜를 찍고 그 시각 라인업
+        # (머티리얼랩 4종)을 자기 회차로 가져갔다. 2026-09-22(화) 오감쇼도
+        # 휴방 예정이라 같은 일이 난다.
+        # 편성표는 고정PGM 슬롯에 프로그램명을 꼬박꼬박 달아준다(9월 오감쇼
+        # 9/1·9/8·9/15, 최은경쇼 9/2·9/9·9/16·9/21 전부 이름 있음). 그러니
+        # **그날 편성표를 이미 받아왔는데 이 프로그램 이름이 없으면 휴방**이다.
+        # 편성표 자체가 아직 안 나온 날(편성 미공개)만 예전처럼 시간대로 채운다.
+        if local_entries:
+            print(f"    -> [휴방 판정] {brod_date} 편성표에 '{program_names[0]}' 방송이 "
+                  f"없음 - 시각({brod_start or '?'})만 보고 남의 라인업을 "
+                  f"가져오지 않는다")
+            return products
         api_slots = select_program_slots(api_entries, [], brod_start, brod_end)
         local_slots = select_program_slots(local_entries, [], brod_start, brod_end)
 

@@ -182,6 +182,41 @@ def test_local_schedule_supplement():
           ["09/08(화) 08:15 방송", "09/08(화) 19:30 방송"])
 
 
+def test_skips_when_program_is_off_air():
+    """휴방인 날, 그 시각에 방송하는 남의 라인업을 끌어오지 않는다.
+
+    2026-09-21(월)은 황정민쇼가 휴방이고 그 자리(19:30)에서 최은경쇼가
+    방송했다. pgm-comm이 실패해 schedule_raw('매주 월요일 19시 30분')로
+    날짜를 찍은 황정민쇼 수집기가 그 시각 라인업(머티리얼랩 4종)을 자기
+    회차로 가져갔다. 편성표에 이 프로그램 이름이 없으면 휴방으로 본다."""
+    print("[6] 편성표에 이 프로그램 방송이 없으면(휴방) 아무것도 안 가져온다")
+    nameless = [dict(it, brodTitl="") for it in DAY_0908]
+    local = [
+        ("19:30", "21:45", "최은경쇼",
+         {"broadcast_date_label": None, "brand": "머티리얼랩", "name": "세렌느 후드자켓",
+          "price": 1, "image": None, "link": None, "_code": "2252314801"}),
+    ]
+    products = run_collect(nameless, ["황정민쇼", "황정민"], "19:30", "21:45",
+                           local_entries=local)
+    check("휴방이면 0건", len(products), 0)
+
+    # 편성표에 이름이 있는 프로그램은 그대로 수집된다
+    ok = run_collect(nameless, ["최은경쇼", "최은경"], "19:30", "21:45",
+                     local_entries=local)
+    check("편성표가 이름을 단 프로그램은 정상 수집",
+          any("머티리얼랩" in (p["brand"] or "") for p in ok), True)
+
+
+def test_time_window_skips_other_program():
+    print("[7] 시간대 폴백에서도 이름이 붙은 남의 방송은 제외한다")
+    entries = [("19:30", "21:45", "최은경쇼", {"x": 1})]
+    slots = rehd.select_program_slots(entries, ["황정민쇼"], "19:30", "21:45")
+    check("남의 이름이 붙은 슬롯은 안 고름", slots, {})
+    slots_nameless = rehd.select_program_slots(
+        [("19:30", "21:45", "", {"x": 1})], ["황정민쇼"], "19:30", "21:45")
+    check("이름이 비어 있으면 예전처럼 시간대로 고름", sorted(slots_nameless), ["19:30"])
+
+
 def main():
     test_two_broadcasts_same_day()
     test_same_product_in_both_slots()
@@ -189,6 +224,8 @@ def main():
     test_local_names_rescue_nameless_tvlist()
     test_fallback_to_time_window()
     test_local_schedule_supplement()
+    test_skips_when_program_is_off_air()
+    test_time_window_skips_other_program()
 
     print()
     if FAILURES:
