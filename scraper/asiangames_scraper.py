@@ -52,6 +52,16 @@ UA = (
 
 KOREA_NAMES = {"대한민국", "한국", "KOR", "Korea", "Republic of Korea", "South Korea"}
 
+# 경기를 클릭했을 때 열리는 네이버 스포츠 경기 페이지.
+# gameId가 없는 레코드는 그 날짜의 일정 페이지로 보낸다(항상 유효).
+GAME_URL = "https://m.sports.naver.com/game/{game_id}"
+
+
+def game_link(game_id, day):
+    if game_id:
+        return GAME_URL.format(game_id=game_id)
+    return SCHEDULE_URL.format(date=day)
+
 # 경기 레코드에서 각 필드를 찾을 때 쓸 키 후보들. 네이버가 대회마다 키를
 # 바꾸기 때문에 하나로 못 박지 않고 순서대로 시도한다(앞쪽이 우선).
 KEYS_TIME = ["startTime", "gameStartTime", "startDateTime", "gameDateTime",
@@ -186,7 +196,7 @@ def walk_games(node, found, path="$"):
             walk_games(v, found, f"{path}[{i}]")
 
 
-def normalize(rec, path=""):
+def normalize(rec, day, path=""):
     """네이버 레코드 -> 화면이 쓰는 스키마."""
     countries = extract_countries(rec)
     discipline = pick(rec, KEYS_DISCIPLINE) or ""
@@ -228,6 +238,7 @@ def normalize(rec, path=""):
             "tv": as_bool(pick(rec, KEYS_TV)),
             "cancelled": False,
             "gameId": rec.get("gameId") or "",
+            "link": game_link(rec.get("gameId"), day),
             "_path": path,
         }
     # 개인 종목이라 국가 목록이 비었는데 한국 선수가 출전하면, 화면의
@@ -248,6 +259,7 @@ def normalize(rec, path=""):
         "tv": as_bool(pick(rec, KEYS_TV)),
         "cancelled": as_bool(rec.get("cancel")) or as_bool(rec.get("suspended")),
         "gameId": rec.get("gameId") or "",
+        "link": game_link(rec.get("gameId"), day),
         "_path": path,
     }
 
@@ -306,7 +318,7 @@ def fetch_day(page, day: str, probe=False):
         walk_games(data, found)
         raw_hits += len(found)
         for pth, rec in found:
-            games.append(normalize(rec, pth))
+            games.append(normalize(rec, day, pth))
     games = dedupe_sort(games)
 
     if probe:
@@ -322,6 +334,16 @@ def fetch_day(page, day: str, probe=False):
             log(f"  --- 대한민국 출전 {len(kr)}건 ---")
             for g in kr[:15]:
                 log(f"      {g['time']}  {g['discipline']} {g['event']}  | {', '.join(g['countries'])}")
+            # 경기 페이지 링크가 실제로 열리는지 한 건만 확인한다.
+            # 네이버가 URL 형식을 바꾸면 여기서 404/리다이렉트로 드러난다.
+            sample = next((g for g in games if g.get("link", "").startswith(GAME_URL[:40])), None)
+            if sample:
+                log(f"  --- 경기 페이지 링크 확인: {sample['link']} ---")
+                try:
+                    r = page.goto(sample["link"], wait_until="domcontentloaded", timeout=30_000)
+                    log(f"      HTTP {r.status if r else '?'} -> 최종 URL {page.url}")
+                except Exception as e:
+                    log(f"      열기 실패: {e}")
         else:
             # 한 건도 못 뽑았으면 구조 파악용으로 응답 본문을 보여준다
             for url, data in payloads:

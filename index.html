@@ -1674,7 +1674,7 @@
     border: 1px solid #C7D8FB; background: var(--brand-blue-soft);
     border-radius: 6px; padding: 5px 9px; white-space: nowrap;
   }
-  tr.ag-row:hover .ag-go { background: var(--brand-blue); color: #fff; border-color: var(--brand-blue); }
+  .ag-go:hover { background: var(--brand-blue); color: #fff; border-color: var(--brand-blue); }
   td.ag-go-cell .cell { text-align: right; }
 
   .ag-empty { padding: 34px 12px; text-align: center; color: var(--ink-faint); font-size: 12.5px; }
@@ -4586,6 +4586,15 @@ function agSearchUrl(g, dateStr) {
        + encodeURIComponent(agSearchQuery(g, dateStr));
 }
 
+// 경기 행을 클릭하면 네이버 스포츠 경기 페이지로 간다. 링크는 수집 단계에서
+// 넣어주지만(gameId 기반), 아직 없는 데이터는 그 날짜의 일정 페이지로 보낸다.
+function agGameUrl(g, dateStr) {
+  if (g.link) return g.link;
+  return "https://m.sports.naver.com/asiangames2026/schedule"
+       + "?type=date&date=" + dateStr
+       + "&disciplineId=&isKorean=N&isMedal=N&isScheduledTv=N";
+}
+
 function agIsCeremony(g) {
   const name = (g.discipline || "") + " " + (g.event || "");
   return /개회식|폐회식/.test(name);
@@ -4655,7 +4664,8 @@ function agRenderRows(data) {
           : agEsc(c)
       ).join(', ');
 
-      return `<tr class="${cls.join(' ')}" data-url="${agEsc(agSearchUrl(g, agDate))}">`
+      return `<tr class="${cls.join(' ')}" data-url="${agEsc(agGameUrl(g, agDate))}"`
+        + ` data-search="${agEsc(agSearchUrl(g, agDate))}" title="네이버 스포츠 경기 페이지로 이동">`
         + `<td><span class="cell ag-time">${agEsc(g.time || '-')}</span></td>`
         + `<td><span class="cell">`
           + `<span class="ag-disc">${agEsc(g.discipline)}</span>`
@@ -4664,7 +4674,9 @@ function agRenderRows(data) {
           + (g.venue ? `<span class="ag-venue">${agEsc(g.venue)}</span>` : '')
         + `</span></td>`
         + `<td><span class="cell ag-countries">${countries || '-'}</span></td>`
-        + `<td class="ag-go-cell"><span class="cell"><span class="ag-go">시청률 검색 ↗</span></span></td>`
+        + `<td class="ag-go-cell"><span class="cell">`
+          + `<span class="ag-go" data-role="search" title="시청률 네이버 검색결과로 이동">시청률 검색 ↗</span>`
+        + `</span></td>`
         + `</tr>`;
     }).join('');
   }
@@ -4675,7 +4687,8 @@ function agRenderRows(data) {
   }
   if (footEl) {
     const collected = (data && data.collectedAt) ? data.collectedAt.slice(0, 16).replace('T', ' ') : '';
-    footEl.innerHTML = '경기를 클릭하면 네이버 검색 결과로 이동합니다 (새 탭)'
+    footEl.innerHTML = '경기를 클릭하면 <strong>네이버 스포츠 경기 페이지</strong>로, '
+      + '오른쪽 끝 <strong>시청률 검색</strong>을 누르면 네이버 검색 결과로 이동합니다 (새 탭)'
       + (collected ? ` · 최종 수집 ${agEsc(collected)}` : '');
   }
 }
@@ -6595,12 +6608,16 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
   if (agBodyEl) {
     agBodyEl.addEventListener('click', (e) => {
       const tr = e.target.closest('tr.ag-row');
-      if (!tr || !tr.dataset.url) return;
-      window.open(tr.dataset.url, '_blank', 'noopener');
+      if (!tr) return;
+      // 오른쪽 끝 '시청률 검색'만 네이버 검색으로, 나머지 영역은 경기 페이지로
+      const isSearch = !!e.target.closest('[data-role="search"]');
+      const url = isSearch ? tr.dataset.search : tr.dataset.url;
+      if (!url) return;
+      window.open(url, '_blank', 'noopener');
       gaEvent('outbound_click', {
-        area: 'asiangames',
+        area: isSearch ? 'asiangames_rating_search' : 'asiangames_game',
         link_label: (tr.querySelector('.ag-disc') || {}).textContent || '',
-        link_url: tr.dataset.url
+        link_url: url
       });
     });
   }
