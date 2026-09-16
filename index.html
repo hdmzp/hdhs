@@ -1314,6 +1314,7 @@
     padding: 7px 14px;
     color: var(--ink-soft);
     cursor: pointer;
+    white-space: nowrap;
     transition: background 0.15s, color 0.15s;
   }
   .dv-slicer button.active {
@@ -1549,6 +1550,14 @@
     .dv-card { padding: 5px 6px 5px 8px; }
     .dv-card .dv-title { font-size: 10.5px; }
     .dv-new-badge, .dv-end-badge { font-size: 8px; }
+    /* 아시안게임이 붙어 버튼이 5개가 됐다. 좁은 화면에서 글자가 세로로
+       쪼개지지 않도록 글자와 여백을 줄여 한 줄에 담는다. */
+    .dv-slicer { gap: 2px; padding: 3px; }
+    .dv-slicer button { font-size: 11px; padding: 6px 7px; }
+  }
+
+  @media (max-width: 400px) {
+    .dv-slicer button { font-size: 10px; padding: 6px 5px; }
   }
 
   /* ============ 아시안게임 탭 (드라마/예능 슬라이서) ============ */
@@ -1690,6 +1699,7 @@
     font-size: 11px; font-weight: 600;
     background: none; border: 1px solid var(--rule); border-radius: 999px;
     padding: 5px 11px; color: var(--ink-faint); cursor: pointer;
+    white-space: nowrap;
     transition: background 0.15s, color 0.15s, border-color 0.15s;
   }
   .ag-disc-chip:hover:not(.active) { background: var(--now-bg); color: var(--ink-soft); }
@@ -1718,6 +1728,16 @@
     .ag-notice { font-size: 11.5px; }
     table.ag-table thead th { font-size: 11.5px; }
     .ag-disc, .ag-ev, .ag-countries { font-size: 11.5px; }
+    /* 범위 슬라이서(3개)와 종목 칩도 좁은 화면에서 줄바꿈되지 않게 줄인다 */
+    .ag-slicer { gap: 2px; padding: 3px; }
+    .ag-slicer button { font-size: 11px; padding: 6px 8px; }
+    .ag-disc-chip { font-size: 10.5px; padding: 4px 9px; }
+    .ag-datechip { min-width: 48px; padding: 6px 6px 5px; }
+    .ag-count { font-size: 10.5px; }
+  }
+
+  @media (max-width: 400px) {
+    .ag-slicer button { font-size: 10px; padding: 6px 6px; }
   }
 
   /* ============ 홈쇼핑랭킹 탭 ============ */
