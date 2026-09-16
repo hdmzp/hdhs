@@ -2,10 +2,9 @@ name: 아시안게임 일정 수집
 
 on:
   schedule:
-    # 대회 기간에만 의미가 있는 수집이라 하루 2회면 충분하다.
-    # KST 07:00(=UTC 22:00 전날), KST 19:00(=UTC 10:00)
-    - cron: "0 22 * * *"
-    - cron: "0 10 * * *"
+    # 드라마예능 수집(scrape-dramavariety.yml)의 새벽 슬롯과 같은 시각에 돈다.
+    # KST 02:00 (= UTC 17:00 전날). 일정은 미리 공개되므로 하루 1회면 충분하다.
+    - cron: "0 17 * * *"
   workflow_dispatch:
     inputs:
       probe:
