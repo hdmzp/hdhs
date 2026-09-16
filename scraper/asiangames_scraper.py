@@ -62,7 +62,9 @@ KEYS_EVENT = ["eventName", "gameName", "roundName", "subCategoryName", "title",
               "eventKoName", "phaseName", "gameSubName"]
 KEYS_VENUE = ["venueName", "stadium", "placeName", "venue", "stadiumName"]
 KEYS_MEDAL = ["medalYn", "isMedal", "hasMedal", "medal"]
-KEYS_TV = ["scheduledTvYn", "isScheduledTv", "broadcast", "tvYn", "onAir"]
+KEYS_TV = ["scheduledTvYn", "isScheduledTv", "scheduledTv", "broadcast", "tvYn", "onAir"]
+# 개인 종목은 출전국가 목록이 비어 있고, 한국 선수 출전 여부만 이 플래그로 온다.
+KEYS_KOREA = ["koreaPlayer", "isKorean", "koreanYn", "hasKorean"]
 
 # 출전국/팀 목록이 들어있을 법한 키
 KEYS_TEAMS = ["teams", "countries", "participants", "nations", "competitors",
@@ -200,23 +202,38 @@ def normalize(rec, path=""):
     if discipline and event.startswith(discipline):
         event = event[len(discipline):].strip(" -·:")
 
+    # 한국 출전 판정: 단체전은 출전국가 목록에 '대한민국'이 들어오고,
+    # 개인 종목은 목록이 비어 있는 대신 koreaPlayer 플래그가 켜진다.
+    has_korea = any(c in KOREA_NAMES for c in countries) or as_bool(pick(rec, KEYS_KOREA))
+    # 개인 종목이라 국가 목록이 비었는데 한국 선수가 출전하면, 화면의
+    # '출전국가' 칸이 비지 않도록 대한민국을 채워준다.
+    if not countries and has_korea:
+        countries = ["대한민국"]
+
+    venue = pick(rec, KEYS_VENUE)
+
     return {
         "time": to_hhmm(pick(rec, KEYS_TIME)),
         "discipline": discipline,
         "event": event,
         "countries": countries,
-        "venue": (pick(rec, KEYS_VENUE) or "") if isinstance(pick(rec, KEYS_VENUE), str) else "",
-        "hasKorea": any(c in KOREA_NAMES for c in countries),
+        "venue": venue if isinstance(venue, str) else "",
+        "hasKorea": has_korea,
         "medal": as_bool(pick(rec, KEYS_MEDAL)),
         "tv": as_bool(pick(rec, KEYS_TV)),
+        "cancelled": as_bool(rec.get("cancel")) or as_bool(rec.get("suspended")),
+        "gameId": rec.get("gameId") or "",
         "_path": path,
     }
 
 
 def dedupe_sort(games):
+    """같은 응답이 여러 번 잡히므로 중복을 걷어낸다. gameId가 있으면 그걸 쓴다."""
     seen, out = set(), []
     for g in games:
-        key = (g["time"], g["discipline"], g["event"], tuple(g["countries"]))
+        if g.get("cancelled"):
+            continue
+        key = g.get("gameId") or (g["time"], g["discipline"], g["event"], tuple(g["countries"]))
         if key in seen:
             continue
         seen.add(key)
@@ -224,6 +241,8 @@ def dedupe_sort(games):
     out.sort(key=lambda g: (g["time"] or "99:99", g["discipline"], g["event"]))
     for g in out:
         g.pop("_path", None)
+        g.pop("cancelled", None)
+        g.pop("gameId", None)
     return out
 
 
@@ -235,7 +254,8 @@ def fetch_day(page, day: str, probe=False):
 
     def on_response(resp):
         url = resp.url
-        if "sports.naver.com" not in url:
+        # 같은 페이지에서 광고 SSP(veta) 응답도 쏟아지는데 경기와 무관하다.
+        if "sports.naver.com" not in url or "veta.naver.com" in url:
             return
         ctype = (resp.headers or {}).get("content-type", "")
         if "json" not in ctype.lower():
@@ -254,29 +274,36 @@ def fetch_day(page, day: str, probe=False):
     finally:
         page.remove_listener("response", on_response)
 
-    if probe:
-        log(f"  [{day}] JSON 응답 {len(payloads)}건")
-        for url, data in payloads:
-            found = []
-            walk_games(data, found)
-            log(f"    - {url[:160]}")
-            log(f"      최상위 키: {list(data)[:12] if isinstance(data, dict) else type(data).__name__}")
-            log(f"      경기 후보: {len(found)}건")
-            if found:
-                p, rec = found[0]
-                log(f"      경로: {p}")
-                log(f"      샘플: {json.dumps(rec, ensure_ascii=False)[:900]}")
-            elif isinstance(data, dict):
-                # 못 찾았으면 구조 파악용으로 트리 일부를 보여준다
-                log(f"      본문(앞 700자): {json.dumps(data, ensure_ascii=False)[:700]}")
-
     games = []
+    raw_hits = 0
     for url, data in payloads:
         found = []
         walk_games(data, found)
-        for p, rec in found:
-            games.append(normalize(rec, p))
-    return dedupe_sort(games), len(payloads)
+        raw_hits += len(found)
+        for pth, rec in found:
+            games.append(normalize(rec, pth))
+    games = dedupe_sort(games)
+
+    if probe:
+        log(f"  [{day}] JSON 응답 {len(payloads)}건 / 경기 후보 {raw_hits}건 / 중복 제거 후 {len(games)}건")
+        if games:
+            log("  --- 파싱 결과 샘플 (앞 10건) ---")
+            for g in games[:10]:
+                mark = "KR" if g["hasKorea"] else "  "
+                flags = ("메달" if g["medal"] else "") + ("/중계" if g["tv"] else "")
+                log(f"   {mark} {g['time']}  {g['discipline']} {g['event']}"
+                    f"  | {', '.join(g['countries']) or '-'}  | {g['venue']} {flags}")
+            kr = [g for g in games if g["hasKorea"]]
+            log(f"  --- 대한민국 출전 {len(kr)}건 ---")
+            for g in kr[:15]:
+                log(f"      {g['time']}  {g['discipline']} {g['event']}  | {', '.join(g['countries'])}")
+        else:
+            # 한 건도 못 뽑았으면 구조 파악용으로 응답 본문을 보여준다
+            for url, data in payloads:
+                log(f"    - {url[:160]}")
+                log(f"      본문(앞 700자): {json.dumps(data, ensure_ascii=False)[:700]}")
+
+    return games, len(payloads)
 
 
 def main():
