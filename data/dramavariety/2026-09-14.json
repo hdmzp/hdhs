@@ -1,7 +1,7 @@
 {
   "weekStart": "2026-09-14",
   "weekEnd": "2026-09-20",
-  "collectedAt": "2026-09-16T04:56:28.209711+09:00",
+  "collectedAt": "2026-09-16T10:35:38.280767+09:00",
   "programs": [
     {
       "id": "drama_기쁜 우리 좋은 날_KBS1_오후 08:30",
@@ -15,12 +15,16 @@
         "목"
       ],
       "time": "오후 08:30",
-      "rating": 11.5,
-      "ratingDate": "09.14",
+      "rating": 10.2,
+      "ratingDate": "09.15",
       "ratingByDay": {
         "월": {
           "rating": 11.5,
           "ratingDate": "09.14"
+        },
+        "화": {
+          "rating": 10.2,
+          "ratingDate": "09.15"
         }
       },
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40757232&qvt=0&query=%EA%B8%B0%EC%81%9C%20%EC%9A%B0%EB%A6%AC%20%EC%A2%8B%EC%9D%80%20%EB%82%A0"
@@ -216,9 +220,7 @@
         }
       },
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41451464&qvt=0&query=%EC%8B%AC%EC%95%BC%EA%B4%B4%EB%8B%B4%ED%9A%8C%20%EC%8B%9C%EC%A6%8C6"
-    }
-  ],
-  "newBelowCutoff": [
+    },
     {
       "id": "drama_로또 1등도 출근합니다_tvN_오후 09:00",
       "category": "drama",
@@ -229,18 +231,77 @@
         "화"
       ],
       "time": "오후 09:00",
-      "rating": 3.9,
-      "ratingDate": "09.14",
+      "rating": 5.2,
+      "ratingDate": "09.15",
       "ratingByDay": {
-        "월": {
-          "rating": 3.9,
-          "ratingDate": "09.14"
+        "화": {
+          "rating": 5.2,
+          "ratingDate": "09.15"
         }
       },
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^blFB^VmJEX0NQYw==^TEdOX0tJVA==&pkid=356&os=41532093&qvt=0&query=%EB%A1%9C%EB%98%90%201%EB%93%B1%EB%8F%84%20%EC%B6%9C%EA%B7%BC%ED%95%A9%EB%8B%88%EB%8B%A4",
       "isNew": true,
       "newReason": "firstAir"
     },
+    {
+      "id": "variety_이호선 상담소_tvN STORY_오후 08:00",
+      "category": "variety",
+      "channel": "tvN STORY",
+      "title": "이호선 상담소",
+      "days": [
+        "화"
+      ],
+      "time": "오후 08:00",
+      "rating": 1.6,
+      "ratingDate": "09.15",
+      "ratingByDay": {
+        "화": {
+          "rating": 1.6,
+          "ratingDate": "09.15"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=38133047&qvt=0&query=%EC%9D%B4%ED%98%B8%EC%84%A0%20%EC%83%81%EB%8B%B4%EC%86%8C"
+    },
+    {
+      "id": "variety_타임슬립 천일야사_채널A_오후 10:00",
+      "category": "variety",
+      "channel": "채널A",
+      "title": "타임슬립 천일야사",
+      "days": [
+        "화"
+      ],
+      "time": "오후 10:00",
+      "rating": 1.1,
+      "ratingDate": "09.15",
+      "ratingByDay": {
+        "화": {
+          "rating": 1.1,
+          "ratingDate": "09.15"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41587761&qvt=0&query=%ED%83%80%EC%9E%84%EC%8A%AC%EB%A6%BD%20%EC%B2%9C%EC%9D%BC%EC%95%BC%EC%82%AC"
+    },
+    {
+      "id": "variety_틈만나면,_SBS_오후 09:00",
+      "category": "variety",
+      "channel": "SBS",
+      "title": "틈만나면,",
+      "days": [
+        "화"
+      ],
+      "time": "오후 09:00",
+      "rating": 3.0,
+      "ratingDate": "09.15",
+      "ratingByDay": {
+        "화": {
+          "rating": 3.0,
+          "ratingDate": "09.15"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=33809574&qvt=0&query=%ED%8B%88%EB%A7%8C%EB%82%98%EB%A9%B4"
+    }
+  ],
+  "newBelowCutoff": [
     {
       "id": "variety_빈칸 채우기_MBN_오후 10:20",
       "category": "variety",
