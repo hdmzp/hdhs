@@ -1604,18 +1604,24 @@
     padding: 12px 2px 10px;
     border-bottom: 1px solid var(--rule);
   }
-  .ag-toggles { display: flex; gap: 6px; flex-wrap: wrap; }
-  .ag-chk {
+  /* 전체 / 대한민국 / 메달 — 셋 중 하나만 켜지는 슬라이서.
+     드라마·예능 슬라이서(.dv-slicer)와 같은 형태로 맞춘다. */
+  .ag-slicer {
+    display: flex; gap: 4px; flex-wrap: wrap;
+    background: var(--paper); border: 1px solid var(--rule);
+    border-radius: 9px; padding: 4px; box-shadow: var(--shadow-sm);
+  }
+  .ag-slicer button {
     font-family: 'Pretendard', -apple-system, sans-serif;
     font-size: 12px; font-weight: 700; cursor: pointer;
-    border: 1px solid var(--rule); background: var(--paper); color: var(--ink-soft);
-    border-radius: 999px; padding: 6px 13px;
-    display: inline-flex; align-items: center; gap: 6px;
+    background: none; border: none; border-radius: 6px; padding: 7px 13px;
+    color: var(--ink-soft); white-space: nowrap;
   }
-  .ag-chk:hover { background: var(--paper-dim); }
-  .ag-chk[aria-pressed="true"] { background: #FDF0F2; border-color: #C8102E; color: #C8102E; }
-  .ag-chk.medal[aria-pressed="true"] { background: #FFF7D6; border-color: #E3C05A; color: #B8860B; }
-  .ag-chk .tick { font-size: 10px; }
+  .ag-slicer button:hover:not(.active) { background: var(--paper-dim); color: var(--ink); }
+  .ag-slicer button.active { background: var(--ink); color: #fff; }
+  /* 선택했을 때의 색으로 그 필터가 무엇인지 알아보게 한다 */
+  .ag-slicer button[data-mode="kr"].active { background: #C8102E; }
+  .ag-slicer button[data-mode="medal"].active { background: #B8860B; }
   .ag-count { font-size: 11.5px; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
   .ag-count b { color: #C8102E; font-weight: 800; }
 
@@ -3286,13 +3292,10 @@
   </div>
 
   <div class="ag-filterbar">
-    <div class="ag-toggles">
-      <button type="button" class="ag-chk" id="agChkKr" aria-pressed="true">
-        <span class="tick">●</span>대한민국 출전 경기만
-      </button>
-      <button type="button" class="ag-chk medal" id="agChkMedal" aria-pressed="false">
-        <span class="tick">●</span>메달 결정전만
-      </button>
+    <div class="ag-slicer" id="agSlicer" role="group" aria-label="경기 범위">
+      <button type="button" data-mode="all">전체 경기</button>
+      <button type="button" data-mode="kr" class="active">대한민국 출전경기만</button>
+      <button type="button" data-mode="medal">메달 결정전만</button>
     </div>
     <div class="ag-count" id="agCount"></div>
   </div>
@@ -4482,8 +4485,8 @@ const AG_LAST_WEEK_START = "2026-09-28";
 const AG_WD = ["일", "월", "화", "수", "목", "금", "토"];
 
 let agDate = AG_START;
-let agKrOnly = true;
-let agMedalOnly = false;
+// 경기 범위 슬라이서: 'all' | 'kr' | 'medal' (셋 중 하나)
+let agMode = 'kr';
 let agManifest = null;        // null = 아직 안 불러옴, false = 없음
 let agCache = {};
 
@@ -4636,15 +4639,16 @@ function agRenderRows(data) {
 
   const all = (data && data.games) ? data.games : [];
   const rows = all.filter(g => {
-    const ceremony = agIsCeremony(g);
-    if (agKrOnly && !g.hasKorea && !ceremony) return false;
-    if (agMedalOnly && !g.medal) return false;
+    if (agMode === 'medal') return g.medal === true;
+    // 개·폐회식은 특정 국가의 경기가 아니지만 눈에 띄어야 하므로
+    // '대한민국 출전경기만'에서도 남긴다. (메달 결정전만에서는 제외)
+    if (agMode === 'kr') return g.hasKorea === true || agIsCeremony(g);
     return true;
   });
 
   if (!rows.length) {
     body.innerHTML = `<tr><td colspan="4"><div class="ag-empty">`
-      + (all.length ? '조건에 맞는 경기가 없습니다. 필터를 해제해 보세요.'
+      + (all.length ? '이 날짜에는 해당 경기가 없습니다. <strong>전체 경기</strong>로 바꿔서 보세요.'
                     : '이 날짜의 수집 데이터가 없습니다.')
       + `</div></td></tr>`;
   } else {
@@ -4682,8 +4686,11 @@ function agRenderRows(data) {
   }
 
   const kr = all.filter(g => g.hasKorea).length;
+  const medal = all.filter(g => g.medal).length;
   if (countEl) {
-    countEl.innerHTML = `전체 ${all.length}경기 · 대한민국 <b>${kr}</b>경기 · 표시 ${rows.length}건`;
+    const label = { all: '전체 경기', kr: '대한민국 출전경기만', medal: '메달 결정전만' }[agMode];
+    countEl.innerHTML = `전체 ${all.length}경기 · 대한민국 <b>${kr}</b>경기 · 메달 ${medal}경기`
+      + ` <span style="color:var(--ink-soft)">— ${label} ${rows.length}건 표시</span>`;
   }
   if (footEl) {
     const collected = (data && data.collectedAt) ? data.collectedAt.slice(0, 16).replace('T', ' ') : '';
@@ -6587,20 +6594,17 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
   if (agPrevEl) agPrevEl.addEventListener('click', () => agShiftDay(-1));
   if (agNextEl) agNextEl.addEventListener('click', () => agShiftDay(1));
 
-  const agChkKrEl = document.getElementById('agChkKr');
-  if (agChkKrEl) {
-    agChkKrEl.addEventListener('click', async () => {
-      agKrOnly = !agKrOnly;
-      agChkKrEl.setAttribute('aria-pressed', String(agKrOnly));
+  const agSlicerEl = document.getElementById('agSlicer');
+  if (agSlicerEl) {
+    agSlicerEl.addEventListener('click', async (e) => {
+      const b = e.target.closest('button[data-mode]');
+      if (!b) return;
+      agMode = b.dataset.mode;
+      agSlicerEl.querySelectorAll('button').forEach(x => {
+        x.classList.toggle('active', x.dataset.mode === agMode);
+      });
       agRenderRows(await agLoadDay(agDate));
-    });
-  }
-  const agChkMedalEl = document.getElementById('agChkMedal');
-  if (agChkMedalEl) {
-    agChkMedalEl.addEventListener('click', async () => {
-      agMedalOnly = !agMedalOnly;
-      agChkMedalEl.setAttribute('aria-pressed', String(agMedalOnly));
-      agRenderRows(await agLoadDay(agDate));
+      gaEvent('filter_click', { filter_group: 'asiangames_scope', filter_value: agMode });
     });
   }
 

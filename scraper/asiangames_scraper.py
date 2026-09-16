@@ -336,7 +336,8 @@ def fetch_day(page, day: str, probe=False):
                 log(f"      {g['time']}  {g['discipline']} {g['event']}  | {', '.join(g['countries'])}")
             # 경기 페이지 링크가 실제로 열리는지 한 건만 확인한다.
             # 네이버가 URL 형식을 바꾸면 여기서 404/리다이렉트로 드러난다.
-            sample = next((g for g in games if g.get("link", "").startswith(GAME_URL[:40])), None)
+            game_prefix = GAME_URL.split("{")[0]
+            sample = next((g for g in games if g.get("link", "").startswith(game_prefix)), None)
             if sample:
                 log(f"  --- 경기 페이지 링크 확인: {sample['link']} ---")
                 try:
