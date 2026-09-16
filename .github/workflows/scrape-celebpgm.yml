@@ -30,7 +30,8 @@ jobs:
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install requests beautifulsoup4 playwright
+        # pandas/openpyxl: infer_brand가 training_data.xlsx(브랜드 사전)를 읽는다
+        pip install requests beautifulsoup4 playwright pandas openpyxl
 
     # 4. Playwright 브라우저 및 시스템 필수 라이브러리 설치 (rehd.py 구동용)
     - name: Install Playwright Browsers
