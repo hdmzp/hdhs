@@ -202,9 +202,34 @@ def normalize(rec, path=""):
     if discipline and event.startswith(discipline):
         event = event[len(discipline):].strip(" -·:")
 
+    # 개·폐회식은 종목명이 '개·폐회식', 경기명이 '개회식'으로 따로 온다.
+    # 화면에도 검색어에도 '개·폐회식 개회식'은 어색하므로 '개회식' 하나로 만든다.
+    for word in ("개회식", "폐회식"):
+        if word in discipline or word in event:
+            discipline, event = word, ""
+            break
+
     # 한국 출전 판정: 단체전은 출전국가 목록에 '대한민국'이 들어오고,
     # 개인 종목은 목록이 비어 있는 대신 koreaPlayer 플래그가 켜진다.
     has_korea = any(c in KOREA_NAMES for c in countries) or as_bool(pick(rec, KEYS_KOREA))
+
+    # 개·폐회식은 특정 국가의 '출전 경기'가 아니다. 한국 경기 수에 섞이지
+    # 않도록 hasKorea를 끄고, 출전국가 칸은 '전 참가국'으로 채운다.
+    # (화면에서는 '대한민국 출전 경기만' 필터와 무관하게 항상 노출된다)
+    if discipline in ("개회식", "폐회식"):
+        return {
+            "time": to_hhmm(pick(rec, KEYS_TIME)),
+            "discipline": discipline,
+            "event": "",
+            "countries": ["전 참가국"],
+            "venue": pick(rec, KEYS_VENUE) if isinstance(pick(rec, KEYS_VENUE), str) else "",
+            "hasKorea": False,
+            "medal": False,
+            "tv": as_bool(pick(rec, KEYS_TV)),
+            "cancelled": False,
+            "gameId": rec.get("gameId") or "",
+            "_path": path,
+        }
     # 개인 종목이라 국가 목록이 비었는데 한국 선수가 출전하면, 화면의
     # '출전국가' 칸이 비지 않도록 대한민국을 채워준다.
     if not countries and has_korea:

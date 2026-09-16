@@ -1647,6 +1647,7 @@
   tr.ag-row.kr td:first-child { box-shadow: inset 4px 0 0 #C8102E; }
   tr.ag-row.kr:hover td { background: #FDF0F2; }
   tr.ag-row.ceremony td { background: #FFFBEF; }
+  tr.ag-row.ceremony .ag-disc { color: #C8102E; }
   tr.ag-row.ceremony:hover td { background: #FFF7D6; }
   tr.ag-row td > .cell { display: block; padding: 10px 10px; }
 
@@ -4645,7 +4646,6 @@ function agRenderRows(data) {
       if (ceremony) cls.push('ceremony');
 
       let badges = '';
-      if (ceremony) badges += `<span class="ag-badge open">${agEsc(g.discipline || '행사')}</span>`;
       if (g.medal) badges += `<span class="ag-badge medal">메달</span>`;
       if (g.tv) badges += `<span class="ag-badge tv">중계</span>`;
 
