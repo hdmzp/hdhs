@@ -1663,16 +1663,19 @@
   table.ag-table th.c-go { width: 104px; text-align: right; }
   /* PC에서는 탭 폭(최대 1400px)에서 남는 자리가 전부 종목명 칸으로 쏠려서
      종목명과 출전국가 사이가 손바닥만큼 벌어졌다(종목명 칸 870px, 빈칸 690px).
-     표를 100%로 늘리지 않고 글자 길이에 맞춰 짜게 하고, 카드도 표 폭에
-     맞춘다. 패널 폭은 날짜 칩('기간 전체' + 16일)이 한 줄에 들어가는 만큼만
-     둔다. 좁은 화면은 가로 스크롤이라 지금처럼 100%로 둔다. */
+     패널을 날짜 칩('기간 전체' + 16일)이 한 줄에 들어가는 폭으로 묶어
+     화면 가운데에 두고, 종목명 칸은 실제 글자 길이에 맞춘 고정폭으로 좁힌다.
+     남는 폭은 출전국가 칸이 받는다. 좁은 화면은 가로 스크롤이라 그대로 둔다. */
   @media (min-width: 701px) {
     .ag-panel { max-width: 1080px; margin: 0 auto; }
-    .ag-scroll { width: fit-content; max-width: 100%; }
-    table.ag-table { width: auto; min-width: 620px; }
-    table.ag-table th.c-disc, table.ag-table th.c-country { width: auto; }
-    /* 출전국가가 비거나 짧아도 열이 너무 쪼그라들지 않게 최소폭만 준다 */
-    table.ag-table th.c-country { min-width: 170px; }
+    .ag-dates { justify-content: center; }
+    .ag-disc-chips { justify-content: center; }
+    table.ag-table { min-width: 0; }
+    /* 종목명·출전국가는 글자 길이에 맞춘 고정폭으로 좁히고, 남는 폭은
+       버튼이 오른쪽 끝에 붙어 있는 맨 뒷칸이 받게 한다 */
+    table.ag-table th.c-disc { width: 400px; }
+    table.ag-table th.c-country { width: 250px; }
+    table.ag-table th.c-go { width: auto; }
   }
   table.ag-table td {
     padding: 0; border-bottom: 1px dotted var(--rule);
