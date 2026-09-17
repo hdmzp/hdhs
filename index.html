@@ -1687,7 +1687,8 @@
   }
 
   /* 종목 미니 필터 — 랭킹 탭의 카테고리 칩(.rk-subcat-chip)과 같은 형태.
-     '전체 경기'일 때만 나오고, 여러 종목을 함께 고를 수 있다. */
+     '전체 경기'일 때만 나오고, 여러 종목을 함께 고를 수 있다.
+     목록은 대회 전체 기간 기준으로 고정이라 날짜를 옮겨도 그대로다. */
   .ag-disc-chips {
     display: none;
     flex-wrap: wrap;
@@ -1709,7 +1710,7 @@
   .ag-disc-chip .n {
     margin-left: 4px; font-weight: 700; font-variant-numeric: tabular-nums; opacity: 0.75;
   }
-  /* 다른 날짜에서 고른 종목이 이 날짜엔 없을 때 — 왜 결과가 없는지 보이게 남긴다 */
+  /* 이 날짜에 경기가 없는 종목 — 0으로 흐리게 남겨서 목록이 들썩이지 않게 한다 */
   .ag-disc-chip.absent { opacity: 0.45; }
 
   .ag-go {
@@ -4769,9 +4770,11 @@ function agGroupRows(rows) {
   return out;
 }
 
+function agIsCeremonyName(name) {
+  return /개회식|폐회식/.test(name || "");
+}
 function agIsCeremony(g) {
-  const name = (g.discipline || "") + " " + (g.event || "");
-  return /개회식|폐회식/.test(name);
+  return agIsCeremonyName((g.discipline || "") + " " + (g.event || ""));
 }
 
 function agRenderDates() {
@@ -4802,9 +4805,10 @@ function agRenderDates() {
   }
 }
 
-// 종목 미니 필터 칩. '전체 경기'일 때만 띄우고, 그날 열리는 종목만 보여준다.
-// 다른 날짜에서 골라둔 종목이 이 날짜엔 없더라도 흐리게 남겨서, 결과가 왜
-// 비었는지 알 수 있게 한다.
+// 종목 미니 필터 칩. '전체 경기'일 때만 띄운다.
+// 목록은 대회 전체 기간(9/19~10/4)의 종목을 모두 세우고, 숫자는 보고 있는
+// 날짜 기준이다. 그날 경기가 없는 종목은 0으로 흐리게 남겨서, 날짜를 옮겨도
+// 칩이 사라지지 않고 결과가 왜 비었는지도 알 수 있게 한다.
 function agRenderDiscChips(scoped) {
   const el = document.getElementById('agDiscChips');
   if (!el) return;
@@ -4815,9 +4819,19 @@ function agRenderDiscChips(scoped) {
     return;
   }
 
-  // 개·폐회식은 따로 골라 볼 일이 없으므로 칩을 만들지 않는다.
+  // 칩 목록은 보고 있는 날짜가 아니라 대회 전체 기간(9/19~10/4) 기준으로
+  // 세운다. 날짜를 옮길 때마다 칩이 사라졌다 나타나면 고르기 어렵기 때문에,
+  // 목록은 그대로 두고 그날 경기가 없는 종목만 0으로 흐리게 남긴다.
+  // 종목 목록은 매니페스트가 들고 있다(16일치 파일을 다 받지 않아도 되게).
+  // 개·폐회식은 따로 골라 볼 일이 없어 칩을 만들지 않는다.
   // ('전체'에서는 그대로 보이고, 개수도 '전체' 칩에 포함된다)
   const counts = new Map();
+  const listed = (agManifest && Array.isArray(agManifest.disciplines))
+    ? agManifest.disciplines : [];
+  for (const d of listed) {
+    if (!d || agIsCeremonyName(d)) continue;
+    counts.set(d, 0);
+  }
   for (const g of scoped) {
     const d = g.discipline || '';
     if (!d || agIsCeremony(g)) continue;
@@ -4847,7 +4861,7 @@ function agRenderDiscChips(scoped) {
     const cls = 'ag-disc-chip'
       + (agDisciplines.has(name) ? ' active' : '')
       + (n === 0 ? ' absent' : '');
-    const tip = (n === 0) ? ' title="이 날짜에는 이 종목 경기가 없습니다"' : '';
+    const tip = (n === 0) ? ' title="이 날짜에는 이 종목 경기가 없습니다 (대회 기간 전체 종목을 보여줍니다)"' : '';
     html += `<button type="button" class="${cls}" data-disc="${agEsc(name)}"${tip}>`
           + `${agEsc(name)}<span class="n">${n}</span></button>`;
   }

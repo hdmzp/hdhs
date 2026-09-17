@@ -407,12 +407,30 @@ def main():
         log(f"=== PROBE 종료: 경기 후보 총 {total_games}건 ===")
         return 0
 
+    # 종목 칩은 특정 날짜가 아니라 대회 전체 기간 기준으로 세워야 하므로,
+    # 화면이 16일치 파일을 다 받지 않고도 종목 목록을 알 수 있게 매니페스트에
+    # 담아둔다. --dates 로 일부 날짜만 다시 긁어도 목록이 줄지 않도록,
+    # 방금 받은 날짜가 아니라 out_dir 에 있는 날짜 파일 전체를 훑는다.
+    disciplines = set()
+    for name in os.listdir(args.out_dir):
+        if not name.endswith(".json") or name == "manifest.json":
+            continue
+        try:
+            with open(os.path.join(args.out_dir, name), encoding="utf-8") as f:
+                for g in json.load(f).get("games", []):
+                    d = (g.get("discipline") or "").strip()
+                    if d:
+                        disciplines.add(d)
+        except Exception as e:
+            log(f"경고: {name} 을(를) 읽지 못해 종목 목록에서 건너뜁니다 ({e})")
+
     manifest = {
         "collectedAt": collected_at,
         "start": days[0],
         "end": days[-1],
         "totalGames": total_games,
         "dates": manifest_dates,
+        "disciplines": sorted(disciplines),
     }
     with open(os.path.join(args.out_dir, "manifest.json"), "w", encoding="utf-8") as f:
         json.dump(manifest, f, ensure_ascii=False, indent=1)
