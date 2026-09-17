@@ -4586,6 +4586,46 @@ let agDate = AG_START;
 let agMode = 'kr';
 // 종목 미니 필터 (중복 선택). 비어 있으면 전체 종목.
 let agDisciplines = new Set();
+
+// 종목 칩 나열 순서. 가나다순보다 '보는 사람이 찾는 순서'가 낫다고 보고,
+// 국내 시청률이 잘 나오는 인기 종목을 앞으로 당긴다. 여기 없는 종목은
+// 목록 뒤쪽에 가나다순으로 붙고, 경기가 아닌 개·폐회식은 맨 뒤로 보낸다.
+// 세부 종목(예: '양궁 리커브')은 앞부분이 일치하면 그 종목으로 묶인다.
+const AG_DISC_ORDER = [
+  // 인기 종목
+  "축구", "양궁", "탁구", "펜싱", "배드민턴", "사격", "육상", "역도", "야구",
+  // 구기·수영 등 중계가 잦은 종목
+  "수영", "다이빙", "아티스틱 스위밍", "수구",
+  "배구", "농구", "3x3 농구", "핸드볼", "하키", "럭비", "소프트볼", "크리켓",
+  "테니스", "정구", "스쿼시", "골프",
+  // 격투기
+  "태권도 겨루기", "태권도 품새", "버추얼 태권도", "유도", "레슬링 자유형",
+  "레슬링 그레코로만형", "복싱", "가라테 쿠미테", "가라테 카타", "우슈 투로",
+  "우슈 산다", "주짓수", "쿠라쉬", "MMA",
+  // 체조·기록 종목
+  "기계 체조", "리듬 체조", "트램폴린", "근대 5종", "트라이애슬론",
+  "사이클 로드", "사이클 트랙", "산악자전거", "BMX 레이싱", "BMX 프리스타일",
+  "조정", "카누 스프린트", "카누 슬라럼", "요트", "승마 마장마술",
+  "승마 장애물", "승마  종합마술",
+  // 신규·기타 종목
+  "스포츠클라이밍", "스케이트보딩", "서핑", "브레이킹",
+  "세팍타크로", "카바디", "파델", "테크볼",
+  // 맨 뒤
+  "e스포츠",
+];
+// 경기가 아닌 행사(개·폐회식)와 중계 특집 편성('AG') — 종목 칩 맨 끝에 둔다
+const AG_DISC_TAIL = ["개회식", "폐회식", "AG"];
+
+// 종목 이름의 나열 순서 값. 작을수록 앞. 목록에 없으면 가운데(미지정) 구간.
+function agDiscRank(name) {
+  const tail = AG_DISC_TAIL.indexOf(name);
+  if (tail >= 0) return AG_DISC_ORDER.length + 1 + tail;
+  for (let i = 0; i < AG_DISC_ORDER.length; i++) {
+    const base = AG_DISC_ORDER[i];
+    if (name === base || name.startsWith(base + " ")) return i;
+  }
+  return AG_DISC_ORDER.length;
+}
 let agManifest = null;        // null = 아직 안 불러옴, false = 없음
 let agCache = {};
 
@@ -4785,7 +4825,12 @@ function agRenderDiscChips(scoped) {
     if (!counts.has(d)) counts.set(d, 0);
   }
 
-  const names = [...counts.keys()].sort((a, b) => a.localeCompare(b, 'ko'));
+  // 인기 종목 우선(AG_DISC_ORDER), 그 외는 가나다순, 개·폐회식은 맨 뒤
+  const names = [...counts.keys()].sort((a, b) => {
+    const ra = agDiscRank(a), rb = agDiscRank(b);
+    if (ra !== rb) return ra - rb;
+    return a.localeCompare(b, 'ko');
+  });
   if (!names.length) {
     el.style.display = 'none';
     el.innerHTML = '';
