@@ -1606,6 +1606,10 @@
   }
   .ag-datechip.active .cnt { color: #FFD9DF; }
   .ag-datechip.ceremony { border-color: #C8102E; }
+  /* 맨 앞 '기간 전체' — 날짜 칩과 같은 모양이되 한 칸 띄워 구분한다 */
+  .ag-datechip.period { min-width: 58px; margin-right: 6px; border-style: dashed; }
+  .ag-datechip.period .d { font-size: 12px; }
+  .ag-datechip.period.active { border-style: solid; }
 
   .ag-filterbar {
     display: flex; align-items: center; justify-content: space-between;
@@ -1649,9 +1653,27 @@
     font-size: 12px; font-weight: 700; color: var(--ink-soft);
     text-align: left; white-space: nowrap;
   }
+  /* 날짜 열은 '기간 전체'에서만 켠다 (하루만 볼 땐 날짜가 위에 이미 있다) */
+  table.ag-table th.c-date, table.ag-table td.c-date { display: none; }
+  table.ag-table.ag-period th.c-date,
+  table.ag-table.ag-period td.c-date { display: table-cell; }
+  table.ag-table th.c-date { width: 86px; text-align: center; }
   table.ag-table th.c-time { width: 78px; text-align: center; }
   table.ag-table th.c-country { width: 290px; }
   table.ag-table th.c-go { width: 104px; text-align: right; }
+  /* PC에서는 탭 폭(최대 1400px)에서 남는 자리가 전부 종목명 칸으로 쏠려서
+     종목명과 출전국가 사이가 손바닥만큼 벌어졌다(종목명 칸 870px, 빈칸 690px).
+     표를 100%로 늘리지 않고 글자 길이에 맞춰 짜게 하고, 카드도 표 폭에
+     맞춘다. 패널 폭은 날짜 칩('기간 전체' + 16일)이 한 줄에 들어가는 만큼만
+     둔다. 좁은 화면은 가로 스크롤이라 지금처럼 100%로 둔다. */
+  @media (min-width: 701px) {
+    .ag-panel { max-width: 1080px; margin: 0 auto; }
+    .ag-scroll { width: fit-content; max-width: 100%; }
+    table.ag-table { width: auto; min-width: 620px; }
+    table.ag-table th.c-disc, table.ag-table th.c-country { width: auto; }
+    /* 출전국가가 비거나 짧아도 열이 너무 쪼그라들지 않게 최소폭만 준다 */
+    table.ag-table th.c-country { min-width: 170px; }
+  }
   table.ag-table td {
     padding: 0; border-bottom: 1px dotted var(--rule);
     background: var(--paper); vertical-align: middle;
@@ -1665,6 +1687,14 @@
   tr.ag-row.ceremony .ag-disc { color: #C8102E; }
   tr.ag-row.ceremony:hover td { background: #FFF7D6; }
   tr.ag-row td > .cell { display: block; padding: 10px 10px; }
+
+  .ag-date {
+    font-size: 12px; font-weight: 700; color: var(--ink-soft);
+    font-variant-numeric: tabular-nums; text-align: center; white-space: nowrap;
+  }
+  .ag-date .w { margin-left: 3px; font-size: 10.5px; color: var(--ink-faint); }
+  .ag-date.sat .w { color: var(--terrestrial); }
+  .ag-date.sun .w { color: #C8102E; }
 
   .ag-time {
     font-size: 13.5px; font-weight: 800; color: var(--ink);
@@ -1734,6 +1764,10 @@
     .ag-slicer button { font-size: 11px; padding: 6px 8px; }
     .ag-disc-chip { font-size: 10.5px; padding: 4px 9px; }
     .ag-datechip { min-width: 48px; padding: 6px 6px 5px; }
+    /* 좁은 화면에서 날짜 열이 켜지면 종목명 칸이 눌리므로 양옆을 줄인다 */
+    table.ag-table.ag-period th.c-date { width: 64px; }
+    table.ag-table.ag-period th.c-country { width: 210px; }
+    .ag-date { font-size: 11px; }
     .ag-count { font-size: 10.5px; }
   }
 
@@ -3388,8 +3422,9 @@
     <table class="ag-table">
       <thead>
         <tr>
+          <th class="c-date">날짜</th>
           <th class="c-time">시각</th>
-          <th>종목명</th>
+          <th class="c-disc">종목명</th>
           <th class="c-country">출전국가</th>
           <th class="c-go"></th>
         </tr>
@@ -4582,6 +4617,8 @@ const AG_END   = "2026-10-04";
 const AG_LAST_WEEK_START = "2026-09-28";
 const AG_WD = ["일", "월", "화", "수", "목", "금", "토"];
 
+// agDate 가 이 값이면 하루가 아니라 대회 기간 전체를 한 표에 모아 본다
+const AG_PERIOD = 'period';
 let agDate = AG_START;
 // 경기 범위 슬라이서: 'all' | 'kr' | 'medal' (셋 중 하나)
 let agMode = 'kr';
@@ -4645,7 +4682,10 @@ function agDateList() {
 const AG_DATES = agDateList();
 
 function agDow(dateStr) { return new Date(dateStr + "T00:00:00").getDay(); }
-function agLabel(dateStr) { return dateStr + " (" + AG_WD[agDow(dateStr)] + ")"; }
+function agLabel(dateStr) {
+  if (dateStr === AG_PERIOD) return agMMDD(AG_START) + " ~ " + agMMDD(AG_END) + " (기간 전체)";
+  return dateStr + " (" + AG_WD[agDow(dateStr)] + ")";
+}
 function agMMDD(dateStr) { return dateStr.slice(5).replace("-", "/"); }
 
 function agEsc(s) { return dvEscapeHtml(s); }
@@ -4673,6 +4713,35 @@ async function agLoadDay(dateStr) {
   } catch (e) {
     return null;
   }
+}
+
+// 기간 전체(9/19~10/4)를 한 표로 볼 때 쓰는 데이터. 16일치를 모두 받아
+// 한 배열로 합치고, 경기마다 어느 날짜 것인지(_date)를 달아 둔다.
+// 한 번 합쳐두면 agCache 에 남아 날짜를 오갈 때 다시 받지 않는다.
+async function agLoadPeriod() {
+  if (agCache[AG_PERIOD]) return agCache[AG_PERIOD];
+  // 16일치(약 1.4MB)를 처음 한 번 받는 동안 표가 빈 채로 멈춰 보이지 않게 한다
+  const body = document.getElementById('agBody');
+  if (body) {
+    body.innerHTML = `<tr><td colspan="5"><div class="ag-empty">`
+      + `대회 기간 전체를 불러오는 중…</div></td></tr>`;
+  }
+  const days = await Promise.all(AG_DATES.map(d => agLoadDay(d)));
+  const games = [];
+  let collectedAt = '';
+  days.forEach((data, i) => {
+    if (!data || !data.games) return;
+    if (data.collectedAt && data.collectedAt > collectedAt) collectedAt = data.collectedAt;
+    for (const g of data.games) games.push(Object.assign({}, g, { _date: AG_DATES[i] }));
+  });
+  const out = { date: AG_PERIOD, collectedAt, games };
+  agCache[AG_PERIOD] = out;
+  return out;
+}
+
+// 지금 고른 게 하루면 그 날짜 파일, '기간 전체'면 합친 데이터
+function agLoadCurrent() {
+  return (agDate === AG_PERIOD) ? agLoadPeriod() : agLoadDay(agDate);
 }
 
 // 수집 데이터가 하나라도 있는지 (manifest 기준)
@@ -4754,7 +4823,7 @@ function agGroupRows(rows) {
   const index = new Map();
   for (const g of rows) {
     const key = [
-      g.time, g.discipline, g.event, g.venue,
+      g._date || '', g.time, g.discipline, g.event, g.venue,
       (g.countries || []).join(','),
       g.medal ? 1 : 0, g.tv ? 1 : 0, g.hasKorea ? 1 : 0
     ].join('|');
@@ -4783,7 +4852,15 @@ function agRenderDates() {
   if (!wrap) return;
   const counts = (agManifest && agManifest.dates) ? agManifest.dates : {};
 
-  wrap.innerHTML = AG_DATES.map(d => {
+  // 맨 앞에 '기간 전체' — 16일치를 한 표로 모아 본다
+  const krAll = AG_DATES.reduce((n, d) => n + ((counts[d] && counts[d].korea) || 0), 0);
+  const periodChip = `<button type="button" class="ag-datechip period`
+    + (agDate === AG_PERIOD ? ' active' : '') + `" data-date="${AG_PERIOD}">`
+    + `<span class="d">기간</span><span class="w">전체</span>`
+    + `<span class="cnt">${krAll ? '한국 ' + krAll : '&nbsp;'}</span>`
+    + `</button>`;
+
+  wrap.innerHTML = periodChip + AG_DATES.map(d => {
     const w = agDow(d);
     const n = (counts[d] && counts[d].korea) ? counts[d].korea : 0;
     const cls = ['ag-datechip'];
@@ -4888,17 +4965,24 @@ function agRenderRows(data) {
 
   const scoped = all.filter(inScope);
   const rows = scoped.filter(byDiscipline);
+  // '기간 전체'에서는 어느 날 경기인지 알아야 하므로 시각 앞에 날짜 열을 켠다
+  const isPeriod = (agDate === AG_PERIOD);
+  const table = document.querySelector('table.ag-table');
+  if (table) table.classList.toggle('ag-period', isPeriod);
+  const where = isPeriod ? '대회 기간에는' : '이 날짜에는';
 
   agRenderDiscChips(scoped);
 
   if (!rows.length) {
-    body.innerHTML = `<tr><td colspan="4"><div class="ag-empty">`
-      + (!all.length ? '이 날짜의 수집 데이터가 없습니다.'
-         : scoped.length ? '고른 종목의 경기가 이 날짜에는 없습니다. 종목 칩의 <strong>전체</strong>를 눌러 보세요.'
-                         : '이 날짜에는 해당 경기가 없습니다. <strong>전체 경기</strong>로 바꿔서 보세요.')
+    body.innerHTML = `<tr><td colspan="${isPeriod ? 5 : 4}"><div class="ag-empty">`
+      + (!all.length ? '수집 데이터가 없습니다.'
+         : scoped.length ? `고른 종목의 경기가 ${where} 없습니다. 종목 칩의 <strong>전체</strong>를 눌러 보세요.`
+                         : `${where} 해당 경기가 없습니다. <strong>전체 경기</strong>로 바꿔서 보세요.`)
       + `</div></td></tr>`;
   } else {
     body.innerHTML = agGroupRows(rows).map(({ g, count }) => {
+      // '기간 전체'면 경기마다 날짜가 다르므로 그 경기 날짜를 쓴다
+      const date = g._date || agDate;
       const ceremony = agIsCeremony(g);
       const cls = ['ag-row'];
       if (g.hasKorea) cls.push('kr');
@@ -4920,11 +5004,16 @@ function agRenderRows(data) {
       ).join(', ');
 
       // 묶인 줄은 특정 한 경기를 고를 수 없으므로 그날 일정 페이지로 보낸다
-      const url = (count > 1) ? agScheduleUrl(agDate) : agGameUrl(g, agDate);
+      const url = (count > 1) ? agScheduleUrl(date) : agGameUrl(g, date);
       const tip = (count > 1) ? '네이버 스포츠 일정 페이지로 이동' : '네이버 스포츠 경기 페이지로 이동';
 
+      const dow = agDow(date);
+      const dateCls = 'cell ag-date' + (dow === 0 ? ' sun' : dow === 6 ? ' sat' : '');
+
       return `<tr class="${cls.join(' ')}" data-url="${agEsc(url)}"`
-        + ` data-search="${agEsc(agSearchUrl(g, agDate))}" title="${tip}">`
+        + ` data-search="${agEsc(agSearchUrl(g, date))}" title="${tip}">`
+        + `<td class="c-date"><span class="${dateCls}">${agMMDD(date)}`
+          + `<span class="w">${AG_WD[dow]}</span></span></td>`
         + `<td><span class="cell ag-time">${agEsc(g.time || '-')}</span></td>`
         + `<td><span class="cell">`
           + `<span class="ag-disc">${agEsc(g.discipline)}</span>`
@@ -4964,7 +5053,7 @@ async function agRefresh() {
   agSyncChrome();
   if (dvFilter !== 'ag') return;
   agRenderDates();
-  agRenderRows(await agLoadDay(agDate));
+  agRenderRows(await agLoadCurrent());
 }
 
 
@@ -6885,17 +6974,19 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
       if (!b) return;
       agDate = b.dataset.date;
       agRenderDates();
-      agRenderRows(await agLoadDay(agDate));
+      agRenderRows(await agLoadCurrent());
       gaEvent('filter_click', { filter_group: 'asiangames_date', filter_value: agDate });
     });
   }
 
+  // '기간 전체'를 9/19 앞에 한 칸 더 있는 것처럼 다룬다 (전체 → 9/19 → 9/20 …)
   const agShiftDay = async (delta) => {
-    const i = AG_DATES.indexOf(agDate) + delta;
-    if (i < 0 || i >= AG_DATES.length) return;
-    agDate = AG_DATES[i];
+    const order = [AG_PERIOD].concat(AG_DATES);
+    const i = order.indexOf(agDate) + delta;
+    if (i < 0 || i >= order.length) return;
+    agDate = order[i];
     agRenderDates();
-    agRenderRows(await agLoadDay(agDate));
+    agRenderRows(await agLoadCurrent());
   };
   const agPrevEl = document.getElementById('agPrevDay');
   const agNextEl = document.getElementById('agNextDay');
@@ -6914,7 +7005,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
       // 종목 칩은 '전체 경기'에서만 보이므로, 거기서 나가면 선택도 비운다.
       // (안 보이는 필터가 남아 결과가 비는 걸 막는다)
       if (agMode !== 'all') agDisciplines.clear();
-      agRenderRows(await agLoadDay(agDate));
+      agRenderRows(await agLoadCurrent());
       gaEvent('filter_click', { filter_group: 'asiangames_scope', filter_value: agMode });
     });
   }
@@ -6932,7 +7023,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
       } else {
         agDisciplines.add(name);
       }
-      agRenderRows(await agLoadDay(agDate));
+      agRenderRows(await agLoadCurrent());
       gaEvent('filter_click', {
         filter_group: 'asiangames_discipline',
         filter_value: name || '전체'
