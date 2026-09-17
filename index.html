@@ -4589,7 +4589,7 @@ let agDisciplines = new Set();
 
 // 종목 칩 나열 순서. 가나다순보다 '보는 사람이 찾는 순서'가 낫다고 보고,
 // 국내 시청률이 잘 나오는 인기 종목을 앞으로 당긴다. 여기 없는 종목은
-// 목록 뒤쪽에 가나다순으로 붙고, 경기가 아닌 개·폐회식은 맨 뒤로 보낸다.
+// 목록 뒤쪽에 가나다순으로 붙는다.
 // 세부 종목(예: '양궁 리커브')은 앞부분이 일치하면 그 종목으로 묶인다.
 const AG_DISC_ORDER = [
   // 인기 종목
@@ -4613,8 +4613,8 @@ const AG_DISC_ORDER = [
   // 맨 뒤
   "e스포츠",
 ];
-// 경기가 아닌 행사(개·폐회식)와 중계 특집 편성('AG') — 종목 칩 맨 끝에 둔다
-const AG_DISC_TAIL = ["개회식", "폐회식", "AG"];
+// 경기가 아닌 중계 특집 편성('AG') — 종목 칩 맨 끝에 둔다
+const AG_DISC_TAIL = ["AG"];
 
 // 종목 이름의 나열 순서 값. 작을수록 앞. 목록에 없으면 가운데(미지정) 구간.
 function agDiscRank(name) {
@@ -4815,17 +4815,19 @@ function agRenderDiscChips(scoped) {
     return;
   }
 
+  // 개·폐회식은 따로 골라 볼 일이 없으므로 칩을 만들지 않는다.
+  // ('전체'에서는 그대로 보이고, 개수도 '전체' 칩에 포함된다)
   const counts = new Map();
   for (const g of scoped) {
     const d = g.discipline || '';
-    if (!d) continue;
+    if (!d || agIsCeremony(g)) continue;
     counts.set(d, (counts.get(d) || 0) + 1);
   }
   for (const d of agDisciplines) {
     if (!counts.has(d)) counts.set(d, 0);
   }
 
-  // 인기 종목 우선(AG_DISC_ORDER), 그 외는 가나다순, 개·폐회식은 맨 뒤
+  // 인기 종목 우선(AG_DISC_ORDER), 그 외는 가나다순, 특집 편성은 맨 뒤
   const names = [...counts.keys()].sort((a, b) => {
     const ra = agDiscRank(a), rb = agDiscRank(b);
     if (ra !== rb) return ra - rb;
