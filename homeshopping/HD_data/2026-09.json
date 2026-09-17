@@ -2,7 +2,7 @@
   "company": "HD",
   "broadcast": "data",
   "month": "2026-09",
-  "updated_at": "2026-09-17T08:17:23+09:00",
+  "updated_at": "2026-09-17T10:44:46+09:00",
   "days": {
     "2026-09-01": [
       {
@@ -10211,7 +10211,7 @@
       },
       {
         "start": "07:00",
-        "end": "09:40",
+        "end": "08:20",
         "brand": "헬로바이오",
         "product": "프리미엄 카무트 효소 with 카무트 브랜드 밀 30포 8",
         "price": 99900,
@@ -10220,7 +10220,7 @@
       },
       {
         "start": "07:00",
-        "end": "09:40",
+        "end": "08:20",
         "brand": "헬로바이오",
         "product": "프리미엄 카무트 효소 with 카무트 브랜드 밀 30포",
         "price": 49900,
@@ -10228,13 +10228,49 @@
         "category": "건강식품"
       },
       {
+        "start": "08:20",
+        "end": "09:40",
+        "brand": "인터쿡",
+        "product": "토마호크 로스돔 세트",
+        "price": 109000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2247721571&preview=true",
+        "category": "리빙/주방"
+      },
+      {
         "start": "09:40",
-        "end": "11:00",
+        "end": "10:00",
         "brand": "일상미당",
         "product": "h 난각번호 1번 무항생제 유정란 대란 40구_파손보장",
         "price": 26900,
         "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2251648495&preview=true",
         "category": "일반식품"
+      },
+      {
+        "start": "10:00",
+        "end": "11:00",
+        "brand": "에이스바이옴",
+        "product": "패밀리세트 비에날씬 12BOX 비에날씬프로틴 3BOX",
+        "price": 699000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2201734283&preview=true",
+        "category": "건강식품"
+      },
+      {
+        "start": "10:00",
+        "end": "11:00",
+        "brand": "에이스바이옴",
+        "product": "비에날씬 6BOX",
+        "price": 376000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2201734378&preview=true",
+        "category": "건강식품"
+      },
+      {
+        "start": "10:00",
+        "end": "11:00",
+        "brand": "에이스바이옴",
+        "product": "비에날씬 3BOX",
+        "price": 198000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2201734401&preview=true",
+        "category": "건강식품"
       },
       {
         "start": "11:00",
@@ -10490,11 +10526,20 @@
       },
       {
         "start": "20:40",
-        "end": "22:40",
+        "end": "21:40",
         "brand": "샘s미트",
         "product": "샘해밍턴의 점보사이즈 LA갈비 x 3팩",
         "price": 79900,
         "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2205198433&preview=true",
+        "category": "일반식품"
+      },
+      {
+        "start": "21:40",
+        "end": "22:40",
+        "brand": "오바다푸드팩토리",
+        "product": "오바다 국내산 손질 통오징어 x 7팩 총 14미",
+        "price": 49900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2248297484&preview=true",
         "category": "일반식품"
       },
       {
@@ -10627,12 +10672,39 @@
       },
       {
         "start": "06:40",
-        "end": "09:40",
+        "end": "07:20",
         "brand": "블라우풍트",
         "product": "귀속형 음성증폭기 BLP-VA260W",
         "price": 199500,
         "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2244863289&preview=true",
         "category": "가전"
+      },
+      {
+        "start": "07:20",
+        "end": "08:20",
+        "brand": "렌가드",
+        "product": "렌가드 주방 후드 필터 60cm 2년 세트 / 필터",
+        "price": 49900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253175174&preview=true",
+        "category": "리빙/주방"
+      },
+      {
+        "start": "07:20",
+        "end": "08:20",
+        "brand": "렌가드",
+        "product": "렌가드 주방 후드 필터 90cm 2년 세트 필터",
+        "price": 59900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253175299&preview=true",
+        "category": "리빙/주방"
+      },
+      {
+        "start": "08:20",
+        "end": "09:40",
+        "brand": "인터쿡",
+        "product": "토마호크 로스돔 세트",
+        "price": 109000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2247721571&preview=true",
+        "category": "리빙/주방"
       },
       {
         "start": "09:40",
@@ -11243,7 +11315,7 @@
       },
       {
         "start": "06:40",
-        "end": "11:40",
+        "end": "09:40",
         "brand": "허브이오",
         "product": "허브이오 파로 효소 더",
         "price": 169000,
@@ -11252,12 +11324,21 @@
       },
       {
         "start": "06:40",
-        "end": "11:40",
+        "end": "09:40",
         "brand": "허브이오",
         "product": "허브이오 파로 효소",
         "price": 43000,
         "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252995780&preview=true",
         "category": "건강식품"
+      },
+      {
+        "start": "09:40",
+        "end": "11:40",
+        "brand": "박정수",
+        "product": "국내산 大사이즈 명품 손질 고등어 총 42팩",
+        "price": 49900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2251358140&preview=true",
+        "category": "일반식품"
       },
       {
         "start": "11:40",
@@ -11279,12 +11360,21 @@
       },
       {
         "start": "12:40",
-        "end": "14:00",
+        "end": "13:20",
         "brand": "멜리지 1826",
         "product": "실크스킨 율무 팩클렌저 5개세트",
         "price": 49900,
         "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2247032471&preview=true",
         "category": "미용"
+      },
+      {
+        "start": "13:20",
+        "end": "14:00",
+        "brand": "프렘",
+        "product": "아뜰리에 IH 플레이팅팬 대용량 4종세트",
+        "price": 74900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253390962&preview=true",
+        "category": "리빙/주방"
       },
       {
         "start": "14:00",
@@ -11388,6 +11478,33 @@
     ],
     "2026-09-22": [
       {
+        "start": "01:00",
+        "end": "01:40",
+        "brand": "에이스바이옴",
+        "product": "패밀리세트 비에날씬 12BOX 비에날씬프로틴 3BOX",
+        "price": 699000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2201734283&preview=true",
+        "category": "건강식품"
+      },
+      {
+        "start": "01:00",
+        "end": "01:40",
+        "brand": "에이스바이옴",
+        "product": "비에날씬 6BOX",
+        "price": 376000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2201734378&preview=true",
+        "category": "건강식품"
+      },
+      {
+        "start": "01:00",
+        "end": "01:40",
+        "brand": "에이스바이옴",
+        "product": "비에날씬 3BOX",
+        "price": 198000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2201734401&preview=true",
+        "category": "건강식품"
+      },
+      {
         "start": "01:40",
         "end": "03:00",
         "brand": "매일유업",
@@ -11488,7 +11605,7 @@
       },
       {
         "start": "07:40",
-        "end": "10:40",
+        "end": "09:40",
         "brand": "땡스소윤",
         "product": "냉동실전용 밀폐용기 착한세트 마스킹테이프",
         "price": 49000,
@@ -11496,8 +11613,26 @@
         "category": "리빙/주방"
       },
       {
+        "start": "09:40",
+        "end": "10:40",
+        "brand": "퓨레어",
+        "product": "퓨레어 퍼퓸 탈취제 더블세트",
+        "price": 89800,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2241233693&preview=true",
+        "category": "리빙/주방"
+      },
+      {
+        "start": "09:40",
+        "end": "10:40",
+        "brand": "퓨레어",
+        "product": "퍼퓸 탈취제 싱글세트",
+        "price": 69800,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2241233915&preview=true",
+        "category": "리빙/주방"
+      },
+      {
         "start": "10:40",
-        "end": "14:20",
+        "end": "13:00",
         "brand": "메시제이",
         "product": "니트배색 패딩 점퍼",
         "price": 39900,
@@ -11506,12 +11641,21 @@
       },
       {
         "start": "10:40",
-        "end": "14:20",
+        "end": "13:00",
         "brand": "메시제이",
         "product": "날씬핏 세로 퀄팅 퍼 패딩팬츠",
         "price": 59900,
         "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2243024115&preview=true",
         "category": "의류"
+      },
+      {
+        "start": "13:00",
+        "end": "14:20",
+        "brand": "바디랩",
+        "product": "센비타 당근주스 100 10병",
+        "price": 59900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2251940485&preview=true",
+        "category": "건강식품"
       },
       {
         "start": "14:20",
