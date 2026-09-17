@@ -1,6 +1,6 @@
 {
  "date": "2026-09-21",
- "collectedAt": "2026-09-17T09:03:34+09:00",
+ "collectedAt": "2026-09-17T23:49:12+09:00",
  "games": [
   {
    "time": "09:00",
@@ -45,6 +45,28 @@
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026WSUWJANGFNL000100"
+  },
+  {
+   "time": "09:00",
+   "discipline": "정구",
+   "event": "혼합복식 B조 1경기",
+   "countries": [],
+   "venue": "히가시야마 공원 테니스 센터",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TSTXDOUBLESGPB000100"
+  },
+  {
+   "time": "09:00",
+   "discipline": "정구",
+   "event": "혼합복식 B조 2경기",
+   "countries": [],
+   "venue": "히가시야마 공원 테니스 센터",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TSTXDOUBLESGPB000200"
   },
   {
    "time": "09:00",
@@ -150,39 +172,6 @@
   },
   {
    "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 단체 16강",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMWTEAM8FNL000100"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 단체 16강",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMWTEAM8FNL000200"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 단체 16강",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMWTEAM8FNL000300"
-  },
-  {
-   "time": "09:30",
    "discipline": "승마  종합마술",
    "event": "종합마술 개인 마장마술",
    "countries": [],
@@ -221,9 +210,11 @@
    "time": "09:30",
    "discipline": "트라이애슬론",
    "event": "혼성 계주",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "가마고리시 트라이애슬론 베뉴",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026TRIXTEAMFNL000100"
@@ -696,6 +687,39 @@
    "link": "https://m.sports.naver.com/game/2026SWMM50MBAHEAT"
   },
   {
+   "time": "10:00",
+   "discipline": "정구",
+   "event": "혼합복식 A조 1경기",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TSTXDOUBLESGPA000100"
+  },
+  {
+   "time": "10:00",
+   "discipline": "정구",
+   "event": "혼합복식 B조 3경기",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TSTXDOUBLESGPB000300"
+  },
+  {
+   "time": "10:00",
+   "discipline": "정구",
+   "event": "혼합복식 B조 4경기",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TSTXDOUBLESGPB000400"
+  },
+  {
    "time": "10:04",
    "discipline": "조정",
    "event": "여자 더블스컬 예선",
@@ -851,6 +875,28 @@
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026MMAWM54KGSFNL000200"
+  },
+  {
+   "time": "11:00",
+   "discipline": "정구",
+   "event": "혼합복식 B조 5경기",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TSTXDOUBLESGPB000500"
+  },
+  {
+   "time": "11:00",
+   "discipline": "정구",
+   "event": "혼합복식 B조 6경기",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TSTXDOUBLESGPB000600"
   },
   {
    "time": "11:00",
@@ -1700,6 +1746,17 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026HOCWTEAM11GPB000500"
+  },
+  {
+   "time": "15:30",
+   "discipline": "AG",
+   "event": "슛포러브 LIVE - 여자축구 대한민국 vs 북한 (feat. 골때녀 마시마 유, 신세계)",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/20260921SFLAG2026"
   },
   {
    "time": "15:30",

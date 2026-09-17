@@ -1,6 +1,6 @@
 {
  "date": "2026-09-29",
- "collectedAt": "2026-09-17T09:03:34+09:00",
+ "collectedAt": "2026-09-17T23:49:12+09:00",
  "games": [
   {
    "time": "09:00",
@@ -651,13 +651,15 @@
   {
    "time": "10:00",
    "discipline": "다이빙",
-   "event": "여자 10m 플랫폼 결승",
-   "countries": [],
+   "event": "여자 10m 플랫폼 예선",
+   "countries": [
+    "대한민국"
+   ],
    "venue": "도쿄 아쿠아틱스 센터",
-   "hasKorea": false,
-   "medal": true,
+   "hasKorea": true,
+   "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026DIVW10MFNL000100"
+   "link": "https://m.sports.naver.com/game/2026DIVW10MPREL000100"
   },
   {
    "time": "10:00",
@@ -1582,6 +1584,19 @@
    "link": "https://m.sports.naver.com/game/2026KURWO87KGQFNL000400"
   },
   {
+   "time": "12:00",
+   "discipline": "다이빙",
+   "event": "남자 3m 스프링보드 예선",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "도쿄 아쿠아틱스 센터",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026DIVM3MPREL000100"
+  },
+  {
    "time": "12:20",
    "discipline": "카누 슬라럼",
    "event": "여자 카약 1인승 런 1&2",
@@ -1591,17 +1606,6 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026CSLWK1HEAT"
-  },
-  {
-   "time": "12:30",
-   "discipline": "다이빙",
-   "event": "남자 3m 스프링보드 결승",
-   "countries": [],
-   "venue": "도쿄 아쿠아틱스 센터",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026DIVM3MFNL000100"
   },
   {
    "time": "12:30",
@@ -2367,6 +2371,17 @@
    "link": "https://m.sports.naver.com/game/2026SFTWTEAMPREL001600"
   },
   {
+   "time": "15:20",
+   "discipline": "다이빙",
+   "event": "여자 10m 플랫폼 결승",
+   "countries": [],
+   "venue": "도쿄 아쿠아틱스 센터",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026DIVW10MFNL000100"
+  },
+  {
    "time": "15:25",
    "discipline": "사이클 트랙",
    "event": "남자 단체 추발, 1라운드 - 2조",
@@ -2580,6 +2595,17 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026ESPOPUBGFNL000300"
+  },
+  {
+   "time": "17:30",
+   "discipline": "다이빙",
+   "event": "남자 3m 스프링보드 결승",
+   "countries": [],
+   "venue": "도쿄 아쿠아틱스 센터",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026DIVM3MFNL000100"
   },
   {
    "time": "18:15",

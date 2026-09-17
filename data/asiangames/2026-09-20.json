@@ -1,14 +1,16 @@
 {
  "date": "2026-09-20",
- "collectedAt": "2026-09-17T09:03:34+09:00",
+ "collectedAt": "2026-09-17T23:49:12+09:00",
  "games": [
   {
-   "time": "08:45",
+   "time": "08:30",
    "discipline": "트라이애슬론",
    "event": "남자 개인",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "가마고리시 트라이애슬론 베뉴",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026TRIMINDIVIDFNL000100"
@@ -71,7 +73,7 @@
   {
    "time": "09:00",
    "discipline": "정구",
-   "event": "여자 단체 준결승",
+   "event": "여자 단체 준결승 1",
    "countries": [],
    "venue": "히가시야마 공원 테니스 센터",
    "hasKorea": false,
@@ -82,7 +84,7 @@
   {
    "time": "09:00",
    "discipline": "정구",
-   "event": "여자 단체 준결승",
+   "event": "여자 단체 준결승 2",
    "countries": [],
    "venue": "히가시야마 공원 테니스 센터",
    "hasKorea": false,
@@ -105,7 +107,10 @@
    "time": "09:00",
    "discipline": "크리켓",
    "event": "여자 준결승 1경기",
-   "countries": [],
+   "countries": [
+    "파키스탄",
+    "미정"
+   ],
    "venue": "코로기 운동공원",
    "hasKorea": false,
    "medal": false,
@@ -136,6 +141,39 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026ROWMSCULL2HEAT"
+  },
+  {
+   "time": "09:30",
+   "discipline": "배드민턴",
+   "event": "여자 단체 16강",
+   "countries": [],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMWTEAM8FNL000100"
+  },
+  {
+   "time": "09:30",
+   "discipline": "배드민턴",
+   "event": "여자 단체 16강",
+   "countries": [],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMWTEAM8FNL000200"
+  },
+  {
+   "time": "09:30",
+   "discipline": "배드민턴",
+   "event": "여자 단체 16강",
+   "countries": [],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMWTEAM8FNL000300"
   },
   {
    "time": "09:32",
@@ -845,17 +883,6 @@
    "link": "https://m.sports.naver.com/game/2026ROWMSCULL2REP"
   },
   {
-   "time": "10:55",
-   "discipline": "트라이애슬론",
-   "event": "여자 개인",
-   "countries": [],
-   "venue": "가마고리시 트라이애슬론 베뉴",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TRIWINDIVIDFNL000100"
-  },
-  {
    "time": "11:00",
    "discipline": "MMA",
    "event": "남자 트레디셔널 -65kg급 16강",
@@ -1055,6 +1082,19 @@
   },
   {
    "time": "11:00",
+   "discipline": "트라이애슬론",
+   "event": "여자 개인",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "가마고리시 트라이애슬론 베뉴",
+   "hasKorea": true,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TRIWINDIVIDFNL000100"
+  },
+  {
+   "time": "11:00",
    "discipline": "하키",
    "event": "여자 B조 3경기",
    "countries": [
@@ -1103,7 +1143,7 @@
   {
    "time": "11:30",
    "discipline": "정구",
-   "event": "남자 단체 준결승",
+   "event": "남자 단체 준결승 1",
    "countries": [],
    "venue": "히가시야마 공원 테니스 센터",
    "hasKorea": false,
@@ -1114,7 +1154,7 @@
   {
    "time": "11:30",
    "discipline": "정구",
-   "event": "남자 단체 준결승",
+   "event": "남자 단체 준결승 2",
    "countries": [],
    "venue": "히가시야마 공원 테니스 센터",
    "hasKorea": false,
@@ -1126,7 +1166,10 @@
    "time": "11:30",
    "discipline": "테크볼",
    "event": "남자 복식 동메달전",
-   "countries": [],
+   "countries": [
+    "베트남",
+    "미정"
+   ],
    "venue": "나고야시 히가시 스포츠센터",
    "hasKorea": false,
    "medal": true,
@@ -1137,7 +1180,10 @@
    "time": "11:30",
    "discipline": "테크볼",
    "event": "남자 복식 동메달전",
-   "countries": [],
+   "countries": [
+    "인도네시아",
+    "미정"
+   ],
    "venue": "나고야시 히가시 스포츠센터",
    "hasKorea": false,
    "medal": true,
@@ -1691,7 +1737,10 @@
    "time": "14:00",
    "discipline": "크리켓",
    "event": "여자 준결승 2경기",
-   "countries": [],
+   "countries": [
+    "방글라데시",
+    "미정"
+   ],
    "venue": "코로기 운동공원",
    "hasKorea": false,
    "medal": false,
@@ -2284,7 +2333,7 @@
    "link": "https://m.sports.naver.com/game/2026HOCMTEAM11GPA000300"
   },
   {
-   "time": "17:07",
+   "time": "17:09",
    "discipline": "수영",
    "event": "남자 200m 개인 혼영 결승",
    "countries": [],
@@ -2367,7 +2416,7 @@
    "link": "https://m.sports.naver.com/game/2026TEQMDOUBLESFNL000100"
   },
   {
-   "time": "17:57",
+   "time": "17:53",
    "discipline": "수영",
    "event": "남자 100m 자유형 결승",
    "countries": [],
@@ -2554,7 +2603,7 @@
    "link": "https://m.sports.naver.com/game/2026SANW60KG8FNL000800"
   },
   {
-   "time": "18:05",
+   "time": "18:01",
    "discipline": "수영",
    "event": "여자 50m 평영 결승",
    "countries": [],
@@ -2565,7 +2614,7 @@
    "link": "https://m.sports.naver.com/game/2026SWMW50MBRFNL"
   },
   {
-   "time": "18:12",
+   "time": "18:13",
    "discipline": "수영",
    "event": "남자 100m 배영 결승",
    "countries": [],
@@ -2664,7 +2713,7 @@
    "link": "https://m.sports.naver.com/game/2026MMAMT77KGQFNL000400"
   },
   {
-   "time": "18:35",
+   "time": "18:33",
    "discipline": "수영",
    "event": "여자 4 x 100m 자유형 계영 결승",
    "countries": [],

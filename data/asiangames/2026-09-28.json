@@ -1,6 +1,6 @@
 {
  "date": "2026-09-28",
- "collectedAt": "2026-09-17T09:03:34+09:00",
+ "collectedAt": "2026-09-17T23:49:12+09:00",
  "games": [
   {
    "time": "07:00",
@@ -1416,9 +1416,11 @@
    "time": "10:00",
    "discipline": "다이빙",
    "event": "여자 1m 스프링보드 결승",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "도쿄 아쿠아틱스 센터",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026DIVW1MFNL000100"

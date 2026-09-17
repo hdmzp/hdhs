@@ -1,6 +1,6 @@
 {
  "date": "2026-09-19",
- "collectedAt": "2026-09-17T09:03:34+09:00",
+ "collectedAt": "2026-09-17T23:49:12+09:00",
  "games": [
   {
    "time": "10:00",
@@ -43,20 +43,6 @@
    "discipline": "핸드볼",
    "event": "여자 라운드로빈 1경기",
    "countries": [
-    "카자흐스탄",
-    "중국"
-   ],
-   "venue": "가스가이시 종합 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026HBLWTEAM7RND000100"
-  },
-  {
-   "time": "10:00",
-   "discipline": "핸드볼",
-   "event": "여자 라운드로빈 2경기",
-   "countries": [
     "홍콩",
     "대한민국"
    ],
@@ -65,6 +51,20 @@
    "medal": false,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026HBLWTEAM7RND000200"
+  },
+  {
+   "time": "10:00",
+   "discipline": "핸드볼",
+   "event": "여자 라운드로빈 2경기",
+   "countries": [
+    "카자흐스탄",
+    "중국"
+   ],
+   "venue": "가스가이시 종합 체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026HBLWTEAM7RND000100"
   },
   {
    "time": "10:30",
@@ -136,7 +136,10 @@
    "time": "12:00",
    "discipline": "테크볼",
    "event": "남자 복식 준결승",
-   "countries": [],
+   "countries": [
+    "태국",
+    "이라크"
+   ],
    "venue": "나고야시 히가시 스포츠센터",
    "hasKorea": false,
    "medal": false,
@@ -147,26 +150,15 @@
    "time": "12:00",
    "discipline": "테크볼",
    "event": "남자 복식 준결승",
-   "countries": [],
+   "countries": [
+    "쿠웨이트",
+    "레바논"
+   ],
    "venue": "나고야시 히가시 스포츠센터",
    "hasKorea": false,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026TEQMDOUBLESSFNL000200"
-  },
-  {
-   "time": "12:00",
-   "discipline": "핸드볼",
-   "event": "남자 예선 B조 1경기",
-   "countries": [
-    "이란",
-    "쿠웨이트"
-   ],
-   "venue": "엔트리오",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026HBLMTEAM7GPB000100"
   },
   {
    "time": "12:00",
@@ -181,6 +173,20 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026HBLWTEAM7RND000300"
+  },
+  {
+   "time": "12:30",
+   "discipline": "핸드볼",
+   "event": "남자 예선 B조 1경기",
+   "countries": [
+    "이란",
+    "쿠웨이트"
+   ],
+   "venue": "엔트리오",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026HBLMTEAM7GPB000100"
   },
   {
    "time": "18:00",

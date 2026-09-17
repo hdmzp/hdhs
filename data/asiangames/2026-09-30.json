@@ -1,6 +1,6 @@
 {
  "date": "2026-09-30",
- "collectedAt": "2026-09-17T09:03:34+09:00",
+ "collectedAt": "2026-09-17T23:49:12+09:00",
  "games": [
   {
    "time": "06:30",
@@ -436,13 +436,15 @@
   {
    "time": "10:00",
    "discipline": "다이빙",
-   "event": "여자 3m 스프링보드 결승",
-   "countries": [],
+   "event": "여자 3m 스프링보드 예선",
+   "countries": [
+    "대한민국"
+   ],
    "venue": "도쿄 아쿠아틱스 센터",
-   "hasKorea": false,
-   "medal": true,
+   "hasKorea": true,
+   "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026DIVW3MFNL000100"
+   "link": "https://m.sports.naver.com/game/2026DIVW3MPREL000100"
   },
   {
    "time": "10:00",
@@ -2154,6 +2156,19 @@
   },
   {
    "time": "12:00",
+   "discipline": "다이빙",
+   "event": "남자 10m 플랫폼 예선",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "도쿄 아쿠아틱스 센터",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026DIVM10MPREL000100"
+  },
+  {
+   "time": "12:00",
    "discipline": "스쿼시",
    "event": "남자 8강",
    "countries": [],
@@ -2195,17 +2210,6 @@
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026CMPXTEAM2FNL000100"
-  },
-  {
-   "time": "12:30",
-   "discipline": "다이빙",
-   "event": "남자 10m 플랫폼 결승",
-   "countries": [],
-   "venue": "도쿄 아쿠아틱스 센터",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026DIVM10MFNL000100"
   },
   {
    "time": "12:50",
@@ -3215,6 +3219,17 @@
    "link": "https://m.sports.naver.com/game/2026SFTWTEAMPREL002000"
   },
   {
+   "time": "15:20",
+   "discipline": "다이빙",
+   "event": "여자 3m 스프링보드 결승",
+   "countries": [],
+   "venue": "도쿄 아쿠아틱스 센터",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026DIVW3MFNL000100"
+  },
+  {
    "time": "15:30",
    "discipline": "복싱",
    "event": "남자 90kg - 준결승",
@@ -3378,6 +3393,17 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026WPOMTEAM7QFNL000400"
+  },
+  {
+   "time": "17:30",
+   "discipline": "다이빙",
+   "event": "남자 10m 플랫폼 결승",
+   "countries": [],
+   "venue": "도쿄 아쿠아틱스 센터",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026DIVM10MFNL000100"
   },
   {
    "time": "17:40",
