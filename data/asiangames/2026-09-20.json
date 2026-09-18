@@ -1,6 +1,6 @@
 {
  "date": "2026-09-20",
- "collectedAt": "2026-09-18T23:17:52+09:00",
+ "collectedAt": "2026-09-19T08:51:40+09:00",
  "games": [
   {
    "time": "08:30",
@@ -815,6 +815,17 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026TTEMTEAMGPF000100"
+  },
+  {
+   "time": "10:00",
+   "discipline": "탁구",
+   "event": "남자 단체 F조 2경기",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMTEAMGPF000200"
   },
   {
    "time": "10:00",
@@ -1640,6 +1651,17 @@
   },
   {
    "time": "12:30",
+   "discipline": "탁구",
+   "event": "남자 단체 F조 3경기",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMTEAMGPF000300"
+  },
+  {
+   "time": "12:30",
    "discipline": "핸드볼",
    "event": "남자 예선 B조 2경기",
    "countries": [
@@ -2273,7 +2295,7 @@
    "venue": "파크 아레나 고마키",
    "hasKorea": true,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026VVOWTEAM6QFNL000300"
   },
   {
