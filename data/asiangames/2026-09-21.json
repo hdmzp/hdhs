@@ -1,6 +1,6 @@
 {
  "date": "2026-09-21",
- "collectedAt": "2026-09-18T08:54:08+09:00",
+ "collectedAt": "2026-09-18T23:17:52+09:00",
  "games": [
   {
    "time": "09:00",
@@ -133,6 +133,20 @@
   {
    "time": "09:00",
    "discipline": "정구",
+   "event": "혼합복식 E조 3경기",
+   "countries": [
+    "일본",
+    "라오스"
+   ],
+   "venue": "히가시야마 공원 테니스 센터",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TSTXDOUBLESGPE000300"
+  },
+  {
+   "time": "09:00",
+   "discipline": "정구",
    "event": "혼합복식 F조 1경기",
    "countries": [
     "차이니스 타이베이",
@@ -193,6 +207,17 @@
   },
   {
    "time": "09:30",
+   "discipline": "AG",
+   "event": "[박종윤 축구] 아시안게임 같이보기 (배드민턴,수영,탁구,여자축구,야구)",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/20260921PJYAG2026"
+  },
+  {
+   "time": "09:30",
    "discipline": "배드민턴",
    "event": "남자 단체 16강",
    "countries": [],
@@ -212,39 +237,6 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026BDMMTEAM8FNL000200"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "남자 단체 16강",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMMTEAM8FNL000300"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "남자 단체 16강",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMMTEAM8FNL000400"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "남자 단체 16강",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMMTEAM8FNL000500"
   },
   {
    "time": "09:30",
@@ -831,20 +823,6 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026TSTXDOUBLESGPD000200"
-  },
-  {
-   "time": "10:00",
-   "discipline": "정구",
-   "event": "혼합복식 E조 3경기",
-   "countries": [
-    "일본",
-    "라오스"
-   ],
-   "venue": "히가시야마 공원 테니스 센터",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TSTXDOUBLESGPE000300"
   },
   {
    "time": "10:00",
@@ -2010,6 +1988,39 @@
   },
   {
    "time": "15:00",
+   "discipline": "배드민턴",
+   "event": "남자 단체 16강",
+   "countries": [],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMMTEAM8FNL000300"
+  },
+  {
+   "time": "15:00",
+   "discipline": "배드민턴",
+   "event": "남자 단체 16강",
+   "countries": [],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMMTEAM8FNL000400"
+  },
+  {
+   "time": "15:00",
+   "discipline": "배드민턴",
+   "event": "남자 단체 16강",
+   "countries": [],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMMTEAM8FNL000500"
+  },
+  {
+   "time": "15:00",
    "discipline": "하키",
    "event": "여자 B조 5경기",
    "countries": [
@@ -2161,7 +2172,10 @@
    "time": "16:00",
    "discipline": "배구",
    "event": "여자 9-12위전",
-   "countries": [],
+   "countries": [
+    "홍콩",
+    "미정"
+   ],
    "venue": "오카자키 중앙종합공원 체육관",
    "hasKorea": false,
    "medal": false,
@@ -3109,7 +3123,10 @@
    "time": "19:00",
    "discipline": "배구",
    "event": "여자 9-12위전",
-   "countries": [],
+   "countries": [
+    "몽골",
+    "미정"
+   ],
    "venue": "오카자키 중앙종합공원 체육관",
    "hasKorea": false,
    "medal": false,

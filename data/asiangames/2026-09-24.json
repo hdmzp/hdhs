@@ -1,6 +1,6 @@
 {
  "date": "2026-09-24",
- "collectedAt": "2026-09-18T08:54:08+09:00",
+ "collectedAt": "2026-09-18T23:17:52+09:00",
  "games": [
   {
    "time": "09:00",
@@ -165,28 +165,6 @@
   {
    "time": "09:30",
    "discipline": "배드민턴",
-   "event": "남자 단체 금메달전",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": true,
-   "tv": true,
-   "link": "https://m.sports.naver.com/game/2026BDMMTEAMFNL000100"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "남자 단체 동메달전",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMMTEAMFNL000200"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
    "event": "여자 단체 금메달전",
    "countries": [],
    "venue": "이치노미야시 종합체육관",
@@ -194,17 +172,6 @@
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026BDMWTEAMFNL000100"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 단체 동메달전",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMWTEAMFNL000200"
   },
   {
    "time": "09:30",
@@ -2274,6 +2241,17 @@
   },
   {
    "time": "16:00",
+   "discipline": "배드민턴",
+   "event": "남자 단체 금메달전",
+   "countries": [],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": true,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/2026BDMMTEAMFNL000100"
+  },
+  {
+   "time": "16:00",
    "discipline": "사격 트랩",
    "event": "혼성 단체 스키트 금메달전",
    "countries": [],
@@ -2574,7 +2552,7 @@
    "link": "https://m.sports.naver.com/game/2026SABWINDIVIDSFNL000100"
   },
   {
-   "time": "17:50",
+   "time": "17:55",
    "discipline": "기계 체조",
    "event": "여자 도마 결승",
    "countries": [],
@@ -2721,17 +2699,6 @@
   },
   {
    "time": "18:35",
-   "discipline": "펜싱 에페",
-   "event": "남자 에페 개인 금메달전",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": true,
-   "tv": true,
-   "link": "https://m.sports.naver.com/game/2026EPEMINDIVIDFNL000100"
-  },
-  {
-   "time": "18:44",
    "discipline": "기계 체조",
    "event": "남자 안마 결승",
    "countries": [],
@@ -2740,6 +2707,17 @@
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026GARM1APPHFNL000001"
+  },
+  {
+   "time": "18:35",
+   "discipline": "펜싱 에페",
+   "event": "남자 에페 개인 금메달전",
+   "countries": [],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": false,
+   "medal": true,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/2026EPEMINDIVIDFNL000100"
   },
   {
    "time": "18:55",
@@ -2902,17 +2880,6 @@
    "link": "https://m.sports.naver.com/game/2026TTEWTEAMFNL00010000"
   },
   {
-   "time": "19:34",
-   "discipline": "기계 체조",
-   "event": "여자 이단평행봉 결승",
-   "countries": [],
-   "venue": "나고야시 종합체육관",
-   "hasKorea": false,
-   "medal": true,
-   "tv": true,
-   "link": "https://m.sports.naver.com/game/2026GARW1APUBFNL000001"
-  },
-  {
    "time": "19:45",
    "discipline": "3x3 농구",
    "event": "여자 8강 4경기",
@@ -2922,6 +2889,17 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026BK3WTEAM3QFNL000400"
+  },
+  {
+   "time": "19:45",
+   "discipline": "기계 체조",
+   "event": "여자 이단평행봉 결승",
+   "countries": [],
+   "venue": "나고야시 종합체육관",
+   "hasKorea": false,
+   "medal": true,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/2026GARW1APUBFNL000001"
   },
   {
    "time": "20:08",
@@ -2946,7 +2924,7 @@
    "link": "https://m.sports.naver.com/game/2026BK3MTEAM3QFNL000300"
   },
   {
-   "time": "20:19",
+   "time": "20:25",
    "discipline": "기계 체조",
    "event": "남자 링 결승",
    "countries": [],

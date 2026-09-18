@@ -1,6 +1,6 @@
 {
  "date": "2026-09-20",
- "collectedAt": "2026-09-18T08:54:08+09:00",
+ "collectedAt": "2026-09-18T23:17:52+09:00",
  "games": [
   {
    "time": "08:30",
@@ -74,7 +74,10 @@
    "time": "09:00",
    "discipline": "정구",
    "event": "여자 단체 준결승 1",
-   "countries": [],
+   "countries": [
+    "일본",
+    "필리핀"
+   ],
    "venue": "히가시야마 공원 테니스 센터",
    "hasKorea": false,
    "medal": true,
@@ -85,9 +88,12 @@
    "time": "09:00",
    "discipline": "정구",
    "event": "여자 단체 준결승 2",
-   "countries": [],
+   "countries": [
+    "대한민국",
+    "차이니스 타이베이"
+   ],
    "venue": "히가시야마 공원 테니스 센터",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026TSTWTEAMSFNL000200"
@@ -154,28 +160,6 @@
    "link": "https://m.sports.naver.com/game/2026BDMWTEAM8FNL000100"
   },
   {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 단체 16강",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMWTEAM8FNL000200"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 단체 16강",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMWTEAM8FNL000300"
-  },
-  {
    "time": "09:32",
    "discipline": "조정",
    "event": "남자 페어 예선",
@@ -207,6 +191,17 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026ROWWNOCOX4HEAT"
+  },
+  {
+   "time": "10:00",
+   "discipline": "AG",
+   "event": "[박종윤 축구] 아시안게임 같이보기 (탁구,수영,남자농구)",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/20260920PJYAG2026"
   },
   {
    "time": "10:00",
@@ -641,9 +636,11 @@
    "time": "10:00",
    "discipline": "근대 5종",
    "event": "여자 결승 펜싱 보너스 라운드",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "안조 스포츠파크",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026MPNWINDIVIDFNL000110"
@@ -677,7 +674,10 @@
    "time": "10:00",
    "discipline": "배구",
    "event": "여자 8강",
-   "countries": [],
+   "countries": [
+    "태국",
+    "인도네시아"
+   ],
    "venue": "파크 아레나 고마키",
    "hasKorea": false,
    "medal": false,
@@ -697,9 +697,133 @@
   },
   {
    "time": "10:00",
+   "discipline": "탁구",
+   "event": "남자 단체 A조 1경기",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMTEAMGPA000100"
+  },
+  {
+   "time": "10:00",
+   "discipline": "탁구",
+   "event": "남자 단체 A조 2경기",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMTEAMGPA000200"
+  },
+  {
+   "time": "10:00",
+   "discipline": "탁구",
+   "event": "남자 단체 B조 1경기",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMTEAMGPB000100"
+  },
+  {
+   "time": "10:00",
+   "discipline": "탁구",
+   "event": "남자 단체 B조 2경기",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMTEAMGPB000200"
+  },
+  {
+   "time": "10:00",
+   "discipline": "탁구",
+   "event": "남자 단체 C조 1경기",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMTEAMGPC000100"
+  },
+  {
+   "time": "10:00",
+   "discipline": "탁구",
+   "event": "남자 단체 C조 2경기",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMTEAMGPC000200"
+  },
+  {
+   "time": "10:00",
+   "discipline": "탁구",
+   "event": "남자 단체 D조 1경기",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMTEAMGPD000100"
+  },
+  {
+   "time": "10:00",
+   "discipline": "탁구",
+   "event": "남자 단체 D조 2경기",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMTEAMGPD000200"
+  },
+  {
+   "time": "10:00",
+   "discipline": "탁구",
+   "event": "남자 단체 E조 1경기",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMTEAMGPE000100"
+  },
+  {
+   "time": "10:00",
+   "discipline": "탁구",
+   "event": "남자 단체 E조 2경기",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMTEAMGPE000200"
+  },
+  {
+   "time": "10:00",
+   "discipline": "탁구",
+   "event": "남자 단체 F조 1경기",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMTEAMGPF000100"
+  },
+  {
+   "time": "10:00",
    "discipline": "테크볼",
    "event": "여자 단식 동메달전",
-   "countries": [],
+   "countries": [
+    "사카모토 유이나",
+    "미정"
+   ],
    "venue": "나고야시 히가시 스포츠센터",
    "hasKorea": false,
    "medal": true,
@@ -710,7 +834,10 @@
    "time": "10:00",
    "discipline": "테크볼",
    "event": "여자 단식 동메달전",
-   "countries": [],
+   "countries": [
+    "큼이엔 디",
+    "미정"
+   ],
    "venue": "나고야시 히가시 스포츠센터",
    "hasKorea": false,
    "medal": true,
@@ -776,9 +903,11 @@
    "time": "10:20",
    "discipline": "근대 5종",
    "event": "여자 결승 장애물",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "안조 스포츠파크",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026MPNWINDIVIDFNL000120"
@@ -809,7 +938,10 @@
    "time": "10:30",
    "discipline": "테크볼",
    "event": "혼합복식 동메달전",
-   "countries": [],
+   "countries": [
+    "인도",
+    "미정"
+   ],
    "venue": "나고야시 히가시 스포츠센터",
    "hasKorea": false,
    "medal": true,
@@ -820,7 +952,10 @@
    "time": "10:30",
    "discipline": "테크볼",
    "event": "혼합복식 동메달전",
-   "countries": [],
+   "countries": [
+    "캄보디아",
+    "미정"
+   ],
    "venue": "나고야시 히가시 스포츠센터",
    "hasKorea": false,
    "medal": true,
@@ -842,9 +977,11 @@
    "time": "10:40",
    "discipline": "근대 5종",
    "event": "여자 결승 수영 100m 자유형",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "안조 스포츠파크",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026MPNWINDIVIDFNL000130"
@@ -1040,9 +1177,11 @@
    "time": "11:00",
    "discipline": "근대 5종",
    "event": "여자 결승 레이저 런",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "안조 스포츠파크",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026MPNWINDIVIDFNL000140"
@@ -1062,7 +1201,10 @@
    "time": "11:00",
    "discipline": "테크볼",
    "event": "남자 단식 동메달전",
-   "countries": [],
+   "countries": [
+    "프린스 아구스틴",
+    "미정"
+   ],
    "venue": "나고야시 히가시 스포츠센터",
    "hasKorea": false,
    "medal": true,
@@ -1073,7 +1215,10 @@
    "time": "11:00",
    "discipline": "테크볼",
    "event": "남자 단식 동메달전",
-   "countries": [],
+   "countries": [
+    "요가 아르디카 푸트라",
+    "미정"
+   ],
    "venue": "나고야시 히가시 스포츠센터",
    "hasKorea": false,
    "medal": true,
@@ -1144,7 +1289,10 @@
    "time": "11:30",
    "discipline": "정구",
    "event": "남자 단체 준결승 1",
-   "countries": [],
+   "countries": [
+    "일본",
+    "인도네시아"
+   ],
    "venue": "히가시야마 공원 테니스 센터",
    "hasKorea": false,
    "medal": true,
@@ -1155,9 +1303,12 @@
    "time": "11:30",
    "discipline": "정구",
    "event": "남자 단체 준결승 2",
-   "countries": [],
+   "countries": [
+    "대한민국",
+    "차이니스 타이베이"
+   ],
    "venue": "히가시야마 공원 테니스 센터",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026TSTMTEAMSFNL000200"
@@ -1478,6 +1629,17 @@
   },
   {
    "time": "12:30",
+   "discipline": "탁구",
+   "event": "남자 단체 E조 3경기",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMTEAMGPE000300"
+  },
+  {
+   "time": "12:30",
    "discipline": "핸드볼",
    "event": "남자 예선 B조 2경기",
    "countries": [
@@ -1626,7 +1788,10 @@
    "time": "13:00",
    "discipline": "배구",
    "event": "여자 8강",
-   "countries": [],
+   "countries": [
+    "베트남",
+    "중국"
+   ],
    "venue": "파크 아레나 고마키",
    "hasKorea": false,
    "medal": false,
@@ -1751,9 +1916,11 @@
    "time": "14:30",
    "discipline": "근대 5종",
    "event": "남자 결승 펜싱 보너스 라운드",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "안조 스포츠파크",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026MPNMINDIVIDFNL000110"
@@ -1812,9 +1979,11 @@
    "time": "14:50",
    "discipline": "근대 5종",
    "event": "남자 결승 장애물",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "안조 스포츠파크",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026MPNMINDIVIDFNL000120"
@@ -1920,6 +2089,28 @@
   },
   {
    "time": "15:00",
+   "discipline": "배드민턴",
+   "event": "여자 단체 16강",
+   "countries": [],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMWTEAM8FNL000200"
+  },
+  {
+   "time": "15:00",
+   "discipline": "배드민턴",
+   "event": "여자 단체 16강",
+   "countries": [],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMWTEAM8FNL000300"
+  },
+  {
+   "time": "15:00",
    "discipline": "테크볼",
    "event": "여자 단식 금메달전",
    "countries": [],
@@ -1947,9 +2138,11 @@
    "time": "15:10",
    "discipline": "근대 5종",
    "event": "남자 결승 수영 100m 자유형",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "안조 스포츠파크",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026MPNMINDIVIDFNL000130"
@@ -1991,9 +2184,11 @@
    "time": "15:30",
    "discipline": "근대 5종",
    "event": "남자 결승 레이저 런",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "안조 스포츠파크",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026MPNMINDIVIDFNL000140"
@@ -2071,9 +2266,12 @@
    "time": "16:00",
    "discipline": "배구",
    "event": "여자 8강",
-   "countries": [],
+   "countries": [
+    "카자흐스탄",
+    "대한민국"
+   ],
    "venue": "파크 아레나 고마키",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026VVOWTEAM6QFNL000300"
@@ -2082,7 +2280,10 @@
    "time": "16:00",
    "discipline": "배구",
    "event": "여자 9-14위전",
-   "countries": [],
+   "countries": [
+    "네팔",
+    "키르기스스탄"
+   ],
    "venue": "오카자키 중앙종합공원 체육관",
    "hasKorea": false,
    "medal": false,
@@ -2267,7 +2468,10 @@
    "time": "16:40",
    "discipline": "농구",
    "event": "남자 동메달전",
-   "countries": [],
+   "countries": [
+    "중국",
+    "이란"
+   ],
    "venue": "아이치 인터내셔널 아레나",
    "hasKorea": false,
    "medal": true,
@@ -2725,14 +2929,83 @@
   },
   {
    "time": "19:00",
+   "discipline": "AG",
+   "event": "농떼르만 LIVE - 남자농구 결승전 같이보기",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/20260920NONGTTEAG2026"
+  },
+  {
+   "time": "19:00",
+   "discipline": "AG",
+   "event": "슛포러브X우지원 - 남자농구 결승전 같이보기",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/20260920SFLAG2026"
+  },
+  {
+   "time": "19:00",
    "discipline": "배구",
    "event": "여자 9-14위전",
-   "countries": [],
+   "countries": [
+    "필리핀",
+    "카타르"
+   ],
    "venue": "오카자키 중앙종합공원 체육관",
    "hasKorea": false,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026VVOWTEAM6PLC001000"
+  },
+  {
+   "time": "19:00",
+   "discipline": "탁구",
+   "event": "남자 단체 A조 3경기",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMTEAMGPA000300"
+  },
+  {
+   "time": "19:00",
+   "discipline": "탁구",
+   "event": "남자 단체 B조 3경기",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMTEAMGPB000300"
+  },
+  {
+   "time": "19:00",
+   "discipline": "탁구",
+   "event": "남자 단체 C조 3경기",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMTEAMGPC000300"
+  },
+  {
+   "time": "19:00",
+   "discipline": "탁구",
+   "event": "남자 단체 D조 3경기",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMTEAMGPD000300"
   },
   {
    "time": "19:00",
@@ -2752,7 +3025,10 @@
    "time": "19:20",
    "discipline": "배구",
    "event": "여자 8강",
-   "countries": [],
+   "countries": [
+    "일본",
+    "차이니스 타이베이"
+   ],
    "venue": "파크 아레나 고마키",
    "hasKorea": false,
    "medal": false,
@@ -2791,9 +3067,12 @@
    "time": "19:40",
    "discipline": "농구",
    "event": "남자 금메달전",
-   "countries": [],
+   "countries": [
+    "일본",
+    "대한민국"
+   ],
    "venue": "아이치 인터내셔널 아레나",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026BKBMTEAM5FNL000100"

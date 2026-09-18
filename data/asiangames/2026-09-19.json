@@ -1,6 +1,6 @@
 {
  "date": "2026-09-19",
- "collectedAt": "2026-09-18T08:54:08+09:00",
+ "collectedAt": "2026-09-18T23:17:52+09:00",
  "games": [
   {
    "time": "10:00",
@@ -20,7 +20,10 @@
    "time": "10:00",
    "discipline": "테크볼",
    "event": "여자 단식 준결승",
-   "countries": [],
+   "countries": [
+    "큄시 조아킴 디수자",
+    "수마야"
+   ],
    "venue": "나고야시 히가시 스포츠센터",
    "hasKorea": false,
    "medal": false,
@@ -31,7 +34,10 @@
    "time": "10:00",
    "discipline": "테크볼",
    "event": "여자 단식 준결승",
-   "countries": [],
+   "countries": [
+    "와이 킨 흐닌",
+    "카마르 단달"
+   ],
    "venue": "나고야시 히가시 스포츠센터",
    "hasKorea": false,
    "medal": false,
@@ -70,7 +76,10 @@
    "time": "10:30",
    "discipline": "테크볼",
    "event": "여자 복식 준결승",
-   "countries": [],
+   "countries": [
+    "미얀마",
+    "레바논"
+   ],
    "venue": "나고야시 히가시 스포츠센터",
    "hasKorea": false,
    "medal": true,
@@ -81,7 +90,10 @@
    "time": "10:30",
    "discipline": "테크볼",
    "event": "여자 복식 준결승",
-   "countries": [],
+   "countries": [
+    "태국",
+    "캄보디아"
+   ],
    "venue": "나고야시 히가시 스포츠센터",
    "hasKorea": false,
    "medal": true,
@@ -92,7 +104,10 @@
    "time": "11:00",
    "discipline": "테크볼",
    "event": "혼합복식 준결승",
-   "countries": [],
+   "countries": [
+    "태국",
+    "베트남"
+   ],
    "venue": "나고야시 히가시 스포츠센터",
    "hasKorea": false,
    "medal": false,
@@ -103,7 +118,10 @@
    "time": "11:00",
    "discipline": "테크볼",
    "event": "혼합복식 준결승",
-   "countries": [],
+   "countries": [
+    "일본",
+    "이라크"
+   ],
    "venue": "나고야시 히가시 스포츠센터",
    "hasKorea": false,
    "medal": false,
@@ -114,7 +132,10 @@
    "time": "11:30",
    "discipline": "테크볼",
    "event": "남자 단식 준결승",
-   "countries": [],
+   "countries": [
+    "알리 자릴 메제르 알엘라야위",
+    "프라이데이 소"
+   ],
    "venue": "나고야시 히가시 스포츠센터",
    "hasKorea": false,
    "medal": false,
@@ -125,9 +146,12 @@
    "time": "11:30",
    "discipline": "테크볼",
    "event": "남자 단식 준결승",
-   "countries": [],
+   "countries": [
+    "자이드 에이단",
+    "이준석"
+   ],
    "venue": "나고야시 히가시 스포츠센터",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026TEQMSINGLESSFNL000200"
@@ -187,6 +211,19 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026HBLMTEAM7GPB000100"
+  },
+  {
+   "time": "18:00",
+   "discipline": "개회식",
+   "event": "",
+   "countries": [
+    "전 참가국"
+   ],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/20260919PJYAG2026"
   },
   {
    "time": "18:00",
