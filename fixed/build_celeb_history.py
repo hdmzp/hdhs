@@ -59,6 +59,10 @@ reconcile 구간에도 아무 수집분이나 받지는 않는다. 방송이 끝
 코드만 바뀌고 이름이 같으면 '제외+추가'가 아니라 '상품코드 변경'으로 남긴다.
 정정 내역은 방송 항목의 revisions[]에 최근 MAX_REVISIONS건까지 기록한다.
 
+- 스크레이퍼가 다음 방송일을 잘못 찍어 생긴 '유령 회차'는 편성표로 지운다
+  (방송 전 회차에 한함). 2026-09-22 오감쇼는 휴방인데 rehd가 요일 산술로
+  그 날을 다음 방송으로 잡아, 실제로는 9/29 방송인 다이슨 청소기가
+  "09/22(화) 방송" 회차로 남았다. 자세한 건 off_air_record().
 - 시작 시각은 기존 기록 라벨 -> 새 수집분 라벨 -> 편성문구(schedule_raw)
   순으로 찾고, 어디서도 못 읽으면 '이미 확정'으로 본다(보존 우선).
 - 상품 라벨에서 월/일을 못 읽는 상품은 건너뛴다(어느 방송인지 알 수 없음).
@@ -71,8 +75,12 @@ reconcile 구간에도 아무 수집분이나 받지는 않는다. 방송이 끝
 
 import os
 import re
+import sys
 import json
 from datetime import datetime, date, timezone, timedelta
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import celeb_day_sweep
 
 KST = timezone(timedelta(hours=9))
 SRC_DIR = os.path.join("homeshopping", "representative_programs")
@@ -421,6 +429,26 @@ def collect_current_broadcasts(today: date) -> dict:
     return collected
 
 
+def off_air_record(meta: dict, broadcast: dict) -> bool:
+    """편성표가 "그 날 이 프로그램 방송 없음"이라고 말하는 회차인지.
+
+    스크레이퍼가 다음 방송일을 잘못 찍으면 있지도 않은 회차가 월 파일에
+    남는다. 2026-09-18 수집에서 오감쇼(HD)가 휴방인 9/22를 다음 방송으로
+    잡아, 실제로는 9/29 방송인 다이슨 청소기가 "09/22(화) 방송" 회차로
+    기록됐다. 스크레이퍼(rehd) 쪽은 고쳤지만 이미 쌓인 기록은 새 수집분에
+    안 잡히므로 여기서 지워야 한다. 편성표가 아직 없는 날(편성 미공개)은
+    건드리지 않는다 - 판단 근거가 없으면 보존이 원칙이다."""
+    company = (meta.get("company") or "").strip()
+    names = [n for n in (meta.get("program_title"), meta.get("tab_name")) if n]
+    if not company or not names:
+        return False
+    try:
+        brod_date = date.fromisoformat(broadcast.get("date") or "")
+    except (TypeError, ValueError):
+        return False
+    return celeb_day_sweep.off_air_state(company, names, brod_date) is True
+
+
 def merge_into_month(existing: dict, program_key: str, meta: dict,
                      new_broadcasts: dict, now: datetime):
     """월 파일의 프로그램 항목에 새 방송분을 병합한다.
@@ -468,6 +496,22 @@ def merge_into_month(existing: dict, program_key: str, meta: dict,
 
     for stale_key in [k for k in by_date if k not in new_broadcasts]:
         stale = by_date[stale_key]
+        # 방송 전 회차만 정리 대상이다. 정정 창(reconcile)/확정(final) 회차는
+        # 무슨 일이 있어도 안 건드린다.
+        if broadcast_phase(stale.get("date"), now, stale.get("label"),
+                           meta.get("schedule_raw")) != "before":
+            continue
+
+        # (1) 편성표가 "그 날 이 프로그램 방송 없음"이라고 하면 휴방 회차다.
+        #     스크레이퍼가 요일 산술로 날짜를 잘못 찍어 생긴 유령 회차
+        #     (2026-09-22 오감쇼 - 실제 방송은 9/29)를 여기서 지운다.
+        if off_air_record(meta, stale):
+            print(f"[정리] {program_key} {stale.get('label')}: 편성표상 휴방인 날이라 "
+                  f"제거 (상품 {len(stale.get('products') or [])}건)")
+            del by_date[stale_key]
+            continue
+
+        # (2) 회차 병합으로 흡수된 옛 회차
         stale_hm = parse_hm(stale.get("label"))
         if not stale_hm:
             continue
@@ -475,9 +519,6 @@ def merge_into_month(existing: dict, program_key: str, meta: dict,
         absorbed = any(start < stale_min <= end
                        for start, end in spans.get(stale.get("date"), []))
         if not absorbed:
-            continue
-        if broadcast_phase(stale.get("date"), now, stale.get("label"),
-                           meta.get("schedule_raw")) != "before":
             continue
         print(f"[정리] {program_key} {stale.get('label')}: 새 회차의 방송 구간에 "
               f"흡수돼 제거 (상품 {len(stale.get('products') or [])}건)")

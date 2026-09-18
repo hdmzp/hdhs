@@ -56,8 +56,14 @@ rehd.py
 상품코드만으로 묶으면 뒤 회차가 사라진다. 뒤 소스의 값으로 빈 필드
 (브랜드/가격/이미지 등)는 채워 병합한다.
 방송일(brodDt)은 pgm-comm이 알려준 값을 쓰고, pgm-comm 캡처가 실패하면
-schedule_raw("매주 화요일 19시 30분")에서 다음 방송 날짜/시각을 계산해
-폴백한다. 그 날 어느 시간대에 방송하는지는 편성표의 방송 제목으로
+resolve_next_broadcast()가 **편성표를 보고** 다음 방송 날짜/시각을 정한다.
+여기서 schedule_raw("매주 화요일 19시 30분")의 요일 산술만 쓰면 휴방 주에
+있지도 않은 회차를 만들어낸다 - 2026-09-18 수집에서 오감쇼가 휴방인 9/22를
+다음 방송으로 잡고, 실제로는 9/29에 나갈 itemList 프리뷰 상품(다이슨 New V8
+무선청소기)에 "9/22(화) 방송상품" 라벨을 붙였다. 그래서 편성표가 아는
+회차를 먼저 보고, 없으면 요일 산술로 후보를 잡되 **편성표가 있는데 이
+프로그램이 없는 날(=휴방)은 건너뛴다**.
+그 날 어느 시간대에 방송하는지는 편성표의 방송 제목으로
 찾으므로, 편성표에 프로그램명이 안 붙은 경우에만 pgm-comm의 시간대
 (brodStrtDtm~brodEndDtm)로 폴백한다.
 
@@ -176,26 +182,24 @@ def parse_price(value):
     return int(cleaned) if cleaned else None
 
 
-def compute_this_week_date_label(schedule_raw: str) -> str:
-    """정확한 brodDispNm이 없을 때(=searchSpexSectItem 쪽 아이템)의 폴백용.
-    '이번주 해당 요일'이 아니라 '오늘 이후 가장 가까운 해당 요일'을 계산한다
-    (예: 오늘이 토요일이면 이번주 화요일은 이미 지났으므로 다음주 화요일)."""
-    today = datetime.now(KST).date()
-    matched_abbr, matched_weekday = None, None
-    for kr, (abbr, weekday) in DAY_MAP.items():
-        if kr in schedule_raw:
-            matched_abbr, matched_weekday = abbr, weekday
-            break
-    if matched_weekday is None:
+def make_fallback_label(brod_date) -> str:
+    """정확한 방송시각을 모르는 소스(searchSpexSectItem.itemList, 스와이퍼
+    카드)용 라벨. 표기는 예전 그대로('9/29(화) 방송상품') 두고, 날짜만
+    resolve_next_broadcast가 편성표까지 보고 정한 다음 방송일을 쓴다.
+    (build_celeb_history가 이 '시각 없는' 표기를 구분해서 다루므로 형식은
+     바꾸지 않는다)"""
+    if brod_date is None:
         return "방송상품"
-    days_ahead = (matched_weekday - today.weekday()) % 7
-    target_date = today + timedelta(days=days_ahead)
-    return f"{target_date.month}/{target_date.day}({matched_abbr}) 방송상품"
+    return (f"{brod_date.month}/{brod_date.day}"
+            f"({WEEKDAY_ABBR[brod_date.weekday()]}) 방송상품")
 
 
 def compute_next_broadcast(schedule_raw: str):
     """schedule_raw('매주 화요일 19시 30분')에서 (다음 방송 date, 'HH:MM')을 계산.
-    pgm-comm 캡처가 실패했을 때 tv-list 조회용 폴백. 파싱 실패 시 (None, None)."""
+    파싱 실패 시 (None, None).
+
+    주의: 이건 **요일 산술만** 하는 저수준 계산이라 휴방을 모른다. 폴백
+    날짜가 필요하면 편성표까지 보는 resolve_next_broadcast()를 쓴다."""
     matched_weekday = None
     for kr, (_abbr, weekday) in DAY_MAP.items():
         if kr in schedule_raw:
@@ -558,6 +562,76 @@ def upcoming_lineup_days(program_names, already_done=None) -> list:
     return sorted(days)
 
 
+# 휴방 주를 건너뛰며 다음 방송을 찾을 최대 주 수. 편성표는 오늘~+5일치뿐이라
+# 실제로 건너뛰는 건 보통 한 주지만, 2주 연속 휴방(명절 등)도 있어 여유를 둔다.
+OFF_AIR_LOOKAHEAD_WEEKS = 8
+
+
+def off_air_state(brod_date, program_names):
+    """그 날 이 프로그램이 방송하는지 편성표(HD_live)에 물어본다.
+      True  = 휴방 확정 (그 날 편성표는 있는데 이 프로그램이 없다)
+      False = 방송 확정
+      None  = 편성 미공개 (그 날 편성표 자체가 아직 없다)
+
+    편성표는 고정PGM 슬롯에 프로그램명을 꼬박꼬박 달아준다(9월 오감쇼
+    9/1·9/8·9/15, 최은경쇼 9/2·9/9·9/16·9/21 전부 이름 있음). 그래서
+    '편성표는 있는데 이 프로그램 이름이 없다'를 휴방으로 본다 -
+    collect_lineup_products의 휴방 판정과 같은 기준이다."""
+    entries = load_local_day_entries(brod_date)
+    if not entries:
+        return None
+    for _start, _end, title, _payload in entries:
+        if title_matches(title, program_names):
+            return False
+    return True
+
+
+def schedule_next_slot(program_names):
+    """편성표(HD_live)가 아는 '아직 시작 안 한 가장 이른 회차' -> (date, 'HH:MM').
+    편성표가 진실이므로 schedule_raw 요일 산술보다 먼저 본다.
+    편성표에 없으면 (None, None)."""
+    now = datetime.now(KST)
+    today, now_hm = now.date(), now.strftime("%H:%M")
+    best = None
+    for (day, start) in find_program_slots("HD", program_names, SWEEP_DAYS):
+        try:
+            d = datetime.strptime(day, "%Y-%m-%d").date()
+        except ValueError:
+            continue
+        if d < today or (d == today and start <= now_hm):
+            continue
+        if best is None or (d, start) < best:
+            best = (d, start)
+    return best if best else (None, None)
+
+
+def resolve_next_broadcast(schedule_raw: str, program_names):
+    """다음 방송 (date, 'HH:MM', 편성표로 확인됐는지)를 정한다.
+    pgm-comm(정확한 방송일시)이 실패했을 때의 폴백.
+
+    예전엔 schedule_raw의 **요일 산술만** 썼는데, 그러면 그 주가 휴방이어도
+    그 날짜를 다음 방송으로 찍는다. 2026-09-18 수집에서 오감쇼
+    ('매주 화요일 19시 30분')가 휴방인 9/22를 다음 방송으로 잡았고, 실제로는
+    9/29에 나갈 itemList 프리뷰 상품(다이슨 New V8 무선청소기)에
+    '9/22(화) 방송상품' 라벨이 붙었다.
+    편성표가 진실이므로 편성표부터 보고, 편성표가 '그 날 이 프로그램 없음'
+    이라고 하면 휴방으로 보고 다음 주 같은 요일로 넘긴다."""
+    day, start_hm = schedule_next_slot(program_names)
+    if day:
+        return day, start_hm, True
+
+    brod_date, start_hm = compute_next_broadcast(schedule_raw)
+    if brod_date is None:
+        return None, start_hm, False
+    for _ in range(OFF_AIR_LOOKAHEAD_WEEKS):
+        if off_air_state(brod_date, program_names) is not True:
+            return brod_date, start_hm, False
+        print(f"    -> [휴방] {brod_date} 편성표에 '{program_names[0]}' 방송이 없음 "
+              f"- 다음 주 같은 요일로 넘긴다")
+        brod_date += timedelta(days=7)
+    return brod_date, start_hm, False
+
+
 def collect_lineup_products(brod_date, program_names, brod_start=None, brod_end=None) -> list:
     """방송일(brod_date) 하루치 편성표를 훑어 이 프로그램의 모든 회차 상품을 모은다.
 
@@ -710,9 +784,18 @@ def crawl_hd_program(page, config: dict, list_map: dict):
 
     detail_link = f"https://www.hmall.com/md/dpa/pgmComm?sectId={sect_id}"
     schedule_raw = list_info.get("schedule_raw", "")
-    fallback_label = compute_this_week_date_label(schedule_raw) if schedule_raw else "방송상품"
+    program_names = [config["spex_sect_nm"], tab_name]
 
     print(f"\n===== [{tab_name}] (sectId={sect_id}) 수집 시작 =====")
+
+    # 다음 방송일: 편성표 -> schedule_raw 요일 산술(휴방 주는 건너뜀) 순.
+    # pgm-comm이 정확한 방송일시를 주면 아래에서 덮어쓴다.
+    brod_date, brod_start, brod_confirmed = resolve_next_broadcast(
+        schedule_raw, program_names)
+    brod_end = None
+    fallback_label = make_fallback_label(brod_date)
+    print(f"    -> 다음 방송(폴백 기준): {brod_date} {brod_start or '시각미상'}"
+          f" ({'편성표 확인' if brod_confirmed else '편성 미공개 - 편성문구 기준'})")
 
     # 소스별로 모았다가 우선순위 순(라인업 -> pgm-comm -> itemList -> 스와이퍼)으로
     # 병합한다. 앞 소스가 기준이 되고, 뒤 소스는 빈 필드만 채운다.
@@ -763,10 +846,8 @@ def crawl_hd_program(page, config: dict, list_map: dict):
         print(f"    -> [경고] pgm-comm-html 응답을 못 잡음")
 
     # --- pgm-comm: 대표상품 1개 (JSON) + 정확한 방송일시 확보 ---
-    brod_date = None      # datetime.date: 다음 방송 날짜
-    brod_start = None     # "HH:MM"
-    brod_end = None       # "HH:MM"
-
+    # (여기서 날짜를 얻으면 위에서 정한 폴백 값을 덮어쓴다)
+    resolved_label = fallback_label   # itemList/스와이퍼에 이미 붙여둔 라벨
     if "error" in captured:
         print(f"    -> [경고] pgm-comm JSON 파싱 실패: {captured['error']}")
     elif "data" not in captured:
@@ -781,30 +862,52 @@ def crawl_hd_program(page, config: dict, list_map: dict):
 
         pgm_view_item = resp_data.get("pgmViewItem")
         if isinstance(pgm_view_item, dict) and pgm_view_item.get("slitmNm"):
-            date_label = pgm_view_item.get("brodDispNm") or fallback_label
-            pgm_comm_products.append(normalize_item(pgm_view_item, date_label))
-            print(f"    -> pgm-comm 대표상품 1개 확보: [{date_label}] {pgm_view_item.get('slitmNm')[:25]}...")
-
             # 정확한 방송일시: brodDt="20260721", brodStrtDtm="19:30", brodEndDtm="21:45"
+            pgm_date, pgm_start, pgm_end = None, None, None
             brod_dt_raw = str(pgm_view_item.get("brodDt") or "")
             if re.fullmatch(r"\d{8}", brod_dt_raw):
-                brod_date = datetime.strptime(brod_dt_raw, "%Y%m%d").date()
+                pgm_date = datetime.strptime(brod_dt_raw, "%Y%m%d").date()
             hm = re.compile(r"^\d{2}:\d{2}$")
             if hm.match(str(pgm_view_item.get("brodStrtDtm") or "")):
-                brod_start = pgm_view_item["brodStrtDtm"]
+                pgm_start = pgm_view_item["brodStrtDtm"]
             if hm.match(str(pgm_view_item.get("brodEndDtm") or "")):
-                brod_end = pgm_view_item["brodEndDtm"]
+                pgm_end = pgm_view_item["brodEndDtm"]
+
+            # pgm-comm이 휴방인 날을 '다음 방송'이라고 말하는 경우가 있다
+            # (편성이 바뀌었는데 이 API만 옛 날짜를 물고 있는 상황). 편성표가
+            # 그 날 휴방이라고 하고 다른 회차를 알고 있으면 편성표를 믿는다.
+            if pgm_date and brod_confirmed and pgm_date != brod_date \
+                    and off_air_state(pgm_date, program_names) is True:
+                print(f"    -> [경고] pgm-comm이 알려준 {pgm_date}는 편성표상 휴방 "
+                      f"- 편성표가 아는 {brod_date}를 쓴다")
+                pgm_date = pgm_start = pgm_end = None
+
+            if pgm_date:
+                # 시각을 안 주면 편성문구로 잡아둔 시각을 그대로 쓴다
+                brod_date, brod_end = pgm_date, pgm_end
+                brod_start = pgm_start or brod_start
+                fallback_label = make_fallback_label(brod_date)
+            elif pgm_start:
+                brod_start = pgm_start
+
+            # 라벨은 pgm-comm이 준 표기(brodDispNm)를 쓰되, 그 날짜를 위에서
+            # 물린 경우엔 남겨두면 안 되므로 폴백 라벨로 되돌린다.
+            date_label = pgm_view_item.get("brodDispNm") or fallback_label
+            if pgm_date is None and brod_dt_raw:
+                date_label = fallback_label
+            pgm_comm_products.append(normalize_item(pgm_view_item, date_label))
+            print(f"    -> pgm-comm 대표상품 1개 확보: [{date_label}] {pgm_view_item.get('slitmNm')[:25]}...")
         else:
             print(f"    -> [경고] pgm-comm 응답에 pgmViewItem이 없음")
 
-    # pgm-comm이 실패했으면 schedule_raw에서 다음 방송 날짜/시각을 계산해 폴백
-    if brod_date is None or brod_start is None:
-        fb_date, fb_start = compute_next_broadcast(schedule_raw)
-        brod_date = brod_date or fb_date
-        brod_start = brod_start or fb_start
+    # itemList/스와이퍼 카드는 방송일을 모르는 소스라 폴백 라벨을 붙여뒀다.
+    # pgm-comm이 날짜를 정정했으면 그 라벨도 같이 고친다.
+    if fallback_label != resolved_label:
+        for product in itemlist_products + swiper_products:
+            if product.get("broadcast_date_label") == resolved_label:
+                product["broadcast_date_label"] = fallback_label
 
     # --- 편성표(tv-list + 로컬 HD_live)에서 그 날 이 프로그램 회차를 전부 수집 ---
-    program_names = [config["spex_sect_nm"], tab_name]
     if brod_date:
         lineup_products = collect_lineup_products(
             brod_date, program_names, brod_start, brod_end)

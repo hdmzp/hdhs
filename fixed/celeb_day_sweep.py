@@ -211,6 +211,24 @@ def find_program_slots(company: str, program_names, days_ahead: int = SWEEP_DAYS
     return slots
 
 
+def off_air_state(company: str, program_names, brod_date: date,
+                  days_ahead: int = SWEEP_DAYS):
+    """그 날 이 프로그램이 방송하는지 편성표에 물어본다.
+      True  = 휴방 확정 (그 날 편성표는 있는데 이 프로그램이 없다)
+      False = 방송 확정
+      None  = 모름 (그 날 편성표가 아직 없다 / 편성표 범위 밖이다)
+
+    편성표는 고정PGM 슬롯에 프로그램명을 꼬박꼬박 달아주므로
+    '편성표는 있는데 이 프로그램 이름이 없다'를 휴방으로 본다."""
+    items = load_live_days(company, days_ahead).get(brod_date.isoformat()) or []
+    if not items:
+        return None
+    for item in items:
+        if title_matches(item.get("pgm"), program_names):
+            return False
+    return True
+
+
 def to_product(item: dict) -> dict:
     """편성표 항목을 셀럽PGM 상품 스키마로. (broadcast_date_label은 호출부가 채움)"""
     return {

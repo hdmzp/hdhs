@@ -15,7 +15,7 @@ python tools/test_build_celeb_history.py)
 import os
 import sys
 import importlib.util
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, date, timezone, timedelta
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
@@ -304,6 +304,80 @@ def test_absorbed_slot_removed():
           ["09/08(화) 08:15 방송", "09/08(화) 19:30 방송"])
 
 
+def test_off_air_slot_removed():
+    """편성표가 휴방이라고 하는 '유령 회차'를 지우는지.
+
+    2026-09-18 수집에서 rehd가 요일 산술로 오감쇼 다음 방송을 9/22(휴방)로
+    잡아, 실제로는 9/29 방송인 다이슨 청소기가 "09/22(화) 방송" 회차로
+    월 파일에 남았다. 스크레이퍼는 고쳤지만 이미 쌓인 기록은 새 수집분에
+    안 잡히므로(=stale) 여기서 지워야 화면에서 사라진다.
+    반대로 편성표가 아직 없는 날은 판단 근거가 없으니 그대로 둔다."""
+    print("[9] 편성표가 휴방이라고 하는 회차는 지우고, 편성 미공개는 지킨다")
+    import json
+    import shutil
+    import tempfile
+    sweep = sys.modules.get("celeb_day_sweep") or bch.celeb_day_sweep
+
+    today = datetime.now(KST).date()
+    off_air = today + timedelta(days=2)     # 편성표 있음 + 오감쇼 없음 -> 휴방
+    unknown = today + timedelta(days=9)     # 편성표 범위 밖 -> 모름
+    meta = {"program_key": "HD_OGS", "company": "HD", "tab_name": "오감쇼",
+            "program_title": "오감쇼", "schedule_raw": "매주 화요일 19시 30분"}
+
+    def phantom(day):
+        return {"date": day.isoformat(),
+                "label": f"{day.month:02d}/{day.day:02d}(화) 방송",
+                "collected_at": "2026-09-18T23:51:08+09:00",
+                "products": [product("다이슨 New V8 무선청소기", "1")]}
+
+    tmp = tempfile.mkdtemp()
+    try:
+        days = {off_air.isoformat(): [
+            {"start": "19:30", "end": "20:45", "pgm": None,
+             "product": "남의 방송 상품", "brand": "", "price": 1},
+        ]}
+        with open(os.path.join(tmp, f"HD_live_{off_air.strftime('%Y-%m')}.json"),
+                  "w", encoding="utf-8") as f:
+            json.dump({"days": days}, f, ensure_ascii=False)
+
+        orig_tpl = sweep.LIVE_DIR_TEMPLATE
+        sweep.LIVE_DIR_TEMPLATE = os.path.join(tmp, "{company}_live_{ym}.json")
+        sweep._LIVE_DAYS_CACHE.clear()
+        try:
+            existing = {"programs": [{**meta, "broadcasts": [phantom(off_air),
+                                                             phantom(unknown)]}]}
+            bch.merge_into_month(existing, "HD_OGS", meta, {},
+                                 datetime.now(KST))
+            left = [b["date"] for b in existing["programs"][0]["broadcasts"]]
+            check("휴방 회차는 제거", off_air.isoformat() in left, False)
+            check("편성 미공개 회차는 보존", unknown.isoformat() in left, True)
+
+            # 편성표에 이름이 있으면(= 진짜 방송하는 날) 절대 안 지운다
+            days[off_air.isoformat()][0]["pgm"] = "오감쇼"
+            with open(os.path.join(tmp, f"HD_live_{off_air.strftime('%Y-%m')}.json"),
+                      "w", encoding="utf-8") as f:
+                json.dump({"days": days}, f, ensure_ascii=False)
+            sweep._LIVE_DAYS_CACHE.clear()
+            existing2 = {"programs": [{**meta, "broadcasts": [phantom(off_air)]}]}
+            bch.merge_into_month(existing2, "HD_OGS", meta, {}, datetime.now(KST))
+            check("편성표가 이름을 단 회차는 보존",
+                  len(existing2["programs"][0]["broadcasts"]), 1)
+        finally:
+            sweep.LIVE_DIR_TEMPLATE = orig_tpl
+            sweep._LIVE_DAYS_CACHE.clear()
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+    # 이미 방송이 시작된 회차는 휴방 판정과 무관하게 손대지 않는다
+    past = {"date": (today - timedelta(days=3)).isoformat(),
+            "label": "09/01(화) 19:30 방송",
+            "collected_at": "2026-09-01T03:00:00+09:00",
+            "products": [product("지난 방송 상품", "9")]}
+    existing3 = {"programs": [{**meta, "broadcasts": [past]}]}
+    bch.merge_into_month(existing3, "HD_OGS", meta, {}, datetime.now(KST))
+    check("지난 회차는 그대로", len(existing3["programs"][0]["broadcasts"]), 1)
+
+
 def main():
     test_phase()
     test_reconcile_removal()
@@ -313,6 +387,7 @@ def main():
     test_merge_into_month()
     test_same_day_two_broadcasts()
     test_absorbed_slot_removed()
+    test_off_air_slot_removed()
 
     print()
     if FAILURES:

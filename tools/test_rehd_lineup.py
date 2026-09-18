@@ -11,6 +11,10 @@ python tools/test_rehd_lineup.py)
   (B) 같은 상품이 두 회차에 다 편성되면 회차별로 남을 것
       (세포랩은 08:15/19:30 양쪽에 있다 - 상품코드로만 중복 제거하면 사라진다)
   (C) 편성표에 프로그램명이 안 붙은 경우엔 예전처럼 시간대 필터로 폴백할 것
+  (D) 다음 방송일을 요일 산술로만 찍지 말 것
+      -> 2026-09-22(화) 오감쇼는 휴방인데 '매주 화요일'만 보고 그 날을
+         다음 방송으로 잡았고, 실제로는 9/29에 나갈 itemList 프리뷰 상품
+         (다이슨 New V8 무선청소기)에 '9/22(화) 방송상품' 라벨이 붙었다.
 """
 
 import os
@@ -261,6 +265,109 @@ def test_sweeps_next_broadcast_day():
     check("이미 훑은 날은 빼고 다음 회차만", days, [next_week])
 
 
+def with_live_schedule(days, fn):
+    """임시 편성표 파일을 만들어 끼운 뒤 fn()을 돌린다.
+    days: {date: [편성 항목...]} - 항목은 HD_live 스키마({start,end,pgm,...})."""
+    import json
+    import shutil
+    import tempfile
+    sweep = sys.modules["celeb_day_sweep"]
+
+    tmp = tempfile.mkdtemp()
+    try:
+        ym_days = {}
+        for d, items in days.items():
+            ym_days.setdefault(d.strftime("%Y-%m"), {})[d.isoformat()] = items
+        for ym, day_map in ym_days.items():
+            with open(os.path.join(tmp, f"HD_live_{ym}.json"), "w",
+                      encoding="utf-8") as f:
+                json.dump({"days": day_map}, f, ensure_ascii=False)
+
+        orig_tpl = sweep.LIVE_DIR_TEMPLATE
+        orig_hd_dir = rehd.HD_LIVE_DIR
+        sweep.LIVE_DIR_TEMPLATE = os.path.join(tmp, "{company}_live_{ym}.json")
+        # rehd.load_local_day_entries는 HD_LIVE_DIR/{YYYY-MM}.json을 읽는다
+        rehd.HD_LIVE_DIR = tmp
+        for ym in ym_days:
+            shutil.copyfile(os.path.join(tmp, f"HD_live_{ym}.json"),
+                            os.path.join(tmp, f"{ym}.json"))
+        sweep._LIVE_DAYS_CACHE.clear()
+        try:
+            return fn()
+        finally:
+            sweep.LIVE_DIR_TEMPLATE = orig_tpl
+            rehd.HD_LIVE_DIR = orig_hd_dir
+            sweep._LIVE_DAYS_CACHE.clear()
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+def slot(start, end, pgm, product):
+    return {"start": start, "end": end, "pgm": pgm, "brand": "브랜드",
+            "product": product, "price": 1000, "link": ""}
+
+
+def next_weekday(weekday, after_days=1):
+    """오늘+after_days 이후(포함) 가장 가까운 해당 요일."""
+    d = datetime.now(rehd.KST).date() + timedelta(days=after_days)
+    return d + timedelta(days=(weekday - d.weekday()) % 7)
+
+
+def test_off_air_week_rolls_to_next_week():
+    """휴방 주를 다음 방송으로 잡지 않는다 (2026-09-22 오감쇼 사고).
+
+    편성표에 그 날 편성은 있는데 오감쇼가 없으면 휴방이다. 그런 날을
+    다음 방송으로 찍으면, 실제로는 다음 주에 나갈 프리뷰 상품에 이번 주
+    날짜가 붙는다."""
+    print("[9] 휴방인 주는 건너뛰고 다음 주 같은 요일을 다음 방송으로 잡는다")
+    off_air = next_weekday(1)               # 다음 화요일 - 휴방
+    next_week = off_air + timedelta(days=7)  # 그 다음 주 화요일 - 편성 미공개
+    days = {off_air: [slot("19:30", "20:45", None, "남의 방송 상품")]}
+
+    got = with_live_schedule(
+        days, lambda: rehd.resolve_next_broadcast("매주 화요일 19시 30분",
+                                                  ["오감쇼", "오감쇼"]))
+    check("휴방 주를 건너뛴다", got[0], next_week)
+    check("시각은 편성문구에서", got[1], "19:30")
+    check("편성표로 확인된 건 아님(편성 미공개)", got[2], False)
+    check("폴백 라벨도 다음 주 날짜",
+          rehd.make_fallback_label(got[0]),
+          f"{next_week.month}/{next_week.day}"
+          f"({rehd.WEEKDAY_ABBR[next_week.weekday()]}) 방송상품")
+
+
+def test_schedule_slot_wins_over_weekday_math():
+    print("[10] 편성표가 아는 회차가 있으면 요일 산술보다 그걸 쓴다")
+    # 편성문구는 '매주 화요일'인데 편성표는 특별편성(목요일 08:15)을 안다
+    special = next_weekday(3)
+    days = {special: [slot("08:15", "09:25", "오감쇼", "세포랩 에센스")]}
+
+    got = with_live_schedule(
+        days, lambda: rehd.resolve_next_broadcast("매주 화요일 19시 30분",
+                                                  ["오감쇼", "오감쇼"]))
+    check("편성표 회차 날짜", got[0], special)
+    check("편성표 회차 시각", got[1], "08:15")
+    check("편성표로 확인됨", got[2], True)
+
+
+def test_off_air_state_unknown_when_schedule_missing():
+    print("[11] 편성표가 없는 날은 휴방으로 단정하지 않는다")
+    far = next_weekday(1, after_days=1) + timedelta(days=21)
+    check("편성표 없는 날은 None",
+          with_live_schedule({}, lambda: rehd.off_air_state(far, ["오감쇼"])),
+          None)
+
+    day = next_weekday(1)
+    days = {day: [slot("19:30", "20:45", "오감쇼", "세포랩 에센스")]}
+    check("이름이 있으면 방송 확정(False)",
+          with_live_schedule(days, lambda: rehd.off_air_state(day, ["오감쇼"])),
+          False)
+    check("편성표는 있는데 이름이 없으면 휴방(True)",
+          with_live_schedule({day: [slot("19:30", "20:45", None, "남의 상품")]},
+                             lambda: rehd.off_air_state(day, ["오감쇼"])),
+          True)
+
+
 def main():
     test_two_broadcasts_same_day()
     test_same_product_in_both_slots()
@@ -271,6 +378,9 @@ def main():
     test_skips_when_program_is_off_air()
     test_time_window_skips_other_program()
     test_sweeps_next_broadcast_day()
+    test_off_air_week_rolls_to_next_week()
+    test_schedule_slot_wins_over_weekday_math()
+    test_off_air_state_unknown_when_schedule_missing()
 
     print()
     if FAILURES:
