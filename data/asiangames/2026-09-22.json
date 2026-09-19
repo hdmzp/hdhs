@@ -1,7 +1,35 @@
 {
  "date": "2026-09-22",
- "collectedAt": "2026-09-19T22:49:07+09:00",
+ "collectedAt": "2026-09-20T08:52:57+09:00",
  "games": [
+  {
+   "time": "09:00",
+   "discipline": "비치 발리볼",
+   "event": "여자 예선 라운드 - A조 2경기",
+   "countries": [
+    "몽골",
+    "베트남"
+   ],
+   "venue": "헤키난 료쿠치 비치 코트",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026VBVWTEAM2GPA000200"
+  },
+  {
+   "time": "09:00",
+   "discipline": "비치 발리볼",
+   "event": "여자 예선 라운드 - B조 2경기",
+   "countries": [
+    "마카오",
+    "베트남"
+   ],
+   "venue": "헤키난 료쿠치 비치 코트",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026VBVWTEAM2GPB000200"
+  },
   {
    "time": "09:00",
    "discipline": "사이클 로드",
@@ -16,10 +44,13 @@
   {
    "time": "09:00",
    "discipline": "세팍타크로",
-   "event": "남자 팀 레구 조별예선 A조",
-   "countries": [],
+   "event": "남자 팀 레구 조별예선 A조 4",
+   "countries": [
+    "라오스",
+    "대한민국"
+   ],
    "venue": "나고야시 미즈호 파크 체육관",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SPKMTEAMREGUGPA000400"
@@ -27,8 +58,11 @@
   {
    "time": "09:00",
    "discipline": "세팍타크로",
-   "event": "남자 팀 레구 조별예선 B조",
-   "countries": [],
+   "event": "남자 팀 레구 조별예선 B조 4",
+   "countries": [
+    "필리핀",
+    "일본"
+   ],
    "venue": "나고야시 미즈호 파크 체육관",
    "hasKorea": false,
    "medal": false,
@@ -38,8 +72,11 @@
   {
    "time": "09:00",
    "discipline": "세팍타크로",
-   "event": "남자 팀 레구 조별예선 B조",
-   "countries": [],
+   "event": "남자 팀 레구 조별예선 B조 5",
+   "countries": [
+    "말레이시아",
+    "인도"
+   ],
    "venue": "나고야시 미즈호 파크 체육관",
    "hasKorea": false,
    "medal": false,
@@ -151,6 +188,17 @@
   },
   {
    "time": "09:00",
+   "discipline": "조정",
+   "event": "여자 싱글스컬 예선",
+   "countries": [],
+   "venue": "나가라가와 국제 레가타 코스",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ROWWSCULL1HEAT"
+  },
+  {
+   "time": "09:00",
    "discipline": "크리켓",
    "event": "여자 동메달전",
    "countries": [],
@@ -199,8 +247,11 @@
   {
    "time": "09:30",
    "discipline": "배드민턴",
-   "event": "여자 단체 8강",
-   "countries": [],
+   "event": "여자 단체 8강 1",
+   "countries": [
+    "중국",
+    "미정"
+   ],
    "venue": "이치노미야시 종합체육관",
    "hasKorea": false,
    "medal": false,
@@ -210,8 +261,11 @@
   {
    "time": "09:30",
    "discipline": "배드민턴",
-   "event": "여자 단체 8강",
-   "countries": [],
+   "event": "여자 단체 8강 2",
+   "countries": [
+    "차이니스 타이베이",
+    "미정"
+   ],
    "venue": "이치노미야시 종합체육관",
    "hasKorea": false,
    "medal": false,
@@ -221,10 +275,13 @@
   {
    "time": "09:30",
    "discipline": "배드민턴",
-   "event": "여자 단체 8강",
-   "countries": [],
+   "event": "여자 단체 8강 3",
+   "countries": [
+    "미정",
+    "대한민국"
+   ],
    "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026BDMWTEAMQFNL000300"
@@ -232,8 +289,11 @@
   {
    "time": "09:30",
    "discipline": "배드민턴",
-   "event": "여자 단체 8강",
-   "countries": [],
+   "event": "여자 단체 8강 4",
+   "countries": [
+    "미정",
+    "일본"
+   ],
    "venue": "이치노미야시 종합체육관",
    "hasKorea": false,
    "medal": false,
@@ -392,17 +452,6 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026ROWWNOCOX4SFNL"
-  },
-  {
-   "time": "09:56",
-   "discipline": "조정",
-   "event": "여자 경량급 싱글스컬 준결승",
-   "countries": [],
-   "venue": "나가라가와 국제 레가타 코스",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ROWWSCULL1LSFNL"
   },
   {
    "time": "09:59",
@@ -803,17 +852,6 @@
   },
   {
    "time": "10:10",
-   "discipline": "조정",
-   "event": "여자 경량급더블스컬 준결승 A/B",
-   "countries": [],
-   "venue": "나가라가와 국제 레가타 코스",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ROWWSCULL2LSFNL"
-  },
-  {
-   "time": "10:10",
    "discipline": "펜싱 에페",
    "event": "여자 에페 개인 예선라운드",
    "countries": [],
@@ -1052,17 +1090,6 @@
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026KATWTEAMFNL000100"
-  },
-  {
-   "time": "10:52",
-   "discipline": "조정",
-   "event": "여자 싱글스컬 준결승",
-   "countries": [],
-   "venue": "나가라가와 국제 레가타 코스",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ROWWSCULL1SFNL"
   },
   {
    "time": "11:00",
@@ -2493,8 +2520,11 @@
   {
    "time": "14:00",
    "discipline": "세팍타크로",
-   "event": "여자 팀 레구 조별예선 A조",
-   "countries": [],
+   "event": "여자 팀 레구 조별예선 A조 5",
+   "countries": [
+    "인도네시아",
+    "일본"
+   ],
    "venue": "나고야시 미즈호 파크 체육관",
    "hasKorea": false,
    "medal": false,
@@ -2915,8 +2945,11 @@
   {
    "time": "15:00",
    "discipline": "배드민턴",
-   "event": "남자 단체 8강",
-   "countries": [],
+   "event": "남자 단체 8강 1",
+   "countries": [
+    "인도네시아",
+    "미정"
+   ],
    "venue": "이치노미야시 종합체육관",
    "hasKorea": false,
    "medal": false,
@@ -2926,8 +2959,11 @@
   {
    "time": "15:00",
    "discipline": "배드민턴",
-   "event": "남자 단체 8강",
-   "countries": [],
+   "event": "남자 단체 8강 2",
+   "countries": [
+    "차이니스 타이베이",
+    "미정"
+   ],
    "venue": "이치노미야시 종합체육관",
    "hasKorea": false,
    "medal": false,
@@ -2937,7 +2973,7 @@
   {
    "time": "15:00",
    "discipline": "배드민턴",
-   "event": "남자 단체 8강",
+   "event": "남자 단체 8강 3",
    "countries": [],
    "venue": "이치노미야시 종합체육관",
    "hasKorea": false,
@@ -2948,8 +2984,11 @@
   {
    "time": "15:00",
    "discipline": "배드민턴",
-   "event": "남자 단체 8강",
-   "countries": [],
+   "event": "남자 단체 8강 4",
+   "countries": [
+    "미정",
+    "중국"
+   ],
    "venue": "이치노미야시 종합체육관",
    "hasKorea": false,
    "medal": false,

@@ -1,6 +1,6 @@
 {
  "date": "2026-09-23",
- "collectedAt": "2026-09-19T22:49:07+09:00",
+ "collectedAt": "2026-09-20T08:52:57+09:00",
  "games": [
   {
    "time": "07:30",
@@ -30,6 +30,34 @@
   },
   {
    "time": "09:00",
+   "discipline": "비치 발리볼",
+   "event": "여자 예선 라운드 - E조 2경기",
+   "countries": [
+    "방글라데시",
+    "카자흐스탄"
+   ],
+   "venue": "헤키난 료쿠치 비치 코트",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026VBVWTEAM2GPE000200"
+  },
+  {
+   "time": "09:00",
+   "discipline": "비치 발리볼",
+   "event": "여자 예선 라운드 - G조 3경기",
+   "countries": [
+    "홍콩",
+    "몰디브"
+   ],
+   "venue": "헤키난 료쿠치 비치 코트",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026VBVWTEAM2GPG000300"
+  },
+  {
+   "time": "09:00",
    "discipline": "사이클 로드",
    "event": "남자 도로경주",
    "countries": [],
@@ -42,8 +70,11 @@
   {
    "time": "09:00",
    "discipline": "세팍타크로",
-   "event": "남자 팀 레구 조별예선 A조",
-   "countries": [],
+   "event": "남자 팀 레구 조별예선 A조 5",
+   "countries": [
+    "태국",
+    "라오스"
+   ],
    "venue": "나고야시 미즈호 파크 체육관",
    "hasKorea": false,
    "medal": false,
@@ -53,10 +84,13 @@
   {
    "time": "09:00",
    "discipline": "세팍타크로",
-   "event": "남자 팀 레구 조별예선 A조",
-   "countries": [],
+   "event": "남자 팀 레구 조별예선 A조 6",
+   "countries": [
+    "인도네시아",
+    "대한민국"
+   ],
    "venue": "나고야시 미즈호 파크 체육관",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SPKMTEAMREGUGPA000600"
@@ -64,8 +98,11 @@
   {
    "time": "09:00",
    "discipline": "세팍타크로",
-   "event": "남자 팀 레구 조별예선 B조",
-   "countries": [],
+   "event": "남자 팀 레구 조별예선 B조 6",
+   "countries": [
+    "인도",
+    "필리핀"
+   ],
    "venue": "나고야시 미즈호 파크 체육관",
    "hasKorea": false,
    "medal": false,
@@ -210,20 +247,9 @@
    "link": "https://m.sports.naver.com/game/2026ROWMSCULL2LFNL"
   },
   {
-   "time": "09:24",
-   "discipline": "조정",
-   "event": "여자 경량급 싱글스컬 결승",
-   "countries": [],
-   "venue": "나가라가와 국제 레가타 코스",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ROWWSCULL1LFNL"
-  },
-  {
    "time": "09:30",
    "discipline": "배드민턴",
-   "event": "여자 단체 준결승",
+   "event": "여자 단체 준결승 1",
    "countries": [],
    "venue": "이치노미야시 종합체육관",
    "hasKorea": false,
@@ -234,7 +260,7 @@
   {
    "time": "09:30",
    "discipline": "배드민턴",
-   "event": "여자 단체 준결승",
+   "event": "여자 단체 준결승 2",
    "countries": [],
    "venue": "이치노미야시 종합체육관",
    "hasKorea": false,
@@ -325,6 +351,17 @@
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026ROWWNOCOX4FNL"
+  },
+  {
+   "time": "09:50",
+   "discipline": "조정",
+   "event": "여자 경량급 싱글스컬 결승",
+   "countries": [],
+   "venue": "나가라가와 국제 레가타 코스",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ROWWSCULL1LFNL"
   },
   {
    "time": "10:00",
@@ -444,6 +481,34 @@
   },
   {
    "time": "10:00",
+   "discipline": "비치 발리볼",
+   "event": "여자 예선 라운드 - F조 2경기",
+   "countries": [
+    "카자흐스탄",
+    "카타르"
+   ],
+   "venue": "헤키난 료쿠치 비치 코트",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026VBVWTEAM2GPF000200"
+  },
+  {
+   "time": "10:00",
+   "discipline": "비치 발리볼",
+   "event": "여자 예선 라운드 - G조 4경기",
+   "countries": [
+    "몽골",
+    "필리핀"
+   ],
+   "venue": "헤키난 료쿠치 비치 코트",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026VBVWTEAM2GPG000400"
+  },
+  {
+   "time": "10:00",
    "discipline": "수영",
    "event": "여자 100m 접영 - 예선",
    "countries": [],
@@ -474,17 +539,6 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026WLFW53KGFNL000200"
-  },
-  {
-   "time": "10:00",
-   "discipline": "조정",
-   "event": "여자 경량급 더블스컬 결승",
-   "countries": [],
-   "venue": "나가라가와 국제 레가타 코스",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ROWWSCULL2LFNL"
   },
   {
    "time": "10:00",
@@ -708,6 +762,17 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026KATMTEAMQFNL000300"
+  },
+  {
+   "time": "10:10",
+   "discipline": "조정",
+   "event": "여자 경량급 더블스컬 결승",
+   "countries": [],
+   "venue": "나가라가와 국제 레가타 코스",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ROWWSCULL2LFNL"
   },
   {
    "time": "10:10",
@@ -1856,8 +1921,11 @@
   {
    "time": "12:05",
    "discipline": "탁구",
-   "event": "여자 단식 64강",
-   "countries": [],
+   "event": "여자 단식 1라운드 1",
+   "countries": [
+    "시솜분 추티폰",
+    "볼로르에르덴 바트뭉흐"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
@@ -1867,96 +1935,11 @@
   {
    "time": "12:05",
    "discipline": "탁구",
-   "event": "여자 단식 64강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEWSINGLESR64000200"
-  },
-  {
-   "time": "12:05",
-   "discipline": "탁구",
-   "event": "여자 단식 64강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEWSINGLESR64000300"
-  },
-  {
-   "time": "12:05",
-   "discipline": "탁구",
-   "event": "여자 단식 64강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEWSINGLESR64000400"
-  },
-  {
-   "time": "12:05",
-   "discipline": "탁구",
-   "event": "여자 단식 64강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEWSINGLESR64000500"
-  },
-  {
-   "time": "12:05",
-   "discipline": "탁구",
-   "event": "여자 단식 64강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEWSINGLESR64000600"
-  },
-  {
-   "time": "12:05",
-   "discipline": "탁구",
-   "event": "여자 단식 64강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEWSINGLESR64000700"
-  },
-  {
-   "time": "12:05",
-   "discipline": "탁구",
-   "event": "여자 단식 64강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEWSINGLESR64000800"
-  },
-  {
-   "time": "12:05",
-   "discipline": "탁구",
-   "event": "여자 단식 64강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEWSINGLESR64000900"
-  },
-  {
-   "time": "12:05",
-   "discipline": "탁구",
-   "event": "여자 단식 64강",
-   "countries": [],
+   "event": "여자 단식 1라운드 10",
+   "countries": [
+    "사르비노즈 미르카디로바",
+    "변성경"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
@@ -1966,8 +1949,11 @@
   {
    "time": "12:05",
    "discipline": "탁구",
-   "event": "여자 단식 64강",
-   "countries": [],
+   "event": "여자 단식 1라운드 11",
+   "countries": [
+    "천쓰위",
+    "주위링"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
@@ -1977,8 +1963,11 @@
   {
    "time": "12:05",
    "discipline": "탁구",
-   "event": "여자 단식 64강",
-   "countries": [],
+   "event": "여자 단식 1라운드 12",
+   "countries": [
+    "비만디 산딘사 스와르나 스리 반다라",
+    "누르키즈 아이아즈베코바"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
@@ -1988,8 +1977,11 @@
   {
    "time": "12:05",
    "discipline": "탁구",
-   "event": "여자 단식 64강",
-   "countries": [],
+   "event": "여자 단식 1라운드 13",
+   "countries": [
+    "노우린 술타나 마히",
+    "아이샤트 라파 나짐"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
@@ -1999,35 +1991,114 @@
   {
    "time": "12:05",
    "discipline": "탁구",
-   "event": "여자 단식 64강",
-   "countries": [],
+   "event": "여자 단식 1라운드 2",
+   "countries": [
+    "에바나 타파",
+    "아루잔 카말로바"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEWSINGLESR64001400"
+   "link": "https://m.sports.naver.com/game/2026TTEWSINGLESR64000200"
   },
   {
    "time": "12:05",
    "discipline": "탁구",
-   "event": "여자 단식 64강",
-   "countries": [],
+   "event": "여자 단식 1라운드 3",
+   "countries": [
+    "마흐시드 아슈타리",
+    "치트라 라스미"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEWSINGLESR64001500"
+   "link": "https://m.sports.naver.com/game/2026TTEWSINGLESR64000300"
   },
   {
    "time": "12:05",
    "discipline": "탁구",
-   "event": "여자 단식 64강",
-   "countries": [],
+   "event": "여자 단식 1라운드 4",
+   "countries": [
+    "파티마트 디마 알리",
+    "김금용"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEWSINGLESR64001600"
+   "link": "https://m.sports.naver.com/game/2026TTEWSINGLESR64000400"
+  },
+  {
+   "time": "12:05",
+   "discipline": "탁구",
+   "event": "여자 단식 1라운드 5",
+   "countries": [
+    "렁온나",
+    "소남 술타나 소마"
+   ],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEWSINGLESR64000500"
+  },
+  {
+   "time": "12:05",
+   "discipline": "탁구",
+   "event": "여자 단식 1라운드 6",
+   "countries": [
+    "헨드 자자",
+    "칼숨 칸"
+   ],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEWSINGLESR64000600"
+  },
+  {
+   "time": "12:05",
+   "discipline": "탁구",
+   "event": "여자 단식 1라운드 7",
+   "countries": [
+    "탈리아 아자르",
+    "수타시니 사웨타부트"
+   ],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEWSINGLESR64000700"
+  },
+  {
+   "time": "12:05",
+   "discipline": "탁구",
+   "event": "여자 단식 1라운드 8",
+   "countries": [
+    "알마이라 네부카드네자르",
+    "세타예시 일루카니"
+   ],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEWSINGLESR64000800"
+  },
+  {
+   "time": "12:05",
+   "discipline": "탁구",
+   "event": "여자 단식 1라운드 9",
+   "countries": [
+    "부렌자르갈 산자아",
+    "아셀 에르케바예바"
+   ],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEWSINGLESR64000900"
   },
   {
    "time": "12:10",
@@ -3131,10 +3202,13 @@
   {
    "time": "14:00",
    "discipline": "세팍타크로",
-   "event": "여자 팀 레구 조별예선 A조",
-   "countries": [],
+   "event": "여자 팀 레구 조별예선 A조 6",
+   "countries": [
+    "대한민국",
+    "태국"
+   ],
    "venue": "나고야시 미즈호 파크 체육관",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SPKWTEAMREGUGPA000600"
@@ -3352,7 +3426,7 @@
   {
    "time": "15:00",
    "discipline": "배드민턴",
-   "event": "남자 단체 준결승",
+   "event": "남자 단체 준결승 1",
    "countries": [],
    "venue": "이치노미야시 종합체육관",
    "hasKorea": false,
@@ -3363,7 +3437,7 @@
   {
    "time": "15:00",
    "discipline": "배드민턴",
-   "event": "남자 단체 준결승",
+   "event": "남자 단체 준결승 1",
    "countries": [],
    "venue": "이치노미야시 종합체육관",
    "hasKorea": false,

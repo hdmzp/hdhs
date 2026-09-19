@@ -1,6 +1,6 @@
 {
  "date": "2026-09-20",
- "collectedAt": "2026-09-19T22:49:07+09:00",
+ "collectedAt": "2026-09-20T08:52:57+09:00",
  "games": [
   {
    "time": "08:30",
@@ -14,6 +14,20 @@
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026TRIMINDIVIDFNL000100"
+  },
+  {
+   "time": "09:00",
+   "discipline": "비치 발리볼",
+   "event": "여자 예선 라운드 - A조 1경기",
+   "countries": [
+    "일본",
+    "몽골"
+   ],
+   "venue": "헤키난 료쿠치 비치 코트",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026VBVWTEAM2GPA000100"
   },
   {
    "time": "09:00",
@@ -45,10 +59,13 @@
   {
    "time": "09:00",
    "discipline": "세팍타크로",
-   "event": "남자 팀 레구 조별예선 A조",
-   "countries": [],
+   "event": "남자 팀 레구 조별예선 A조 1",
+   "countries": [
+    "태국",
+    "대한민국"
+   ],
    "venue": "나고야시 미즈호 파크 체육관",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SPKMTEAMREGUGPA000100"
@@ -56,8 +73,11 @@
   {
    "time": "09:00",
    "discipline": "세팍타크로",
-   "event": "남자 팀 레구 조별예선 A조",
-   "countries": [],
+   "event": "남자 팀 레구 조별예선 A조 2",
+   "countries": [
+    "라오스",
+    "인도네시아"
+   ],
    "venue": "나고야시 미즈호 파크 체육관",
    "hasKorea": false,
    "medal": false,
@@ -67,8 +87,11 @@
   {
    "time": "09:00",
    "discipline": "세팍타크로",
-   "event": "남자 팀 레구 조별예선 B조",
-   "countries": [],
+   "event": "남자 팀 레구 조별예선 B조 1",
+   "countries": [
+    "말레이시아",
+    "일본"
+   ],
    "venue": "나고야시 미즈호 파크 체육관",
    "hasKorea": false,
    "medal": false,
@@ -160,12 +183,15 @@
   {
    "time": "09:30",
    "discipline": "배드민턴",
-   "event": "여자 단체 16강",
-   "countries": [],
+   "event": "여자 단체 1라운드 1경기",
+   "countries": [
+    "인도네시아",
+    "몽골"
+   ],
    "venue": "이치노미야시 종합체육관",
    "hasKorea": false,
    "medal": false,
-   "tv": true,
+   "tv": false,
    "link": "https://m.sports.naver.com/game/2026BDMWTEAM8FNL000100"
   },
   {
@@ -220,94 +246,6 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026KATWINDIVID8FNL000200"
-  },
-  {
-   "time": "10:00",
-   "discipline": "가라테 쿠미테",
-   "event": "남자 -55kg급 16강",
-   "countries": [],
-   "venue": "도요하시 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026KUMM55KG8FNL000100"
-  },
-  {
-   "time": "10:00",
-   "discipline": "가라테 쿠미테",
-   "event": "남자 -55kg급 16강",
-   "countries": [],
-   "venue": "도요하시 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026KUMM55KG8FNL000200"
-  },
-  {
-   "time": "10:00",
-   "discipline": "가라테 쿠미테",
-   "event": "남자 -55kg급 16강",
-   "countries": [],
-   "venue": "도요하시 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026KUMM55KG8FNL000300"
-  },
-  {
-   "time": "10:00",
-   "discipline": "가라테 쿠미테",
-   "event": "남자 -55kg급 16강",
-   "countries": [],
-   "venue": "도요하시 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026KUMM55KG8FNL000400"
-  },
-  {
-   "time": "10:00",
-   "discipline": "가라테 쿠미테",
-   "event": "남자 -55kg급 16강",
-   "countries": [],
-   "venue": "도요하시 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026KUMM55KG8FNL000500"
-  },
-  {
-   "time": "10:00",
-   "discipline": "가라테 쿠미테",
-   "event": "남자 -55kg급 16강",
-   "countries": [],
-   "venue": "도요하시 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026KUMM55KG8FNL000600"
-  },
-  {
-   "time": "10:00",
-   "discipline": "가라테 쿠미테",
-   "event": "남자 -55kg급 16강",
-   "countries": [],
-   "venue": "도요하시 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026KUMM55KG8FNL000700"
-  },
-  {
-   "time": "10:00",
-   "discipline": "가라테 쿠미테",
-   "event": "남자 -55kg급 16강",
-   "countries": [],
-   "venue": "도요하시 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026KUMM55KG8FNL000800"
   },
   {
    "time": "10:00",
@@ -372,8 +310,22 @@
    "venue": "헤키난 료쿠치 비치 코트",
    "hasKorea": true,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026VBVWTEAM2GPD000100"
+  },
+  {
+   "time": "10:00",
+   "discipline": "비치 발리볼",
+   "event": "여자 예선 라운드 - F조 1경기",
+   "countries": [
+    "일본",
+    "카타르"
+   ],
+   "venue": "헤키난 료쿠치 비치 코트",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026VBVWTEAM2GPF000100"
   },
   {
    "time": "10:00",
@@ -931,6 +883,34 @@
   },
   {
    "time": "11:00",
+   "discipline": "비치 발리볼",
+   "event": "여자 예선 라운드 - B조 1경기",
+   "countries": [
+    "중국",
+    "마카오"
+   ],
+   "venue": "헤키난 료쿠치 비치 코트",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026VBVWTEAM2GPB000100"
+  },
+  {
+   "time": "11:00",
+   "discipline": "비치 발리볼",
+   "event": "여자 예선 라운드 - E조 1경기",
+   "countries": [
+    "방글라데시",
+    "필리핀"
+   ],
+   "venue": "헤키난 료쿠치 비치 코트",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026VBVWTEAM2GPE000100"
+  },
+  {
+   "time": "11:00",
    "discipline": "테크볼",
    "event": "남자 단식 동메달전 1경기",
    "countries": [
@@ -1178,50 +1158,6 @@
    "link": "https://m.sports.naver.com/game/2026KATWINDIVIDFNL000100"
   },
   {
-   "time": "11:45",
-   "discipline": "가라테 쿠미테",
-   "event": "남자 -55kg급 8강",
-   "countries": [],
-   "venue": "도요하시 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026KUMM55KGQFNL000100"
-  },
-  {
-   "time": "11:45",
-   "discipline": "가라테 쿠미테",
-   "event": "남자 -55kg급 8강",
-   "countries": [],
-   "venue": "도요하시 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026KUMM55KGQFNL000200"
-  },
-  {
-   "time": "11:45",
-   "discipline": "가라테 쿠미테",
-   "event": "남자 -55kg급 8강",
-   "countries": [],
-   "venue": "도요하시 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026KUMM55KGQFNL000300"
-  },
-  {
-   "time": "11:45",
-   "discipline": "가라테 쿠미테",
-   "event": "남자 -55kg급 8강",
-   "countries": [],
-   "venue": "도요하시 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026KUMM55KGQFNL000400"
-  },
-  {
    "time": "12:30",
    "discipline": "탁구",
    "event": "남자 단체 A조 1경기",
@@ -1364,96 +1300,39 @@
   {
    "time": "12:50",
    "discipline": "가라테 쿠미테",
-   "event": "남자 -55kg급 준결승 A",
-   "countries": [],
+   "event": "남자 -60kg급 32강 112경기",
+   "countries": [
+    "압달라 하마드",
+    "하시모토 히로무"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026KUMM55KGSFNL000100"
+   "link": "https://m.sports.naver.com/game/2026KUMM60KGR32000100"
   },
   {
    "time": "12:50",
    "discipline": "가라테 쿠미테",
-   "event": "남자 -55kg급 준결승 B",
-   "countries": [],
+   "event": "남자 -60kg급 32강 208경기",
+   "countries": [
+    "박건호",
+    "존 크리스티안 라치카"
+   ],
    "venue": "도요하시 체육관",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026KUMM55KGSFNL000200"
-  },
-  {
-   "time": "12:50",
-   "discipline": "가라테 쿠미테",
-   "event": "남자 -55kg급 패자부활전",
-   "countries": [],
-   "venue": "도요하시 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026KUMM55KGREP1000100"
-  },
-  {
-   "time": "12:50",
-   "discipline": "가라테 쿠미테",
-   "event": "남자 -55kg급 패자부활전",
-   "countries": [],
-   "venue": "도요하시 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026KUMM55KGREP1000200"
-  },
-  {
-   "time": "12:50",
-   "discipline": "가라테 쿠미테",
-   "event": "남자 -60kg급 패자부활전",
-   "countries": [],
-   "venue": "도요하시 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026KUMM60KGREP1000200"
-  },
-  {
-   "time": "12:50",
-   "discipline": "가라테 쿠미테",
-   "event": "여자 +68kg급 준결승 A",
-   "countries": [],
-   "venue": "도요하시 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026KUMWO68KGSFNL000100"
-  },
-  {
-   "time": "12:50",
-   "discipline": "가라테 쿠미테",
-   "event": "여자 +68kg급 준결승 B",
-   "countries": [],
-   "venue": "도요하시 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026KUMWO68KGSFNL000200"
-  },
-  {
-   "time": "12:50",
-   "discipline": "가라테 쿠미테",
-   "event": "여자 +68kg급 패자부활전",
-   "countries": [],
-   "venue": "도요하시 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026KUMWO68KGREP1000200"
+   "link": "https://m.sports.naver.com/game/2026KUMM60KGR32000200"
   },
   {
    "time": "13:00",
    "discipline": "가라테 쿠미테",
    "event": "남자 -60kg급 16강 113경기",
-   "countries": [],
+   "countries": [
+    "무함마드 미르조조다",
+    "미정"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": false,
@@ -1464,7 +1343,10 @@
    "time": "13:00",
    "discipline": "가라테 쿠미테",
    "event": "남자 -60kg급 16강 209경기",
-   "countries": [],
+   "countries": [
+    "라얀 구르반미라도프",
+    "미정"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": false,
@@ -1496,7 +1378,7 @@
    "venue": "헤키난 료쿠치 비치 코트",
    "hasKorea": false,
    "medal": false,
-   "tv": true,
+   "tv": false,
    "link": "https://m.sports.naver.com/game/2026VBVMTEAM2GPE000100"
   },
   {
@@ -1510,7 +1392,7 @@
    "venue": "헤키난 료쿠치 비치 코트",
    "hasKorea": true,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026VBVMTEAM2GPE000200"
   },
   {
@@ -1531,7 +1413,10 @@
    "time": "13:10",
    "discipline": "가라테 쿠미테",
    "event": "남자 -60kg급 16강 114경기",
-   "countries": [],
+   "countries": [
+    "민 바하두르 타망",
+    "차우카힘"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": false,
@@ -1542,7 +1427,10 @@
    "time": "13:10",
    "discipline": "가라테 쿠미테",
    "event": "남자 -60kg급 16강 210경기",
-   "countries": [],
+   "countries": [
+    "수레야 산카르 하리 산카르",
+    "엠디 시암 호센"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": false,
@@ -1553,7 +1441,10 @@
    "time": "13:20",
    "discipline": "가라테 쿠미테",
    "event": "남자 -60kg급 16강 115경기",
-   "countries": [],
+   "countries": [
+    "압둘라 샤아반",
+    "벡잔 사비르자노비치 칼리코프"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": false,
@@ -1564,7 +1455,10 @@
    "time": "13:20",
    "discipline": "가라테 쿠미테",
    "event": "남자 -60kg급 16강 211경기",
-   "countries": [],
+   "countries": [
+    "다람자그드 바투르",
+    "주 반 둑"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": false,
@@ -1575,7 +1469,10 @@
    "time": "13:30",
    "discipline": "가라테 쿠미테",
    "event": "남자 -60kg급 16강 116경기",
-   "countries": [],
+   "countries": [
+    "시와콘 무엑통",
+    "사우드 압둘아지즈 알바셰르 B"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": false,
@@ -1586,7 +1483,10 @@
    "time": "13:30",
    "discipline": "가라테 쿠미테",
    "event": "남자 -60kg급 16강 212경기",
-   "countries": [],
+   "countries": [
+    "메흐리딘 투라호노프",
+    "압델라흐만 압델하미드"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": false,
@@ -1619,6 +1519,62 @@
    "medal": false,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026HBLWTEAM7RND000400"
+  },
+  {
+   "time": "13:40",
+   "discipline": "가라테 쿠미테",
+   "event": "남자 -55kg급 8강 117경기",
+   "countries": [
+    "테벤드란 칼리아나 순드람",
+    "후모윤미르조 할리모프"
+   ],
+   "venue": "도요하시 체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026KUMM55KGQFNL000100"
+  },
+  {
+   "time": "13:40",
+   "discipline": "가라테 쿠미테",
+   "event": "남자 -55kg급 8강 213경기",
+   "countries": [
+    "졸아만 비가빌",
+    "마흐사툴로 무미노프"
+   ],
+   "venue": "도요하시 체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026KUMM55KGQFNL000200"
+  },
+  {
+   "time": "13:50",
+   "discipline": "가라테 쿠미테",
+   "event": "남자 -55kg급 8강 118경기",
+   "countries": [
+    "라케시 마난 다르",
+    "낫타릿 잉로이"
+   ],
+   "venue": "도요하시 체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026KUMM55KGQFNL000300"
+  },
+  {
+   "time": "13:50",
+   "discipline": "가라테 쿠미테",
+   "event": "남자 -55kg급 8강 214경기",
+   "countries": [
+    "무함마드 테가르 자누아르",
+    "아크 아흐마드 무니브 아이만 PG 하지 모하마드 하시무딘"
+   ],
+   "venue": "도요하시 체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026KUMM55KGQFNL000400"
   },
   {
    "time": "13:50",
@@ -1687,8 +1643,11 @@
   {
    "time": "14:00",
    "discipline": "세팍타크로",
-   "event": "여자 팀 레구 조별예선 A조",
-   "countries": [],
+   "event": "여자 팀 레구 조별예선 A조 1",
+   "countries": [
+    "일본",
+    "태국"
+   ],
    "venue": "나고야시 미즈호 파크 체육관",
    "hasKorea": false,
    "medal": false,
@@ -1698,10 +1657,13 @@
   {
    "time": "14:00",
    "discipline": "세팍타크로",
-   "event": "여자 팀 레구 조별예선 A조",
-   "countries": [],
+   "event": "여자 팀 레구 조별예선 A조 2",
+   "countries": [
+    "인도네시아",
+    "대한민국"
+   ],
    "venue": "나고야시 미즈호 파크 체육관",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SPKWTEAMREGUGPA000200"
@@ -1770,8 +1732,11 @@
   {
    "time": "14:20",
    "discipline": "가라테 쿠미테",
-   "event": "여자 +68kg급 8강 1",
-   "countries": [],
+   "event": "여자 +68kg급 8강 121경기",
+   "countries": [
+    "보누 에감베르디예바",
+    "레이카 알 후마이라 루비스"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": false,
@@ -1781,8 +1746,11 @@
   {
    "time": "14:20",
    "discipline": "가라테 쿠미테",
-   "event": "여자 +68kg급 8강 2",
-   "countries": [],
+   "event": "여자 +68kg급 8강 217경기",
+   "countries": [
+    "디나 아흐메드 모스타파 S",
+    "소피야 베룰체바"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": false,
@@ -1792,8 +1760,11 @@
   {
    "time": "14:30",
    "discipline": "가라테 쿠미테",
-   "event": "여자 +68kg급 8강 3",
-   "countries": [],
+   "event": "여자 +68kg급 8강 122경기",
+   "countries": [
+    "마네반 부수완",
+    "베기마이 오로잘리예바"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": false,
@@ -1803,8 +1774,11 @@
   {
    "time": "14:30",
    "discipline": "가라테 쿠미테",
-   "event": "여자 +68kg급 8강 4",
-   "countries": [],
+   "event": "여자 +68kg급 8강 218경기",
+   "countries": [
+    "아리카 구룽",
+    "야라 나세르"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": false,
@@ -1861,6 +1835,28 @@
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026WSUWTAIJIFNL000100"
+  },
+  {
+   "time": "14:40",
+   "discipline": "가라테 쿠미테",
+   "event": "남자 -55kg급 준결승 A 123경기",
+   "countries": [],
+   "venue": "도요하시 체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026KUMM55KGSFNL000100"
+  },
+  {
+   "time": "14:40",
+   "discipline": "가라테 쿠미테",
+   "event": "남자 -55kg급 준결승 B 219경기",
+   "countries": [],
+   "venue": "도요하시 체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026KUMM55KGSFNL000200"
   },
   {
    "time": "14:45",
@@ -1935,9 +1931,34 @@
   },
   {
    "time": "15:00",
-   "discipline": "배드민턴",
-   "event": "여자 단체 16강",
+   "discipline": "가라테 쿠미테",
+   "event": "여자 +68kg급 준결승 A 125경기",
    "countries": [],
+   "venue": "도요하시 체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026KUMWO68KGSFNL000100"
+  },
+  {
+   "time": "15:00",
+   "discipline": "가라테 쿠미테",
+   "event": "여자 +68kg급 준결승 B 221경기",
+   "countries": [],
+   "venue": "도요하시 체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026KUMWO68KGSFNL000200"
+  },
+  {
+   "time": "15:00",
+   "discipline": "배드민턴",
+   "event": "여자 단체 1라운드 2경기",
+   "countries": [
+    "홍콩",
+    "말레이시아"
+   ],
    "venue": "이치노미야시 종합체육관",
    "hasKorea": false,
    "medal": false,
@@ -1947,8 +1968,11 @@
   {
    "time": "15:00",
    "discipline": "배드민턴",
-   "event": "여자 단체 16강",
-   "countries": [],
+   "event": "여자 단체 1라운드 3경기",
+   "countries": [
+    "카자흐스탄",
+    "인도"
+   ],
    "venue": "이치노미야시 종합체육관",
    "hasKorea": false,
    "medal": false,
@@ -2052,6 +2076,17 @@
   },
   {
    "time": "15:10",
+   "discipline": "가라테 쿠미테",
+   "event": "남자 -60kg급 패자부활전 라운드 2 222경기",
+   "countries": [],
+   "venue": "도요하시 체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026KUMM60KGREP1000200"
+  },
+  {
+   "time": "15:10",
    "discipline": "근대 5종",
    "event": "남자 결승 수영 100m 자유형",
    "countries": [
@@ -2089,6 +2124,28 @@
    "link": "https://m.sports.naver.com/game/2026MMAMT77KGQFNL000100"
   },
   {
+   "time": "15:20",
+   "discipline": "가라테 쿠미테",
+   "event": "남자 -60kg급 패자부활전 라운드 1 127경기",
+   "countries": [],
+   "venue": "도요하시 체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026KUMM60KGREPF000100"
+  },
+  {
+   "time": "15:20",
+   "discipline": "가라테 쿠미테",
+   "event": "남자 -60kg급 패자부활전 라운드 1 223경기",
+   "countries": [],
+   "venue": "도요하시 체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026KUMM60KGREPF000200"
+  },
+  {
    "time": "15:30",
    "discipline": "MMA",
    "event": "여자 모던 -54kg급 8강 15경기",
@@ -2101,6 +2158,17 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026MMAWM54KGQFNL000200"
+  },
+  {
+   "time": "15:30",
+   "discipline": "가라테 쿠미테",
+   "event": "남자 -55kg급 동메달 결정전 A 128경기",
+   "countries": [],
+   "venue": "도요하시 체육관",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026KUMM55KGREPF000100"
   },
   {
    "time": "15:30",
@@ -2169,20 +2237,9 @@
    "link": "https://m.sports.naver.com/game/2026MMAMT65KGQFNL000200"
   },
   {
-   "time": "15:42",
+   "time": "15:40",
    "discipline": "가라테 쿠미테",
-   "event": "남자 -55kg급 동메달전 A",
-   "countries": [],
-   "venue": "도요하시 체육관",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026KUMM55KGREPF000100"
-  },
-  {
-   "time": "15:42",
-   "discipline": "가라테 쿠미테",
-   "event": "남자 -55kg급 동메달전 B",
+   "event": "남자 -55kg급 동메달 결정전 B 129경기",
    "countries": [],
    "venue": "도요하시 체육관",
    "hasKorea": false,
@@ -2205,26 +2262,15 @@
    "link": "https://m.sports.naver.com/game/2026MMAWT60KGQFNL000200"
   },
   {
-   "time": "15:54",
+   "time": "15:50",
    "discipline": "가라테 쿠미테",
-   "event": "여자 +68kg급 동메달전 A",
+   "event": "남자 -60kg급 동메달 결정전 130경기",
    "countries": [],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": true,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026KUMWO68KGREPF000100"
-  },
-  {
-   "time": "15:54",
-   "discipline": "가라테 쿠미테",
-   "event": "여자 +68kg급 동메달전 B",
-   "countries": [],
-   "venue": "도요하시 체육관",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026KUMWO68KGREPF000200"
+   "link": "https://m.sports.naver.com/game/2026KUMM60KGREPF000300"
   },
   {
    "time": "16:00",
@@ -2237,8 +2283,19 @@
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": true,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026MMAMM71KGQFNL000200"
+  },
+  {
+   "time": "16:00",
+   "discipline": "가라테 쿠미테",
+   "event": "남자 -60kg급 동메달 결정전 131경기",
+   "countries": [],
+   "venue": "도요하시 체육관",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026KUMM60KGREPF000400"
   },
   {
    "time": "16:00",
@@ -2423,28 +2480,6 @@
    "link": "https://m.sports.naver.com/game/2026WPOWTEAM7GPA000200"
   },
   {
-   "time": "16:06",
-   "discipline": "가라테 쿠미테",
-   "event": "남자 -60kg급 동메달전 A",
-   "countries": [],
-   "venue": "도요하시 체육관",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026KUMM60KGREPF000100"
-  },
-  {
-   "time": "16:06",
-   "discipline": "가라테 쿠미테",
-   "event": "남자 -60kg급 동메달전 B",
-   "countries": [],
-   "venue": "도요하시 체육관",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026KUMM60KGREPF000200"
-  },
-  {
    "time": "16:10",
    "discipline": "MMA",
    "event": "남자 트레디셔널 -77kg급 8강 19경기",
@@ -2457,6 +2492,17 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026MMAMT77KGQFNL000200"
+  },
+  {
+   "time": "16:10",
+   "discipline": "가라테 쿠미테",
+   "event": "여자 +68kg급 동메달 결정전 A 132경기",
+   "countries": [],
+   "venue": "도요하시 체육관",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026KUMWO68KGREPF000100"
   },
   {
    "time": "16:20",
@@ -2473,6 +2519,17 @@
    "link": "https://m.sports.naver.com/game/2026MMAMM60KGQFNL000300"
   },
   {
+   "time": "16:20",
+   "discipline": "가라테 쿠미테",
+   "event": "여자 +68kg급 동메달 결정전 B 133경기",
+   "countries": [],
+   "venue": "도요하시 체육관",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026KUMWO68KGREPF000200"
+  },
+  {
    "time": "16:30",
    "discipline": "MMA",
    "event": "남자 모던 -60kg급 8강 21경기",
@@ -2485,6 +2542,17 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026MMAMM60KGQFNL000400"
+  },
+  {
+   "time": "16:30",
+   "discipline": "가라테 쿠미테",
+   "event": "남자 -55kg급 결승 134경기",
+   "countries": [],
+   "venue": "도요하시 체육관",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026KUMM55KGFNL000100"
   },
   {
    "time": "16:40",
@@ -2502,6 +2570,17 @@
   },
   {
    "time": "16:40",
+   "discipline": "가라테 쿠미테",
+   "event": "남자 -60kg급 결승 135경기",
+   "countries": [],
+   "venue": "도요하시 체육관",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026KUMM60KGFNL000100"
+  },
+  {
+   "time": "16:40",
    "discipline": "농구",
    "event": "남자 동메달전",
    "countries": [
@@ -2513,17 +2592,6 @@
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026BKBMTEAM5FNL000200"
-  },
-  {
-   "time": "16:45",
-   "discipline": "가라테 쿠미테",
-   "event": "남자 -55kg급 결승",
-   "countries": [],
-   "venue": "도요하시 체육관",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026KUMM55KGFNL000100"
   },
   {
    "time": "16:50",
@@ -2540,6 +2608,17 @@
    "link": "https://m.sports.naver.com/game/2026MMAMM71KGQFNL000400"
   },
   {
+   "time": "16:50",
+   "discipline": "가라테 쿠미테",
+   "event": "여자 +68kg급 결승 136경기",
+   "countries": [],
+   "venue": "도요하시 체육관",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026KUMWO68KGFNL000100"
+  },
+  {
    "time": "17:00",
    "discipline": "MMA",
    "event": "남자 트레디셔널 -65kg급 8강 24경기",
@@ -2552,17 +2631,6 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026MMAMT65KGQFNL000300"
-  },
-  {
-   "time": "17:00",
-   "discipline": "가라테 쿠미테",
-   "event": "여자 +68kg급 결승",
-   "countries": [],
-   "venue": "도요하시 체육관",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026KUMWO68KGFNL000100"
   },
   {
    "time": "17:00",
@@ -2630,17 +2698,6 @@
   },
   {
    "time": "17:15",
-   "discipline": "가라테 쿠미테",
-   "event": "남자 -60kg급 결승",
-   "countries": [],
-   "venue": "도요하시 체육관",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026KUMM60KGFNL000100"
-  },
-  {
-   "time": "17:15",
    "discipline": "정구",
    "event": "남자 단체 금메달전",
    "countries": [],
@@ -2661,7 +2718,7 @@
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": true,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026MMAMT77KGQFNL000300"
   },
   {
@@ -2759,7 +2816,7 @@
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": true,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026MMAWM54KGQFNL000400"
   },
   {
