@@ -1,6 +1,6 @@
 {
   "month": "2026-09",
-  "updated_at": "2026-09-19T05:10:54.688423+09:00",
+  "updated_at": "2026-09-19T10:08:00.251733+09:00",
   "programs": [
     {
       "program_key": "HD_HJM",
@@ -127,7 +127,7 @@
         {
           "date": "2026-09-22",
           "label": "09/22(화) 방송",
-          "collected_at": "2026-09-19T05:10:54.683760+09:00",
+          "collected_at": "2026-09-19T10:08:00.249243+09:00",
           "products": [
             {
               "broadcast_date_label": "9/22(화) 방송상품",
@@ -378,7 +378,7 @@
         {
           "date": "2026-09-19",
           "label": "09/19(토) 08:20 방송",
-          "collected_at": "2026-09-19T05:10:54.683760+09:00",
+          "collected_at": "2026-09-19T10:08:00.249243+09:00",
           "products": [
             {
               "broadcast_date_label": "09/19(토) 08:20 방송",
@@ -406,11 +406,37 @@
             },
             {
               "broadcast_date_label": "09/19(토) 08:20 방송",
+              "brand": "제로핀홀드롭스",
+              "name": "드롭스 블랙  IH 프라이팬 세트 (26cm팬+26cm웍)",
+              "price": 59900,
+              "image": "https://image.hmall.com/2252695408_0.png",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252695408"
+            },
+            {
+              "broadcast_date_label": "09/19(토) 08:20 방송",
+              "brand": "늘해랑",
+              "name": "[늘해랑] 해남 황토 호박고구마 8kg (4kg+4kg)",
+              "price": 29900,
+              "image": "https://image.hmall.com/2241678738_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2241678738"
+            },
+            {
+              "broadcast_date_label": "09/19(토) 08:20 방송",
               "brand": "콤비타",
               "name": "콤비타 고체꿀 UMF10 퓨어 마누카꿀 로젠지",
               "price": 96900,
               "image": "https://image.hmall.com/2228678932_0.jpg",
               "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2228678932&preview=true"
+            }
+          ],
+          "reconciled_at": "2026-09-19T10:08:00.249243+09:00",
+          "revisions": [
+            {
+              "at": "2026-09-19T10:08:00.249243+09:00",
+              "added": [
+                "드롭스 블랙  IH 프라이팬 세트 (26cm팬+26cm웍)",
+                "[늘해랑] 해남 황토 호박고구마 8kg (4kg+4kg)"
+              ]
             }
           ]
         },
@@ -543,7 +569,7 @@
         {
           "date": "2026-09-21",
           "label": "09/21(월) 19:30 방송",
-          "collected_at": "2026-09-19T05:10:54.683760+09:00",
+          "collected_at": "2026-09-19T10:08:00.249243+09:00",
           "products": [
             {
               "broadcast_date_label": "09/21(월) 19:30 방송",
@@ -1850,6 +1876,69 @@
       "broadcasts": [
         {
           "date": "2026-09-19",
+          "label": "09/19(토) 09:20 방송",
+          "collected_at": "2026-09-19T10:08:00.249243+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "09/19 토요일 09:20",
+              "brand": "횡성축협한우",
+              "name": "[횡성축협한우] 1++ 구이세트 (꽃등심 400g 1팩, 등심 400g 1팩, 갈비살 400g 1팩), 총 1.2kg",
+              "price": 249000,
+              "image": "https://image2.lotteimall.com/goods/74/33/87/12873374_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12873374"
+            },
+            {
+              "broadcast_date_label": "09/19 토요일 09:20",
+              "brand": "횡성축협한우",
+              "name": "[횡성축협한우] 1++ 불고기세트 (불고기 600g x 4팩 / 총 2.4kg)",
+              "price": 169000,
+              "image": "https://image2.lotteimall.com/goods/57/28/78/12782857_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12782857"
+            },
+            {
+              "broadcast_date_label": "09/19 토요일 09:20",
+              "brand": "청도 반건시",
+              "name": "[청도 반건시] 20과세트* 2세트 + 감말랭이 150g*4팩 + 쇼핑백 2장",
+              "price": 66900,
+              "image": "https://image2.lotteimall.com/goods/72/45/75/12754572_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12754572"
+            },
+            {
+              "broadcast_date_label": "09/19 토요일 09:20",
+              "brand": "담꽃",
+              "name": "[담꽃]프리미엄 생강차 3병(각 400g) + 생강차 스틱 2박스(각 25gx10ea) ",
+              "price": 73900,
+              "image": "https://image2.lotteimall.com/goods/18/91/81/12819118_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12819118"
+            },
+            {
+              "broadcast_date_label": "09/19 토요일 09:20",
+              "brand": "기삼전복",
+              "name": "[기삼전복] 진도 활전복 왕왕특대 160g이상x 8미(1.28kg이상)",
+              "price": 69900,
+              "image": "https://image2.lotteimall.com/goods/44/26/87/12872644_2.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12872644"
+            },
+            {
+              "broadcast_date_label": "09/19 토요일 09:20",
+              "brand": "파너",
+              "name": "[파너] 파너 유기농 착즙 당근주스 10병+비트주스 2병, 총 500mlx12병",
+              "price": 79900,
+              "image": "https://image2.lotteimall.com/goods/83/60/91/12916083_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12916083"
+            },
+            {
+              "broadcast_date_label": "09/19 토요일 09:20",
+              "brand": "라카루트",
+              "name": "[추석기프트세트] 액티브 치약 75ml * 10개 + 휴대용 10ml * 4개 + 쇼핑백",
+              "price": 109000,
+              "image": "https://image2.lotteimall.com/goods/28/45/92/12924528_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12924528"
+            }
+          ]
+        },
+        {
+          "date": "2026-09-19",
           "label": "09/19(토) 08:20 방송",
           "collected_at": "2026-09-19T05:10:54.683760+09:00",
           "products": [
@@ -2289,7 +2378,7 @@
         {
           "date": "2026-09-21",
           "label": "09/21(월) 19:35 방송",
-          "collected_at": "2026-09-19T05:10:54.683760+09:00",
+          "collected_at": "2026-09-19T10:08:00.249243+09:00",
           "products": [
             {
               "broadcast_date_label": "09/21(월) 19:35",
@@ -3557,7 +3646,7 @@
         {
           "date": "2026-09-21",
           "label": "09/21(월) 20:00 방송",
-          "collected_at": "2026-09-19T05:10:54.683760+09:00",
+          "collected_at": "2026-09-19T10:08:00.249243+09:00",
           "products": [
             {
               "broadcast_date_label": "09/21(월) 20:00",
