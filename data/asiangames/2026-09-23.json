@@ -1,6 +1,6 @@
 {
  "date": "2026-09-23",
- "collectedAt": "2026-09-20T08:52:57+09:00",
+ "collectedAt": "2026-09-20T23:03:51+09:00",
  "games": [
   {
    "time": "07:30",
@@ -213,13 +213,13 @@
   {
    "time": "09:00",
    "discipline": "조정",
-   "event": "남자 페어 결승 A",
+   "event": "남자 싱글스컬 예선",
    "countries": [],
    "venue": "나가라가와 국제 레가타 코스",
    "hasKorea": false,
-   "medal": true,
+   "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ROWMNOCOX2FNL"
+   "link": "https://m.sports.naver.com/game/2026ROWMSCULL1HEAT"
   },
   {
    "time": "09:00",
@@ -236,15 +236,15 @@
    "link": "https://m.sports.naver.com/game/2026HOCWTEAM11GPA000700"
   },
   {
-   "time": "09:12",
+   "time": "09:20",
    "discipline": "조정",
-   "event": "남자 경량급 더블스컬 결승",
+   "event": "남자 더블스컬 예선",
    "countries": [],
    "venue": "나가라가와 국제 레가타 코스",
    "hasKorea": false,
-   "medal": true,
+   "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ROWMSCULL2LFNL"
+   "link": "https://m.sports.naver.com/game/2026ROWMSCULL2HEAT"
   },
   {
    "time": "09:30",
@@ -283,15 +283,15 @@
    "link": "https://m.sports.naver.com/game/2026KABMTEAMGPA000600"
   },
   {
-   "time": "09:36",
+   "time": "09:40",
    "discipline": "조정",
-   "event": "남자 무타포어 결승",
+   "event": "여자 경량급 싱글스컬 예선",
    "countries": [],
    "venue": "나가라가와 국제 레가타 코스",
    "hasKorea": false,
-   "medal": true,
+   "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ROWMNOCOX4FNL"
+   "link": "https://m.sports.naver.com/game/2026ROWWSCULL1LHEAT"
   },
   {
    "time": "09:45",
@@ -340,28 +340,6 @@
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026TRPWSKMTFNL000100"
-  },
-  {
-   "time": "09:48",
-   "discipline": "조정",
-   "event": "여자 무타포어 결승",
-   "countries": [],
-   "venue": "나가라가와 국제 레가타 코스",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ROWWNOCOX4FNL"
-  },
-  {
-   "time": "09:50",
-   "discipline": "조정",
-   "event": "여자 경량급 싱글스컬 결승",
-   "countries": [],
-   "venue": "나가라가와 국제 레가타 코스",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ROWWSCULL1LFNL"
   },
   {
    "time": "10:00",
@@ -542,6 +520,17 @@
   },
   {
    "time": "10:00",
+   "discipline": "조정",
+   "event": "여자 경량급 더블스컬 예선",
+   "countries": [],
+   "venue": "나가라가와 국제 레가타 코스",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ROWWSCULL2LHEAT"
+  },
+  {
+   "time": "10:00",
    "discipline": "카누 스프린트",
    "event": "남자 카약 4인승 500m 예선",
    "countries": [],
@@ -554,10 +543,13 @@
   {
    "time": "10:00",
    "discipline": "탁구",
-   "event": "혼합복식 32강",
-   "countries": [],
+   "event": "혼합복식 2라운드 1",
+   "countries": [
+    "대한민국",
+    "카타르"
+   ],
    "venue": "스카이 홀 도요타",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026TTEXDOUBLESR32000100"
@@ -565,95 +557,7 @@
   {
    "time": "10:00",
    "discipline": "탁구",
-   "event": "혼합복식 32강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEXDOUBLESR32000200"
-  },
-  {
-   "time": "10:00",
-   "discipline": "탁구",
-   "event": "혼합복식 32강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEXDOUBLESR32000300"
-  },
-  {
-   "time": "10:00",
-   "discipline": "탁구",
-   "event": "혼합복식 32강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEXDOUBLESR32000400"
-  },
-  {
-   "time": "10:00",
-   "discipline": "탁구",
-   "event": "혼합복식 32강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEXDOUBLESR32000500"
-  },
-  {
-   "time": "10:00",
-   "discipline": "탁구",
-   "event": "혼합복식 32강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEXDOUBLESR32000600"
-  },
-  {
-   "time": "10:00",
-   "discipline": "탁구",
-   "event": "혼합복식 32강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEXDOUBLESR32000700"
-  },
-  {
-   "time": "10:00",
-   "discipline": "탁구",
-   "event": "혼합복식 32강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEXDOUBLESR32000800"
-  },
-  {
-   "time": "10:00",
-   "discipline": "탁구",
-   "event": "혼합복식 32강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEXDOUBLESR32000900"
-  },
-  {
-   "time": "10:00",
-   "discipline": "탁구",
-   "event": "혼합복식 32강",
+   "event": "혼합복식 2라운드 10",
    "countries": [],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -664,7 +568,7 @@
   {
    "time": "10:00",
    "discipline": "탁구",
-   "event": "혼합복식 32강",
+   "event": "혼합복식 2라운드 11",
    "countries": [],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -675,7 +579,7 @@
   {
    "time": "10:00",
    "discipline": "탁구",
-   "event": "혼합복식 32강",
+   "event": "혼합복식 2라운드 12",
    "countries": [],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -686,7 +590,7 @@
   {
    "time": "10:00",
    "discipline": "탁구",
-   "event": "혼합복식 32강",
+   "event": "혼합복식 2라운드 13",
    "countries": [],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -697,10 +601,13 @@
   {
    "time": "10:00",
    "discipline": "탁구",
-   "event": "혼합복식 32강",
-   "countries": [],
+   "event": "혼합복식 2라운드 14",
+   "countries": [
+    "미정",
+    "대한민국"
+   ],
    "venue": "스카이 홀 도요타",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026TTEXDOUBLESR32001400"
@@ -708,7 +615,7 @@
   {
    "time": "10:00",
    "discipline": "탁구",
-   "event": "혼합복식 32강",
+   "event": "혼합복식 2라운드 15",
    "countries": [],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -719,7 +626,7 @@
   {
    "time": "10:00",
    "discipline": "탁구",
-   "event": "혼합복식 32강",
+   "event": "혼합복식 2라운드 16",
    "countries": [],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -728,15 +635,92 @@
    "link": "https://m.sports.naver.com/game/2026TTEXDOUBLESR32001600"
   },
   {
-   "time": "10:06",
-   "discipline": "조정",
-   "event": "남자 싱글스컬 결승",
+   "time": "10:00",
+   "discipline": "탁구",
+   "event": "혼합복식 2라운드 2",
    "countries": [],
-   "venue": "나가라가와 국제 레가타 코스",
+   "venue": "스카이 홀 도요타",
    "hasKorea": false,
-   "medal": true,
+   "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ROWMSCULL1FNL"
+   "link": "https://m.sports.naver.com/game/2026TTEXDOUBLESR32000200"
+  },
+  {
+   "time": "10:00",
+   "discipline": "탁구",
+   "event": "혼합복식 2라운드 3",
+   "countries": [],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEXDOUBLESR32000300"
+  },
+  {
+   "time": "10:00",
+   "discipline": "탁구",
+   "event": "혼합복식 2라운드 4",
+   "countries": [],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEXDOUBLESR32000400"
+  },
+  {
+   "time": "10:00",
+   "discipline": "탁구",
+   "event": "혼합복식 2라운드 5",
+   "countries": [],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEXDOUBLESR32000500"
+  },
+  {
+   "time": "10:00",
+   "discipline": "탁구",
+   "event": "혼합복식 2라운드 6",
+   "countries": [],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEXDOUBLESR32000600"
+  },
+  {
+   "time": "10:00",
+   "discipline": "탁구",
+   "event": "혼합복식 2라운드 7",
+   "countries": [],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEXDOUBLESR32000700"
+  },
+  {
+   "time": "10:00",
+   "discipline": "탁구",
+   "event": "혼합복식 2라운드 8",
+   "countries": [],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEXDOUBLESR32000800"
+  },
+  {
+   "time": "10:00",
+   "discipline": "탁구",
+   "event": "혼합복식 2라운드 9",
+   "countries": [],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEXDOUBLESR32000900"
   },
   {
    "time": "10:09",
@@ -766,13 +750,13 @@
   {
    "time": "10:10",
    "discipline": "조정",
-   "event": "여자 경량급 더블스컬 결승",
+   "event": "남자 페어 예선",
    "countries": [],
    "venue": "나가라가와 국제 레가타 코스",
    "hasKorea": false,
-   "medal": true,
+   "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ROWWSCULL2LFNL"
+   "link": "https://m.sports.naver.com/game/2026ROWMNOCOX2HEAT"
   },
   {
    "time": "10:10",
@@ -866,6 +850,17 @@
    "link": "https://m.sports.naver.com/game/2026TSTWSINGLESSFNL000200"
   },
   {
+   "time": "10:30",
+   "discipline": "조정",
+   "event": "여자 쿼드러플 스컬 예선",
+   "countries": [],
+   "venue": "나가라가와 국제 레가타 코스",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ROWWSCULL4HEAT"
+  },
+  {
    "time": "10:33",
    "discipline": "수영",
    "event": "남자 200m 자유형 - 예선",
@@ -911,6 +906,17 @@
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026KATMTEAMFNL000300"
+  },
+  {
+   "time": "10:40",
+   "discipline": "조정",
+   "event": "여자 포어 예선",
+   "countries": [],
+   "venue": "나가라가와 국제 레가타 코스",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ROWWNOCOX4HEAT"
   },
   {
    "time": "10:45",
@@ -1873,8 +1879,8 @@
    "discipline": "야구",
    "event": "남자 A조 5경기",
    "countries": [
-    "일본",
-    "필리핀"
+    "필리핀",
+    "일본"
    ],
    "venue": "토요하시 시민구장",
    "hasKorea": false,
@@ -1887,8 +1893,8 @@
    "discipline": "야구",
    "event": "남자 B조 5경기",
    "countries": [
-    "대한민국",
-    "태국"
+    "태국",
+    "대한민국"
    ],
    "venue": "오카자키 시민구장",
    "hasKorea": true,
@@ -1965,7 +1971,7 @@
    "discipline": "탁구",
    "event": "여자 단식 1라운드 12",
    "countries": [
-    "비만디 산딘사 스와르나 스리 반다라",
+    "비만디 반다라",
     "누르키즈 아이아즈베코바"
    ],
    "venue": "스카이 홀 도요타",
@@ -3214,6 +3220,17 @@
    "link": "https://m.sports.naver.com/game/2026SPKWTEAMREGUGPA000600"
   },
   {
+   "time": "14:00",
+   "discipline": "조정",
+   "event": "여자 싱글스컬 예선",
+   "countries": [],
+   "venue": "나가라가와 국제 레가타 코스",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ROWWSCULL1HEAT"
+  },
+  {
    "time": "14:05",
    "discipline": "3x3 농구",
    "event": "여자 B조 6경기",
@@ -3248,6 +3265,17 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026CSPMC1500MHEAT"
+  },
+  {
+   "time": "14:20",
+   "discipline": "조정",
+   "event": "여자 더블스컬 예선",
+   "countries": [],
+   "venue": "나가라가와 국제 레가타 코스",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ROWWSCULL2HEAT"
   },
   {
    "time": "14:25",
@@ -3347,6 +3375,17 @@
   },
   {
    "time": "14:30",
+   "discipline": "조정",
+   "event": "남자 경량급 싱글스컬 예선",
+   "countries": [],
+   "venue": "나가라가와 국제 레가타 코스",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ROWMSCULL1LHEAT"
+  },
+  {
+   "time": "14:30",
    "discipline": "축구",
    "event": "남자 B조 5경기",
    "countries": [
@@ -3410,6 +3449,17 @@
    "link": "https://m.sports.naver.com/game/2026PISWAPMFNL000100"
   },
   {
+   "time": "14:50",
+   "discipline": "조정",
+   "event": "남자 경량급 더블스컬 예선",
+   "countries": [],
+   "venue": "나가라가와 국제 레가타 코스",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ROWMSCULL2LHEAT"
+  },
+  {
    "time": "14:55",
    "discipline": "3x3 농구",
    "event": "남자 C조 6경기",
@@ -3471,6 +3521,28 @@
    "link": "https://m.sports.naver.com/game/2026TRPMSKMFNL000100"
   },
   {
+   "time": "15:10",
+   "discipline": "조정",
+   "event": "여자 페어 예선",
+   "countries": [],
+   "venue": "나가라가와 국제 레가타 코스",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ROWWNOCOX2HEAT"
+  },
+  {
+   "time": "15:30",
+   "discipline": "조정",
+   "event": "남자 쿼드러플스컬 예선",
+   "countries": [],
+   "venue": "나가라가와 국제 레가타 코스",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ROWMSCULL4HEAT"
+  },
+  {
    "time": "15:30",
    "discipline": "핸드볼",
    "event": "여자 라운드로빈 11경기",
@@ -3509,7 +3581,7 @@
   {
    "time": "15:45",
    "discipline": "정구",
-   "event": "여자 단식 결승",
+   "event": "남자 단식 결승",
    "countries": [],
    "venue": "히가시야마 공원 테니스 센터",
    "hasKorea": false,
@@ -3527,6 +3599,17 @@
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026WSUWDOGUFNL000100"
+  },
+  {
+   "time": "15:50",
+   "discipline": "조정",
+   "event": "남자 무타포어 예선",
+   "countries": [],
+   "venue": "나가라가와 국제 레가타 코스",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ROWMNOCOX4HEAT"
   },
   {
    "time": "16:00",
@@ -4196,8 +4279,8 @@
    "discipline": "야구",
    "event": "남자 A조 6경기",
    "countries": [
-    "중국",
-    "팔레스타인"
+    "팔레스타인",
+    "중국"
    ],
    "venue": "오카자키 시민구장",
    "hasKorea": false,
@@ -4210,8 +4293,8 @@
    "discipline": "야구",
    "event": "남자 B조 6경기",
    "countries": [
-    "차이니스 타이베이",
-    "홍콩"
+    "홍콩",
+    "차이니스 타이베이"
    ],
    "venue": "토요하시 시민구장",
    "hasKorea": false,
