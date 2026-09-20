@@ -1,6 +1,6 @@
 {
  "date": "2026-09-23",
- "collectedAt": "2026-09-20T23:03:51+09:00",
+ "collectedAt": "2026-09-21T08:50:03+09:00",
  "games": [
   {
    "time": "07:30",
@@ -60,9 +60,11 @@
    "time": "09:00",
    "discipline": "사이클 로드",
    "event": "남자 도로경주",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "신시로 도로 사이클 코스",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026CRDMRRFNL000100"
@@ -922,9 +924,11 @@
    "time": "10:45",
    "discipline": "승마  종합마술",
    "event": "종합마술 개인 장애물 결승",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "승마 공원",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026EEVOINDIVIDJUMP000100"
@@ -933,9 +937,11 @@
    "time": "10:45",
    "discipline": "승마  종합마술",
    "event": "종합마술 단체 장애물 결승",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "승마 공원",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026EEVOTEAMJUMP000100"
@@ -1812,67 +1818,15 @@
    "time": "12:00",
    "discipline": "복싱",
    "event": "남자 60kg - 예선 - 32강",
-   "countries": [],
+   "countries": [
+    "오태범",
+    "지야드 알리 마주라시 S"
+   ],
    "venue": "니시오 체육관",
    "hasKorea": false,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026BOXM60KGR32000100"
-  },
-  {
-   "time": "12:00",
-   "discipline": "복싱",
-   "event": "남자 60kg - 예선 - 32강",
-   "countries": [],
-   "venue": "니시오 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BOXM60KGR32000200"
-  },
-  {
-   "time": "12:00",
-   "discipline": "복싱",
-   "event": "남자 60kg - 예선 - 32강",
-   "countries": [],
-   "venue": "니시오 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BOXM60KGR32000300"
-  },
-  {
-   "time": "12:00",
-   "discipline": "복싱",
-   "event": "남자 60kg - 예선 - 32강",
-   "countries": [],
-   "venue": "니시오 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BOXM60KGR32000400"
-  },
-  {
-   "time": "12:00",
-   "discipline": "복싱",
-   "event": "남자 60kg - 예선 - 32강",
-   "countries": [],
-   "venue": "니시오 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BOXM60KGR32000500"
-  },
-  {
-   "time": "12:00",
-   "discipline": "복싱",
-   "event": "남자 60kg - 예선 - 32강",
-   "countries": [],
-   "venue": "니시오 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BOXM60KGR32000600"
   },
   {
    "time": "12:00",
@@ -2223,6 +2177,20 @@
    "link": "https://m.sports.naver.com/game/2026FOIWINDIVIDR32000800"
   },
   {
+   "time": "12:15",
+   "discipline": "복싱",
+   "event": "남자 60kg - 예선 - 32강",
+   "countries": [
+    "살리나스앨빈 존 레예스",
+    "카겐드라 로카 마가르"
+   ],
+   "venue": "니시오 체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BOXM60KGR32000200"
+  },
+  {
    "time": "12:20",
    "discipline": "가라테 쿠미테",
    "event": "여자 -50kg급 16강 5",
@@ -2249,6 +2217,20 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026BK3WTEAM3GPD000600"
+  },
+  {
+   "time": "12:30",
+   "discipline": "복싱",
+   "event": "남자 60kg - 예선 - 32강",
+   "countries": [
+    "준밀라도 오가이레",
+    "룬다아 간투무르"
+   ],
+   "venue": "니시오 체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BOXM60KGR32000300"
   },
   {
    "time": "12:30",
@@ -2362,6 +2344,20 @@
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026ESPOGT7FNL000100"
+  },
+  {
+   "time": "12:45",
+   "discipline": "복싱",
+   "event": "남자 60kg - 예선 - 32강",
+   "countries": [
+    "키타모토 슌스케",
+    "첸신린"
+   ],
+   "venue": "니시오 체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BOXM60KGR32000400"
   },
   {
    "time": "12:45",
@@ -2633,6 +2629,20 @@
   },
   {
    "time": "13:00",
+   "discipline": "복싱",
+   "event": "남자 60kg - 예선 - 32강",
+   "countries": [
+    "모하메드 사타르 살리흐 시잘라위",
+    "오마르 부다헤이"
+   ],
+   "venue": "니시오 체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BOXM60KGR32000500"
+  },
+  {
+   "time": "13:00",
    "discipline": "비치 발리볼",
    "event": "남자 예선 라운드 - D조 3경기",
    "countries": [
@@ -2788,6 +2798,20 @@
   },
   {
    "time": "13:15",
+   "discipline": "복싱",
+   "event": "남자 60kg - 예선 - 32강",
+   "countries": [
+    "킨레이",
+    "모하마드 아부 자제"
+   ],
+   "venue": "니시오 체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BOXM60KGR32000600"
+  },
+  {
+   "time": "13:15",
    "discipline": "사격 트랩",
    "event": "여자 스키트 결승",
    "countries": [],
@@ -2844,46 +2868,16 @@
   {
    "time": "13:30",
    "discipline": "복싱",
-   "event": "남자 80kg - 예선 - 16강",
-   "countries": [],
-   "venue": "니시오 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BOXM80KG8FNL000100"
-  },
-  {
-   "time": "13:30",
-   "discipline": "복싱",
-   "event": "남자 80kg - 예선 - 16강",
-   "countries": [],
+   "event": "남자 80kg - 예선 - 16강 2",
+   "countries": [
+    "안바르 나스레디노프",
+    "모호메드 우사이트 야즈민"
+   ],
    "venue": "니시오 체육관",
    "hasKorea": false,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026BOXM80KG8FNL000200"
-  },
-  {
-   "time": "13:30",
-   "discipline": "복싱",
-   "event": "남자 80kg - 예선 - 16강",
-   "countries": [],
-   "venue": "니시오 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BOXM80KG8FNL000300"
-  },
-  {
-   "time": "13:30",
-   "discipline": "복싱",
-   "event": "남자 80kg - 예선 - 16강",
-   "countries": [],
-   "venue": "니시오 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BOXM80KG8FNL000400"
   },
   {
    "time": "13:30",
@@ -3036,6 +3030,20 @@
   },
   {
    "time": "13:45",
+   "discipline": "복싱",
+   "event": "남자 80kg - 예선 - 16강 3",
+   "countries": [
+    "안쿠쉬",
+    "함사 포겔"
+   ],
+   "venue": "니시오 체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BOXM80KG8FNL000300"
+  },
+  {
+   "time": "13:45",
    "discipline": "탁구",
    "event": "혼합복식 16강",
    "countries": [],
@@ -3176,6 +3184,20 @@
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026KUMW50KGREPF000100"
+  },
+  {
+   "time": "14:00",
+   "discipline": "복싱",
+   "event": "남자 80kg - 예선 - 16강 4",
+   "countries": [
+    "압디라만 이크리모프",
+    "네크루즈 살리모프"
+   ],
+   "venue": "니시오 체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BOXM80KG8FNL000400"
   },
   {
    "time": "14:00",
@@ -3734,111 +3756,15 @@
    "time": "17:00",
    "discipline": "복싱",
    "event": "남자 60kg - 예선 - 32강",
-   "countries": [],
+   "countries": [
+    "린준유",
+    "장동환"
+   ],
    "venue": "니시오 체육관",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026BOXM60KGR32000700"
-  },
-  {
-   "time": "17:00",
-   "discipline": "복싱",
-   "event": "남자 60kg - 예선 - 32강",
-   "countries": [],
-   "venue": "니시오 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BOXM60KGR32000800"
-  },
-  {
-   "time": "17:00",
-   "discipline": "복싱",
-   "event": "남자 60kg - 예선 - 32강",
-   "countries": [],
-   "venue": "니시오 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BOXM60KGR32000900"
-  },
-  {
-   "time": "17:00",
-   "discipline": "복싱",
-   "event": "남자 60kg - 예선 - 32강",
-   "countries": [],
-   "venue": "니시오 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BOXM60KGR32001000"
-  },
-  {
-   "time": "17:00",
-   "discipline": "복싱",
-   "event": "남자 60kg - 예선 - 32강",
-   "countries": [],
-   "venue": "니시오 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BOXM60KGR32001100"
-  },
-  {
-   "time": "17:00",
-   "discipline": "복싱",
-   "event": "남자 60kg - 예선 - 32강",
-   "countries": [],
-   "venue": "니시오 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BOXM60KGR32001200"
-  },
-  {
-   "time": "17:00",
-   "discipline": "복싱",
-   "event": "남자 80kg - 예선 - 16강",
-   "countries": [],
-   "venue": "니시오 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BOXM80KG8FNL000500"
-  },
-  {
-   "time": "17:00",
-   "discipline": "복싱",
-   "event": "남자 80kg - 예선 - 16강",
-   "countries": [],
-   "venue": "니시오 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BOXM80KG8FNL000600"
-  },
-  {
-   "time": "17:00",
-   "discipline": "복싱",
-   "event": "남자 80kg - 예선 - 16강",
-   "countries": [],
-   "venue": "니시오 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BOXM80KG8FNL000700"
-  },
-  {
-   "time": "17:00",
-   "discipline": "복싱",
-   "event": "남자 80kg - 예선 - 16강",
-   "countries": [],
-   "venue": "니시오 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BOXM80KG8FNL000800"
   },
   {
    "time": "17:00",
@@ -3968,6 +3894,20 @@
    "link": "https://m.sports.naver.com/game/2026SWMW100MBAFNL"
   },
   {
+   "time": "17:15",
+   "discipline": "복싱",
+   "event": "남자 60kg - 예선 - 32강",
+   "countries": [
+    "다니얄 샤흐바흐쉬",
+    "아스리 우딘"
+   ],
+   "venue": "니시오 체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BOXM60KGR32001000"
+  },
+  {
    "time": "17:20",
    "discipline": "펜싱 사브르",
    "event": "남자 사브르 개인 준결승 2",
@@ -3988,6 +3928,20 @@
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026SWMM200MFRFNL"
+  },
+  {
+   "time": "17:30",
+   "discipline": "복싱",
+   "event": "남자 60kg - 예선 - 32강",
+   "countries": [
+    "엠디 살림 호사인",
+    "삭다 루암탐"
+   ],
+   "venue": "니시오 체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BOXM60KGR32000800"
   },
   {
    "time": "17:30",
@@ -4032,6 +3986,34 @@
    "link": "https://m.sports.naver.com/game/2026WPOWTEAM7GPA001200"
   },
   {
+   "time": "17:45",
+   "discipline": "복싱",
+   "event": "남자 60kg - 예선 - 32강",
+   "countries": [
+    "도블레트 무하노프",
+    "라비두 자야나트 쿠마라 구나실라 자야와르다나 칸"
+   ],
+   "venue": "니시오 체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BOXM60KGR32000900"
+  },
+  {
+   "time": "17:45",
+   "discipline": "복싱",
+   "event": "남자 60kg - 예선 - 32강",
+   "countries": [
+    "에말 함담",
+    "모하메드 알파가이"
+   ],
+   "venue": "니시오 체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BOXM60KGR32001300"
+  },
+  {
    "time": "17:48",
    "discipline": "수영",
    "event": "여자 100m 평영 결승",
@@ -4056,112 +4038,13 @@
   {
    "time": "18:00",
    "discipline": "우슈 산다",
-   "event": "남자 산다 56kg급 준결승 1",
+   "event": "여자 산다 52kg급 준결승 1",
    "countries": [],
    "venue": "아이치현 무도관",
    "hasKorea": false,
    "medal": true,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SANM56KGSFNL000100"
-  },
-  {
-   "time": "18:00",
-   "discipline": "우슈 산다",
-   "event": "남자 산다 56kg급 준결승 2",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SANM56KGSFNL000200"
-  },
-  {
-   "time": "18:00",
-   "discipline": "우슈 산다",
-   "event": "남자 산다 60kg급 준결승 1",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SANM60KGSFNL000100"
-  },
-  {
-   "time": "18:00",
-   "discipline": "우슈 산다",
-   "event": "남자 산다 60kg급 준결승 2",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SANM60KGSFNL000200"
-  },
-  {
-   "time": "18:00",
-   "discipline": "우슈 산다",
-   "event": "남자 산다 65kg급 준결승 1",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SANM65KGSFNL000100"
-  },
-  {
-   "time": "18:00",
-   "discipline": "우슈 산다",
-   "event": "남자 산다 65kg급 준결승 2",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SANM65KGSFNL000200"
-  },
-  {
-   "time": "18:00",
-   "discipline": "우슈 산다",
-   "event": "남자 산다 70kg급 준결승 1",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SANM70KGSFNL000100"
-  },
-  {
-   "time": "18:00",
-   "discipline": "우슈 산다",
-   "event": "남자 산다 70kg급 준결승 2",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SANM70KGSFNL000200"
-  },
-  {
-   "time": "18:00",
-   "discipline": "우슈 산다",
-   "event": "남자 산다 75kg급 준결승 1",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SANM75KGSFNL000100"
-  },
-  {
-   "time": "18:00",
-   "discipline": "우슈 산다",
-   "event": "남자 산다 75kg급 준결승 2",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SANM75KGSFNL000200"
+   "link": "https://m.sports.naver.com/game/2026SANW52KGSFNL000100"
   },
   {
    "time": "18:05",
@@ -4201,6 +4084,17 @@
   },
   {
    "time": "18:10",
+   "discipline": "우슈 산다",
+   "event": "여자 산다 52kg급 준결승 2",
+   "countries": [],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SANW52KGSFNL000200"
+  },
+  {
+   "time": "18:10",
    "discipline": "카바디",
    "event": "남자 예선 A조 8경기",
    "countries": [
@@ -4226,6 +4120,20 @@
   },
   {
    "time": "18:15",
+   "discipline": "복싱",
+   "event": "남자 60kg - 예선 - 32강",
+   "countries": [
+    "술리야 캄미",
+    "아크말 우바이도프"
+   ],
+   "venue": "니시오 체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BOXM60KGR32001100"
+  },
+  {
+   "time": "18:15",
    "discipline": "수영",
    "event": "혼성 4 x 100m 혼계영 결승",
    "countries": [],
@@ -4234,6 +4142,17 @@
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026SWMX4X100MMDFNL"
+  },
+  {
+   "time": "18:20",
+   "discipline": "우슈 산다",
+   "event": "여자 산다 60kg급 준결승 1",
+   "countries": [],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SANW60KGSFNL000100"
   },
   {
    "time": "18:20",
@@ -4276,6 +4195,20 @@
   },
   {
    "time": "18:30",
+   "discipline": "복싱",
+   "event": "남자 80kg - 예선 - 16강 5",
+   "countries": [
+    "김민성",
+    "사비르잔 아칼리코프"
+   ],
+   "venue": "니시오 체육관",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BOXM80KG8FNL000500"
+  },
+  {
+   "time": "18:30",
    "discipline": "야구",
    "event": "남자 A조 6경기",
    "countries": [
@@ -4303,40 +4236,7 @@
    "link": "https://m.sports.naver.com/game/2026BSBMTEAMGPB000600"
   },
   {
-   "time": "18:40",
-   "discipline": "우슈 산다",
-   "event": "여자 산다 52kg급 준결승 1",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SANW52KGSFNL000100"
-  },
-  {
-   "time": "18:40",
-   "discipline": "우슈 산다",
-   "event": "여자 산다 52kg급 준결승 2",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SANW52KGSFNL000200"
-  },
-  {
-   "time": "18:40",
-   "discipline": "우슈 산다",
-   "event": "여자 산다 60kg급 준결승 1",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SANW60KGSFNL000100"
-  },
-  {
-   "time": "18:40",
+   "time": "18:30",
    "discipline": "우슈 산다",
    "event": "여자 산다 60kg급 준결승 2",
    "countries": [],
@@ -4345,6 +4245,42 @@
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SANW60KGSFNL000200"
+  },
+  {
+   "time": "18:40",
+   "discipline": "우슈 산다",
+   "event": "남자 산다 56kg급 준결승 1",
+   "countries": [],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SANM56KGSFNL000100"
+  },
+  {
+   "time": "18:45",
+   "discipline": "복싱",
+   "event": "남자 80kg - 예선 - 16강 6",
+   "countries": [
+    "토리야베 카이",
+    "마이켈 로버드 무스키타"
+   ],
+   "venue": "니시오 체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BOXM80KG8FNL000600"
+  },
+  {
+   "time": "18:50",
+   "discipline": "우슈 산다",
+   "event": "남자 산다 56kg급 준결승 2",
+   "countries": [],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SANM56KGSFNL000200"
   },
   {
    "time": "18:55",
@@ -4387,6 +4323,31 @@
   },
   {
    "time": "19:00",
+   "discipline": "복싱",
+   "event": "남자 80kg - 예선 - 16강 7",
+   "countries": [
+    "왕샤오바오",
+    "위라폰 종조호"
+   ],
+   "venue": "니시오 체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BOXM80KG8FNL000700"
+  },
+  {
+   "time": "19:00",
+   "discipline": "우슈 산다",
+   "event": "남자 산다 60kg급 준결승 1",
+   "countries": [],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SANM60KGSFNL000100"
+  },
+  {
+   "time": "19:00",
    "discipline": "하키",
    "event": "여자 A조 9경기",
    "countries": [
@@ -4398,6 +4359,31 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026HOCWTEAM11GPA000900"
+  },
+  {
+   "time": "19:10",
+   "discipline": "우슈 산다",
+   "event": "남자 산다 60kg급 준결승 2",
+   "countries": [],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SANM60KGSFNL000200"
+  },
+  {
+   "time": "19:15",
+   "discipline": "복싱",
+   "event": "남자 80kg - 예선 - 16강 8",
+   "countries": [
+    "오무르벡 벡지기트 울루",
+    "후세인 이아샤이시"
+   ],
+   "venue": "니시오 체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BOXM80KG8FNL000800"
   },
   {
    "time": "19:15",
@@ -4428,6 +4414,28 @@
    "link": "https://m.sports.naver.com/game/2026BK3WTEAM3GPA000500"
   },
   {
+   "time": "19:20",
+   "discipline": "우슈 산다",
+   "event": "남자 산다 65kg급 준결승 1",
+   "countries": [],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SANM65KGSFNL000100"
+  },
+  {
+   "time": "19:30",
+   "discipline": "우슈 산다",
+   "event": "남자 산다 65kg급 준결승 2",
+   "countries": [],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SANM65KGSFNL000200"
+  },
+  {
    "time": "19:30",
    "discipline": "축구",
    "event": "남자 A조 5경기",
@@ -4456,6 +4464,17 @@
    "link": "https://m.sports.naver.com/game/2026FBLMTEAM11GPA000600"
   },
   {
+   "time": "19:40",
+   "discipline": "우슈 산다",
+   "event": "남자 산다 70kg급 준결승 1",
+   "countries": [],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SANM70KGSFNL000100"
+  },
+  {
    "time": "19:45",
    "discipline": "3x3 농구",
    "event": "여자 A조 6경기",
@@ -4470,6 +4489,17 @@
    "link": "https://m.sports.naver.com/game/2026BK3WTEAM3GPA000600"
   },
   {
+   "time": "19:50",
+   "discipline": "우슈 산다",
+   "event": "남자 산다 70kg급 준결승 2",
+   "countries": [],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SANM70KGSFNL000200"
+  },
+  {
    "time": "20:00",
    "discipline": "e스포츠",
    "event": "e풋볼 동메달전",
@@ -4479,6 +4509,28 @@
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026ESPOEFBFNL000200"
+  },
+  {
+   "time": "20:00",
+   "discipline": "우슈 산다",
+   "event": "남자 산다 75kg급 준결승 1",
+   "countries": [],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SANM75KGSFNL000100"
+  },
+  {
+   "time": "20:10",
+   "discipline": "우슈 산다",
+   "event": "남자 산다 75kg급 준결승 2",
+   "countries": [],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SANM75KGSFNL000200"
   },
   {
    "time": "20:50",
