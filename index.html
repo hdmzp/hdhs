@@ -1724,6 +1724,10 @@
   .ag-hd:hover { text-decoration: underline; }
   .ag-hd b { font-weight: 800; color: var(--ink); }
   .ag-hd .t { font-variant-numeric: tabular-nums; }
+  /* 줄머리만 채널색으로 구분한다 (브랜드명·상품명은 그대로).
+     .ag-hd b 의 색 지정보다 선택자가 구체적이라 여기가 이긴다. */
+  .ag-hd .t.live { color: #15306B; }   /* 본채널 - 짙은 남색 */
+  .ag-hd .t.data { color: #5B21B6; }   /* 데이터방송 - 짙은 보라 */
   .ag-hd .nm { color: var(--ink-soft); font-weight: 500; }
   .ag-hd-none { font-size: 11.5px; color: var(--ink-faint); }
   .ag-badge {
@@ -4772,13 +4776,16 @@ async function agLoadPeriod() {
 // 방송 한 타임이 40~70분이라 앞 30분까지 넓히면 경기 시작 시점에 이미
 // 나가고 있던 방송이 잡힌다.
 //
-// 본채널(HD_live)과 데이터방송(HD_data)을 한 칸에 모아 [Live/ hh:mm],
-// [Data/ hh:mm]으로 구분한다. 데이터는 홈쇼핑 탭이 쓰는 편성 월 파일
+// 본채널(HD_live)과 데이터방송(HD_data)을 한 칸에 모아 [Live/ hh:mm](짙은
+// 남색), [Data/ hh:mm](짙은 보라)로 구분한다. 본채널 묶음이 먼저 오고 각
+// 묶음 안에서 시각순이다. 데이터는 홈쇼핑 탭이 쓰는 편성 월 파일
 // (homeshopping/HD_{live,data}/{YYYY-MM}.json) 그대로이고, 그 파일은
 // 어제~+5일까지만 채워지므로 그 뒤 날짜는 '편성 미공개'.
+// 순서가 곧 화면 순서다 - 본채널(Live) 묶음을 시간순으로 먼저 깔고,
+// 그 아래에 데이터방송(Data) 묶음을 다시 시간순으로 깐다.
 const AG_HD_CHANNELS = [
-  { dir: 'HD_live', tag: 'Live' },
-  { dir: 'HD_data', tag: 'Data' },
+  { dir: 'HD_live', tag: 'Live', cls: 'live' },
+  { dir: 'HD_data', tag: 'Data', cls: 'data' },
 ];
 const AG_HD_BEFORE_MIN = 30;   // 경기 시작 이 분 전부터
 const AG_HD_AFTER_MIN = 60;    // 경기 시작 이 분 뒤까지 (끝은 제외)
@@ -4838,7 +4845,7 @@ function agHdDayKnown(dateStr) {
 // 경기 시각 앞 30분 ~ 뒤 60분에 시작하는 HD 방송. 편성 월 파일은 같은
 // 방송을 브랜드·가격별로 여러 줄 담고 있어서(대천김 3줄 등) 채널별로
 // 시작 시각당 첫 줄 = 대표상품 하나만 쓴다.
-// 반환: [{tag, mark, abs, p}...] / [] (범위에 방송 없음) / null (그 날짜 편성 없음)
+// 반환: [{tag, cls, ci, mark, abs, p}...] / [] (범위에 방송 없음) / null (그 날짜 편성 없음)
 function agHdSlots(dateStr, timeStr) {
   if (!agHdDayKnown(dateStr)) return null;
   const base = agHmToMin(timeStr);
@@ -4847,7 +4854,7 @@ function agHdSlots(dateStr, timeStr) {
   const to = base + AG_HD_AFTER_MIN;
 
   const out = [];
-  for (const ch of AG_HD_CHANNELS) {
+  AG_HD_CHANNELS.forEach((ch, ci) => {
     const seen = new Set();
     for (const off of AG_HD_DAY_OFFSETS) {
       const day = agShiftDate(dateStr, off.days);
@@ -4862,13 +4869,12 @@ function agHdSlots(dateStr, timeStr) {
         const key = `${day}|${p.start}`;
         if (seen.has(key)) continue;
         seen.add(key);
-        out.push({ tag: ch.tag, mark: off.mark, abs, p });
+        out.push({ tag: ch.tag, cls: ch.cls, ci, mark: off.mark, abs, p });
       }
     }
-  }
-  // 시각순. Array.sort는 안정 정렬이라 같은 시각이면 AG_HD_CHANNELS 순서
-  // (Live -> Data)가 그대로 유지된다.
-  out.sort((a, b) => a.abs - b.abs);
+  });
+  // 채널 묶음 먼저(Live -> Data), 묶음 안에서 시각순.
+  out.sort((a, b) => (a.ci - b.ci) || (a.abs - b.abs));
   return out;
 }
 
@@ -4880,12 +4886,12 @@ function agHdCellHtml(dateStr, timeStr) {
     return `<span class="ag-hd-none" title="HD 편성표는 +5일까지만 공개됩니다">편성 미공개</span>`;
   }
   if (!slots.length) return `<span class="ag-hd-none">-</span>`;
-  return `<span class="ag-hd-list">` + slots.map(({ tag, mark, p }) => {
+  return `<span class="ag-hd-list">` + slots.map(({ tag, cls, mark, p }) => {
     const when = (mark ? mark + ' ' : '') + p.start;
     const head = `[${tag}/ ${when}]` + (p.brand ? ` ${p.brand}` : '');
     const name = p.product || '';
     const label = (head + ' ' + name).trim();
-    const body = `<b><span class="t">[${agEsc(tag)}/ ${agEsc(when)}]</span>`
+    const body = `<b><span class="t ${cls}">[${agEsc(tag)}/ ${agEsc(when)}]</span>`
                + (p.brand ? ` ${agEsc(p.brand)}` : '') + `</b>`
                + (name ? ` <span class="nm">${agEsc(name)}</span>` : '');
     if (!p.link) return `<span class="ag-hd" title="${agEsc(label)}">${body}</span>`;
