@@ -1,6 +1,6 @@
 {
  "date": "2026-09-24",
- "collectedAt": "2026-09-21T08:50:03+09:00",
+ "collectedAt": "2026-09-22T01:21:59+09:00",
  "games": [
   {
    "time": "08:30",
@@ -38,28 +38,6 @@
   {
    "time": "09:00",
    "discipline": "e스포츠",
-   "event": "대전격투게임 C조 2경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOFTGGPC000200"
-  },
-  {
-   "time": "09:00",
-   "discipline": "e스포츠",
-   "event": "대전격투게임 C조 3경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOFTGGPC000300"
-  },
-  {
-   "time": "09:00",
-   "discipline": "e스포츠",
    "event": "대전격투게임 D조 1경기",
    "countries": [],
    "venue": "아이치 스카이 엑스포 홀 D",
@@ -67,28 +45,6 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026ESPOFTGGPD000100"
-  },
-  {
-   "time": "09:00",
-   "discipline": "e스포츠",
-   "event": "대전격투게임 D조 2경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOFTGGPD000200"
-  },
-  {
-   "time": "09:00",
-   "discipline": "e스포츠",
-   "event": "대전격투게임 D조 3경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOFTGGPD000300"
   },
   {
    "time": "09:00",
@@ -295,6 +251,17 @@
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SANM56KGFNL000100"
+  },
+  {
+   "time": "10:00",
+   "discipline": "e스포츠",
+   "event": "나라카 준결승 1",
+   "countries": [],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPONRKELE000100"
   },
   {
    "time": "10:00",
@@ -715,17 +682,6 @@
   },
   {
    "time": "10:30",
-   "discipline": "e스포츠",
-   "event": "나라카 엘리미네이션 스테이지 1라운드",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPONRKELE000100"
-  },
-  {
-   "time": "10:30",
    "discipline": "스케이트보딩",
    "event": "여자 파크 예선 2조",
    "countries": [],
@@ -803,6 +759,30 @@
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026SWMM800MFRFNL"
+  },
+  {
+   "time": "11:00",
+   "discipline": "e스포츠",
+   "event": "대전격투게임 C조 2경기",
+   "countries": [],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOFTGGPC000200"
+  },
+  {
+   "time": "11:00",
+   "discipline": "e스포츠",
+   "event": "대전격투게임 D조 2경기",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOFTGGPD000200"
   },
   {
    "time": "11:00",
@@ -1130,17 +1110,6 @@
    "link": "https://m.sports.naver.com/game/2026HOCMTEAM11GPA000700"
   },
   {
-   "time": "11:10",
-   "discipline": "e스포츠",
-   "event": "나라카 엘리미네이션 스테이지 2라운드",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPONRKELE000200"
-  },
-  {
    "time": "11:12",
    "discipline": "카누 스프린트",
    "event": "남자 카약 4인승 500m 결승",
@@ -1441,17 +1410,6 @@
    "link": "https://m.sports.naver.com/game/2026KABWTEAMGPB000500"
   },
   {
-   "time": "11:50",
-   "discipline": "e스포츠",
-   "event": "나라카 엘리미네이션 스테이지 3라운드",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPONRKELE000300"
-  },
-  {
    "time": "11:52",
    "discipline": "카누 스프린트",
    "event": "남자 카누 2인승 500m 결승",
@@ -1511,17 +1469,6 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026BK3WTEAM3PLAY000200"
-  },
-  {
-   "time": "12:30",
-   "discipline": "e스포츠",
-   "event": "나라카 엘리미네이션 스테이지 4라운드",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPONRKELE000400"
   },
   {
    "time": "12:30",
@@ -1674,6 +1621,17 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026BK3MTEAM3PLAY000100"
+  },
+  {
+   "time": "13:00",
+   "discipline": "e스포츠",
+   "event": "나라카 준결승 2",
+   "countries": [],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPONRKELE000200"
   },
   {
    "time": "13:00",
@@ -1986,6 +1944,30 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026BK3WTEAM3PLAY000300"
+  },
+  {
+   "time": "13:45",
+   "discipline": "e스포츠",
+   "event": "대전격투게임 C조 3경기",
+   "countries": [],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOFTGGPC000300"
+  },
+  {
+   "time": "13:45",
+   "discipline": "e스포츠",
+   "event": "대전격투게임 D조 3경기",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOFTGGPD000300"
   },
   {
    "time": "13:45",
@@ -2304,17 +2286,6 @@
   },
   {
    "time": "14:45",
-   "discipline": "e스포츠",
-   "event": "나라카 그랜드 파이널 1라운드",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPONRKFNL000600"
-  },
-  {
-   "time": "14:45",
    "discipline": "카누 스프린트",
    "event": "혼성 카누 2인승 500m 예선",
    "countries": [],
@@ -2431,17 +2402,6 @@
   },
   {
    "time": "15:20",
-   "discipline": "e스포츠",
-   "event": "나라카 그랜드 파이널 2라운드",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPONRKFNL000500"
-  },
-  {
-   "time": "15:20",
    "discipline": "사격 트랩",
    "event": "혼성 단체 스키트 동메달전",
    "countries": [],
@@ -2535,17 +2495,6 @@
    "link": "https://m.sports.naver.com/game/2026WPOWTEAM7GPA001400"
   },
   {
-   "time": "16:15",
-   "discipline": "e스포츠",
-   "event": "나라카 그랜드 파이널 3라운드",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPONRKFNL000400"
-  },
-  {
    "time": "16:20",
    "discipline": "조정",
    "event": "남자 쿼드러플스컬 결승",
@@ -2591,11 +2540,24 @@
   },
   {
    "time": "17:00",
+   "discipline": "e스포츠",
+   "event": "나라카 결승전",
+   "countries": [],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPONRKFNL000100"
+  },
+  {
+   "time": "17:00",
    "discipline": "기계 체조",
    "event": "남자 마루 운동 결승",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "나고야시 종합체육관",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026GARM1APFXFNL000001"
@@ -2782,17 +2744,6 @@
   },
   {
    "time": "17:40",
-   "discipline": "e스포츠",
-   "event": "나라카 그랜드 파이널 4라운드",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPONRKFNL000300"
-  },
-  {
-   "time": "17:40",
    "discipline": "수구",
    "event": "여자 라운드로빈",
    "countries": [
@@ -2939,17 +2890,6 @@
    "link": "https://m.sports.naver.com/game/2026SWMW4X200MFRFNL"
   },
   {
-   "time": "18:25",
-   "discipline": "e스포츠",
-   "event": "나라카 그랜드 파이널 5라운드",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPONRKFNL000200"
-  },
-  {
    "time": "18:30",
    "discipline": "3x3 농구",
    "event": "남자 8강 1경기",
@@ -3070,17 +3010,6 @@
    "medal": false,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026ATHMHIGHJUMPQUAL"
-  },
-  {
-   "time": "19:15",
-   "discipline": "e스포츠",
-   "event": "나라카 그랜드 파이널 최종 라운드",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPONRKFNL000100"
   },
   {
    "time": "19:15",

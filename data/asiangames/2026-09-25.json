@@ -1,6 +1,6 @@
 {
  "date": "2026-09-25",
- "collectedAt": "2026-09-21T08:50:03+09:00",
+ "collectedAt": "2026-09-22T01:21:59+09:00",
  "games": [
   {
    "time": "07:00",
@@ -67,6 +67,17 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SRFWSHORTBRDPREL000600"
+  },
+  {
+   "time": "09:00",
+   "discipline": "e스포츠",
+   "event": "대전격투게임 8강 1경기",
+   "countries": [],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOFTGQFNL000100"
   },
   {
    "time": "09:00",
@@ -1729,6 +1740,17 @@
   },
   {
    "time": "11:00",
+   "discipline": "e스포츠",
+   "event": "대전격투게임 8강 2경기",
+   "countries": [],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOFTGQFNL000200"
+  },
+  {
+   "time": "11:00",
    "discipline": "비치 발리볼",
    "event": "남자 예선 라운드 - D조 5경기",
    "countries": [
@@ -2504,6 +2526,17 @@
   },
   {
    "time": "12:45",
+   "discipline": "e스포츠",
+   "event": "대전격투게임 8강 3경기",
+   "countries": [],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOFTGQFNL000300"
+  },
+  {
+   "time": "12:45",
    "discipline": "복싱",
    "event": "여자 54kg - 예선 - 16강 4",
    "countries": [
@@ -3005,13 +3038,13 @@
   {
    "time": "14:30",
    "discipline": "e스포츠",
-   "event": "대전격투게임 8강 1경기",
+   "event": "대전격투게임 8강 4경기",
    "countries": [],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOFTGQFNL000100"
+   "link": "https://m.sports.naver.com/game/2026ESPOFTGQFNL000400"
   },
   {
    "time": "14:30",
@@ -3053,9 +3086,11 @@
    "time": "15:00",
    "discipline": "기계 체조",
    "event": "남자 도마 결승",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "나고야시 종합체육관",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026GARM1APVTFNL000001"
@@ -3257,17 +3292,6 @@
    "link": "https://m.sports.naver.com/game/2026FOIMTEAMSFNL000200"
   },
   {
-   "time": "15:45",
-   "discipline": "e스포츠",
-   "event": "대전격투게임 8강 2경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOFTGQFNL000200"
-  },
-  {
    "time": "15:49",
    "discipline": "서핑",
    "event": "여자 2라운드 - 8조",
@@ -3307,9 +3331,11 @@
    "time": "16:50",
    "discipline": "기계 체조",
    "event": "남자 평행봉 결승",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "나고야시 종합체육관",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026GARM1APPBFNL000001"
@@ -3324,6 +3350,17 @@
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026EPEWTEAMSFNL000100"
+  },
+  {
+   "time": "17:00",
+   "discipline": "e스포츠",
+   "event": "대전격투게임 준결승 1경기",
+   "countries": [],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOFTGSFNL000100"
   },
   {
    "time": "17:00",
@@ -3490,17 +3527,6 @@
   },
   {
    "time": "17:30",
-   "discipline": "e스포츠",
-   "event": "대전격투게임 8강 3경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOFTGQFNL000300"
-  },
-  {
-   "time": "17:30",
    "discipline": "기계 체조",
    "event": "여자 마루 운동 결승",
    "countries": [],
@@ -3642,6 +3668,28 @@
   },
   {
    "time": "18:00",
+   "discipline": "AG",
+   "event": "스탯캐스터와 야구 같이보기 | AG 슈퍼라운드 1차전",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/20260925SCAG2026"
+  },
+  {
+   "time": "18:00",
+   "discipline": "AG",
+   "event": "펀고 유희관X신재영 LIVE - 야구 슈퍼라운드 1차전",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/20260925FUNGOAG2026"
+  },
+  {
+   "time": "18:00",
    "discipline": "복싱",
    "event": "남자 60kg - 예선 - 16강 5",
    "countries": [
@@ -3768,23 +3816,14 @@
    "time": "18:40",
    "discipline": "기계 체조",
    "event": "남자 철봉 결승",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "나고야시 종합체육관",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026GARM1APHBFNL000001"
-  },
-  {
-   "time": "18:45",
-   "discipline": "e스포츠",
-   "event": "대전격투게임 8강 4경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOFTGQFNL000400"
   },
   {
    "time": "18:45",
@@ -3810,6 +3849,17 @@
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026BK3WTEAM3FNL000100"
+  },
+  {
+   "time": "19:00",
+   "discipline": "e스포츠",
+   "event": "대전격투게임 준결승 2경기",
+   "countries": [],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOFTGSFNL000200"
   },
   {
    "time": "19:00",

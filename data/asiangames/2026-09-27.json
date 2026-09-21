@@ -1,6 +1,6 @@
 {
  "date": "2026-09-27",
- "collectedAt": "2026-09-21T08:50:03+09:00",
+ "collectedAt": "2026-09-22T01:21:59+09:00",
  "games": [
   {
    "time": "07:00",
@@ -1086,7 +1086,10 @@
    "time": "09:00",
    "discipline": "비치 발리볼",
    "event": "여자 예선 라운드 - H조 5경기",
-   "countries": [],
+   "countries": [
+    "홍콩",
+    "태국"
+   ],
    "venue": "",
    "hasKorea": false,
    "medal": false,
@@ -1883,7 +1886,10 @@
    "time": "10:00",
    "discipline": "비치 발리볼",
    "event": "여자 예선 라운드 - H조 6경기",
-   "countries": [],
+   "countries": [
+    "카타르",
+    "스리랑카"
+   ],
    "venue": "",
    "hasKorea": false,
    "medal": false,
@@ -2433,7 +2439,10 @@
    "time": "11:00",
    "discipline": "비치 발리볼",
    "event": "남자 예선 라운드 - A조 3경기",
-   "countries": [],
+   "countries": [
+    "오만",
+    "카타르"
+   ],
    "venue": "헤키난 료쿠치 비치 코트",
    "hasKorea": false,
    "medal": false,
@@ -3639,6 +3648,28 @@
   },
   {
    "time": "13:00",
+   "discipline": "AG",
+   "event": "TEAM KE LIVE - 남자배구 대한민국 vs 필리핀",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/20260927KEAG2026"
+  },
+  {
+   "time": "13:00",
+   "discipline": "AG",
+   "event": "빙고맨ㅣ남자배구 조별 1차전 vs 필리핀",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/20260927BGAG2026"
+  },
+  {
+   "time": "13:00",
    "discipline": "다이빙",
    "event": "남자 싱크로나이즈드 10m 플랫폼 결승",
    "countries": [
@@ -3682,7 +3713,10 @@
    "time": "13:00",
    "discipline": "복싱",
    "event": "남자 80kg - 8강 1",
-   "countries": [],
+   "countries": [
+    "파즐리딘 에르킨보예프",
+    "미정"
+   ],
    "venue": "니시오 체육관",
    "hasKorea": false,
    "medal": false,
@@ -3693,7 +3727,10 @@
    "time": "13:00",
    "discipline": "비치 발리볼",
    "event": "남자 예선 라운드 - B조 3경기",
-   "countries": [],
+   "countries": [
+    "중국",
+    "홍콩"
+   ],
    "venue": "헤키난 료쿠치 비치 코트",
    "hasKorea": false,
    "medal": false,
@@ -4106,7 +4143,10 @@
    "time": "14:00",
    "discipline": "비치 발리볼",
    "event": "남자 예선 라운드 - C조 5경기",
-   "countries": [],
+   "countries": [
+    "인도네시아",
+    "필리핀"
+   ],
    "venue": "헤키난 료쿠치 비치 코트",
    "hasKorea": false,
    "medal": false,
@@ -4310,7 +4350,10 @@
    "time": "15:00",
    "discipline": "비치 발리볼",
    "event": "남자 예선 라운드 - C조 6경기",
-   "countries": [],
+   "countries": [
+    "몽골",
+    "베트남"
+   ],
    "venue": "헤키난 료쿠치 비치 코트",
    "hasKorea": false,
    "medal": false,
@@ -4567,7 +4610,10 @@
    "time": "17:00",
    "discipline": "복싱",
    "event": "여자 65kg - 8강 1",
-   "countries": [],
+   "countries": [
+    "첸니엔친",
+    "미정"
+   ],
    "venue": "니시오 체육관",
    "hasKorea": false,
    "medal": false,
@@ -4661,7 +4707,10 @@
    "time": "17:45",
    "discipline": "복싱",
    "event": "여자 65kg - 8강 4",
-   "countries": [],
+   "countries": [
+    "미정",
+    "아이다 아비케이예바"
+   ],
    "venue": "니시오 체육관",
    "hasKorea": false,
    "medal": false,
@@ -4678,6 +4727,28 @@
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SABWTEAMSFNL000100"
+  },
+  {
+   "time": "18:00",
+   "discipline": "AG",
+   "event": "스탯캐스터와 야구 같이보기 | 야구 결승전",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/20260927SCAG2026"
+  },
+  {
+   "time": "18:00",
+   "discipline": "AG",
+   "event": "펀고 유희관X김재호 LIVE - 야구 결승전",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/20260927FGAG2026"
   },
   {
    "time": "18:00",
@@ -4829,7 +4900,10 @@
    "time": "19:00",
    "discipline": "복싱",
    "event": "남자 +90kg - 8강 1",
-   "countries": [],
+   "countries": [
+    "아이벡 오랄바이",
+    "미정"
+   ],
    "venue": "니시오 체육관",
    "hasKorea": false,
    "medal": false,
@@ -4904,7 +4978,10 @@
    "time": "19:15",
    "discipline": "복싱",
    "event": "남자 +90kg - 8강 2",
-   "countries": [],
+   "countries": [
+    "아드타퐁 사엥텝",
+    "나렌데르"
+   ],
    "venue": "니시오 체육관",
    "hasKorea": false,
    "medal": false,
@@ -4929,7 +5006,10 @@
    "time": "19:30",
    "discipline": "복싱",
    "event": "남자 +90kg - 8강 3",
-   "countries": [],
+   "countries": [
+    "자혼기르 조키로프",
+    "무함마드 아브로리디노프"
+   ],
    "venue": "니시오 체육관",
    "hasKorea": false,
    "medal": false,
@@ -4951,7 +5031,10 @@
    "time": "19:45",
    "discipline": "복싱",
    "event": "남자 +90kg - 8강 4",
-   "countries": [],
+   "countries": [
+    "미정",
+    "바이케우지 다나베커"
+   ],
    "venue": "니시오 체육관",
    "hasKorea": false,
    "medal": false,

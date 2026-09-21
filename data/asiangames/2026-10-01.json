@@ -1,6 +1,6 @@
 {
  "date": "2026-10-01",
- "collectedAt": "2026-09-21T08:50:03+09:00",
+ "collectedAt": "2026-09-22T01:21:59+09:00",
  "games": [
   {
    "time": "06:30",
@@ -12,7 +12,7 @@
    "venue": "가스가이 컨트리 클럽",
    "hasKorea": true,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026GLFMINDIVIDFNL000200"
   },
   {
@@ -25,7 +25,7 @@
    "venue": "가스가이 컨트리 클럽",
    "hasKorea": true,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026GLFMTEAMFNL000200"
   },
   {
@@ -38,7 +38,7 @@
    "venue": "가스가이 컨트리 클럽",
    "hasKorea": true,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026GLFWINDIVIDFNL000200"
   },
   {
@@ -51,7 +51,7 @@
    "venue": "가스가이 컨트리 클럽",
    "hasKorea": true,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026GLFWTEAMFNL000200"
   },
   {
@@ -64,17 +64,6 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026ESPOLOLSFNL000100"
-  },
-  {
-   "time": "09:00",
-   "discipline": "e스포츠",
-   "event": "리그 오브 레전드 준결승 2경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOLOLSFNL000200"
   },
   {
    "time": "09:00",
@@ -540,9 +529,11 @@
    "time": "09:30",
    "discipline": "승마 장애물",
    "event": "장애물비월 단체 결승 1라운드",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "승마 공원",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026EJPOTEAMFNL000200"
@@ -1210,7 +1201,7 @@
    "venue": "오카자키 주오 소고 공원",
    "hasKorea": false,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026CMPWINDIVIDSFNL000100"
   },
   {
@@ -1917,7 +1908,7 @@
    "venue": "오카자키 주오 소고 공원",
    "hasKorea": false,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026CMPWINDIVIDSFNL000200"
   },
   {
@@ -2027,7 +2018,7 @@
    "venue": "오카자키 주오 소고 공원",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026CMPWINDIVIDFNL000100"
   },
   {
@@ -2363,7 +2354,7 @@
    "venue": "오카자키 주오 소고 공원",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026CMPWINDIVIDFNL000200"
   },
   {
@@ -2520,7 +2511,7 @@
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026POEMPOOMSAESFNL000100"
   },
   {
@@ -2531,7 +2522,7 @@
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026POEMPOOMSAESFNL000200"
   },
   {
@@ -2542,7 +2533,7 @@
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026POEWPOOMSAESFNL000100"
   },
   {
@@ -2553,7 +2544,7 @@
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026POEWPOOMSAESFNL000200"
   },
   {
@@ -3167,7 +3158,7 @@
    "venue": "오카자키 주오 소고 공원",
    "hasKorea": false,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026CMPMINDIVIDQFNL000100"
   },
   {
@@ -3508,7 +3499,7 @@
    "venue": "오카자키 주오 소고 공원",
    "hasKorea": false,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026CMPMINDIVIDQFNL000200"
   },
   {
@@ -3599,7 +3590,7 @@
    "venue": "오카자키 주오 소고 공원",
    "hasKorea": false,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026CMPMINDIVIDQFNL000300"
   },
   {
@@ -3852,7 +3843,7 @@
    "venue": "오카자키 주오 소고 공원",
    "hasKorea": false,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026CMPMINDIVIDQFNL000400"
   },
   {
@@ -3907,7 +3898,7 @@
    "venue": "오카자키 주오 소고 공원",
    "hasKorea": false,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026CMPMINDIVIDSFNL000100"
   },
   {
@@ -4075,7 +4066,7 @@
    "venue": "오카자키 주오 소고 공원",
    "hasKorea": false,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026CMPMINDIVIDSFNL000200"
   },
   {
@@ -4100,7 +4091,7 @@
    "venue": "오카자키 주오 소고 공원",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026CMPMINDIVIDFNL000200"
   },
   {
@@ -4116,6 +4107,17 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026RU7MTEAM7GPB000300"
+  },
+  {
+   "time": "15:00",
+   "discipline": "e스포츠",
+   "event": "리그 오브 레전드 준결승 2경기",
+   "countries": [],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOLOLSFNL000200"
   },
   {
    "time": "15:00",
@@ -4180,7 +4182,7 @@
    "venue": "오카자키 주오 소고 공원",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026CMPMINDIVIDFNL000100"
   },
   {
@@ -4208,7 +4210,7 @@
    "venue": "나고야시 미즈호 럭비장",
    "hasKorea": true,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026RU7MTEAM7GPB000400"
   },
   {
@@ -4252,7 +4254,7 @@
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026POEWPOOMSAEFNL000100"
   },
   {
@@ -4462,7 +4464,7 @@
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026POEMPOOMSAEFNL000100"
   },
   {
@@ -4484,7 +4486,7 @@
    "venue": "아이치 인터내셔널 아레나",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026JUDW57KGREPF000100"
   },
   {
@@ -4495,7 +4497,7 @@
    "venue": "아이치 인터내셔널 아레나",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026JUDW57KGREPF000200"
   },
   {
@@ -4506,7 +4508,7 @@
    "venue": "아이치 인터내셔널 아레나",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026JUDW63KGREPF000100"
   },
   {
@@ -4517,7 +4519,7 @@
    "venue": "아이치 인터내셔널 아레나",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026JUDW63KGREPF000200"
   },
   {
@@ -4528,7 +4530,7 @@
    "venue": "아이치 인터내셔널 아레나",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026JUDW70KGREPF000100"
   },
   {
@@ -4539,7 +4541,7 @@
    "venue": "아이치 인터내셔널 아레나",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026JUDW70KGREPF000200"
   },
   {
@@ -4575,7 +4577,7 @@
    "venue": "아이치 인터내셔널 아레나",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026JUDW57KGFNL000100"
   },
   {
@@ -4586,7 +4588,7 @@
    "venue": "아이치 인터내셔널 아레나",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026JUDW63KGFNL000100"
   },
   {
@@ -4597,7 +4599,7 @@
    "venue": "아이치 인터내셔널 아레나",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026JUDW70KGFNL000100"
   },
   {
@@ -4622,7 +4624,7 @@
    "venue": "아이치 인터내셔널 아레나",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026JUDM73KGREPF000100"
   },
   {
@@ -4633,7 +4635,7 @@
    "venue": "아이치 인터내셔널 아레나",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026JUDM73KGREPF000200"
   },
   {
@@ -4644,7 +4646,7 @@
    "venue": "아이치 인터내셔널 아레나",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026JUDM81KGREPF000100"
   },
   {
@@ -4655,7 +4657,7 @@
    "venue": "아이치 인터내셔널 아레나",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026JUDM81KGREPF000200"
   },
   {
@@ -4666,7 +4668,7 @@
    "venue": "아이치 인터내셔널 아레나",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026JUDM73KGFNL000100"
   },
   {
@@ -4677,7 +4679,7 @@
    "venue": "아이치 인터내셔널 아레나",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026JUDM81KGFNL000100"
   },
   {
@@ -4688,7 +4690,7 @@
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026WGRM60KGFNL000100"
   },
   {
@@ -4699,7 +4701,7 @@
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026WGRM60KGREPF000100"
   },
   {
@@ -4710,7 +4712,7 @@
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026WGRM60KGREPF000200"
   },
   {
@@ -4721,7 +4723,7 @@
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026WGRM77KGFNL000100"
   },
   {
@@ -4732,7 +4734,7 @@
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026WGRM77KGREPF000100"
   },
   {
@@ -4743,7 +4745,7 @@
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026WGRM77KGREPF000200"
   },
   {
@@ -4754,7 +4756,7 @@
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026WGRM97KGFNL000100"
   },
   {
@@ -4765,7 +4767,7 @@
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026WGRM97KGREPF000100"
   },
   {
@@ -4776,7 +4778,7 @@
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026WGRM97KGREPF000200"
   },
   {
