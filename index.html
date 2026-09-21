@@ -1730,6 +1730,8 @@
   .ag-hd .t.data { color: #15306B; }   /* 데이터방송 - 짙은 남색 */
   .ag-hd .nm { color: var(--ink-soft); font-weight: 500; }
   .ag-hd-none { font-size: 11.5px; color: var(--ink-faint); }
+  /* 바로 윗줄과 편성이 같을 때 접어 쓰는 표시 */
+  .ag-hd-ditto { font-size: 11.5px; color: var(--ink-faint); }
   .ag-badge {
     display: inline-block; margin-left: 5px; padding: 1px 5px; border-radius: 3px;
     font-size: 9px; font-weight: 800; line-height: 1.6; vertical-align: 1px;
@@ -4896,23 +4898,25 @@ function agHdSlots(dateStr, timeStr) {
 }
 
 // "[Live/ hh:mm] 브랜드명 상품명" - [채널/시각] 브랜드명까지만 굵게,
-// 줄 전체가 상품 링크.
-function agHdCellHtml(dateStr, timeStr) {
+// 줄 전체가 상품 링크. 반환: {html, lines} (lines = 방송 줄 수)
+function agHdCell(dateStr, timeStr) {
   const cacheKey = `${dateStr}|${timeStr}`;
-  const cached = agHdCellCache.get(cacheKey);
-  if (cached !== undefined) return cached;
-  const html = agHdCellBuild(dateStr, timeStr);
-  agHdCellCache.set(cacheKey, html);
-  return html;
+  let cell = agHdCellCache.get(cacheKey);
+  if (cell === undefined) {
+    cell = agHdCellBuild(dateStr, timeStr);
+    agHdCellCache.set(cacheKey, cell);
+  }
+  return cell;
 }
 
 function agHdCellBuild(dateStr, timeStr) {
   const slots = agHdSlots(dateStr, timeStr);
   if (slots === null) {
-    return `<span class="ag-hd-none" title="HD 편성표는 +5일까지만 공개됩니다">편성 미공개</span>`;
+    return { lines: 0,
+             html: `<span class="ag-hd-none" title="HD 편성표는 +5일까지만 공개됩니다">편성 미공개</span>` };
   }
-  if (!slots.length) return `<span class="ag-hd-none">-</span>`;
-  return `<span class="ag-hd-list">` + slots.map(({ tag, cls, mark, p }) => {
+  if (!slots.length) return { lines: 0, html: `<span class="ag-hd-none">-</span>` };
+  const html = `<span class="ag-hd-list">` + slots.map(({ tag, cls, mark, p }) => {
     const when = (mark ? mark + ' ' : '') + p.start;
     const head = `[${tag}/ ${when}]` + (p.brand ? ` ${p.brand}` : '');
     const name = p.product || '';
@@ -4925,6 +4929,7 @@ function agHdCellBuild(dateStr, timeStr) {
          + ` target="_blank" rel="noopener"`
          + ` data-label="${agEsc(label)}" title="${agEsc(label)}">${body}</a>`;
   }).join('') + `</span>`;
+  return { lines: slots.length, html };
 }
 
 // 지금 고른 게 하루면 그 날짜 파일, '기간 전체'면 합친 데이터
@@ -5170,6 +5175,10 @@ function agRenderRows(data) {
                          : `${where} 해당 경기가 없습니다. <strong>전체 경기</strong>로 바꿔서 보세요.`)
       + `</div></td></tr>`;
   } else {
+    // 날짜+시각이 같은 경기가 줄줄이 이어지면(09:00에만 10경기씩 열린다)
+    // HD 편성 칸이 통째로 똑같이 반복된다. 첫 줄에만 펼치고 이어지는 줄은
+    // '상동'으로 접는다. 방송이 없는 칸('-', '편성 미공개')은 짧아서 그대로 둔다.
+    let lastHdKey = '';
     body.innerHTML = agGroupRows(rows).map(({ g, count }) => {
       // '기간 전체'면 경기마다 날짜가 다르므로 그 경기 날짜를 쓴다
       const date = g._date || agDate;
@@ -5200,6 +5209,13 @@ function agRenderRows(data) {
       const dow = agDow(date);
       const dateCls = 'cell ag-date' + (dow === 0 ? ' sun' : dow === 6 ? ' sat' : '');
 
+      const hdKey = `${date}|${g.time}`;
+      const hdCell = agHdCell(date, g.time);
+      const hdHtml = (hdKey === lastHdKey && hdCell.lines)
+        ? `<span class="ag-hd-ditto" title="바로 윗줄과 같은 편성입니다">상동</span>`
+        : hdCell.html;
+      lastHdKey = hdKey;
+
       return `<tr class="${cls.join(' ')}" data-url="${agEsc(url)}"`
         + ` data-search="${agEsc(agSearchUrl(g, date))}" title="${tip}">`
         + `<td class="c-date"><span class="${dateCls}">${agMMDD(date)}`
@@ -5212,7 +5228,7 @@ function agRenderRows(data) {
           + (g.venue ? `<span class="ag-venue">${agEsc(g.venue)}</span>` : '')
         + `</span></td>`
         + `<td><span class="cell ag-countries">${countries || '-'}</span></td>`
-        + `<td class="c-hd"><span class="cell">${agHdCellHtml(date, g.time)}</span></td>`
+        + `<td class="c-hd"><span class="cell">${hdHtml}</span></td>`
         + `<td class="ag-go-cell"><span class="cell">`
           + `<span class="ag-go" data-role="search" title="시청률 네이버 검색결과로 이동">시청률 검색 ↗</span>`
         + `</span></td>`
