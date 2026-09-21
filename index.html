@@ -1643,7 +1643,7 @@
     border-radius: var(--radius); box-shadow: var(--shadow-sm);
   }
   table.ag-table {
-    width: 100%; min-width: 980px; border-collapse: collapse;
+    width: 100%; min-width: 1040px; border-collapse: collapse;
     font-family: 'Pretendard', -apple-system, sans-serif;
   }
   table.ag-table thead th {
@@ -1678,7 +1678,7 @@
        버튼이 오른쪽 끝에 붙어 있는 맨 뒷칸이 받게 한다 */
     table.ag-table th.c-disc { width: 380px; }
     table.ag-table th.c-country { width: 190px; }
-    table.ag-table th.c-hd { width: 400px; }
+    table.ag-table th.c-hd { width: 520px; }
     table.ag-table th.c-go { width: auto; }
   }
   table.ag-table td {
@@ -1712,9 +1712,9 @@
   .ag-venue { display: block; font-size: 10.5px; color: var(--ink-faint); margin-top: 2px; }
   .ag-countries { font-size: 12px; color: var(--ink); line-height: 1.5; }
   .ag-countries .kr-name { color: #C8102E; font-weight: 800; }
-  /* 동시간대 HD 라이브 편성. 경기 시각과 같은 '시(hour)'에 시작하는 방송을
-     한 줄에 하나씩 쌓는다. 줄 전체가 상품 링크라 행 클릭(경기 페이지)과
-     겹치지 않게 클릭을 따로 받는다. */
+  /* 동시간대 HD 편성(본채널 Live + 데이터방송 Data). 경기 시각과 같은
+     '시(hour)'에 시작하는 방송을 한 줄에 하나씩 쌓는다. 줄 전체가 상품
+     링크라 행 클릭(경기 페이지)과 겹치지 않게 클릭을 따로 받는다. */
   .ag-hd-list { font-size: 11.5px; color: var(--ink); line-height: 1.45; }
   .ag-hd {
     display: block; color: inherit; text-decoration: none;
@@ -4761,62 +4761,83 @@ async function agLoadPeriod() {
   return out;
 }
 
-// ============ 동시간대 HD 라이브 편성 ============
+// ============ 동시간대 HD 편성 (라이브 + 데이터방송) ============
 // 경기 줄에 "그 시간대에 우리(HD)가 무슨 방송을 걸었나"를 붙인다.
 // 시간대 = 경기 시각의 '시(hour)'. 10:00 경기면 10:00~10:59에 **시작하는**
 // 방송을 모두 쓴다(10:25 / 10:55). 09:40에 시작해 10:20에 끝나는 방송은
 // 그 시간대의 편성이 아니므로 뺀다.
-// 데이터는 홈쇼핑 탭이 쓰는 편성 월 파일(homeshopping/HD_live/{YYYY-MM}.json)
-// 그대로다. 그 파일은 어제~+5일까지만 채워지므로 그 뒤 날짜는 '편성 미공개'.
+// 본채널(HD_live)과 데이터방송(HD_data)을 한 칸에 모아 [Live/ hh:mm],
+// [Data/ hh:mm]으로 구분한다. 데이터는 홈쇼핑 탭이 쓰는 편성 월 파일
+// (homeshopping/HD_{live,data}/{YYYY-MM}.json) 그대로이고, 그 파일은
+// 어제~+5일까지만 채워지므로 그 뒤 날짜는 '편성 미공개'.
+const AG_HD_CHANNELS = [
+  { dir: 'HD_live', tag: 'Live' },
+  { dir: 'HD_data', tag: 'Data' },
+];
 const agHdCache = {};
 
-async function agLoadHdMonth(ym) {
-  if (!(ym in agHdCache)) {
-    agHdCache[ym] = await fetchJsonSafe(`./homeshopping/HD_live/${ym}.json`);
+async function agLoadHdMonth(dir, ym) {
+  const key = `${dir}/${ym}`;
+  if (!(key in agHdCache)) {
+    agHdCache[key] = await fetchJsonSafe(`./homeshopping/${dir}/${ym}.json`);
   }
-  return agHdCache[ym];
+  return agHdCache[key];
 }
 
 // agRenderRows는 동기라서, 표에 나올 날짜들의 월 파일을 그리기 전에 받아둔다.
 async function agPrefetchHd() {
   const dates = (agDate === AG_PERIOD) ? AG_DATES : [agDate];
   const months = [...new Set(dates.map(d => d.slice(0, 7)))];
-  await Promise.all(months.map(agLoadHdMonth));
+  const jobs = [];
+  for (const ch of AG_HD_CHANNELS) {
+    for (const ym of months) jobs.push(agLoadHdMonth(ch.dir, ym));
+  }
+  await Promise.all(jobs);
 }
 
 // 그 날짜·그 시간대의 HD 방송. 편성 월 파일은 같은 방송을 브랜드·가격별로
-// 여러 줄 담고 있어서(대천김 3줄 등) 시작 시각당 첫 줄 = 대표상품 하나만 쓴다.
-// 반환: 편성 배열 / [] (그 시간대 방송 없음) / null (그 날짜 편성 자체가 없음)
+// 여러 줄 담고 있어서(대천김 3줄 등) 채널별로 시작 시각당 첫 줄 =
+// 대표상품 하나만 쓴다.
+// 반환: [{tag, p}...] / [] (그 시간대 방송 없음) / null (그 날짜 편성 자체가 없음)
 function agHdSlots(dateStr, timeStr) {
-  const month = agHdCache[dateStr.slice(0, 7)];
-  const day = (month && month.days) ? month.days[dateStr] : null;
-  if (!day) return null;
+  const ym = dateStr.slice(0, 7);
   const hour = String(timeStr || '').slice(0, 2);
-  if (!/^\d\d$/.test(hour)) return [];
-  const seen = new Set();
+  let known = false;
   const out = [];
-  for (const p of day) {
-    const start = p.start || '';
-    if (start.slice(0, 2) !== hour || seen.has(start)) continue;
-    seen.add(start);
-    out.push(p);
+  for (const ch of AG_HD_CHANNELS) {
+    const month = agHdCache[`${ch.dir}/${ym}`];
+    const day = (month && month.days) ? month.days[dateStr] : null;
+    if (!day) continue;
+    known = true;
+    if (!/^\d\d$/.test(hour)) continue;
+    const seen = new Set();
+    for (const p of day) {
+      const start = p.start || '';
+      if (start.slice(0, 2) !== hour || seen.has(start)) continue;
+      seen.add(start);
+      out.push({ tag: ch.tag, p });
+    }
   }
-  out.sort((a, b) => a.start.localeCompare(b.start));
+  if (!known) return null;
+  // 시각순. Array.sort는 안정 정렬이라 같은 시각이면 AG_HD_CHANNELS 순서
+  // (Live -> Data)가 그대로 유지된다.
+  out.sort((a, b) => a.p.start.localeCompare(b.p.start));
   return out;
 }
 
-// "[hh:mm] 브랜드명 상품명" - [시각] 브랜드명까지만 굵게, 줄 전체가 상품 링크.
+// "[Live/ hh:mm] 브랜드명 상품명" - [채널/시각] 브랜드명까지만 굵게,
+// 줄 전체가 상품 링크.
 function agHdCellHtml(dateStr, timeStr) {
   const slots = agHdSlots(dateStr, timeStr);
   if (slots === null) {
     return `<span class="ag-hd-none" title="HD 편성표는 +5일까지만 공개됩니다">편성 미공개</span>`;
   }
   if (!slots.length) return `<span class="ag-hd-none">-</span>`;
-  return `<span class="ag-hd-list">` + slots.map(p => {
-    const head = `[${p.start}]` + (p.brand ? ` ${p.brand}` : '');
+  return `<span class="ag-hd-list">` + slots.map(({ tag, p }) => {
+    const head = `[${tag}/ ${p.start}]` + (p.brand ? ` ${p.brand}` : '');
     const name = p.product || '';
     const label = (head + ' ' + name).trim();
-    const body = `<b><span class="t">[${agEsc(p.start)}]</span>`
+    const body = `<b><span class="t">[${agEsc(tag)}/ ${agEsc(p.start)}]</span>`
                + (p.brand ? ` ${agEsc(p.brand)}` : '') + `</b>`
                + (name ? ` <span class="nm">${agEsc(name)}</span>` : '');
     if (!p.link) return `<span class="ag-hd" title="${agEsc(label)}">${body}</span>`;
@@ -5135,7 +5156,8 @@ function agRenderRows(data) {
     footEl.innerHTML = '경기를 클릭하면 <strong>네이버 스포츠 경기 페이지</strong>로, '
       + '오른쪽 끝 <strong>시청률 검색</strong>을 누르면 네이버 검색 결과로 이동합니다 (새 탭)'
       + ' · <strong>동시간대 HD방송</strong>은 경기 시각과 같은 시간대에 시작하는 '
-      + '당사 라이브 편성(방송별 대표상품 1개)이며, 누르면 상품 페이지로 이동합니다'
+      + '당사 편성(<strong>Live</strong> 본채널 / <strong>Data</strong> 데이터방송, '
+      + '방송별 대표상품 1개)이며, 누르면 상품 페이지로 이동합니다'
       + (collected ? ` · 최종 수집 ${agEsc(collected)}` : '');
   }
 }
