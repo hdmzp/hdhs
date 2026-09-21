@@ -1726,8 +1726,8 @@
   .ag-hd .t { font-variant-numeric: tabular-nums; }
   /* 줄머리만 채널색으로 구분한다 (브랜드명·상품명은 그대로).
      .ag-hd b 의 색 지정보다 선택자가 구체적이라 여기가 이긴다. */
-  .ag-hd .t.live { color: #15306B; }   /* 본채널 - 짙은 남색 */
-  .ag-hd .t.data { color: #5B21B6; }   /* 데이터방송 - 짙은 보라 */
+  .ag-hd .t.live { color: #5B21B6; }   /* 본채널 - 짙은 보라 */
+  .ag-hd .t.data { color: #15306B; }   /* 데이터방송 - 짙은 남색 */
   .ag-hd .nm { color: var(--ink-soft); font-weight: 500; }
   .ag-hd-none { font-size: 11.5px; color: var(--ink-faint); }
   .ag-badge {
@@ -4768,19 +4768,19 @@ async function agLoadPeriod() {
 // ============ 동시간대 HD 편성 (라이브 + 데이터방송) ============
 // 경기 줄에 "그 시간대에 우리(HD)가 무슨 방송을 걸었나"를 붙인다.
 //
-// 기준은 **방송 구간이 [경기 시각, 경기 시각 + 60분]과 겹치는가**이다.
-// 한 줄로 쓰면 start < 경기+60분 && end > 경기.
-//   - 경기 시작 시점에 이미 나가고 있던 방송 (start <= 경기 < end)
-//   - 경기 시작 뒤 60분 안에 이어서 시작한 방송
-// 시작 시각만 보면(처음엔 '경기 시각의 시', 그다음 '앞 30분~뒤 60분에
-// 시작') 방송 시작이 경기보다 조금만 앞서도 통째로 빠졌다. 실측:
-// 2026-09-19(토) 09:00 경기 - 본채널이 08:20 시작이라 09시대가 비었고,
-// 2026-09-26(토) 13:15 경기 - 12:40 시작이 30분 창 밖으로 밀렸다.
-// 둘 다 경기 시작 때 실제로 나가고 있던 방송이다. 편성표에 end가 있으니
-// 겹침으로 보면 정확히 잡힌다.
+// 둘 중 하나라도 맞으면 그 경기의 방송으로 본다.
+//   (a) 시작이 [경기 시각 - 50분, 경기 시각 + 60분) 안에 든다
+//   (b) 경기 시작 시점에 나가고 있었다 (start <= 경기 < end)
+// (b)만 쓰면(= 겹침만) 경기 직전에 끝난 방송이 빠지는데, 경기가 언제까지
+// 가는지 모르니 그 앞 타임도 같은 시간대로 친다 - 그래서 (a)의 앞 50분
+// 시작창을 같이 둔다. 거꾸로 (a)만 쓰면 길게 가는 방송이 빠진다
+// (2026-09-26 13:15 경기 - 11:20~13:45 페라가모가 시작창 밖이다).
+// 시작 시각만 보던 이전 규칙('경기 시각의 시', '앞 30분~뒤 60분')이
+// 놓쳤던 실측 사례: 2026-09-19(토) 11:00 경기(본채널 08:20~11:20 왕톡),
+// 2026-09-26(토) 13:15 경기(11:20~13:45 페라가모).
 //
 // 본채널(HD_live)과 데이터방송(HD_data)을 한 칸에 모아 [Live/ hh:mm](짙은
-// 남색), [Data/ hh:mm](짙은 보라)로 구분한다. 본채널 묶음이 먼저 오고 각
+// 보라), [Data/ hh:mm](짙은 남색)로 구분한다. 본채널 묶음이 먼저 오고 각
 // 묶음 안에서 시각순이다. 데이터는 홈쇼핑 탭이 쓰는 편성 월 파일
 // (homeshopping/HD_{live,data}/{YYYY-MM}.json) 그대로이고, 그 파일은
 // 어제~+5일까지만 채워지므로 그 뒤 날짜는 '편성 미공개'.
@@ -4790,6 +4790,7 @@ const AG_HD_CHANNELS = [
   { dir: 'HD_live', tag: 'Live', cls: 'live' },
   { dir: 'HD_data', tag: 'Data', cls: 'data' },
 ];
+const AG_HD_BEFORE_MIN = 50;   // 경기 시작 이 분 전부터 시작한 방송을 본다
 const AG_HD_AFTER_MIN = 60;    // 경기 시작 뒤 이 분까지 시작한 방송도 본다
 // 방송이 자정을 넘거나(23:55~01:00) 경기가 자정 근처일 수 있어 앞뒤 날짜까지
 // 훑는다 (편성 월 파일은 날짜별 배열이고 00:00~23:59 시작분만 담는다).
@@ -4849,7 +4850,7 @@ function agHdDayKnown(dateStr) {
   });
 }
 
-// 경기 시각에 걸쳐 있는 HD 방송. 편성 월 파일은 같은 방송을 브랜드·가격별로
+// 경기 시간대의 HD 방송. 편성 월 파일은 같은 방송을 브랜드·가격별로
 // 여러 줄 담고 있어서(대천김 3줄 등) 채널별로 시작 시각당 첫 줄 =
 // 대표상품 하나만 쓴다.
 // 반환: [{tag, cls, ci, mark, abs, p}...] / [] (범위에 방송 없음) / null (그 날짜 편성 없음)
@@ -4857,6 +4858,7 @@ function agHdSlots(dateStr, timeStr) {
   if (!agHdDayKnown(dateStr)) return null;
   const base = agHmToMin(timeStr);
   if (base === null) return [];
+  const from = base - AG_HD_BEFORE_MIN;
   const until = base + AG_HD_AFTER_MIN;
 
   const out = [];
@@ -4877,8 +4879,10 @@ function agHdSlots(dateStr, timeStr) {
         if (endMin === null) endMin = mins;
         if (endMin <= mins) endMin += 24 * 60;
         const endAbs = endMin + shift;
-        // [start, end) 가 [경기, 경기+60분) 과 겹치면 그 경기의 방송이다
-        if (abs >= until || endAbs <= base) continue;
+        // 너무 늦게 시작했거나(경기+60분 이후),
+        // 시작창(경기-50분)보다 앞서면서 경기 시작 전에 이미 끝났으면 뺀다
+        if (abs >= until) continue;
+        if (abs < from && endAbs <= base) continue;
         const key = `${day}|${p.start}`;
         if (seen.has(key)) continue;
         seen.add(key);
@@ -5231,8 +5235,8 @@ function agRenderRows(data) {
     const collected = (data && data.collectedAt) ? data.collectedAt.slice(0, 16).replace('T', ' ') : '';
     footEl.innerHTML = '경기를 클릭하면 <strong>네이버 스포츠 경기 페이지</strong>로, '
       + '오른쪽 끝 <strong>시청률 검색</strong>을 누르면 네이버 검색 결과로 이동합니다 (새 탭)'
-      + ' · <strong>동시간대 HD방송</strong>은 경기 시작 시점에 방송 중이거나 '
-      + '<strong>그 뒤 60분 안에 시작</strong>하는 당사 편성'
+      + ' · <strong>동시간대 HD방송</strong>은 경기 시작 <strong>50분 전 ~ 60분 뒤</strong>에 '
+      + '시작하거나 경기 시작 시점에 방송 중인 당사 편성'
       + '(<strong>Live</strong> 본채널 / <strong>Data</strong> 데이터방송, '
       + '방송별 대표상품 1개)이며, 누르면 상품 페이지로 이동합니다'
       + (collected ? ` · 최종 수집 ${agEsc(collected)}` : '');
