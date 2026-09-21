@@ -4768,13 +4768,16 @@ async function agLoadPeriod() {
 // ============ 동시간대 HD 편성 (라이브 + 데이터방송) ============
 // 경기 줄에 "그 시간대에 우리(HD)가 무슨 방송을 걸었나"를 붙인다.
 //
-// 범위는 **경기 시작 시각 기준 앞 30분 ~ 뒤 60분에 시작하는 방송**이다.
-//   09:00 경기 -> 08:30 ~ 10:00 사이에 시작하는 방송 (10:00 시작은 제외)
-// 처음엔 '경기 시각의 시(hour)'로 잘랐는데(09:00 경기 -> 09:00~09:59),
-// 홈쇼핑 편성이 정시에 시작하는 일이 드물어서 09시에 시작하는 방송이
-// 없는 날은 칸이 통째로 비었다(토요일 09:00 경기 - 08:20/10:20 편성).
-// 방송 한 타임이 40~70분이라 앞 30분까지 넓히면 경기 시작 시점에 이미
-// 나가고 있던 방송이 잡힌다.
+// 기준은 **방송 구간이 [경기 시각, 경기 시각 + 60분]과 겹치는가**이다.
+// 한 줄로 쓰면 start < 경기+60분 && end > 경기.
+//   - 경기 시작 시점에 이미 나가고 있던 방송 (start <= 경기 < end)
+//   - 경기 시작 뒤 60분 안에 이어서 시작한 방송
+// 시작 시각만 보면(처음엔 '경기 시각의 시', 그다음 '앞 30분~뒤 60분에
+// 시작') 방송 시작이 경기보다 조금만 앞서도 통째로 빠졌다. 실측:
+// 2026-09-19(토) 09:00 경기 - 본채널이 08:20 시작이라 09시대가 비었고,
+// 2026-09-26(토) 13:15 경기 - 12:40 시작이 30분 창 밖으로 밀렸다.
+// 둘 다 경기 시작 때 실제로 나가고 있던 방송이다. 편성표에 end가 있으니
+// 겹침으로 보면 정확히 잡힌다.
 //
 // 본채널(HD_live)과 데이터방송(HD_data)을 한 칸에 모아 [Live/ hh:mm](짙은
 // 남색), [Data/ hh:mm](짙은 보라)로 구분한다. 본채널 묶음이 먼저 오고 각
@@ -4787,16 +4790,19 @@ const AG_HD_CHANNELS = [
   { dir: 'HD_live', tag: 'Live', cls: 'live' },
   { dir: 'HD_data', tag: 'Data', cls: 'data' },
 ];
-const AG_HD_BEFORE_MIN = 30;   // 경기 시작 이 분 전부터
-const AG_HD_AFTER_MIN = 60;    // 경기 시작 이 분 뒤까지 (끝은 제외)
-// 범위가 자정을 넘을 수 있어 앞뒤 날짜까지 훑는다 (편성 월 파일은 날짜별
-// 배열이고 00:00~23:59 시작분만 담는다).
+const AG_HD_AFTER_MIN = 60;    // 경기 시작 뒤 이 분까지 시작한 방송도 본다
+// 방송이 자정을 넘거나(23:55~01:00) 경기가 자정 근처일 수 있어 앞뒤 날짜까지
+// 훑는다 (편성 월 파일은 날짜별 배열이고 00:00~23:59 시작분만 담는다).
 const AG_HD_DAY_OFFSETS = [
   { days: -1, mark: '전일' },
   { days: 0, mark: '' },
   { days: 1, mark: '익일' },
 ];
 const agHdCache = {};
+// 한 칸(날짜+경기시각)의 결과를 재활용한다. '기간 전체'는 3천 줄이 넘고
+// 같은 시각에 열리는 경기가 수십 개씩이라, 캐시가 없으면 같은 계산을
+// 그만큼 반복한다. 월 파일을 새로 받으면 결과가 달라지므로 비운다.
+let agHdCellCache = new Map();
 
 function agHmToMin(hm) {
   const m = /^(\d{1,2}):(\d{2})$/.exec(String(hm || '').trim());
@@ -4831,6 +4837,7 @@ async function agPrefetchHd() {
     for (const ym of months) jobs.push(agLoadHdMonth(ch.dir, ym));
   }
   await Promise.all(jobs);
+  agHdCellCache = new Map();
 }
 
 // 경기 날짜의 편성이 어느 채널에든 수집돼 있는지 (없으면 '편성 미공개')
@@ -4842,16 +4849,15 @@ function agHdDayKnown(dateStr) {
   });
 }
 
-// 경기 시각 앞 30분 ~ 뒤 60분에 시작하는 HD 방송. 편성 월 파일은 같은
-// 방송을 브랜드·가격별로 여러 줄 담고 있어서(대천김 3줄 등) 채널별로
-// 시작 시각당 첫 줄 = 대표상품 하나만 쓴다.
+// 경기 시각에 걸쳐 있는 HD 방송. 편성 월 파일은 같은 방송을 브랜드·가격별로
+// 여러 줄 담고 있어서(대천김 3줄 등) 채널별로 시작 시각당 첫 줄 =
+// 대표상품 하나만 쓴다.
 // 반환: [{tag, cls, ci, mark, abs, p}...] / [] (범위에 방송 없음) / null (그 날짜 편성 없음)
 function agHdSlots(dateStr, timeStr) {
   if (!agHdDayKnown(dateStr)) return null;
   const base = agHmToMin(timeStr);
   if (base === null) return [];
-  const from = base - AG_HD_BEFORE_MIN;
-  const to = base + AG_HD_AFTER_MIN;
+  const until = base + AG_HD_AFTER_MIN;
 
   const out = [];
   AG_HD_CHANNELS.forEach((ch, ci) => {
@@ -4861,11 +4867,18 @@ function agHdSlots(dateStr, timeStr) {
       const month = agHdCache[`${ch.dir}/${day.slice(0, 7)}`];
       const items = (month && month.days) ? month.days[day] : null;
       if (!items) continue;
+      const shift = off.days * 24 * 60;
       for (const p of items) {
         const mins = agHmToMin(p.start);
         if (mins === null) continue;
-        const abs = mins + off.days * 24 * 60;
-        if (abs < from || abs >= to) continue;
+        const abs = mins + shift;
+        // 종료가 시작보다 이르면 자정을 넘긴 방송이다 (23:55 -> 01:00).
+        let endMin = agHmToMin(p.end);
+        if (endMin === null) endMin = mins;
+        if (endMin <= mins) endMin += 24 * 60;
+        const endAbs = endMin + shift;
+        // [start, end) 가 [경기, 경기+60분) 과 겹치면 그 경기의 방송이다
+        if (abs >= until || endAbs <= base) continue;
         const key = `${day}|${p.start}`;
         if (seen.has(key)) continue;
         seen.add(key);
@@ -4881,6 +4894,15 @@ function agHdSlots(dateStr, timeStr) {
 // "[Live/ hh:mm] 브랜드명 상품명" - [채널/시각] 브랜드명까지만 굵게,
 // 줄 전체가 상품 링크.
 function agHdCellHtml(dateStr, timeStr) {
+  const cacheKey = `${dateStr}|${timeStr}`;
+  const cached = agHdCellCache.get(cacheKey);
+  if (cached !== undefined) return cached;
+  const html = agHdCellBuild(dateStr, timeStr);
+  agHdCellCache.set(cacheKey, html);
+  return html;
+}
+
+function agHdCellBuild(dateStr, timeStr) {
   const slots = agHdSlots(dateStr, timeStr);
   if (slots === null) {
     return `<span class="ag-hd-none" title="HD 편성표는 +5일까지만 공개됩니다">편성 미공개</span>`;
@@ -5209,8 +5231,9 @@ function agRenderRows(data) {
     const collected = (data && data.collectedAt) ? data.collectedAt.slice(0, 16).replace('T', ' ') : '';
     footEl.innerHTML = '경기를 클릭하면 <strong>네이버 스포츠 경기 페이지</strong>로, '
       + '오른쪽 끝 <strong>시청률 검색</strong>을 누르면 네이버 검색 결과로 이동합니다 (새 탭)'
-      + ' · <strong>동시간대 HD방송</strong>은 경기 시작 <strong>30분 전 ~ 60분 뒤</strong>에 '
-      + '시작하는 당사 편성(<strong>Live</strong> 본채널 / <strong>Data</strong> 데이터방송, '
+      + ' · <strong>동시간대 HD방송</strong>은 경기 시작 시점에 방송 중이거나 '
+      + '<strong>그 뒤 60분 안에 시작</strong>하는 당사 편성'
+      + '(<strong>Live</strong> 본채널 / <strong>Data</strong> 데이터방송, '
       + '방송별 대표상품 1개)이며, 누르면 상품 페이지로 이동합니다'
       + (collected ? ` · 최종 수집 ${agEsc(collected)}` : '');
   }
