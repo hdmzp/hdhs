@@ -1,6 +1,6 @@
 {
   "month": "2026-09",
-  "updated_at": "2026-09-21T15:00:53.405158+09:00",
+  "updated_at": "2026-09-22T08:45:22.356866+09:00",
   "programs": [
     {
       "program_key": "HD_HJM",
@@ -141,18 +141,10 @@
       "broadcasts": [
         {
           "date": "2026-09-22",
-          "label": "09/22(화) 방송",
-          "collected_at": "2026-09-21T15:00:53.400947+09:00",
-          "products": [
-            {
-              "broadcast_date_label": "9/22(화) 방송상품",
-              "brand": "",
-              "name": "[역대최저가찬스] 다이슨 New V8 싸이클론 무선청소기",
-              "price": 369000,
-              "image": "https://image.hmall.com/2241627898_0.jpg",
-              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2241627898"
-            }
-          ]
+          "label": "09/22(화) 휴방",
+          "off_air": true,
+          "collected_at": "2026-09-22T08:45:22.356809+09:00",
+          "products": []
         },
         {
           "date": "2026-09-15",

@@ -490,6 +490,18 @@ def merge_into_month(existing: dict, program_key: str, meta: dict,
             by_date[slot_key] = broadcast
             continue
 
+        # 사람이 '휴방'으로 못 박은 회차는 수집분으로 덮지 않는다.
+        # 휴방인 날에도 상세페이지에 지난 회차 상품이 남아 있어서 수집분이
+        # 계속 그 날짜를 주장한다 (2026-09-22 오감쇼 - 휴방인데 다이슨 V8이
+        # '9/22 방송'으로 잡혔다). 편성표가 진실이고, 그 판단을 여기에
+        # 기록해 둔 것이므로 수집분보다 우선한다.
+        if kept.get("off_air"):
+            new_n = len(broadcast.get("products") or [])
+            if new_n:
+                print(f"[보존] {program_key} {date_iso}: 휴방으로 기록된 회차라 "
+                      f"수집분 {new_n}건 무시")
+            continue
+
         # 시작 시각은 기존 기록 라벨을 가장 신뢰한다. 방송이 끝나면 사이트
         # 라벨이 "8/22(토) 방송상품"처럼 시각 없는 잔여 표기로 바뀐다.
         phase = broadcast_phase(date_iso, now, kept.get("label"),

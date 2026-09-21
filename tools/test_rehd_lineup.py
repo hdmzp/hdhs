@@ -62,7 +62,8 @@ DAY_0908 = [
 ]
 
 
-def run_collect(day_items, program_names, brod_start, brod_end, local_entries=()):
+def run_collect(day_items, program_names, brod_start, brod_end, local_entries=(),
+                status=None):
     """fetch_day_items / load_local_day_entries를 갈아끼우고 라인업 수집을 돌린다."""
     orig_fetch = rehd.fetch_day_items
     orig_local = rehd.load_local_day_entries
@@ -70,7 +71,7 @@ def run_collect(day_items, program_names, brod_start, brod_end, local_entries=()
     rehd.load_local_day_entries = lambda brod_date: list(local_entries)
     try:
         return rehd.collect_lineup_products(
-            date(2026, 9, 8), program_names, brod_start, brod_end)
+            date(2026, 9, 8), program_names, brod_start, brod_end, status=status)
     finally:
         rehd.fetch_day_items = orig_fetch
         rehd.load_local_day_entries = orig_local
@@ -261,6 +262,45 @@ def test_sweeps_next_broadcast_day():
     check("이미 훑은 날은 빼고 다음 회차만", days, [next_week])
 
 
+def test_off_air_strips_leftover_label():
+    """휴방인 날짜를 주장하는 상세페이지 잔여 상품은 라벨에서 날짜를 뗀다.
+
+    편성표 라인업은 휴방을 걸러내는데(테스트 [6]), 나머지 소스
+    (searchSpexSectItem.itemList / pgm-comm / 스와이퍼)는 상세페이지에 남아
+    있는 지난 상품을 주고 거기에 폴백 라벨이 붙는다. 실제 사고:
+    2026-09-22(화) 오감쇼가 휴방인데 다이슨 V8이 '9/22(화) 방송상품'을 달고
+    와서 셀럽PGM 탭에 9/22 회차가 생겼다.
+    """
+    print("[9] 휴방인 날짜를 주장하는 잔여 상품은 날짜를 뗀다")
+    nameless = [dict(it, brodTitl="") for it in DAY_0908]
+    local = [
+        ("19:30", "21:45", "최은경쇼",
+         {"broadcast_date_label": None, "brand": "머티리얼랩", "name": "세렌느 후드자켓",
+          "price": 1, "image": None, "link": None, "_code": "2252314801"}),
+    ]
+    status = {}
+    products = run_collect(nameless, ["오감쇼", "오감쇼"], "19:30", "21:45",
+                           local_entries=local, status=status)
+    check("휴방이면 0건", len(products), 0)
+    check("휴방 판정이 호출부에 전달됨", status.get("off_air"), True)
+
+    leftover = [
+        {"broadcast_date_label": "9/8(화) 방송상품", "name": "다이슨 V8"},
+        {"broadcast_date_label": "09/08(화) 19:30 방송", "name": "진짜 회차 상품"},
+        {"broadcast_date_label": "9/15(화) 방송상품", "name": "다른 날 잔여"},
+        {"broadcast_date_label": "방송상품", "name": "원래 날짜 없는 상품"},
+    ]
+    rehd.strip_off_air_date(leftover, date(2026, 9, 8))
+    check("휴방 날짜 잔여 상품은 날짜를 뗌",
+          leftover[0]["broadcast_date_label"], "방송상품")
+    check("시각 있는 진짜 회차 라벨은 그대로",
+          leftover[1]["broadcast_date_label"], "09/08(화) 19:30 방송")
+    check("다른 날 라벨은 그대로",
+          leftover[2]["broadcast_date_label"], "9/15(화) 방송상품")
+    check("원래 날짜 없는 라벨도 그대로",
+          leftover[3]["broadcast_date_label"], "방송상품")
+
+
 def main():
     test_two_broadcasts_same_day()
     test_same_product_in_both_slots()
@@ -271,6 +311,7 @@ def main():
     test_skips_when_program_is_off_air()
     test_time_window_skips_other_program()
     test_sweeps_next_broadcast_day()
+    test_off_air_strips_leftover_label()
 
     print()
     if FAILURES:
