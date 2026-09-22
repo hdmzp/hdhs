@@ -101,6 +101,7 @@ from tools import scrape_guard
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from celeb_day_sweep import (supplement_missing_slots, merge_continuous_slots,
                              select_slots_by_starts, find_program_slots,
+                             parse_label as parse_broadcast_label,
                              SWEEP_DAYS)
 from playwright.sync_api import sync_playwright
 from bs4 import BeautifulSoup
@@ -643,36 +644,88 @@ def collect_lineup_products(brod_date, program_names, brod_start=None, brod_end=
     return products
 
 
-def strip_off_air_date(products, off_air_date):
-    """휴방으로 판정된 날짜를 주장하는 '시각 없는' 라벨에서 날짜를 뗀다.
+_SCHEDULE_HAS_CACHE = {}
 
-    편성표 라인업은 휴방을 제대로 걸러내는데(collect_lineup_products), 나머지
-    소스(searchSpexSectItem.itemList / pgm-comm / 스와이퍼)는 상세페이지에 남아
-    있는 잔여 상품을 주고 거기에 폴백 라벨("9/22(화) 방송상품")이 붙는다.
-    그대로 두면 휴방인 날에 회차가 하나 생긴다 - 2026-09-22 오감쇼가 휴방인데
-    상세페이지에 남아 있던 다이슨 V8이 '9/22 방송'으로 잡혔다.
-    날짜를 떼면 build_celeb_history가 '어느 방송인지 알 수 없는 상품'으로 보고
-    건너뛰므로 휴방인 날에 회차가 생기지 않는다.
-    (편성표가 준 시각 있는 라벨은 진짜 회차라 손대지 않는다)
+
+def schedule_has_program(brod_date, program_names):
+    """편성표(tv-list + 로컬 HD_live)에 그날 이 프로그램 방송이 있는지.
+
+    반환:
+      True  - 편성표에 있다 (그 날짜는 믿어도 된다)
+      False - 편성표는 받았는데 이 프로그램이 없다 = 휴방
+      None  - 그날 편성표 자체가 없다 (편성 미공개 - 판단 보류)
+
+    휴방(False)은 **로컬 편성(HD_live)에 그날이 들어와 있을 때만** 내린다.
+    tv-list의 brodTitl은 시점에 따라 통째로 비어서 오기 때문에(2026-09-04 낮
+    수집에서 9/8 편성 전체의 이름이 사라졌다) tv-list만 보고 휴방을 단정하면
+    멀쩡한 회차가 날아간다. HD_live는 하루 5회 수집분이라 그날이 들어와
+    있으면 프로그램명도 같이 들어와 있다.
     """
-    if not off_air_date:
-        return 0
-    stripped = 0
+    key = (brod_date, tuple(program_names))
+    if key in _SCHEDULE_HAS_CACHE:
+        return _SCHEDULE_HAS_CACHE[key]
+
+    local_entries = load_local_day_entries(brod_date)
+    api_entries = [
+        (it.get("brodStrtDtm") or "", it.get("brodEndDtm") or "",
+         it.get("brodTitl") or "", it)
+        for it in fetch_day_items(brod_date.strftime("%Y%m%d"))
+    ]
+    if select_program_slots(api_entries, program_names) or \
+            select_program_slots(local_entries, program_names):
+        verdict = True
+    elif local_entries:
+        verdict = False
+    else:
+        verdict = None
+
+    _SCHEDULE_HAS_CACHE[key] = verdict
+    return verdict
+
+
+def enforce_schedule_dates(products, program_names):
+    """라벨이 주장하는 날짜를 편성표와 대조해, 편성표가 부정하는 날짜는 뗀다.
+
+    **편성표의 방송일시가 최우선**이다. 라벨의 날짜는 소스에 따라 신뢰도가
+    다르다:
+      - 편성표 라인업이 만든 라벨("09/15(화) 19:30 방송")  -> 편성표가 근거
+      - 상세페이지 pgm-comm의 brodDispNm                   -> 사이트 주장
+      - schedule_raw 추측 폴백("9/23(수) 방송상품")         -> 순수 계산값
+    뒤 두 개는 휴방 주를 못 읽는다. 2026-09-22 주에 실제로 다 틀렸다:
+      최은경쇼 9/23 / 왕영은의 톡투게더 9/26 - 편성표에 방송이 아예 없는데
+      schedule_raw('매주 수요일 19시 30분', '매주 토요일 08시 20분')로 날짜를
+      찍어서 휴방 주에 상품이 들어갔다.
+    그래서 날짜가 붙은 라벨은 전부 편성표에 물어보고, 편성표가 '그날 이
+    프로그램 방송 없음'이라고 하면 날짜를 뗀다("방송상품"). 날짜가 없으면
+    build_celeb_history가 '어느 방송인지 알 수 없는 상품'으로 보고 건너뛰므로
+    휴방인 날에 회차가 생기지 않는다.
+    편성표가 아직 없는 날(편성 미공개)은 판단을 보류하고 그대로 둔다.
+
+    반환: (날짜를 뗀 상품 수, 휴방으로 판정한 날짜 목록)
+    휴방 날짜는 결과 JSON의 off_air_dates로 넘겨서 build_celeb_history가
+    '휴방' 회차로 기록하게 한다 - 화면에서 그 주가 그냥 비어 보이는 것보다
+    휴방이라고 쓰는 게 낫다.
+    """
+    today = datetime.now(KST).date()
+    by_date = {}
     for p in products:
         label = p.get("broadcast_date_label") or ""
-        if re.search(r"\d{1,2}:\d{2}", label):
+        d, _hm = parse_broadcast_label(label, today)
+        if d:
+            by_date.setdefault(d, []).append(p)
+
+    stripped = 0
+    off_air_dates = []
+    for brod_date, group in sorted(by_date.items()):
+        if schedule_has_program(brod_date, program_names) is not False:
             continue
-        m = re.search(r"(\d{1,2})\s*/\s*(\d{1,2})", label)
-        if not m:
-            continue
-        if (int(m.group(1)), int(m.group(2))) != (off_air_date.month, off_air_date.day):
-            continue
-        p["broadcast_date_label"] = "방송상품"
-        stripped += 1
-    if stripped:
-        print(f"    -> [휴방] {off_air_date} 라벨을 단 잔여 상품 {stripped}개에서 "
-              f"날짜를 뗌 (휴방인 날에 회차를 만들지 않는다)")
-    return stripped
+        off_air_dates.append(brod_date)
+        for p in group:
+            p["broadcast_date_label"] = "방송상품"
+            stripped += 1
+        print(f"    -> [휴방] 편성표에 {brod_date} 방송이 없음 - 그 날짜를 달고 있던 "
+              f"상품 {len(group)}개에서 날짜를 뗌 (휴방 주에 회차를 만들지 않는다)")
+    return stripped, off_air_dates
 
 
 def merge_sources(lineup_products, pgm_comm_products,
@@ -840,6 +893,8 @@ def crawl_hd_program(page, config: dict, list_map: dict):
 
     # --- 편성표(tv-list + 로컬 HD_live)에서 그 날 이 프로그램 회차를 전부 수집 ---
     program_names = [config["spex_sect_nm"], tab_name]
+    # status는 휴방 판정 여부를 로그/테스트에서 확인하기 위한 것.
+    # 실제 날짜 정정은 아래 enforce_schedule_dates가 모든 소스를 상대로 한다.
     lineup_status = {}
     if brod_date:
         lineup_products = collect_lineup_products(
@@ -856,9 +911,9 @@ def crawl_hd_program(page, config: dict, list_map: dict):
     deduped = merge_sources(lineup_products, pgm_comm_products,
                             itemlist_products, swiper_products)
 
-    # 휴방인 날짜를 상세페이지 잔여 상품이 주장하고 있으면 날짜를 뗀다
-    if lineup_status.get("off_air"):
-        strip_off_air_date(deduped, brod_date)
+    # 편성표 최우선: 라벨이 주장하는 날짜를 편성표와 대조해, 편성표가
+    # '그날 이 프로그램 방송 없음'이라고 하는 날짜는 뗀다 (휴방 주 방어)
+    _, off_air_dates = enforce_schedule_dates(deduped, program_names)
 
     # 마지막 안전망: pgm-comm이 알려준 날짜 자체가 틀렸거나 편성표 조회가
     # 실패한 경우를 대비해, 나머지 3사와 같은 공통 보강(편성표에서 이
@@ -868,7 +923,7 @@ def crawl_hd_program(page, config: dict, list_map: dict):
 
     print(f"    -> 최종 상품 {len(deduped)}개 (병합/중복 제거 후)")
 
-    return {
+    result = {
         "company": "HD",
         "tab_name": tab_name,
         "program_title": config["spex_sect_nm"],
@@ -876,6 +931,11 @@ def crawl_hd_program(page, config: dict, list_map: dict):
         "detail_link": detail_link,
         "products": deduped,
     }
+    if off_air_dates:
+        # 편성표가 '그날 방송 없음'이라고 한 날짜. build_celeb_history가
+        # '휴방' 회차로 기록해 화면에 휴방이라고 쓰게 한다.
+        result["off_air_dates"] = [d.isoformat() for d in off_air_dates]
+    return result
 
 
 def main():
