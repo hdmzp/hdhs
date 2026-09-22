@@ -304,6 +304,45 @@ def test_absorbed_slot_removed():
           ["09/08(화) 08:15 방송", "09/08(화) 19:30 방송"])
 
 
+def test_off_air_is_sticky():
+    """'휴방'으로 못 박은 회차는 수집분이 덮지 못한다.
+
+    휴방인 날에도 상세페이지에 지난 회차 상품이 남아 있어서 수집분이 계속
+    그 날짜를 주장한다 (2026-09-22 오감쇼 - 휴방인데 다이슨 V8이 '9/22 방송'
+    으로 잡혔다). 편성표가 진실이고 그 판단을 기록해 둔 것이므로 수집분보다
+    우선한다. 방송 전(before) 단계여도 마찬가지다 - before는 원래 최신
+    수집분으로 통째 교체하는 구간이라 여기서 막지 않으면 바로 덮인다."""
+    print("[10] 휴방으로 기록된 회차는 수집분이 덮지 않는다")
+    meta = {"program_key": "HD_OGS", "schedule_raw": "매주 화요일 19시 30분"}
+    off_air = {"date": "2026-09-22", "label": "09/22(화) 휴방", "off_air": True,
+               "collected_at": "2026-09-21T21:00:00+09:00", "products": []}
+    leftover = {"date": "2026-09-22", "label": "09/22(화) 방송",
+                "collected_at": "2026-09-21T23:00:00+09:00",
+                "products": [{"broadcast_date_label": "9/22(화) 방송상품",
+                              "name": "다이슨 New V8 싸이클론 무선청소기"}]}
+
+    for now_text, phase in [("2026-09-21T23:00:00", "before"),
+                            ("2026-09-22T20:00:00", "reconcile"),
+                            ("2026-09-24T04:00:00", "final")]:
+        existing = {"programs": [{**meta, "broadcasts": [dict(off_air)]}]}
+        bch.merge_into_month(existing, "HD_OGS", meta,
+                             {bch.broadcast_key("2026-09-22", None): dict(leftover)},
+                             at(now_text))
+        kept = existing["programs"][0]["broadcasts"][0]
+        check(f"{phase} - 휴방 유지", kept.get("off_air"), True)
+        check(f"{phase} - 잔여 상품 안 들어옴", len(kept["products"]), 0)
+
+    # 휴방 표시가 없는 회차는 예전처럼 정상 동작(before = 교체)해야 한다
+    existing = {"programs": [{**meta, "broadcasts": [
+        {"date": "2026-09-22", "label": "09/22(화) 방송",
+         "collected_at": "2026-09-21T21:00:00+09:00", "products": []}]}]}
+    bch.merge_into_month(existing, "HD_OGS", meta,
+                         {bch.broadcast_key("2026-09-22", None): dict(leftover)},
+                         at("2026-09-21T23:00:00"))
+    check("휴방 표시가 없으면 평소대로 교체",
+          len(existing["programs"][0]["broadcasts"][0]["products"]), 1)
+
+
 def main():
     test_phase()
     test_reconcile_removal()
@@ -311,6 +350,7 @@ def main():
     test_gate_untimed_label()
     test_gate_retention()
     test_merge_into_month()
+    test_off_air_is_sticky()
     test_same_day_two_broadcasts()
     test_absorbed_slot_removed()
 

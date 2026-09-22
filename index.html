@@ -3268,6 +3268,13 @@
     margin-top: 2px;
   }
 
+  /* 휴방 회차 - 상품 자리에 한 마디만 둔다 */
+  .cel-bcast.off-air .cel-date-group-label { color: var(--ink-faint); }
+  .cel-off-air {
+    margin-top: 6px; padding: 14px 0; text-align: center;
+    font-size: 12px; font-weight: 700; color: var(--ink-faint);
+    background: var(--paper-dim); border-radius: 6px;
+  }
   .cel-col-empty {
     font-size: 11px;
     color: var(--ink-faint);
@@ -6782,7 +6789,8 @@ function celBroadcastIsUpcoming(b) {
 // 하나라도 남아 있으면 '예정'(노랑), 전부 지났으면 '종료'(회색). 방송일을
 // 못 뽑은 묶음('기타')은 판단 근거가 없어 배지를 붙이지 않는다.
 function celWeekStatusHtml(broadcasts) {
-  const dated = (broadcasts || []).filter(b => b.date);
+  // 휴방 회차는 '예정/종료'를 가릴 대상이 아니다 (방송이 없는 주다)
+  const dated = (broadcasts || []).filter(b => b.date && !b.offAir);
   if (dated.length === 0) return '';
   return dated.some(celBroadcastIsUpcoming)
     ? '<span class="cel-week-status upcoming">예정</span>'
@@ -6849,7 +6857,8 @@ function celRenderBand(file) {
   let broadcasts = [];
   let emptyMsg = '';
   if (histProg && (histProg.broadcasts || []).length > 0) {
-    broadcasts = histProg.broadcasts.map(b => ({ date: b.date || '', label: b.label || b.date || '', products: b.products || [] }));
+    broadcasts = histProg.broadcasts.map(b => ({ date: b.date || '', label: b.label || b.date || '',
+                                                 offAir: b.off_air === true, products: b.products || [] }));
   } else if (celMonth && celMonth !== celThisMonth()) {
     emptyMsg = '이 달에 수집된 방송 기록이 없습니다.';
   } else {
@@ -6875,7 +6884,8 @@ function celRenderBand(file) {
   });
   const monthNum = parseInt((celMonth || celThisMonth()).slice(5, 7), 10);
   const weeks = Object.keys(weekMap).map(Number).sort((a, b) => b - a);
-  const bcastCnt = broadcasts.length;
+  // 휴방 회차는 '이번 달 방송 N회'에서 뺀다 (방송이 없던 주다)
+  const bcastCnt = broadcasts.filter(b => !b.offAir).length;
   // 한 브랜드가 여러 상품코드로 노출돼 상품 수는 과잉집계라, 고유 브랜드 수로 센다.
   // 브랜드를 못 뽑는 회사(GS)는 brandCnt가 0이 되고 요약에서 브랜드 표기가 생략된다.
   const brandSet = new Set();
@@ -6890,8 +6900,10 @@ function celRenderBand(file) {
     : weeks.map(w => {
         const items = weekMap[w].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
         const cols = items.map(b =>
-          `<div class="cel-bcast"><div class="cel-date-group-label">${b.label}</div>` +
-          celRenderProductList(b.products) + `</div>`
+          `<div class="cel-bcast${b.offAir ? ' off-air' : ''}">` +
+          `<div class="cel-date-group-label">${b.label}</div>` +
+          (b.offAir ? `<div class="cel-off-air">휴방</div>` : celRenderProductList(b.products)) +
+          `</div>`
         ).join('');
         return `<div class="cel-week">` +
           `<span class="cel-week-label">${w === 0 ? '기타' : monthNum + '월 ' + w + '주차'}</span>` +

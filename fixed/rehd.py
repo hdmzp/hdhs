@@ -558,7 +558,8 @@ def upcoming_lineup_days(program_names, already_done=None) -> list:
     return sorted(days)
 
 
-def collect_lineup_products(brod_date, program_names, brod_start=None, brod_end=None) -> list:
+def collect_lineup_products(brod_date, program_names, brod_start=None, brod_end=None,
+                            status=None) -> list:
     """방송일(brod_date) 하루치 편성표를 훑어 이 프로그램의 모든 회차 상품을 모은다.
 
     ("가까운 방송 >" 페이지가 보여주는 것과 같은 데이터. 여기가 메인 소스)
@@ -610,6 +611,8 @@ def collect_lineup_products(brod_date, program_names, brod_start=None, brod_end=
             print(f"    -> [휴방 판정] {brod_date} 편성표에 '{program_names[0]}' 방송이 "
                   f"없음 - 시각({brod_start or '?'})만 보고 남의 라인업을 "
                   f"가져오지 않는다")
+            if status is not None:
+                status["off_air"] = True
             return products
         api_slots = select_program_slots(api_entries, [], brod_start, brod_end)
         local_slots = select_program_slots(local_entries, [], brod_start, brod_end)
@@ -638,6 +641,38 @@ def collect_lineup_products(brod_date, program_names, brod_start=None, brod_end=
             print(f"         · [{it['brand']}] {(it['name'] or '')[:40]}")
 
     return products
+
+
+def strip_off_air_date(products, off_air_date):
+    """휴방으로 판정된 날짜를 주장하는 '시각 없는' 라벨에서 날짜를 뗀다.
+
+    편성표 라인업은 휴방을 제대로 걸러내는데(collect_lineup_products), 나머지
+    소스(searchSpexSectItem.itemList / pgm-comm / 스와이퍼)는 상세페이지에 남아
+    있는 잔여 상품을 주고 거기에 폴백 라벨("9/22(화) 방송상품")이 붙는다.
+    그대로 두면 휴방인 날에 회차가 하나 생긴다 - 2026-09-22 오감쇼가 휴방인데
+    상세페이지에 남아 있던 다이슨 V8이 '9/22 방송'으로 잡혔다.
+    날짜를 떼면 build_celeb_history가 '어느 방송인지 알 수 없는 상품'으로 보고
+    건너뛰므로 휴방인 날에 회차가 생기지 않는다.
+    (편성표가 준 시각 있는 라벨은 진짜 회차라 손대지 않는다)
+    """
+    if not off_air_date:
+        return 0
+    stripped = 0
+    for p in products:
+        label = p.get("broadcast_date_label") or ""
+        if re.search(r"\d{1,2}:\d{2}", label):
+            continue
+        m = re.search(r"(\d{1,2})\s*/\s*(\d{1,2})", label)
+        if not m:
+            continue
+        if (int(m.group(1)), int(m.group(2))) != (off_air_date.month, off_air_date.day):
+            continue
+        p["broadcast_date_label"] = "방송상품"
+        stripped += 1
+    if stripped:
+        print(f"    -> [휴방] {off_air_date} 라벨을 단 잔여 상품 {stripped}개에서 "
+              f"날짜를 뗌 (휴방인 날에 회차를 만들지 않는다)")
+    return stripped
 
 
 def merge_sources(lineup_products, pgm_comm_products,
@@ -805,9 +840,10 @@ def crawl_hd_program(page, config: dict, list_map: dict):
 
     # --- 편성표(tv-list + 로컬 HD_live)에서 그 날 이 프로그램 회차를 전부 수집 ---
     program_names = [config["spex_sect_nm"], tab_name]
+    lineup_status = {}
     if brod_date:
         lineup_products = collect_lineup_products(
-            brod_date, program_names, brod_start, brod_end)
+            brod_date, program_names, brod_start, brod_end, status=lineup_status)
     else:
         print(f"    -> [경고] 방송일을 알 수 없어 편성표 라인업 조회 생략")
 
@@ -819,6 +855,10 @@ def crawl_hd_program(page, config: dict, list_map: dict):
 
     deduped = merge_sources(lineup_products, pgm_comm_products,
                             itemlist_products, swiper_products)
+
+    # 휴방인 날짜를 상세페이지 잔여 상품이 주장하고 있으면 날짜를 뗀다
+    if lineup_status.get("off_air"):
+        strip_off_air_date(deduped, brod_date)
 
     # 마지막 안전망: pgm-comm이 알려준 날짜 자체가 틀렸거나 편성표 조회가
     # 실패한 경우를 대비해, 나머지 3사와 같은 공통 보강(편성표에서 이
