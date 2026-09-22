@@ -1464,6 +1464,37 @@
     letter-spacing: 0.3px;
     vertical-align: 1px;
   }
+  /* 결방 카드 — 셀럽PGM 탭의 '휴방'과 같은 취지. 시청률이 없는 자리이므로
+     링크가 아니고, 값이 아직 안 들어온 빈칸과 구분되게 흐리게 깔아둔다. */
+  .dv-card.dv-off-air {
+    background: var(--paper-dim);
+    border-left-color: var(--rule);
+    cursor: default;
+  }
+  .dv-card.dv-off-air:hover { background: var(--paper-dim); }
+  .dv-card.dv-off-air .dv-title,
+  .dv-card.dv-off-air .dv-title .dv-channel,
+  .dv-card.dv-off-air .dv-meta { color: var(--ink-faint); }
+  .dv-off-badge {
+    display: inline-block;
+    margin-left: 4px;
+    padding: 0 3px;
+    border-radius: 3px;
+    background: var(--ink-faint);
+    color: #fff;
+    font-size: 8.5px;
+    font-weight: 800;
+    line-height: 1.5;
+    letter-spacing: 0.3px;
+    vertical-align: 1px;
+  }
+  .dv-off-note {
+    display: block;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--ink-faint);
+  }
+
   .dv-card .dv-meta {
     font-size: 10.5px;
     color: var(--ink-soft);
@@ -1491,7 +1522,9 @@
     line-height: 1.6;
   }
   .dv-badge-note .dv-new-badge,
-  .dv-badge-note .dv-end-badge { margin-left: 0; }
+  .dv-badge-note .dv-end-badge,
+  .dv-badge-note .dv-off-badge,
+  .info-tip-bubble-body .dv-off-badge { margin-left: 0; }
 
   /* 그 주의 신규 편성/종영 프로그램 요약 (표 아래) */
   .dv-below-new {
@@ -1549,7 +1582,7 @@
     table.dv-table thead th { font-size: 12px; }
     .dv-card { padding: 5px 6px 5px 8px; }
     .dv-card .dv-title { font-size: 10.5px; }
-    .dv-new-badge, .dv-end-badge { font-size: 8px; }
+    .dv-new-badge, .dv-end-badge, .dv-off-badge { font-size: 8px; }
     /* 아시안게임이 붙어 버튼이 5개가 됐다. 좁은 화면에서 글자가 세로로
        쪼개지지 않도록 글자와 여백을 줄여 한 줄에 담는다. */
     .dv-slicer { gap: 2px; padding: 3px; }
@@ -3802,7 +3835,10 @@ const TAB_TIPS = {
   },
   dramavariety: {
     title: '드라마·예능 탭은?',
-    items: ['네이버에서 시청률 드라마 5%·예능 1% 이상만 수집해요'],
+    items: [
+      '네이버에서 시청률 드라마 5%·예능 1% 이상만 수집해요',
+      '<span class="dv-off-badge">결방</span> 은 방송사 공지로 확인된 결방이에요 (시청률이 집계되지 않아요)',
+    ],
   },
   weather: {
     title: '날씨 탭은?',
@@ -4401,6 +4437,19 @@ const DV_GENRES = [
   { key: "variety", label: "예능" }
 ];
 
+// 방송사 공지로 확인된 장기 결방. 아시안게임 중계처럼 여러 주가 통째로 빠지면
+// 시청률이 아예 안 잡혀 표에 아무것도 안 뜨고, 그러면 수집이 깨진 것처럼 보인다.
+// 셀럽PGM 탭의 '휴방'과 같은 취지로 그 자리에 결방 카드를 띄운다.
+// from·to는 양끝을 포함하는 ISO 날짜. 새 결방 공지가 뜨면 여기에 한 줄 추가한다.
+const DV_OFF_AIR = [
+  { category: "drama", channel: "KBS2", title: "욕망의 덫", time: "오후 07:50",
+    days: ["월", "화", "수", "목", "금"],
+    from: "2026-09-21", to: "2026-10-02", note: "아시안게임 중계" },
+  { category: "drama", channel: "MBC", title: "가족관계증명서", time: "오후 07:05",
+    days: ["월", "화", "수", "목", "금"],
+    from: "2026-09-21", to: "2026-10-02", note: "아시안게임 중계" }
+];
+
 function dvMondayOf(dateStr) {
   const d = new Date(dateStr + "T00:00:00");
   const dow = d.getDay();
@@ -4487,6 +4536,51 @@ function dvEscapeHtml(s) {
     .replace(/'/g, '&#39;');
 }
 
+// DV_OFF_AIR를 이 주차에 실제로 걸치는 칸으로 펼친다.
+// 반환: { 장르: { 요일: [결방항목, ...] } }
+// 결방 기간이 주 중간에 시작/끝나도(예: ~10/2 금) 그 안에 드는 요일 칸에만 붙는다.
+function dvOffAirForWeek(weekStart) {
+  const byGenre = {};
+  if (!weekStart) return byGenre;
+  for (const off of DV_OFF_AIR) {
+    for (let i = 0; i < DV_DAYS.length; i++) {
+      const day = DV_DAYS[i];
+      if (!off.days.includes(day)) continue;
+      const d = new Date(weekStart + "T00:00:00");
+      d.setDate(d.getDate() + i);
+      const date = toLocalDateStr(d);
+      if (date < off.from || date > off.to) continue;
+      const byDay = byGenre[off.category] || (byGenre[off.category] = {});
+      (byDay[day] = byDay[day] || []).push(off);
+    }
+  }
+  return byGenre;
+}
+
+function dvOffAirCount(byDay) {
+  if (!byDay) return 0;
+  return Object.keys(byDay).reduce((n, day) => n + byDay[day].length, 0);
+}
+
+// "2026-09-21" -> "09.21" (시청률 측정일 표기와 같은 형식)
+function dvShortDate(iso) {
+  return (iso || '').slice(5).replace('-', '.');
+}
+
+// 결방 카드. 시청률이 없는 자리라 링크로 만들지 않는다.
+function dvOffAirCardHtml(off) {
+  const period = `${dvShortDate(off.from)}~${dvShortDate(off.to)}`;
+  const tip = `${off.title} 결방 (${off.from} ~ ${off.to}${off.note ? ' · ' + off.note : ''})`;
+  return `<div class="dv-card dv-cat-${off.category} dv-off-air" title="${dvEscapeHtml(tip)}">`
+    + `<span class="dv-title"><span class="dv-channel">[${dvEscapeHtml(off.channel)}]</span> `
+    + `${dvEscapeHtml(off.title)}<span class="dv-off-badge">결방</span></span>`
+    + `<span class="dv-meta">(${dvEscapeHtml(off.days.join(', '))})`
+    + `${off.time ? ' ' + dvEscapeHtml(off.time) : ''}</span>`
+    + `<span class="dv-off-note">${dvEscapeHtml(period)}`
+    + `${off.note ? ' · ' + dvEscapeHtml(off.note) : ''}</span>`
+    + `</div>`;
+}
+
 function dvRenderGrid(data) {
   const wrap = document.getElementById('dvGridWrap');
   const programs = (data && data.programs) ? data.programs : [];
@@ -4507,22 +4601,34 @@ function dvRenderGrid(data) {
     ? DV_GENRES
     : (dvFilter === "all" ? DV_GENRES : DV_GENRES.filter(g => g.key === dvFilter));
 
+  // 결방 안내. 고시청률 필터는 '잘 나온 프로그램'만 보는 화면이라 붙이지 않는다.
+  // 주차 파일이 없어 data가 null인 주(수집이 한 건도 안 된 주)에도 떠야 하므로
+  // 현재 보고 있는 주차(dvWeekStart)를 기준으로 삼는다.
+  const weekStart = (data && data.weekStart) || dvWeekStart;
+  const offAirByGenre = (dvFilter === "high") ? {} : dvOffAirForWeek(weekStart);
+  const visibleOffAir = genres.reduce(
+    (n, g) => n + dvOffAirCount(offAirByGenre[g.key]), 0);
+
   let html = '<table class="dv-table"><thead><tr><th class="dv-genre-col"></th>';
   for (const day of DV_DAYS) html += `<th>${day}</th>`;
   html += '</tr></thead><tbody>';
 
-  if (!filteredPrograms.length) {
+  if (!filteredPrograms.length && !visibleOffAir) {
     html += `<tr class="dv-empty-row"><td colspan="${DV_DAYS.length + 1}">이 주차의 수집 데이터가 없습니다</td></tr>`;
   } else {
     for (const genre of genres) {
       const genrePrograms = filteredPrograms.filter(p => p.category === genre.key);
-      if (genrePrograms.length === 0 && dvFilter !== "all" && dvFilter !== "high") continue;
+      const genreOffAir = offAirByGenre[genre.key] || {};
+      if (genrePrograms.length === 0 && dvOffAirCount(genreOffAir) === 0
+          && dvFilter !== "all" && dvFilter !== "high") continue;
 
       const genreClass = genre.key === 'drama' ? 'dv-genre-drama' : 'dv-genre-variety';
       html += `<tr><td class="dv-genre-label ${genreClass}">${genre.label}</td>`;
       for (const day of DV_DAYS) {
         const dayPrograms = genrePrograms.filter(p => p.days.includes(day));
-        const cellClass = dayPrograms.length ? 'dv-day-cell' : 'dv-day-cell dv-empty-cell';
+        const dayOffAir = genreOffAir[day] || [];
+        const cellClass = (dayPrograms.length || dayOffAir.length)
+          ? 'dv-day-cell' : 'dv-day-cell dv-empty-cell';
         html += `<td class="${cellClass}">`;
         for (const p of dayPrograms) {
           // 주 다회 편성 프로그램은 요일마다 회차가 다르므로, 그 요일의
@@ -4561,6 +4667,8 @@ function dvRenderGrid(data) {
           html += `<span class="dv-rating">${dvEscapeHtml(dayRating)}%</span> <span class="dv-rating-date">${dayRatingDate ? '(' + dvEscapeHtml(dayRatingDate) + ')' : ''}</span>`;
           html += `</a>`;
         }
+        // 결방 카드는 그 요일 칸 맨 아래에 (방영분 다음에) 붙인다
+        for (const off of dayOffAir) html += dvOffAirCardHtml(off);
         html += `</td>`;
       }
       html += `</tr>`;
@@ -4571,10 +4679,14 @@ function dvRenderGrid(data) {
 
   // 두 배지의 표시 규칙이 다르다는 점을 표 바로 아래에 고지한다.
   // (New는 그 주 편성 요일 전체, End는 마지막 회차 요일 하나에만)
-  if (filteredPrograms.length) {
+  if (filteredPrograms.length || visibleOffAir) {
     html += '<div class="dv-badge-note">'
           + '※ <span class="dv-new-badge">New</span> 신규 편성은 해당 주의 <strong>편성 요일 전체</strong>에, '
           + '<span class="dv-end-badge">End</span> 종영은 <strong>마지막 방영 회차</strong>에만 표시됩니다.'
+          + (visibleOffAir
+              ? '<br>※ <span class="dv-off-badge">결방</span> 은 방송사 공지로 확인된 결방입니다 '
+                + '(시청률이 집계되지 않아 수집 데이터에는 없습니다).'
+              : '')
           + '</div>';
   }
 
