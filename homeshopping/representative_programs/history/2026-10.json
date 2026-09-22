@@ -1,6 +1,6 @@
 {
   "month": "2026-10",
-  "updated_at": "2026-09-22T10:35:01.431908+09:00",
+  "updated_at": "2026-09-22T14:57:23.960031+09:00",
   "programs": [
     {
       "program_key": "GS_BJY",
@@ -14,7 +14,7 @@
         {
           "date": "2026-10-01",
           "label": "10/01(목) 20:45 방송",
-          "collected_at": "2026-09-22T10:35:01.419888+09:00",
+          "collected_at": "2026-09-22T14:57:23.949666+09:00",
           "products": [
             {
               "prd_id": "1108204751",
@@ -59,7 +59,7 @@
         {
           "date": "2026-10-02",
           "label": "10/02(금) 20:35 방송",
-          "collected_at": "2026-09-22T10:35:01.419888+09:00",
+          "collected_at": "2026-09-22T14:57:23.949666+09:00",
           "products": [
             {
               "prd_id": "1128885173",
@@ -95,8 +95,16 @@
         {
           "date": "2026-10-01",
           "label": "10/01(목) 20:45 방송",
-          "collected_at": "2026-09-22T10:35:01.419888+09:00",
+          "collected_at": "2026-09-22T14:57:23.949666+09:00",
           "products": [
+            {
+              "broadcast_date_label": "10/01 목요일 20:45",
+              "brand": "소다산",
+              "name": "[소다산] 2026 단한번 아로마 주방세제 500ml 9통(과일/야채 겸용, 레몬 5+라벤더 2+오렌지 2) + 전용펌프 1개",
+              "price": 79900,
+              "image": "https://image2.lotteimall.com/goods/30/52/92/12925230_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12925230"
+            },
             {
               "broadcast_date_label": "10/01 목요일 20:45",
               "brand": "소다산",
@@ -161,7 +169,7 @@
         {
           "date": "2026-10-05",
           "label": "10/05(월) 19:35 방송",
-          "collected_at": "2026-09-22T10:35:01.419888+09:00",
+          "collected_at": "2026-09-22T14:57:23.949666+09:00",
           "products": [
             {
               "broadcast_date_label": "10/05(월) 19:35",
@@ -170,6 +178,40 @@
               "price": 124900,
               "image": "https://image.cjonstyle.net/goods_images/20/883/2029780883L.jpg?timestamp=20251114165349",
               "link": "https://item.cjonstyle.com/item/2029780883?channelCode=30002002"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "program_key": "CJ_KCO",
+      "company": "CJ",
+      "tab_name": "김창옥",
+      "program_title": "더 김창옥 라이브",
+      "schedule_raw": "화요일 19시 35분",
+      "detail_link": "https://display.cjonstyle.com/m/pgmShop/563907",
+      "program_image": "https://image.cjonstyle.net/public/confirm/assets/pgm/shop/563907/2026/2/3/7041270f12d2ab6e9d229dc91dfb95dcd41518e7.png",
+      "broadcasts": [
+        {
+          "date": "2026-10-13",
+          "label": "10/13(화) 19:35 방송",
+          "collected_at": "2026-09-22T14:57:23.949666+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "10/13(화) 19:35",
+              "brand": "라이프밀",
+              "name": "[1등 생식] 황성주 박사의 라이프 밀 4박스&흔들컵1",
+              "price": 249000,
+              "image": "https://image.cjonstyle.net/goods_images/20/670/2070472670L.jpg?timestamp=20260526152220",
+              "link": "https://item.cjonstyle.com/item/2070472670?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "10/13(화) 19:35",
+              "brand": "라이프밀",
+              "name": "[최화정쇼PICK] 100% 국산 동결건조칩 15팩",
+              "price": 59900,
+              "image": "https://image.cjonstyle.net/goods_images/20/126/2092651126L.jpg?timestamp=20260902160203",
+              "link": "https://item.cjonstyle.com/item/2092651126?channelCode=30002002"
             }
           ]
         }
@@ -187,7 +229,7 @@
         {
           "date": "2026-10-02",
           "label": "10/02(금) 22:45 방송",
-          "collected_at": "2026-09-22T10:35:01.419888+09:00",
+          "collected_at": "2026-09-22T14:57:23.949666+09:00",
           "products": [
             {
               "broadcast_date_label": "10/02(금) 22:45",
