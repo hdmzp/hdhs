@@ -403,6 +403,27 @@ def collect_current_broadcasts(today: date) -> dict:
                     "products": products,
                 }
 
+        # 수집기가 '편성표에 그날 방송 없음'이라고 알려준 날짜는 휴방 회차로
+        # 남긴다. 화면에서 그 주가 그냥 비어 보이는 것보다 '휴방'이라고 쓰는
+        # 게 낫다 (2026-09 추석 주 - 최은경쇼 9/23 / 왕영은 9/26).
+        # 같은 날짜에 실제 회차가 수집됐으면(편성표가 방송을 확인해 준 것)
+        # 그쪽이 맞으므로 휴방을 만들지 않는다.
+        for date_text in data.get("off_air_dates") or []:
+            try:
+                off_date = date.fromisoformat(date_text)
+            except (TypeError, ValueError):
+                continue
+            if any(b.get("date") == date_text for b in by_date.values()):
+                continue
+            by_date[broadcast_key(date_text, None)] = {
+                "date": date_text,
+                "label": f"{off_date.month:02d}/{off_date.day:02d}"
+                         f"({WEEKDAY_ABBR[off_date.weekday()]}) 휴방",
+                "off_air": True,
+                "collected_at": now_iso,
+                "products": [],
+            }
+
         if not by_date:
             continue
 

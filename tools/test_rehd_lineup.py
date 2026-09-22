@@ -262,43 +262,105 @@ def test_sweeps_next_broadcast_day():
     check("이미 훑은 날은 빼고 다음 회차만", days, [next_week])
 
 
-def test_off_air_strips_leftover_label():
-    """휴방인 날짜를 주장하는 상세페이지 잔여 상품은 라벨에서 날짜를 뗀다.
+def test_schedule_dates_win():
+    """편성표가 부정하는 날짜는 라벨에서 뗀다 (편성표 방송일시 최우선).
 
-    편성표 라인업은 휴방을 걸러내는데(테스트 [6]), 나머지 소스
-    (searchSpexSectItem.itemList / pgm-comm / 스와이퍼)는 상세페이지에 남아
-    있는 지난 상품을 주고 거기에 폴백 라벨이 붙는다. 실제 사고:
-    2026-09-22(화) 오감쇼가 휴방인데 다이슨 V8이 '9/22(화) 방송상품'을 달고
-    와서 셀럽PGM 탭에 9/22 회차가 생겼다.
+    라벨의 날짜는 소스마다 신뢰도가 다르다. 편성표 라인업이 만든 라벨만
+    편성표가 근거이고, pgm-comm의 brodDispNm과 schedule_raw 추측 폴백은
+    휴방 주를 못 읽는다. 실제 사고 (2026-09-22 주 - 셀럽PGM이 통째로 휴방):
+      최은경쇼  편성표에 9/23 방송 없음인데 '9/23(수) 방송상품'
+      왕영은    편성표에 9/26 방송 없음인데 '9/26(토) 방송상품'
+      오감쇼    편성표에 9/22 방송 없음인데 다이슨 V8이 '9/22(화) 방송상품'
+    편성표가 아직 없는 날(편성 미공개)은 판단을 보류하고 그대로 둔다 -
+    그러지 않으면 2주 뒤 회차가 수집되는 즉시 날짜를 잃는다.
     """
-    print("[9] 휴방인 날짜를 주장하는 잔여 상품은 날짜를 뗀다")
-    nameless = [dict(it, brodTitl="") for it in DAY_0908]
-    local = [
-        ("19:30", "21:45", "최은경쇼",
-         {"broadcast_date_label": None, "brand": "머티리얼랩", "name": "세렌느 후드자켓",
-          "price": 1, "image": None, "link": None, "_code": "2252314801"}),
-    ]
-    status = {}
-    products = run_collect(nameless, ["오감쇼", "오감쇼"], "19:30", "21:45",
-                           local_entries=local, status=status)
-    check("휴방이면 0건", len(products), 0)
-    check("휴방 판정이 호출부에 전달됨", status.get("off_air"), True)
+    print("[9] 편성표가 부정하는 날짜는 뗀다 (편성 미공개인 날은 보류)")
 
-    leftover = [
-        {"broadcast_date_label": "9/8(화) 방송상품", "name": "다이슨 V8"},
-        {"broadcast_date_label": "09/08(화) 19:30 방송", "name": "진짜 회차 상품"},
-        {"broadcast_date_label": "9/15(화) 방송상품", "name": "다른 날 잔여"},
-        {"broadcast_date_label": "방송상품", "name": "원래 날짜 없는 상품"},
-    ]
-    rehd.strip_off_air_date(leftover, date(2026, 9, 8))
-    check("휴방 날짜 잔여 상품은 날짜를 뗌",
-          leftover[0]["broadcast_date_label"], "방송상품")
-    check("시각 있는 진짜 회차 라벨은 그대로",
-          leftover[1]["broadcast_date_label"], "09/08(화) 19:30 방송")
-    check("다른 날 라벨은 그대로",
-          leftover[2]["broadcast_date_label"], "9/15(화) 방송상품")
-    check("원래 날짜 없는 라벨도 그대로",
-          leftover[3]["broadcast_date_label"], "방송상품")
+    # 9/23: 편성표는 받았고 최은경쇼가 없다 -> 휴방
+    # 9/30: 편성표 자체가 아직 없다 -> 보류
+    day_items = {
+        "20260923": [tv_item("19:30", "20:40", "아쇼라", "1", "남의브랜드", "남의상품")],
+        "20260930": [],
+    }
+    local_days = {
+        date(2026, 9, 23): [("19:30", "20:40", "아쇼라", {"x": 1})],
+        date(2026, 9, 30): [],
+    }
+    orig_fetch, orig_local = rehd.fetch_day_items, rehd.load_local_day_entries
+    rehd.fetch_day_items = lambda brod_dt: list(day_items.get(brod_dt, []))
+    rehd.load_local_day_entries = lambda d: list(local_days.get(d, []))
+    rehd._SCHEDULE_HAS_CACHE.clear()
+    try:
+        check("편성표에 없으면 휴방(False)",
+              rehd.schedule_has_program(date(2026, 9, 23), ["최은경쇼", "최은경"]), False)
+        check("편성표에 있으면 True",
+              rehd.schedule_has_program(date(2026, 9, 23), ["아쇼라"]), True)
+        check("편성표 자체가 없으면 보류(None)",
+              rehd.schedule_has_program(date(2026, 9, 30), ["최은경쇼"]), None)
+
+        products = [
+            {"broadcast_date_label": "9/23(수) 방송상품", "name": "휴방 주 폴백 상품"},
+            {"broadcast_date_label": "09/23(수) 19:30 방송", "name": "휴방 주 시각 라벨"},
+            {"broadcast_date_label": "9/30(수) 방송상품", "name": "편성 미공개 상품"},
+            {"broadcast_date_label": "방송상품", "name": "원래 날짜 없는 상품"},
+        ]
+        stripped, off_air = rehd.enforce_schedule_dates(products, ["최은경쇼", "최은경"])
+        check("뗀 개수", stripped, 2)
+        check("휴방 날짜를 돌려준다", off_air, [date(2026, 9, 23)])
+        check("휴방 주 폴백 라벨 -> 날짜 뗌",
+              products[0]["broadcast_date_label"], "방송상품")
+        check("휴방 주면 시각 있는 라벨도 뗀다 (편성표가 최우선)",
+              products[1]["broadcast_date_label"], "방송상품")
+        check("편성 미공개인 날은 그대로 보류",
+              products[2]["broadcast_date_label"], "9/30(수) 방송상품")
+        check("원래 날짜 없는 라벨도 그대로",
+              products[3]["broadcast_date_label"], "방송상품")
+    finally:
+        rehd.fetch_day_items, rehd.load_local_day_entries = orig_fetch, orig_local
+        rehd._SCHEDULE_HAS_CACHE.clear()
+
+
+def test_off_air_is_week_level():
+    """'휴방'으로 남길지는 주 단위로 본다 (요일 이동 주는 휴방이 아니다).
+
+    2026-09-21(월) 최은경쇼는 수요일(9/23) 방송을 월요일로 당긴 것이다.
+    9/23에 방송이 없다고 그 주를 휴방으로 적으면 틀린다 - 날짜만 떼고
+    휴방 회차는 만들지 않아야 한다. 반대로 왕영은은 그 주(9/21~9/27)에
+    아무 날도 방송이 없어서 진짜 휴방이다.
+    """
+    print("[10] 휴방 회차는 주 단위로 판단한다 (요일 이동 주는 제외)")
+    # 2026-09-21(월) ~ 09-27(일)
+    local_days = {
+        date(2026, 9, 21): [("19:30", "20:40", "최은경쇼", {"x": 1})],
+        date(2026, 9, 22): [("19:30", "20:40", "에이지투웨니스", {"x": 1})],
+        date(2026, 9, 23): [("19:30", "20:40", "아쇼라", {"x": 1})],
+        date(2026, 9, 26): [("08:20", "09:20", "클럽노블레스", {"x": 1})],
+    }
+    day_items = {}
+    orig_fetch, orig_local = rehd.fetch_day_items, rehd.load_local_day_entries
+    rehd.fetch_day_items = lambda brod_dt: list(day_items.get(brod_dt, []))
+    rehd.load_local_day_entries = lambda d: list(local_days.get(d, []))
+    rehd._SCHEDULE_HAS_CACHE.clear()
+    try:
+        check("요일을 옮겨 방송한 주는 방송 있음",
+              rehd.program_airs_in_week(date(2026, 9, 23), ["최은경쇼", "최은경"]), True)
+        check("그 주에 아무 날도 없으면 휴방 주",
+              rehd.program_airs_in_week(date(2026, 9, 26), ["왕영은의 톡투게더", "왕영은"]), False)
+        check("그 주 편성표가 하나도 없으면 보류",
+              rehd.program_airs_in_week(date(2026, 10, 7), ["최은경쇼"]), None)
+
+        moved = [{"broadcast_date_label": "9/23(수) 방송상품", "name": "요일 이동 주 폴백"}]
+        stripped, off_air = rehd.enforce_schedule_dates(moved, ["최은경쇼", "최은경"])
+        check("요일 이동 주도 날짜는 뗀다", moved[0]["broadcast_date_label"], "방송상품")
+        check("요일 이동 주는 휴방으로 남기지 않는다", off_air, [])
+
+        real = [{"broadcast_date_label": "9/26(토) 방송상품", "name": "휴방 주 폴백"}]
+        stripped, off_air = rehd.enforce_schedule_dates(
+            real, ["왕영은의 톡투게더", "왕영은"])
+        check("진짜 휴방 주는 휴방으로 남긴다", off_air, [date(2026, 9, 26)])
+    finally:
+        rehd.fetch_day_items, rehd.load_local_day_entries = orig_fetch, orig_local
+        rehd._SCHEDULE_HAS_CACHE.clear()
 
 
 def main():
@@ -311,7 +373,8 @@ def main():
     test_skips_when_program_is_off_air()
     test_time_window_skips_other_program()
     test_sweeps_next_broadcast_day()
-    test_off_air_strips_leftover_label()
+    test_schedule_dates_win()
+    test_off_air_is_week_level()
 
     print()
     if FAILURES:
