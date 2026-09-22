@@ -683,6 +683,33 @@ def schedule_has_program(brod_date, program_names):
     return verdict
 
 
+def program_airs_in_week(brod_date, program_names):
+    """그 주(월~일)에 편성표 상 이 프로그램 방송이 한 번이라도 있는지.
+
+    반환: True(그 주에 방송 있음) / False(휴방 주) / None(주 전체가 편성 미공개)
+
+    '그 날짜에 방송이 없다'와 '그 주에 방송이 없다'는 다르다. 요일을 옮겨
+    방송하는 주가 있다 - 2026-09-21(월) 최은경쇼는 수요일 방송을 월요일로
+    당긴 것이라, 9/23(수)에 방송이 없다고 해서 휴방 주가 아니다.
+    날짜를 떼는 건(enforce_schedule_dates) 날짜 단위로 맞지만, '휴방' 회차를
+    남길지는 주 단위로 봐야 한다.
+
+    로컬 편성(HD_live)만 본다. 네트워크 없이 읽을 수 있고, 하루 5회 수집분이라
+    프로그램명이 붙어 있다. 그 주에 편성표가 하나도 없으면 판단을 보류한다.
+    """
+    monday = brod_date - timedelta(days=brod_date.weekday())
+    seen_schedule = False
+    for i in range(7):
+        day = monday + timedelta(days=i)
+        local_entries = load_local_day_entries(day)
+        if not local_entries:
+            continue
+        seen_schedule = True
+        if select_program_slots(local_entries, program_names):
+            return True
+    return False if seen_schedule else None
+
+
 def enforce_schedule_dates(products, program_names):
     """라벨이 주장하는 날짜를 편성표와 대조해, 편성표가 부정하는 날짜는 뗀다.
 
@@ -704,7 +731,9 @@ def enforce_schedule_dates(products, program_names):
     반환: (날짜를 뗀 상품 수, 휴방으로 판정한 날짜 목록)
     휴방 날짜는 결과 JSON의 off_air_dates로 넘겨서 build_celeb_history가
     '휴방' 회차로 기록하게 한다 - 화면에서 그 주가 그냥 비어 보이는 것보다
-    휴방이라고 쓰는 게 낫다.
+    휴방이라고 쓰는 게 낫다. 단 **그 주에 다른 날 방송이 있으면** 휴방이
+    아니라 요일 이동이므로 날짜만 떼고 휴방으로는 남기지 않는다
+    (program_airs_in_week).
     """
     today = datetime.now(KST).date()
     by_date = {}
@@ -719,12 +748,21 @@ def enforce_schedule_dates(products, program_names):
     for brod_date, group in sorted(by_date.items()):
         if schedule_has_program(brod_date, program_names) is not False:
             continue
-        off_air_dates.append(brod_date)
+        # '휴방' 회차로 남길지는 주 단위로 본다. 요일을 옮겨 방송한 주는
+        # 그 날짜에 방송이 없을 뿐 휴방이 아니다 (2026-09-21 최은경쇼 -
+        # 수요일 방송을 월요일로 당겼다).
+        if program_airs_in_week(brod_date, program_names) is False:
+            off_air_dates.append(brod_date)
+            print(f"    -> [휴방] {brod_date} 주에 이 프로그램 방송이 하루도 없다 "
+                  f"- 휴방 회차로 남긴다")
+        else:
+            print(f"    -> (그 주 다른 날에 방송이 있다 - 요일 이동이므로 "
+                  f"휴방으로는 남기지 않는다)")
         for p in group:
             p["broadcast_date_label"] = "방송상품"
             stripped += 1
-        print(f"    -> [휴방] 편성표에 {brod_date} 방송이 없음 - 그 날짜를 달고 있던 "
-              f"상품 {len(group)}개에서 날짜를 뗌 (휴방 주에 회차를 만들지 않는다)")
+        print(f"    -> [편성표] {brod_date}에 이 프로그램 방송이 없음 - 그 날짜를 "
+              f"달고 있던 상품 {len(group)}개에서 날짜를 뗌")
     return stripped, off_air_dates
 
 

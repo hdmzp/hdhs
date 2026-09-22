@@ -320,6 +320,49 @@ def test_schedule_dates_win():
         rehd._SCHEDULE_HAS_CACHE.clear()
 
 
+def test_off_air_is_week_level():
+    """'휴방'으로 남길지는 주 단위로 본다 (요일 이동 주는 휴방이 아니다).
+
+    2026-09-21(월) 최은경쇼는 수요일(9/23) 방송을 월요일로 당긴 것이다.
+    9/23에 방송이 없다고 그 주를 휴방으로 적으면 틀린다 - 날짜만 떼고
+    휴방 회차는 만들지 않아야 한다. 반대로 왕영은은 그 주(9/21~9/27)에
+    아무 날도 방송이 없어서 진짜 휴방이다.
+    """
+    print("[10] 휴방 회차는 주 단위로 판단한다 (요일 이동 주는 제외)")
+    # 2026-09-21(월) ~ 09-27(일)
+    local_days = {
+        date(2026, 9, 21): [("19:30", "20:40", "최은경쇼", {"x": 1})],
+        date(2026, 9, 22): [("19:30", "20:40", "에이지투웨니스", {"x": 1})],
+        date(2026, 9, 23): [("19:30", "20:40", "아쇼라", {"x": 1})],
+        date(2026, 9, 26): [("08:20", "09:20", "클럽노블레스", {"x": 1})],
+    }
+    day_items = {}
+    orig_fetch, orig_local = rehd.fetch_day_items, rehd.load_local_day_entries
+    rehd.fetch_day_items = lambda brod_dt: list(day_items.get(brod_dt, []))
+    rehd.load_local_day_entries = lambda d: list(local_days.get(d, []))
+    rehd._SCHEDULE_HAS_CACHE.clear()
+    try:
+        check("요일을 옮겨 방송한 주는 방송 있음",
+              rehd.program_airs_in_week(date(2026, 9, 23), ["최은경쇼", "최은경"]), True)
+        check("그 주에 아무 날도 없으면 휴방 주",
+              rehd.program_airs_in_week(date(2026, 9, 26), ["왕영은의 톡투게더", "왕영은"]), False)
+        check("그 주 편성표가 하나도 없으면 보류",
+              rehd.program_airs_in_week(date(2026, 10, 7), ["최은경쇼"]), None)
+
+        moved = [{"broadcast_date_label": "9/23(수) 방송상품", "name": "요일 이동 주 폴백"}]
+        stripped, off_air = rehd.enforce_schedule_dates(moved, ["최은경쇼", "최은경"])
+        check("요일 이동 주도 날짜는 뗀다", moved[0]["broadcast_date_label"], "방송상품")
+        check("요일 이동 주는 휴방으로 남기지 않는다", off_air, [])
+
+        real = [{"broadcast_date_label": "9/26(토) 방송상품", "name": "휴방 주 폴백"}]
+        stripped, off_air = rehd.enforce_schedule_dates(
+            real, ["왕영은의 톡투게더", "왕영은"])
+        check("진짜 휴방 주는 휴방으로 남긴다", off_air, [date(2026, 9, 26)])
+    finally:
+        rehd.fetch_day_items, rehd.load_local_day_entries = orig_fetch, orig_local
+        rehd._SCHEDULE_HAS_CACHE.clear()
+
+
 def main():
     test_two_broadcasts_same_day()
     test_same_product_in_both_slots()
@@ -331,6 +374,7 @@ def main():
     test_time_window_skips_other_program()
     test_sweeps_next_broadcast_day()
     test_schedule_dates_win()
+    test_off_air_is_week_level()
 
     print()
     if FAILURES:
