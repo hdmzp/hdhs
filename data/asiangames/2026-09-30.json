@@ -1,6 +1,6 @@
 {
  "date": "2026-09-30",
- "collectedAt": "2026-09-22T09:34:35+09:00",
+ "collectedAt": "2026-09-22T23:35:09+09:00",
  "games": [
   {
    "time": "06:30",
@@ -58,7 +58,10 @@
    "time": "09:00",
    "discipline": "e스포츠",
    "event": "리그 오브 레전드 B조 1경기",
-   "countries": [],
+   "countries": [
+    "인도",
+    "홍콩"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -70,7 +73,8 @@
    "discipline": "e스포츠",
    "event": "리그 오브 레전드 B조 2경기",
    "countries": [
-    "대한민국"
+    "대한민국",
+    "차이니스 타이베이"
    ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": true,
@@ -88,39 +92,6 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026ESPOMOLQFNL000100"
-  },
-  {
-   "time": "09:00",
-   "discipline": "e스포츠",
-   "event": "모바일 레전드 8강 2경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOMOLQFNL000200"
-  },
-  {
-   "time": "09:00",
-   "discipline": "e스포츠",
-   "event": "모바일 레전드 8강 3경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOMOLQFNL000300"
-  },
-  {
-   "time": "09:00",
-   "discipline": "e스포츠",
-   "event": "모바일 레전드 8강 4경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOMOLQFNL000400"
   },
   {
    "time": "09:00",
@@ -143,6 +114,28 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026ESPOITVQFNL000300"
+  },
+  {
+   "time": "09:00",
+   "discipline": "비치 발리볼",
+   "event": "남자 8강",
+   "countries": [],
+   "venue": "헤키난 료쿠치 비치 코트",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026VBVMTEAM2QFNL000100"
+  },
+  {
+   "time": "09:00",
+   "discipline": "비치 발리볼",
+   "event": "남자 8강",
+   "countries": [],
+   "venue": "헤키난 료쿠치 비치 코트",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026VBVMTEAM2QFNL000200"
   },
   {
    "time": "09:00",
@@ -447,6 +440,28 @@
    "medal": false,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026DIVW3MPREL000100"
+  },
+  {
+   "time": "10:00",
+   "discipline": "비치 발리볼",
+   "event": "남자 8강",
+   "countries": [],
+   "venue": "헤키난 료쿠치 비치 코트",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026VBVMTEAM2QFNL000300"
+  },
+  {
+   "time": "10:00",
+   "discipline": "비치 발리볼",
+   "event": "남자 8강",
+   "countries": [],
+   "venue": "헤키난 료쿠치 비치 코트",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026VBVMTEAM2QFNL000400"
   },
   {
    "time": "10:00",
@@ -876,28 +891,6 @@
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026CMPWTEAM3FNL000100"
-  },
-  {
-   "time": "10:30",
-   "discipline": "e스포츠",
-   "event": "아이덴티티 V 8강 2경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOITVQFNL000200"
-  },
-  {
-   "time": "10:30",
-   "discipline": "e스포츠",
-   "event": "아이덴티티 V 8강 4경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOITVQFNL000400"
   },
   {
    "time": "10:30",
@@ -1472,6 +1465,50 @@
    "link": "https://m.sports.naver.com/game/2026CTRWKEIRINRND1000300"
   },
   {
+   "time": "10:55",
+   "discipline": "e스포츠",
+   "event": "모바일 레전드 8강 2경기",
+   "countries": [],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOMOLQFNL000200"
+  },
+  {
+   "time": "11:00",
+   "discipline": "e스포츠",
+   "event": "아이덴티티 V 8강 2경기",
+   "countries": [],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOITVQFNL000200"
+  },
+  {
+   "time": "11:00",
+   "discipline": "e스포츠",
+   "event": "아이덴티티 V 8강 4경기",
+   "countries": [],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOITVQFNL000400"
+  },
+  {
+   "time": "11:00",
+   "discipline": "비치 발리볼",
+   "event": "여자 8강",
+   "countries": [],
+   "venue": "헤키난 료쿠치 비치 코트",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026VBVWTEAM2QFNL000100"
+  },
+  {
    "time": "11:00",
    "discipline": "소프트볼",
    "event": "예선 라운드 18경기",
@@ -1831,6 +1868,7 @@
    "discipline": "e스포츠",
    "event": "리그 오브 레전드 B조 3경기",
    "countries": [
+    "인도",
     "대한민국"
    ],
    "venue": "아이치 스카이 엑스포 홀 D",
@@ -1843,7 +1881,10 @@
    "time": "11:30",
    "discipline": "e스포츠",
    "event": "리그 오브 레전드 B조 4경기",
-   "countries": [],
+   "countries": [
+    "홍콩",
+    "차이니스 타이베이"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -2239,6 +2280,17 @@
   },
   {
    "time": "12:50",
+   "discipline": "e스포츠",
+   "event": "모바일 레전드 8강 3경기",
+   "countries": [],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOMOLQFNL000300"
+  },
+  {
+   "time": "12:50",
    "discipline": "유도",
    "event": "남자 -60kg급 8강",
    "countries": [],
@@ -2415,17 +2467,6 @@
   },
   {
    "time": "13:00",
-   "discipline": "e스포츠",
-   "event": "아이덴티티 V 준결승 1경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOITVSFNL000100"
-  },
-  {
-   "time": "13:00",
    "discipline": "복싱",
    "event": "여자 51kg - 준결승 1",
    "countries": [],
@@ -2434,6 +2475,17 @@
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026BOXW51KGSFNL000100"
+  },
+  {
+   "time": "13:00",
+   "discipline": "비치 발리볼",
+   "event": "여자 8강",
+   "countries": [],
+   "venue": "헤키난 료쿠치 비치 코트",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026VBVWTEAM2QFNL000200"
   },
   {
    "time": "13:00",
@@ -2805,7 +2857,10 @@
    "time": "14:00",
    "discipline": "e스포츠",
    "event": "리그 오브 레전드 B조 5경기",
-   "countries": [],
+   "countries": [
+    "인도",
+    "차이니스 타이베이"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -2817,6 +2872,7 @@
    "discipline": "e스포츠",
    "event": "리그 오브 레전드 B조 6경기",
    "countries": [
+    "홍콩",
     "대한민국"
    ],
    "venue": "아이치 스카이 엑스포 홀 D",
@@ -2824,6 +2880,17 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026ESPOLOLGPB000600"
+  },
+  {
+   "time": "14:00",
+   "discipline": "e스포츠",
+   "event": "아이덴티티 V 준결승 1경기",
+   "countries": [],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOITVSFNL000100"
   },
   {
    "time": "14:00",
@@ -2835,6 +2902,17 @@
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026BOXW75KGSFNL000100"
+  },
+  {
+   "time": "14:00",
+   "discipline": "비치 발리볼",
+   "event": "여자 8강",
+   "countries": [],
+   "venue": "헤키난 료쿠치 비치 코트",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026VBVWTEAM2QFNL000300"
   },
   {
    "time": "14:00",
@@ -3080,17 +3158,6 @@
   },
   {
    "time": "14:35",
-   "discipline": "e스포츠",
-   "event": "아이덴티티 V 준결승 2경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOITVSFNL000200"
-  },
-  {
-   "time": "14:35",
    "discipline": "사이클 트랙",
    "event": "여자 경륜, 7-12위전",
    "countries": [],
@@ -3124,6 +3191,17 @@
   },
   {
    "time": "14:45",
+   "discipline": "e스포츠",
+   "event": "모바일 레전드 8강 4경기",
+   "countries": [],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOMOLQFNL000400"
+  },
+  {
+   "time": "14:45",
    "discipline": "복싱",
    "event": "남자 55kg - 준결승 2",
    "countries": [],
@@ -3143,6 +3221,17 @@
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026BOXM70KGSFNL000100"
+  },
+  {
+   "time": "15:00",
+   "discipline": "비치 발리볼",
+   "event": "여자 8강",
+   "countries": [],
+   "venue": "헤키난 료쿠치 비치 코트",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026VBVWTEAM2QFNL000400"
   },
   {
    "time": "15:00",
@@ -3270,6 +3359,17 @@
   },
   {
    "time": "16:00",
+   "discipline": "e스포츠",
+   "event": "아이덴티티 V 준결승 2경기",
+   "countries": [],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOITVSFNL000200"
+  },
+  {
+   "time": "16:00",
    "discipline": "세팍타크로",
    "event": "남자 쿼드런트 조별예선 B조",
    "countries": [],
@@ -3326,13 +3426,13 @@
   {
    "time": "17:00",
    "discipline": "e스포츠",
-   "event": "모바일 레전드 준결승 2경기",
+   "event": "아이덴티티 V 동메달전",
    "countries": [],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
-   "medal": false,
+   "medal": true,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOMOLSFNL000200"
+   "link": "https://m.sports.naver.com/game/2026ESPOITVFNL000200"
   },
   {
    "time": "17:00",
@@ -3443,6 +3543,17 @@
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026JUDM60KGFNL000100"
+  },
+  {
+   "time": "18:00",
+   "discipline": "e스포츠",
+   "event": "아이덴티티 V 금메달전",
+   "countries": [],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOITVFNL000100"
   },
   {
    "time": "18:00",
@@ -3589,17 +3700,6 @@
   },
   {
    "time": "18:15",
-   "discipline": "e스포츠",
-   "event": "아이덴티티 V 금메달전",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOITVFNL000100"
-  },
-  {
-   "time": "18:15",
    "discipline": "유도",
    "event": "여자 -52kg급 동메달전 A",
    "countries": [],
@@ -3632,15 +3732,15 @@
    "link": "https://m.sports.naver.com/game/2026JUDW52KGFNL000100"
   },
   {
-   "time": "18:30",
+   "time": "18:35",
    "discipline": "e스포츠",
-   "event": "아이덴티티 V 동메달전",
+   "event": "모바일 레전드 준결승 2경기",
    "countries": [],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
-   "medal": true,
+   "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOITVFNL000200"
+   "link": "https://m.sports.naver.com/game/2026ESPOMOLSFNL000200"
   },
   {
    "time": "18:50",

@@ -1,6 +1,6 @@
 {
  "date": "2026-09-24",
- "collectedAt": "2026-09-22T09:34:35+09:00",
+ "collectedAt": "2026-09-22T23:35:09+09:00",
  "games": [
   {
    "time": "08:30",
@@ -28,7 +28,10 @@
    "time": "09:00",
    "discipline": "e스포츠",
    "event": "대전격투게임 C조 1경기",
-   "countries": [],
+   "countries": [
+    "사우디 아라비아",
+    "키르기스스탄"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -39,7 +42,10 @@
    "time": "09:00",
    "discipline": "e스포츠",
    "event": "대전격투게임 D조 1경기",
-   "countries": [],
+   "countries": [
+    "홍콩",
+    "카자흐스탄"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -279,7 +285,8 @@
    "discipline": "e스포츠",
    "event": "뿌요뿌요 챔피언 A조 1경기",
    "countries": [
-    "대한민국"
+    "강동신",
+    "알렉산드르 피보바로프"
    ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": true,
@@ -675,7 +682,10 @@
    "time": "10:20",
    "discipline": "e스포츠",
    "event": "뿌요뿌요 챔피언 A조 2경기",
-   "countries": [],
+   "countries": [
+    "쿠리하라 유키",
+    "칼 오웬 곤잘보"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -778,7 +788,8 @@
    "discipline": "e스포츠",
    "event": "뿌요뿌요 챔피언 A조 3경기",
    "countries": [
-    "대한민국"
+    "강동신",
+    "유윙림"
    ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": true,
@@ -812,7 +823,10 @@
    "time": "11:00",
    "discipline": "e스포츠",
    "event": "대전격투게임 C조 2경기",
-   "countries": [],
+   "countries": [
+    "키르기스스탄",
+    "바레인"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -824,6 +838,7 @@
    "discipline": "e스포츠",
    "event": "대전격투게임 D조 2경기",
    "countries": [
+    "카자흐스탄",
     "대한민국"
    ],
    "venue": "아이치 스카이 엑스포 홀 D",
@@ -836,7 +851,10 @@
    "time": "11:00",
    "discipline": "e스포츠",
    "event": "뿌요뿌요 챔피언 A조 7경기",
-   "countries": [],
+   "countries": [
+    "알렉산드르 피보바로프",
+    "칼 오웬 곤잘보"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -1194,7 +1212,10 @@
    "time": "11:20",
    "discipline": "e스포츠",
    "event": "뿌요뿌요 챔피언 A조 8경기",
-   "countries": [],
+   "countries": [
+    "쿠리하라 유키",
+    "유윙림"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -1204,8 +1225,11 @@
   {
    "time": "11:20",
    "discipline": "탁구",
-   "event": "남자 단식 64강",
-   "countries": [],
+   "event": "남자 단식 1라운드 1",
+   "countries": [
+    "티타팟 프리차얀",
+    "무함마드 칸"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
@@ -1215,96 +1239,11 @@
   {
    "time": "11:20",
    "discipline": "탁구",
-   "event": "남자 단식 64강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64000200"
-  },
-  {
-   "time": "11:20",
-   "discipline": "탁구",
-   "event": "남자 단식 64강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64000300"
-  },
-  {
-   "time": "11:20",
-   "discipline": "탁구",
-   "event": "남자 단식 64강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64000400"
-  },
-  {
-   "time": "11:20",
-   "discipline": "탁구",
-   "event": "남자 단식 64강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64000500"
-  },
-  {
-   "time": "11:20",
-   "discipline": "탁구",
-   "event": "남자 단식 64강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64000600"
-  },
-  {
-   "time": "11:20",
-   "discipline": "탁구",
-   "event": "남자 단식 64강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64000700"
-  },
-  {
-   "time": "11:20",
-   "discipline": "탁구",
-   "event": "남자 단식 64강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64000800"
-  },
-  {
-   "time": "11:20",
-   "discipline": "탁구",
-   "event": "남자 단식 64강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64000900"
-  },
-  {
-   "time": "11:20",
-   "discipline": "탁구",
-   "event": "남자 단식 64강",
-   "countries": [],
+   "event": "남자 단식 1라운드 10",
+   "countries": [
+    "라셰드 라셰드",
+    "타하 빌랄"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
@@ -1314,134 +1253,72 @@
   {
    "time": "11:20",
    "discipline": "탁구",
-   "event": "남자 단식 64강",
-   "countries": [],
+   "event": "남자 단식 1라운드 2",
+   "countries": [
+    "우태룡",
+    "누라딜 톨로고노프"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64001100"
+   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64000200"
   },
   {
    "time": "11:20",
    "discipline": "탁구",
-   "event": "남자 단식 64강",
-   "countries": [],
+   "event": "남자 단식 1라운드 4",
+   "countries": [
+    "모하메드 살레",
+    "람힘리안 바움"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64001200"
+   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64000400"
   },
   {
    "time": "11:20",
    "discipline": "탁구",
-   "event": "남자 단식 64강",
-   "countries": [],
+   "event": "남자 단식 1라운드 6",
+   "countries": [
+    "무사 문시프 아메드",
+    "노샤드 알라미얀"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64001300"
+   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64000600"
   },
   {
    "time": "11:20",
    "discipline": "탁구",
-   "event": "남자 단식 64강",
-   "countries": [],
+   "event": "남자 단식 1라운드 8",
+   "countries": [
+    "에브라힘 구브란",
+    "사뇨그 카팔리"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64001400"
+   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64000800"
   },
   {
    "time": "11:20",
    "discipline": "탁구",
-   "event": "남자 단식 64강",
-   "countries": [],
+   "event": "남자 단식 1라운드 9",
+   "countries": [
+    "모하메드 아후세인",
+    "무함마드 나우팔 주닌드라"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64001500"
-  },
-  {
-   "time": "11:20",
-   "discipline": "탁구",
-   "event": "남자 단식 64강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64001600"
-  },
-  {
-   "time": "11:20",
-   "discipline": "탁구",
-   "event": "남자 단식 64강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64001700"
-  },
-  {
-   "time": "11:20",
-   "discipline": "탁구",
-   "event": "남자 단식 64강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64001800"
-  },
-  {
-   "time": "11:20",
-   "discipline": "탁구",
-   "event": "남자 단식 64강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64001900"
-  },
-  {
-   "time": "11:20",
-   "discipline": "탁구",
-   "event": "남자 단식 64강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64002000"
-  },
-  {
-   "time": "11:20",
-   "discipline": "탁구",
-   "event": "남자 단식 64강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64002100"
-  },
-  {
-   "time": "11:20",
-   "discipline": "탁구",
-   "event": "남자 단식 64강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64002200"
+   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64000900"
   },
   {
    "time": "11:29",
@@ -1459,7 +1336,8 @@
    "discipline": "e스포츠",
    "event": "뿌요뿌요 챔피언 A조 9경기",
    "countries": [
-    "대한민국"
+    "강동신",
+    "칼 오웬 곤잘보"
    ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": true,
@@ -1518,7 +1396,10 @@
    "time": "12:00",
    "discipline": "e스포츠",
    "event": "뿌요뿌요 챔피언 A조 4경기",
-   "countries": [],
+   "countries": [
+    "알렉산드르 피보바로프",
+    "쿠리하라 유키"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -1540,6 +1421,132 @@
    "link": "https://m.sports.naver.com/game/2026BOXW51KG8FNL000100"
   },
   {
+   "time": "12:05",
+   "discipline": "탁구",
+   "event": "남자 단식 1라운드 11",
+   "countries": [
+    "모하메드 샤판 이스마일",
+    "사라윳 탄차로엔"
+   ],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64001100"
+  },
+  {
+   "time": "12:05",
+   "discipline": "탁구",
+   "event": "남자 단식 1라운드 12",
+   "countries": [
+    "찬볼드윈 호와",
+    "무함마드 네가라"
+   ],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64001200"
+  },
+  {
+   "time": "12:05",
+   "discipline": "탁구",
+   "event": "남자 단식 1라운드 13",
+   "countries": [
+    "아바이 카시모프",
+    "마그드 알두브하니"
+   ],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64001300"
+  },
+  {
+   "time": "12:05",
+   "discipline": "탁구",
+   "event": "남자 단식 1라운드 14",
+   "countries": [
+    "리정식",
+    "디요르베크 딜쇼도프"
+   ],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64001400"
+  },
+  {
+   "time": "12:05",
+   "discipline": "탁구",
+   "event": "남자 단식 1라운드 15",
+   "countries": [
+    "막틴 이안",
+    "루빈 마하르잔"
+   ],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64001500"
+  },
+  {
+   "time": "12:05",
+   "discipline": "탁구",
+   "event": "남자 단식 1라운드 16",
+   "countries": [
+    "찬룰 쿨라푸와와두",
+    "베냐민 파라지"
+   ],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64001600"
+  },
+  {
+   "time": "12:05",
+   "discipline": "탁구",
+   "event": "남자 단식 1라운드 17",
+   "countries": [
+    "치 셴 웡",
+    "마누쉬 웃팔바이 샤"
+   ],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64001700"
+  },
+  {
+   "time": "12:05",
+   "discipline": "탁구",
+   "event": "남자 단식 1라운드 18",
+   "countries": [
+    "아난 봉사",
+    "압둘라 압둘후세인"
+   ],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64001800"
+  },
+  {
+   "time": "12:05",
+   "discipline": "탁구",
+   "event": "남자 단식 1라운드 3",
+   "countries": [
+    "정홍 와이",
+    "자벤 충"
+   ],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64000300"
+  },
+  {
    "time": "12:15",
    "discipline": "복싱",
    "event": "여자 51kg - 예선 - 16강 2",
@@ -1557,7 +1564,10 @@
    "time": "12:20",
    "discipline": "e스포츠",
    "event": "뿌요뿌요 챔피언 A조 5경기",
-   "countries": [],
+   "countries": [
+    "칼 오웬 곤잘보",
+    "유윙림"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -1682,7 +1692,8 @@
    "discipline": "e스포츠",
    "event": "뿌요뿌요 챔피언 A조 6경기",
    "countries": [
-    "대한민국"
+    "강동신",
+    "쿠리하라 유키"
    ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": true,
@@ -1741,6 +1752,48 @@
    "link": "https://m.sports.naver.com/game/2026BK3MTEAM3PLAY000100"
   },
   {
+   "time": "12:50",
+   "discipline": "탁구",
+   "event": "남자 단식 1라운드 19",
+   "countries": [
+    "빌군 앙흐바야르",
+    "모후타신 아흐메드 리도이"
+   ],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64001900"
+  },
+  {
+   "time": "12:50",
+   "discipline": "탁구",
+   "event": "남자 단식 1라운드 5",
+   "countries": [
+    "쇼흐루흐 이스칸다로프",
+    "테물렌 미안달"
+   ],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64000500"
+  },
+  {
+   "time": "12:50",
+   "discipline": "탁구",
+   "event": "남자 단식 1라운드 7",
+   "countries": [
+    "요한 하그베르그",
+    "예우 엔 코엔 팡"
+   ],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64000700"
+  },
+  {
    "time": "13:00",
    "discipline": "e스포츠",
    "event": "나라카 준결승 2",
@@ -1755,7 +1808,10 @@
    "time": "13:00",
    "discipline": "e스포츠",
    "event": "뿌요뿌요 챔피언 A조 10경기",
-   "countries": [],
+   "countries": [
+    "알렉산드르 피보바로프",
+    "유윙림"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -2078,7 +2134,10 @@
    "time": "13:45",
    "discipline": "e스포츠",
    "event": "대전격투게임 C조 3경기",
-   "countries": [],
+   "countries": [
+    "사우디 아라비아",
+    "바레인"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -2090,6 +2149,7 @@
    "discipline": "e스포츠",
    "event": "대전격투게임 D조 3경기",
    "countries": [
+    "홍콩",
     "대한민국"
    ],
    "venue": "아이치 스카이 엑스포 홀 D",
@@ -2461,7 +2521,10 @@
    "time": "15:00",
    "discipline": "e스포츠",
    "event": "뿌요뿌요 챔피언 B조 1경기",
-   "countries": [],
+   "countries": [
+    "파리토쉬",
+    "뭉흐조리그 간볼드"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -2544,7 +2607,10 @@
    "time": "15:20",
    "discipline": "e스포츠",
    "event": "뿌요뿌요 챔피언 B조 2경기",
-   "countries": [],
+   "countries": [
+    "궈자앙",
+    "타나락 웡키티쿤"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -2577,7 +2643,10 @@
    "time": "15:40",
    "discipline": "e스포츠",
    "event": "뿌요뿌요 챔피언 B조 3경기",
-   "countries": [],
+   "countries": [
+    "파리토쉬",
+    "문 준 저스틴 코"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -2599,7 +2668,10 @@
    "time": "16:00",
    "discipline": "e스포츠",
    "event": "뿌요뿌요 챔피언 B조 4경기",
-   "countries": [],
+   "countries": [
+    "뭉흐조리그 간볼드",
+    "궈자앙"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -2671,7 +2743,10 @@
    "time": "16:20",
    "discipline": "e스포츠",
    "event": "뿌요뿌요 챔피언 B조 5경기",
-   "countries": [],
+   "countries": [
+    "타나락 웡키티쿤",
+    "문 준 저스틴 코"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -2693,7 +2768,10 @@
    "time": "16:40",
    "discipline": "e스포츠",
    "event": "뿌요뿌요 챔피언 B조 6경기",
-   "countries": [],
+   "countries": [
+    "파리토쉬",
+    "궈자앙"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -2748,7 +2826,10 @@
    "time": "17:00",
    "discipline": "e스포츠",
    "event": "뿌요뿌요 챔피언 B조 7경기",
-   "countries": [],
+   "countries": [
+    "뭉흐조리그 간볼드",
+    "타나락 웡키티쿤"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -2905,7 +2986,10 @@
    "time": "17:20",
    "discipline": "e스포츠",
    "event": "뿌요뿌요 챔피언 A조 8경기",
-   "countries": [],
+   "countries": [
+    "궈자앙",
+    "문 준 저스틴 코"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -2963,7 +3047,10 @@
    "time": "17:40",
    "discipline": "e스포츠",
    "event": "뿌요뿌요 챔피언 B조 9경기",
-   "countries": [],
+   "countries": [
+    "파리토쉬",
+    "타나락 웡키티쿤"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -3024,7 +3111,10 @@
    "time": "18:00",
    "discipline": "e스포츠",
    "event": "뿌요뿌요 챔피언 B조 10경기",
-   "countries": [],
+   "countries": [
+    "뭉흐조리그 간볼드",
+    "문 준 저스틴 코"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,

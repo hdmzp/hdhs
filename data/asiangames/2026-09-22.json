@@ -1,12 +1,15 @@
 {
  "date": "2026-09-22",
- "collectedAt": "2026-09-22T09:34:35+09:00",
+ "collectedAt": "2026-09-22T23:35:09+09:00",
  "games": [
   {
    "time": "09:00",
    "discipline": "e스포츠",
    "event": "e풋볼 조별리그 A조  2경기",
-   "countries": [],
+   "countries": [
+    "사우디 아라비아",
+    "이란"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -18,6 +21,7 @@
    "discipline": "e스포츠",
    "event": "e풋볼 조별리그 A조 1경기",
    "countries": [
+    "카타르",
     "대한민국"
    ],
    "venue": "아이치 스카이 엑스포 홀 D",
@@ -30,7 +34,10 @@
    "time": "09:00",
    "discipline": "e스포츠",
    "event": "e풋볼 조별리그 C조 1경기",
-   "countries": [],
+   "countries": [
+    "인도네시아",
+    "키르기스스탄"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -41,7 +48,10 @@
    "time": "09:00",
    "discipline": "e스포츠",
    "event": "e풋볼 조별리그 D조 1경기",
-   "countries": [],
+   "countries": [
+    "카자흐스탄",
+    "말레이시아"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -52,7 +62,10 @@
    "time": "09:00",
    "discipline": "e스포츠",
    "event": "e풋볼 조별리그 E조 1경기",
-   "countries": [],
+   "countries": [
+    "바레인",
+    "요르단"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -63,7 +76,10 @@
    "time": "09:00",
    "discipline": "e스포츠",
    "event": "e풋볼 조별리그 F조 1경기",
-   "countries": [],
+   "countries": [
+    "인도",
+    "우즈베키스탄"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -152,6 +168,19 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SPKMTEAMREGUGPB000500"
+  },
+  {
+   "time": "09:00",
+   "discipline": "우슈 투로",
+   "event": "남자 남권·남곤 결승-남권",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "아이치현 무도관",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026WSUMNAMFNL000200"
   },
   {
    "time": "09:00",
@@ -344,7 +373,7 @@
    "venue": "이치노미야시 종합체육관",
    "hasKorea": true,
    "medal": false,
-   "tv": true,
+   "tv": false,
    "link": "https://m.sports.naver.com/game/2026BDMWTEAMQFNL000300"
   },
   {
@@ -550,7 +579,7 @@
    "venue": "헤키난 료쿠치 비치 코트",
    "hasKorea": true,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026VBVWTEAM2GPC000200"
   },
   {
@@ -558,8 +587,8 @@
    "discipline": "비치 발리볼",
    "event": "여자 예선 라운드 - D조 2경기",
    "countries": [
-    "말레이시아",
-    "대한민국"
+    "대한민국",
+    "말레이시아"
    ],
    "venue": "헤키난 료쿠치 비치 코트",
    "hasKorea": true,
@@ -609,7 +638,7 @@
   {
    "time": "10:00",
    "discipline": "탁구",
-   "event": "여자 단체 16강 2",
+   "event": "여자 단체 16강 2경기",
    "countries": [
     "우즈베키스탄",
     "카자흐스탄"
@@ -623,10 +652,10 @@
   {
    "time": "10:00",
    "discipline": "탁구",
-   "event": "여자 단체 16강 3",
+   "event": "여자 단체 16강 3경기",
    "countries": [
-    "인도",
-    "태국"
+    "태국",
+    "인도"
    ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -637,10 +666,10 @@
   {
    "time": "10:00",
    "discipline": "탁구",
-   "event": "여자 단체 16강 6",
+   "event": "여자 단체 16강 6경기",
    "countries": [
-    "싱가포르",
-    "홍콩"
+    "홍콩",
+    "싱가포르"
    ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -651,7 +680,7 @@
   {
    "time": "10:00",
    "discipline": "탁구",
-   "event": "여자 단체 16강 7",
+   "event": "여자 단체 16강 7경기",
    "countries": [
     "마카오",
     "차이니스 타이베이"
@@ -692,19 +721,6 @@
   },
   {
    "time": "10:10",
-   "discipline": "펜싱 에페",
-   "event": "여자 에페 개인 예선라운드",
-   "countries": [
-    "대한민국"
-   ],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": true,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026EPEWINDIVIDPOOL000100"
-  },
-  {
-   "time": "10:10",
    "discipline": "펜싱 플뢰레",
    "event": "남자 플뢰레 개인 예선라운드",
    "countries": [
@@ -733,7 +749,10 @@
    "time": "10:20",
    "discipline": "가라테 카타",
    "event": "여자 단체 준결승 103경기",
-   "countries": [],
+   "countries": [
+    "필리핀",
+    "이란"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": false,
@@ -744,7 +763,10 @@
    "time": "10:20",
    "discipline": "가라테 카타",
    "event": "여자 단체 준결승 203경기",
-   "countries": [],
+   "countries": [
+    "차이니스 타이베이",
+    "베트남"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": false,
@@ -755,7 +777,10 @@
    "time": "10:30",
    "discipline": "가라테 카타",
    "event": "여자 단체 동메달전 A 104경기",
-   "countries": [],
+   "countries": [
+    "태국",
+    "필리핀"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": true,
@@ -877,7 +902,10 @@
    "time": "10:40",
    "discipline": "가라테 카타",
    "event": "여자 단체 동메달전 B 105경기",
-   "countries": [],
+   "countries": [
+    "네팔",
+    "차이니스 타이베이"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": true,
@@ -950,21 +978,8 @@
    "venue": "헤키난 료쿠치 비치 코트",
    "hasKorea": true,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026VBVMTEAM2GPE000400"
-  },
-  {
-   "time": "11:00",
-   "discipline": "우슈 투로",
-   "event": "남자 남권·남곤 결승-남권",
-   "countries": [
-    "대한민국"
-   ],
-   "venue": "아이치현 무도관",
-   "hasKorea": true,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026WSUMNAMFNL000200"
   },
   {
    "time": "11:00",
@@ -985,8 +1000,8 @@
    "discipline": "가라테 쿠미테",
    "event": "남자 -84kg급 준결승 A 107경기",
    "countries": [
-    "체탄 바트",
-    "미정"
+    "미정",
+    "체탄 바트"
    ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
@@ -999,8 +1014,8 @@
    "discipline": "가라테 쿠미테",
    "event": "남자 -84kg급 준결승 B 205경기",
    "countries": [
-    "압달라 알카팁",
-    "미정"
+    "알리 아스가르 아시아바리",
+    "압달라 알카팁"
    ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
@@ -1025,7 +1040,10 @@
    "time": "11:20",
    "discipline": "가라테 쿠미테",
    "event": "남자 -84kg급 동메달전 A 108경기",
-   "countries": [],
+   "countries": [
+    "충맹유",
+    "체탄 바트"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": true,
@@ -1049,7 +1067,10 @@
    "time": "11:30",
    "discipline": "e스포츠",
    "event": "e풋볼 조별리그 A조 3경기",
-   "countries": [],
+   "countries": [
+    "카타르",
+    "사우디 아라비아"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -1061,7 +1082,8 @@
    "discipline": "e스포츠",
    "event": "e풋볼 조별리그 A조 4경기",
    "countries": [
-    "대한민국"
+    "대한민국",
+    "이란"
    ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": true,
@@ -1073,7 +1095,10 @@
    "time": "11:30",
    "discipline": "e스포츠",
    "event": "e풋볼 조별리그 B조 1경기",
-   "countries": [],
+   "countries": [
+    "태국",
+    "팔레스타인"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -1084,7 +1109,10 @@
    "time": "11:30",
    "discipline": "e스포츠",
    "event": "e풋볼 조별리그 C조 2경기",
-   "countries": [],
+   "countries": [
+    "키르기스스탄",
+    "홍콩"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -1095,7 +1123,10 @@
    "time": "11:30",
    "discipline": "e스포츠",
    "event": "e풋볼 조별리그 D조 2경기",
-   "countries": [],
+   "countries": [
+    "말레이시아",
+    "타지키스탄"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -1106,7 +1137,10 @@
    "time": "11:30",
    "discipline": "가라테 쿠미테",
    "event": "남자 -84kg급 동메달전 B 109경기",
-   "countries": [],
+   "countries": [
+    "압둘라 바비크르",
+    "압달라 알카팁"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": true,
@@ -1198,6 +1232,32 @@
    "link": "https://m.sports.naver.com/game/2026KABWTEAMGPB000200"
   },
   {
+   "time": "11:45",
+   "discipline": "펜싱 에페",
+   "event": "여자 에페 개인 예선라운드",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026EPEWINDIVIDPOOL000100"
+  },
+  {
+   "time": "11:55",
+   "discipline": "사격 소총",
+   "event": "혼성 단체 10m 공기소총 결승",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "아이치현 종합사격장",
+   "hasKorea": true,
+   "medal": true,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/2026RIFXARMTFNL000100"
+  },
+  {
    "time": "12:00",
    "discipline": "3x3 농구",
    "event": "여자 C조 1경기",
@@ -1221,7 +1281,7 @@
    "venue": "나고야시 종합체육관",
    "hasKorea": true,
    "medal": true,
-   "tv": true,
+   "tv": false,
    "link": "https://m.sports.naver.com/game/2026GARW1AAFNL000001"
   },
   {
@@ -1234,7 +1294,7 @@
    "venue": "나고야시 종합체육관",
    "hasKorea": true,
    "medal": false,
-   "tv": true,
+   "tv": false,
    "link": "https://m.sports.naver.com/game/2026GARWTEAMQUAL000001"
   },
   {
@@ -1247,7 +1307,7 @@
    "venue": "나고야시 종합체육관",
    "hasKorea": true,
    "medal": false,
-   "tv": true,
+   "tv": false,
    "link": "https://m.sports.naver.com/game/2026GARW1APVTQUAL000001"
   },
   {
@@ -1260,7 +1320,7 @@
    "venue": "나고야시 종합체육관",
    "hasKorea": true,
    "medal": false,
-   "tv": true,
+   "tv": false,
    "link": "https://m.sports.naver.com/game/2026GARW1APFXQUAL000001"
   },
   {
@@ -1273,7 +1333,7 @@
    "venue": "나고야시 종합체육관",
    "hasKorea": true,
    "medal": false,
-   "tv": true,
+   "tv": false,
    "link": "https://m.sports.naver.com/game/2026GARW1APUBQUAL000001"
   },
   {
@@ -1286,7 +1346,7 @@
    "venue": "나고야시 종합체육관",
    "hasKorea": true,
    "medal": false,
-   "tv": true,
+   "tv": false,
    "link": "https://m.sports.naver.com/game/2026GARW1APBBQUAL000001"
   },
   {
@@ -1430,17 +1490,6 @@
    "link": "https://m.sports.naver.com/game/2026BK3WTEAM3GPC000200"
   },
   {
-   "time": "12:25",
-   "discipline": "사격 소총",
-   "event": "혼성 단체 10m 공기소총 결승",
-   "countries": [],
-   "venue": "아이치현 종합사격장",
-   "hasKorea": false,
-   "medal": true,
-   "tv": true,
-   "link": "https://m.sports.naver.com/game/2026RIFXARMTFNL000100"
-  },
-  {
    "time": "12:30",
    "discipline": "복싱",
    "event": "여자 51kg - 예선 - 32강 12경기",
@@ -1457,7 +1506,7 @@
   {
    "time": "12:30",
    "discipline": "탁구",
-   "event": "남자 단체 16강 2",
+   "event": "남자 단체 16강 2경기",
    "countries": [
     "우즈베키스탄",
     "태국"
@@ -1471,7 +1520,7 @@
   {
    "time": "12:30",
    "discipline": "탁구",
-   "event": "남자 단체 16강 3",
+   "event": "남자 단체 16강 3경기",
    "countries": [
     "이란",
     "싱가포르"
@@ -1485,10 +1534,10 @@
   {
    "time": "12:30",
    "discipline": "탁구",
-   "event": "남자 단체 16강 4",
+   "event": "남자 단체 16강 4경기",
    "countries": [
-    "몽골",
-    "차이니스 타이베이"
+    "차이니스 타이베이",
+    "몽골"
    ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -1499,7 +1548,7 @@
   {
    "time": "12:30",
    "discipline": "탁구",
-   "event": "남자 단체 16강 5",
+   "event": "남자 단체 16강 5경기",
    "countries": [
     "대한민국",
     "인도"
@@ -1513,10 +1562,10 @@
   {
    "time": "12:30",
    "discipline": "탁구",
-   "event": "남자 단체 16강 6",
+   "event": "남자 단체 16강 6경기",
    "countries": [
-    "카타르",
-    "홍콩"
+    "홍콩",
+    "카타르"
    ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -1527,104 +1576,16 @@
   {
    "time": "12:30",
    "discipline": "탁구",
-   "event": "남자 단체 16강 7",
+   "event": "남자 단체 16강 7경기",
    "countries": [
-    "카자흐스탄",
-    "바레인"
+    "바레인",
+    "카자흐스탄"
    ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026TTEMTEAM8FNL00070000"
-  },
-  {
-   "time": "12:30",
-   "discipline": "펜싱 플뢰레",
-   "event": "남자 플뢰레 개인 32강",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDR32000100"
-  },
-  {
-   "time": "12:30",
-   "discipline": "펜싱 플뢰레",
-   "event": "남자 플뢰레 개인 32강",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDR32000200"
-  },
-  {
-   "time": "12:30",
-   "discipline": "펜싱 플뢰레",
-   "event": "남자 플뢰레 개인 32강",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDR32000300"
-  },
-  {
-   "time": "12:30",
-   "discipline": "펜싱 플뢰레",
-   "event": "남자 플뢰레 개인 32강",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDR32000400"
-  },
-  {
-   "time": "12:30",
-   "discipline": "펜싱 플뢰레",
-   "event": "남자 플뢰레 개인 32강",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDR32000500"
-  },
-  {
-   "time": "12:30",
-   "discipline": "펜싱 플뢰레",
-   "event": "남자 플뢰레 개인 32강",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDR32000600"
-  },
-  {
-   "time": "12:30",
-   "discipline": "펜싱 플뢰레",
-   "event": "남자 플뢰레 개인 32강",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDR32000700"
-  },
-  {
-   "time": "12:30",
-   "discipline": "펜싱 플뢰레",
-   "event": "남자 플뢰레 개인 32강",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDR32000800"
   },
   {
    "time": "12:40",
@@ -1667,20 +1628,6 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026BOXW54KGR32000100"
-  },
-  {
-   "time": "12:45",
-   "discipline": "카바디",
-   "event": "남자 예선 B조 4경기",
-   "countries": [
-    "태국",
-    "말레이시아"
-   ],
-   "venue": "도카이 시민 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026KABMTEAMGPB000400"
   },
   {
    "time": "12:50",
@@ -1729,8 +1676,8 @@
    "discipline": "가라테 쿠미테",
    "event": "여자 -55kg급 8강 112경기",
    "countries": [
-    "하페잔 마리사",
-    "미정"
+    "파테메자흐라 사에이다바디",
+    "하페잔 마리사"
    ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
@@ -1743,8 +1690,8 @@
    "discipline": "가라테 쿠미테",
    "event": "여자 -55kg급 8강 208경기",
    "countries": [
-    "세빈치 라히모바",
-    "미정"
+    "아데올라 페이 로버트",
+    "세빈치 라히모바"
    ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
@@ -1908,94 +1855,6 @@
   },
   {
    "time": "13:00",
-   "discipline": "펜싱 에페",
-   "event": "여자 에페 개인 32강",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026EPEWINDIVIDR32000100"
-  },
-  {
-   "time": "13:00",
-   "discipline": "펜싱 에페",
-   "event": "여자 에페 개인 32강",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026EPEWINDIVIDR32000200"
-  },
-  {
-   "time": "13:00",
-   "discipline": "펜싱 에페",
-   "event": "여자 에페 개인 32강",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026EPEWINDIVIDR32000300"
-  },
-  {
-   "time": "13:00",
-   "discipline": "펜싱 에페",
-   "event": "여자 에페 개인 32강",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026EPEWINDIVIDR32000400"
-  },
-  {
-   "time": "13:00",
-   "discipline": "펜싱 에페",
-   "event": "여자 에페 개인 32강",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026EPEWINDIVIDR32000500"
-  },
-  {
-   "time": "13:00",
-   "discipline": "펜싱 에페",
-   "event": "여자 에페 개인 32강",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026EPEWINDIVIDR32000600"
-  },
-  {
-   "time": "13:00",
-   "discipline": "펜싱 에페",
-   "event": "여자 에페 개인 32강",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026EPEWINDIVIDR32000700"
-  },
-  {
-   "time": "13:00",
-   "discipline": "펜싱 에페",
-   "event": "여자 에페 개인 32강",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026EPEWINDIVIDR32000800"
-  },
-  {
-   "time": "13:00",
    "discipline": "하키",
    "event": "남자 B조 5경기",
    "countries": [
@@ -2013,8 +1872,8 @@
    "discipline": "가라테 쿠미테",
    "event": "여자 -55kg급 8강 113경기",
    "countries": [
-    "레이 홍 키오",
-    "미정"
+    "촉 이스트리 아궁 사니스티야라니",
+    "레이 홍 키오"
    ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
@@ -2040,7 +1899,10 @@
    "time": "13:15",
    "discipline": "가라테 쿠미테",
    "event": "여자 -55kg급 준결승 A 209경기",
-   "countries": [],
+   "countries": [
+    "아데올라 페이 로버트",
+    "벨라 사마셰바"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": false,
@@ -2049,14 +1911,129 @@
   },
   {
    "time": "13:15",
+   "discipline": "카바디",
+   "event": "남자 예선 B조 4경기",
+   "countries": [
+    "태국",
+    "말레이시아"
+   ],
+   "venue": "도카이 시민 체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026KABMTEAMGPB000400"
+  },
+  {
+   "time": "13:25",
    "discipline": "가라테 쿠미테",
    "event": "여자 -55kg급 준결승 B 114경기",
-   "countries": [],
+   "countries": [
+    "파테메자흐라 사에이다바디",
+    "촉 이스트리 아궁 사니스티야라니"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026KUMW55KGSFNL000200"
+  },
+  {
+   "time": "13:30",
+   "discipline": "펜싱 플뢰레",
+   "event": "남자 플뢰레 개인 32강",
+   "countries": [
+    "헤마쉬 싱 사나삼",
+    "갈림 누루모프"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDR32000100"
+  },
+  {
+   "time": "13:30",
+   "discipline": "펜싱 플뢰레",
+   "event": "남자 플뢰레 개인 32강",
+   "countries": [
+    "알리 오와이다",
+    "파리스 알블루시"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDR32000200"
+  },
+  {
+   "time": "13:30",
+   "discipline": "펜싱 플뢰레",
+   "event": "남자 플뢰레 개인 32강",
+   "countries": [
+    "알리 나사르",
+    "이무라 카즈키"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDR32000300"
+  },
+  {
+   "time": "13:30",
+   "discipline": "펜싱 플뢰레",
+   "event": "남자 플뢰레 개인 32강",
+   "countries": [
+    "마츠야마 쿄스케",
+    "알도 프라타마 아르조니"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDR32000400"
+  },
+  {
+   "time": "13:30",
+   "discipline": "펜싱 플뢰레",
+   "event": "남자 플뢰레 개인 32강",
+   "countries": [
+    "압둘라흐만 푸르가리브",
+    "첸치치에"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDR32000500"
+  },
+  {
+   "time": "13:30",
+   "discipline": "펜싱 플뢰레",
+   "event": "남자 플뢰레 개인 32강",
+   "countries": [
+    "라파엘 후안 캉 탄",
+    "라드미르 세메네예프"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDR32000600"
+  },
+  {
+   "time": "13:30",
+   "discipline": "펜싱 플뢰레",
+   "event": "남자 플뢰레 개인 32강",
+   "countries": [
+    "아흐메드 케스케스",
+    "쉬지에"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDR32000700"
   },
   {
    "time": "13:30",
@@ -2087,98 +2064,13 @@
    "link": "https://m.sports.naver.com/game/2026BK3WTEAM3GPC000300"
   },
   {
-   "time": "13:40",
-   "discipline": "펜싱 플뢰레",
-   "event": "남자 플뢰레 개인 16강",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026FOIMINDIVID8FNL000100"
-  },
-  {
-   "time": "13:40",
-   "discipline": "펜싱 플뢰레",
-   "event": "남자 플뢰레 개인 16강",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026FOIMINDIVID8FNL000200"
-  },
-  {
-   "time": "13:40",
-   "discipline": "펜싱 플뢰레",
-   "event": "남자 플뢰레 개인 16강",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026FOIMINDIVID8FNL000300"
-  },
-  {
-   "time": "13:40",
-   "discipline": "펜싱 플뢰레",
-   "event": "남자 플뢰레 개인 16강",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026FOIMINDIVID8FNL000400"
-  },
-  {
-   "time": "13:40",
-   "discipline": "펜싱 플뢰레",
-   "event": "남자 플뢰레 개인 16강",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026FOIMINDIVID8FNL000500"
-  },
-  {
-   "time": "13:40",
-   "discipline": "펜싱 플뢰레",
-   "event": "남자 플뢰레 개인 16강",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026FOIMINDIVID8FNL000600"
-  },
-  {
-   "time": "13:40",
-   "discipline": "펜싱 플뢰레",
-   "event": "남자 플뢰레 개인 16강",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026FOIMINDIVID8FNL000700"
-  },
-  {
-   "time": "13:40",
-   "discipline": "펜싱 플뢰레",
-   "event": "남자 플뢰레 개인 16강",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026FOIMINDIVID8FNL000800"
-  },
-  {
    "time": "13:45",
    "discipline": "가라테 쿠미테",
    "event": "여자 -55kg급 패자부활전 115경기",
-   "countries": [],
+   "countries": [
+    "파 또르완사이",
+    "하페잔 마리사"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": false,
@@ -2189,12 +2081,113 @@
    "time": "13:45",
    "discipline": "가라테 쿠미테",
    "event": "여자 -55kg급 패자부활전 210경기",
-   "countries": [],
+   "countries": [
+    "아스랄 자셈",
+    "세빈치 라히모바"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026KUMW55KGREP1000200"
+  },
+  {
+   "time": "13:50",
+   "discipline": "펜싱 에페",
+   "event": "여자 에페 개인 32강",
+   "countries": [
+    "낫파팟 상오디오",
+    "타닉샤 카트리"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026EPEWINDIVIDR32000100"
+  },
+  {
+   "time": "13:50",
+   "discipline": "펜싱 플뢰레",
+   "event": "남자 플뢰레 개인 32강",
+   "countries": [
+    "람팍 키오",
+    "첸이퉁"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDR32000800"
+  },
+  {
+   "time": "13:50",
+   "discipline": "펜싱 플뢰레",
+   "event": "남자 플뢰레 개인 32강",
+   "countries": [
+    "다닐 크라브초프",
+    "청카롱"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDR32000900"
+  },
+  {
+   "time": "13:50",
+   "discipline": "펜싱 플뢰레",
+   "event": "남자 플뢰레 개인 32강",
+   "countries": [
+    "너다니엘 페레스",
+    "젱자오란"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDR32001000"
+  },
+  {
+   "time": "13:50",
+   "discipline": "펜싱 플뢰레",
+   "event": "남자 플뢰레 개인 32강",
+   "countries": [
+    "청총 키오",
+    "노테타코드 왕파이싯"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDR32001100"
+  },
+  {
+   "time": "13:50",
+   "discipline": "펜싱 플뢰레",
+   "event": "남자 플뢰레 개인 32강",
+   "countries": [
+    "압둘와하브 모하마드",
+    "엘리자 롭슨 사무엘"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDR32001200"
+  },
+  {
+   "time": "13:50",
+   "discipline": "펜싱 플뢰레",
+   "event": "남자 플뢰레 개인 32강",
+   "countries": [
+    "티모페이 세묘노프",
+    "사친"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDR32001300"
   },
   {
    "time": "14:00",
@@ -2368,7 +2361,10 @@
    "time": "14:05",
    "discipline": "가라테 쿠미테",
    "event": "여자 -55kg급 동메달전 A 116경기",
-   "countries": [],
+   "countries": [
+    "하페잔 마리사",
+    "촉 이스트리 아궁 사니스티야라니"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": true,
@@ -2376,98 +2372,125 @@
    "link": "https://m.sports.naver.com/game/2026KUMW55KGREPF000100"
   },
   {
-   "time": "14:05",
+   "time": "14:10",
    "discipline": "펜싱 에페",
-   "event": "여자 에페 개인 16강",
-   "countries": [],
+   "event": "여자 에페 개인 32강",
+   "countries": [
+    "탕준야오",
+    "응우옌 프엉 킴"
+   ],
    "venue": "아이치 스카이 엑스포 홀 F",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026EPEWINDIVID8FNL000100"
+   "link": "https://m.sports.naver.com/game/2026EPEWINDIVIDR32000200"
   },
   {
-   "time": "14:05",
+   "time": "14:10",
    "discipline": "펜싱 에페",
-   "event": "여자 에페 개인 16강",
-   "countries": [],
+   "event": "여자 에페 개인 32강",
+   "countries": [
+    "자이나브 알호사니",
+    "찬와이링"
+   ],
    "venue": "아이치 스카이 엑스포 홀 F",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026EPEWINDIVID8FNL000200"
+   "link": "https://m.sports.naver.com/game/2026EPEWINDIVIDR32000300"
   },
   {
-   "time": "14:05",
+   "time": "14:10",
    "discipline": "펜싱 에페",
-   "event": "여자 에페 개인 16강",
-   "countries": [],
+   "event": "여자 에페 개인 32강",
+   "countries": [
+    "딜나즈 무르자타예바",
+    "테라야마 타마키"
+   ],
    "venue": "아이치 스카이 엑스포 홀 F",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026EPEWINDIVID8FNL000300"
+   "link": "https://m.sports.naver.com/game/2026EPEWINDIVIDR32000400"
   },
   {
-   "time": "14:05",
+   "time": "14:10",
    "discipline": "펜싱 에페",
-   "event": "여자 에페 개인 16강",
-   "countries": [],
+   "event": "여자 에페 개인 32강",
+   "countries": [
+    "줄리아나 마 베아트리스 고메즈",
+    "파우지아 알레파에"
+   ],
    "venue": "아이치 스카이 엑스포 홀 F",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026EPEWINDIVID8FNL000400"
+   "link": "https://m.sports.naver.com/game/2026EPEWINDIVIDR32000500"
   },
   {
-   "time": "14:05",
+   "time": "14:10",
    "discipline": "펜싱 에페",
-   "event": "여자 에페 개인 16강",
-   "countries": [],
+   "event": "여자 에페 개인 32강",
+   "countries": [
+    "미트바 제상바이 초우다리",
+    "양징웬"
+   ],
    "venue": "아이치 스카이 엑스포 홀 F",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026EPEWINDIVID8FNL000500"
+   "link": "https://m.sports.naver.com/game/2026EPEWINDIVIDR32000600"
   },
   {
-   "time": "14:05",
+   "time": "14:10",
    "discipline": "펜싱 에페",
-   "event": "여자 에페 개인 16강",
-   "countries": [],
+   "event": "여자 에페 개인 32강",
+   "countries": [
+    "임태희",
+    "자나 알 샤르지"
+   ],
    "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026EPEWINDIVID8FNL000600"
+   "link": "https://m.sports.naver.com/game/2026EPEWINDIVIDR32000700"
   },
   {
-   "time": "14:05",
+   "time": "14:10",
    "discipline": "펜싱 에페",
-   "event": "여자 에페 개인 16강",
-   "countries": [],
+   "event": "여자 에페 개인 32강",
+   "countries": [
+    "아마르자야 바트사이칸",
+    "요시무라 미호"
+   ],
    "venue": "아이치 스카이 엑스포 홀 F",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026EPEWINDIVID8FNL000700"
+   "link": "https://m.sports.naver.com/game/2026EPEWINDIVIDR32000800"
   },
   {
-   "time": "14:05",
+   "time": "14:10",
    "discipline": "펜싱 에페",
-   "event": "여자 에페 개인 16강",
-   "countries": [],
+   "event": "여자 에페 개인 32강",
+   "countries": [
+    "말리카 카키모바",
+    "디나 만시"
+   ],
    "venue": "아이치 스카이 엑스포 홀 F",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026EPEWINDIVID8FNL000800"
+   "link": "https://m.sports.naver.com/game/2026EPEWINDIVIDR32000900"
   },
   {
    "time": "14:15",
    "discipline": "가라테 쿠미테",
    "event": "여자 -55kg급 동메달전 B 117경기",
-   "countries": [],
+   "countries": [
+    "세빈치 라히모바",
+    "벨라 사마셰바"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": true,
@@ -2545,6 +2568,131 @@
    "link": "https://m.sports.naver.com/game/2026WPOWTEAM7GPA000700"
   },
   {
+   "time": "14:30",
+   "discipline": "우슈 투로",
+   "event": "남자 남권·남곤 결승-남곤",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "아이치현 무도관",
+   "hasKorea": true,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026WSUMNAMFNL000100"
+  },
+  {
+   "time": "14:30",
+   "discipline": "펜싱 플뢰레",
+   "event": "남자 플뢰레 개인 16강",
+   "countries": [
+    "이광현",
+    "갈림 누루모프"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026FOIMINDIVID8FNL000100"
+  },
+  {
+   "time": "14:30",
+   "discipline": "펜싱 플뢰레",
+   "event": "남자 플뢰레 개인 16강",
+   "countries": [
+    "알리 오와이다",
+    "이무라 카즈키"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026FOIMINDIVID8FNL000200"
+  },
+  {
+   "time": "14:30",
+   "discipline": "펜싱 플뢰레",
+   "event": "남자 플뢰레 개인 16강",
+   "countries": [
+    "마츠야마 쿄스케",
+    "첸치치에"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026FOIMINDIVID8FNL000300"
+  },
+  {
+   "time": "14:30",
+   "discipline": "펜싱 플뢰레",
+   "event": "남자 플뢰레 개인 16강",
+   "countries": [
+    "라드미르 세메네예프",
+    "쉬지에"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026FOIMINDIVID8FNL000400"
+  },
+  {
+   "time": "14:30",
+   "discipline": "펜싱 플뢰레",
+   "event": "남자 플뢰레 개인 16강",
+   "countries": [
+    "윤정현",
+    "첸이퉁"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026FOIMINDIVID8FNL000500"
+  },
+  {
+   "time": "14:30",
+   "discipline": "펜싱 플뢰레",
+   "event": "남자 플뢰레 개인 16강",
+   "countries": [
+    "다닐 크라브초프",
+    "젱자오란"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026FOIMINDIVID8FNL000600"
+  },
+  {
+   "time": "14:30",
+   "discipline": "펜싱 플뢰레",
+   "event": "남자 플뢰레 개인 16강",
+   "countries": [
+    "노테타코드 왕파이싯",
+    "엘리자 롭슨 사무엘"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026FOIMINDIVID8FNL000700"
+  },
+  {
+   "time": "14:30",
+   "discipline": "펜싱 플뢰레",
+   "event": "남자 플뢰레 개인 16강",
+   "countries": [
+    "라드미르 세메네예프",
+    "라이언 초이"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026FOIMINDIVID8FNL000800"
+  },
+  {
    "time": "14:34",
    "discipline": "MMA",
    "event": "남자 트레디셔널 -77kg급 결승 49경기",
@@ -2585,50 +2733,6 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026KUMM75KGQFNL000200"
-  },
-  {
-   "time": "14:40",
-   "discipline": "펜싱 플뢰레",
-   "event": "남자 플뢰레 개인 8강 1",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDQFNL000100"
-  },
-  {
-   "time": "14:40",
-   "discipline": "펜싱 플뢰레",
-   "event": "남자 플뢰레 개인 8강 2",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDQFNL000200"
-  },
-  {
-   "time": "14:40",
-   "discipline": "펜싱 플뢰레",
-   "event": "남자 플뢰레 개인 8강 3",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDQFNL000300"
-  },
-  {
-   "time": "14:40",
-   "discipline": "펜싱 플뢰레",
-   "event": "남자 플뢰레 개인 8강 4",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDQFNL000400"
   },
   {
    "time": "14:45",
@@ -2705,8 +2809,8 @@
    "discipline": "가라테 쿠미테",
    "event": "남자 -75kg급 8강 120경기",
    "countries": [
-    "쉬지아 쳉",
-    "미정"
+    "알윈 바티칸",
+    "쉬지아 쳉"
    ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
@@ -2719,14 +2823,126 @@
    "discipline": "가라테 쿠미테",
    "event": "남자 -75kg급 8강 213경기",
    "countries": [
-    "다부트 나즈미라도프",
-    "미정"
+    "나짐 누를라노프",
+    "다부트 나즈미라도프"
    ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026KUMM75KGQFNL000400"
+  },
+  {
+   "time": "14:50",
+   "discipline": "펜싱 에페",
+   "event": "여자 에페 개인 16강",
+   "countries": [
+    "송세라",
+    "타닉샤 카트리"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026EPEWINDIVID8FNL000100"
+  },
+  {
+   "time": "14:50",
+   "discipline": "펜싱 에페",
+   "event": "여자 에페 개인 16강",
+   "countries": [
+    "탕준야오",
+    "찬와이링"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026EPEWINDIVID8FNL000200"
+  },
+  {
+   "time": "14:50",
+   "discipline": "펜싱 에페",
+   "event": "여자 에페 개인 16강",
+   "countries": [
+    "쩐 티 투이 찐",
+    "테라야마 타마키"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026EPEWINDIVID8FNL000300"
+  },
+  {
+   "time": "14:50",
+   "discipline": "펜싱 에페",
+   "event": "여자 에페 개인 16강",
+   "countries": [
+    "줄리아나 마 베아트리스 고메즈",
+    "엘 메이후이 코"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026EPEWINDIVID8FNL000400"
+  },
+  {
+   "time": "14:50",
+   "discipline": "펜싱 에페",
+   "event": "여자 에페 개인 16강",
+   "countries": [
+    "셰케이린 신얀",
+    "양징웬"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026EPEWINDIVID8FNL000500"
+  },
+  {
+   "time": "14:50",
+   "discipline": "펜싱 에페",
+   "event": "여자 에페 개인 16강",
+   "countries": [
+    "임태희",
+    "블라디슬라바 안드레이예바"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026EPEWINDIVID8FNL000600"
+  },
+  {
+   "time": "14:50",
+   "discipline": "펜싱 에페",
+   "event": "여자 에페 개인 16강",
+   "countries": [
+    "티카나 압둘 라흐만 키리아",
+    "요시무라 미호"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026EPEWINDIVID8FNL000700"
+  },
+  {
+   "time": "14:50",
+   "discipline": "펜싱 에페",
+   "event": "여자 에페 개인 16강",
+   "countries": [
+    "디나 만시",
+    "이리나 바칼디나"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026EPEWINDIVID8FNL000800"
   },
   {
    "time": "14:55",
@@ -2746,7 +2962,10 @@
    "time": "15:00",
    "discipline": "e스포츠",
    "event": "e풋볼 조별리그 A조 5경기",
-   "countries": [],
+   "countries": [
+    "카타르",
+    "이란"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -2758,7 +2977,8 @@
    "discipline": "e스포츠",
    "event": "e풋볼 조별리그 A조 6경기",
    "countries": [
-    "대한민국"
+    "대한민국",
+    "사우디 아라비아"
    ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": true,
@@ -2770,7 +2990,10 @@
    "time": "15:00",
    "discipline": "e스포츠",
    "event": "e풋볼 조별리그 B조 2경기",
-   "countries": [],
+   "countries": [
+    "팔레스타인",
+    "일본"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -2781,7 +3004,10 @@
    "time": "15:00",
    "discipline": "e스포츠",
    "event": "e풋볼 조별리그 E조 2경기",
-   "countries": [],
+   "countries": [
+    "요르단",
+    "미얀마"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -2792,7 +3018,10 @@
    "time": "15:00",
    "discipline": "e스포츠",
    "event": "e풋볼 조별리그 F조 2경기",
-   "countries": [],
+   "countries": [
+    "우즈베키스탄",
+    "몽골"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -2901,7 +3130,10 @@
    "time": "15:05",
    "discipline": "가라테 쿠미테",
    "event": "남자 -75kg급 준결승 A 121경기",
-   "countries": [],
+   "countries": [
+    "알윈 바티칸",
+    "모르테자 네마티"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": false,
@@ -2912,40 +3144,15 @@
    "time": "15:05",
    "discipline": "가라테 쿠미테",
    "event": "남자 -75kg급 준결승 B 214경기",
-   "countries": [],
+   "countries": [
+    "다부트 나즈미라도프",
+    "파와즈 바니 알마제"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026KUMM75KGSFNL000200"
-  },
-  {
-   "time": "15:10",
-   "discipline": "탁구",
-   "event": "혼합복식 1라운드 1",
-   "countries": [
-    "몽골",
-    "마카오"
-   ],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEXDOUBLESR64000100"
-  },
-  {
-   "time": "15:10",
-   "discipline": "탁구",
-   "event": "혼합복식 1라운드 2",
-   "countries": [
-    "일본",
-    "우즈베키스탄"
-   ],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEXDOUBLESR64000200"
   },
   {
    "time": "15:10",
@@ -2978,20 +3185,6 @@
   {
    "time": "15:10",
    "discipline": "탁구",
-   "event": "혼합복식 1라운드 5",
-   "countries": [
-    "라오스",
-    "방글라데시"
-   ],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEXDOUBLESR64000500"
-  },
-  {
-   "time": "15:10",
-   "discipline": "탁구",
    "event": "혼합복식 1라운드 6",
    "countries": [
     "네팔",
@@ -3020,20 +3213,6 @@
   {
    "time": "15:10",
    "discipline": "탁구",
-   "event": "혼합복식 1라운드 8",
-   "countries": [
-    "인도네시아",
-    "이란"
-   ],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEXDOUBLESR64000800"
-  },
-  {
-   "time": "15:10",
-   "discipline": "탁구",
    "event": "혼합복식 1라운드 9",
    "countries": [
     "카자흐스탄",
@@ -3044,72 +3223,6 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026TTEXDOUBLESR64000900"
-  },
-  {
-   "time": "15:15",
-   "discipline": "가라테 쿠미테",
-   "event": "남자 -75kg급 패자부활전 122경기",
-   "countries": [],
-   "venue": "도요하시 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026KUMM75KGREP1000100"
-  },
-  {
-   "time": "15:15",
-   "discipline": "가라테 쿠미테",
-   "event": "남자 -75kg급 패자부활전 215경기",
-   "countries": [],
-   "venue": "도요하시 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026KUMM75KGREP1000200"
-  },
-  {
-   "time": "15:15",
-   "discipline": "펜싱 에페",
-   "event": "여자 에페 개인 8강 1",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026EPEWINDIVIDQFNL000100"
-  },
-  {
-   "time": "15:15",
-   "discipline": "펜싱 에페",
-   "event": "여자 에페 개인 8강 2",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026EPEWINDIVIDQFNL000200"
-  },
-  {
-   "time": "15:15",
-   "discipline": "펜싱 에페",
-   "event": "여자 에페 개인 8강 3",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026EPEWINDIVIDQFNL000300"
-  },
-  {
-   "time": "15:15",
-   "discipline": "펜싱 에페",
-   "event": "여자 에페 개인 8강 4",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026EPEWINDIVIDQFNL000400"
   },
   {
    "time": "15:29",
@@ -3142,7 +3255,10 @@
    "time": "15:30",
    "discipline": "가라테 쿠미테",
    "event": "남자 -75kg급 동메달전 A 123경기",
-   "countries": [],
+   "countries": [
+    "누르카낫 아지카노프",
+    "알윈 바티칸"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": true,
@@ -3247,6 +3363,118 @@
   },
   {
    "time": "15:30",
+   "discipline": "펜싱 에페",
+   "event": "여자 에페 개인 8강 1경기",
+   "countries": [
+    "송세라",
+    "탕준야오"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026EPEWINDIVIDQFNL000100"
+  },
+  {
+   "time": "15:30",
+   "discipline": "펜싱 에페",
+   "event": "여자 에페 개인 8강 2경기",
+   "countries": [
+    "테라야마 타마키",
+    "엘 메이후이 코"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026EPEWINDIVIDQFNL000200"
+  },
+  {
+   "time": "15:30",
+   "discipline": "펜싱 에페",
+   "event": "여자 에페 개인 8강 3경기",
+   "countries": [
+    "양징웬",
+    "블라디슬라바 안드레이예바"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026EPEWINDIVIDQFNL000300"
+  },
+  {
+   "time": "15:30",
+   "discipline": "펜싱 에페",
+   "event": "여자 에페 개인 8강 4경기",
+   "countries": [
+    "티카나 압둘 라흐만 키리아",
+    "이리나 바칼디나"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026EPEWINDIVIDQFNL000400"
+  },
+  {
+   "time": "15:30",
+   "discipline": "펜싱 플뢰레",
+   "event": "남자 플뢰레 개인 8강 1",
+   "countries": [
+    "이광현",
+    "이무라 카즈키"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDQFNL000100"
+  },
+  {
+   "time": "15:30",
+   "discipline": "펜싱 플뢰레",
+   "event": "남자 플뢰레 개인 8강 2",
+   "countries": [
+    "마츠야마 쿄스케",
+    "라드미르 세메네예프"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDQFNL000200"
+  },
+  {
+   "time": "15:30",
+   "discipline": "펜싱 플뢰레",
+   "event": "남자 플뢰레 개인 8강 3",
+   "countries": [
+    "윤정현",
+    "다닐 크라브초프"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDQFNL000300"
+  },
+  {
+   "time": "15:30",
+   "discipline": "펜싱 플뢰레",
+   "event": "남자 플뢰레 개인 8강 4",
+   "countries": [
+    "엘리자 롭슨 사무엘",
+    "라이언 초이"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDQFNL000400"
+  },
+  {
+   "time": "15:30",
    "discipline": "핸드볼",
    "event": "여자 라운드로빈 8경기",
    "countries": [
@@ -3263,12 +3491,71 @@
    "time": "15:40",
    "discipline": "가라테 쿠미테",
    "event": "남자 -75kg급 동메달전 B 124경기",
-   "countries": [],
+   "countries": [
+    "나짐 누를라노프",
+    "파와즈 바니 알마제"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026KUMM75KGREPF000200"
+  },
+  {
+   "time": "15:40",
+   "discipline": "탁구",
+   "event": "혼합복식 1라운드 1",
+   "countries": [
+    "몽골",
+    "마카오"
+   ],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEXDOUBLESR64000100"
+  },
+  {
+   "time": "15:40",
+   "discipline": "탁구",
+   "event": "혼합복식 1라운드 2",
+   "countries": [
+    "일본",
+    "우즈베키스탄"
+   ],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEXDOUBLESR64000200"
+  },
+  {
+   "time": "15:40",
+   "discipline": "탁구",
+   "event": "혼합복식 1라운드 5",
+   "countries": [
+    "라오스",
+    "방글라데시"
+   ],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEXDOUBLESR64000500"
+  },
+  {
+   "time": "15:40",
+   "discipline": "탁구",
+   "event": "혼합복식 1라운드 8",
+   "countries": [
+    "인도네시아",
+    "이란"
+   ],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEXDOUBLESR64000800"
   },
   {
    "time": "15:47",
@@ -3288,25 +3575,15 @@
    "time": "15:50",
    "discipline": "가라테 카타",
    "event": "여자 단체 금메달전 125경기",
-   "countries": [],
+   "countries": [
+    "이란",
+    "베트남"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026KATWTEAMFNL000100"
-  },
-  {
-   "time": "15:50",
-   "discipline": "우슈 투로",
-   "event": "남자 남권·남곤 결승-남곤",
-   "countries": [
-    "대한민국"
-   ],
-   "venue": "아이치현 무도관",
-   "hasKorea": true,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026WSUMNAMFNL000100"
   },
   {
    "time": "16:00",
@@ -3323,7 +3600,10 @@
    "time": "16:00",
    "discipline": "가라테 쿠미테",
    "event": "남자 -75kg급 결승 126경기",
-   "countries": [],
+   "countries": [
+    "모르테자 네마티",
+    "다부트 나즈미라도프"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": true,
@@ -3418,7 +3698,10 @@
    "time": "16:10",
    "discipline": "가라테 쿠미테",
    "event": "남자 -84kg급 결승 127경기",
-   "countries": [],
+   "countries": [
+    "모하마드 알자파리",
+    "알리 아스가르 아시아바리"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": true,
@@ -3429,7 +3712,10 @@
    "time": "16:20",
    "discipline": "가라테 쿠미테",
    "event": "여자 -55kg급 결승 128경기",
-   "countries": [],
+   "countries": [
+    "파테메자흐라 사에이다바디",
+    "아데올라 페이 로버트"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": true,
@@ -3454,9 +3740,11 @@
    "time": "17:00",
    "discipline": "수영",
    "event": "여자 100m 자유형 결승",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "도쿄 아쿠아틱스 센터",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026SWMW100MFRFNL"
@@ -3476,26 +3764,14 @@
    "link": "https://m.sports.naver.com/game/2026HOCMTEAM11GPA000500"
   },
   {
-   "time": "17:05",
-   "discipline": "카바디",
-   "event": "여자 예선 A조 3경기",
-   "countries": [
-    "이란",
-    "방글라데시"
-   ],
-   "venue": "도카이 시민 체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026KABWTEAMGPA000300"
-  },
-  {
    "time": "17:08",
    "discipline": "수영",
    "event": "남자 400m 개인 혼영 결승",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "도쿄 아쿠아틱스 센터",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026SWMM400MIMFNL"
@@ -3515,32 +3791,40 @@
    "link": "https://m.sports.naver.com/game/2026BOXM55KGR32000300"
   },
   {
+   "time": "17:15",
+   "discipline": "카바디",
+   "event": "여자 예선 A조 3경기",
+   "countries": [
+    "이란",
+    "방글라데시"
+   ],
+   "venue": "도카이 시민 체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026KABWTEAMGPA000300"
+  },
+  {
    "time": "17:20",
    "discipline": "수영",
    "event": "여자 200m 배영 결승",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "도쿄 아쿠아틱스 센터",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026SWMW200MBAFNL"
   },
   {
-   "time": "17:25",
-   "discipline": "펜싱 플뢰레",
-   "event": "남자 플뢰레 개인 준결승 1",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDSFNL000100"
-  },
-  {
    "time": "17:30",
    "discipline": "e스포츠",
    "event": "e풋볼 조별리그 B조 3경기",
-   "countries": [],
+   "countries": [
+    "태국",
+    "일본"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -3551,7 +3835,10 @@
    "time": "17:30",
    "discipline": "e스포츠",
    "event": "e풋볼 조별리그 C조 3경기",
-   "countries": [],
+   "countries": [
+    "인도네시아",
+    "홍콩"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -3562,7 +3849,10 @@
    "time": "17:30",
    "discipline": "e스포츠",
    "event": "e풋볼 조별리그 D조 3경기",
-   "countries": [],
+   "countries": [
+    "카자흐스탄",
+    "타지키스탄"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -3573,23 +3863,15 @@
    "time": "17:30",
    "discipline": "e스포츠",
    "event": "e풋볼 조별리그 E조 3경기",
-   "countries": [],
+   "countries": [
+    "바레인",
+    "미얀마"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026ESPOEFBGPE000300"
-  },
-  {
-   "time": "17:30",
-   "discipline": "e스포츠",
-   "event": "e풋볼 조별리그 F조 3경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOEFBGPF000300"
   },
   {
    "time": "17:30",
@@ -3616,7 +3898,7 @@
    "venue": "엔트리오",
    "hasKorea": true,
    "medal": false,
-   "tv": true,
+   "tv": false,
    "link": "https://m.sports.naver.com/game/2026HBLMTEAM7GPB000600"
   },
   {
@@ -3649,6 +3931,20 @@
   },
   {
    "time": "17:40",
+   "discipline": "e스포츠",
+   "event": "e풋볼 조별리그 F조 3경기",
+   "countries": [
+    "인도",
+    "몽골"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOEFBGPF000300"
+  },
+  {
+   "time": "17:40",
    "discipline": "수구",
    "event": "여자 라운드로빈 8경기",
    "countries": [
@@ -3674,6 +3970,20 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026BOXM55KGR32000700"
+  },
+  {
+   "time": "17:50",
+   "discipline": "펜싱 플뢰레",
+   "event": "남자 플뢰레 개인 준결승 1경기",
+   "countries": [
+    "이무라 카즈키",
+    "마츠야마 쿄스케"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": false,
+   "medal": true,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDSFNL000100"
   },
   {
    "time": "18:00",
@@ -3729,9 +4039,11 @@
    "time": "18:02",
    "discipline": "수영",
    "event": "여자 400m 자유형 결승",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "도쿄 아쿠아틱스 센터",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026SWMW400MFRFNL"
@@ -3751,28 +4063,6 @@
    "link": "https://m.sports.naver.com/game/2026BK3WTEAM3GPA000200"
   },
   {
-   "time": "18:05",
-   "discipline": "펜싱 에페",
-   "event": "여자 에페 개인 준결승 1",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026EPEWINDIVIDSFNL000100"
-  },
-  {
-   "time": "18:05",
-   "discipline": "펜싱 플뢰레",
-   "event": "남자 플뢰레 개인 준결승 2",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDSFNL000200"
-  },
-  {
    "time": "18:10",
    "discipline": "우슈 산다",
    "event": "여자 산다 52kg급 8강 2",
@@ -3788,17 +4078,17 @@
   },
   {
    "time": "18:10",
-   "discipline": "카바디",
-   "event": "남자 예선 B조 5경기",
+   "discipline": "펜싱 플뢰레",
+   "event": "남자 플뢰레 개인 준결승 2경기",
    "countries": [
-    "네팔",
-    "이란"
+    "윤정현",
+    "라이언 초이"
    ],
-   "venue": "도카이 시민 체육관",
-   "hasKorea": false,
-   "medal": false,
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": true,
+   "medal": true,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026KABMTEAMGPB000500"
+   "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDSFNL000200"
   },
   {
    "time": "18:15",
@@ -3832,23 +4122,14 @@
    "time": "18:25",
    "discipline": "수영",
    "event": "남자 4 x 100m 혼계영 결승",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "도쿄 아쿠아틱스 센터",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026SWMM4X100MMDFNL"
-  },
-  {
-   "time": "18:25",
-   "discipline": "펜싱 에페",
-   "event": "여자 에페 개인 준결승 2",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026EPEWINDIVIDSFNL000200"
   },
   {
    "time": "18:30",
@@ -3945,6 +4226,34 @@
    "link": "https://m.sports.naver.com/game/2026SANW52KGQFNL000400"
   },
   {
+   "time": "18:30",
+   "discipline": "카바디",
+   "event": "남자 예선 B조 5경기",
+   "countries": [
+    "네팔",
+    "이란"
+   ],
+   "venue": "도카이 시민 체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026KABMTEAMGPB000500"
+  },
+  {
+   "time": "18:30",
+   "discipline": "펜싱 에페",
+   "event": "여자 에페 개인 준결승 1경기",
+   "countries": [
+    "송세라",
+    "테라야마 타마키"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": true,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026EPEWINDIVIDSFNL000100"
+  },
+  {
    "time": "18:40",
    "discipline": "우슈 산다",
    "event": "여자 산다 60kg급 8강 1",
@@ -3985,6 +4294,20 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SANW60KGQFNL000200"
+  },
+  {
+   "time": "18:50",
+   "discipline": "펜싱 에페",
+   "event": "여자 에페 개인 준결승 2경기",
+   "countries": [
+    "양징웬",
+    "티카나 압둘 라흐만 키리아"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026EPEWINDIVIDSFNL000200"
   },
   {
    "time": "18:55",
@@ -4069,17 +4392,6 @@
   },
   {
    "time": "19:00",
-   "discipline": "펜싱 플뢰레",
-   "event": "남자 플뢰레 개인 금메달전",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": true,
-   "tv": true,
-   "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDFNL000100"
-  },
-  {
-   "time": "19:00",
    "discipline": "하키",
    "event": "남자 A조 6경기",
    "countries": [
@@ -4107,18 +4419,18 @@
    "link": "https://m.sports.naver.com/game/2026SANW60KGQFNL000400"
   },
   {
-   "time": "19:15",
-   "discipline": "카바디",
-   "event": "여자 예선 B조 3경기",
+   "time": "19:10",
+   "discipline": "펜싱 플뢰레",
+   "event": "남자 플뢰레 개인 금메달전",
    "countries": [
-    "스리랑카",
-    "차이니스 타이베이"
+    "이무라 카즈키",
+    "라이언 초이"
    ],
-   "venue": "도카이 시민 체육관",
+   "venue": "아이치 스카이 엑스포 홀 F",
    "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026KABWTEAMGPB000300"
+   "medal": true,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDFNL000100"
   },
   {
    "time": "19:20",
@@ -4176,10 +4488,10 @@
   {
    "time": "19:20",
    "discipline": "탁구",
-   "event": "남자 단체 8강 1",
+   "event": "남자 단체 8강 1경기",
    "countries": [
     "중국",
-    "미정"
+    "태국"
    ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -4190,8 +4502,11 @@
   {
    "time": "19:20",
    "discipline": "탁구",
-   "event": "남자 단체 8강 2",
-   "countries": [],
+   "event": "남자 단체 8강 2경기",
+   "countries": [
+    "이란",
+    "차이니스 타이베이"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
@@ -4201,10 +4516,13 @@
   {
    "time": "19:20",
    "discipline": "탁구",
-   "event": "남자 단체 8강 3",
-   "countries": [],
+   "event": "남자 단체 8강 3경기",
+   "countries": [
+    "대한민국",
+    "홍콩"
+   ],
    "venue": "스카이 홀 도요타",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026TTEMTEAMQFNL00030000"
@@ -4212,10 +4530,10 @@
   {
    "time": "19:20",
    "discipline": "탁구",
-   "event": "남자 단체 8강 4",
+   "event": "남자 단체 8강 4경기",
    "countries": [
-    "미정",
-    "일본"
+    "일본",
+    "카자흐스탄"
    ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -4226,10 +4544,10 @@
   {
    "time": "19:20",
    "discipline": "탁구",
-   "event": "여자 단체 8강 1",
+   "event": "여자 단체 8강 1경기",
    "countries": [
-    "중국",
-    "미정"
+    "우즈베키스탄",
+    "중국"
    ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -4240,10 +4558,10 @@
   {
    "time": "19:20",
    "discipline": "탁구",
-   "event": "여자 단체 8강 2",
+   "event": "여자 단체 8강 2경기",
    "countries": [
-    "미정",
-    "북한"
+    "북한",
+    "인도"
    ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -4254,10 +4572,10 @@
   {
    "time": "19:20",
    "discipline": "탁구",
-   "event": "여자 단체 8강 3",
+   "event": "여자 단체 8강 3경기",
    "countries": [
     "대한민국",
-    "미정"
+    "싱가포르"
    ],
    "venue": "스카이 홀 도요타",
    "hasKorea": true,
@@ -4268,27 +4586,16 @@
   {
    "time": "19:20",
    "discipline": "탁구",
-   "event": "여자 단체 8강 4",
+   "event": "여자 단체 8강 4경기",
    "countries": [
-    "미정",
-    "일본"
+    "일본",
+    "차이니스 타이베이"
    ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026TTEWTEAMQFNL00040000"
-  },
-  {
-   "time": "19:25",
-   "discipline": "펜싱 에페",
-   "event": "여자 에페 개인 금메달전",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": true,
-   "tv": true,
-   "link": "https://m.sports.naver.com/game/2026EPEWINDIVIDFNL000100"
   },
   {
    "time": "19:30",
@@ -4303,6 +4610,20 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SANM56KGQFNL000200"
+  },
+  {
+   "time": "19:30",
+   "discipline": "펜싱 에페",
+   "event": "여자 에페 개인 금메달전",
+   "countries": [
+    "송세라",
+    "티카나 압둘 라흐만 키리아"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 F",
+   "hasKorea": true,
+   "medal": true,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/2026EPEWINDIVIDFNL000100"
   },
   {
    "time": "19:40",
@@ -4331,6 +4652,20 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026BK3WTEAM3GPA000400"
+  },
+  {
+   "time": "19:45",
+   "discipline": "카바디",
+   "event": "여자 예선 B조 3경기",
+   "countries": [
+    "스리랑카",
+    "차이니스 타이베이"
+   ],
+   "venue": "도카이 시민 체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026KABWTEAMGPB000300"
   },
   {
    "time": "19:50",

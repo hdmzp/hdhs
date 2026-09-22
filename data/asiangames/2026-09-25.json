@@ -1,6 +1,6 @@
 {
  "date": "2026-09-25",
- "collectedAt": "2026-09-22T09:34:35+09:00",
+ "collectedAt": "2026-09-22T23:35:09+09:00",
  "games": [
   {
    "time": "07:00",
@@ -1274,7 +1274,10 @@
    "time": "10:00",
    "discipline": "e스포츠",
    "event": "포켓몬 유나이트 B조 1경기",
-   "countries": [],
+   "countries": [
+    "싱가포르",
+    "홍콩"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -1716,7 +1719,7 @@
   {
    "time": "11:00",
    "discipline": "탁구",
-   "event": "남자 복식 32강",
+   "event": "남자 복식 2라운드 1",
    "countries": [],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -1727,95 +1730,7 @@
   {
    "time": "11:00",
    "discipline": "탁구",
-   "event": "남자 복식 32강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMDOUBLESR32000200"
-  },
-  {
-   "time": "11:00",
-   "discipline": "탁구",
-   "event": "남자 복식 32강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMDOUBLESR32000300"
-  },
-  {
-   "time": "11:00",
-   "discipline": "탁구",
-   "event": "남자 복식 32강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMDOUBLESR32000400"
-  },
-  {
-   "time": "11:00",
-   "discipline": "탁구",
-   "event": "남자 복식 32강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMDOUBLESR32000500"
-  },
-  {
-   "time": "11:00",
-   "discipline": "탁구",
-   "event": "남자 복식 32강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMDOUBLESR32000600"
-  },
-  {
-   "time": "11:00",
-   "discipline": "탁구",
-   "event": "남자 복식 32강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMDOUBLESR32000700"
-  },
-  {
-   "time": "11:00",
-   "discipline": "탁구",
-   "event": "남자 복식 32강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMDOUBLESR32000800"
-  },
-  {
-   "time": "11:00",
-   "discipline": "탁구",
-   "event": "남자 복식 32강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMDOUBLESR32000900"
-  },
-  {
-   "time": "11:00",
-   "discipline": "탁구",
-   "event": "남자 복식 32강",
+   "event": "남자 복식 2라운드 10",
    "countries": [],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -1826,10 +1741,12 @@
   {
    "time": "11:00",
    "discipline": "탁구",
-   "event": "남자 복식 32강",
-   "countries": [],
+   "event": "남자 복식 2라운드 11",
+   "countries": [
+    "대한민국"
+   ],
    "venue": "스카이 홀 도요타",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026TTEMDOUBLESR32001100"
@@ -1837,7 +1754,7 @@
   {
    "time": "11:00",
    "discipline": "탁구",
-   "event": "남자 복식 32강",
+   "event": "남자 복식 2라운드 12",
    "countries": [],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -1848,7 +1765,7 @@
   {
    "time": "11:00",
    "discipline": "탁구",
-   "event": "남자 복식 32강",
+   "event": "남자 복식 2라운드 13",
    "countries": [],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -1859,7 +1776,7 @@
   {
    "time": "11:00",
    "discipline": "탁구",
-   "event": "남자 복식 32강",
+   "event": "남자 복식 2라운드 14",
    "countries": [],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -1870,7 +1787,7 @@
   {
    "time": "11:00",
    "discipline": "탁구",
-   "event": "남자 복식 32강",
+   "event": "남자 복식 2라운드 15",
    "countries": [],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -1881,13 +1798,103 @@
   {
    "time": "11:00",
    "discipline": "탁구",
-   "event": "남자 복식 32강",
+   "event": "남자 복식 2라운드 16",
    "countries": [],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026TTEMDOUBLESR32001600"
+  },
+  {
+   "time": "11:00",
+   "discipline": "탁구",
+   "event": "남자 복식 2라운드 2",
+   "countries": [],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMDOUBLESR32000200"
+  },
+  {
+   "time": "11:00",
+   "discipline": "탁구",
+   "event": "남자 복식 2라운드 3",
+   "countries": [],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMDOUBLESR32000300"
+  },
+  {
+   "time": "11:00",
+   "discipline": "탁구",
+   "event": "남자 복식 2라운드 4",
+   "countries": [],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMDOUBLESR32000400"
+  },
+  {
+   "time": "11:00",
+   "discipline": "탁구",
+   "event": "남자 복식 2라운드 5",
+   "countries": [],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMDOUBLESR32000500"
+  },
+  {
+   "time": "11:00",
+   "discipline": "탁구",
+   "event": "남자 복식 2라운드 6",
+   "countries": [],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMDOUBLESR32000600"
+  },
+  {
+   "time": "11:00",
+   "discipline": "탁구",
+   "event": "남자 복식 2라운드 7",
+   "countries": [],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMDOUBLESR32000700"
+  },
+  {
+   "time": "11:00",
+   "discipline": "탁구",
+   "event": "남자 복식 2라운드 8",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMDOUBLESR32000800"
+  },
+  {
+   "time": "11:00",
+   "discipline": "탁구",
+   "event": "남자 복식 2라운드 9",
+   "countries": [],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMDOUBLESR32000900"
   },
   {
    "time": "11:00",
@@ -2039,9 +2046,12 @@
    "time": "11:25",
    "discipline": "e스포츠",
    "event": "포켓몬 유나이트 C조 1경기",
-   "countries": [],
+   "countries": [
+    "인도",
+    "대한민국"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026ESPOPKUGPC000100"
@@ -2498,7 +2508,10 @@
    "time": "12:50",
    "discipline": "e스포츠",
    "event": "포켓몬 유나이트 A조 1경기",
-   "countries": [],
+   "countries": [
+    "필리핀",
+    "카자흐스탄"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -2785,8 +2798,11 @@
   {
    "time": "14:00",
    "discipline": "탁구",
-   "event": "남자 단식 32강",
-   "countries": [],
+   "event": "남자 단식 2라운드 1",
+   "countries": [
+    "왕추친",
+    "미정"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
@@ -2796,96 +2812,11 @@
   {
    "time": "14:00",
    "discipline": "탁구",
-   "event": "남자 단식 32강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR32000200"
-  },
-  {
-   "time": "14:00",
-   "discipline": "탁구",
-   "event": "남자 단식 32강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR32000300"
-  },
-  {
-   "time": "14:00",
-   "discipline": "탁구",
-   "event": "남자 단식 32강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR32000400"
-  },
-  {
-   "time": "14:00",
-   "discipline": "탁구",
-   "event": "남자 단식 32강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR32000500"
-  },
-  {
-   "time": "14:00",
-   "discipline": "탁구",
-   "event": "남자 단식 32강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR32000600"
-  },
-  {
-   "time": "14:00",
-   "discipline": "탁구",
-   "event": "남자 단식 32강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR32000700"
-  },
-  {
-   "time": "14:00",
-   "discipline": "탁구",
-   "event": "남자 단식 32강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR32000800"
-  },
-  {
-   "time": "14:00",
-   "discipline": "탁구",
-   "event": "남자 단식 32강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR32000900"
-  },
-  {
-   "time": "14:00",
-   "discipline": "탁구",
-   "event": "남자 단식 32강",
-   "countries": [],
+   "event": "남자 단식 2라운드 10",
+   "countries": [
+    "미정",
+    "키릴 게라시멘코"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
@@ -2895,7 +2826,7 @@
   {
    "time": "14:00",
    "discipline": "탁구",
-   "event": "남자 단식 32강",
+   "event": "남자 단식 2라운드 11",
    "countries": [],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -2906,10 +2837,13 @@
   {
    "time": "14:00",
    "discipline": "탁구",
-   "event": "남자 단식 32강",
-   "countries": [],
+   "event": "남자 단식 2라운드 12",
+   "countries": [
+    "미정",
+    "안재현"
+   ],
    "venue": "스카이 홀 도요타",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR32001200"
@@ -2917,8 +2851,11 @@
   {
    "time": "14:00",
    "discipline": "탁구",
-   "event": "남자 단식 32강",
-   "countries": [],
+   "event": "남자 단식 2라운드 13",
+   "countries": [
+    "린시동",
+    "미정"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
@@ -2928,7 +2865,7 @@
   {
    "time": "14:00",
    "discipline": "탁구",
-   "event": "남자 단식 32강",
+   "event": "남자 단식 2라운드 14",
    "countries": [],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -2939,8 +2876,11 @@
   {
    "time": "14:00",
    "discipline": "탁구",
-   "event": "남자 단식 32강",
-   "countries": [],
+   "event": "남자 단식 2라운드 15",
+   "countries": [
+    "용 이작 퀘크",
+    "미정"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
@@ -2950,13 +2890,125 @@
   {
    "time": "14:00",
    "discipline": "탁구",
-   "event": "남자 단식 32강",
-   "countries": [],
+   "event": "남자 단식 2라운드 16",
+   "countries": [
+    "미정",
+    "마츠시마 소라"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR32001600"
+  },
+  {
+   "time": "14:00",
+   "discipline": "탁구",
+   "event": "남자 단식 2라운드 2",
+   "countries": [
+    "미정",
+    "마나브 비카쉬 타카르"
+   ],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR32000200"
+  },
+  {
+   "time": "14:00",
+   "discipline": "탁구",
+   "event": "남자 단식 2라운드 3",
+   "countries": [
+    "풍이신",
+    "미정"
+   ],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR32000300"
+  },
+  {
+   "time": "14:00",
+   "discipline": "탁구",
+   "event": "남자 단식 2라운드 4",
+   "countries": [
+    "미정",
+    "장우진"
+   ],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR32000400"
+  },
+  {
+   "time": "14:00",
+   "discipline": "탁구",
+   "event": "남자 단식 2라운드 5",
+   "countries": [
+    "웡춘팅",
+    "미정"
+   ],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR32000500"
+  },
+  {
+   "time": "14:00",
+   "discipline": "탁구",
+   "event": "남자 단식 2라운드 6",
+   "countries": [],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR32000600"
+  },
+  {
+   "time": "14:00",
+   "discipline": "탁구",
+   "event": "남자 단식 2라운드 7",
+   "countries": [
+    "알란 쿠르망갈리예프",
+    "미정"
+   ],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR32000700"
+  },
+  {
+   "time": "14:00",
+   "discipline": "탁구",
+   "event": "남자 단식 2라운드 8",
+   "countries": [
+    "미정",
+    "하리모토 토모카즈"
+   ],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR32000800"
+  },
+  {
+   "time": "14:00",
+   "discipline": "탁구",
+   "event": "남자 단식 2라운드 9",
+   "countries": [
+    "린윤주",
+    "미정"
+   ],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR32000900"
   },
   {
    "time": "14:15",
@@ -2973,7 +3025,10 @@
    "time": "14:15",
    "discipline": "e스포츠",
    "event": "포켓몬 유나이트 A조 2경기",
-   "countries": [],
+   "countries": [
+    "차이니스 타이베이",
+    "말레이시아"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -3069,7 +3124,10 @@
    "time": "15:00",
    "discipline": "축구",
    "event": "여자 8강 1경기",
-   "countries": [],
+   "countries": [
+    "북한",
+    "차이니스 타이베이"
+   ],
    "venue": "시즈오카 스타디움",
    "hasKorea": false,
    "medal": false,
@@ -3080,7 +3138,10 @@
    "time": "15:00",
    "discipline": "축구",
    "event": "여자 8강 3경기",
-   "countries": [],
+   "countries": [
+    "중국",
+    "베트남"
+   ],
    "venue": "나가이 스타디움",
    "hasKorea": false,
    "medal": false,
@@ -3229,7 +3290,10 @@
    "time": "15:40",
    "discipline": "e스포츠",
    "event": "포켓몬 유나이트 B조 2경기",
-   "countries": [],
+   "countries": [
+    "홍콩",
+    "인도네시아"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -3368,7 +3432,7 @@
   {
    "time": "17:00",
    "discipline": "탁구",
-   "event": "남자 복식 16강",
+   "event": "남자 복식 3라운드 1",
    "countries": [],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -3379,7 +3443,7 @@
   {
    "time": "17:00",
    "discipline": "탁구",
-   "event": "남자 복식 16강",
+   "event": "남자 복식 3라운드 2",
    "countries": [],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -3390,7 +3454,7 @@
   {
    "time": "17:00",
    "discipline": "탁구",
-   "event": "남자 복식 16강",
+   "event": "남자 복식 3라운드 3",
    "countries": [],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -3401,7 +3465,7 @@
   {
    "time": "17:00",
    "discipline": "탁구",
-   "event": "남자 복식 16강",
+   "event": "남자 복식 3라운드 4",
    "countries": [],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -3412,7 +3476,7 @@
   {
    "time": "17:00",
    "discipline": "탁구",
-   "event": "남자 복식 16강",
+   "event": "남자 복식 3라운드 5",
    "countries": [],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -3423,7 +3487,7 @@
   {
    "time": "17:00",
    "discipline": "탁구",
-   "event": "남자 복식 16강",
+   "event": "남자 복식 3라운드 6",
    "countries": [],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -3434,7 +3498,7 @@
   {
    "time": "17:00",
    "discipline": "탁구",
-   "event": "남자 복식 16강",
+   "event": "남자 복식 3라운드 7",
    "countries": [],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -3445,7 +3509,7 @@
   {
    "time": "17:00",
    "discipline": "탁구",
-   "event": "남자 복식 16강",
+   "event": "남자 복식 3라운드 8",
    "countries": [],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -3471,9 +3535,12 @@
    "time": "17:05",
    "discipline": "e스포츠",
    "event": "포켓몬 유나이트 C조 2경기",
-   "countries": [],
+   "countries": [
+    "대한민국",
+    "일본"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026ESPOPKUGPC000200"
@@ -3937,7 +4004,10 @@
    "time": "19:30",
    "discipline": "축구",
    "event": "여자 8강 2경기",
-   "countries": [],
+   "countries": [
+    "일본",
+    "필리핀"
+   ],
    "venue": "시즈오카 스타디움",
    "hasKorea": false,
    "medal": false,
@@ -3948,9 +4018,12 @@
    "time": "19:30",
    "discipline": "축구",
    "event": "여자 8강 4경기",
-   "countries": [],
+   "countries": [
+    "대한민국",
+    "우즈베키스탄"
+   ],
    "venue": "나가이 스타디움",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026FBLWTEAM11QFNL000400"
