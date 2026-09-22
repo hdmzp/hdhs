@@ -84,6 +84,14 @@ FIRST_AIR_RETRY_DAYS = 7    # 조회 실패(날짜 못 찾음)한 프로그램�
 # 아직 종영일이 없는(=방영 중인) 프로그램을 다시 확인하는 간격. 방영 중이던
 # 프로그램은 언제든 종영할 수 있으므로 주기적으로 다시 봐야 한다.
 AIR_END_RECHECK_DAYS = 7
+# 이번 주 파일에 아직 값이 없는 '방영 중' 프로그램을 다시 확인하는 최소 간격(시간).
+# 7일 주기(AIR_END_RECHECK_DAYS)를 기다리면 그 주 시청률은 영영 못 받는다 —
+# 네이버는 프로그램당 '최신 회차' 하나만 보여주기 때문에, 다음 회차가 나오는
+# 순간 이번 주 값이 덮여 사라진다. 실제로 2026-09-21 주차에서 위젯이 월요일
+# 방영 일일드라마(욕망의 덫/가족관계증명서)의 시청률을 갱신해주지 않아
+# 드라마가 통째로 빈 채로 남았다. 하루 4회 실행 사이에 최소 한 번은 다시
+# 보도록 6시간으로 잡는다.
+CURRENT_WEEK_RECHECK_HOURS = 6
 
 
 def monday_of(date_obj):
@@ -1281,13 +1289,70 @@ def parse_last_rating_from_html(html: str, today=None):
     return rating, basis, episode
 
 
+def current_week_missing_keys(out_dir: str, today):
+    """이번 주 파일에 아직 한 줄도 없는 '방영 중' 프로그램의 키를 고른다.
+
+    위젯이 어떤 프로그램의 시청률을 그 주 안에 갱신해주지 않으면(네이버 쪽
+    사정이라 우리가 어쩔 수 없다) 그 주 값은 영영 비고, 지나간 뒤에는 복구도
+    불가능하다. 그래서 '이번 주에 이미 방영했는데 아직 값이 없는' 프로그램은
+    상세 페이지를 짧은 주기로 다시 확인해두고, fill_missing_weeks_from_cache가
+    그 값으로 주차를 메우게 한다.
+
+    대상을 좁히는 조건:
+      - 컷오프 이상으로 표에 실리던 프로그램만 (아래쪽 잡음까지 훑지 않는다)
+      - 어제까지 이번 주에 한 번이라도 방영된 프로그램만 — 오늘 방송분은
+        시청률이 내일 아침에야 나오므로 지금 조회해봐야 소용없다.
+
+    편성 요일은 '가장 최근에 등장한 주차'의 항목들을 합쳐서 본다. 같은
+    프로그램이 시간 표기가 달라 슬롯별로 쪼개져 저장되는 경우가 있어서
+    (예: 가족관계증명서 — 월화수금 오후 07:05 / 목 오후 07:10), 항목 하나의
+    days만 보면 월요일 방영분을 놓친다."""
+    files = _week_files(out_dir)
+    if not files:
+        return set()
+    week = monday_of(today).isoformat()
+
+    seen_this_week, last_week, days_by_key, meta = set(), {}, {}, {}
+    for name in files:                       # 파일명 오름차순 = 주차 오름차순
+        wk = name[:-5]
+        try:
+            with open(os.path.join(out_dir, name), encoding="utf-8") as f:
+                d = json.load(f)
+        except Exception:
+            continue
+        for p in d.get("programs", []) + d.get("newBelowCutoff", []):
+            key = _first_air_key(p)
+            if wk == week:
+                seen_this_week.add(key)
+                continue
+            if last_week.get(key) != wk:     # 더 최근 주차로 넘어오면 요일 초기화
+                last_week[key] = wk
+                days_by_key[key] = set()
+            days_by_key[key].update(p.get("days") or [])
+            meta[key] = p
+
+    missing = set()
+    for key, p in meta.items():
+        if key in seen_this_week:
+            continue
+        if (p.get("rating") or 0) < _cutoff_for(p.get("category", "variety")):
+            continue
+        if not any(DAY_INDEX.get(d, 99) < today.weekday()
+                   for d in days_by_key.get(key, ())):
+            continue
+        missing.add(key)
+    return missing
+
+
 def lookup_air_periods(page, programs: list, out_dir: str):
     """프로그램들의 방영 기간(첫방송일/종영일)을 상세 페이지에서 조회해
     캐시(first_air_dates.json)에 채운다.
 
     조회 대상 우선순위:
       1) 첫방송일조차 모르는 프로그램 (신규 판정에 바로 필요)
-      2) 방영 중으로 알고 있는데 마지막 확인이 오래된 프로그램 (종영 여부 확인)
+      2) 이번 주에 이미 방영했는데 주차 파일에 값이 없는 프로그램
+         (그 주가 지나기 전에 시청률을 확보해야 하므로 가장 급하다)
+      3) 방영 중으로 알고 있는데 마지막 확인이 오래된 프로그램 (종영 여부 확인)
     종영일까지 확보한 프로그램은 더 이상 조회하지 않는다."""
     cache = load_first_air_cache(out_dir)
     today = datetime.now(KST).date()
@@ -1309,7 +1374,16 @@ def lookup_air_periods(page, programs: list, out_dir: str):
         except ValueError:
             return 10 ** 6
 
-    need_start, need_end, need_rating = [], [], []
+    def hours_since_check(ent):
+        try:
+            delta = datetime.now(KST) - datetime.fromisoformat(ent.get("checkedAt", ""))
+        except (TypeError, ValueError):
+            return 10 ** 6
+        return delta.total_seconds() / 3600
+
+    missing_this_week = current_week_missing_keys(out_dir, today)
+
+    need_start, need_current, need_end, need_rating = [], [], [], []
     for key, link in targets.items():
         ent = cache.get(key)
         if not ent:
@@ -1327,11 +1401,17 @@ def lookup_air_periods(page, programs: list, out_dir: str):
             if days_since_check(ent) >= FIRST_AIR_RETRY_DAYS:
                 need_start.append((key, link))
             continue
+        # 이번 주에 이미 방영했는데 주차 파일에 값이 없는 프로그램 — 7일 주기를
+        # 기다리면 그 주 시청률은 다음 회차에 덮여 사라지므로 짧은 주기로 본다
+        if (key in missing_this_week
+                and hours_since_check(ent) >= CURRENT_WEEK_RECHECK_HOURS):
+            need_current.append((key, link))
+            continue
         # 첫방송일은 아는데 종영 여부를 모르는 상태 — 주기적으로 다시 확인
         if days_since_check(ent) >= AIR_END_RECHECK_DAYS:
             need_end.append((key, link))
 
-    queue = need_start + need_end + need_rating
+    queue = need_start + need_current + need_end + need_rating
     if len(queue) > FIRST_AIR_LOOKUP_MAX:
         print(f"  [방영기간] 조회 대기 {len(queue)}건 중 이번 실행은 {FIRST_AIR_LOOKUP_MAX}건만 "
               f"— 나머지는 다음 실행에서 계속 (신규 판정 우선)")
@@ -1386,8 +1466,10 @@ def lookup_air_periods(page, programs: list, out_dir: str):
         save_first_air_cache(out_dir, cache)
     known = sum(1 for v in cache.values() if v.get("date"))
     ended = sum(1 for v in cache.values() if v.get("endDate"))
+    queued = len(need_start) + len(need_current) + len(need_end)
     print(f"  [방영기간] 캐시 현황: 첫방송 {known}건 / 종영 {ended}건 / 전체 {len(cache)}건"
-          f" (이번 실행 {looked}건 조회, 대기 {max(0, len(need_start)+len(need_end)-looked)}건)")
+          f" (이번 실행 {looked}건 조회, 대기 {max(0, queued - looked)}건,"
+          f" 이번 주 미확보 {len(need_current)}건)")
     return cache
 
 
@@ -1415,10 +1497,10 @@ def _program_meta_and_weeks(out_dir: str, files: list):
 def fill_missing_weeks_from_cache(out_dir: str):
     """위젯 수집에서 놓친 주차를 상세 페이지 시청률로 메운다.
 
-    방영 중인 프로그램도 종영 여부 확인 때문에 7일마다 상세 페이지를 보게
-    되고, 그때마다 그 시점의 최신 시청률(lastRating/lastRatingDate)이 캐시에
-    남는다. 위젯 페이징이 불안정해 어쩌다 한 주 통째로 놓친 프로그램이라도
-    이 값으로 메울 수 있다.
+    방영 중인 프로그램도 종영 여부 확인 때문에, 그리고 이번 주 값이 아직
+    없으면 CURRENT_WEEK_RECHECK_HOURS 간격으로 상세 페이지를 보게 되고,
+    그때마다 그 시점의 최신 시청률(lastRating/lastRatingDate)이 캐시에 남는다.
+    위젯이 한 주를 통째로 빠뜨린 프로그램이라도 이 값으로 메울 수 있다.
 
     '시청률 기준일이 그 주에 속한다'는 것은 그 주에 실제로 방영됐다는 뜻이라,
     결방한 주차를 잘못 채울 위험은 없다. 종영작은 ensure_ended_entries가
@@ -1426,6 +1508,7 @@ def fill_missing_weeks_from_cache(out_dir: str):
     files = _week_files(out_dir)
     if not files:
         return
+    today = datetime.now(KST).date()
     cache = load_first_air_cache(out_dir)
     meta, seen_weeks = _program_meta_and_weeks(out_dir, files)
 
@@ -1440,16 +1523,29 @@ def fill_missing_weeks_from_cache(out_dir: str):
         except ValueError:
             continue
 
-        target = monday_of(basis).isoformat()
-        if f"{target}.json" not in files or target in seen_weeks.get(key, set()):
+        target_monday = monday_of(basis)
+        target = target_monday.isoformat()
+        if target in seen_weeks.get(key, set()):
             continue
-
+        # 이번 주는 위젯이 한 건도 못 잡아 파일 자체가 없을 수 있다. 그때야말로
+        # 메워야 할 상황이므로 뼈대를 만들어서라도 채운다. 지난 주차 파일이
+        # 없는 경우는 수집을 아예 안 하던 시기라 손대지 않는다.
         path = os.path.join(out_dir, f"{target}.json")
-        try:
-            with open(path, encoding="utf-8") as f:
-                data = json.load(f)
-        except Exception:
-            continue
+        if f"{target}.json" not in files:
+            if target_monday != monday_of(today):
+                continue
+            data = {
+                "weekStart": target,
+                "weekEnd": (target_monday + timedelta(days=6)).isoformat(),
+                "collectedAt": datetime.now(KST).isoformat(),
+                "programs": [],
+            }
+        else:
+            try:
+                with open(path, encoding="utf-8") as f:
+                    data = json.load(f)
+            except Exception:
+                continue
 
         src = meta[key]
         rating = ent["lastRating"]
@@ -1460,7 +1556,12 @@ def fill_missing_weeks_from_cache(out_dir: str):
             "category": src["category"],
             "channel": src["channel"],
             "title": src["title"],
-            "days": list(src.get("days", [])) or [day],
+            # 이 항목은 '그 날 방영됐다'는 한 회차의 관측치다. 과거 주차의 편성
+            # 요일을 그대로 붙이면 값이 없는 요일 칸까지 이 시청률로 채워져
+            # (그리드는 요일별 값이 없으면 대표 시청률로 폴백한다) 다른 날
+            # 수치처럼 보인다. 실제로 확인된 요일 하나만 남기고, 나머지 요일은
+            # 이후 위젯 수집이 들어올 때 _carry_over_history가 합쳐준다.
+            "days": [day],
             "time": src.get("time", ""),
             "rating": rating,
             "ratingDate": md,
