@@ -1,6 +1,6 @@
 {
  "date": "2026-09-27",
- "collectedAt": "2026-09-22T01:21:59+09:00",
+ "collectedAt": "2026-09-22T09:34:35+09:00",
  "games": [
   {
    "time": "07:00",
@@ -964,28 +964,6 @@
   {
    "time": "09:00",
    "discipline": "e스포츠",
-   "event": "아너 오브 킹스 A조 2경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOHOKGPA000200"
-  },
-  {
-   "time": "09:00",
-   "discipline": "e스포츠",
-   "event": "아너 오브 킹스 A조 3경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOHOKGPA000300"
-  },
-  {
-   "time": "09:00",
-   "discipline": "e스포츠",
    "event": "아너 오브 킹스 B조 1경기",
    "countries": [],
    "venue": "아이치 스카이 엑스포 홀 D",
@@ -997,32 +975,12 @@
   {
    "time": "09:00",
    "discipline": "e스포츠",
-   "event": "아너 오브 킹스 B조 2경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOHOKGPB000200"
-  },
-  {
-   "time": "09:00",
-   "discipline": "e스포츠",
-   "event": "아너 오브 킹스 B조 3경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOHOKGPB000300"
-  },
-  {
-   "time": "09:00",
-   "discipline": "e스포츠",
    "event": "아너 오브 킹스 C조 1경기",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026ESPOHOKGPC000100"
@@ -1030,57 +988,13 @@
   {
    "time": "09:00",
    "discipline": "e스포츠",
-   "event": "아너 오브 킹스 C조 2경기",
+   "event": "포켓몬 유나이트 8강 1경기",
    "countries": [],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOHOKGPC000200"
-  },
-  {
-   "time": "09:00",
-   "discipline": "e스포츠",
-   "event": "아너 오브 킹스 C조 3경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOHOKGPC000300"
-  },
-  {
-   "time": "09:00",
-   "discipline": "e스포츠",
-   "event": "아너 오브 킹스 D조 1경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOHOKGPD000100"
-  },
-  {
-   "time": "09:00",
-   "discipline": "e스포츠",
-   "event": "아너 오브 킹스 D조 2경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOHOKGPD000200"
-  },
-  {
-   "time": "09:00",
-   "discipline": "e스포츠",
-   "event": "아너 오브 킹스 D조 3경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOHOKGPD000300"
+   "link": "https://m.sports.naver.com/game/2026ESPOPKUQFNL000100"
   },
   {
    "time": "09:00",
@@ -1200,17 +1114,6 @@
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026BMFWINDVFRSTFNL000100"
-  },
-  {
-   "time": "09:30",
-   "discipline": "e스포츠",
-   "event": "포켓몬 유나이트 8강 1경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOPKUQFNL000100"
   },
   {
    "time": "09:30",
@@ -2403,7 +2306,7 @@
    "link": "https://m.sports.naver.com/game/2026SRFMSHORTBRD8FNL000700"
   },
   {
-   "time": "10:20",
+   "time": "10:25",
    "discipline": "e스포츠",
    "event": "포켓몬 유나이트 8강 2경기",
    "countries": [],
@@ -2434,6 +2337,39 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SRFMSHORTBRD8FNL000800"
+  },
+  {
+   "time": "11:00",
+   "discipline": "e스포츠",
+   "event": "아너 오브 킹스 A조 2경기",
+   "countries": [],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOHOKGPA000200"
+  },
+  {
+   "time": "11:00",
+   "discipline": "e스포츠",
+   "event": "아너 오브 킹스 B조 2경기",
+   "countries": [],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOHOKGPB000200"
+  },
+  {
+   "time": "11:00",
+   "discipline": "e스포츠",
+   "event": "아너 오브 킹스 D조 1경기",
+   "countries": [],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOHOKGPD000100"
   },
   {
    "time": "11:00",
@@ -2586,17 +2522,6 @@
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026BMFMINDVFRSTFNL000100"
-  },
-  {
-   "time": "11:20",
-   "discipline": "e스포츠",
-   "event": "포켓몬 유나이트 8강 3경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOPKUQFNL000300"
   },
   {
    "time": "11:24",
@@ -2786,6 +2711,17 @@
    "link": "https://m.sports.naver.com/game/2026KURW57KGQFNL000400"
   },
   {
+   "time": "11:50",
+   "discipline": "e스포츠",
+   "event": "포켓몬 유나이트 8강 3경기",
+   "countries": [],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOPKUQFNL000300"
+  },
+  {
    "time": "11:57",
    "discipline": "서핑",
    "event": "여자 8강 - 2조",
@@ -2864,17 +2800,6 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026HBLWTEAM7RND001900"
-  },
-  {
-   "time": "12:10",
-   "discipline": "e스포츠",
-   "event": "포켓몬 유나이트 8강 4경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOPKUQFNL000400"
   },
   {
    "time": "12:15",
@@ -3670,6 +3595,28 @@
   },
   {
    "time": "13:00",
+   "discipline": "e스포츠",
+   "event": "아너 오브 킹스 A조 3경기",
+   "countries": [],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOHOKGPA000300"
+  },
+  {
+   "time": "13:00",
+   "discipline": "e스포츠",
+   "event": "아너 오브 킹스 B조 3경기",
+   "countries": [],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOHOKGPB000300"
+  },
+  {
+   "time": "13:00",
    "discipline": "다이빙",
    "event": "남자 싱크로나이즈드 10m 플랫폼 결승",
    "countries": [
@@ -3772,6 +3719,17 @@
    "medal": false,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026GTRM1TRAFNL000002"
+  },
+  {
+   "time": "13:15",
+   "discipline": "e스포츠",
+   "event": "포켓몬 유나이트 8강 4경기",
+   "countries": [],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOPKUQFNL000400"
   },
   {
    "time": "13:15",
@@ -4290,17 +4248,6 @@
   },
   {
    "time": "14:15",
-   "discipline": "e스포츠",
-   "event": "포켓몬 유나이트 준결승 1경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOPKUSFNL000100"
-  },
-  {
-   "time": "14:15",
    "discipline": "수구",
    "event": "남자 예선 - B조",
    "countries": [
@@ -4334,6 +4281,17 @@
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026KURMO90KGSFNL000200"
+  },
+  {
+   "time": "14:40",
+   "discipline": "e스포츠",
+   "event": "포켓몬 유나이트 준결승 1경기",
+   "countries": [],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOPKUSFNL000100"
   },
   {
    "time": "14:42",
@@ -4433,17 +4391,6 @@
    "link": "https://m.sports.naver.com/game/2026SFTWTEAMPREL000800"
   },
   {
-   "time": "15:20",
-   "discipline": "e스포츠",
-   "event": "포켓몬 유나이트 준결승 2경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOPKUSFNL000200"
-  },
-  {
    "time": "15:30",
    "discipline": "펜싱 에페",
    "event": "남자 에페 단체 준결승 1",
@@ -4528,6 +4475,17 @@
    "medal": false,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026HBLWTEAM7RND002100"
+  },
+  {
+   "time": "16:05",
+   "discipline": "e스포츠",
+   "event": "포켓몬 유나이트 준결승 2경기",
+   "countries": [],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOPKUSFNL000200"
   },
   {
    "time": "16:05",
@@ -4694,6 +4652,17 @@
   },
   {
    "time": "17:30",
+   "discipline": "e스포츠",
+   "event": "포켓몬 유나이트 금메달전",
+   "countries": [],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOPKUFNL000100"
+  },
+  {
+   "time": "17:30",
    "discipline": "복싱",
    "event": "여자 65kg - 8강 3",
    "countries": [],
@@ -4826,17 +4795,6 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026BOXM60KGQFNL000200"
-  },
-  {
-   "time": "18:30",
-   "discipline": "e스포츠",
-   "event": "포켓몬 유나이트 금메달전",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOPKUFNL000100"
   },
   {
    "time": "18:30",

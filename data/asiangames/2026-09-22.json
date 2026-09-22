@@ -1,6 +1,6 @@
 {
  "date": "2026-09-22",
- "collectedAt": "2026-09-22T01:21:59+09:00",
+ "collectedAt": "2026-09-22T09:34:35+09:00",
  "games": [
   {
    "time": "09:00",
@@ -351,9 +351,11 @@
    "time": "09:45",
    "discipline": "사격 소총",
    "event": "혼성 단체 10m 공기소총  예선",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "아이치현 종합사격장",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026RIFXARMTQUAL000100"
@@ -362,9 +364,11 @@
    "time": "09:45",
    "discipline": "사격 트랩",
    "event": "남자 스키트 예선 - 2일차",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "아이치현 종합사격장",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026TRPMSKMQUAL000200"
@@ -373,9 +377,11 @@
    "time": "09:45",
    "discipline": "사격 트랩",
    "event": "여자 스키트 예선 - 2일차",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "아이치현 종합사격장",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026TRPWSKMQUAL000200"
@@ -544,7 +550,7 @@
    "venue": "헤키난 료쿠치 비치 코트",
    "hasKorea": true,
    "medal": false,
-   "tv": true,
+   "tv": false,
    "link": "https://m.sports.naver.com/game/2026VBVWTEAM2GPC000200"
   },
   {
@@ -558,8 +564,34 @@
    "venue": "헤키난 료쿠치 비치 코트",
    "hasKorea": true,
    "medal": false,
-   "tv": true,
+   "tv": false,
    "link": "https://m.sports.naver.com/game/2026VBVWTEAM2GPD000200"
+  },
+  {
+   "time": "10:00",
+   "discipline": "사격 트랩",
+   "event": "남자 스키트 단체 결승 - 2일차",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "아이치현 종합사격장",
+   "hasKorea": true,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TRPMSKMTFNL000100"
+  },
+  {
+   "time": "10:00",
+   "discipline": "사격 트랩",
+   "event": "여자 스키트 단체 결승 - 2일차",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "아이치현 종합사격장",
+   "hasKorea": true,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TRPWSKMTFNL000100"
   },
   {
    "time": "10:00",
@@ -662,9 +694,11 @@
    "time": "10:10",
    "discipline": "펜싱 에페",
    "event": "여자 에페 개인 예선라운드",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026EPEWINDIVIDPOOL000100"
@@ -673,9 +707,11 @@
    "time": "10:10",
    "discipline": "펜싱 플뢰레",
    "event": "남자 플뢰레 개인 예선라운드",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026FOIMINDIVIDPOOL000100"
@@ -1000,9 +1036,11 @@
    "time": "11:29",
    "discipline": "수영",
    "event": "남자 4 x 100m 혼계영 - 예선",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "도쿄 아쿠아틱스 센터",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026SWMM4X100MMDHEAT"
@@ -1144,17 +1182,6 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026TSTWSINGLESGPE000200"
-  },
-  {
-   "time": "11:40",
-   "discipline": "사격 소총",
-   "event": "혼성 단체 10m 공기소총 동메달전",
-   "countries": [],
-   "venue": "아이치현 종합사격장",
-   "hasKorea": false,
-   "medal": true,
-   "tv": true,
-   "link": "https://m.sports.naver.com/game/2026RIFXARMTFNL000200"
   },
   {
    "time": "11:40",
@@ -1405,7 +1432,7 @@
   {
    "time": "12:25",
    "discipline": "사격 소총",
-   "event": "혼성 단체 10m 공기소총 금메달전",
+   "event": "혼성 단체 10m 공기소총 결승",
    "countries": [],
    "venue": "아이치현 종합사격장",
    "hasKorea": false,
@@ -1430,19 +1457,11 @@
   {
    "time": "12:30",
    "discipline": "탁구",
-   "event": "남자 단체 16강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMTEAM8FNL00010000"
-  },
-  {
-   "time": "12:30",
-   "discipline": "탁구",
-   "event": "남자 단체 16강",
-   "countries": [],
+   "event": "남자 단체 16강 2",
+   "countries": [
+    "우즈베키스탄",
+    "태국"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
@@ -1452,8 +1471,11 @@
   {
    "time": "12:30",
    "discipline": "탁구",
-   "event": "남자 단체 16강",
-   "countries": [],
+   "event": "남자 단체 16강 3",
+   "countries": [
+    "이란",
+    "싱가포르"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
@@ -1463,8 +1485,11 @@
   {
    "time": "12:30",
    "discipline": "탁구",
-   "event": "남자 단체 16강",
-   "countries": [],
+   "event": "남자 단체 16강 4",
+   "countries": [
+    "몽골",
+    "차이니스 타이베이"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
@@ -1474,19 +1499,25 @@
   {
    "time": "12:30",
    "discipline": "탁구",
-   "event": "남자 단체 16강",
-   "countries": [],
+   "event": "남자 단체 16강 5",
+   "countries": [
+    "대한민국",
+    "인도"
+   ],
    "venue": "스카이 홀 도요타",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026TTEMTEAM8FNL00050000"
   },
   {
    "time": "12:30",
    "discipline": "탁구",
-   "event": "남자 단체 16강",
-   "countries": [],
+   "event": "남자 단체 16강 6",
+   "countries": [
+    "카타르",
+    "홍콩"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
@@ -1496,24 +1527,16 @@
   {
    "time": "12:30",
    "discipline": "탁구",
-   "event": "남자 단체 16강",
-   "countries": [],
+   "event": "남자 단체 16강 7",
+   "countries": [
+    "카자흐스탄",
+    "바레인"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026TTEMTEAM8FNL00070000"
-  },
-  {
-   "time": "12:30",
-   "discipline": "탁구",
-   "event": "남자 단체 16강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMTEAM8FNL00080000"
   },
   {
    "time": "12:30",
@@ -3927,7 +3950,7 @@
    "event": "여자 산다 60kg급 8강 1",
    "countries": [
     "린차이메이",
-    "미정"
+    "장샤오유"
    ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
@@ -3953,7 +3976,10 @@
    "time": "18:50",
    "discipline": "우슈 산다",
    "event": "여자 산다 60kg급 8강 2",
-   "countries": [],
+   "countries": [
+    "메르젠 조라예바",
+    "응우옌 티 투 투이"
+   ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
    "medal": false,
@@ -3973,6 +3999,17 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026BK3MTEAM3GPD000200"
+  },
+  {
+   "time": "19:00",
+   "discipline": "AG",
+   "event": "[박종윤 축구] 남자축구 대한민국 vs 사우디아라비아",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/20260922PJYAG2026"
   },
   {
    "time": "19:00",
@@ -4006,7 +4043,10 @@
    "time": "19:00",
    "discipline": "우슈 산다",
    "event": "여자 산다 60kg급 8강 3",
-   "countries": [],
+   "countries": [
+    "데비 로시비나",
+    "추 만 신"
+   ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
    "medal": false,
@@ -4056,7 +4096,10 @@
    "time": "19:10",
    "discipline": "우슈 산다",
    "event": "여자 산다 60kg급 8강 4",
-   "countries": [],
+   "countries": [
+    "샤흐조다 아자토바",
+    "타니아 쿠수마닝티야스"
+   ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
    "medal": false,
@@ -4122,7 +4165,7 @@
    "event": "남자 산다 56kg급 8강 1",
    "countries": [
     "쇼지브 호사인",
-    "미정"
+    "오우지아밍"
    ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
@@ -4133,8 +4176,11 @@
   {
    "time": "19:20",
    "discipline": "탁구",
-   "event": "남자 단체 8강",
-   "countries": [],
+   "event": "남자 단체 8강 1",
+   "countries": [
+    "중국",
+    "미정"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
@@ -4144,7 +4190,7 @@
   {
    "time": "19:20",
    "discipline": "탁구",
-   "event": "남자 단체 8강",
+   "event": "남자 단체 8강 2",
    "countries": [],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -4155,7 +4201,7 @@
   {
    "time": "19:20",
    "discipline": "탁구",
-   "event": "남자 단체 8강",
+   "event": "남자 단체 8강 3",
    "countries": [],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -4166,8 +4212,11 @@
   {
    "time": "19:20",
    "discipline": "탁구",
-   "event": "남자 단체 8강",
-   "countries": [],
+   "event": "남자 단체 8강 4",
+   "countries": [
+    "미정",
+    "일본"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
@@ -4246,8 +4295,8 @@
    "discipline": "우슈 산다",
    "event": "남자 산다 56kg급 8강 2",
    "countries": [
-    "사이둘로 압두라쉬토프",
-    "미정"
+    "아리안",
+    "사이둘로 압두라쉬토프"
    ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
@@ -4261,7 +4310,7 @@
    "event": "남자 산다 56kg급 8강 3",
    "countries": [
     "아민 울라",
-    "미정"
+    "딘 반 탐"
    ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
@@ -4288,8 +4337,8 @@
    "discipline": "우슈 산다",
    "event": "남자 산다 56kg급 8강 4",
    "countries": [
-    "페레디 시나가",
-    "미정"
+    "엔흐툽신 에르데네바야르",
+    "페레디 시나가"
    ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
@@ -4303,7 +4352,7 @@
    "event": "남자 산다 60kg급 8강 1",
    "countries": [
     "렁위홍",
-    "미정"
+    "마흐디 케르마니"
    ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
@@ -4345,7 +4394,7 @@
    "event": "남자 산다 60kg급 8강 3",
    "countries": [
     "김민수",
-    "미정"
+    "화 반 도안"
    ],
    "venue": "아이치현 무도관",
    "hasKorea": true,
@@ -4358,8 +4407,8 @@
    "discipline": "우슈 산다",
    "event": "남자 산다 60kg급 8강 4",
    "countries": [
-    "기디언 프레드 파두아",
-    "미정"
+    "탕시슈오",
+    "기디언 프레드 파두아"
    ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
@@ -4385,7 +4434,10 @@
    "time": "20:40",
    "discipline": "우슈 산다",
    "event": "남자 산다 65kg급 8강 1",
-   "countries": [],
+   "countries": [
+    "아바즈베크 마카마드존오프",
+    "쇼자 파나히겔레콜라에이"
+   ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
    "medal": false,
@@ -4396,7 +4448,10 @@
    "time": "20:50",
    "discipline": "우슈 산다",
    "event": "남자 산다 65kg급 8강 2",
-   "countries": [],
+   "countries": [
+    "젠더 알리피오",
+    "응우옌 칵 끼엔"
+   ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
    "medal": false,
@@ -4407,7 +4462,10 @@
    "time": "21:00",
    "discipline": "우슈 산다",
    "event": "남자 산다 65kg급 8강 3",
-   "countries": [],
+   "countries": [
+    "하미드 아슈라피",
+    "사무엘 마르분"
+   ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
    "medal": false,
@@ -4418,7 +4476,10 @@
    "time": "21:10",
    "discipline": "우슈 산다",
    "event": "남자 산다 65kg급 8강 4",
-   "countries": [],
+   "countries": [
+    "마르셀 제니시베크 울루",
+    "왕쳉진"
+   ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
    "medal": false,

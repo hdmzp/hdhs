@@ -1,6 +1,6 @@
 {
  "date": "2026-09-30",
- "collectedAt": "2026-09-22T01:21:59+09:00",
+ "collectedAt": "2026-09-22T09:34:35+09:00",
  "games": [
   {
    "time": "06:30",
@@ -57,24 +57,26 @@
   {
    "time": "09:00",
    "discipline": "e스포츠",
-   "event": "리그 오브 레전드 A조 5경기",
+   "event": "리그 오브 레전드 B조 1경기",
    "countries": [],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOLOLGPA000500"
+   "link": "https://m.sports.naver.com/game/2026ESPOLOLGPB000100"
   },
   {
    "time": "09:00",
    "discipline": "e스포츠",
-   "event": "리그 오브 레전드 A조 6경기",
-   "countries": [],
+   "event": "리그 오브 레전드 B조 2경기",
+   "countries": [
+    "대한민국"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOLOLGPA000600"
+   "link": "https://m.sports.naver.com/game/2026ESPOLOLGPB000200"
   },
   {
    "time": "09:00",
@@ -1826,6 +1828,30 @@
   },
   {
    "time": "11:30",
+   "discipline": "e스포츠",
+   "event": "리그 오브 레전드 B조 3경기",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOLOLGPB000300"
+  },
+  {
+   "time": "11:30",
+   "discipline": "e스포츠",
+   "event": "리그 오브 레전드 B조 4경기",
+   "countries": [],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOLOLGPB000400"
+  },
+  {
+   "time": "11:30",
    "discipline": "스포츠클라이밍",
    "event": "남자 스피드4 예선",
    "countries": [],
@@ -2390,28 +2416,6 @@
   {
    "time": "13:00",
    "discipline": "e스포츠",
-   "event": "리그 오브 레전드 B조 3경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOLOLGPB000300"
-  },
-  {
-   "time": "13:00",
-   "discipline": "e스포츠",
-   "event": "리그 오브 레전드 B조 4경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOLOLGPB000400"
-  },
-  {
-   "time": "13:00",
-   "discipline": "e스포츠",
    "event": "아이덴티티 V 준결승 1경기",
    "countries": [],
    "venue": "아이치 스카이 엑스포 홀 D",
@@ -2796,6 +2800,30 @@
    "medal": false,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026CMPMTEAM3SFNL000100"
+  },
+  {
+   "time": "14:00",
+   "discipline": "e스포츠",
+   "event": "리그 오브 레전드 B조 5경기",
+   "countries": [],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOLOLGPB000500"
+  },
+  {
+   "time": "14:00",
+   "discipline": "e스포츠",
+   "event": "리그 오브 레전드 B조 6경기",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOLOLGPB000600"
   },
   {
    "time": "14:00",
@@ -3239,28 +3267,6 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026WPOMTEAM7QFNL000300"
-  },
-  {
-   "time": "16:00",
-   "discipline": "e스포츠",
-   "event": "리그 오브 레전드 B조 5경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOLOLGPB000500"
-  },
-  {
-   "time": "16:00",
-   "discipline": "e스포츠",
-   "event": "리그 오브 레전드 B조 6경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOLOLGPB000600"
   },
   {
    "time": "16:00",
