@@ -1,6 +1,6 @@
 {
   "month": "2026-09",
-  "updated_at": "2026-09-23T10:26:56.928032+09:00",
+  "updated_at": "2026-09-23T14:39:59.510436+09:00",
   "programs": [
     {
       "program_key": "HD_HJM",
@@ -14,7 +14,7 @@
         {
           "date": "2026-09-28",
           "label": "09/28(월) 19:30 방송",
-          "collected_at": "2026-09-23T10:26:56.923143+09:00",
+          "collected_at": "2026-09-23T14:39:59.505483+09:00",
           "products": [
             {
               "broadcast_date_label": "09/28(월) 19:30 방송",
@@ -149,7 +149,7 @@
         {
           "date": "2026-09-29",
           "label": "09/29(화) 19:30 방송",
-          "collected_at": "2026-09-23T10:26:56.923143+09:00",
+          "collected_at": "2026-09-23T14:39:59.505483+09:00",
           "products": [
             {
               "broadcast_date_label": "09/29(화) 19:30 방송",
@@ -679,7 +679,7 @@
         {
           "date": "2026-09-30",
           "label": "09/30(수) 19:30 방송",
-          "collected_at": "2026-09-23T10:26:56.923143+09:00",
+          "collected_at": "2026-09-23T14:39:59.505483+09:00",
           "products": [
             {
               "broadcast_date_label": "09/30(수) 19:30 방송",
@@ -2551,25 +2551,143 @@
         {
           "date": "2026-09-28",
           "label": "09/28(월) 19:35 방송",
-          "collected_at": "2026-09-23T10:26:56.923143+09:00",
+          "collected_at": "2026-09-23T14:39:59.505483+09:00",
           "products": [
             {
               "broadcast_date_label": "09/28(월) 19:35",
-              "brand": "필립스",
-              "name": "올인원 스팀다리미 AIS8540/60 단독",
-              "price": 429000,
-              "image": null,
-              "link": "https://display.cjonstyle.com/p/item/2092730288?channelCode=30002002",
-              "from_schedule": true
+              "brand": "그레인온",
+              "name": "[50%Sale] [굿라이프] 캡슐레이션효소 18박스 + 전기저당밥솥 + 파로10봉 더",
+              "price": 305000,
+              "image": "https://image.cjonstyle.net/goods_images/20/250/2093752250L.jpg?timestamp=20260923090905",
+              "link": "https://item.cjonstyle.com/item/2093752250?channelCode=30002002"
             },
             {
               "broadcast_date_label": "09/28(월) 19:35",
               "brand": "그레인온",
-              "name": "골드파로효소 캡슐레이션 30포 X",
+              "name": "[최대역가]골드파로효소 캡슐레이션 30포 X 6박스",
               "price": 210000,
-              "image": null,
-              "link": "https://display.cjonstyle.com/p/item/2094166021?channelCode=30002002",
-              "from_schedule": true
+              "image": "https://image.cjonstyle.net/goods_images/20/021/2094166021L.jpg?timestamp=20260923091006",
+              "link": "https://item.cjonstyle.com/item/2094166021?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "09/28(월) 19:35",
+              "brand": "필립스",
+              "name": "[굿라이프PICK] 올인원 스팀다리미 AIS8540/60+단독(정품 보풀제거기+다리미판 커버 1개더)",
+              "price": 409000,
+              "image": "goods_images/20/288/2092730288L.jpg?timestamp=20260915163936",
+              "link": "https://display.cjonstyle.com/p/item/2092730288?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "09/28(월) 19:35",
+              "brand": "필립스",
+              "name": "토스터기 3000 시리즈 HD2511/02 아틱 화이트",
+              "price": 70000,
+              "image": "goods_images/20/033/2093346033L.jpg?timestamp=20260914163432",
+              "link": "https://display.cjonstyle.com/p/item/2093346033?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "09/28(월) 19:35",
+              "brand": "필립스",
+              "name": "콤팩트 전기히터 2000 시리즈 CX2120/01",
+              "price": 83000,
+              "image": "goods_images/20/789/2093344789L.jpg?timestamp=20260914163413",
+              "link": "https://display.cjonstyle.com/p/item/2093344789?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "09/28(월) 19:35",
+              "brand": "필립스",
+              "name": "파워 핸드블렌더 5000시리즈 HR2683/00",
+              "price": 99000,
+              "image": "goods_images/20/729/2093344729L.jpg?timestamp=20260914163359",
+              "link": "https://display.cjonstyle.com/p/item/2093344729?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "09/28(월) 19:35",
+              "brand": "필립스",
+              "name": "핸디형 스팀다리미 7000 시리즈 STH7060/80 블랙",
+              "price": 129000,
+              "image": "goods_images/20/676/2093344676L.jpg?timestamp=20260914163342",
+              "link": "https://display.cjonstyle.com/p/item/2093344676?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "09/28(월) 19:35",
+              "brand": "필립스",
+              "name": "PHILIPS  토스터기 HD2581/90 블랙",
+              "price": 35000,
+              "image": "goods_images/20/566/2093344566L.jpg?timestamp=20260914163324",
+              "link": "https://display.cjonstyle.com/p/item/2093344566?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "09/28(월) 19:35",
+              "brand": "필립스",
+              "name": "바리스티나 빈스왑 에스프레소 전자동 커피머신 블랙",
+              "price": 612000,
+              "image": "goods_images/20/257/2093344257L.jpg?timestamp=20260914154126",
+              "link": "https://display.cjonstyle.com/p/item/2093344257?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "09/28(월) 19:35",
+              "brand": "필립스",
+              "name": "바리스티나 빈스왑 에스프레소 전자동 커피머신 화이트",
+              "price": 612000,
+              "image": "goods_images/20/977/2093343977L.jpg?timestamp=20260914154204",
+              "link": "https://display.cjonstyle.com/p/item/2093343977?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "09/28(월) 19:35",
+              "brand": "필립스",
+              "name": "PHILIPS  데일리 컬렉션 무선 주전자 1.2L HD9303/03",
+              "price": 39000,
+              "image": "goods_images/20/018/2093343018L.jpg?timestamp=20260914163253",
+              "link": "https://display.cjonstyle.com/p/item/2093343018?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "09/28(월) 19:35",
+              "brand": "필립스",
+              "name": "스마트 공기 청정기 900 시리즈 AC0950/10",
+              "price": 199000,
+              "image": "goods_images/20/772/2093341772L.jpg?timestamp=20260914163128",
+              "link": "https://display.cjonstyle.com/p/item/2093341772?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "09/28(월) 19:35",
+              "brand": "필립스",
+              "name": "공기청정기 600i 시리즈 앱연동 화이트  AC0650/10",
+              "price": 119000,
+              "image": "goods_images/20/668/2093445668L.jpg?timestamp=20260914163536",
+              "link": "https://display.cjonstyle.com/p/item/2093445668?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "09/28(월) 19:35",
+              "brand": "필립스",
+              "name": "커피 메이커 커피머신 HD7411/00",
+              "price": 52000,
+              "image": "goods_images/20/715/2093445715L.jpg?timestamp=20260914163643",
+              "link": "https://display.cjonstyle.com/p/item/2093445715?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "09/28(월) 19:35",
+              "brand": "필립스",
+              "name": "보풀제거기 GCA2100",
+              "price": 39900,
+              "image": "goods_images/20/350/2093445350L.jpg?timestamp=20260914154049",
+              "link": "https://display.cjonstyle.com/p/item/2093445350?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "09/28(월) 19:35",
+              "brand": "필립스",
+              "name": "바리스티나 커피머신 BAR302/20",
+              "price": 449000,
+              "image": "goods_images/20/637/2094255637L.jpg?timestamp=20260922154308",
+              "link": "https://display.cjonstyle.com/p/item/2094255637?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "09/28(월) 19:35",
+              "brand": "필립스",
+              "name": "흡착 진공 다리미 STH8040/80",
+              "price": 179000,
+              "image": "goods_images/20/739/2094255739L.jpg?timestamp=20260922154605",
+              "link": "https://display.cjonstyle.com/p/item/2094255739?channelCode=30002002"
             }
           ]
         },
@@ -3192,7 +3310,7 @@
         {
           "date": "2026-09-30",
           "label": "09/30(수) 19:35 방송",
-          "collected_at": "2026-09-23T10:26:56.923143+09:00",
+          "collected_at": "2026-09-23T14:39:59.505483+09:00",
           "products": [
             {
               "broadcast_date_label": "09/30(수) 19:35",
@@ -3932,7 +4050,7 @@
         {
           "date": "2026-09-29",
           "label": "09/29(화) 20:00 방송",
-          "collected_at": "2026-09-23T10:26:56.923143+09:00",
+          "collected_at": "2026-09-23T14:39:59.505483+09:00",
           "products": [
             {
               "broadcast_date_label": "09/29(화) 20:00",
