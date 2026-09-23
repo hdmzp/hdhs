@@ -1,6 +1,6 @@
 {
   "month": "2026-10",
-  "updated_at": "2026-09-24T02:32:38.813939+09:00",
+  "updated_at": "2026-09-24T05:53:25.215819+09:00",
   "programs": [
     {
       "program_key": "GS_BJY",
@@ -14,8 +14,17 @@
         {
           "date": "2026-10-01",
           "label": "10/01(목) 20:45 방송",
-          "collected_at": "2026-09-24T02:32:38.799170+09:00",
+          "collected_at": "2026-09-24T05:53:25.199894+09:00",
           "products": [
+            {
+              "prd_id": "1136319522",
+              "broadcast_date_label": "10월 1일(목) 20:45 방송",
+              "broadcast_iso": "2026-10-01T20:45:00",
+              "brand": "GS SHOP",
+              "name": "키직 26FW 프리덤런 러닝화 여성용",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1136319522"
+            },
             {
               "prd_id": "1131120574",
               "broadcast_date_label": "10월 1일(목) 20:45 방송",
@@ -42,15 +51,6 @@
               "name": "에버콜라겐 스킨앤헤어 6박스 헤어콜라겐 모발콜라겐",
               "price": null,
               "link": "https://m.gsshop.com/prd/prd.gs?prdid=1102754761"
-            },
-            {
-              "prd_id": "1136319522",
-              "broadcast_date_label": "10월 1일(목) 20:45 방송",
-              "broadcast_iso": "2026-10-01T20:45:00",
-              "brand": "GS SHOP",
-              "name": "키직 26FW 프리덤런 러닝화 여성용",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1136319522"
             }
           ]
         }
@@ -68,7 +68,7 @@
         {
           "date": "2026-10-02",
           "label": "10/02(금) 20:35 방송",
-          "collected_at": "2026-09-24T02:32:38.799170+09:00",
+          "collected_at": "2026-09-24T05:53:25.199894+09:00",
           "products": [
             {
               "prd_id": "1128885173",
@@ -113,7 +113,7 @@
         {
           "date": "2026-10-03",
           "label": "10/03(토) 08:20 방송",
-          "collected_at": "2026-09-24T02:32:38.799170+09:00",
+          "collected_at": "2026-09-24T05:53:25.199894+09:00",
           "products": [
             {
               "broadcast_date_label": "10/03 토요일 08:20",
@@ -156,7 +156,7 @@
         {
           "date": "2026-10-01",
           "label": "10/01(목) 20:45 방송",
-          "collected_at": "2026-09-24T02:32:38.799170+09:00",
+          "collected_at": "2026-09-24T05:53:25.199894+09:00",
           "products": [
             {
               "broadcast_date_label": "10/01 목요일 20:45",
@@ -279,7 +279,7 @@
         {
           "date": "2026-10-06",
           "label": "10/06(화) 19:35 방송",
-          "collected_at": "2026-09-24T02:32:38.799170+09:00",
+          "collected_at": "2026-09-24T05:53:25.199894+09:00",
           "products": [
             {
               "broadcast_date_label": "10/06(화) 19:35",
@@ -321,7 +321,7 @@
         {
           "date": "2026-10-02",
           "label": "10/02(금) 22:45 방송",
-          "collected_at": "2026-09-24T02:32:38.799170+09:00",
+          "collected_at": "2026-09-24T05:53:25.199894+09:00",
           "products": [
             {
               "broadcast_date_label": "10/02(금) 22:45",
