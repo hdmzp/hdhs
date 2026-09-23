@@ -1,7 +1,7 @@
 {
   "weekStart": "2026-09-21",
   "weekEnd": "2026-09-27",
-  "collectedAt": "2026-09-23T10:44:05.456724+09:00",
+  "collectedAt": "2026-09-23T17:32:04.411338+09:00",
   "programs": [
     {
       "id": "variety_연애전쟁_JTBC_오후 09:50",
@@ -196,6 +196,29 @@
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=42003854&qvt=0&query=%EC%9B%90%EB%8D%94%ED%94%BD",
       "isNew": true,
       "newReason": "firstAir"
+    },
+    {
+      "id": "variety_내 남은 연애_SBS_오후 10:10",
+      "category": "variety",
+      "channel": "SBS",
+      "title": "내 남은 연애",
+      "days": [
+        "월"
+      ],
+      "time": "오후 10:10",
+      "rating": 0.7,
+      "ratingDate": "09.21",
+      "ratingByDay": {
+        "월": {
+          "rating": 0.7,
+          "ratingDate": "09.21",
+          "episode": 8
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41682976&qvt=0&query=%EB%82%B4%20%EB%82%A8%EC%9D%80%20%EC%97%B0%EC%95%A0",
+      "isEnded": true,
+      "endDate": "2026-09-21",
+      "episode": 8
     }
   ]
 }
