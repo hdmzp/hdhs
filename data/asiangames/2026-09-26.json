@@ -1,6 +1,6 @@
 {
  "date": "2026-09-26",
- "collectedAt": "2026-09-24T09:13:24+09:00",
+ "collectedAt": "2026-09-24T23:49:10+09:00",
  "games": [
   {
    "time": "07:00",
@@ -277,17 +277,6 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026BMFWINDVFRSTQUAL000100"
-  },
-  {
-   "time": "09:30",
-   "discipline": "e스포츠",
-   "event": "뿌요뿌요 챔피언 8강 1경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOPPCQFNL000100"
   },
   {
    "time": "09:30",
@@ -742,6 +731,20 @@
   },
   {
    "time": "09:45",
+   "discipline": "e스포츠",
+   "event": "뿌요뿌요 챔피언 8강 1경기",
+   "countries": [
+    "쿠리하라 유키",
+    "미정"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOPPCQFNL000100"
+  },
+  {
+   "time": "09:45",
    "discipline": "펜싱 사브르",
    "event": "남자 사브르 단체 16강",
    "countries": [],
@@ -942,7 +945,10 @@
    "time": "10:00",
    "discipline": "e스포츠",
    "event": "뿌요뿌요 챔피언 8강 2경기",
-   "countries": [],
+   "countries": [
+    "타나락 웡키티쿤",
+    "칼 오웬 곤잘보"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
@@ -1201,6 +1207,17 @@
   },
   {
    "time": "10:15",
+   "discipline": "e스포츠",
+   "event": "뿌요뿌요 챔피언 8강 3경기",
+   "countries": [],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOPPCQFNL000300"
+  },
+  {
+   "time": "10:15",
    "discipline": "사격 소총",
    "event": "여자 50m 소총3자세 단체 결승",
    "countries": [],
@@ -1256,6 +1273,20 @@
   },
   {
    "time": "10:30",
+   "discipline": "e스포츠",
+   "event": "뿌요뿌요 챔피언 8강 4경기",
+   "countries": [
+    "강동신",
+    "파리토쉬"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOPPCQFNL000400"
+  },
+  {
+   "time": "10:30",
    "discipline": "스케이트보딩",
    "event": "여자 스트리트 예선 2조",
    "countries": [],
@@ -1264,17 +1295,6 @@
    "medal": false,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026SKBWSTREETQUAL000200"
-  },
-  {
-   "time": "10:40",
-   "discipline": "e스포츠",
-   "event": "뿌요뿌요 챔피언 8강 3경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOPPCQFNL000300"
   },
   {
    "time": "10:44",
@@ -1286,6 +1306,20 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SRFWSHORTBRD8FNL000100"
+  },
+  {
+   "time": "11:00",
+   "discipline": "비치 발리볼",
+   "event": "남자 예선 라운드 - D조 5경기",
+   "countries": [
+    "카타르",
+    "태국"
+   ],
+   "venue": "헤키난 료쿠치 비치 코트",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026VBVMTEAM2GPD000600"
   },
   {
    "time": "11:00",
@@ -1468,17 +1502,6 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026FOIWTEAMQFNL000400"
-  },
-  {
-   "time": "11:10",
-   "discipline": "e스포츠",
-   "event": "뿌요뿌요 챔피언 8강 4경기",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ESPOPPCQFNL000400"
   },
   {
    "time": "11:10",
@@ -1676,8 +1699,11 @@
   {
    "time": "12:00",
    "discipline": "야구",
-   "event": "순위 결정전 3경기",
-   "countries": [],
+   "event": "순위 결정전 17경기",
+   "countries": [
+    "팔레스타인",
+    "태국"
+   ],
    "venue": "오카자키 시민구장",
    "hasKorea": false,
    "medal": false,
@@ -1687,8 +1713,11 @@
   {
    "time": "12:00",
    "discipline": "야구",
-   "event": "순위 결정전 4경기",
-   "countries": [],
+   "event": "순위 결정전 18경기",
+   "countries": [
+    "홍콩",
+    "필리핀"
+   ],
    "venue": "토요하시 시민구장",
    "hasKorea": false,
    "medal": false,
@@ -1857,7 +1886,7 @@
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026ESPOPPCSFNL000100"
   },
   {
@@ -1971,7 +2000,7 @@
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026ESPOPPCSFNL000200"
   },
   {
@@ -2071,7 +2100,7 @@
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026ESPOPPCFNL000200"
   },
   {
@@ -2201,7 +2230,7 @@
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026ESPOPPCFNL000100"
   },
   {
@@ -2314,7 +2343,10 @@
    "time": "15:00",
    "discipline": "축구",
    "event": "남자 8강 3경기",
-   "countries": [],
+   "countries": [
+    "중국",
+    "태국"
+   ],
    "venue": "도요타 스타디움",
    "hasKorea": false,
    "medal": false,
@@ -2440,7 +2472,7 @@
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026ESPOFTGFNL000100"
   },
   {
@@ -2943,21 +2975,27 @@
   {
    "time": "18:30",
    "discipline": "야구",
-   "event": "슈퍼 라운드 3경기",
-   "countries": [],
+   "event": "슈퍼 라운드 19경기",
+   "countries": [
+    "차이니스 타이베이",
+    "일본"
+   ],
    "venue": "오카자키 시민구장",
    "hasKorea": false,
    "medal": false,
-   "tv": true,
+   "tv": false,
    "link": "https://m.sports.naver.com/game/2026BSBMTEAMSUPR000300"
   },
   {
    "time": "18:30",
    "discipline": "야구",
-   "event": "슈퍼 라운드 4경기",
-   "countries": [],
+   "event": "슈퍼 라운드 20경기",
+   "countries": [
+    "중국",
+    "대한민국"
+   ],
    "venue": "토요하시 시민구장",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026BSBMTEAMSUPR000400"
@@ -3058,7 +3096,10 @@
    "time": "19:30",
    "discipline": "축구",
    "event": "남자 8강 4경기",
-   "countries": [],
+   "countries": [
+    "일본",
+    "북한"
+   ],
    "venue": "도요타 스타디움",
    "hasKorea": false,
    "medal": false,
@@ -3075,17 +3116,6 @@
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026TTEXDOUBLESFNL000100"
-  },
-  {
-   "time": "19:44",
-   "discipline": "육상",
-   "event": "여자 세단뛰기 결승",
-   "countries": [],
-   "venue": "미즈호 파크 육상경기장",
-   "hasKorea": false,
-   "medal": true,
-   "tv": true,
-   "link": "https://m.sports.naver.com/game/2026ATHWTRPLJUMPFNL"
   },
   {
    "time": "20:00",
