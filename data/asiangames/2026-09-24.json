@@ -1,6 +1,6 @@
 {
  "date": "2026-09-24",
- "collectedAt": "2026-09-23T23:50:32+09:00",
+ "collectedAt": "2026-09-24T09:13:24+09:00",
  "games": [
   {
    "time": "08:30",
@@ -173,7 +173,7 @@
    "venue": "이치노미야시 종합체육관",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026BDMWTEAMFNL000100"
   },
   {
@@ -259,9 +259,11 @@
    "time": "09:45",
    "discipline": "사격 트랩",
    "event": "혼성 단체 스키트 예선",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "아이치현 종합사격장",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026TRPXSKXQUAL000100"
@@ -351,9 +353,11 @@
    "time": "10:00",
    "discipline": "수영",
    "event": "여자 50m 자유형 - 예선",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "도쿄 아쿠아틱스 센터",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026SWMW50MFRHEAT"
@@ -542,6 +546,19 @@
    "link": "https://m.sports.naver.com/game/2026TTEWDOUBLESR32000800"
   },
   {
+   "time": "10:08",
+   "discipline": "수영",
+   "event": "남자 50m 접영 - 예선",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "도쿄 아쿠아틱스 센터",
+   "hasKorea": true,
+   "medal": false,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/2026SWMM50MBFHEAT"
+  },
+  {
    "time": "10:10",
    "discipline": "우슈 산다",
    "event": "남자 산다 65kg급 결승",
@@ -558,13 +575,13 @@
   {
    "time": "10:10",
    "discipline": "카누 스프린트",
-   "event": "남자 카약 2인승 500m 준결승",
+   "event": "남자 카약 4인승 500m 준결승",
    "countries": [],
-   "venue": "미요시 호수 카누 코스",
+   "venue": "나가라가와 국제 레가타 코스",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CSPMK2500MSFNL"
+   "link": "https://m.sports.naver.com/game/2026CSPMK4500MSFNL"
   },
   {
    "time": "10:10",
@@ -593,15 +610,17 @@
    "link": "https://m.sports.naver.com/game/2026EPEMINDIVIDPOOL000100"
   },
   {
-   "time": "10:13",
+   "time": "10:18",
    "discipline": "수영",
-   "event": "남자 50m 접영 - 예선",
-   "countries": [],
+   "event": "여자 200m 평영 - 예선",
+   "countries": [
+    "대한민국"
+   ],
    "venue": "도쿄 아쿠아틱스 센터",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": true,
-   "link": "https://m.sports.naver.com/game/2026SWMM50MBFHEAT"
+   "link": "https://m.sports.naver.com/game/2026SWMW200MBRHEAT"
   },
   {
    "time": "10:20",
@@ -656,15 +675,17 @@
    "link": "https://m.sports.naver.com/game/2026CSPWK2500MSFNL"
   },
   {
-   "time": "10:28",
+   "time": "10:26",
    "discipline": "수영",
-   "event": "여자 200m 평영 - 예선",
-   "countries": [],
+   "event": "남자 200m 평영 - 예선",
+   "countries": [
+    "대한민국"
+   ],
    "venue": "도쿄 아쿠아틱스 센터",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": true,
-   "link": "https://m.sports.naver.com/game/2026SWMW200MBRHEAT"
+   "link": "https://m.sports.naver.com/game/2026SWMM200MBRHEAT"
   },
   {
    "time": "10:30",
@@ -719,13 +740,13 @@
   {
    "time": "10:40",
    "discipline": "수영",
-   "event": "남자 200m 평영 - 예선",
+   "event": "남자 800m 자유형 결승",
    "countries": [],
    "venue": "도쿄 아쿠아틱스 센터",
    "hasKorea": false,
-   "medal": false,
+   "medal": true,
    "tv": true,
-   "link": "https://m.sports.naver.com/game/2026SWMM200MBRHEAT"
+   "link": "https://m.sports.naver.com/game/2026SWMM800MFRFNL"
   },
   {
    "time": "10:40",
@@ -863,17 +884,6 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026KABMTEAMGPA000900"
-  },
-  {
-   "time": "10:56",
-   "discipline": "수영",
-   "event": "남자 800m 자유형 결승",
-   "countries": [],
-   "venue": "도쿄 아쿠아틱스 센터",
-   "hasKorea": false,
-   "medal": true,
-   "tv": true,
-   "link": "https://m.sports.naver.com/game/2026SWMM800MFRFNL"
   },
   {
    "time": "11:00",
@@ -1020,6 +1030,32 @@
    "link": "https://m.sports.naver.com/game/2026HOCMTEAM11GPA000700"
   },
   {
+   "time": "11:02",
+   "discipline": "수영",
+   "event": "남자 4 x 100m 자유형 계영 - 예선",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "도쿄 아쿠아틱스 센터",
+   "hasKorea": true,
+   "medal": false,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/2026SWMM4X100MFRHEAT"
+  },
+  {
+   "time": "11:10",
+   "discipline": "수영",
+   "event": "여자 4 x 200m 자유형 계영 - 예선",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "도쿄 아쿠아틱스 센터",
+   "hasKorea": true,
+   "medal": false,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/2026SWMW4X200MFRHEAT"
+  },
+  {
    "time": "11:12",
    "discipline": "카누 스프린트",
    "event": "남자 카약 4인승 500m 결승",
@@ -1029,17 +1065,6 @@
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026CSPMK4500MFNL"
-  },
-  {
-   "time": "11:15",
-   "discipline": "수영",
-   "event": "남자 4 x 100m 자유형 계영 - 예선",
-   "countries": [],
-   "venue": "도쿄 아쿠아틱스 센터",
-   "hasKorea": false,
-   "medal": false,
-   "tv": true,
-   "link": "https://m.sports.naver.com/game/2026SWMM4X100MFRHEAT"
   },
   {
    "time": "11:20",
@@ -1166,17 +1191,6 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026TTEMSINGLESR64000400"
-  },
-  {
-   "time": "11:29",
-   "discipline": "수영",
-   "event": "여자 4 x 200m 자유형 계영 - 예선",
-   "countries": [],
-   "venue": "도쿄 아쿠아틱스 센터",
-   "hasKorea": false,
-   "medal": false,
-   "tv": true,
-   "link": "https://m.sports.naver.com/game/2026SWMW4X200MFRHEAT"
   },
   {
    "time": "11:30",
@@ -3013,17 +3027,6 @@
   },
   {
    "time": "16:50",
-   "discipline": "육상",
-   "event": "여자 100m 예선",
-   "countries": [],
-   "venue": "미즈호 파크 육상경기장",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ATHW100MPREL"
-  },
-  {
-   "time": "16:50",
    "discipline": "조정",
    "event": "남자 무타포어 결승",
    "countries": [],
@@ -3380,17 +3383,6 @@
    "link": "https://m.sports.naver.com/game/2026BK3WTEAM3QFNL000200"
   },
   {
-   "time": "18:05",
-   "discipline": "수영",
-   "event": "남자 4 x 100m 자유형 계영 결승",
-   "countries": [],
-   "venue": "도쿄 아쿠아틱스 센터",
-   "hasKorea": false,
-   "medal": true,
-   "tv": true,
-   "link": "https://m.sports.naver.com/game/2026SWMM4X100MFRFNL"
-  },
-  {
    "time": "18:15",
    "discipline": "복싱",
    "event": "여자 65kg - 예선 - 16강 6",
@@ -3405,15 +3397,15 @@
    "link": "https://m.sports.naver.com/game/2026BOXW65KG8FNL000600"
   },
   {
-   "time": "18:23",
+   "time": "18:18",
    "discipline": "수영",
-   "event": "여자 4 x 200m 자유형 계영 결승",
+   "event": "남자 4 x 100m 자유형 계영 결승",
    "countries": [],
    "venue": "도쿄 아쿠아틱스 센터",
    "hasKorea": false,
    "medal": true,
    "tv": true,
-   "link": "https://m.sports.naver.com/game/2026SWMW4X200MFRFNL"
+   "link": "https://m.sports.naver.com/game/2026SWMM4X100MFRFNL"
   },
   {
    "time": "18:30",
@@ -3478,6 +3470,17 @@
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026EPEMINDIVIDFNL000100"
+  },
+  {
+   "time": "18:40",
+   "discipline": "수영",
+   "event": "여자 4 x 200m 자유형 계영 결승",
+   "countries": [],
+   "venue": "도쿄 아쿠아틱스 센터",
+   "hasKorea": false,
+   "medal": true,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/2026SWMW4X200MFRFNL"
   },
   {
    "time": "18:45",
@@ -3653,6 +3656,19 @@
    "link": "https://m.sports.naver.com/game/2026TTEWTEAMFNL00010000"
   },
   {
+   "time": "19:33",
+   "discipline": "육상",
+   "event": "여자 100m 예선",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "미즈호 파크 육상경기장",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ATHW100MPREL"
+  },
+  {
    "time": "19:45",
    "discipline": "3x3 농구",
    "event": "여자 8강 4경기",
@@ -3748,7 +3764,20 @@
    "link": "https://m.sports.naver.com/game/2026BK3MTEAM3QFNL000400"
   },
   {
-   "time": "20:50",
+   "time": "21:25",
+   "discipline": "육상",
+   "event": "여자 10,000m 결승",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "미즈호 파크 육상경기장",
+   "hasKorea": true,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ATHW10000MFNL"
+  },
+  {
+   "time": "22:15",
    "discipline": "육상",
    "event": "4 x 400m 혼성 계주 결승",
    "countries": [],
@@ -3757,17 +3786,6 @@
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026ATHX4X400MFNL"
-  },
-  {
-   "time": "22:00",
-   "discipline": "육상",
-   "event": "여자 10,000m 결승",
-   "countries": [],
-   "venue": "미즈호 파크 육상경기장",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ATHW10000MFNL"
   }
  ]
 }
