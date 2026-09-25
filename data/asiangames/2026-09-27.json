@@ -1,6 +1,6 @@
 {
  "date": "2026-09-27",
- "collectedAt": "2026-09-25T09:15:21+09:00",
+ "collectedAt": "2026-09-26T00:06:07+09:00",
  "games": [
   {
    "time": "07:00",
@@ -1066,17 +1066,6 @@
   },
   {
    "time": "09:00",
-   "discipline": "육상",
-   "event": "남자 10종경기 110m 허들",
-   "countries": [],
-   "venue": "미즈호 파크 육상경기장",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ATHMDECATH110H"
-  },
-  {
-   "time": "09:00",
    "discipline": "트램폴린",
    "event": "남자 예선",
    "countries": [],
@@ -1346,9 +1335,11 @@
    "time": "09:30",
    "discipline": "승마 마장마술",
    "event": "마장마술 개인 결승",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "승마 공원",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026EDCOINDIVIDINTF000100"
@@ -2028,17 +2019,6 @@
   },
   {
    "time": "10:00",
-   "discipline": "육상",
-   "event": "남자 10종경기 원반던지기",
-   "countries": [],
-   "venue": "미즈호 파크 육상경기장",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ATHMDECATHDT"
-  },
-  {
-   "time": "10:00",
    "discipline": "테니스",
    "event": "남자 단식 1라운드",
    "countries": [],
@@ -2494,6 +2474,17 @@
   },
   {
    "time": "11:00",
+   "discipline": "육상",
+   "event": "남자 10종경기 110m 허들",
+   "countries": [],
+   "venue": "미즈호 파크 육상경기장",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ATHMDECATH110H"
+  },
+  {
+   "time": "11:00",
    "discipline": "하키",
    "event": "여자 B조 13경기",
    "countries": [
@@ -2639,6 +2630,17 @@
    "link": "https://m.sports.naver.com/game/2026EPEMTEAMQFNL000400"
   },
   {
+   "time": "11:40",
+   "discipline": "육상",
+   "event": "남자 10종경기 원반던지기",
+   "countries": [],
+   "venue": "미즈호 파크 육상경기장",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ATHMDECATHDT"
+  },
+  {
    "time": "11:45",
    "discipline": "쿠라쉬",
    "event": "남자 +90kg급 8강",
@@ -2772,17 +2774,6 @@
   },
   {
    "time": "12:00",
-   "discipline": "육상",
-   "event": "남자 10종경기 장대높이뛰기",
-   "countries": [],
-   "venue": "미즈호 파크 육상경기장",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026ATHMDECATHPV"
-  },
-  {
-   "time": "12:00",
    "discipline": "탁구",
    "event": "남자 복식 준결승",
    "countries": [],
@@ -2816,6 +2807,17 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026HBLWTEAM7RND001900"
+  },
+  {
+   "time": "12:05",
+   "discipline": "육상",
+   "event": "남자 400m 허들 1라운드",
+   "countries": [],
+   "venue": "미즈호 파크 육상경기장",
+   "hasKorea": false,
+   "medal": false,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/2026ATHM400MHURDRND1"
   },
   {
    "time": "12:15",
@@ -3577,6 +3579,17 @@
    "link": "https://m.sports.naver.com/game/2026CMPWINDIVIDR64000900"
   },
   {
+   "time": "12:40",
+   "discipline": "육상",
+   "event": "남자 멀리뛰기 예선",
+   "countries": [],
+   "venue": "미즈호 파크 육상경기장",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ATHMLONGJUMPQUAL"
+  },
+  {
    "time": "12:45",
    "discipline": "복싱",
    "event": "여자 54kg - 8강 4",
@@ -3777,6 +3790,17 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SFTWTEAMPREL000700"
+  },
+  {
+   "time": "13:20",
+   "discipline": "육상",
+   "event": "남자 10종경기 장대높이뛰기",
+   "countries": [],
+   "venue": "미즈호 파크 육상경기장",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ATHMDECATHPV"
   },
   {
    "time": "13:30",
@@ -4755,28 +4779,6 @@
   {
    "time": "18:00",
    "discipline": "육상",
-   "event": "남자 4 x 100m 계주 1라운드",
-   "countries": [],
-   "venue": "미즈호 파크 육상경기장",
-   "hasKorea": false,
-   "medal": false,
-   "tv": true,
-   "link": "https://m.sports.naver.com/game/2026ATHM4X100MRND1"
-  },
-  {
-   "time": "18:00",
-   "discipline": "육상",
-   "event": "남자 400m 허들 1라운드",
-   "countries": [],
-   "venue": "미즈호 파크 육상경기장",
-   "hasKorea": false,
-   "medal": false,
-   "tv": true,
-   "link": "https://m.sports.naver.com/game/2026ATHM400MHURDRND1"
-  },
-  {
-   "time": "18:00",
-   "discipline": "육상",
    "event": "여자 3000m 장애물 결승",
    "countries": [],
    "venue": "미즈호 파크 육상경기장",
@@ -5033,6 +5035,17 @@
    "link": "https://m.sports.naver.com/game/2026BOXMO90KGQFNL000400"
   },
   {
+   "time": "19:45",
+   "discipline": "육상",
+   "event": "남자 높이뛰기 결승",
+   "countries": [],
+   "venue": "미즈호 파크 육상경기장",
+   "hasKorea": false,
+   "medal": true,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/2026ATHMHIGHJUMPFNL"
+  },
+  {
    "time": "20:00",
    "discipline": "육상",
    "event": "여자 200m 결승",
@@ -5064,17 +5077,6 @@
    "medal": false,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026GTRW1TRAFNL000002"
-  },
-  {
-   "time": "20:15",
-   "discipline": "육상",
-   "event": "남자 높이뛰기 결승",
-   "countries": [],
-   "venue": "미즈호 파크 육상경기장",
-   "hasKorea": false,
-   "medal": true,
-   "tv": true,
-   "link": "https://m.sports.naver.com/game/2026ATHMHIGHJUMPFNL"
   },
   {
    "time": "20:20",
@@ -5130,6 +5132,17 @@
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026ATHMDECATH1500"
+  },
+  {
+   "time": "22:12",
+   "discipline": "육상",
+   "event": "남자 4 x 100m 계주 1라운드",
+   "countries": [],
+   "venue": "미즈호 파크 육상경기장",
+   "hasKorea": false,
+   "medal": false,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/2026ATHM4X100MRND1"
   }
  ]
 }

@@ -1,6 +1,6 @@
 {
  "date": "2026-09-30",
- "collectedAt": "2026-09-25T09:15:21+09:00",
+ "collectedAt": "2026-09-26T00:06:07+09:00",
  "games": [
   {
    "time": "06:30",
@@ -3259,9 +3259,12 @@
    "time": "15:00",
    "discipline": "축구",
    "event": "남자 준결승 1경기",
-   "countries": [],
+   "countries": [
+    "대한민국",
+    "미정"
+   ],
    "venue": "나가이 스타디움",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026FBLMTEAM11SFNL000100"
@@ -3790,7 +3793,10 @@
    "time": "19:30",
    "discipline": "축구",
    "event": "남자 준결승 2경기",
-   "countries": [],
+   "countries": [
+    "우즈베키스탄",
+    "미정"
+   ],
    "venue": "나가이 스타디움",
    "hasKorea": false,
    "medal": false,
