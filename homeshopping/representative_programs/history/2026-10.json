@@ -1,6 +1,6 @@
 {
   "month": "2026-10",
-  "updated_at": "2026-09-26T00:47:09.922853+09:00",
+  "updated_at": "2026-09-26T02:37:27.918658+09:00",
   "programs": [
     {
       "program_key": "HD_WYE",
@@ -14,7 +14,7 @@
         {
           "date": "2026-10-03",
           "label": "10/03(토) 08:20 방송",
-          "collected_at": "2026-09-26T00:47:09.908535+09:00",
+          "collected_at": "2026-09-26T02:37:27.903326+09:00",
           "products": [
             {
               "broadcast_date_label": "10/03(토) 08:20 방송",
@@ -72,17 +72,8 @@
         {
           "date": "2026-10-01",
           "label": "10/01(목) 20:45 방송",
-          "collected_at": "2026-09-26T00:47:09.908535+09:00",
+          "collected_at": "2026-09-26T02:37:27.903326+09:00",
           "products": [
-            {
-              "prd_id": "1131120574",
-              "broadcast_date_label": "10월 1일(목) 20:45 방송",
-              "broadcast_iso": "2026-10-01T20:45:00",
-              "brand": "GS SHOP",
-              "name": "GS단독 한박스 더 한국인의 두유 무가당 국산 서리태 콩물두유 3박스(60팩) + 백태 콩물두유 1박스(20팩)",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1131120574"
-            },
             {
               "prd_id": "1135848970",
               "broadcast_date_label": "10월 1일(목) 20:45 방송",
@@ -147,6 +138,15 @@
               "link": "https://m.gsshop.com/prd/prd.gs?prdid=1136319522"
             },
             {
+              "prd_id": "1131120574",
+              "broadcast_date_label": "10월 1일(목) 20:45 방송",
+              "broadcast_iso": "2026-10-01T20:45:00",
+              "brand": "GS SHOP",
+              "name": "GS단독 한박스 더 한국인의 두유 무가당 국산 서리태 콩물두유 3박스(60팩) + 백태 콩물두유 1박스(20팩)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1131120574"
+            },
+            {
               "prd_id": "1108204751",
               "broadcast_date_label": "10월 1일(목) 20:45 방송",
               "broadcast_iso": "2026-10-01T20:45:00",
@@ -180,7 +180,7 @@
         {
           "date": "2026-10-09",
           "label": "10/09(금) 20:35 방송",
-          "collected_at": "2026-09-26T00:47:09.908535+09:00",
+          "collected_at": "2026-09-26T02:37:27.903326+09:00",
           "products": [
             {
               "prd_id": "1133786916",
@@ -277,8 +277,17 @@
         {
           "date": "2026-10-02",
           "label": "10/02(금) 20:35 방송",
-          "collected_at": "2026-09-26T00:47:09.908535+09:00",
+          "collected_at": "2026-09-26T02:37:27.903326+09:00",
           "products": [
+            {
+              "prd_id": "1100521278",
+              "broadcast_date_label": "10월 2일(금) 20:35 방송",
+              "broadcast_iso": "2026-10-02T20:35:00",
+              "brand": "GS SHOP",
+              "name": "[미세스문] LK_코튼텐셀 침구 풀세트",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1100521278"
+            },
             {
               "prd_id": "1128885173",
               "broadcast_date_label": "10월 2일(금) 20:35 방송",
@@ -296,15 +305,6 @@
               "name": "스칸디나비안포레스트 최신상 대용량 텀블러 1,300ml+전용빨대+지비츠 포함 (색상 선택)",
               "price": null,
               "link": "https://m.gsshop.com/prd/prd.gs?prdid=1128889171"
-            },
-            {
-              "prd_id": "1100521278",
-              "broadcast_date_label": "10월 2일(금) 20:35 방송",
-              "broadcast_iso": "2026-10-02T20:35:00",
-              "brand": "GS SHOP",
-              "name": "[미세스문] LK_코튼텐셀 침구 풀세트",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1100521278"
             }
           ]
         }
@@ -322,7 +322,7 @@
         {
           "date": "2026-10-03",
           "label": "10/03(토) 08:20 방송",
-          "collected_at": "2026-09-26T00:47:09.908535+09:00",
+          "collected_at": "2026-09-26T02:37:27.903326+09:00",
           "products": [
             {
               "broadcast_date_label": "10/03 토요일 08:20",
@@ -365,7 +365,7 @@
         {
           "date": "2026-10-01",
           "label": "10/01(목) 20:45 방송",
-          "collected_at": "2026-09-26T00:47:09.908535+09:00",
+          "collected_at": "2026-09-26T02:37:27.903326+09:00",
           "products": [
             {
               "broadcast_date_label": "10/01 목요일 20:45",
@@ -488,7 +488,7 @@
         {
           "date": "2026-10-06",
           "label": "10/06(화) 19:35 방송",
-          "collected_at": "2026-09-26T00:47:09.908535+09:00",
+          "collected_at": "2026-09-26T02:37:27.903326+09:00",
           "products": [
             {
               "broadcast_date_label": "10/06(화) 19:35",
@@ -530,7 +530,7 @@
         {
           "date": "2026-10-02",
           "label": "10/02(금) 22:45 방송",
-          "collected_at": "2026-09-26T00:47:09.908535+09:00",
+          "collected_at": "2026-09-26T02:37:27.903326+09:00",
           "products": [
             {
               "broadcast_date_label": "10/02(금) 22:45",
