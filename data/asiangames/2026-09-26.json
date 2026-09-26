@@ -1,14 +1,16 @@
 {
  "date": "2026-09-26",
- "collectedAt": "2026-09-26T00:06:07+09:00",
+ "collectedAt": "2026-09-26T09:26:34+09:00",
  "games": [
   {
    "time": "07:30",
    "discipline": "육상",
    "event": "남자 마라톤 결승",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "미즈호 파크 육상경기장",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026ATHMMARATHONFNL"
@@ -17,9 +19,11 @@
    "time": "07:50",
    "discipline": "육상",
    "event": "여자 마라톤 결승",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "미즈호 파크 육상경기장",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026ATHWMARATHONFNL"
@@ -28,9 +32,11 @@
    "time": "08:00",
    "discipline": "양궁 리커브",
    "event": "남자 개인 랭킹 라운드",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "오카자키 주오 소고 공원",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026ARCMINDIVIDQUAL000100"
@@ -39,9 +45,11 @@
    "time": "08:00",
    "discipline": "양궁 리커브",
    "event": "남자 단체 랭킹 라운드",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "오카자키 주오 소고 공원",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026ARCMTEAM3QUAL000100"
@@ -50,9 +58,11 @@
    "time": "08:00",
    "discipline": "양궁 컴파운드",
    "event": "여자 개인 랭킹 라운드",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "오카자키 주오 소고 공원",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026CMPWINDIVIDQUAL000100"
@@ -61,12 +71,28 @@
    "time": "08:00",
    "discipline": "양궁 컴파운드",
    "event": "여자 단체 랭킹 라운드",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "오카자키 주오 소고 공원",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026CMPWTEAM3QUAL000100"
+  },
+  {
+   "time": "09:00",
+   "discipline": "e스포츠",
+   "event": "뿌요뿌요 챔피언 1라운드 1경기",
+   "countries": [
+    "문 준 저스틴 코",
+    "알렉산드르 피보바로프"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 D",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026ESPOPPC1RND000100"
   },
   {
    "time": "09:00",
@@ -132,30 +158,22 @@
    "venue": "미즈호 파크 육상경기장",
    "hasKorea": false,
    "medal": false,
-   "tv": true,
+   "tv": false,
    "link": "https://m.sports.naver.com/game/2026ATHMDECATH100"
   },
   {
    "time": "09:15",
-   "discipline": "스케이트보딩",
-   "event": "여자 스트리트 예선 1조",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 B",
-   "hasKorea": false,
-   "medal": false,
-   "tv": true,
-   "link": "https://m.sports.naver.com/game/2026SKBWSTREETQUAL000100"
-  },
-  {
-   "time": "09:20",
-   "discipline": "서핑",
-   "event": "남자 2라운드 - 1조",
-   "countries": [],
-   "venue": "퍼시픽 롱비치",
+   "discipline": "e스포츠",
+   "event": "뿌요뿌요 챔피언 1라운드 2경기",
+   "countries": [
+    "유윙림",
+    "뭉흐조리그 간볼드"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SRFMSHORTBRDREP000100"
+   "link": "https://m.sports.naver.com/game/2026ESPOPPC1RND000200"
   },
   {
    "time": "09:30",
@@ -169,220 +187,6 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026BMFWINDVFRSTQUAL000100"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "남자 단식 16강",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMMSINGLES8FNL000100"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "남자 단식 16강",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMMSINGLES8FNL000200"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "남자 단식 16강",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMMSINGLES8FNL000300"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "남자 단식 16강",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMMSINGLES8FNL000400"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "남자 단식 16강",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMMSINGLES8FNL000500"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "남자 단식 16강",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMMSINGLES8FNL000600"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "남자 단식 16강",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMMSINGLES8FNL000700"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "남자 단식 16강",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMMSINGLES8FNL000800"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "남자 단식 2라운드 1",
-   "countries": [
-    "조나탄 크리스티",
-    "주마보이 사이도프"
-   ],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMMSINGLESR32000100"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "남자 단식 2라운드 10",
-   "countries": [
-    "니시모토 켄타",
-    "알위 파르한"
-   ],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMMSINGLESR32001000"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "남자 단식 2라운드 11",
-   "countries": [
-    "미정",
-    "아유쉬 셰티"
-   ],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMMSINGLESR32001100"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "남자 단식 2라운드 12",
-   "countries": [
-    "아이만 이븐 자만",
-    "초우티엔첸"
-   ],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMMSINGLESR32001200"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "남자 단식 2라운드 13",
-   "countries": [
-    "미정",
-    "응카롱 앵거스"
-   ],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMMSINGLESR32001300"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "남자 단식 2라운드 14",
-   "countries": [
-    "최지훈",
-    "리시펑"
-   ],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": true,
-   "medal": false,
-   "tv": true,
-   "link": "https://m.sports.naver.com/game/2026BDMMSINGLESR32001400"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "남자 단식 2라운드 15",
-   "countries": [
-    "미정",
-    "오딜존 압두라히모프"
-   ],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMMSINGLESR32001500"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "남자 단식 2라운드 16",
-   "countries": [
-    "푸이 팡 퐁",
-    "쿤라붓 비디산"
-   ],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMMSINGLESR32001600"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "남자 단식 2라운드 2",
-   "countries": [
-    "니발 아메드",
-    "풀리쿠티 아라치칠라게 네타싱헤 V"
-   ],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMMSINGLESR32000200"
   },
   {
    "time": "09:30",
@@ -401,423 +205,6 @@
   {
    "time": "09:30",
    "discipline": "배드민턴",
-   "event": "남자 단식 2라운드 4",
-   "countries": [
-    "고우라브 싱하",
-    "미정"
-   ],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMMSINGLESR32000400"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "남자 단식 2라운드 5",
-   "countries": [
-    "시유기",
-    "드미트리 파나린"
-   ],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMMSINGLESR32000500"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "남자 단식 2라운드 6",
-   "countries": [
-    "유태빈",
-    "미정"
-   ],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": true,
-   "medal": false,
-   "tv": true,
-   "link": "https://m.sports.naver.com/game/2026BDMMSINGLESR32000600"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "남자 단식 2라운드 7",
-   "countries": [
-    "나라오카 코다이",
-    "리척이우"
-   ],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMMSINGLESR32000700"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "남자 단식 2라운드 8",
-   "countries": [
-    "니마 로스타무르라갈다니",
-    "미정"
-   ],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMMSINGLESR32000800"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "남자 단식 2라운드 9",
-   "countries": [
-    "미정",
-    "준 하오 레옹"
-   ],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMMSINGLESR32000900"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "남자 복식 2라운드 1",
-   "countries": [
-    "대한민국",
-    "미정"
-   ],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": true,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMMDOUBLES8FNL000100"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "남자 복식 2라운드 2",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMMDOUBLES8FNL000200"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "남자 복식 2라운드 3",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMMDOUBLES8FNL000300"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "남자 복식 2라운드 4",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMMDOUBLES8FNL000400"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "남자 복식 2라운드 5",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMMDOUBLES8FNL000500"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "남자 복식 2라운드 6",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMMDOUBLES8FNL000600"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "남자 복식 2라운드 7",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMMDOUBLES8FNL000700"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "남자 복식 2라운드 8",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMMDOUBLES8FNL000800"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 단식 16강",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMWSINGLES8FNL000100"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 단식 16강",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMWSINGLES8FNL000200"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 단식 16강",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMWSINGLES8FNL000300"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 단식 16강",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMWSINGLES8FNL000400"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 단식 16강",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMWSINGLES8FNL000500"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 단식 16강",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMWSINGLES8FNL000600"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 단식 16강",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMWSINGLES8FNL000700"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 단식 16강",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMWSINGLES8FNL000800"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 단식 2라운드 1",
-   "countries": [
-    "안세영",
-    "카밀라 스마굴로바"
-   ],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": true,
-   "medal": false,
-   "tv": true,
-   "link": "https://m.sports.naver.com/game/2026BDMWSINGLESR32000100"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 단식 2라운드 10",
-   "countries": [
-    "마후르 샤흐자드",
-    "푸트리 쿠수마 워다니"
-   ],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMWSINGLESR32001000"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 단식 2라운드 11",
-   "countries": [
-    "아이샤 주마벡",
-    "푸이치 와"
-   ],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMWSINGLESR32001100"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 단식 2라운드 12",
-   "countries": [
-    "세예데하이산 슈오리데히지아바리",
-    "야마구치 아칸네"
-   ],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMWSINGLESR32001200"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 단식 2라운드 13",
-   "countries": [
-    "미정",
-    "로신얀 해피"
-   ],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMWSINGLESR32001300"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 단식 2라운드 14",
-   "countries": [
-    "린시앙티",
-    "폰파위 초추웡"
-   ],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMWSINGLESR32001400"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 단식 2라운드 15",
-   "countries": [
-    "우르미 아크테르",
-    "김가은"
-   ],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": true,
-   "medal": false,
-   "tv": true,
-   "link": "https://m.sports.naver.com/game/2026BDMWSINGLESR32001500"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 단식 2라운드 16",
-   "countries": [
-    "라실라 마하르잔",
-    "왕지이"
-   ],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMWSINGLESR32001600"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 단식 2라운드 2",
-   "countries": [
-    "라니트마 티누디 웨이헤나 리야나게",
-    "리한나 셰르찬"
-   ],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMWSINGLESR32000200"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 단식 2라운드 3",
-   "countries": [
-    "랏차녹 인타논",
-    "김진향"
-   ],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMWSINGLESR32000300"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 단식 2라운드 4",
-   "countries": [
-    "파티마트 나바하 압둘 라자크",
-    "지아 민 여"
-   ],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMWSINGLESR32000400"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
    "event": "여자 단식 2라운드 5",
    "countries": [
     "첸유페이",
@@ -828,153 +215,6 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026BDMWSINGLESR32000500"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 단식 2라운드 6",
-   "countries": [
-    "응우옌 투이 린",
-    "탈리타 라마단 위리야완"
-   ],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMWSINGLESR32000600"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 단식 2라운드 7",
-   "countries": [
-    "미야자키 토모카",
-    "사랑구아 헤를렌바아타르"
-   ],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMWSINGLESR32000700"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 단식 2라운드 8",
-   "countries": [
-    "P. V. 신두",
-    "미정"
-   ],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMWSINGLESR32000800"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 단식 2라운드 9",
-   "countries": [
-    "링 칭 웡",
-    "미정"
-   ],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMWSINGLESR32000900"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 복식 2라운드 1",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMWDOUBLES8FNL000100"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 복식 2라운드 2",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMWDOUBLES8FNL000200"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 복식 2라운드 3",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMWDOUBLES8FNL000300"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 복식 2라운드 4",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMWDOUBLES8FNL000400"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 복식 2라운드 5",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMWDOUBLES8FNL000500"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 복식 2라운드 6",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMWDOUBLES8FNL000600"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 복식 2라운드 7",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMWDOUBLES8FNL000700"
-  },
-  {
-   "time": "09:30",
-   "discipline": "배드민턴",
-   "event": "여자 복식 2라운드 8",
-   "countries": [
-    "미정",
-    "대한민국"
-   ],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": true,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026BDMWDOUBLES8FNL000800"
   },
   {
    "time": "09:30",
@@ -1004,6 +244,34 @@
    "link": "https://m.sports.naver.com/game/2026FOIWTEAM8FNL000100"
   },
   {
+   "time": "09:40",
+   "discipline": "배드민턴",
+   "event": "남자 단식 2라운드 1",
+   "countries": [
+    "조나탄 크리스티",
+    "주마보이 사이도프"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMMSINGLESR32000100"
+  },
+  {
+   "time": "09:40",
+   "discipline": "배드민턴",
+   "event": "남자 단식 2라운드 5",
+   "countries": [
+    "시유기",
+    "드미트리 파나린"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMMSINGLESR32000500"
+  },
+  {
    "time": "09:45",
    "discipline": "e스포츠",
    "event": "뿌요뿌요 챔피언 8강 1경기",
@@ -1025,131 +293,8 @@
    "venue": "미즈호 파크 육상경기장",
    "hasKorea": false,
    "medal": false,
-   "tv": true,
+   "tv": false,
    "link": "https://m.sports.naver.com/game/2026ATHMDECATHLJ"
-  },
-  {
-   "time": "09:45",
-   "discipline": "펜싱 사브르",
-   "event": "남자 사브르 단체 16강",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SABMTEAM8FNL000500"
-  },
-  {
-   "time": "09:45",
-   "discipline": "펜싱 사브르",
-   "event": "남자 사브르 단체 16강",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SABMTEAM8FNL000600"
-  },
-  {
-   "time": "09:45",
-   "discipline": "펜싱 사브르",
-   "event": "남자 사브르 단체 16강",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SABMTEAM8FNL000700"
-  },
-  {
-   "time": "09:45",
-   "discipline": "펜싱 사브르",
-   "event": "남자 사브르 단체 16강",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SABMTEAM8FNL000800"
-  },
-  {
-   "time": "09:45",
-   "discipline": "펜싱 플뢰레",
-   "event": "여자 플뢰레 단체 16강",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026FOIWTEAM8FNL000300"
-  },
-  {
-   "time": "09:45",
-   "discipline": "펜싱 플뢰레",
-   "event": "여자 플뢰레 단체 16강",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026FOIWTEAM8FNL000400"
-  },
-  {
-   "time": "09:45",
-   "discipline": "펜싱 플뢰레",
-   "event": "여자 플뢰레 단체 16강",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026FOIWTEAM8FNL000500"
-  },
-  {
-   "time": "09:45",
-   "discipline": "펜싱 플뢰레",
-   "event": "여자 플뢰레 단체 16강",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026FOIWTEAM8FNL000600"
-  },
-  {
-   "time": "09:45",
-   "discipline": "펜싱 플뢰레",
-   "event": "여자 플뢰레 단체 16강",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026FOIWTEAM8FNL000700"
-  },
-  {
-   "time": "09:45",
-   "discipline": "펜싱 플뢰레",
-   "event": "여자 플뢰레 단체 16강",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026FOIWTEAM8FNL000800"
-  },
-  {
-   "time": "09:48",
-   "discipline": "서핑",
-   "event": "남자 2라운드 - 2조",
-   "countries": [
-    "대한민국"
-   ],
-   "venue": "퍼시픽 롱비치",
-   "hasKorea": true,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SRFMSHORTBRDREP000200"
   },
   {
    "time": "10:00",
@@ -1208,105 +353,6 @@
   },
   {
    "time": "10:00",
-   "discipline": "스쿼시",
-   "event": "남자 단식 결승",
-   "countries": [],
-   "venue": "나고야 긴조후토 아레나",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SQUMSINGLESFNL000100"
-  },
-  {
-   "time": "10:00",
-   "discipline": "스쿼시",
-   "event": "남자 단식 준결승",
-   "countries": [],
-   "venue": "나고야 긴조후토 아레나",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SQUMSINGLESSFNL000100"
-  },
-  {
-   "time": "10:00",
-   "discipline": "스쿼시",
-   "event": "남자 단식 준결승",
-   "countries": [],
-   "venue": "나고야 긴조후토 아레나",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SQUMSINGLESSFNL000200"
-  },
-  {
-   "time": "10:00",
-   "discipline": "스쿼시",
-   "event": "여자 단식 결승",
-   "countries": [],
-   "venue": "나고야 긴조후토 아레나",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SQUWSINGLESFNL000100"
-  },
-  {
-   "time": "10:00",
-   "discipline": "스쿼시",
-   "event": "여자 단식 준결승",
-   "countries": [],
-   "venue": "나고야 긴조후토 아레나",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SQUWSINGLESSFNL000100"
-  },
-  {
-   "time": "10:00",
-   "discipline": "스쿼시",
-   "event": "여자 단식 준결승",
-   "countries": [],
-   "venue": "나고야 긴조후토 아레나",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SQUWSINGLESSFNL000200"
-  },
-  {
-   "time": "10:00",
-   "discipline": "스쿼시",
-   "event": "혼합복식 결승",
-   "countries": [],
-   "venue": "나고야 긴조후토 아레나",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SQUXDOUBLESFNL000100"
-  },
-  {
-   "time": "10:00",
-   "discipline": "스쿼시",
-   "event": "혼합복식 준결승",
-   "countries": [],
-   "venue": "나고야 긴조후토 아레나",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SQUXDOUBLESSFNL000100"
-  },
-  {
-   "time": "10:00",
-   "discipline": "스쿼시",
-   "event": "혼합복식 준결승",
-   "countries": [],
-   "venue": "나고야 긴조후토 아레나",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SQUXDOUBLESSFNL000200"
-  },
-  {
-   "time": "10:00",
    "discipline": "카누 스프린트",
    "event": "남자 카약 1인승 500m 준결승",
    "countries": [],
@@ -1319,8 +365,11 @@
   {
    "time": "10:00",
    "discipline": "탁구",
-   "event": "여자 단식 3라운드 1",
-   "countries": [],
+   "event": "여자 단식 3라운드 1경기",
+   "countries": [
+    "왕만위",
+    "두호이켐"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
@@ -1330,19 +379,25 @@
   {
    "time": "10:00",
    "discipline": "탁구",
-   "event": "여자 단식 3라운드 2",
-   "countries": [],
+   "event": "여자 단식 3라운드 2경기",
+   "countries": [
+    "자우레시 아카셰바",
+    "신유빈"
+   ],
    "venue": "스카이 홀 도요타",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026TTEWSINGLES8FNL000200"
   },
   {
    "time": "10:00",
    "discipline": "탁구",
-   "event": "여자 단식 3라운드 3",
-   "countries": [],
+   "event": "여자 단식 3라운드 3경기",
+   "countries": [
+    "김금용",
+    "린 첸 세르"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
@@ -1352,8 +407,11 @@
   {
    "time": "10:00",
    "discipline": "탁구",
-   "event": "여자 단식 3라운드 4",
-   "countries": [],
+   "event": "여자 단식 3라운드 4경기",
+   "countries": [
+    "야샤스위니 디팍 고르파데",
+    "하리모토 미와"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
@@ -1361,67 +419,42 @@
    "link": "https://m.sports.naver.com/game/2026TTEWSINGLES8FNL000400"
   },
   {
-   "time": "10:00",
-   "discipline": "탁구",
-   "event": "여자 단식 3라운드 5",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEWSINGLES8FNL000500"
-  },
-  {
-   "time": "10:00",
-   "discipline": "탁구",
-   "event": "여자 단식 3라운드 6",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEWSINGLES8FNL000600"
-  },
-  {
-   "time": "10:00",
-   "discipline": "탁구",
-   "event": "여자 단식 3라운드 7",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEWSINGLES8FNL000700"
-  },
-  {
-   "time": "10:00",
-   "discipline": "탁구",
-   "event": "여자 단식 3라운드 8",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEWSINGLES8FNL000800"
-  },
-  {
    "time": "10:15",
    "discipline": "e스포츠",
    "event": "뿌요뿌요 챔피언 8강 3경기",
-   "countries": [],
+   "countries": [
+    "강동신",
+    "파리토쉬"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026ESPOPPCQFNL000300"
   },
   {
    "time": "10:15",
+   "discipline": "배드민턴",
+   "event": "여자 단식 2라운드 3",
+   "countries": [
+    "랏차녹 인타논",
+    "김진향"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMWSINGLESR32000300"
+  },
+  {
+   "time": "10:15",
    "discipline": "사격 소총",
    "event": "여자 50m 소총3자세 단체 결승",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "아이치현 종합사격장",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026RIFWR3PMTFNL000100"
@@ -1430,23 +463,28 @@
    "time": "10:15",
    "discipline": "사격 소총",
    "event": "여자 50m 소총3자세 예선",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "아이치현 종합사격장",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026RIFWR3PMQUAL000100"
   },
   {
-   "time": "10:16",
-   "discipline": "서핑",
-   "event": "남자 2라운드 - 3조",
-   "countries": [],
-   "venue": "퍼시픽 롱비치",
+   "time": "10:20",
+   "discipline": "배드민턴",
+   "event": "여자 단식 2라운드 6",
+   "countries": [
+    "응우옌 투이 린",
+    "탈리타 라마단 위리야완"
+   ],
+   "venue": "이치노미야시 종합체육관",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SRFMSHORTBRDREP000300"
+   "link": "https://m.sports.naver.com/game/2026BDMWSINGLESR32000600"
   },
   {
    "time": "10:20",
@@ -1460,29 +498,46 @@
    "link": "https://m.sports.naver.com/game/2026CSPXK2500MSFNL"
   },
   {
+   "time": "10:25",
+   "discipline": "배드민턴",
+   "event": "남자 단식 2라운드 2",
+   "countries": [
+    "니발 아메드",
+    "풀리쿠티 아라치칠라게 네타싱헤 V"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMMSINGLESR32000200"
+  },
+  {
+   "time": "10:25",
+   "discipline": "배드민턴",
+   "event": "여자 단식 2라운드 10",
+   "countries": [
+    "마후르 샤흐자드",
+    "푸트리 쿠수마 워다니"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMWSINGLESR32001000"
+  },
+  {
    "time": "10:30",
    "discipline": "e스포츠",
    "event": "뿌요뿌요 챔피언 8강 4경기",
    "countries": [
-    "강동신",
-    "파리토쉬"
+    "궈자앙",
+    "미정"
    ],
    "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": true,
+   "hasKorea": false,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026ESPOPPCQFNL000400"
-  },
-  {
-   "time": "10:30",
-   "discipline": "스케이트보딩",
-   "event": "여자 스트리트 예선 2조",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 B",
-   "hasKorea": false,
-   "medal": false,
-   "tv": true,
-   "link": "https://m.sports.naver.com/game/2026SKBWSTREETQUAL000200"
   },
   {
    "time": "10:30",
@@ -1541,37 +596,74 @@
    "link": "https://m.sports.naver.com/game/2026SABMTEAM8FNL000400"
   },
   {
-   "time": "10:30",
-   "discipline": "펜싱 플뢰레",
-   "event": "여자 플뢰레 단체 16강",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 F",
+   "time": "10:45",
+   "discipline": "탁구",
+   "event": "여자 단식 3라운드 5경기",
+   "countries": [
+    "하야타 히나",
+    "소지퉁"
+   ],
+   "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026FOIWTEAM8FNL000200"
+   "link": "https://m.sports.naver.com/game/2026TTEWSINGLES8FNL000500"
   },
   {
-   "time": "10:44",
-   "discipline": "서핑",
-   "event": "남자 2라운드 - 4조",
-   "countries": [],
-   "venue": "퍼시픽 롱비치",
+   "time": "10:45",
+   "discipline": "탁구",
+   "event": "여자 단식 3라운드 6경기",
+   "countries": [
+    "변성경",
+    "주위링"
+   ],
+   "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SRFMSHORTBRDREP000400"
+   "link": "https://m.sports.naver.com/game/2026TTEWSINGLES8FNL000600"
   },
   {
-   "time": "10:44",
-   "discipline": "서핑",
-   "event": "여자 3라운드 - 1조",
-   "countries": [],
-   "venue": "퍼시픽 롱비치",
+   "time": "10:45",
+   "discipline": "탁구",
+   "event": "여자 단식 3라운드 7경기",
+   "countries": [
+    "주천희",
+    "지안 쩡"
+   ],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": true,
+   "medal": false,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/2026TTEWSINGLES8FNL000700"
+  },
+  {
+   "time": "10:45",
+   "discipline": "탁구",
+   "event": "여자 단식 3라운드 8경기",
+   "countries": [
+    "오라완 파라낭",
+    "쑨잉샤"
+   ],
+   "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SRFWSHORTBRD8FNL000100"
+   "link": "https://m.sports.naver.com/game/2026TTEWSINGLES8FNL000800"
+  },
+  {
+   "time": "11:00",
+   "discipline": "배드민턴",
+   "event": "남자 단식 2라운드 12",
+   "countries": [
+    "아이만 이븐 자만",
+    "초우티엔첸"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMMSINGLESR32001200"
   },
   {
    "time": "11:00",
@@ -1600,6 +692,19 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SFTWTEAMPREL000200"
+  },
+  {
+   "time": "11:00",
+   "discipline": "스케이트보딩",
+   "event": "여자 스트리트 예선 1조",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 B",
+   "hasKorea": true,
+   "medal": false,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/2026SKBWSTREETQUAL000100"
   },
   {
    "time": "11:00",
@@ -1674,11 +779,28 @@
   },
   {
    "time": "11:05",
+   "discipline": "배드민턴",
+   "event": "남자 단식 2라운드 6",
+   "countries": [
+    "유태빈",
+    "린춘이"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": true,
+   "medal": false,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/2026BDMMSINGLESR32000600"
+  },
+  {
+   "time": "11:05",
    "discipline": "펜싱 사브르",
    "event": "남자 사브르 단체 8강 1",
-   "countries": [],
+   "countries": [
+    "대한민국",
+    "미정"
+   ],
    "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SABMTEAMQFNL000100"
@@ -1718,6 +840,34 @@
   },
   {
    "time": "11:10",
+   "discipline": "배드민턴",
+   "event": "남자 단식 2라운드 4",
+   "countries": [
+    "고우라브 싱하",
+    "저스틴 쇼 웨이 호"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMMSINGLESR32000400"
+  },
+  {
+   "time": "11:10",
+   "discipline": "배드민턴",
+   "event": "여자 단식 2라운드 4",
+   "countries": [
+    "파티마트 나바하 압둘 라자크",
+    "지아 민 여"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMWSINGLESR32000400"
+  },
+  {
+   "time": "11:10",
    "discipline": "요트",
    "event": "여자 청소년 스키프 - 레이스 1",
    "countries": [],
@@ -1737,28 +887,6 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SALW49ERBPREL000200"
-  },
-  {
-   "time": "11:12",
-   "discipline": "서핑",
-   "event": "남자 2라운드 - 6조",
-   "countries": [],
-   "venue": "퍼시픽 롱비치",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SRFMSHORTBRDREP000600"
-  },
-  {
-   "time": "11:12",
-   "discipline": "서핑",
-   "event": "여자 3라운드 - 2조",
-   "countries": [],
-   "venue": "퍼시픽 롱비치",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SRFWSHORTBRD8FNL000200"
   },
   {
    "time": "11:15",
@@ -1811,9 +939,11 @@
    "time": "11:30",
    "discipline": "육상",
    "event": "남자 200m 1라운드",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "미즈호 파크 육상경기장",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026ATHM200MRND1"
@@ -1832,8 +962,11 @@
   {
    "time": "11:30",
    "discipline": "탁구",
-   "event": "남자 단식 3라운드 1",
-   "countries": [],
+   "event": "남자 단식 3라운드 1경기",
+   "countries": [
+    "왕추친",
+    "우태룡"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
@@ -1843,19 +976,25 @@
   {
    "time": "11:30",
    "discipline": "탁구",
-   "event": "남자 단식 3라운드 2",
-   "countries": [],
+   "event": "남자 단식 3라운드 2경기",
+   "countries": [
+    "풍이신",
+    "장우진"
+   ],
    "venue": "스카이 홀 도요타",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026TTEMSINGLES8FNL000200"
   },
   {
    "time": "11:30",
    "discipline": "탁구",
-   "event": "남자 단식 3라운드 3",
-   "countries": [],
+   "event": "남자 단식 3라운드 3경기",
+   "countries": [
+    "웡춘팅",
+    "노샤드 알라미얀"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
@@ -1865,57 +1004,16 @@
   {
    "time": "11:30",
    "discipline": "탁구",
-   "event": "남자 단식 3라운드 4",
-   "countries": [],
+   "event": "남자 단식 3라운드 4경기",
+   "countries": [
+    "알란 쿠르망갈리예프",
+    "하리모토 토모카즈"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026TTEMSINGLES8FNL000400"
-  },
-  {
-   "time": "11:30",
-   "discipline": "탁구",
-   "event": "남자 단식 3라운드 5",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMSINGLES8FNL000500"
-  },
-  {
-   "time": "11:30",
-   "discipline": "탁구",
-   "event": "남자 단식 3라운드 6",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMSINGLES8FNL000600"
-  },
-  {
-   "time": "11:30",
-   "discipline": "탁구",
-   "event": "남자 단식 3라운드 7",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMSINGLES8FNL000700"
-  },
-  {
-   "time": "11:30",
-   "discipline": "탁구",
-   "event": "남자 단식 3라운드 8",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMSINGLES8FNL000800"
   },
   {
    "time": "11:30",
@@ -1971,26 +1069,45 @@
    "link": "https://m.sports.naver.com/game/2026FOIWTEAMQFNL000400"
   },
   {
-   "time": "11:40",
-   "discipline": "서핑",
-   "event": "남자 2라운드 - 7조",
-   "countries": [],
-   "venue": "퍼시픽 롱비치",
+   "time": "11:45",
+   "discipline": "배드민턴",
+   "event": "여자 단식 2라운드 11",
+   "countries": [
+    "아이샤 주마벡",
+    "푸이치 와"
+   ],
+   "venue": "이치노미야시 종합체육관",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SRFMSHORTBRDREP000700"
+   "link": "https://m.sports.naver.com/game/2026BDMWSINGLESR32001100"
   },
   {
-   "time": "11:40",
-   "discipline": "서핑",
-   "event": "여자 3라운드 - 3조",
-   "countries": [],
-   "venue": "퍼시픽 롱비치",
+   "time": "11:50",
+   "discipline": "배드민턴",
+   "event": "여자 단식 2라운드 13",
+   "countries": [
+    "아미나트 나베하 압둘 라자크",
+    "로신얀 해피"
+   ],
+   "venue": "이치노미야시 종합체육관",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SRFWSHORTBRD8FNL000300"
+   "link": "https://m.sports.naver.com/game/2026BDMWSINGLESR32001300"
+  },
+  {
+   "time": "11:50",
+   "discipline": "스케이트보딩",
+   "event": "여자 스트리트 예선 2조",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 B",
+   "hasKorea": true,
+   "medal": false,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/2026SKBWSTREETQUAL000200"
   },
   {
    "time": "11:50",
@@ -2006,6 +1123,34 @@
    "link": "https://m.sports.naver.com/game/2026CSPXC2500MFNL"
   },
   {
+   "time": "11:55",
+   "discipline": "배드민턴",
+   "event": "여자 단식 2라운드 16",
+   "countries": [
+    "라실라 마하르잔",
+    "왕지이"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMWSINGLESR32001600"
+  },
+  {
+   "time": "11:55",
+   "discipline": "배드민턴",
+   "event": "여자 단식 2라운드 2",
+   "countries": [
+    "라니트마 티누디 웨이헤나 리야나게",
+    "리한나 셰르찬"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMWSINGLESR32000200"
+  },
+  {
    "time": "12:00",
    "discipline": "복싱",
    "event": "여자 60kg - 예선 - 16강 1",
@@ -2018,6 +1163,20 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026BOXW60KG8FNL000100"
+  },
+  {
+   "time": "12:00",
+   "discipline": "스쿼시",
+   "event": "혼합복식 준결승 1경기",
+   "countries": [
+    "홍콩",
+    "인도"
+   ],
+   "venue": "나고야 긴조후토 아레나",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SQUXDOUBLESSFNL000100"
   },
   {
    "time": "12:00",
@@ -2073,28 +1232,6 @@
    "link": "https://m.sports.naver.com/game/2026HBLMTEAM7QFNL000100"
   },
   {
-   "time": "12:08",
-   "discipline": "서핑",
-   "event": "남자 2라운드 - 8조",
-   "countries": [],
-   "venue": "퍼시픽 롱비치",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SRFMSHORTBRDREP000800"
-  },
-  {
-   "time": "12:08",
-   "discipline": "서핑",
-   "event": "여자 3라운드 - 4조",
-   "countries": [],
-   "venue": "퍼시픽 롱비치",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SRFWSHORTBRD8FNL000400"
-  },
-  {
    "time": "12:15",
    "discipline": "BMX 프리스타일",
    "event": "남자 파크 예선 2조",
@@ -2120,6 +1257,76 @@
    "link": "https://m.sports.naver.com/game/2026BOXW60KG8FNL000200"
   },
   {
+   "time": "12:15",
+   "discipline": "탁구",
+   "event": "남자 단식 3라운드 5경기",
+   "countries": [
+    "린윤주",
+    "키릴 게라시멘코"
+   ],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMSINGLES8FNL000500"
+  },
+  {
+   "time": "12:15",
+   "discipline": "탁구",
+   "event": "남자 단식 3라운드 6경기",
+   "countries": [
+    "찬볼드윈 호와",
+    "리정식"
+   ],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMSINGLES8FNL000600"
+  },
+  {
+   "time": "12:15",
+   "discipline": "탁구",
+   "event": "남자 단식 3라운드 7경기",
+   "countries": [
+    "린시동",
+    "마누쉬 웃팔바이 샤"
+   ],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMSINGLES8FNL000700"
+  },
+  {
+   "time": "12:15",
+   "discipline": "탁구",
+   "event": "남자 단식 3라운드 8경기",
+   "countries": [
+    "용 이작 퀘크",
+    "마츠시마 소라"
+   ],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMSINGLES8FNL000800"
+  },
+  {
+   "time": "12:30",
+   "discipline": "배드민턴",
+   "event": "여자 단식 2라운드 9",
+   "countries": [
+    "운나티 후다",
+    "링 칭 웡"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMWSINGLESR32000900"
+  },
+  {
    "time": "12:30",
    "discipline": "복싱",
    "event": "여자 60kg - 예선 - 16강 3",
@@ -2137,9 +1344,11 @@
    "time": "12:30",
    "discipline": "양궁 리커브",
    "event": "여자 개인 랭킹 라운드",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "오카자키 주오 소고 공원",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026ARCWINDIVIDQUAL000100"
@@ -2148,9 +1357,11 @@
    "time": "12:30",
    "discipline": "양궁 리커브",
    "event": "여자 단체 랭킹 라운드",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "오카자키 주오 소고 공원",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026ARCWTEAM3QUAL000100"
@@ -2159,9 +1370,11 @@
    "time": "12:30",
    "discipline": "양궁 리커브",
    "event": "혼성 단체 랭킹 라운드",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "오카자키 주오 소고 공원",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026ARCXTEAM2QUAL000100"
@@ -2170,9 +1383,11 @@
    "time": "12:30",
    "discipline": "양궁 컴파운드",
    "event": "남자 개인 랭킹 라운드",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "오카자키 주오 소고 공원",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026CMPMINDIVIDQUAL000100"
@@ -2181,9 +1396,11 @@
    "time": "12:30",
    "discipline": "양궁 컴파운드",
    "event": "남자 단체 랭킹 라운드",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "오카자키 주오 소고 공원",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026CMPMTEAM3QUAL000100"
@@ -2192,9 +1409,11 @@
    "time": "12:30",
    "discipline": "양궁 컴파운드",
    "event": "혼성 단체 랭킹 라운드",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "오카자키 주오 소고 공원",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026CMPXTEAM2QUAL000100"
@@ -2214,15 +1433,18 @@
    "link": "https://m.sports.naver.com/game/2026HBLWTEAM7RND001600"
   },
   {
-   "time": "12:36",
-   "discipline": "서핑",
-   "event": "여자 3라운드 - 5조",
-   "countries": [],
-   "venue": "퍼시픽 롱비치",
+   "time": "12:35",
+   "discipline": "배드민턴",
+   "event": "남자 단식 2라운드 7",
+   "countries": [
+    "나라오카 코다이",
+    "리척이우"
+   ],
+   "venue": "이치노미야시 종합체육관",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SRFWSHORTBRD8FNL000500"
+   "link": "https://m.sports.naver.com/game/2026BDMMSINGLESR32000700"
   },
   {
    "time": "12:40",
@@ -2234,6 +1456,34 @@
    "medal": false,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026ESPOPPCSFNL000100"
+  },
+  {
+   "time": "12:40",
+   "discipline": "배드민턴",
+   "event": "남자 단식 2라운드 16",
+   "countries": [
+    "푸이 팡 퐁",
+    "쿤라붓 비디산"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMMSINGLESR32001600"
+  },
+  {
+   "time": "12:40",
+   "discipline": "배드민턴",
+   "event": "남자 단식 2라운드 8",
+   "countries": [
+    "니마 로스타무르라갈다니",
+    "크시티즈 카날"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMMSINGLESR32000800"
   },
   {
    "time": "12:45",
@@ -2248,6 +1498,20 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026BOXW60KG8FNL000400"
+  },
+  {
+   "time": "12:45",
+   "discipline": "스쿼시",
+   "event": "혼합복식 준결승 2경기",
+   "countries": [
+    "홍콩",
+    "말레이시아"
+   ],
+   "venue": "나고야 긴조후토 아레나",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SQUXDOUBLESSFNL000200"
   },
   {
    "time": "12:50",
@@ -2344,17 +1608,6 @@
    "link": "https://m.sports.naver.com/game/2026HOCMTEAM11GPB001100"
   },
   {
-   "time": "13:04",
-   "discipline": "서핑",
-   "event": "여자 3라운드 - 6조",
-   "countries": [],
-   "venue": "퍼시픽 롱비치",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SRFWSHORTBRD8FNL000600"
-  },
-  {
    "time": "13:10",
    "discipline": "e스포츠",
    "event": "뿌요뿌요 챔피언 준결승 2경기",
@@ -2366,15 +1619,18 @@
    "link": "https://m.sports.naver.com/game/2026ESPOPPCSFNL000200"
   },
   {
-   "time": "13:10",
-   "discipline": "스케이트보딩",
-   "event": "남자 스트리트 예선 1조",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 B",
+   "time": "13:15",
+   "discipline": "배드민턴",
+   "event": "남자 단식 2라운드 11",
+   "countries": [
+    "막수트 타지불라예프",
+    "아유쉬 셰티"
+   ],
+   "venue": "이치노미야시 종합체육관",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SKBMSTREETQUAL000100"
+   "link": "https://m.sports.naver.com/game/2026BDMMSINGLESR32001100"
   },
   {
    "time": "13:15",
@@ -2392,6 +1648,19 @@
   },
   {
    "time": "13:15",
+   "discipline": "서핑",
+   "event": "여자 2라운드 - 2조",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "퍼시픽 롱비치",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SRFWSHORTBRDREP000100"
+  },
+  {
+   "time": "13:15",
    "discipline": "소프트볼",
    "event": "예선 라운드 3경기",
    "countries": [
@@ -2403,6 +1672,48 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SFTWTEAMPREL000300"
+  },
+  {
+   "time": "13:25",
+   "discipline": "배드민턴",
+   "event": "여자 단식 2라운드 1",
+   "countries": [
+    "안세영",
+    "카밀라 스마굴로바"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": true,
+   "medal": false,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/2026BDMWSINGLESR32000100"
+  },
+  {
+   "time": "13:25",
+   "discipline": "배드민턴",
+   "event": "여자 단식 2라운드 14",
+   "countries": [
+    "린시앙티",
+    "폰파위 초추웡"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMWSINGLESR32001400"
+  },
+  {
+   "time": "13:25",
+   "discipline": "배드민턴",
+   "event": "여자 단식 2라운드 7",
+   "countries": [
+    "미야자키 토모카",
+    "사랑구아 헤를렌바아타르"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMWSINGLESR32000700"
   },
   {
    "time": "13:30",
@@ -2430,15 +1741,15 @@
    "link": "https://m.sports.naver.com/game/2026WLFM70KGFNL000100"
   },
   {
-   "time": "13:32",
+   "time": "13:43",
    "discipline": "서핑",
-   "event": "여자 3라운드 - 7조",
+   "event": "여자 2라운드 - 3조",
    "countries": [],
    "venue": "퍼시픽 롱비치",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SRFWSHORTBRD8FNL000700"
+   "link": "https://m.sports.naver.com/game/2026SRFWSHORTBRDREP000200"
   },
   {
    "time": "13:45",
@@ -2464,6 +1775,20 @@
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026ESPOPPCFNL000200"
+  },
+  {
+   "time": "14:00",
+   "discipline": "배드민턴",
+   "event": "여자 단식 2라운드 12",
+   "countries": [
+    "세예데하이산 슈오리데히지아바리",
+    "야마구치 아칸네"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMWSINGLESR32001200"
   },
   {
    "time": "14:00",
@@ -2495,14 +1820,17 @@
   },
   {
    "time": "14:00",
-   "discipline": "서핑",
-   "event": "여자 3라운드 - 8조",
-   "countries": [],
-   "venue": "퍼시픽 롱비치",
+   "discipline": "스쿼시",
+   "event": "여자 단식 준결승 2경기",
+   "countries": [
+    "아나하트 싱",
+    "와타나베 사토미"
+   ],
+   "venue": "나고야 긴조후토 아레나",
    "hasKorea": false,
-   "medal": false,
+   "medal": true,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SRFWSHORTBRD8FNL000800"
+   "link": "https://m.sports.naver.com/game/2026SQUWSINGLESSFNL000200"
   },
   {
    "time": "14:00",
@@ -2600,6 +1928,34 @@
   },
   {
    "time": "14:10",
+   "discipline": "배드민턴",
+   "event": "남자 단식 2라운드 15",
+   "countries": [
+    "응우옌 하이 당",
+    "오딜존 압두라히모프"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMMSINGLESR32001500"
+  },
+  {
+   "time": "14:10",
+   "discipline": "배드민턴",
+   "event": "여자 단식 2라운드 15",
+   "countries": [
+    "우르미 아크테르",
+    "김가은"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": true,
+   "medal": false,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/2026BDMWSINGLESR32001500"
+  },
+  {
+   "time": "14:10",
    "discipline": "펜싱 플뢰레",
    "event": "여자 플뢰레 단체 준결승 1",
    "countries": [],
@@ -2608,6 +1964,17 @@
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026FOIWTEAMSFNL000100"
+  },
+  {
+   "time": "14:11",
+   "discipline": "서핑",
+   "event": "여자 2라운드 - 6조",
+   "countries": [],
+   "venue": "퍼시픽 롱비치",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SRFWSHORTBRDREP000300"
   },
   {
    "time": "14:15",
@@ -2622,6 +1989,20 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026ESPOPKUGPC000300"
+  },
+  {
+   "time": "14:15",
+   "discipline": "배드민턴",
+   "event": "여자 단식 2라운드 8",
+   "countries": [
+    "P. V. 신두",
+    "치우핀치안"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMWSINGLESR32000800"
   },
   {
    "time": "14:15",
@@ -2652,17 +2033,6 @@
    "link": "https://m.sports.naver.com/game/2026WPOMTEAM7GPB000100"
   },
   {
-   "time": "14:20",
-   "discipline": "스케이트보딩",
-   "event": "남자 스트리트 예선 2조",
-   "countries": [],
-   "venue": "아이치 스카이 엑스포 홀 B",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SKBMSTREETQUAL000200"
-  },
-  {
    "time": "14:30",
    "discipline": "복싱",
    "event": "남자 90kg - 예선 - 16강 4",
@@ -2677,6 +2047,87 @@
    "link": "https://m.sports.naver.com/game/2026BOXM90KG8FNL000400"
   },
   {
+   "time": "14:39",
+   "discipline": "서핑",
+   "event": "여자 2라운드 - 7조",
+   "countries": [],
+   "venue": "퍼시픽 롱비치",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SRFWSHORTBRDREP000400"
+  },
+  {
+   "time": "14:45",
+   "discipline": "배드민턴",
+   "event": "남자 단식 2라운드 10",
+   "countries": [
+    "니시모토 켄타",
+    "알위 파르한"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMMSINGLESR32001000"
+  },
+  {
+   "time": "14:45",
+   "discipline": "스쿼시",
+   "event": "남자 단식 준결승 2경기",
+   "countries": [
+    "무함마드 아샤브 이르판",
+    "아바이 싱"
+   ],
+   "venue": "나고야 긴조후토 아레나",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SQUMSINGLESSFNL000200"
+  },
+  {
+   "time": "14:55",
+   "discipline": "배드민턴",
+   "event": "남자 단식 2라운드 9",
+   "countries": [
+    "바트다바아 뭉흐바트",
+    "준 하오 레옹"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMMSINGLESR32000900"
+  },
+  {
+   "time": "14:55",
+   "discipline": "배드민턴",
+   "event": "남자 복식 2라운드 4",
+   "countries": [
+    "베트남",
+    "방글라데시"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMMDOUBLES8FNL000400"
+  },
+  {
+   "time": "15:00",
+   "discipline": "배드민턴",
+   "event": "남자 단식 2라운드 14",
+   "countries": [
+    "최지훈",
+    "리시펑"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": true,
+   "medal": false,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/2026BDMMSINGLESR32001400"
+  },
+  {
    "time": "15:00",
    "discipline": "비치 발리볼",
    "event": "남자 예선 라운드 - F조 6경기",
@@ -2689,6 +2140,19 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026VBVMTEAM2GPF000600"
+  },
+  {
+   "time": "15:00",
+   "discipline": "스케이트보딩",
+   "event": "남자 스트리트 예선 1조",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 B",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SKBMSTREETQUAL000100"
   },
   {
    "time": "15:00",
@@ -2733,6 +2197,19 @@
    "link": "https://m.sports.naver.com/game/2026HBLWTEAM7RND001700"
   },
   {
+   "time": "15:07",
+   "discipline": "서핑",
+   "event": "여자 2라운드 - 8조",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "퍼시픽 롱비치",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SRFWSHORTBRDREP000500"
+  },
+  {
    "time": "15:10",
    "discipline": "펜싱 플뢰레",
    "event": "여자 플뢰레 단체 준결승 2",
@@ -2759,31 +2236,54 @@
   },
   {
    "time": "15:30",
-   "discipline": "탁구",
-   "event": "남자 복식 8강",
-   "countries": [],
-   "venue": "스카이 홀 도요타",
+   "discipline": "스쿼시",
+   "event": "여자 단식 준결승 1경기",
+   "countries": [
+    "시바상가리 수브라마니암",
+    "찬신육"
+   ],
+   "venue": "나고야 긴조후토 아레나",
    "hasKorea": false,
-   "medal": false,
+   "medal": true,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMDOUBLESQFNL000100"
+   "link": "https://m.sports.naver.com/game/2026SQUWSINGLESSFNL000100"
   },
   {
    "time": "15:30",
    "discipline": "탁구",
-   "event": "남자 복식 8강",
-   "countries": [],
+   "event": "남자 복식 8강 1경기",
+   "countries": [
+    "중국",
+    "차이니스 타이베이"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
    "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TTEMDOUBLESQFNL000400"
+  },
+  {
+   "time": "15:30",
+   "discipline": "탁구",
+   "event": "남자 복식 8강 2경기",
+   "countries": [
+    "일본",
+    "대한민국"
+   ],
+   "venue": "스카이 홀 도요타",
+   "hasKorea": true,
+   "medal": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026TTEMDOUBLESQFNL000200"
   },
   {
    "time": "15:30",
    "discipline": "탁구",
-   "event": "남자 복식 8강",
-   "countries": [],
+   "event": "남자 복식 8강 3경기",
+   "countries": [
+    "이란",
+    "중국"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
@@ -2793,13 +2293,41 @@
   {
    "time": "15:30",
    "discipline": "탁구",
-   "event": "남자 복식 8강",
-   "countries": [],
+   "event": "남자 복식 8강 4경기",
+   "countries": [
+    "싱가포르",
+    "일본"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TTEMDOUBLESQFNL000400"
+   "link": "https://m.sports.naver.com/game/2026TTEMDOUBLESQFNL000100"
+  },
+  {
+   "time": "15:35",
+   "discipline": "배드민턴",
+   "event": "남자 복식 2라운드 3",
+   "countries": [
+    "태국",
+    "인도네시아"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMMDOUBLES8FNL000300"
+  },
+  {
+   "time": "15:35",
+   "discipline": "서핑",
+   "event": "남자 2라운드 - 1조",
+   "countries": [],
+   "venue": "퍼시픽 롱비치",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SRFMSHORTBRDREP000100"
   },
   {
    "time": "15:40",
@@ -2814,6 +2342,48 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026ESPOPKUGPA000500"
+  },
+  {
+   "time": "15:40",
+   "discipline": "배드민턴",
+   "event": "여자 복식 2라운드 4",
+   "countries": [
+    "말레이시아",
+    "태국"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMWDOUBLES8FNL000400"
+  },
+  {
+   "time": "15:45",
+   "discipline": "배드민턴",
+   "event": "여자 복식 2라운드 5",
+   "countries": [
+    "태국",
+    "홍콩"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMWDOUBLES8FNL000500"
+  },
+  {
+   "time": "15:50",
+   "discipline": "배드민턴",
+   "event": "여자 복식 2라운드 1",
+   "countries": [
+    "중국",
+    "대한민국"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMWDOUBLES8FNL000100"
   },
   {
    "time": "15:50",
@@ -2848,8 +2418,8 @@
    "discipline": "농구",
    "event": "여자 동메달전",
    "countries": [
-    "중국",
-    "차이니스 타이베이"
+    "차이니스 타이베이",
+    "중국"
    ],
    "venue": "아이치 인터내셔널 아레나",
    "hasKorea": false,
@@ -2872,6 +2442,32 @@
    "link": "https://m.sports.naver.com/game/2026HBLMTEAM7QFNL000300"
   },
   {
+   "time": "16:03",
+   "discipline": "서핑",
+   "event": "남자 2라운드 - 2조",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "퍼시픽 롱비치",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SRFMSHORTBRDREP000200"
+  },
+  {
+   "time": "16:10",
+   "discipline": "스케이트보딩",
+   "event": "남자 스트리트 예선 2조",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "아이치 스카이 엑스포 홀 B",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SKBMSTREETQUAL000200"
+  },
+  {
    "time": "16:10",
    "discipline": "펜싱 사브르",
    "event": "남자 사브르 단체 준결승 1",
@@ -2884,8 +2480,22 @@
   },
   {
    "time": "16:15",
+   "discipline": "스쿼시",
+   "event": "남자 단식 준결승 1경기",
+   "countries": [
+    "에인 요우 응",
+    "누르 자만"
+   ],
+   "venue": "나고야 긴조후토 아레나",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SQUMSINGLESSFNL000100"
+  },
+  {
+   "time": "16:15",
    "discipline": "탁구",
-   "event": "여자 단식 8강",
+   "event": "여자 단식 8강 1경기",
    "countries": [],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -2896,7 +2506,7 @@
   {
    "time": "16:15",
    "discipline": "탁구",
-   "event": "여자 단식 8강",
+   "event": "여자 단식 8강 2경기",
    "countries": [],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -2907,7 +2517,7 @@
   {
    "time": "16:15",
    "discipline": "탁구",
-   "event": "여자 단식 8강",
+   "event": "여자 단식 8강 3경기",
    "countries": [],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -2918,13 +2528,80 @@
   {
    "time": "16:15",
    "discipline": "탁구",
-   "event": "여자 단식 8강",
+   "event": "여자 단식 8강 4경기",
    "countries": [],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026TTEWSINGLESQFNL000400"
+  },
+  {
+   "time": "16:25",
+   "discipline": "배드민턴",
+   "event": "여자 복식 2라운드 3",
+   "countries": [
+    "일본",
+    "인도"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMWDOUBLES8FNL000300"
+  },
+  {
+   "time": "16:30",
+   "discipline": "배드민턴",
+   "event": "남자 단식 2라운드 13",
+   "countries": [
+    "두민두 와르나카 아베윅라마",
+    "응카롱 앵거스"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMMSINGLESR32001300"
+  },
+  {
+   "time": "16:31",
+   "discipline": "서핑",
+   "event": "남자 2라운드 - 3조",
+   "countries": [],
+   "venue": "퍼시픽 롱비치",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SRFMSHORTBRDREP000300"
+  },
+  {
+   "time": "16:35",
+   "discipline": "배드민턴",
+   "event": "남자 복식 2라운드 7",
+   "countries": [
+    "대한민국",
+    "싱가포르"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMMDOUBLES8FNL000700"
+  },
+  {
+   "time": "16:40",
+   "discipline": "배드민턴",
+   "event": "남자 복식 2라운드 1",
+   "countries": [
+    "대한민국",
+    "말레이시아"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMMDOUBLES8FNL000100"
   },
   {
    "time": "16:55",
@@ -2936,6 +2613,17 @@
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SABMTEAMSFNL000200"
+  },
+  {
+   "time": "16:59",
+   "discipline": "서핑",
+   "event": "남자 2라운드 - 4조",
+   "countries": [],
+   "venue": "퍼시픽 롱비치",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SRFMSHORTBRDREP000400"
   },
   {
    "time": "17:00",
@@ -2978,7 +2666,7 @@
   {
    "time": "17:00",
    "discipline": "탁구",
-   "event": "남자 단식 8강",
+   "event": "남자 단식 8강 1경기",
    "countries": [],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -2989,7 +2677,7 @@
   {
    "time": "17:00",
    "discipline": "탁구",
-   "event": "남자 단식 8강",
+   "event": "남자 단식 8강 2경기",
    "countries": [],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -3000,7 +2688,7 @@
   {
    "time": "17:00",
    "discipline": "탁구",
-   "event": "남자 단식 8강",
+   "event": "남자 단식 8강 3경기",
    "countries": [],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -3011,7 +2699,7 @@
   {
    "time": "17:00",
    "discipline": "탁구",
-   "event": "남자 단식 8강",
+   "event": "남자 단식 8강 4경기",
    "countries": [],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
@@ -3049,6 +2737,34 @@
   },
   {
    "time": "17:15",
+   "discipline": "배드민턴",
+   "event": "남자 복식 2라운드 5",
+   "countries": [
+    "말레이시아",
+    "일본"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMMDOUBLES8FNL000500"
+  },
+  {
+   "time": "17:15",
+   "discipline": "배드민턴",
+   "event": "남자 복식 2라운드 8",
+   "countries": [
+    "홍콩",
+    "인도네시아"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMMDOUBLES8FNL000800"
+  },
+  {
+   "time": "17:15",
    "discipline": "복싱",
    "event": "여자 60kg - 예선 - 16강 6",
    "countries": [
@@ -3063,6 +2779,20 @@
   },
   {
    "time": "17:25",
+   "discipline": "배드민턴",
+   "event": "여자 복식 2라운드 7",
+   "countries": [
+    "차이니스 타이베이",
+    "카자흐스탄"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMWDOUBLES8FNL000700"
+  },
+  {
+   "time": "17:25",
    "discipline": "수구",
    "event": "남자 예선 - B조",
    "countries": [
@@ -3074,6 +2804,31 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026WPOMTEAM7GPB000200"
+  },
+  {
+   "time": "17:27",
+   "discipline": "서핑",
+   "event": "남자 2라운드 - 6조",
+   "countries": [],
+   "venue": "퍼시픽 롱비치",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SRFMSHORTBRDREP000600"
+  },
+  {
+   "time": "17:30",
+   "discipline": "배드민턴",
+   "event": "남자 복식 2라운드 6",
+   "countries": [
+    "태국",
+    "중국"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMMDOUBLES8FNL000600"
   },
   {
    "time": "17:30",
@@ -3164,8 +2919,11 @@
   {
    "time": "17:45",
    "discipline": "탁구",
-   "event": "여자 복식 8강 1",
-   "countries": [],
+   "event": "여자 복식 8강 1경기",
+   "countries": [
+    "일본",
+    "중국"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
@@ -3175,8 +2933,11 @@
   {
    "time": "17:45",
    "discipline": "탁구",
-   "event": "여자 복식 8강 2",
-   "countries": [],
+   "event": "여자 복식 8강 2경기",
+   "countries": [
+    "싱가포르",
+    "홍콩"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
@@ -3186,10 +2947,13 @@
   {
    "time": "17:45",
    "discipline": "탁구",
-   "event": "여자 복식 8강 3",
-   "countries": [],
+   "event": "여자 복식 8강 3경기",
+   "countries": [
+    "대한민국",
+    "태국"
+   ],
    "venue": "스카이 홀 도요타",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026TTEWDOUBLESQFNL000300"
@@ -3197,13 +2961,27 @@
   {
    "time": "17:45",
    "discipline": "탁구",
-   "event": "여자 복식 8강 4",
-   "countries": [],
+   "event": "여자 복식 8강 4경기",
+   "countries": [
+    "일본",
+    "중국"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026TTEWDOUBLESQFNL000400"
+  },
+  {
+   "time": "17:55",
+   "discipline": "서핑",
+   "event": "남자 2라운드 - 7조",
+   "countries": [],
+   "venue": "퍼시픽 롱비치",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SRFMSHORTBRDREP000700"
   },
   {
    "time": "18:00",
@@ -3282,6 +3060,34 @@
   },
   {
    "time": "18:05",
+   "discipline": "배드민턴",
+   "event": "남자 복식 2라운드 2",
+   "countries": [
+    "차이니스 타이베이",
+    "일본"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMMDOUBLES8FNL000200"
+  },
+  {
+   "time": "18:05",
+   "discipline": "배드민턴",
+   "event": "여자 복식 2라운드 8",
+   "countries": [
+    "인도네시아",
+    "대한민국"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMWDOUBLES8FNL000800"
+  },
+  {
+   "time": "18:05",
    "discipline": "육상",
    "event": "남자 10종경기 높이뛰기",
    "countries": [],
@@ -3290,6 +3096,20 @@
    "medal": false,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026ATHMDECATHHJ"
+  },
+  {
+   "time": "18:15",
+   "discipline": "배드민턴",
+   "event": "여자 복식 2라운드 2",
+   "countries": [
+    "카자흐스탄",
+    "차이니스 타이베이"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMWDOUBLES8FNL000200"
   },
   {
    "time": "18:15",
@@ -3304,6 +3124,31 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026BOXM55KG8FNL000600"
+  },
+  {
+   "time": "18:20",
+   "discipline": "배드민턴",
+   "event": "여자 복식 2라운드 6",
+   "countries": [
+    "일본",
+    "중국"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMWDOUBLES8FNL000600"
+  },
+  {
+   "time": "18:23",
+   "discipline": "서핑",
+   "event": "남자 2라운드 - 8조",
+   "countries": [],
+   "venue": "퍼시픽 롱비치",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SRFMSHORTBRDREP000800"
   },
   {
    "time": "18:30",
@@ -3384,6 +3229,28 @@
    "link": "https://m.sports.naver.com/game/2026SABMTEAMFNL000100"
   },
   {
+   "time": "18:55",
+   "discipline": "배드민턴",
+   "event": "여자 단식 3라운드 3",
+   "countries": [],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMWSINGLES8FNL000300"
+  },
+  {
+   "time": "18:55",
+   "discipline": "배드민턴",
+   "event": "여자 단식 3라운드 5",
+   "countries": [],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMWSINGLES8FNL000500"
+  },
+  {
    "time": "19:00",
    "discipline": "복싱",
    "event": "남자 90kg - 예선 - 16강 6",
@@ -3427,6 +3294,17 @@
   },
   {
    "time": "19:05",
+   "discipline": "배드민턴",
+   "event": "남자 단식 3라운드 6",
+   "countries": [],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMMSINGLES8FNL000600"
+  },
+  {
+   "time": "19:05",
    "discipline": "육상",
    "event": "남자 110m 허들 1라운드",
    "countries": [],
@@ -3435,6 +3313,17 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026ATHM110MHURDRND1"
+  },
+  {
+   "time": "19:10",
+   "discipline": "배드민턴",
+   "event": "남자 단식 3라운드 3",
+   "countries": [],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMMSINGLES8FNL000300"
   },
   {
    "time": "19:15",
@@ -3466,6 +3355,17 @@
   },
   {
    "time": "19:30",
+   "discipline": "배드민턴",
+   "event": "남자 단식 3라운드 8",
+   "countries": [],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMMSINGLES8FNL000800"
+  },
+  {
+   "time": "19:30",
    "discipline": "축구",
    "event": "남자 8강 4경기",
    "countries": [
@@ -3482,11 +3382,13 @@
    "time": "19:30",
    "discipline": "탁구",
    "event": "혼합복식 결승",
-   "countries": [],
+   "countries": [
+    "중국"
+   ],
    "venue": "스카이 홀 도요타",
    "hasKorea": false,
    "medal": true,
-   "tv": true,
+   "tv": false,
    "link": "https://m.sports.naver.com/game/2026TTEXDOUBLESFNL000100"
   },
   {
@@ -3499,6 +3401,72 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026ATHW100MHURDRND1"
+  },
+  {
+   "time": "19:40",
+   "discipline": "배드민턴",
+   "event": "남자 단식 3라운드 2",
+   "countries": [],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMMSINGLES8FNL000200"
+  },
+  {
+   "time": "19:40",
+   "discipline": "배드민턴",
+   "event": "여자 단식 3라운드 2",
+   "countries": [],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMWSINGLES8FNL000200"
+  },
+  {
+   "time": "19:50",
+   "discipline": "배드민턴",
+   "event": "여자 단식 3라운드 8",
+   "countries": [],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMWSINGLES8FNL000800"
+  },
+  {
+   "time": "20:00",
+   "discipline": "배드민턴",
+   "event": "남자 단식 3라운드 4",
+   "countries": [],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMMSINGLES8FNL000400"
+  },
+  {
+   "time": "20:00",
+   "discipline": "배드민턴",
+   "event": "여자 단식 3라운드 7",
+   "countries": [],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMWSINGLES8FNL000700"
+  },
+  {
+   "time": "20:00",
+   "discipline": "배드민턴",
+   "event": "여자 단식 3라운드6",
+   "countries": [],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMWSINGLES8FNL000600"
   },
   {
    "time": "20:00",
@@ -3523,6 +3491,28 @@
    "link": "https://m.sports.naver.com/game/2026ATHM200MSFNL"
   },
   {
+   "time": "20:25",
+   "discipline": "배드민턴",
+   "event": "남자 단식 3라운드 5",
+   "countries": [],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMMSINGLES8FNL000500"
+  },
+  {
+   "time": "20:30",
+   "discipline": "배드민턴",
+   "event": "여자 단식 3라운드 1",
+   "countries": [],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMWSINGLES8FNL000100"
+  },
+  {
    "time": "20:35",
    "discipline": "육상",
    "event": "남자 세단뛰기 결승",
@@ -3532,6 +3522,17 @@
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026ATHMTRPLJUMPFNL"
+  },
+  {
+   "time": "20:45",
+   "discipline": "배드민턴",
+   "event": "여자 단식 3라운드 4",
+   "countries": [],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMWSINGLES8FNL000400"
   },
   {
    "time": "20:51",
@@ -3545,6 +3546,17 @@
    "link": "https://m.sports.naver.com/game/2026ATHM1500MRND1"
   },
   {
+   "time": "21:10",
+   "discipline": "배드민턴",
+   "event": "남자 단식 3라운드 7",
+   "countries": [],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMMSINGLES8FNL000700"
+  },
+  {
    "time": "21:20",
    "discipline": "육상",
    "event": "남자 10종경기 400m",
@@ -3554,6 +3566,17 @@
    "medal": false,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026ATHMDECATH400"
+  },
+  {
+   "time": "21:30",
+   "discipline": "배드민턴",
+   "event": "남자 단식 3라운드 1",
+   "countries": [],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMMSINGLES8FNL000100"
   },
   {
    "time": "22:03",
