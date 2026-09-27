@@ -1,6 +1,6 @@
 {
  "date": "2026-10-02",
- "collectedAt": "2026-09-27T09:12:12+09:00",
+ "collectedAt": "2026-09-28T00:03:46+09:00",
  "games": [
   {
    "time": "06:30",
@@ -160,7 +160,10 @@
    "time": "09:00",
    "discipline": "세팍타크로",
    "event": "남자 쿼드런트 조별예선 A조",
-   "countries": [],
+   "countries": [
+    "라오스",
+    "베트남"
+   ],
    "venue": "나고야시 미즈호 파크 체육관",
    "hasKorea": false,
    "medal": false,
@@ -738,9 +741,12 @@
    "time": "10:00",
    "discipline": "세팍타크로",
    "event": "남자 쿼드런트 조별예선 B조",
-   "countries": [],
+   "countries": [
+    "대한민국",
+    "일본"
+   ],
    "venue": "나고야시 미즈호 파크 체육관",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SPKMQUADGPB000600"
@@ -2014,6 +2020,17 @@
   {
    "time": "11:00",
    "discipline": "요트",
+   "event": "남자 청소년 스키프 - 레이스 11",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SALM49ERBPREL001100"
+  },
+  {
+   "time": "11:00",
+   "discipline": "요트",
    "event": "남자 청소년 스키프 메달레이스",
    "countries": [],
    "venue": "카이요 요트 하버",
@@ -2025,17 +2042,6 @@
   {
    "time": "11:00",
    "discipline": "요트",
-   "event": "여자 스키프 메달레이스",
-   "countries": [],
-   "venue": "카이요 요트 하버",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SALW49ERFNL000100"
-  },
-  {
-   "time": "11:00",
-   "discipline": "요트",
    "event": "여자 청소년 스키프 메달레이스",
    "countries": [],
    "venue": "카이요 요트 하버",
@@ -2043,6 +2049,28 @@
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SALW49ERBFNL000100"
+  },
+  {
+   "time": "11:00",
+   "discipline": "요트",
+   "event": "혼성 딩기 - 레이스 10",
+   "countries": [],
+   "venue": "카이요 요트 하버",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SALX470PREL001000"
+  },
+  {
+   "time": "11:00",
+   "discipline": "요트",
+   "event": "혼성 딩기 - 레이스 9",
+   "countries": [],
+   "venue": "카이요 요트 하버",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SALX470PREL000900"
   },
   {
    "time": "11:00",
@@ -2109,6 +2137,39 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SALWIQFOILPREL001800"
+  },
+  {
+   "time": "11:10",
+   "discipline": "요트",
+   "event": "여자 청소년 스키프 - 레이스 11",
+   "countries": [],
+   "venue": "카이요 요트 하버",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SALW49ERBPREL001100"
+  },
+  {
+   "time": "11:10",
+   "discipline": "요트",
+   "event": "혼성 청소년 딩기 - 레이스 10",
+   "countries": [],
+   "venue": "카이요 요트 하버",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SALX470BPREL001000"
+  },
+  {
+   "time": "11:10",
+   "discipline": "요트",
+   "event": "혼성 청소년 딩기 - 레이스 9",
+   "countries": [],
+   "venue": "카이요 요트 하버",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SALX470BPREL000900"
   },
   {
    "time": "11:12",
@@ -3796,17 +3857,6 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SALWIQFOILBPREL001800"
-  },
-  {
-   "time": "14:00",
-   "discipline": "요트",
-   "event": "혼성 딩기 메달 레이스",
-   "countries": [],
-   "venue": "카이요 요트 하버",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SALX470FNL000100"
   },
   {
    "time": "14:00",
@@ -5507,28 +5557,6 @@
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026TKWM58KGFNL000100"
-  },
-  {
-   "time": "19:50",
-   "discipline": "태권도 겨루기",
-   "event": "여자 -67kg급 결승",
-   "countries": [],
-   "venue": "도요하시 체육관",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TKWW67KGFNL000100"
-  },
-  {
-   "time": "20:05",
-   "discipline": "태권도 겨루기",
-   "event": "남자 -80kg급 결승",
-   "countries": [],
-   "venue": "도요하시 체육관",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026TKWM80KGFNL000100"
   }
  ]
 }

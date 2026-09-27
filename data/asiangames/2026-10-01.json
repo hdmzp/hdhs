@@ -1,6 +1,6 @@
 {
  "date": "2026-10-01",
- "collectedAt": "2026-09-27T09:12:12+09:00",
+ "collectedAt": "2026-09-28T00:03:46+09:00",
  "games": [
   {
    "time": "06:30",
@@ -94,7 +94,10 @@
    "time": "09:00",
    "discipline": "세팍타크로",
    "event": "남자 쿼드런트 조별예선 A조",
-   "countries": [],
+   "countries": [
+    "인도",
+    "베트남"
+   ],
    "venue": "나고야시 미즈호 파크 체육관",
    "hasKorea": false,
    "medal": false,
@@ -1007,7 +1010,10 @@
    "time": "10:00",
    "discipline": "세팍타크로",
    "event": "남자 쿼드런트 조별예선 B조",
-   "countries": [],
+   "countries": [
+    "인도네시아",
+    "싱가포르"
+   ],
    "venue": "나고야시 미즈호 파크 체육관",
    "hasKorea": false,
    "medal": false,
@@ -2224,28 +2230,6 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SALWIQFOILBPREL001400"
-  },
-  {
-   "time": "11:00",
-   "discipline": "요트",
-   "event": "혼성 청소년 딩기 - 레이스 10",
-   "countries": [],
-   "venue": "카이요 요트 하버",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SALX470BPREL001000"
-  },
-  {
-   "time": "11:00",
-   "discipline": "요트",
-   "event": "혼성 청소년 딩기 - 레이스 9",
-   "countries": [],
-   "venue": "카이요 요트 하버",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SALX470BPREL000900"
   },
   {
    "time": "11:00",
@@ -3916,7 +3900,10 @@
    "time": "14:00",
    "discipline": "세팍타크로",
    "event": "남자 쿼드런트 조별예선 A조",
-   "countries": [],
+   "countries": [
+    "미얀마",
+    "인도"
+   ],
    "venue": "나고야시 미즈호 파크 체육관",
    "hasKorea": false,
    "medal": false,
@@ -3944,6 +3931,28 @@
    "medal": false,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026CMPMINDIVIDSFNL000100"
+  },
+  {
+   "time": "14:00",
+   "discipline": "요트",
+   "event": "여자 스키프 - 레이스 11",
+   "countries": [],
+   "venue": "카이요 요트 하버",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SALW49ERPREL001100"
+  },
+  {
+   "time": "14:00",
+   "discipline": "요트",
+   "event": "여자 스키프 메달레이스",
+   "countries": [],
+   "venue": "카이요 요트 하버",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SALW49ERFNL000100"
   },
   {
    "time": "14:00",
@@ -4021,6 +4030,17 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026HOCMTEAM11PLC000200"
+  },
+  {
+   "time": "14:10",
+   "discipline": "요트",
+   "event": "남자 스키프 - 레이스 11",
+   "countries": [],
+   "venue": "카이요 요트 하버",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SALM49ERPREL001100"
   },
   {
    "time": "14:10",
@@ -4189,7 +4209,10 @@
    "time": "15:00",
    "discipline": "세팍타크로",
    "event": "남자 쿼드런트 조별예선 B조",
-   "countries": [],
+   "countries": [
+    "싱가포르",
+    "일본"
+   ],
    "venue": "나고야시 미즈호 파크 체육관",
    "hasKorea": false,
    "medal": false,
