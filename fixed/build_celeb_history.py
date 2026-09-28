@@ -210,6 +210,27 @@ def product_name_key(product: dict) -> str:
     return re.sub(r"\s+", "", product.get("name") or "").lower()
 
 
+def fold_time_unknown(products: list, extras: list) -> list:
+    """방송 시각을 못 읽은 상품(extras)을 같은 날 시각 있는 회차(products)에 합친다.
+    이미 있는 상품(코드 -> 이름 순 대조)은 건너뛰고, 새로 붙는 상품엔
+    time_unknown=True를 달아 화면에 '시간확인필요' 배지를 띄운다.
+
+    채널/프로그램 무관. 방송이 시작되면 상세페이지 라벨이 "9/28(월) 방송상품"처럼
+    시각 없는 표기로 바뀌는데(HD), 그걸 별도 회차로 두면 같은 날 방송이
+    '19:30 방송'과 '방송' 두 개로 갈라져 보였다 (2026-09-28 황정민쇼)."""
+    codes = {product_code(p) for p in products} - {""}
+    names = {product_name_key(p) for p in products} - {""}
+    out = list(products)
+    for p in extras:
+        code, name = product_code(p), product_name_key(p)
+        if (code and code in codes) or (name and name in names):
+            continue
+        out.append({**p, "time_unknown": True})
+        codes.add(code)
+        names.add(name)
+    return out
+
+
 def diff_products(kept: list, new: list):
     """기존 기록과 새 수집분을 상품 단위로 대조한다.
     같은 상품인지는 상품코드 -> 상품명 순으로 본다.
@@ -394,9 +415,10 @@ def collect_current_broadcasts(today: date) -> dict:
                 # 같은 날짜에 시각 있는 라벨과 없는 라벨이 섞여 들어오는 회사가 있다
                 # (HD: "09/02(수) 19:30 방송" + "9/2(수) 방송상품"). 정정 게이트가
                 # 라벨의 HH:MM으로 회차를 특정하므로, 시각 없는 상품은 그 날의
-                # 첫 회차에 붙여 시각 있는 라벨을 쓰게 한다.
+                # 첫 회차에 붙여 시각 있는 라벨을 쓰게 한다. 겹치는 상품은 빼고
+                # 새로 붙는 상품은 '시간확인필요'로 표시한다.
                 if timeless and start_hm == min(slots):
-                    products = products + timeless
+                    products = fold_time_unknown(products, timeless)
                 by_date[broadcast_key(brod_date.isoformat(), start_hm)] = {
                     "date": brod_date.isoformat(),
                     "label": make_broadcast_label(brod_date, start_hm),
@@ -505,6 +527,52 @@ def merge_into_month(existing: dict, program_key: str, meta: dict,
               f"흡수돼 제거 (상품 {len(stale.get('products') or [])}건)")
         del by_date[stale_key]
 
+    # 시각 없는 회차('YYYY-MM-DD#')는 같은 날 시각 있는 회차가 있으면 거기로
+    # 합친다 (fold_time_unknown). 새 수집분·기존 기록 둘 다. 채널/프로그램 무관.
+    # 합칠 곳은 새 수집분의 회차를 먼저, 없으면 기존 기록을 쓴다. 기존 기록이
+    # 확정(final)이면 새 수집분은 안 붙인다('확정 기록은 안 건드린다' 규칙).
+    new_broadcasts = dict(new_broadcasts)
+
+    def timed_sibling(date_iso):
+        for pool in (new_broadcasts, by_date):
+            keys = sorted(k for k, b in pool.items()
+                          if k.startswith(f"{date_iso}#") and not k.endswith("#")
+                          and not b.get("off_air"))
+            if keys:
+                return pool, keys[0]
+        return None, None
+
+    for key in [k for k, b in new_broadcasts.items() if k.endswith("#") and not b.get("off_air")]:
+        date_iso = key[:-1]
+        pool, sib = timed_sibling(date_iso)
+        if not sib:
+            continue
+        target = pool[sib]
+        extras = new_broadcasts[key].get("products") or []
+        if pool is by_date and broadcast_phase(date_iso, now, target.get("label"),
+                                               meta.get("schedule_raw")) == "final":
+            print(f"[보존] {program_key} {date_iso}: 시각 없는 수집분 {len(extras)}건 - "
+                  f"같은 날 {target.get('label')}이 확정 기록이라 안 붙임")
+        else:
+            before_n = len(target.get("products") or [])
+            target["products"] = fold_time_unknown(target.get("products") or [], extras)
+            print(f"[합침] {program_key} {date_iso}: 시각 없는 상품을 {target.get('label')}에 "
+                  f"합침 (+{len(target['products']) - before_n}건 시간확인필요)")
+        del new_broadcasts[key]
+
+    for key in [k for k, b in by_date.items() if k.endswith("#") and not b.get("off_air")]:
+        date_iso = key[:-1]
+        pool, sib = timed_sibling(date_iso)
+        if not sib:
+            continue
+        stale = by_date.pop(key)
+        target = pool[sib]
+        before_n = len(target.get("products") or [])
+        target["products"] = fold_time_unknown(target.get("products") or [],
+                                               stale.get("products") or [])
+        print(f"[합침] {program_key} {date_iso}: 기존 '{stale.get('label')}' 기록을 "
+              f"{target.get('label')}에 합침 (+{len(target['products']) - before_n}건 시간확인필요)")
+
     for slot_key, broadcast in new_broadcasts.items():
         date_iso = broadcast.get("date") or slot_key.split("#", 1)[0]
         kept = by_date.get(slot_key)
@@ -578,15 +646,26 @@ def main():
             ym = (broadcast.get("date") or slot_key)[:7]
             months.setdefault(ym, {}).setdefault(program_key, {})[slot_key] = broadcast
 
-    for ym in sorted(months):
+    # 새 수집분이 없는 달/프로그램도 이번 달·지난달 파일은 한 번씩 훑어
+    # 기존 기록 정리(시각 없는 회차 합치기 등)를 적용한다.
+    this_ym = today.strftime("%Y-%m")
+    prev_ym = (today.replace(day=1) - timedelta(days=1)).strftime("%Y-%m")
+    cleanup_months = {ym for ym in (this_ym, prev_ym)
+                      if os.path.isfile(os.path.join(HISTORY_DIR, f"{ym}.json"))}
+
+    for ym in sorted(set(months) | cleanup_months):
         path = os.path.join(HISTORY_DIR, f"{ym}.json")
         existing = (load_json(path) if os.path.isfile(path) else None) or {}
         existing["month"] = ym
         existing["updated_at"] = datetime.now(KST).isoformat()
 
-        for program_key, new_broadcasts in months[ym].items():
+        month_new = months.get(ym, {})
+        for program_key, new_broadcasts in month_new.items():
             merge_into_month(existing, program_key, collected[program_key]["meta"],
                              new_broadcasts, now)
+        for prog in list(existing.get("programs") or []):
+            if prog.get("program_key") not in month_new:
+                merge_into_month(existing, prog.get("program_key"), {}, {}, now)
 
         # 프로그램 순서를 SOURCE_FILES 순서로 고정
         order = {f[:-len(".json")]: i for i, f in enumerate(SOURCE_FILES)}

@@ -3115,6 +3115,8 @@
     line-height: 1.6;
     vertical-align: 1px;
   }
+  /* 방송 시각을 못 읽은 회차/상품 */
+  .cel-verify-badge.time { background: #8B5CF6; }
 
   /* 프로그램별 가로 밴드: 세로 스크롤만으로 전체 프로그램을 훑는다 */
   .cel-band {
@@ -6837,9 +6839,13 @@ function celRenderProductRow(p) {
   // 이 상품이 나온 구간을 표시한다 ("08:20-09:20(60')").
   const timeTag = p.segment_time ? `<span class="cel-prod-time">${p.segment_time}</span>` : '';
   // CJ: 프로그램 페이지 탭엔 없고 편성표에만 있는 상품 (recj.py verify)
-  const verifyTag = p.verify
+  const verifyTag = (p.verify
     ? `<span class="cel-verify-badge" title="프로그램 페이지엔 없고 CJ 편성표에만 있는 상품이에요">확인필요</span>`
-    : '';
+    : '') +
+    // 방송 시각을 못 읽어 같은 날 회차에 일단 넣은 상품 (build_celeb_history)
+    (p.time_unknown
+      ? `<span class="cel-verify-badge time" title="방송 날짜만 확인되고 시각은 몰라 이 회차에 넣은 상품이에요">시간확인필요</span>`
+      : '');
   return (
     `<a class="cel-prod-row" href="${p.link || '#'}" target="_blank" rel="noopener noreferrer">` +
       `<div class="cel-prod-name">${timeTag}${brandTag}${p.name || ''}${verifyTag}</div>` +
@@ -7052,7 +7058,11 @@ function celRenderBand(file) {
         const items = weekMap[w].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
         const cols = items.map(b =>
           `<div class="cel-bcast${b.offAir ? ' off-air' : ''}">` +
-          `<div class="cel-date-group-label">${b.label}</div>` +
+          `<div class="cel-date-group-label">${b.label}` +
+            // 방송 시각을 못 읽어 날짜만 있는 회차 (build_celeb_history.fold_time_unknown)
+            ((!b.offAir && !/\d{1,2}:\d{2}/.test(b.label || ''))
+              ? `<span class="cel-verify-badge time" title="방송 날짜만 확인되고 시각은 모르는 회차예요">시간확인필요</span>` : '') +
+          `</div>` +
           (b.offAir ? `<div class="cel-off-air">휴방</div>` : celRenderProductList(b.products)) +
           `</div>`
         ).join('');
