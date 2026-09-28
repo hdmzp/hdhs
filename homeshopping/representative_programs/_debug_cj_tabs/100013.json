@@ -1,0 +1,586 @@
+{
+ "pgm_cd": "100013",
+ "initial_net": [
+  {
+   "url": "https://display.cjonstyle.com/m/pgmShop/100013",
+   "status": 200,
+   "type": "document",
+   "ctype": "text/html;charset=UTF-8"
+  },
+  {
+   "url": "https://image.cjonstyle.net/public/confirm/static/deploy/webjars/ec-markup-common/dist/common-cjos-mobile/others/907e3965300617104800c3ed1a16238a/css/common.cjos.mobile.min.css",
+   "status": 200,
+   "type": "stylesheet",
+   "ctype": "text/css"
+  },
+  {
+   "url": "https://image.cjonstyle.net/public/confirm/static/deploy/webjars/ec-markup-common/dist/page-cjmall-mobile/others/86700b9c28a8aeac7885bcbc8bfedc39/css/page.cjmall.mobile.homeTab.min.css",
+   "status": 200,
+   "type": "stylesheet",
+   "ctype": "text/css"
+  },
+  {
+   "url": "https://image.cjonstyle.net/public/confirm/static/deploy/webjars/ec-markup-common/dist/common-cjmall-mobile/others/b2574bcf3b59d1a21e87109272d564af/css/common.cjmall.mobile.optional.min.css",
+   "status": 200,
+   "type": "stylesheet",
+   "ctype": "text/css"
+  },
+  {
+   "url": "https://image.cjonstyle.net/public/confirm/static/deploy/webjars/ec-markup-common/dist/page-cjmall-mobile/others/86700b9c28a8aeac7885bcbc8bfedc39/css/page.cjmall.mobile.shop.min.css",
+   "status": 200,
+   "type": "stylesheet",
+   "ctype": "text/css"
+  },
+  {
+   "url": "https://image.cjonstyle.net/public/confirm/static/deploy/webjars/ec-markup-common/dist/common-cjmall-mobile/others/b2574bcf3b59d1a21e87109272d564af/css/common.cjmall.mobile.min.css",
+   "status": 200,
+   "type": "stylesheet",
+   "ctype": "text/css"
+  },
+  {
+   "url": "https://image.cjonstyle.net/public/confirm/contents/ec-static-contents/design/font/font_pretendard.css",
+   "status": 200,
+   "type": "stylesheet",
+   "ctype": "text/css"
+  },
+  {
+   "url": "https://image.cjonstyle.net/public/confirm/static/deploy/webjars/ec-static-common/dist/common-cjos-mobile/js/60587a9cff46eb8f479107fae480396f/common.cjos.mobile.util-ui.min.js",
+   "status": 200,
+   "type": "script",
+   "ctype": "text/javascript"
+  },
+  {
+   "url": "https://image.cjonstyle.net/public/confirm/static/deploy/webjars/ec-static-common/dist/common-cjmall-mobile/js/503676ba33424c3b74c8f6bbfce961b3/common.cjmall.mobile.lib.min.js",
+   "status": 200,
+   "type": "script",
+   "ctype": "text/javascript"
+  },
+  {
+   "url": "https://image.cjonstyle.net/public/confirm/static/deploy/webjars/ec-static-component/dist/component-cjmall-mobile/itembuyinfo/387a68172bc068267501d04cf7d0f166/js/component.cjmall.mobile.itembuyinfo.min.js",
+   "status": 200,
+   "type": "script",
+   "ctype": "text/javascript"
+  },
+  {
+   "url": "https://image.cjonstyle.net/public/confirm/static/deploy/webjars/ec-static-component/dist/component-cjmall-mobile/itemoption/5250874f39f933eba184d27efeabe9a4/js/component.cjmall.mobile.itemoption.min.js",
+   "status": 200,
+   "type": "script",
+   "ctype": "text/javascript"
+  },
+  {
+   "url": "https://image.cjonstyle.net/public/confirm/static/deploy/webjars/ec-static-common/dist/common-cjmall-mobile/js/793fdc12eafca9ba08fac68515d04ae3/common.cjmall.mobile.util-ui.min.js",
+   "status": 200,
+   "type": "script",
+   "ctype": "text/javascript"
+  },
+  {
+   "url": "https://image.cjonstyle.net/public/confirm/static/deploy/webjars/ec-static-component/dist/component-cjmall-mobile/video/37b5f69b43589d241fdf3cfa1e288467/js/component.cjmall.mobile.video.min.js",
+   "status": 200,
+   "type": "script",
+   "ctype": "text/javascript"
+  },
+  {
+   "url": "https://image.cjonstyle.net/public/confirm/static/deploy/webjars/ec-markup-common/dist/common-cjmall-mobile/others/b2574bcf3b59d1a21e87109272d564af/img/common/cjos/m/spinner.gif",
+   "status": 200,
+   "type": "image",
+   "ctype": "image/gif"
+  },
+  {
+   "url": "https://image.cjonstyle.net/public/confirm/static/deploy/webjars/ec-static-common/dist/common-cjos-mobile/js/32d8a23839867146109c18d7894743f6/common.cjos.mobile.lib.min.js",
+   "status": 200,
+   "type": "script",
+   "ctype": "text/javascript"
+  },
+  {
+   "url": "https://display.cjonstyle.com/c/rest/ad/scriptList",
+   "status": 200,
+   "type": "xhr",
+   "ctype": "application/json;charset=UTF-8"
+  },
+  {
+   "url": "https://www.google.com/ccm/collect?rcb=4&frm=0&apvc=1&ae=g&auid=1865651742.1790595144&dt=%EB%8F%99%EA%B0%80%EA%B2%8C%20%7C%20CJ%EC%98%A8%EC%8A%A4%ED%83%80%EC%9D%BC&en=page_view&dl=https%3A%2F%2Fdisplay.cjonstyle.com%2Fm%2FpgmShop%2F100013&scrsrc=www.googletagmanager.com&rnd=504559002.1790595144&navt",
+   "status": 200,
+   "type": "fetch",
+   "ctype": ""
+  },
+  {
+   "url": "https://image.cjonstyle.net/public/confirm/static/deploy/ec-display-cjmall/dist/page-cjmall-mobile/js/11e7bd09291d4b7d7939cf9c3ab7bd49/page.cjmall.mobile.pgmShop.min.js",
+   "status": 200,
+   "type": "script",
+   "ctype": "text/javascript"
+  },
+  {
+   "url": "https://user.cjonstyle.com/v1/login/info",
+   "status": 200,
+   "type": "xhr",
+   "ctype": "application/json"
+  },
+  {
+   "url": "https://display-frontapi.cjonstyle.com/mlc/previewList?pgmCd=100013",
+   "status": 200,
+   "type": "xhr",
+   "ctype": "application/json"
+  },
+  {
+   "url": "https://www.google-analytics.com/j/collect?v=1&_v=j102&a=742576493&t=pageview&_s=1&dl=https%3A%2F%2Fdisplay.cjonstyle.com%2Fm%2FpgmShop%2F100013&ul=en-us&dt=%EB%8F%99%EA%B0%80%EA%B2%8C%20%7C%20CJ%EC%98%A8%EC%8A%A4%ED%83%80%EC%9D%BC&sr=390x664&vp=390x664&_u=YEBAAEABAAAAACgDI~&jid=556873672&gjid=10146",
+   "status": 200,
+   "type": "xhr",
+   "ctype": "text/plain"
+  },
+  {
+   "url": "https://image.cjonstyle.net/public/confirm/static/deploy/webjars/ec-markup-common/dist/common-cjmall-mobile/others/b2574bcf3b59d1a21e87109272d564af/img/common/cjos/m/logo_fnb_purpledot.gif",
+   "status": 200,
+   "type": "image",
+   "ctype": "image/gif"
+  },
+  {
+   "url": "https://analytics.google.com/g/collect?v=2&tid=G-51EC6CKH10&gtm=45je69n1v887532144z8838392890za20gzb838392890zd838392890xf1&_p=1790595143430&_gaz=1&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=EAAAAGAC&_prs=ok&cid=1948596497.1790595145&frm=0&ir=1&pscdl=noapi&rcb=5&sr=390x664&uaa=arm&uab=64&uafvl=HeadlessChrome%",
+   "status": 204,
+   "type": "fetch",
+   "ctype": "text/plain"
+  },
+  {
+   "url": "https://www.google.com/measurement/conversion?random=1790595144875&cv=11&tid=G-51EC6CKH10&fst=1790595144875&fmt=8&en=session_start&gtm=45je69n1v887532144z8838392890za20gzb838392890zd838392890xecxf1&gcd=13l3l3l3l1l1&dma=0&tag_exp=115938466~115938469~117776796~118897920~118897930~120213116~120385422~1",
+   "status": 302,
+   "type": "fetch",
+   "ctype": "text/html; charset=UTF-8"
+  },
+  {
+   "url": "https://base.cjonstyle.com/m/rest/myzone/recentview?limit=4",
+   "status": 200,
+   "type": "xhr",
+   "ctype": "application/json;charset=UTF-8"
+  },
+  {
+   "url": "https://www.google.com/measurement/1p-conversion/?random=2146347163&cv=11&tid=G-51EC6CKH10&fst=1790595144875&fmt=8&en=session_start&gtm=45je69n1v887532144z8838392890za20gzb838392890zd838392890xecxf1&gcd=13l3l3l3l1l1&dma=0&tag_exp=115938466~115938469~117776796~118897920~118897930~120213116~120385422~",
+   "status": 200,
+   "type": "fetch",
+   "ctype": ""
+  },
+  {
+   "url": "https://gum.criteo.com/syncframe?topUrl=display.cjonstyle.com&origin=onetag",
+   "status": 200,
+   "type": "document",
+   "ctype": "text/html; charset=utf-8"
+  },
+  {
+   "url": "https://connect.facebook.net/signals/config/151903095379191?v=2.9.408&r=stable&domain=display.cjonstyle.com&im=1&hme=f9ad993bedcdbb3fffd47532e189463ba18afe816a0bd364070ce559e4a6ac26&ex_m=117%2C239%2C169%2C27%2C81%2C82%2C160%2C77%2C76%2C11%2C179%2C101%2C20%2C152%2C140%2C46%2C84%2C89%2C148%2C174%2C181",
+   "status": 200,
+   "type": "script",
+   "ctype": "application/x-javascript; charset=utf-8"
+  },
+  {
+   "url": "https://display-frontapi.cjonstyle.com/pgmShop?pgmCd=100013&pmType=M&includeOpnPreplnYn=Y&isEmployee=false",
+   "status": 200,
+   "type": "xhr",
+   "ctype": "application/json"
+  },
+  {
+   "url": "https://www.google.com/rmkt/collect/AW-739893196/?random=1790595145158&cv=11&fst=1790595145158&fmt=8&bg=ffffff&guid=ON&async=1&gtm=45be69n1z8838392890za20gzb838392890zd838392890xeaxf1&gcd=13l3l3l3l1l1&dma=0&tag_exp=115938466~115938469~117776796~118897920~118897930~119404696~120385422~120469145~12046",
+   "status": 200,
+   "type": "fetch",
+   "ctype": ""
+  },
+  {
+   "url": "https://www.google.com/ccm/collect?rcb=7&frm=0&apvc=0&ae=g&auid=1865651742.1790595144&dt=%EB%8F%99%EA%B0%80%EA%B2%8C%20%7C%20CJ%EC%98%A8%EC%8A%A4%ED%83%80%EC%9D%BC&tid=AW-AW-739893196&dl=https%3A%2F%2Fdisplay.cjonstyle.com%2Fm%2FpgmShop%2F100013&scrsrc=www.googletagmanager.com&rnd=504559002.17905951",
+   "status": 200,
+   "type": "fetch",
+   "ctype": ""
+  },
+  {
+   "url": "https://base.cjonstyle.com/c/rest/switchCache/getValue?key=USE_LEGACY_ORDER",
+   "status": 200,
+   "type": "xhr",
+   "ctype": "application/json;charset=UTF-8"
+  },
+  {
+   "url": "https://googleads.g.doubleclick.net/pagead/viewthroughconversion/AW-739893196/?random=1790595145158&cv=11&fst=1790595145158&bg=ffffff&guid=ON&async=1&gtm=45be69n1z8838392890za20gzb838392890zd838392890xeaxf1&gcd=13l3l3l3l1l1&dma=0&tag_exp=115938466~115938469~117776796~118897920~118897930~119404696~12",
+   "status": 200,
+   "type": "script",
+   "ctype": "text/javascript; charset=UTF-8"
+  },
+  {
+   "url": "https://image.cjonstyle.net/public/confirm/contents/ec-static-contents/design/img/cjonstyle/default_bnr_mo.png",
+   "status": 200,
+   "type": "image",
+   "ctype": "image/png"
+  },
+  {
+   "url": "https://www.google.com/ccm/collect?rcb=3&frm=0&apvc=0&ae=g&auid=1865651742.1790595144&dt=%EB%8F%99%EA%B0%80%EA%B2%8C%20%7C%20CJ%EC%98%A8%EC%8A%A4%ED%83%80%EC%9D%BC&tid=AW-AW-951197791&dl=https%3A%2F%2Fdisplay.cjonstyle.com%2Fm%2FpgmShop%2F100013&scrsrc=www.googletagmanager.com&rnd=504559002.17905951",
+   "status": 200,
+   "type": "fetch",
+   "ctype": ""
+  },
+  {
+   "url": "https://www.google.com/rmkt/collect/AW-951197791/?random=1790595145225&cv=11&fst=1790595145225&fmt=8&bg=ffffff&guid=ON&async=1&gtm=45be69n1z8838392890za20gzb838392890zd838392890xeaxf1&gcd=13l3l3l3l1l1&dma=0&tag_exp=115616986~115938466~115938468~117776796~118897920~118897930~120385422~120469145~12046",
+   "status": 200,
+   "type": "fetch",
+   "ctype": ""
+  },
+  {
+   "url": "https://googleads.g.doubleclick.net/pagead/viewthroughconversion/AW-951197791/?random=1790595145225&cv=11&fst=1790595145225&bg=ffffff&guid=ON&async=1&gtm=45be69n1z8838392890za20gzb838392890zd838392890xeaxf1&gcd=13l3l3l3l1l1&dma=0&tag_exp=115616986~115938466~115938468~117776796~118897920~118897930~12",
+   "status": 200,
+   "type": "script",
+   "ctype": "text/javascript; charset=UTF-8"
+  },
+  {
+   "url": "https://ga-cjonstyle.com/v4/record",
+   "status": 200,
+   "type": "fetch",
+   "ctype": "application/json"
+  },
+  {
+   "url": "https://www.google.com/pagead/1p-user-list/AW-739893196/?random=1790595145158&cv=11&fst=1790593200000&bg=ffffff&guid=ON&async=1&gtm=45be69n1z8838392890za20gzb838392890zd838392890xeaxf1&gcd=13l3l3l3l1l1&dma=0&tag_exp=115938466~115938469~117776796~118897920~118897930~119404696~120385422~120469145~1204",
+   "status": 200,
+   "type": "image",
+   "ctype": "image/gif"
+  },
+  {
+   "url": "https://www.google.com/pagead/1p-user-list/AW-951197791/?random=1790595145225&cv=11&fst=1790593200000&bg=ffffff&guid=ON&async=1&gtm=45be69n1z8838392890za20gzb838392890zd838392890xeaxf1&gcd=13l3l3l3l1l1&dma=0&tag_exp=115616986~115938466~115938468~117776796~118897920~118897930~120385422~120469145~1204",
+   "status": 200,
+   "type": "image",
+   "ctype": "image/gif"
+  },
+  {
+   "url": "https://display-frontapi.cjonstyle.com/brand/zzim/list",
+   "status": 200,
+   "type": "xhr",
+   "ctype": "application/json"
+  },
+  {
+   "url": "https://gum.criteo.com/sid/json?origin=onetag&v=1&domain=cjonstyle.com&sn=SafariSyncframe&so=undefined&topUrl=https%3A%2F%2Fdisplay.cjonstyle.com&nic=3GT5MnxvS0NDazNKSGRFZFpjaFNtdGdLcGlLNU5FWEtJWGdFRm9MK3orZUVoQmFEd256Mkg3amxlcDN6TGI4TThwVEtvSFRCWHViUUpsUFpuMVhORlpkend1MVRtQnJZeE9Ka0k3MU53VDc0TitiQX",
+   "status": 200,
+   "type": "fetch",
+   "ctype": "application/json; charset=utf-8"
+  },
+  {
+   "url": "https://display-frontapi.cjonstyle.com/popup/floating/list?dispPageType=PGMSHOP&dispPageVal=100013&dispMedType=MOBILE&isEmployee=false",
+   "status": 200,
+   "type": "xhr",
+   "ctype": "application/json"
+  },
+  {
+   "url": "https://sslwidget.criteo.com/event?a=%5B129538%2C129537%2C2491%5D&v=5.50.0&p0=e%3Dce%26m%3D%255B%255D%26h%3Dsha256&p1=e%3Dce%26m%3D%255B%255D%26h%3Dmd5&p2=e%3Dexd%26site_type%3Dm&p3=e%3Dvh&p4=e%3Ddis&bundle=drXpol83JTJCcWhIbzZiRjhiJTJCWTJScG00enR6Q1ZHUlc2YUR0R29hV2VVZzlXTm1PMERsRDU4ZXZVbFlxRVBQbml3c",
+   "status": 302,
+   "type": "script",
+   "ctype": ""
+  },
+  {
+   "url": "blob:https://display.cjonstyle.com/0fa7359b-7c66-4356-a777-933c81b810db",
+   "status": 200,
+   "type": "script",
+   "ctype": "application/javascript"
+  },
+  {
+   "url": "blob:https://display.cjonstyle.com/08a9ea89-0490-4242-bd4a-04ab841ddda3",
+   "status": 200,
+   "type": "script",
+   "ctype": "application/javascript"
+  },
+  {
+   "url": "https://user.cjonstyle.com/v1/cj-one-sso/tokens",
+   "status": 200,
+   "type": "xhr",
+   "ctype": "application/json"
+  },
+  {
+   "url": "https://promotion-frontapi.cjonstyle.com/v1/pgm/shop/best-download-coupon",
+   "status": 200,
+   "type": "xhr",
+   "ctype": "application/json"
+  },
+  {
+   "url": "https://thumb.cjonstyle.net/unsafe/112x112/image.cjonstyle.net/public/confirm/assets/TSH_CMMN_CONTS/202408/14/SC0018/6e27a5a3ec9d519c1bbae9c4410b0fb8c35756f6.png",
+   "status": 200,
+   "type": "image",
+   "ctype": "image/png"
+  },
+  {
+   "url": "https://thumb.cjonstyle.net/unsafe/416x136/image.cjonstyle.net/public/confirm/assets/pgm/shop/100013/2026/9/28/d2cd1dc44d8e60b999ab4390df3889769f40209c.png",
+   "status": 200,
+   "type": "image",
+   "ctype": "image/png"
+  },
+  {
+   "url": "https://astg.widerplanet.com/delivery/wpc.php?v=1&ver=4.0&r=1&md=bs&ga=1lbkk29-1q2ae8h-1-1&ty=Home&ti=43296&device=mobile&charset=UTF-8&tc=1790595145543&loc=https%3A%2F%2Fdisplay.cjonstyle.com%2Fm%2FpgmShop%2F100013%3FpgmShopTabType%3DM&amver=20260917035426",
+   "status": 200,
+   "type": "script",
+   "ctype": "application/javascript;charset=UTF-8"
+  },
+  {
+   "url": "https://display-frontapi.cjonstyle.com/pgmShop/moduleList?tabId=P00301&pmType=M&isEmployee=false&employeeDiscountRate=0",
+   "status": 200,
+   "type": "xhr",
+   "ctype": "application/json"
+  },
+  {
+   "url": "https://widget.as.criteo.com/event?a=%5B129538%2C129537%2C2491%5D&v=5.50.0&p0=e%3Dce%26m%3D%255B%255D%26h%3Dsha256&p1=e%3Dce%26m%3D%255B%255D%26h%3Dmd5&p2=e%3Dexd%26site_type%3Dm&p3=e%3Dvh&p4=e%3Ddis&bundle=drXpol83JTJCcWhIbzZiRjhiJTJCWTJScG00enR6Q1ZHUlc2YUR0R29hV2VVZzlXTm1PMERsRDU4ZXZVbFlxRVBQbml3c",
+   "status": 200,
+   "type": "script",
+   "ctype": "application/x-javascript"
+  },
+  {
+   "url": "https://thumb.cjonstyle.net/unsafe/960x1200/image.cjonstyle.net/public/confirm/assets/pgm/shop/100013/2026/9/16/6a5d5653b984fcf1f02b90c1e09fc5d2c85d73dd.jpg",
+   "status": 200,
+   "type": "image",
+   "ctype": "image/jpeg"
+  },
+  {
+   "url": "https://thumb.cjonstyle.net/unsafe/fit-in/160x160/image.cjonstyle.net/goods_images/20/618/2090793618L.jpg?timestamp=20260811140548",
+   "status": 200,
+   "type": "image",
+   "ctype": "image/jpeg"
+  },
+  {
+   "url": "https://image.cjonstyle.net/public/confirm/contents/ec-static-contents/design/font/font/Pretendard-Regular.woff2",
+   "status": 200,
+   "type": "font",
+   "ctype": "font/woff2"
+  },
+  {
+   "url": "https://image.cjonstyle.net/public/confirm/contents/ec-static-contents/config/webInfo/cjmallWebInfo.json",
+   "status": 200,
+   "type": "xhr",
+   "ctype": "application/json"
+  },
+  {
+   "url": "https://thumb.cjonstyle.net/unsafe/112x112/image.cjonstyle.net/public/confirm/assets/TSH_CMMN_CONTS/202410/07/SC0162/9a1b0645669aa546b155f58e2d7d422bd8744e98.png",
+   "status": 200,
+   "type": "image",
+   "ctype": "image/png"
+  },
+  {
+   "url": "https://thumb.cjonstyle.net/unsafe/112x112/image.cjonstyle.net/public/confirm/assets/TSH_CMMN_CONTS/202104/19/SC0008/2191c3eecb4ecee38de8360955956f8d621215a6.jpg",
+   "status": 200,
+   "type": "image",
+   "ctype": "image/jpeg"
+  },
+  {
+   "url": "https://image.cjonstyle.net/public/confirm/contents/ec-static-contents/design/font/font/Pretendard-Bold.woff2",
+   "status": 200,
+   "type": "font",
+   "ctype": "font/woff2"
+  },
+  {
+   "url": "https://bc.ad.daum.net/bc?d=%7B%22track_id%22%3A%222425877519854751000%22%2C%22event_code%22%3A%22PageView%22%2C%22params%22%3A%7B%7D%2C%22props%22%3A%7B%22lmt%22%3A%22N%22%7D%2C%22site%22%3A%7B%22identifier%22%3A%22display.cjonstyle.com%22%7D%2C%22sdk%22%3A%7B%22type%22%3A%22WEB%22%2C%22version%22%",
+   "status": 204,
+   "type": "fetch",
+   "ctype": ""
+  },
+  {
+   "url": "https://image.cjonstyle.net/public/confirm/contents/ec-static-contents/design/font/font/Pretendard-SemiBold.woff2",
+   "status": 200,
+   "type": "font",
+   "ctype": "font/woff2"
+  },
+  {
+   "url": "https://image.cjonstyle.net/public/confirm/static/deploy/webjars/ec-markup-common/dist/page-cjmall-mobile/others/86700b9c28a8aeac7885bcbc8bfedc39/img/common/cjmall/m/img_profile_default.png",
+   "status": 200,
+   "type": "image",
+   "ctype": "image/png"
+  },
+  {
+   "url": "https://thumb.cjonstyle.net/unsafe/76x76/image.cjonstyle.net/public/confirm/assets/module/MCOM01A/2026/9/1/7ef88feb98d2f47e3a8b5cad82da4e87ff322865.png",
+   "status": 200,
+   "type": "image",
+   "ctype": "image/png"
+  },
+  {
+   "url": "https://live-ch1.cjonstyle.net/cjmalllive/_definst_/stream1/playlist.m3u8",
+   "status": 200,
+   "type": "media",
+   "ctype": "application/vnd.apple.mpegurl"
+  },
+  {
+   "url": "https://thumb.cjonstyle.net/unsafe/720x864/upload-files.cjonstyle.net/public/confirm/assets/community/202609/03/1788411008741/fa74b89b110c4e4a5c064f2008e53c3d.jpeg",
+   "status": 200,
+   "type": "image",
+   "ctype": "image/jpeg"
+  },
+  {
+   "url": "https://thumb.cjonstyle.net/unsafe/200x200/image.cjonstyle.net/goods_images/20/618/2090793618L.jpg?timestamp=20260928203150",
+   "status": 200,
+   "type": "image",
+   "ctype": "image/jpeg"
+  },
+  {
+   "url": "https://display-frontapi.cjonstyle.com/appPush/broadcastList",
+   "status": 200,
+   "type": "xhr",
+   "ctype": "application/json"
+  },
+  {
+   "url": "https://thumb.cjonstyle.net/unsafe/200x200/image.cjonstyle.net/goods_images/20/621/2091782621L.jpg?timestamp=20260928203150",
+   "status": 200,
+   "type": "image",
+   "ctype": "image/jpeg"
+  },
+  {
+   "url": "https://live-ch1.cjonstyle.net/cjmalllive/_definst_/stream1/chunklist.m3u8",
+   "status": 200,
+   "type": "media",
+   "ctype": "application/vnd.apple.mpegurl"
+  },
+  {
+   "url": "https://thumb.cjonstyle.net/unsafe/200x200/image.cjonstyle.net/goods_images/20/619/2092060619L.jpg?timestamp=20260928203150",
+   "status": 200,
+   "type": "image",
+   "ctype": "image/png"
+  },
+  {
+   "url": "https://thumb.cjonstyle.net/unsafe/200x200/image.cjonstyle.net/goods_images/20/174/2091144174L.jpg?timestamp=20260928203150",
+   "status": 200,
+   "type": "image",
+   "ctype": "image/png"
+  },
+  {
+   "url": "https://live-ch1.cjonstyle.net/cjmalllive/_definst_/stream1/media-udz3x02n3_599555.ts",
+   "status": 200,
+   "type": "media",
+   "ctype": "video/MP2T"
+  },
+  {
+   "url": "https://display.cjonstyle.com/cdn-cgi/rum?",
+   "status": 204,
+   "type": "xhr",
+   "ctype": "text/plain"
+  },
+  {
+   "url": "https://live-ch1.cjonstyle.net/cjmalllive/_definst_/stream1/media-udz3x02n3_599556.ts",
+   "status": 200,
+   "type": "media",
+   "ctype": "video/MP2T"
+  }
+ ],
+ "tabs": [
+  {
+   "label": "10/03(토) 08:20",
+   "trace": [
+    {
+     "i": 0,
+     "visible": true,
+     "html": "<strong class=\"txt_date\">10/03(토) 08:20</strong>",
+     "clicked": true
+    }
+   ],
+   "net": [
+    {
+     "url": "https://live-ch1.cjonstyle.net/cjmalllive/_definst_/stream1/media-udz3x02n3_599557.ts",
+     "status": 200,
+     "type": "media",
+     "ctype": "video/MP2T"
+    },
+    {
+     "url": "https://image.cjonstyle.net/public/confirm/static/deploy/webjars/ec-markup-common/dist/common-cjmall-mobile/others/b2574bcf3b59d1a21e87109272d564af/img/common/cjmall/m/item_ico_shorts.png",
+     "status": 200,
+     "type": "image",
+     "ctype": "image/png"
+    },
+    {
+     "url": "https://image.cjonstyle.net/public/confirm/static/deploy/webjars/ec-markup-common/dist/common-cjmall-mobile/others/b2574bcf3b59d1a21e87109272d564af/img/common/cjmall/m/sp_list.png",
+     "status": 200,
+     "type": "image",
+     "ctype": "image/png"
+    },
+    {
+     "url": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/618/2090793618L.jpg?timestamp=20260811140548",
+     "status": 200,
+     "type": "image",
+     "ctype": "image/jpeg"
+    },
+    {
+     "url": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/371/2090793371L.jpg?timestamp=20260811140404",
+     "status": 200,
+     "type": "image",
+     "ctype": "image/jpeg"
+    },
+    {
+     "url": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/002/2090793002L.jpg?timestamp=20260810210606",
+     "status": 200,
+     "type": "image",
+     "ctype": "image/jpeg"
+    },
+    {
+     "url": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/626/2090750626L.jpg?timestamp=20260908133606",
+     "status": 200,
+     "type": "image",
+     "ctype": "image/png"
+    },
+    {
+     "url": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/945/2092214945L.jpg?timestamp=20260914115832",
+     "status": 200,
+     "type": "image",
+     "ctype": "image/jpeg"
+    },
+    {
+     "url": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/434/2090744434L.jpg?timestamp=20260916163454",
+     "status": 200,
+     "type": "image",
+     "ctype": "image/png"
+    },
+    {
+     "url": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/571/2091800571L.jpg?timestamp=20260914104126",
+     "status": 200,
+     "type": "image",
+     "ctype": "image/jpeg"
+    },
+    {
+     "url": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/028/2092215028L.jpg?timestamp=20260907172149",
+     "status": 200,
+     "type": "image",
+     "ctype": "image/jpeg"
+    }
+   ]
+  },
+  {
+   "label": "10/08(목) 20:45",
+   "trace": [
+    {
+     "i": 0,
+     "visible": true,
+     "html": "<strong class=\"txt_date\">10/08(목) 20:45</strong>",
+     "error": "TimeoutError('Locator.click: Timeout 5000ms exceeded.\\nCall log:\\n  - waiting for get_by_text(re.compile(r\"^\\\\s*0?10\\\\s*/\\\\s*0?8\\\\s*(\\\\([^)]*\\\\))?\\\\s*20:45\\\\s*$\")).first\\n    - locator resolved to <st"
+    },
+    {
+     "i": 1,
+     "visible": true,
+     "html": "<span class=\"txt\">10/08(목) 20:45</span>",
+     "error": "TimeoutError('Locator.click: Timeout 5000ms exceeded.\\nCall log:\\n  - waiting for get_by_text(re.compile(r\"^\\\\s*0?10\\\\s*/\\\\s*0?8\\\\s*(\\\\([^)]*\\\\))?\\\\s*20:45\\\\s*$\")).nth(1)\\n    - locator resolved to <s"
+    }
+   ],
+   "net": [
+    {
+     "url": "https://live-ch1.cjonstyle.net/cjmalllive/_definst_/stream1/chunklist.m3u8",
+     "status": 200,
+     "type": "media",
+     "ctype": "application/vnd.apple.mpegurl"
+    }
+   ]
+  },
+  {
+   "label": "10/10(토) 08:20",
+   "trace": [
+    {
+     "i": 0,
+     "visible": true,
+     "html": "<strong class=\"txt_date\">10/10(토) 08:20</strong>",
+     "error": "TimeoutError('Locator.click: Timeout 5000ms exceeded.\\nCall log:\\n  - waiting for get_by_text(re.compile(r\"^\\\\s*0?10\\\\s*/\\\\s*0?10\\\\s*(\\\\([^)]*\\\\))?\\\\s*08:20\\\\s*$\")).first\\n    - locator resolved to <s"
+    },
+    {
+     "i": 1,
+     "visible": true,
+     "html": "<span class=\"txt\">10/10(토) 08:20</span>",
+     "error": "TimeoutError('Locator.click: Timeout 5000ms exceeded.\\nCall log:\\n  - waiting for get_by_text(re.compile(r\"^\\\\s*0?10\\\\s*/\\\\s*0?10\\\\s*(\\\\([^)]*\\\\))?\\\\s*08:20\\\\s*$\")).nth(1)\\n    - locator resolved to <"
+    }
+   ],
+   "net": [
+    {
+     "url": "https://live-ch1.cjonstyle.net/cjmalllive/_definst_/stream1/chunklist.m3u8",
+     "status": 200,
+     "type": "media",
+     "ctype": "application/vnd.apple.mpegurl"
+    }
+   ]
+  }
+ ]
+}
