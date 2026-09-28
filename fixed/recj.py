@@ -213,14 +213,16 @@ def fetch_repbrands(session: requests.Session, item_cds):
 
 
 def supplement_from_schedule(session: requests.Session, config: dict, products: list,
-                             extra_labels=(), skip_labels=()):
+                             extra_labels=(), verify_labels=()):
     """products의 각 방송 타임(+ extra_labels)에 대해 편성표 itemList 전체로 보강.
 
     extra_labels: 상품은 없지만 방송 타임으로 확인된 라벨 (MSRT06에서
-    날짜 탭만 있고 itemInfoList가 비어 온 회차)."""
-    labels = [lb for lb in dict.fromkeys(
-        [p["broadcast_date_label"] for p in products] + list(extra_labels))
-        if lb not in skip_labels]
+    날짜 탭만 있고 itemInfoList가 비어 온 회차).
+    verify_labels: 페이지 탭 라인업을 직접 읽은 회차. 여기에 편성표로 덧붙인
+    상품은 페이지에 없는 상품이라 verify=True('확인필요')로 표시한다
+    (2026-09-28 동가게 10/03 '[최화정쇼픽] 기버터' - 편성표에만 있음)."""
+    labels = list(dict.fromkeys(
+        [p["broadcast_date_label"] for p in products] + list(extra_labels)))
 
     seen_codes = set()
     seen_names = set()
@@ -244,6 +246,7 @@ def supplement_from_schedule(session: requests.Session, config: dict, products: 
             continue
 
         brand_map = fetch_repbrands(session, [str(it["itemCd"]) for it in new_items])
+        verify = label in verify_labels
         for it in new_items:
             cd = str(it["itemCd"])
             seen_codes.add(cd)
@@ -251,15 +254,19 @@ def supplement_from_schedule(session: requests.Session, config: dict, products: 
             link = f"https://display.cjonstyle.com/p/item/{cd}"
             if chn:
                 link += f"?channelCode={chn}"
-            products.append({
+            product = {
                 "broadcast_date_label": label,
                 "brand": brand_map.get(cd, "") or it.get("brandName") or "",
                 "name": it.get("itemNm", ""),
                 "price": it.get("salePrice"),
                 "image": to_https(it.get("itemImgUrl") or it.get("imgUrl") or ""),
                 "link": link,
-            })
-        print(f"    -> 편성표 보강: {label} +{len(new_items)}개 (전체 {len(products)}개)")
+            }
+            if verify:
+                product["verify"] = True
+            products.append(product)
+        print(f"    -> 편성표 보강: {label} +{len(new_items)}개 (전체 {len(products)}개)"
+              + (" [확인필요]" if verify else ""))
         time.sleep(0.3)
 
 
@@ -513,19 +520,24 @@ def crawl_cj_program(session: requests.Session, config: dict):
     # CJ_live 보강분 2개만 남음 - 실제는 4개). 아직 시작 안 한 빈 탭 라벨은
     # 모아뒀다가 편성표 itemList 전체로 채운다.
     empty_future_labels = []
+    future_labels = []   # 아직 시작 안 한 날짜 탭 전부 (페이지에서 직접 읽을 대상)
     now_kst = datetime.now(KST)
     for content in content_list:
         srttb_list = content.get("srttbList") or []
         for srttb in srttb_list:
             date_label = srttb.get("srttbNm", "")
             item_list = srttb.get("itemInfoList")
+            bdate, start_hm = parse_label_datetime(date_label)
+            is_future = False
+            if bdate and start_hm:
+                hh, mi = map(int, start_hm.split(":"))
+                is_future = datetime(bdate.year, bdate.month, bdate.day, hh, mi, tzinfo=KST) > now_kst
+            if is_future:
+                future_labels.append(date_label)
             if not item_list:
                 # "지난방송상품" 등 -> itemInfoList가 null
-                bdate, start_hm = parse_label_datetime(date_label)
-                if bdate and start_hm:
-                    hh, mi = map(int, start_hm.split(":"))
-                    if datetime(bdate.year, bdate.month, bdate.day, hh, mi, tzinfo=KST) > now_kst:
-                        empty_future_labels.append(date_label)
+                if is_future:
+                    empty_future_labels.append(date_label)
                 continue
             if any(w in date_label for w in PAST_LABEL_STOP_WORDS):
                 # itemInfoList가 채워져 오는 지난방송 구좌 (휴방 주에 관측됨)
@@ -554,18 +566,20 @@ def crawl_cj_program(session: requests.Session, config: dict):
         if added:
             print(f"    -> [{code}] 구좌에서 +{added}개")
 
-    # 비어 온 날짜 탭은 페이지에서 직접 눌러 공개된 상품을 전부 가져온다
+    # 날짜 탭을 페이지에서 직접 눌러 공개된 상품을 전부 가져온다. 첫 탭도
+    # 다시 읽는다 - moduleList가 탭당 대표상품만 주는 프로그램이 있고(강주은),
+    # 페이지에서 읽은 회차여야 편성표 추가분을 '확인필요'로 가를 수 있다.
     tab_labels = set()
-    for label, bases in fetch_tabs_via_browser(pgm_cd, empty_future_labels).items():
+    for label, bases in fetch_tabs_via_browser(pgm_cd, future_labels).items():
         added = sum(1 for base in bases if add_product(label, base))
         tab_labels.add(label)
         print(f"    -> [방송 타임 진입/탭]: {label} - 상품 +{added}개")
 
     # 방송 타임당 대표상품만 온 경우를 대비해 편성표 itemList 전체로 보강
     # (탭 수집이 실패한 회차도 여기서 편성표로 채운다)
-    # 탭에서 직접 읽은 회차는 페이지 공개 라인업이 정답이라 건너뛴다. 편성표
-    # itemList엔 페이지에 없는 상품이 섞인다 (2026-09-28 동가게 10/03에
-    # '[최화정쇼픽] 기버터'가 붙음).
+    # 탭에서 직접 읽은 회차는 페이지 라인업을 먼저 담고, 편성표에만 있는 상품은
+    # 덧붙이되 '확인필요'(verify)로 표시한다 (2026-09-28 동가게 10/03
+    # '[최화정쇼픽] 기버터' - 페이지엔 없고 편성표에만 있음).
     supplement_from_schedule(session, config, products, empty_future_labels, tab_labels)
 
     # 셀럽PGM은 하루 2회 방송하는 날이 있는데(2026-09-08 오감쇼 08:15/19:30,
@@ -581,7 +595,7 @@ def crawl_cj_program(session: requests.Session, config: dict):
     # 회차는 편성표 원본(tvSchedule) itemList로 나머지 상품을 다시 채운다.
     # 이미 있는 상품코드는 건너뛰므로 기존 회차는 그대로다.
     if swept:
-        supplement_from_schedule(session, config, products, skip_labels=tab_labels)
+        supplement_from_schedule(session, config, products, verify_labels=tab_labels)
 
     # 이어지는 구간으로 쪼개져 온 회차는 한 방송으로 묶는다
     merge_continuous_slots(
