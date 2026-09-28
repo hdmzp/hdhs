@@ -289,6 +289,79 @@ def find_first_image_url(obj):
     return None
 
 
+# ============ 날짜 탭 브라우저 수집 ============
+# pgmShop moduleList는 첫 날짜 탭의 상품만 싣고, 나머지 탭은 사용자가 탭을
+# 눌러야 따로 불러온다 (2026-09-28 동가게: 10/03·10/08·10/10 탭이 비어 옴).
+# 그 API 경로를 몰라도 되도록 실제 페이지를 열어 탭을 하나씩 누르고, 누른
+# 직후 들어온 JSON 응답에서 itemBaseInfo를 모은다. 응답 URL은 로그로 남겨
+# 나중에 requests 직접 호출로 바꿀 수 있게 한다.
+PGM_SHOP_PAGE_URL = "https://display.cjonstyle.com/m/pgmShop/{pgm_cd}"
+
+
+def fetch_tabs_via_browser(pgm_cd: str, labels):
+    """{라벨: [itemBaseInfo, ...]}. playwright가 없거나 실패하면 {}."""
+    if not labels:
+        return {}
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError:
+        print("    -> [탭 수집] playwright 없음 - 건너뜀")
+        return {}
+
+    out = {}
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            context = browser.new_context(**p.devices["iPhone 13"])
+            page = context.new_page()
+            captured = []
+
+            def on_response(response):
+                if "cjonstyle" not in response.url:
+                    return
+                if "json" not in (response.headers.get("content-type") or ""):
+                    return
+                try:
+                    captured.append((response.url, response.json()))
+                except Exception:
+                    pass
+
+            page.on("response", on_response)
+            page.goto(PGM_SHOP_PAGE_URL.format(pgm_cd=pgm_cd),
+                      wait_until="networkidle", timeout=30000)
+
+            for label in labels:
+                captured.clear()
+                tab = page.get_by_text(label, exact=True).first
+                try:
+                    tab.click(timeout=5000)
+                    page.wait_for_load_state("networkidle", timeout=10000)
+                except Exception as e:
+                    print(f"    -> [탭 수집] '{label}' 탭 클릭 실패: {e!r}")
+                    continue
+                page.wait_for_timeout(500)
+
+                bases = []
+                for url, data in captured:
+                    found = []
+                    walk_collect_items(data, label, found)
+                    # 응답 안에 다른 회차 라벨이 달린 항목은 그 회차 몫이다
+                    hit = [b for lb, b in found if lb == label]
+                    if hit:
+                        print(f"    -> [탭 수집] '{label}' {len(hit)}개 <- {url.split('?')[0]}")
+                        bases.extend(hit)
+                if bases:
+                    out[label] = bases
+                else:
+                    urls = [u.split("?")[0] for u, _ in captured]
+                    print(f"    -> [탭 수집] '{label}' 상품 없음 (응답 {len(urls)}개: {urls[:5]})")
+
+            browser.close()
+    except Exception as e:
+        print(f"    -> [탭 수집] 브라우저 수집 실패: {e!r}")
+    return out
+
+
 def get_tab_id(session: requests.Session, pgm_cd: str):
     """1단계: pgmShop 기본정보 API에서 tabId + 편성텍스트 + 프로그램 이미지를 얻는다."""
     url = STEP1_URL_TEMPLATE.format(pgm_cd=pgm_cd)
@@ -434,7 +507,13 @@ def crawl_cj_program(session: requests.Session, config: dict):
         if added:
             print(f"    -> [{code}] 구좌에서 +{added}개")
 
+    # 비어 온 날짜 탭은 페이지에서 직접 눌러 공개된 상품을 전부 가져온다
+    for label, bases in fetch_tabs_via_browser(pgm_cd, empty_future_labels).items():
+        added = sum(1 for base in bases if add_product(label, base))
+        print(f"    -> [방송 타임 진입/탭]: {label} - 상품 +{added}개")
+
     # 방송 타임당 대표상품만 온 경우를 대비해 편성표 itemList 전체로 보강
+    # (탭 수집이 실패한 회차도 여기서 편성표로 채운다)
     supplement_from_schedule(session, config, products, empty_future_labels)
 
     # 셀럽PGM은 하루 2회 방송하는 날이 있는데(2026-09-08 오감쇼 08:15/19:30,
