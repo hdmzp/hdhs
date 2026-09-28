@@ -308,18 +308,34 @@ def tab_label_pattern(label: str):
         rf"^\s*0?{bdate.month}\s*/\s*0?{bdate.day}\s*(\([^)]*\))?\s*{re.escape(start_hm)}\s*$")
 
 
-def click_visible(page, pattern) -> bool:
-    """패턴에 맞는 요소 중 화면에 보이는 첫 번째를 누른다."""
+def click_visible(page, pattern, trace=None) -> bool:
+    """패턴에 맞는 요소 중 화면에 보이는 첫 번째를 누른다.
+    trace(list)를 주면 후보별 상태를 남긴다 (디버그 덤프용)."""
     loc = page.get_by_text(pattern)
-    for i in range(min(loc.count(), 10)):
+    count = loc.count()
+    for i in range(min(count, 20)):
         el = loc.nth(i)
+        info = {"i": i}
         try:
-            if el.is_visible():
+            info["visible"] = el.is_visible()
+            info["html"] = (el.evaluate("e => e.outerHTML") or "")[:300]
+            if info["visible"]:
+                el.scroll_into_view_if_needed(timeout=3000)
                 el.click(timeout=5000)
+                info["clicked"] = True
+                if trace is not None:
+                    trace.append(info)
                 return True
-        except Exception:
-            continue
+        except Exception as e:
+            info["error"] = repr(e)[:200]
+        if trace is not None:
+            trace.append(info)
+    if trace is not None and not count:
+        trace.append({"count": 0})
     return False
+
+
+DEBUG_DUMP_DIR = os.path.join(OUTPUT_DIR, "_debug_cj_tabs")
 
 
 def fetch_tabs_via_browser(pgm_cd: str, labels):
@@ -339,14 +355,19 @@ def fetch_tabs_via_browser(pgm_cd: str, labels):
             context = browser.new_context(**p.devices["iPhone 13"])
             page = context.new_page()
             captured = []
+            netlog = []   # 디버그: 탭 클릭 뒤 오간 모든 요청
 
             def on_response(response):
                 if "cjonstyle" not in response.url:
                     return
-                if "json" not in (response.headers.get("content-type") or ""):
+                ctype = response.headers.get("content-type") or ""
+                netlog.append({"url": response.url[:300], "status": response.status,
+                               "type": response.request.resource_type, "ctype": ctype[:60]})
+                if response.request.resource_type not in ("xhr", "fetch") and "json" not in ctype:
                     return
+                # content-type이 json이 아니어도(text/plain 등) 본문이 JSON이면 쓴다
                 try:
-                    captured.append((response.url, response.json()))
+                    captured.append((response.url, json.loads(response.text())))
                 except Exception:
                     pass
 
@@ -357,10 +378,22 @@ def fetch_tabs_via_browser(pgm_cd: str, labels):
                       wait_until="domcontentloaded", timeout=30000)
             page.wait_for_timeout(4000)
 
-            for label in labels:
+            debug = {"pgm_cd": pgm_cd, "initial_net": list(netlog), "tabs": []}
+            os.makedirs(DEBUG_DUMP_DIR, exist_ok=True)
+            try:
+                with open(os.path.join(DEBUG_DUMP_DIR, f"{pgm_cd}_0_initial.html"), "w", encoding="utf-8") as f:
+                    f.write(page.content())
+            except Exception:
+                pass
+
+            for idx, label in enumerate(labels, 1):
                 captured.clear()
+                netlog.clear()
+                trace = []
+                tab_debug = {"label": label, "trace": trace, "net": netlog}
+                debug["tabs"].append(tab_debug)
                 try:
-                    clicked = click_visible(page, tab_label_pattern(label))
+                    clicked = click_visible(page, tab_label_pattern(label), trace)
                 except Exception as e:
                     print(f"    -> [탭 수집] '{label}' 탭 클릭 오류: {e!r}")
                     continue
@@ -374,6 +407,12 @@ def fetch_tabs_via_browser(pgm_cd: str, labels):
                     print(f"    -> [탭 수집] '{label}' 탭 못 찾음 (화면 날짜 문구: {near})")
                     continue
                 page.wait_for_timeout(2500)
+                tab_debug["net"] = list(netlog)
+                try:
+                    with open(os.path.join(DEBUG_DUMP_DIR, f"{pgm_cd}_{idx}.html"), "w", encoding="utf-8") as f:
+                        f.write(page.content())
+                except Exception:
+                    pass
 
                 bases = []
                 for url, data in captured:
@@ -389,7 +428,14 @@ def fetch_tabs_via_browser(pgm_cd: str, labels):
                 else:
                     urls = [u.split("?")[0] for u, _ in captured]
                     print(f"    -> [탭 수집] '{label}' 상품 없음 (응답 {len(urls)}개: {urls[:5]})")
+                    print(f"       네트워크 {len(netlog)}건: {[n['url'].split('?')[0] for n in netlog][:8]}")
 
+            # 탭 구조/응답 경로를 맞추기 위한 덤프 (셀렉터가 안정되면 제거)
+            try:
+                with open(os.path.join(DEBUG_DUMP_DIR, f"{pgm_cd}.json"), "w", encoding="utf-8") as f:
+                    json.dump(debug, f, ensure_ascii=False, indent=1)
+            except Exception:
+                pass
             browser.close()
     except Exception as e:
         print(f"    -> [탭 수집] 브라우저 수집 실패: {e!r}")
