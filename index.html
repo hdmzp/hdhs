@@ -3088,6 +3088,34 @@
   }
   .cel-new-badge.soon { background: var(--brand-blue); }
 
+  /* 셀럽PGM 밴드 헤더: 중간 편입 프로그램의 수집 시작 월 */
+  .cel-since-badge {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 0 6px;
+    border-radius: 999px;
+    border: 1px solid currentColor;
+    color: var(--brand-blue);
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1.6;
+    vertical-align: 1px;
+  }
+
+  /* 셀럽PGM 상품: CJ 편성표에만 있고 프로그램 페이지엔 없는 상품 */
+  .cel-verify-badge {
+    display: inline-block;
+    margin-left: 4px;
+    padding: 0 4px;
+    border-radius: 3px;
+    background: #F59E0B;
+    color: #fff;
+    font-size: 9px;
+    font-weight: 800;
+    line-height: 1.6;
+    vertical-align: 1px;
+  }
+
   /* 프로그램별 가로 밴드: 세로 스크롤만으로 전체 프로그램을 훑는다 */
   .cel-band {
     display: flex;
@@ -6808,9 +6836,13 @@ function celRenderProductRow(p) {
   // 롯데처럼 한 방송이 구간별로 쪼개져 편성되는 경우, 묶인 회차 안에서
   // 이 상품이 나온 구간을 표시한다 ("08:20-09:20(60')").
   const timeTag = p.segment_time ? `<span class="cel-prod-time">${p.segment_time}</span>` : '';
+  // CJ: 프로그램 페이지 탭엔 없고 편성표에만 있는 상품 (recj.py verify)
+  const verifyTag = p.verify
+    ? `<span class="cel-verify-badge" title="프로그램 페이지엔 없고 CJ 편성표에만 있는 상품이에요">확인필요</span>`
+    : '';
   return (
     `<a class="cel-prod-row" href="${p.link || '#'}" target="_blank" rel="noopener noreferrer">` +
-      `<div class="cel-prod-name">${timeTag}${brandTag}${p.name || ''}</div>` +
+      `<div class="cel-prod-name">${timeTag}${brandTag}${p.name || ''}${verifyTag}</div>` +
       (priceText ? `<div class="cel-prod-price">${priceText}</div>` : '') +
     `</a>`
   );
@@ -7048,6 +7080,11 @@ function celRenderBand(file) {
       : `<span class="cel-thumb-ph">${(meta.title || '?')[0]}</span>`) +
     `</div>`;
   const newBadge = celLaunchBadgeHtml(file);
+  // 중간 편입 프로그램: 언제부터 수집했는지 표시 ('2026-10' -> "'26.10부터 수집")
+  const sinceYm = CEL_START_MONTH[file];
+  const sinceBadge = sinceYm
+    ? `<span class="cel-since-badge" title="셀럽PGM 탭에는 이 달부터 수집해요">'${sinceYm.slice(2, 4)}.${sinceYm.slice(5, 7)}부터 수집</span>`
+    : '';
   const titleHtml = meta.detail_link
     ? `<a class="cel-col-title" href="${meta.detail_link}" target="_blank" rel="noopener noreferrer">${meta.title}${newBadge} ↗</a>`
     : `<div class="cel-col-title">${meta.title}${newBadge}</div>`;
@@ -7060,7 +7097,9 @@ function celRenderBand(file) {
           (meta.company ? `<span class="cel-col-co ${coCls}">${meta.company}</span>` : '') +
           titleHtml +
           (meta.schedule_raw ? `<div class="cel-col-sched">${normalizeScheduleRaw(meta.schedule_raw)}</div>` : '') +
-          (bcastCnt ? `<div class="cel-band-cnt">이번 달 방송 <b>${bcastCnt}회</b>${brandCnt ? ` · 브랜드 <b>${brandCnt}개</b>` : ''}</div>` : '') +
+          ((bcastCnt || sinceBadge)
+            ? `<div class="cel-band-cnt">${bcastCnt ? `이번 달 방송 <b>${bcastCnt}회</b>${brandCnt ? ` · 브랜드 <b>${brandCnt}개</b>` : ''}` : ''}${sinceBadge}</div>`
+            : '') +
           celFailBadgeHtml(file) +
         `</div>` +
       `</div>` +
