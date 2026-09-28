@@ -298,6 +298,30 @@ def find_first_image_url(obj):
 PGM_SHOP_PAGE_URL = "https://display.cjonstyle.com/m/pgmShop/{pgm_cd}"
 
 
+def tab_label_pattern(label: str):
+    """'10/08(목) 20:45' -> 날짜와 시각이 다른 요소로 나뉘어 공백 없이 붙거나
+    줄바꿈이 끼어도 맞는 정규식 (2026-09-28 강주은 탭이 exact 텍스트로 안 잡힘)."""
+    bdate, start_hm = parse_label_datetime(label)
+    if not bdate:
+        return re.compile(r"^\s*" + re.escape(label) + r"\s*$")
+    return re.compile(
+        rf"^\s*0?{bdate.month}\s*/\s*0?{bdate.day}\s*(\([^)]*\))?\s*{re.escape(start_hm)}\s*$")
+
+
+def click_visible(page, pattern) -> bool:
+    """패턴에 맞는 요소 중 화면에 보이는 첫 번째를 누른다."""
+    loc = page.get_by_text(pattern)
+    for i in range(min(loc.count(), 10)):
+        el = loc.nth(i)
+        try:
+            if el.is_visible():
+                el.click(timeout=5000)
+                return True
+        except Exception:
+            continue
+    return False
+
+
 def fetch_tabs_via_browser(pgm_cd: str, labels):
     """{라벨: [itemBaseInfo, ...]}. playwright가 없거나 실패하면 {}."""
     if not labels:
@@ -327,19 +351,29 @@ def fetch_tabs_via_browser(pgm_cd: str, labels):
                     pass
 
             page.on("response", on_response)
+            # 페이지가 폴링/로그 요청을 계속 보내 networkidle은 안 온다
+            # (2026-09-28 동가게·김창옥 goto 30초 타임아웃)
             page.goto(PGM_SHOP_PAGE_URL.format(pgm_cd=pgm_cd),
-                      wait_until="networkidle", timeout=30000)
+                      wait_until="domcontentloaded", timeout=30000)
+            page.wait_for_timeout(4000)
 
             for label in labels:
                 captured.clear()
-                tab = page.get_by_text(label, exact=True).first
                 try:
-                    tab.click(timeout=5000)
-                    page.wait_for_load_state("networkidle", timeout=10000)
+                    clicked = click_visible(page, tab_label_pattern(label))
                 except Exception as e:
-                    print(f"    -> [탭 수집] '{label}' 탭 클릭 실패: {e!r}")
+                    print(f"    -> [탭 수집] '{label}' 탭 클릭 오류: {e!r}")
                     continue
-                page.wait_for_timeout(500)
+                if not clicked:
+                    # 다음에 셀렉터를 맞출 수 있게 화면의 날짜 비슷한 문구를 남긴다
+                    try:
+                        body = page.inner_text("body")
+                    except Exception:
+                        body = ""
+                    near = sorted(set(re.findall(r"\d{1,2}/\d{1,2}[^\n]{0,15}", body)))[:12]
+                    print(f"    -> [탭 수집] '{label}' 탭 못 찾음 (화면 날짜 문구: {near})")
+                    continue
+                page.wait_for_timeout(2500)
 
                 bases = []
                 for url, data in captured:
