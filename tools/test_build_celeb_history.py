@@ -343,6 +343,36 @@ def test_off_air_is_sticky():
           len(existing["programs"][0]["broadcasts"][0]["products"]), 1)
 
 
+def test_time_unknown_folded():
+    """(G) 시각 없는 회차는 같은 날 시각 있는 회차에 합치고, 새 상품만 '시간확인필요'.
+    -> 2026-09-28 황정민쇼: 방송 시작 뒤 수집에서 '9/28(월) 방송상품'만 와서
+       '19:30 방송'과 '방송' 두 회차로 갈라져 보였다."""
+    meta = {"program_key": "HD_HJM", "schedule_raw": "매주 월요일 19시 30분"}
+    timed = broadcast("08/31(월) 19:35 방송", [product("부가티", "111")])
+    existing = {"programs": [{**meta, "broadcasts": [
+        timed,
+        # 이미 갈라져 쌓인 옛 기록도 합쳐져야 한다
+        broadcast("08/31(월) 방송", [product("부가티", "111"), product("남은상품", "333")]),
+    ]}]}
+    new_timeless = broadcast("08/31(월) 방송", [product("부가티", "111"), product("새상품", "222")])
+    bch.merge_into_month(existing, "HD_HJM", meta,
+                         {bch.broadcast_key("2026-08-31", None): new_timeless},
+                         at("2026-08-31T20:40:00"))
+    bcasts = existing["programs"][0]["broadcasts"]
+    check("회차 하나로 합쳐짐", [b["label"] for b in bcasts], ["08/31(월) 19:35 방송"])
+    got = {p["name"]: p.get("time_unknown", False) for p in bcasts[0]["products"]}
+    check("중복 없이 합쳐지고 새 상품만 시간확인필요", got,
+          {"부가티": False, "새상품": True, "남은상품": True})
+
+    # 같은 날 시각 있는 회차가 없으면 날짜 회차로 그대로 남는다
+    existing2 = {"programs": [{**meta, "broadcasts": []}]}
+    bch.merge_into_month(existing2, "HD_HJM", meta,
+                         {bch.broadcast_key("2026-08-31", None): broadcast("08/31(월) 방송", [product("A", "9")])},
+                         at("2026-08-31T20:40:00"))
+    check("시각 있는 회차가 없으면 날짜 회차 유지",
+          [b["label"] for b in existing2["programs"][0]["broadcasts"]], ["08/31(월) 방송"])
+
+
 def main():
     test_phase()
     test_reconcile_removal()
@@ -353,6 +383,7 @@ def main():
     test_off_air_is_sticky()
     test_same_day_two_broadcasts()
     test_absorbed_slot_removed()
+    test_time_unknown_folded()
 
     print()
     if FAILURES:

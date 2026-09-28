@@ -365,6 +365,11 @@ def check_history_regressions():
             program_key, date_iso, start_hm = key
             if not record_is_final(date_iso, now, label, schedule):
                 continue  # 방송 전 라인업 변경 / 정정 창 안의 정정은 정상
+            if key not in after and not start_hm and any(
+                    k[0] == program_key and k[1] == date_iso and k[2] for k in after):
+                # 시각 없는 회차가 같은 날 시각 있는 회차로 합쳐진 것
+                # (build_celeb_history.fold_time_unknown) - 사라진 게 아니다
+                continue
             if key not in after:
                 problems.append(
                     f"{rel_path}: [{program_key} {date_iso} {start_hm}] "
