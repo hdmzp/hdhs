@@ -123,6 +123,10 @@ PROGRAMS = [
     # 임시 표기 (API에 값이 생기면 그쪽이 우선).
     {"tab_name": "김신영", "program_title": "김신영이 산다", "pgm_cd": "100078", "output_file": "CJ_KSY.json",
      "keywords": ("김신영",), "fallback_schedule": "화 21:45"},
+    # 동가게: 목 20:45 / 토 08:20 주 2회. 셀럽PGM 탭에는 2026-10부터 편입
+    # (9월 이전 회차는 안 쌓는다 -> since보다 이른 방송일 상품은 버린다).
+    {"tab_name": "동가게", "program_title": "동가게", "pgm_cd": "100013", "output_file": "CJ_DGG.json",
+     "keywords": ("동가게",), "fallback_schedule": "목 20:45 / 토 08:20", "since": "2026-10-01"},
 ]
 # ==============================================
 
@@ -433,6 +437,17 @@ def crawl_cj_program(session: requests.Session, config: dict):
          tab_name, *config.get("keywords", ())],
         products)
 
+    # 셀럽PGM 편입일(since) 이전 회차는 버린다. 라벨 날짜를 못 읽는 상품은
+    # 남겨두면 build_celeb_history가 알아서 건너뛴다.
+    since = config.get("since")
+    if since:
+        since_date = date.fromisoformat(since)
+        before = len(products)
+        products[:] = [p for p in products
+                       if (parse_label_datetime(p.get("broadcast_date_label"))[0] or since_date) >= since_date]
+        if len(products) != before:
+            print(f"    -> 편입일({since}) 이전 회차 상품 {before - len(products)}개 제외")
+
     print(f"[{tab_name}] 수집 완료. 방송예정 상품 총 {len(products)}개")
 
     return {
@@ -471,4 +486,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main()

@@ -3632,6 +3632,7 @@
       <button class="active" data-file="CJ_CHJ.json">최화정쇼</button>
       <button class="active" data-file="GS_BJY.json">지금 백지연</button>
       <button class="active" data-file="LT_CYR.json">최유라쇼</button>
+      <button class="active" data-file="CJ_DGG.json">동가게</button>
       <button class="active" data-file="GS_SYJ.json">소유진쇼</button>
       <button class="active" data-file="CJ_SIH.json">소이현 겟잇스타일</button>
       <button class="active" data-file="HD_WYE.json">왕영은 톡투게더</button>
@@ -6561,11 +6562,17 @@ document.getElementById('pmMonthPicker').addEventListener('change', (e) => {
 // ※ 김신영이 산다는 8/18(화) 21:45 론칭 후 연간 10회 내외 비정기 편성이라
 //   요일·시간대가 유동적 - 우선 론칭 시간대(화 21:45) 자리에 둔다.
 // ※ 최은경쇼는 2026-08 신규 편성 (HD, 수 19:30)
+// ※ 동가게(CJ, 목 20:45 / 토 08:20)는 2026-10부터 편입 - 최유라쇼와 같은 시간대
 const CEL_FILES = [
   "HD_HJM.json", "CJ_KJE.json", "HD_OGS.json", "CJ_KCO.json", "CJ_KSY.json",
-  "HD_CEK.json", "CJ_CHJ.json", "GS_BJY.json", "LT_CYR.json", "GS_SYJ.json",
-  "CJ_SIH.json", "HD_WYE.json"
+  "HD_CEK.json", "CJ_CHJ.json", "GS_BJY.json", "LT_CYR.json", "CJ_DGG.json",
+  "GS_SYJ.json", "CJ_SIH.json", "HD_WYE.json"
 ];
+// 중간에 편입된 프로그램: 이 달 이전을 조회하면 밴드 자체를 안 그린다
+// (편입 전 달은 수집하지 않으므로 빈 밴드만 남는다).
+const CEL_START_MONTH = {
+  'CJ_DGG.json': '2026-10',
+};
 // 신규 론칭 프로그램 배지. 론칭일 전에는 '론칭예정', 론칭 후
 // CEL_NEW_BADGE_DAYS일 동안 'NEW'를 붙이고 그 뒤엔 저절로 사라진다
 // (기간이 지난 뒤 배지를 지우러 다시 손댈 필요가 없게 날짜 기준으로 판단).
@@ -7079,7 +7086,9 @@ function celRenderCompare() {
   celRenderUpdated();
   celRenderFailNotice();
 
-  const selected = CEL_FILES.filter(f => celSelectedFiles.has(f));
+  const viewMonth = celMonth || celThisMonth();
+  const selected = CEL_FILES.filter(f => celSelectedFiles.has(f)
+    && !(CEL_START_MONTH[f] && viewMonth < CEL_START_MONTH[f]));
   if (selected.length === 0) {
     wrap.innerHTML = '<div class="cel-empty">비교할 셀럽PGM을 선택하세요 (여러 개 중복 선택 가능)</div>';
     return;

@@ -122,6 +122,7 @@ SPECS = {
         # 김신영이 산다: 연 10회 내외 비정기 편성이라 방송 예정이 없는 기간엔
         # pgmShop에 상품이 안 걸린다 -> 갱신 누락을 실패로 보지 않는다
         (f"{REP}/CJ_KSY.json", count_products, 0, False),
+        (f"{REP}/CJ_DGG.json", count_products, 0, True),
         (f"{REP}/merged.json", count_merged_programs, 8, True),
     ],
     "fixed": [
@@ -141,6 +142,7 @@ PRODUCER = {
     "LT_CYR": "fixed/relt.py",
     "CJ_KJE": "fixed/recj.py", "CJ_CHJ": "fixed/recj.py",
     "CJ_KCO": "fixed/recj.py", "CJ_SIH": "fixed/recj.py", "CJ_KSY": "fixed/recj.py",
+    "CJ_DGG": "fixed/recj.py",
     "HD": "fixed/hd_fixed_programs.py", "GS": "fixed/gs_fixed_programs.py",
     "CJ": "fixed/cj_fixed_programs.py", "LT": "fixed/lt_fixed_programs.py",
 }

@@ -51,7 +51,7 @@ jobs:
         echo "GS 지금 백지연 수집 시작..."
         python tools/run_step.py fixed/regs.py
 
-        echo "CJ 대표 PGM(강주은, 최화정, 김창옥) 수집 시작..."
+        echo "CJ 대표 PGM(강주은, 최화정, 김창옥, 소이현, 김신영, 동가게) 수집 시작..."
         python tools/run_step.py fixed/recj.py
 
         echo "HD 대표 PGM(황정민쇼, 오감쇼) 수집 시작..."
