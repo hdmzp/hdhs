@@ -1,39 +1,41 @@
 {
  "date": "2026-09-29",
- "collectedAt": "2026-09-28T09:17:11+09:00",
+ "collectedAt": "2026-09-29T03:02:44+09:00",
  "games": [
   {
    "time": "07:00",
    "discipline": "서핑",
-   "event": "남자 준결승 - 1조",
-   "countries": [],
+   "event": "남자 8강 - 1조",
+   "countries": [
+    "대한민국"
+   ],
    "venue": "퍼시픽 롱비치",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SRFMSHORTBRDSFNL000100"
+   "link": "https://m.sports.naver.com/game/2026SRFMSHORTBRDQFNL000100"
   },
   {
-   "time": "07:36",
+   "time": "07:28",
    "discipline": "서핑",
-   "event": "남자 준결승 - 2조",
+   "event": "남자 8강 - 2조",
    "countries": [],
    "venue": "퍼시픽 롱비치",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SRFMSHORTBRDSFNL000200"
+   "link": "https://m.sports.naver.com/game/2026SRFMSHORTBRDQFNL000200"
   },
   {
-   "time": "08:12",
+   "time": "07:56",
    "discipline": "서핑",
-   "event": "여자 준결승 - 1조",
+   "event": "남자 8강 - 3조",
    "countries": [],
    "venue": "퍼시픽 롱비치",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SRFWSHORTBRDSFNL000100"
+   "link": "https://m.sports.naver.com/game/2026SRFMSHORTBRDQFNL000300"
   },
   {
    "time": "08:15",
@@ -162,15 +164,26 @@
    "link": "https://m.sports.naver.com/game/2026ARCMINDIVIDR64000700"
   },
   {
-   "time": "08:48",
+   "time": "08:24",
    "discipline": "서핑",
-   "event": "여자 준결승 - 2조",
+   "event": "남자 8강 - 4조",
    "countries": [],
    "venue": "퍼시픽 롱비치",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SRFWSHORTBRDSFNL000200"
+   "link": "https://m.sports.naver.com/game/2026SRFMSHORTBRDQFNL000400"
+  },
+  {
+   "time": "08:52",
+   "discipline": "서핑",
+   "event": "여자 8강 - 1조",
+   "countries": [],
+   "venue": "퍼시픽 롱비치",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SRFWSHORTBRDQFNL000100"
   },
   {
    "time": "09:00",
@@ -232,9 +245,11 @@
    "time": "09:00",
    "discipline": "e스포츠",
    "event": "배틀그라운드 매치 7",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026ESPOPUBGFNL000600"
@@ -284,22 +299,25 @@
   {
    "time": "09:00",
    "discipline": "비치 발리볼",
-   "event": "남자 16강 2",
+   "event": "남자 16강 3",
    "countries": [
-    "일본",
+    "카자흐스탄",
     "이란"
    ],
    "venue": "헤키난 료쿠치 비치 코트",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026VBVMTEAM28FNL000200"
+   "link": "https://m.sports.naver.com/game/2026VBVMTEAM28FNL000300"
   },
   {
    "time": "09:00",
    "discipline": "세팍타크로",
    "event": "여자 더블 금메달전",
-   "countries": [],
+   "countries": [
+    "필리핀",
+    "베트남"
+   ],
    "venue": "나고야시 미즈호 파크 체육관",
    "hasKorea": false,
    "medal": true,
@@ -550,7 +568,7 @@
    "event": "남자 8강 3경기",
    "countries": [
     "스리랑카",
-    "미정"
+    "네팔"
    ],
    "venue": "코로기 운동공원",
    "hasKorea": false,
@@ -559,15 +577,15 @@
    "link": "https://m.sports.naver.com/game/2026CKTMTEAMQFNL000300"
   },
   {
-   "time": "09:24",
+   "time": "09:20",
    "discipline": "서핑",
-   "event": "남자 동메달전",
+   "event": "여자 8강 - 2조",
    "countries": [],
    "venue": "퍼시픽 롱비치",
    "hasKorea": false,
-   "medal": true,
+   "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SRFMSHORTBRDFNL000200"
+   "link": "https://m.sports.naver.com/game/2026SRFWSHORTBRDQFNL000200"
   },
   {
    "time": "09:30",
@@ -585,7 +603,7 @@
   {
    "time": "09:30",
    "discipline": "쿠라쉬",
-   "event": "남자 -66kg급 32강 2",
+   "event": "남자 -66kg급 32강 2경기 101",
    "countries": [
     "닉 가브리엘 리게로",
     "윤현수"
@@ -599,7 +617,7 @@
   {
    "time": "09:30",
    "discipline": "쿠라쉬",
-   "event": "여자 +87kg급 16강 2",
+   "event": "여자 +87kg급 16강 2경기 201",
    "countries": [
     "양야춘",
     "와라폰 수완파이랏"
@@ -771,7 +789,7 @@
   {
    "time": "09:42",
    "discipline": "쿠라쉬",
-   "event": "남자 -66kg급 32강 15",
+   "event": "남자 -66kg급 32강 15경기 102",
    "countries": [
     "요신 보보칼로노프",
     "누르 아만슈키로프"
@@ -785,7 +803,7 @@
   {
    "time": "09:45",
    "discipline": "쿠라쉬",
-   "event": "여자 +87kg급 16강 3",
+   "event": "여자 +87kg급 16강 3경기 202",
    "countries": [
     "마리암 페이마니",
     "게게엔 간볼드"
@@ -797,9 +815,20 @@
    "link": "https://m.sports.naver.com/game/2026KURWO87KG8FNL000300"
   },
   {
+   "time": "09:48",
+   "discipline": "서핑",
+   "event": "여자 8강 - 3조",
+   "countries": [],
+   "venue": "퍼시픽 롱비치",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SRFWSHORTBRDQFNL000300"
+  },
+  {
    "time": "09:54",
    "discipline": "쿠라쉬",
-   "event": "남자 -66kg급 16강 1",
+   "event": "남자 -66kg급 16강 1경기 103",
    "countries": [
     "비핀 쿠마르",
     "미정"
@@ -854,16 +883,16 @@
   {
    "time": "10:00",
    "discipline": "비치 발리볼",
-   "event": "남자 16강 3",
+   "event": "남자 16강 2",
    "countries": [
-    "카자흐스탄",
+    "일본",
     "이란"
    ],
    "venue": "헤키난 료쿠치 비치 코트",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026VBVMTEAM28FNL000300"
+   "link": "https://m.sports.naver.com/game/2026VBVMTEAM28FNL000200"
   },
   {
    "time": "10:00",
@@ -881,7 +910,7 @@
   {
    "time": "10:00",
    "discipline": "사이클 트랙",
-   "event": "여자 단체 스프린트, 예선",
+   "event": "여자 단체 스프린트 예선",
    "countries": [],
    "venue": "이즈 벨로드롬",
    "hasKorea": false,
@@ -923,7 +952,7 @@
    "event": "여자 단체 B조 2경기",
    "countries": [
     "홍콩",
-    "파키스탄"
+    "몽골"
    ],
    "venue": "나고야 긴조후토 아레나",
    "hasKorea": false,
@@ -973,7 +1002,7 @@
   {
    "time": "10:00",
    "discipline": "쿠라쉬",
-   "event": "여자 +87kg급 16강 6",
+   "event": "여자 +87kg급 16강 6경기 203",
    "countries": [
     "즈엉 탄 탄",
     "아라이림 셰게노바"
@@ -997,6 +1026,34 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026TENMSINGLESR32000100"
+  },
+  {
+   "time": "10:00",
+   "discipline": "테니스",
+   "event": "남자 단식 2라운드 14경기",
+   "countries": [
+    "모하마드 알코톱",
+    "슈유시우"
+   ],
+   "venue": "히가시야마 공원 테니스 센터",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TENMSINGLESR32001400"
+  },
+  {
+   "time": "10:00",
+   "discipline": "테니스",
+   "event": "남자 단식 2라운드 16경기",
+   "countries": [
+    "아비셰크 바스톨라",
+    "알렉산드르 셰브첸코"
+   ],
+   "venue": "히가시야마 공원 테니스 센터",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TENMSINGLESR32001600"
   },
   {
    "time": "10:00",
@@ -1403,20 +1460,9 @@
    "link": "https://m.sports.naver.com/game/2026TENXDOUBLESR32001300"
   },
   {
-   "time": "10:05",
-   "discipline": "서핑",
-   "event": "여자 동메달전",
-   "countries": [],
-   "venue": "퍼시픽 롱비치",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SRFWSHORTBRDFNL000200"
-  },
-  {
    "time": "10:06",
    "discipline": "쿠라쉬",
-   "event": "남자 -66kg급 16강 2",
+   "event": "남자 -66kg급 16강 2경기 104",
    "countries": [
     "메라주딘 착마르",
     "쿠바니치베크 아이벡 울루"
@@ -1431,17 +1477,19 @@
    "time": "10:10",
    "discipline": "e스포츠",
    "event": "배틀그라운드 매치 8",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026ESPOPUBGFNL000500"
   },
   {
    "time": "10:15",
    "discipline": "쿠라쉬",
-   "event": "여자 +87kg급 16강 7",
+   "event": "여자 +87kg급 16강 7경기 204",
    "countries": [
     "김민영",
     "쩐 티 탄 투이"
@@ -1453,9 +1501,33 @@
    "link": "https://m.sports.naver.com/game/2026KURWO87KG8FNL000700"
   },
   {
+   "time": "10:16",
+   "discipline": "서핑",
+   "event": "여자 8강 - 4조",
+   "countries": [],
+   "venue": "퍼시픽 롱비치",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SRFWSHORTBRDQFNL000400"
+  },
+  {
+   "time": "10:18",
+   "discipline": "사이클 트랙",
+   "event": "남자 단체 스프린트 예선",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "이즈 벨로드롬",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026CTRMSPRTEAM3QUAL000100"
+  },
+  {
    "time": "10:18",
    "discipline": "쿠라쉬",
-   "event": "남자 -66kg급 16강 3",
+   "event": "남자 -66kg급 16강 3경기 105",
    "countries": [
     "마지드 바히드 바리만루",
     "이슬람 캄치베코프"
@@ -1465,17 +1537,6 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026KURM66KG8FNL000300"
-  },
-  {
-   "time": "10:25",
-   "discipline": "사이클 트랙",
-   "event": "남자 단체 스프린트, 예선",
-   "countries": [],
-   "venue": "이즈 벨로드롬",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRMSPRTEAM3QUAL000100"
   },
   {
    "time": "10:30",
@@ -1495,7 +1556,10 @@
    "time": "10:30",
    "discipline": "세팍타크로",
    "event": "남자 레구 금메달전",
-   "countries": [],
+   "countries": [
+    "태국",
+    "말레이시아"
+   ],
    "venue": "나고야시 미즈호 파크 체육관",
    "hasKorea": false,
    "medal": true,
@@ -1506,9 +1570,11 @@
    "time": "10:30",
    "discipline": "카누 슬라럼",
    "event": "남자 카약 1인승 예선 런 1&2",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "야하기가와 카누 슬라럼 코스",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026CSLMK1HEAT"
@@ -1516,7 +1582,7 @@
   {
    "time": "10:30",
    "discipline": "쿠라쉬",
-   "event": "남자 -66kg급 16강 4",
+   "event": "남자 -66kg급 16강 4경기 106",
    "countries": [
     "라힘울라 나지미",
     "자키루 에스카르페"
@@ -1530,7 +1596,7 @@
   {
    "time": "10:30",
    "discipline": "쿠라쉬",
-   "event": "여자 +87kg급 8강 1",
+   "event": "여자 +87kg급 8강 1경기 205",
    "countries": [
     "파테메 바르마키 코르드콜라에이",
     "미정"
@@ -1543,8 +1609,21 @@
   },
   {
    "time": "10:42",
+   "discipline": "사이클 트랙",
+   "event": "여자 단체 추발 예선",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "이즈 벨로드롬",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026CTRWPURTEAM4QUAL000100"
+  },
+  {
+   "time": "10:42",
    "discipline": "쿠라쉬",
-   "event": "남자 -66kg급 16강 5",
+   "event": "남자 -66kg급 16강 5경기 107",
    "countries": [
     "사르바르 압두슈쿠로프",
     "일리야스 무함메도프"
@@ -1556,9 +1635,20 @@
    "link": "https://m.sports.naver.com/game/2026KURM66KG8FNL000500"
   },
   {
+   "time": "10:44",
+   "discipline": "서핑",
+   "event": "남자 준결승 - 1조",
+   "countries": [],
+   "venue": "퍼시픽 롱비치",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SRFMSHORTBRDSFNL000100"
+  },
+  {
    "time": "10:45",
    "discipline": "쿠라쉬",
-   "event": "여자 +87kg급 8강 2",
+   "event": "여자 +87kg급 8강 2경기 206",
    "countries": [
     "미정",
     "스류리링"
@@ -1570,20 +1660,9 @@
    "link": "https://m.sports.naver.com/game/2026KURWO87KGQFNL000200"
   },
   {
-   "time": "10:46",
-   "discipline": "서핑",
-   "event": "남자 금메달전",
-   "countries": [],
-   "venue": "퍼시픽 롱비치",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SRFMSHORTBRDFNL000100"
-  },
-  {
    "time": "10:54",
    "discipline": "쿠라쉬",
-   "event": "남자 -66kg급 16강 6",
+   "event": "남자 -66kg급 16강 6경기 108",
    "countries": [
     "볼라트 빌랄",
     "찬하오청"
@@ -1609,15 +1688,18 @@
    "link": "https://m.sports.naver.com/game/2026ESPOMOLGPA000200"
   },
   {
-   "time": "10:55",
-   "discipline": "사이클 트랙",
-   "event": "여자 단체 추발, 예선",
-   "countries": [],
-   "venue": "",
+   "time": "11:00",
+   "discipline": "배드민턴",
+   "event": "혼합 복식 금메달전",
+   "countries": [
+    "인도네시아",
+    "중국"
+   ],
+   "venue": "이치노미야시 종합체육관",
    "hasKorea": false,
-   "medal": false,
+   "medal": true,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRWPURTEAM4QUAL000100"
+   "link": "https://m.sports.naver.com/game/2026BDMXDOUBLESFNL000100"
   },
   {
    "time": "11:00",
@@ -1638,8 +1720,8 @@
    "discipline": "소프트볼",
    "event": "예선 라운드 14경기",
    "countries": [
-    "중국",
-    "차이니스 타이베이"
+    "차이니스 타이베이",
+    "중국"
    ],
    "venue": "안조 스포츠파크",
    "hasKorea": false,
@@ -1650,10 +1732,38 @@
   {
    "time": "11:00",
    "discipline": "요트",
-   "event": "남자 스키프 - 레이스 5",
-   "countries": [],
+   "event": "남자 스키프 - 레이스 3",
+   "countries": [
+    "대한민국"
+   ],
    "venue": "카이요 요트 하버",
-   "hasKorea": false,
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SALM49ERPREL000300"
+  },
+  {
+   "time": "11:00",
+   "discipline": "요트",
+   "event": "남자 스키프 - 레이스 4",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "카이요 요트 하버",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SALM49ERPREL000400"
+  },
+  {
+   "time": "11:00",
+   "discipline": "요트",
+   "event": "남자 스키프 - 레이스 5",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "카이요 요트 하버",
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SALM49ERPREL000500"
@@ -1662,9 +1772,11 @@
    "time": "11:00",
    "discipline": "요트",
    "event": "남자 스키프 - 레이스 6",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "카이요 요트 하버",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SALM49ERPREL000600"
@@ -1672,46 +1784,35 @@
   {
    "time": "11:00",
    "discipline": "요트",
-   "event": "남자 스키프 - 레이스 7",
+   "event": "남자 청소년 딩기 - 레이스 1",
    "countries": [],
    "venue": "카이요 요트 하버",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SALM49ERPREL000700"
+   "link": "https://m.sports.naver.com/game/2026SALMILCA7BPREL000100"
   },
   {
    "time": "11:00",
    "discipline": "요트",
-   "event": "남자 청소년 딩기 - 레이스 4",
+   "event": "남자 청소년 딩기 - 레이스 2",
    "countries": [],
    "venue": "카이요 요트 하버",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SALMILCA7BPREL000400"
+   "link": "https://m.sports.naver.com/game/2026SALMILCA7BPREL000200"
   },
   {
    "time": "11:00",
    "discipline": "요트",
-   "event": "남자 청소년 딩기 - 레이스 5",
+   "event": "남자 청소년 딩기 - 레이스 3",
    "countries": [],
    "venue": "카이요 요트 하버",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SALMILCA7BPREL000500"
-  },
-  {
-   "time": "11:00",
-   "discipline": "요트",
-   "event": "남자 청소년 딩기 - 레이스 6",
-   "countries": [],
-   "venue": "카이요 요트 하버",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SALMILCA7BPREL000600"
+   "link": "https://m.sports.naver.com/game/2026SALMILCA7BPREL000300"
   },
   {
    "time": "11:00",
@@ -1756,28 +1857,6 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SALMIQFOILBPREL000400"
-  },
-  {
-   "time": "11:00",
-   "discipline": "요트",
-   "event": "여자 스키프 - 레이스 10",
-   "countries": [],
-   "venue": "카이요 요트 하버",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SALW49ERPREL001000"
-  },
-  {
-   "time": "11:00",
-   "discipline": "요트",
-   "event": "여자 스키프 - 레이스 9",
-   "countries": [],
-   "venue": "카이요 요트 하버",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SALW49ERPREL000900"
   },
   {
    "time": "11:00",
@@ -1827,9 +1906,11 @@
    "time": "11:00",
    "discipline": "요트",
    "event": "혼성 청소년 딩기 - 레이스 4",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "카이요 요트 하버",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SALX470BPREL000400"
@@ -1838,9 +1919,11 @@
    "time": "11:00",
    "discipline": "요트",
    "event": "혼성 청소년 딩기 - 레이스 5",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "카이요 요트 하버",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SALX470BPREL000500"
@@ -1849,9 +1932,11 @@
    "time": "11:00",
    "discipline": "요트",
    "event": "혼성 청소년 딩기 - 레이스 6",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "카이요 요트 하버",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SALX470BPREL000600"
@@ -1859,7 +1944,7 @@
   {
    "time": "11:00",
    "discipline": "쿠라쉬",
-   "event": "여자 +87kg급 8강 3",
+   "event": "여자 +87kg급 8강 3경기 207",
    "countries": [
     "박종원",
     "미정"
@@ -1869,6 +1954,20 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026KURWO87KGQFNL000300"
+  },
+  {
+   "time": "11:00",
+   "discipline": "테니스",
+   "event": "여자 단식 2라운드 7경기",
+   "countries": [
+    "사카츠메 히메노",
+    "백다연"
+   ],
+   "venue": "히가시야마 공원 테니스 센터",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026TENWSINGLES8FNL000700"
   },
   {
    "time": "11:00",
@@ -1899,23 +1998,9 @@
    "link": "https://m.sports.naver.com/game/2026PDLWDOUBLESR32001100"
   },
   {
-   "time": "11:00",
-   "discipline": "파델",
-   "event": "여자 복식 1라운드 14",
-   "countries": [
-    "태국",
-    "쿠웨이트"
-   ],
-   "venue": "나고야시 히가시 스포츠센터",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026PDLWDOUBLESR32001400"
-  },
-  {
    "time": "11:06",
    "discipline": "쿠라쉬",
-   "event": "남자 -66kg급 16강 7",
+   "event": "남자 -66kg급 16강 7경기 109",
    "countries": [
     "판수성",
     "히디르 무함메도프"
@@ -1927,53 +2012,42 @@
    "link": "https://m.sports.naver.com/game/2026KURM66KG8FNL000700"
   },
   {
-   "time": "11:07",
-   "discipline": "카누 슬라럼",
-   "event": "여자 카누 1인승 예선 런 1&2",
-   "countries": [],
-   "venue": "야하기가와 카누 슬라럼 코스",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CSLWC1HEAT"
-  },
-  {
    "time": "11:10",
    "discipline": "요트",
-   "event": "여자 청소년 딩기 - 레이스 4",
+   "event": "여자 청소년 딩기 - 레이스 1",
    "countries": [],
    "venue": "카이요 요트 하버",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SALWILCA7BPREL000400"
+   "link": "https://m.sports.naver.com/game/2026SALWILCA7BPREL000100"
   },
   {
    "time": "11:10",
    "discipline": "요트",
-   "event": "여자 청소년 딩기 - 레이스 5",
+   "event": "여자 청소년 딩기 - 레이스 2",
    "countries": [],
    "venue": "카이요 요트 하버",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SALWILCA7BPREL000500"
+   "link": "https://m.sports.naver.com/game/2026SALWILCA7BPREL000200"
   },
   {
    "time": "11:10",
    "discipline": "요트",
-   "event": "여자 청소년 딩기 - 레이스 6",
+   "event": "여자 청소년 딩기 - 레이스 3",
    "countries": [],
    "venue": "카이요 요트 하버",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SALWILCA7BPREL000600"
+   "link": "https://m.sports.naver.com/game/2026SALWILCA7BPREL000300"
   },
   {
    "time": "11:15",
    "discipline": "쿠라쉬",
-   "event": "여자 +87kg급 8강 4",
+   "event": "여자 +87kg급 8강 4경기 208",
    "countries": [
     "미정",
     "알비나 바히예바"
@@ -1985,9 +2059,33 @@
    "link": "https://m.sports.naver.com/game/2026KURWO87KGQFNL000400"
   },
   {
+   "time": "11:17",
+   "discipline": "사이클 트랙",
+   "event": "남자 단체 추발 예선",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "이즈 벨로드롬",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026CTRMPURTEAM4QUAL000100"
+  },
+  {
+   "time": "11:17",
+   "discipline": "서핑",
+   "event": "남자 준결승 - 2조",
+   "countries": [],
+   "venue": "퍼시픽 롱비치",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SRFMSHORTBRDSFNL000200"
+  },
+  {
    "time": "11:18",
    "discipline": "쿠라쉬",
-   "event": "남자 -66kg급 16강 8",
+   "event": "남자 -66kg급 16강 8경기 110",
    "countries": [
     "미정",
     "와타나베 이사무"
@@ -2002,23 +2100,25 @@
    "time": "11:20",
    "discipline": "e스포츠",
    "event": "배틀그라운드 매치 9",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026ESPOPUBGFNL000400"
   },
   {
-   "time": "11:27",
-   "discipline": "서핑",
-   "event": "여자 금메달전",
+   "time": "11:20",
+   "discipline": "카누 슬라럼",
+   "event": "여자 카누 1인승 예선 런 1&2",
    "countries": [],
-   "venue": "퍼시픽 롱비치",
+   "venue": "야하기가와 카누 슬라럼 코스",
    "hasKorea": false,
-   "medal": true,
+   "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SRFWSHORTBRDFNL000100"
+   "link": "https://m.sports.naver.com/game/2026CSLWC1HEAT"
   },
   {
    "time": "11:30",
@@ -2062,7 +2162,7 @@
   {
    "time": "11:30",
    "discipline": "쿠라쉬",
-   "event": "남자 -66kg급 8강 1",
+   "event": "남자 -66kg급 8강 1경기 111",
    "countries": [],
    "venue": "아이치현 무도관",
    "hasKorea": false,
@@ -2071,34 +2171,9 @@
    "link": "https://m.sports.naver.com/game/2026KURM66KGQFNL000100"
   },
   {
-   "time": "11:30",
-   "discipline": "파델",
-   "event": "여자 복식 1라운드 15",
-   "countries": [
-    "레바논",
-    "아랍에미리트"
-   ],
-   "venue": "나고야시 히가시 스포츠센터",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026PDLWDOUBLESR32001500"
-  },
-  {
-   "time": "11:35",
-   "discipline": "사이클 트랙",
-   "event": "남자 단체 추발, 예선",
-   "countries": [],
-   "venue": "",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRMPURTEAM4QUAL000100"
-  },
-  {
    "time": "11:42",
    "discipline": "쿠라쉬",
-   "event": "남자 -66kg급 8강 2",
+   "event": "남자 -66kg급 8강 2경기 112",
    "countries": [],
    "venue": "아이치현 무도관",
    "hasKorea": false,
@@ -2107,20 +2182,33 @@
    "link": "https://m.sports.naver.com/game/2026KURM66KGQFNL000200"
   },
   {
-   "time": "11:45",
+   "time": "11:47",
    "discipline": "카누 슬라럼",
    "event": "남자 카누 1인승 예선 런 1&2",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "야하기가와 카누 슬라럼 코스",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026CSLMC1HEAT"
   },
   {
+   "time": "11:50",
+   "discipline": "서핑",
+   "event": "여자 준결승 - 1조",
+   "countries": [],
+   "venue": "퍼시픽 롱비치",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SRFWSHORTBRDSFNL000100"
+  },
+  {
    "time": "11:54",
    "discipline": "쿠라쉬",
-   "event": "남자 -66kg급 8강 3",
+   "event": "남자 -66kg급 8강 3경기 113",
    "countries": [],
    "venue": "아이치현 무도관",
    "hasKorea": false,
@@ -2144,7 +2232,7 @@
   {
    "time": "12:06",
    "discipline": "쿠라쉬",
-   "event": "남자 -66kg급 8강 4",
+   "event": "남자 -66kg급 8강 4경기 114",
    "countries": [],
    "venue": "아이치현 무도관",
    "hasKorea": false,
@@ -2153,7 +2241,7 @@
    "link": "https://m.sports.naver.com/game/2026KURM66KGQFNL000400"
   },
   {
-   "time": "12:20",
+   "time": "12:17",
    "discipline": "카누 슬라럼",
    "event": "여자 카약 1인승 런 1&2",
    "countries": [],
@@ -2162,6 +2250,31 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026CSLWK1HEAT"
+  },
+  {
+   "time": "12:23",
+   "discipline": "서핑",
+   "event": "여자 준결승 - 2조",
+   "countries": [],
+   "venue": "퍼시픽 롱비치",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SRFWSHORTBRDSFNL000200"
+  },
+  {
+   "time": "12:30",
+   "discipline": "배드민턴",
+   "event": "여자 복식 금메달전",
+   "countries": [
+    "중국",
+    "대한민국"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": true,
+   "medal": true,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/2026BDMWDOUBLESFNL000100"
   },
   {
    "time": "12:30",
@@ -2301,12 +2414,25 @@
    "link": "https://m.sports.naver.com/game/2026ESPOMOLGPB000300"
   },
   {
+   "time": "12:56",
+   "discipline": "서핑",
+   "event": "남자 동메달전",
+   "countries": [],
+   "venue": "퍼시픽 롱비치",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SRFMSHORTBRDFNL000200"
+  },
+  {
    "time": "13:00",
    "discipline": "e스포츠",
    "event": "배틀그라운드 매치 10",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026ESPOPUBGFNL000300"
@@ -2343,7 +2469,10 @@
    "time": "13:00",
    "discipline": "복싱",
    "event": "여자 54kg - 준결승 1",
-   "countries": [],
+   "countries": [
+    "나미키 츠키미",
+    "낫니차 총프로글랑"
+   ],
    "venue": "니시오 체육관",
    "hasKorea": false,
    "medal": true,
@@ -2368,7 +2497,10 @@
    "time": "13:15",
    "discipline": "복싱",
    "event": "여자 54kg - 준결승 2",
-   "countries": [],
+   "countries": [
+    "자오슈안",
+    "방철미"
+   ],
    "venue": "니시오 체육관",
    "hasKorea": false,
    "medal": true,
@@ -2625,6 +2757,17 @@
    "link": "https://m.sports.naver.com/game/2026ARCWINDIVIDR32000900"
   },
   {
+   "time": "13:29",
+   "discipline": "서핑",
+   "event": "여자 동메달전",
+   "countries": [],
+   "venue": "퍼시픽 롱비치",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SRFWSHORTBRDFNL000200"
+  },
+  {
    "time": "13:30",
    "discipline": "e스포츠",
    "event": "아이덴티티 V B조 5경기",
@@ -2640,64 +2783,12 @@
   },
   {
    "time": "13:30",
-   "discipline": "배드민턴",
-   "event": "남자 단식 금메달전",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": true,
-   "tv": true,
-   "link": "https://m.sports.naver.com/game/2026BDMMSINGLESFNL000100"
-  },
-  {
-   "time": "13:30",
-   "discipline": "배드민턴",
-   "event": "남자 복식 금메달전",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": true,
-   "tv": true,
-   "link": "https://m.sports.naver.com/game/2026BDMMDOUBLESFNL000100"
-  },
-  {
-   "time": "13:30",
-   "discipline": "배드민턴",
-   "event": "여자 단식 금메달전",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": true,
-   "tv": true,
-   "link": "https://m.sports.naver.com/game/2026BDMWSINGLESFNL000100"
-  },
-  {
-   "time": "13:30",
-   "discipline": "배드민턴",
-   "event": "여자 복식 금메달전",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": true,
-   "tv": true,
-   "link": "https://m.sports.naver.com/game/2026BDMWDOUBLESFNL000100"
-  },
-  {
-   "time": "13:30",
-   "discipline": "배드민턴",
-   "event": "혼합 복식 금메달전",
-   "countries": [],
-   "venue": "이치노미야시 종합체육관",
-   "hasKorea": false,
-   "medal": true,
-   "tv": true,
-   "link": "https://m.sports.naver.com/game/2026BDMXDOUBLESFNL000100"
-  },
-  {
-   "time": "13:30",
    "discipline": "복싱",
    "event": "여자 65kg - 준결승 1",
-   "countries": [],
+   "countries": [
+    "첸니엔친",
+    "황효선"
+   ],
    "venue": "니시오 체육관",
    "hasKorea": false,
    "medal": true,
@@ -2705,48 +2796,122 @@
    "link": "https://m.sports.naver.com/game/2026BOXW65KGSFNL000100"
   },
   {
+   "time": "13:30",
+   "discipline": "요트",
+   "event": "남자 딩기 오프닝 시리즈 레이스 3",
+   "countries": [],
+   "venue": "카이요 요트 하버",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SALMILCA7PREL000300"
+  },
+  {
+   "time": "13:30",
+   "discipline": "요트",
+   "event": "남자 딩기 오프닝 시리즈 레이스 4",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "카이요 요트 하버",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SALMILCA7PREL000400"
+  },
+  {
+   "time": "13:30",
+   "discipline": "요트",
+   "event": "남자 딩기 오프닝 시리즈 레이스 5",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "카이요 요트 하버",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SALMILCA7PREL000500"
+  },
+  {
+   "time": "13:30",
+   "discipline": "파델",
+   "event": "여자 복식 1라운드 14",
+   "countries": [
+    "태국",
+    "쿠웨이트"
+   ],
+   "venue": "나고야시 히가시 스포츠센터",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026PDLWDOUBLESR32001400"
+  },
+  {
+   "time": "13:30",
+   "discipline": "파델",
+   "event": "여자 복식 1라운드 15",
+   "countries": [
+    "레바논",
+    "아랍에미리트"
+   ],
+   "venue": "나고야시 히가시 스포츠센터",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026PDLWDOUBLESR32001500"
+  },
+  {
+   "time": "13:40",
+   "discipline": "요트",
+   "event": "여자 딩기 오프닝 시리즈 레이스 3",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "카이요 요트 하버",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SALWILCA7PREL000300"
+  },
+  {
+   "time": "13:40",
+   "discipline": "요트",
+   "event": "여자 딩기 오프닝 시리즈 레이스 4",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "카이요 요트 하버",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SALWILCA7PREL000400"
+  },
+  {
+   "time": "13:40",
+   "discipline": "요트",
+   "event": "여자 딩기 오프닝 시리즈 레이스 5",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "카이요 요트 하버",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SALWILCA7PREL000500"
+  },
+  {
    "time": "13:45",
    "discipline": "복싱",
    "event": "여자 65kg - 준결승 2",
-   "countries": [],
+   "countries": [
+    "파르빈",
+    "리슈"
+   ],
    "venue": "니시오 체육관",
    "hasKorea": false,
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026BOXW65KGSFNL000200"
-  },
-  {
-   "time": "13:45",
-   "discipline": "사이클 트랙",
-   "event": "여자 단체 스프린트, 1라운드 - 1조",
-   "countries": [],
-   "venue": "이즈 벨로드롬",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRWSPRTEAM3RND1000100"
-  },
-  {
-   "time": "13:50",
-   "discipline": "사이클 트랙",
-   "event": "여자 단체 스프린트, 1라운드 - 2조",
-   "countries": [],
-   "venue": "이즈 벨로드롬",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRWSPRTEAM3RND1000200"
-  },
-  {
-   "time": "13:55",
-   "discipline": "사이클 트랙",
-   "event": "여자 단체 스프린트, 1라운드 - 3조",
-   "countries": [],
-   "venue": "이즈 벨로드롬",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRWSPRTEAM3RND1000300"
   },
   {
    "time": "13:55",
@@ -2866,9 +3031,26 @@
   },
   {
    "time": "14:00",
+   "discipline": "배드민턴",
+   "event": "여자 단식 금메달전",
+   "countries": [
+    "안세영",
+    "야마구치 아카네"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": true,
+   "medal": true,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/2026BDMWSINGLESFNL000100"
+  },
+  {
+   "time": "14:00",
    "discipline": "복싱",
    "event": "남자 60kg - 준결승 1",
-   "countries": [],
+   "countries": [
+    "압두말릭 할로코프",
+    "키타모토 슌스케"
+   ],
    "venue": "니시오 체육관",
    "hasKorea": false,
    "medal": true,
@@ -2888,17 +3070,6 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026VBVMTEAM28FNL000700"
-  },
-  {
-   "time": "14:00",
-   "discipline": "사이클 트랙",
-   "event": "여자 단체 스프린트, 1라운드 - 4조",
-   "countries": [],
-   "venue": "이즈 벨로드롬",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRWSPRTEAM3RND1000400"
   },
   {
    "time": "14:00",
@@ -2959,39 +3130,6 @@
   {
    "time": "14:00",
    "discipline": "요트",
-   "event": "남자 딩기 오프닝 시리즈 레이스 4",
-   "countries": [],
-   "venue": "카이요 요트 하버",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SALMILCA7PREL000400"
-  },
-  {
-   "time": "14:00",
-   "discipline": "요트",
-   "event": "남자 딩기 오프닝 시리즈 레이스 5",
-   "countries": [],
-   "venue": "카이요 요트 하버",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SALMILCA7PREL000500"
-  },
-  {
-   "time": "14:00",
-   "discipline": "요트",
-   "event": "남자 딩기 오프닝 시리즈 레이스 6",
-   "countries": [],
-   "venue": "카이요 요트 하버",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SALMILCA7PREL000600"
-  },
-  {
-   "time": "14:00",
-   "discipline": "요트",
    "event": "남자 윈드서핑 - 레이스 1",
    "countries": [],
    "venue": "카이요 요트 하버",
@@ -3036,40 +3174,40 @@
   {
    "time": "14:00",
    "discipline": "요트",
-   "event": "남자 청소년 스키프 - 레이스 6",
+   "event": "남자 청소년 스키프 - 레이스 3",
    "countries": [],
    "venue": "카이요 요트 하버",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SALM49ERBPREL000600"
+   "link": "https://m.sports.naver.com/game/2026SALM49ERBPREL000300"
   },
   {
    "time": "14:00",
    "discipline": "요트",
-   "event": "남자 청소년 스키프 - 레이스 7",
+   "event": "남자 청소년 스키프 - 레이스 4",
    "countries": [],
    "venue": "카이요 요트 하버",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SALM49ERBPREL000700"
+   "link": "https://m.sports.naver.com/game/2026SALM49ERBPREL000400"
   },
   {
    "time": "14:00",
    "discipline": "요트",
-   "event": "남자 청소년 스키프 - 레이스 8",
+   "event": "남자 청소년 스키프 - 레이스 5",
    "countries": [],
    "venue": "카이요 요트 하버",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SALM49ERBPREL000800"
+   "link": "https://m.sports.naver.com/game/2026SALM49ERBPREL000500"
   },
   {
    "time": "14:00",
    "discipline": "쿠라쉬",
-   "event": "여자 +87kg급 준결승 A",
+   "event": "여자 +87kg급 준결승 A 209",
    "countries": [],
    "venue": "아이치현 무도관",
    "hasKorea": false,
@@ -3083,7 +3221,7 @@
    "event": "남자 8강 4경기",
    "countries": [
     "방글라데시",
-    "미정"
+    "말레이시아"
    ],
    "venue": "코로기 운동공원",
    "hasKorea": false,
@@ -3093,69 +3231,93 @@
   },
   {
    "time": "14:05",
-   "discipline": "사이클 트랙",
-   "event": "남자 단체 스프린트, 1라운드 - 1조",
+   "discipline": "서핑",
+   "event": "남자 금메달전",
    "countries": [],
-   "venue": "이즈 벨로드롬",
+   "venue": "퍼시픽 롱비치",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SRFMSHORTBRDFNL000100"
+  },
+  {
+   "time": "14:05",
+   "discipline": "요트",
+   "event": "여자 스키프 - 레이스 3",
+   "countries": [],
+   "venue": "카이요 요트 하버",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRMSPRTEAM3RND1000100"
+   "link": "https://m.sports.naver.com/game/2026SALW49ERPREL000300"
+  },
+  {
+   "time": "14:05",
+   "discipline": "요트",
+   "event": "여자 스키프 - 레이스 4",
+   "countries": [],
+   "venue": "카이요 요트 하버",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SALW49ERPREL000400"
+  },
+  {
+   "time": "14:05",
+   "discipline": "요트",
+   "event": "여자 스키프 - 레이스 5",
+   "countries": [],
+   "venue": "카이요 요트 하버",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SALW49ERPREL000500"
+  },
+  {
+   "time": "14:05",
+   "discipline": "요트",
+   "event": "여자 청소년 스키프 - 레이스 3",
+   "countries": [],
+   "venue": "카이요 요트 하버",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SALW49ERBPREL000300"
+  },
+  {
+   "time": "14:05",
+   "discipline": "요트",
+   "event": "여자 청소년 스키프 - 레이스 4",
+   "countries": [],
+   "venue": "카이요 요트 하버",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SALW49ERBPREL000400"
+  },
+  {
+   "time": "14:05",
+   "discipline": "요트",
+   "event": "여자 청소년 스키프 - 레이스 5",
+   "countries": [],
+   "venue": "카이요 요트 하버",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SALW49ERBPREL000500"
   },
   {
    "time": "14:10",
    "discipline": "e스포츠",
    "event": "배틀그라운드 매치 11",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026ESPOPUBGFNL000200"
-  },
-  {
-   "time": "14:10",
-   "discipline": "사이클 트랙",
-   "event": "남자 단체 스프린트, 1라운드 - 2조",
-   "countries": [],
-   "venue": "이즈 벨로드롬",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRMSPRTEAM3RND1000200"
-  },
-  {
-   "time": "14:10",
-   "discipline": "요트",
-   "event": "여자 딩기 오프닝 시리즈 레이스 4",
-   "countries": [],
-   "venue": "카이요 요트 하버",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SALWILCA7PREL000400"
-  },
-  {
-   "time": "14:10",
-   "discipline": "요트",
-   "event": "여자 딩기 오프닝 시리즈 레이스 5",
-   "countries": [],
-   "venue": "카이요 요트 하버",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SALWILCA7PREL000500"
-  },
-  {
-   "time": "14:10",
-   "discipline": "요트",
-   "event": "여자 딩기 오프닝 시리즈 레이스 6",
-   "countries": [],
-   "venue": "카이요 요트 하버",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SALWILCA7PREL000600"
   },
   {
    "time": "14:10",
@@ -3237,7 +3399,7 @@
   {
    "time": "14:10",
    "discipline": "쿠라쉬",
-   "event": "여자 +87kg급 준결승 B",
+   "event": "여자 +87kg급 준결승 B 210",
    "countries": [],
    "venue": "아이치현 무도관",
    "hasKorea": false,
@@ -3249,23 +3411,15 @@
    "time": "14:15",
    "discipline": "복싱",
    "event": "남자 60kg - 준결승 2",
-   "countries": [],
+   "countries": [
+    "장동환",
+    "아크말 우바이도프"
+   ],
    "venue": "니시오 체육관",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026BOXM60KGSFNL000200"
-  },
-  {
-   "time": "14:15",
-   "discipline": "사이클 트랙",
-   "event": "남자 단체 스프린트, 1라운드 - 3조",
-   "countries": [],
-   "venue": "이즈 벨로드롬",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRMSPRTEAM3RND1000300"
   },
   {
    "time": "14:20",
@@ -3280,19 +3434,8 @@
   },
   {
    "time": "14:20",
-   "discipline": "사이클 트랙",
-   "event": "남자 단체 스프린트, 1라운드 - 4조",
-   "countries": [],
-   "venue": "이즈 벨로드롬",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRMSPRTEAM3RND1000400"
-  },
-  {
-   "time": "14:20",
    "discipline": "쿠라쉬",
-   "event": "남자 -66kg급 준결승 A",
+   "event": "남자 -66kg급 준결승 A 211",
    "countries": [],
    "venue": "아이치현 무도관",
    "hasKorea": false,
@@ -3304,7 +3447,10 @@
    "time": "14:30",
    "discipline": "복싱",
    "event": "남자 80kg - 준결승 1",
-   "countries": [],
+   "countries": [
+    "파즐리딘 에르킨보예프",
+    "안쿠쉬"
+   ],
    "venue": "니시오 체육관",
    "hasKorea": false,
    "medal": true,
@@ -3325,7 +3471,7 @@
   {
    "time": "14:30",
    "discipline": "쿠라쉬",
-   "event": "남자 -66kg급 준결승 B",
+   "event": "남자 -66kg급 준결승 B 212",
    "countries": [],
    "venue": "아이치현 무도관",
    "hasKorea": false,
@@ -3334,25 +3480,42 @@
    "link": "https://m.sports.naver.com/game/2026KURM66KGSFNL000200"
   },
   {
-   "time": "14:35",
-   "discipline": "사이클 트랙",
-   "event": "여자 단체 추발, 1라운드 - 1조",
-   "countries": [],
-   "venue": "",
+   "time": "14:30",
+   "discipline": "테니스",
+   "event": "혼합 복식 1라운드 15경기",
+   "countries": [
+    "이란",
+    "차이니스 타이베이"
+   ],
+   "venue": "히가시야마 공원 테니스 센터",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRWPURTEAM4RND1000100"
+   "link": "https://m.sports.naver.com/game/2026TENXDOUBLESR32001500"
+  },
+  {
+   "time": "14:41",
+   "discipline": "서핑",
+   "event": "여자 금메달전",
+   "countries": [],
+   "venue": "퍼시픽 롱비치",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SRFWSHORTBRDFNL000100"
   },
   {
    "time": "14:45",
    "discipline": "복싱",
    "event": "남자 80kg - 준결승 2",
-   "countries": [],
+   "countries": [
+    "김민성",
+    "후세인 이아샤이시"
+   ],
    "venue": "니시오 체육관",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026BOXM80KGSFNL000200"
   },
   {
@@ -3365,28 +3528,6 @@
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026TRPXTRXFNL000100"
-  },
-  {
-   "time": "14:45",
-   "discipline": "사이클 트랙",
-   "event": "여자 단체 추발, 1라운드 - 2조",
-   "countries": [],
-   "venue": "",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRWPURTEAM4RND1000200"
-  },
-  {
-   "time": "14:55",
-   "discipline": "사이클 트랙",
-   "event": "여자 단체 추발, 1라운드 - 3조",
-   "countries": [],
-   "venue": "",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRWPURTEAM4RND1000300"
   },
   {
    "time": "15:00",
@@ -3420,7 +3561,10 @@
    "time": "15:00",
    "discipline": "복싱",
    "event": "남자 +90kg - 준결승",
-   "countries": [],
+   "countries": [
+    "아이벡 오랄바이",
+    "나렌데르"
+   ],
    "venue": "니시오 체육관",
    "hasKorea": false,
    "medal": true,
@@ -3431,7 +3575,10 @@
    "time": "15:00",
    "discipline": "복싱",
    "event": "남자 +90kg - 준결승",
-   "countries": [],
+   "countries": [
+    "자혼기르 조키로프",
+    "아미르 에스마에일리 반다에이"
+   ],
    "venue": "니시오 체육관",
    "hasKorea": false,
    "medal": true,
@@ -3454,6 +3601,17 @@
   },
   {
    "time": "15:00",
+   "discipline": "사이클 트랙",
+   "event": "여자 단체 스프린트 1라운드 - 1조",
+   "countries": [],
+   "venue": "이즈 벨로드롬",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026CTRWSPRTEAM3RND1000100"
+  },
+  {
+   "time": "15:00",
    "discipline": "축구",
    "event": "여자 준결승 1경기",
    "countries": [
@@ -3463,13 +3621,13 @@
    "venue": "시즈오카 스타디움",
    "hasKorea": false,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026FBLWTEAM11SFNL000100"
   },
   {
    "time": "15:00",
    "discipline": "쿠라쉬",
-   "event": "여자 +87kg급 결승",
+   "event": "여자 +87kg급 결승 213",
    "countries": [],
    "venue": "아이치현 무도관",
    "hasKorea": false,
@@ -3478,15 +3636,37 @@
    "link": "https://m.sports.naver.com/game/2026KURWO87KGFNL000100"
   },
   {
-   "time": "15:05",
+   "time": "15:03",
    "discipline": "사이클 트랙",
-   "event": "여자 단체 추발, 1라운드 - 4조",
+   "event": "여자 단체 스프린트 1라운드 - 2조",
    "countries": [],
-   "venue": "",
+   "venue": "이즈 벨로드롬",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRWPURTEAM4RND1000400"
+   "link": "https://m.sports.naver.com/game/2026CTRWSPRTEAM3RND1000200"
+  },
+  {
+   "time": "15:06",
+   "discipline": "사이클 트랙",
+   "event": "여자 단체 스프린트 1라운드 - 3조",
+   "countries": [],
+   "venue": "이즈 벨로드롬",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026CTRWSPRTEAM3RND1000300"
+  },
+  {
+   "time": "15:09",
+   "discipline": "사이클 트랙",
+   "event": "여자 단체 스프린트 1라운드 - 4조",
+   "countries": [],
+   "venue": "이즈 벨로드롬",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026CTRWSPRTEAM3RND1000400"
   },
   {
    "time": "15:10",
@@ -3500,23 +3680,34 @@
    "link": "https://m.sports.naver.com/game/2026TRPMTRMFNL000100"
   },
   {
-   "time": "15:15",
+   "time": "15:12",
    "discipline": "사이클 트랙",
-   "event": "남자 단체 추발, 1라운드 - 1조",
+   "event": "남자 단체 스프린트 1라운드 - 1조",
    "countries": [],
-   "venue": "",
+   "venue": "이즈 벨로드롬",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRMPURTEAM4RND1000100"
+   "link": "https://m.sports.naver.com/game/2026CTRMSPRTEAM3RND1000100"
+  },
+  {
+   "time": "15:15",
+   "discipline": "사이클 트랙",
+   "event": "남자 단체 스프린트 1라운드 - 2조",
+   "countries": [],
+   "venue": "이즈 벨로드롬",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026CTRMSPRTEAM3RND1000200"
   },
   {
    "time": "15:15",
    "discipline": "소프트볼",
    "event": "예선 라운드 16경기",
    "countries": [
-    "일본",
-    "싱가포르"
+    "싱가포르",
+    "일본"
    ],
    "venue": "안조 스포츠파크",
    "hasKorea": false,
@@ -3527,7 +3718,7 @@
   {
    "time": "15:15",
    "discipline": "쿠라쉬",
-   "event": "남자 -66kg급 결승",
+   "event": "남자 -66kg급 결승 214",
    "countries": [],
    "venue": "아이치현 무도관",
    "hasKorea": false,
@@ -3536,14 +3727,27 @@
    "link": "https://m.sports.naver.com/game/2026KURM66KGFNL000100"
   },
   {
+   "time": "15:18",
+   "discipline": "사이클 트랙",
+   "event": "남자 단체 스프린트 1라운드 - 3조",
+   "countries": [],
+   "venue": "이즈 벨로드롬",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026CTRMSPRTEAM3RND1000300"
+  },
+  {
    "time": "15:20",
    "discipline": "e스포츠",
    "event": "배틀그라운드 메달 매치",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "아이치 스카이 엑스포 홀 D",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026ESPOPUBGFNL000100"
   },
   {
@@ -3558,37 +3762,73 @@
    "link": "https://m.sports.naver.com/game/2026DIVW10MFNL000100"
   },
   {
-   "time": "15:25",
+   "time": "15:21",
    "discipline": "사이클 트랙",
-   "event": "남자 단체 추발, 1라운드 - 2조",
+   "event": "남자 단체 스프린트 1라운드 - 4조",
    "countries": [],
-   "venue": "",
+   "venue": "이즈 벨로드롬",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRMPURTEAM4RND1000200"
+   "link": "https://m.sports.naver.com/game/2026CTRMSPRTEAM3RND1000400"
   },
   {
-   "time": "15:35",
+   "time": "15:24",
    "discipline": "사이클 트랙",
-   "event": "남자 단체 추발, 1라운드 - 3조",
+   "event": "여자 단체 추발 1라운드 - 1조",
+   "countries": [],
+   "venue": "이즈 벨로드롬",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026CTRWPURTEAM4RND1000100"
+  },
+  {
+   "time": "15:30",
+   "discipline": "배드민턴",
+   "event": "남자 복식 금메달전",
+   "countries": [
+    "인도네시아",
+    "중국"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMMDOUBLESFNL000100"
+  },
+  {
+   "time": "15:31",
+   "discipline": "사이클 트랙",
+   "event": "여자 단체 추발 1라운드 - 2조",
+   "countries": [],
+   "venue": "이즈 벨로드롬",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026CTRWPURTEAM4RND1000200"
+  },
+  {
+   "time": "15:38",
+   "discipline": "사이클 트랙",
+   "event": "여자 단체 추발 1라운드 - 3조",
    "countries": [],
    "venue": "",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRMPURTEAM4RND1000300"
+   "link": "https://m.sports.naver.com/game/2026CTRWPURTEAM4RND1000300"
   },
   {
    "time": "15:45",
    "discipline": "사이클 트랙",
-   "event": "남자 단체 추발, 1라운드 - 4조",
+   "event": "남자 단체 추발 1라운드 - 1조",
    "countries": [],
-   "venue": "",
+   "venue": "이즈 벨로드롬",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRMPURTEAM4RND1000400"
+   "link": "https://m.sports.naver.com/game/2026CTRMPURTEAM4RND1000100"
   },
   {
    "time": "15:50",
@@ -3600,6 +3840,28 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026WPOMTEAM7QFNL000100"
+  },
+  {
+   "time": "15:52",
+   "discipline": "사이클 트랙",
+   "event": "남자 단체 추발 1라운드 - 2조",
+   "countries": [],
+   "venue": "이즈 벨로드롬",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026CTRMPURTEAM4RND1000200"
+  },
+  {
+   "time": "15:59",
+   "discipline": "사이클 트랙",
+   "event": "남자 단체 추발 1라운드 - 3조",
+   "countries": [],
+   "venue": "이즈 벨로드롬",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026CTRMPURTEAM4RND1000300"
   },
   {
    "time": "16:00",
@@ -3630,15 +3892,76 @@
    "link": "https://m.sports.naver.com/game/2026VVOMTEAM6GPC000600"
   },
   {
-   "time": "16:15",
+   "time": "16:00",
+   "discipline": "파델",
+   "event": "여자 복식 2라운드 1",
+   "countries": [
+    "일본",
+    "카타르"
+   ],
+   "venue": "나고야시 히가시 스포츠센터",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026PDLWDOUBLES8FNL000100"
+  },
+  {
+   "time": "16:00",
+   "discipline": "파델",
+   "event": "여자 복식 2라운드 2",
+   "countries": [
+    "쿠웨이트",
+    "인도네시아"
+   ],
+   "venue": "나고야시 히가시 스포츠센터",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026PDLWDOUBLES8FNL000200"
+  },
+  {
+   "time": "16:06",
    "discipline": "사이클 트랙",
-   "event": "여자 단체 스프린트, 결승 - 동메달전",
+   "event": "남자 단체 추발 1라운드 - 4조",
+   "countries": [],
+   "venue": "이즈 벨로드롬",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026CTRMPURTEAM4RND1000400"
+  },
+  {
+   "time": "16:13",
+   "discipline": "사이클 트랙",
+   "event": "여자 단체 스프린트 결승 - 동메달전",
    "countries": [],
    "venue": "이즈 벨로드롬",
    "hasKorea": false,
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026CTRWSPRTEAM3FNL000200"
+  },
+  {
+   "time": "16:16",
+   "discipline": "사이클 트랙",
+   "event": "여자 단체 스프린트 결승 - 금메달전",
+   "countries": [],
+   "venue": "이즈 벨로드롬",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026CTRWSPRTEAM3FNL000100"
+  },
+  {
+   "time": "16:19",
+   "discipline": "사이클 트랙",
+   "event": "남자 단체 스프린트 결승 - 동메달전",
+   "countries": [],
+   "venue": "이즈 벨로드롬",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026CTRMSPRTEAM3FNL000200"
   },
   {
    "time": "16:20",
@@ -3654,31 +3977,9 @@
    "link": "https://m.sports.naver.com/game/2026WLFWO86KGFNL000100"
   },
   {
-   "time": "16:23",
+   "time": "16:22",
    "discipline": "사이클 트랙",
-   "event": "여자 단체 스프린트, 결승 - 금메달전",
-   "countries": [],
-   "venue": "이즈 벨로드롬",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRWSPRTEAM3FNL000100"
-  },
-  {
-   "time": "16:31",
-   "discipline": "사이클 트랙",
-   "event": "남자 단체, 스프린트 결승 - 동메달전",
-   "countries": [],
-   "venue": "이즈 벨로드롬",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRMSPRTEAM3FNL000200"
-  },
-  {
-   "time": "16:39",
-   "discipline": "사이클 트랙",
-   "event": "남자 단체, 스프린트 결승 - 금메달전",
+   "event": "남자 단체 스프린트 결승 - 금메달전",
    "countries": [],
    "venue": "이즈 벨로드롬",
    "hasKorea": false,
@@ -3702,11 +4003,28 @@
   },
   {
    "time": "17:00",
+   "discipline": "배드민턴",
+   "event": "남자 단식 금메달전",
+   "countries": [
+    "로킨유",
+    "쿤라붓 비디산"
+   ],
+   "venue": "이치노미야시 종합체육관",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026BDMMSINGLESFNL000100"
+  },
+  {
+   "time": "17:00",
    "discipline": "핸드볼",
    "event": "남자 동메달전",
-   "countries": [],
+   "countries": [
+    "일본",
+    "대한민국"
+   ],
    "venue": "엔트리오",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026HBLMTEAM7FNL000200"
@@ -3732,6 +4050,34 @@
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026DIVM3MFNL000100"
+  },
+  {
+   "time": "18:00",
+   "discipline": "파델",
+   "event": "남자 복식 2라운드 7",
+   "countries": [
+    "일본",
+    "태국"
+   ],
+   "venue": "나고야시 히가시 스포츠센터",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026PDLMDOUBLES8FNL000700"
+  },
+  {
+   "time": "18:00",
+   "discipline": "파델",
+   "event": "남자 복식 2라운드 8",
+   "countries": [
+    "쿠웨이트",
+    "이란"
+   ],
+   "venue": "나고야시 히가시 스포츠센터",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026PDLMDOUBLES8FNL000800"
   },
   {
    "time": "18:20",
@@ -3760,6 +4106,28 @@
   },
   {
    "time": "19:00",
+   "discipline": "AG",
+   "event": "TEAM KE LIVE - 남자배구 대한민국 vs 중국",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/20260929KEAG2026"
+  },
+  {
+   "time": "19:00",
+   "discipline": "AG",
+   "event": "빙고맨ㅣ남자배구 조별 3차전 vs 중국",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/20260929BGAG2026"
+  },
+  {
+   "time": "19:00",
    "discipline": "배구",
    "event": "남자 예선 - D조",
    "countries": [
@@ -3782,17 +4150,6 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SQUWTEAMPO000300"
-  },
-  {
-   "time": "19:00",
-   "discipline": "핸드볼",
-   "event": "남자 금메달전",
-   "countries": [],
-   "venue": "엔트리오",
-   "hasKorea": false,
-   "medal": true,
-   "tv": true,
-   "link": "https://m.sports.naver.com/game/2026HBLMTEAM7FNL000100"
   },
   {
    "time": "19:05",
@@ -3834,6 +4191,17 @@
   },
   {
    "time": "19:30",
+   "discipline": "AG",
+   "event": "[박종윤(축구)] 여자축구 준결승 대한민국 vs 일본 같이보기",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/20260929PJYAG2026"
+  },
+  {
+   "time": "19:30",
    "discipline": "축구",
    "event": "여자 준결승 2경기",
    "countries": [
@@ -3843,8 +4211,22 @@
    "venue": "시즈오카 스타디움",
    "hasKorea": true,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026FBLWTEAM11SFNL000200"
+  },
+  {
+   "time": "19:30",
+   "discipline": "핸드볼",
+   "event": "남자 금메달전",
+   "countries": [
+    "바레인",
+    "카타르"
+   ],
+   "venue": "엔트리오",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026HBLMTEAM7FNL000100"
   },
   {
    "time": "19:35",
