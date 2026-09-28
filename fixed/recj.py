@@ -212,9 +212,14 @@ def fetch_repbrands(session: requests.Session, item_cds):
     return out
 
 
-def supplement_from_schedule(session: requests.Session, config: dict, products: list):
-    """MSRT06 결과(products)의 각 방송 타임에 대해 편성표 itemList 전체로 보강."""
-    labels = list(dict.fromkeys(p["broadcast_date_label"] for p in products))
+def supplement_from_schedule(session: requests.Session, config: dict, products: list,
+                             extra_labels=()):
+    """products의 각 방송 타임(+ extra_labels)에 대해 편성표 itemList 전체로 보강.
+
+    extra_labels: 상품은 없지만 방송 타임으로 확인된 라벨 (MSRT06에서
+    날짜 탭만 있고 itemInfoList가 비어 온 회차)."""
+    labels = list(dict.fromkeys(
+        [p["broadcast_date_label"] for p in products] + list(extra_labels)))
 
     seen_codes = set()
     seen_names = set()
@@ -282,6 +287,79 @@ def find_first_image_url(obj):
             if found:
                 return found
     return None
+
+
+# ============ 날짜 탭 브라우저 수집 ============
+# pgmShop moduleList는 첫 날짜 탭의 상품만 싣고, 나머지 탭은 사용자가 탭을
+# 눌러야 따로 불러온다 (2026-09-28 동가게: 10/03·10/08·10/10 탭이 비어 옴).
+# 그 API 경로를 몰라도 되도록 실제 페이지를 열어 탭을 하나씩 누르고, 누른
+# 직후 들어온 JSON 응답에서 itemBaseInfo를 모은다. 응답 URL은 로그로 남겨
+# 나중에 requests 직접 호출로 바꿀 수 있게 한다.
+PGM_SHOP_PAGE_URL = "https://display.cjonstyle.com/m/pgmShop/{pgm_cd}"
+
+
+def fetch_tabs_via_browser(pgm_cd: str, labels):
+    """{라벨: [itemBaseInfo, ...]}. playwright가 없거나 실패하면 {}."""
+    if not labels:
+        return {}
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError:
+        print("    -> [탭 수집] playwright 없음 - 건너뜀")
+        return {}
+
+    out = {}
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            context = browser.new_context(**p.devices["iPhone 13"])
+            page = context.new_page()
+            captured = []
+
+            def on_response(response):
+                if "cjonstyle" not in response.url:
+                    return
+                if "json" not in (response.headers.get("content-type") or ""):
+                    return
+                try:
+                    captured.append((response.url, response.json()))
+                except Exception:
+                    pass
+
+            page.on("response", on_response)
+            page.goto(PGM_SHOP_PAGE_URL.format(pgm_cd=pgm_cd),
+                      wait_until="networkidle", timeout=30000)
+
+            for label in labels:
+                captured.clear()
+                tab = page.get_by_text(label, exact=True).first
+                try:
+                    tab.click(timeout=5000)
+                    page.wait_for_load_state("networkidle", timeout=10000)
+                except Exception as e:
+                    print(f"    -> [탭 수집] '{label}' 탭 클릭 실패: {e!r}")
+                    continue
+                page.wait_for_timeout(500)
+
+                bases = []
+                for url, data in captured:
+                    found = []
+                    walk_collect_items(data, label, found)
+                    # 응답 안에 다른 회차 라벨이 달린 항목은 그 회차 몫이다
+                    hit = [b for lb, b in found if lb == label]
+                    if hit:
+                        print(f"    -> [탭 수집] '{label}' {len(hit)}개 <- {url.split('?')[0]}")
+                        bases.extend(hit)
+                if bases:
+                    out[label] = bases
+                else:
+                    urls = [u.split("?")[0] for u, _ in captured]
+                    print(f"    -> [탭 수집] '{label}' 상품 없음 (응답 {len(urls)}개: {urls[:5]})")
+
+            browser.close()
+    except Exception as e:
+        print(f"    -> [탭 수집] 브라우저 수집 실패: {e!r}")
+    return out
 
 
 def get_tab_id(session: requests.Session, pgm_cd: str):
@@ -383,6 +461,12 @@ def crawl_cj_program(session: requests.Session, config: dict):
 
     # 1) TV 방송상품 모음(MSRT06): srttbNm이 정확한 방송일시 라벨
     content_list = (target_module.get("contentList") or []) if target_module else []
+    # pgmShop은 첫 날짜 탭의 상품만 내려주고 나머지 탭은 itemInfoList를 비워
+    # 보낸다 (2026-09-28 동가게: 10/01 탭 8개는 왔는데 10/03 탭은 빈 채로 와서
+    # CJ_live 보강분 2개만 남음 - 실제는 4개). 아직 시작 안 한 빈 탭 라벨은
+    # 모아뒀다가 편성표 itemList 전체로 채운다.
+    empty_future_labels = []
+    now_kst = datetime.now(KST)
     for content in content_list:
         srttb_list = content.get("srttbList") or []
         for srttb in srttb_list:
@@ -390,6 +474,11 @@ def crawl_cj_program(session: requests.Session, config: dict):
             item_list = srttb.get("itemInfoList")
             if not item_list:
                 # "지난방송상품" 등 -> itemInfoList가 null
+                bdate, start_hm = parse_label_datetime(date_label)
+                if bdate and start_hm:
+                    hh, mi = map(int, start_hm.split(":"))
+                    if datetime(bdate.year, bdate.month, bdate.day, hh, mi, tzinfo=KST) > now_kst:
+                        empty_future_labels.append(date_label)
                 continue
             if any(w in date_label for w in PAST_LABEL_STOP_WORDS):
                 # itemInfoList가 채워져 오는 지난방송 구좌 (휴방 주에 관측됨)
@@ -418,17 +507,29 @@ def crawl_cj_program(session: requests.Session, config: dict):
         if added:
             print(f"    -> [{code}] 구좌에서 +{added}개")
 
+    # 비어 온 날짜 탭은 페이지에서 직접 눌러 공개된 상품을 전부 가져온다
+    for label, bases in fetch_tabs_via_browser(pgm_cd, empty_future_labels).items():
+        added = sum(1 for base in bases if add_product(label, base))
+        print(f"    -> [방송 타임 진입/탭]: {label} - 상품 +{added}개")
+
     # 방송 타임당 대표상품만 온 경우를 대비해 편성표 itemList 전체로 보강
-    supplement_from_schedule(session, config, products)
+    # (탭 수집이 실패한 회차도 여기서 편성표로 채운다)
+    supplement_from_schedule(session, config, products, empty_future_labels)
 
     # 셀럽PGM은 하루 2회 방송하는 날이 있는데(2026-09-08 오감쇼 08:15/19:30,
     # 2026-09-05 최유라쇼 08:20/09:20/10:20) pgmShop이 그 회차를 다 안 보여줄
     # 수 있다. 편성표(CJ_live)를 훑어 수집분에 없는 회차를 채운다.
-    supplement_missing_slots(
+    swept = supplement_missing_slots(
         "CJ",
         [program_title or config["program_title"], config["program_title"],
          tab_name, *config.get("keywords", ())],
         products)
+
+    # CJ_live는 셀럽 쇼를 브랜드당 1개로 줄여 담는다(cj_scraper). 거기서 채운
+    # 회차는 편성표 원본(tvSchedule) itemList로 나머지 상품을 다시 채운다.
+    # 이미 있는 상품코드는 건너뛰므로 기존 회차는 그대로다.
+    if swept:
+        supplement_from_schedule(session, config, products)
 
     # 이어지는 구간으로 쪼개져 온 회차는 한 방송으로 묶는다
     merge_continuous_slots(
