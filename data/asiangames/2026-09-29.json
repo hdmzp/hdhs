@@ -1,6 +1,6 @@
 {
  "date": "2026-09-29",
- "collectedAt": "2026-09-28T00:03:46+09:00",
+ "collectedAt": "2026-09-28T09:17:11+09:00",
  "games": [
   {
    "time": "07:00",
@@ -236,7 +236,7 @@
    "venue": "아이치 스카이 엑스포 홀 D",
    "hasKorea": false,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026ESPOPUBGFNL000600"
   },
   {
@@ -573,9 +573,11 @@
    "time": "09:30",
    "discipline": "역도",
    "event": "여자 86kg 그룹 A",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "나고야시 중소기업진흥회관",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026WLFW86KGFNL000100"
@@ -890,8 +892,53 @@
   {
    "time": "10:00",
    "discipline": "스쿼시",
-   "event": "여자 조별예선 C조",
-   "countries": [],
+   "event": "여자 단체 A조 2경기",
+   "countries": [
+    "말레이시아",
+    "싱가포르"
+   ],
+   "venue": "나고야 긴조후토 아레나",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SQUWTEAMGPA000200"
+  },
+  {
+   "time": "10:00",
+   "discipline": "스쿼시",
+   "event": "여자 단체 B조 1경기",
+   "countries": [
+    "대한민국",
+    "파키스탄"
+   ],
+   "venue": "나고야 긴조후토 아레나",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SQUWTEAMGPB000100"
+  },
+  {
+   "time": "10:00",
+   "discipline": "스쿼시",
+   "event": "여자 단체 B조 2경기",
+   "countries": [
+    "홍콩",
+    "파키스탄"
+   ],
+   "venue": "나고야 긴조후토 아레나",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SQUWTEAMGPB000200"
+  },
+  {
+   "time": "10:00",
+   "discipline": "스쿼시",
+   "event": "여자 단체 C조 1경기",
+   "countries": [
+    "일본",
+    "중국"
+   ],
    "venue": "나고야 긴조후토 아레나",
    "hasKorea": false,
    "medal": false,
@@ -901,57 +948,16 @@
   {
    "time": "10:00",
    "discipline": "스쿼시",
-   "event": "여자 조별예선 C조",
-   "countries": [],
+   "event": "여자 단체 C조 2경기",
+   "countries": [
+    "인도",
+    "이란"
+   ],
    "venue": "나고야 긴조후토 아레나",
    "hasKorea": false,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SQUWTEAMGPC000200"
-  },
-  {
-   "time": "10:00",
-   "discipline": "스쿼시",
-   "event": "여자 조별예선 C조",
-   "countries": [],
-   "venue": "나고야 긴조후토 아레나",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SQUWTEAMGPC000300"
-  },
-  {
-   "time": "10:00",
-   "discipline": "스쿼시",
-   "event": "여자 조별예선 C조",
-   "countries": [],
-   "venue": "나고야 긴조후토 아레나",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SQUWTEAMGPC000400"
-  },
-  {
-   "time": "10:00",
-   "discipline": "스쿼시",
-   "event": "여자 조별예선 C조",
-   "countries": [],
-   "venue": "나고야 긴조후토 아레나",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SQUWTEAMGPC000500"
-  },
-  {
-   "time": "10:00",
-   "discipline": "스쿼시",
-   "event": "여자 조별예선 C조",
-   "countries": [],
-   "venue": "나고야 긴조후토 아레나",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SQUWTEAMGPC000600"
   },
   {
    "time": "10:00",
@@ -1677,6 +1683,39 @@
   {
    "time": "11:00",
    "discipline": "요트",
+   "event": "남자 청소년 딩기 - 레이스 4",
+   "countries": [],
+   "venue": "카이요 요트 하버",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SALMILCA7BPREL000400"
+  },
+  {
+   "time": "11:00",
+   "discipline": "요트",
+   "event": "남자 청소년 딩기 - 레이스 5",
+   "countries": [],
+   "venue": "카이요 요트 하버",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SALMILCA7BPREL000500"
+  },
+  {
+   "time": "11:00",
+   "discipline": "요트",
+   "event": "남자 청소년 딩기 - 레이스 6",
+   "countries": [],
+   "venue": "카이요 요트 하버",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SALMILCA7BPREL000600"
+  },
+  {
+   "time": "11:00",
+   "discipline": "요트",
    "event": "남자 청소년 윈드서핑 - 레이스 1",
    "countries": [],
    "venue": "카이요 요트 하버",
@@ -1897,6 +1936,39 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026CSLWC1HEAT"
+  },
+  {
+   "time": "11:10",
+   "discipline": "요트",
+   "event": "여자 청소년 딩기 - 레이스 4",
+   "countries": [],
+   "venue": "카이요 요트 하버",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SALWILCA7BPREL000400"
+  },
+  {
+   "time": "11:10",
+   "discipline": "요트",
+   "event": "여자 청소년 딩기 - 레이스 5",
+   "countries": [],
+   "venue": "카이요 요트 하버",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SALWILCA7BPREL000500"
+  },
+  {
+   "time": "11:10",
+   "discipline": "요트",
+   "event": "여자 청소년 딩기 - 레이스 6",
+   "countries": [],
+   "venue": "카이요 요트 하버",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SALWILCA7BPREL000600"
   },
   {
    "time": "11:15",
@@ -2831,68 +2903,58 @@
   {
    "time": "14:00",
    "discipline": "스쿼시",
-   "event": "남자 조별예선 C조",
-   "countries": [],
+   "event": "남자 단체  D조 1경기",
+   "countries": [
+    "일본",
+    "몽골"
+   ],
+   "venue": "나고야 긴조후토 아레나",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SQUMTEAMGPD000100"
+  },
+  {
+   "time": "14:00",
+   "discipline": "스쿼시",
+   "event": "남자 단체 A조 1경기",
+   "countries": [
+    "대한민국",
+    "중국"
+   ],
+   "venue": "나고야 긴조후토 아레나",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SQUMTEAMGPA000100"
+  },
+  {
+   "time": "14:00",
+   "discipline": "스쿼시",
+   "event": "남자 단체 B조 1경기",
+   "countries": [
+    "쿠웨이트",
+    "필리핀"
+   ],
+   "venue": "나고야 긴조후토 아레나",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SQUMTEAMGPB000100"
+  },
+  {
+   "time": "14:00",
+   "discipline": "스쿼시",
+   "event": "남자 단체 C조 1경기",
+   "countries": [
+    "카타르",
+    "태국"
+   ],
    "venue": "나고야 긴조후토 아레나",
    "hasKorea": false,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SQUMTEAMGPC000100"
-  },
-  {
-   "time": "14:00",
-   "discipline": "스쿼시",
-   "event": "남자 조별예선 C조",
-   "countries": [],
-   "venue": "나고야 긴조후토 아레나",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SQUMTEAMGPC000200"
-  },
-  {
-   "time": "14:00",
-   "discipline": "스쿼시",
-   "event": "남자 조별예선 C조",
-   "countries": [],
-   "venue": "나고야 긴조후토 아레나",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SQUMTEAMGPC000300"
-  },
-  {
-   "time": "14:00",
-   "discipline": "스쿼시",
-   "event": "남자 조별예선 C조",
-   "countries": [],
-   "venue": "나고야 긴조후토 아레나",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SQUMTEAMGPC000400"
-  },
-  {
-   "time": "14:00",
-   "discipline": "스쿼시",
-   "event": "남자 조별예선 C조",
-   "countries": [],
-   "venue": "나고야 긴조후토 아레나",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SQUMTEAMGPC000500"
-  },
-  {
-   "time": "14:00",
-   "discipline": "스쿼시",
-   "event": "남자 조별예선 C조",
-   "countries": [],
-   "venue": "나고야 긴조후토 아레나",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SQUMTEAMGPC000600"
   },
   {
    "time": "14:00",
@@ -3251,6 +3313,17 @@
   },
   {
    "time": "14:30",
+   "discipline": "스쿼시",
+   "event": "여자 단체 스테이지1 라운드로빈 2",
+   "countries": [],
+   "venue": "나고야 긴조후토 아레나",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SQUWTEAMPO000200"
+  },
+  {
+   "time": "14:30",
    "discipline": "쿠라쉬",
    "event": "남자 -66kg급 준결승 B",
    "countries": [],
@@ -3571,9 +3644,11 @@
    "time": "16:20",
    "discipline": "역도",
    "event": "여자 +86kg 그룹 A",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "나고야시 중소기업진흥회관",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026WLFWO86KGFNL000100"
@@ -3699,6 +3774,17 @@
   },
   {
    "time": "19:00",
+   "discipline": "스쿼시",
+   "event": "여자 단체 스테이지1 라운드로빈 3",
+   "countries": [],
+   "venue": "나고야 긴조후토 아레나",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SQUWTEAMPO000300"
+  },
+  {
+   "time": "19:00",
    "discipline": "핸드볼",
    "event": "남자 금메달전",
    "countries": [],
@@ -3723,9 +3809,11 @@
    "time": "19:10",
    "discipline": "역도",
    "event": "남자 +110 그룹 A",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "나고야시 중소기업진흥회관",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026WLFMO110KGFNL000100"
