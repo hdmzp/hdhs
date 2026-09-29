@@ -1,6 +1,6 @@
 {
   "month": "2026-10",
-  "updated_at": "2026-09-29T08:47:09.197177+09:00",
+  "updated_at": "2026-09-29T11:35:37.830678+09:00",
   "programs": [
     {
       "program_key": "HD_HJM",
@@ -14,7 +14,7 @@
         {
           "date": "2026-10-05",
           "label": "10/05(월) 19:30 방송",
-          "collected_at": "2026-09-29T08:47:09.172102+09:00",
+          "collected_at": "2026-09-29T11:35:37.812563+09:00",
           "products": [
             {
               "broadcast_date_label": "10/05(월) 19:30 방송",
@@ -39,6 +39,22 @@
               "price": 59900,
               "image": "https://image.hmall.com/2253641587_0.png",
               "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253641587"
+            },
+            {
+              "broadcast_date_label": "10/05(월) 19:30 방송",
+              "brand": "알레보",
+              "name": "알레보 디엣지 플러스 유리 밥용기 1+1세트(12P+찜용기)_방송에서만",
+              "price": 59800,
+              "image": "https://image.hmall.com/2252250861_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252250861"
+            },
+            {
+              "broadcast_date_label": "10/05(월) 19:30 방송",
+              "brand": "알레보",
+              "name": "알레보 디엣지 플러스 유리 밥용기 기본세트(6p)",
+              "price": 39900,
+              "image": "https://image.hmall.com/2250158887_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2250158887"
             }
           ]
         }
@@ -56,7 +72,7 @@
         {
           "date": "2026-10-03",
           "label": "10/03(토) 08:20 방송",
-          "collected_at": "2026-09-29T08:47:09.172102+09:00",
+          "collected_at": "2026-09-29T11:35:37.812563+09:00",
           "products": [
             {
               "broadcast_date_label": "10/03(토) 08:20 방송",
@@ -130,7 +146,7 @@
         {
           "date": "2026-10-01",
           "label": "10/01(목) 20:45 방송",
-          "collected_at": "2026-09-29T08:47:09.172102+09:00",
+          "collected_at": "2026-09-29T11:35:37.812563+09:00",
           "products": [
             {
               "prd_id": "1131120574",
@@ -223,6 +239,24 @@
               "link": "https://m.gsshop.com/prd/prd.gs?prdid=1131104622"
             },
             {
+              "prd_id": "1108204751",
+              "broadcast_date_label": "10월 1일(목) 20:45 방송",
+              "broadcast_iso": "2026-10-01T20:45:00",
+              "brand": "GS SHOP",
+              "name": "에버콜라겐 스킨앤헤어 12박스 헤어콜라겐 모발콜라겐",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1108204751"
+            },
+            {
+              "prd_id": "1102754761",
+              "broadcast_date_label": "10월 1일(목) 20:45 방송",
+              "broadcast_iso": "2026-10-01T20:45:00",
+              "brand": "GS SHOP",
+              "name": "에버콜라겐 스킨앤헤어 6박스 헤어콜라겐 모발콜라겐",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1102754761"
+            },
+            {
               "prd_id": "1135848970",
               "broadcast_date_label": "10월 1일(목) 20:45 방송",
               "broadcast_iso": "2026-10-01T20:45:00",
@@ -284,24 +318,6 @@
               "name": "키직 26FW 프리덤런 러닝화 여성용",
               "price": null,
               "link": "https://m.gsshop.com/prd/prd.gs?prdid=1136319522"
-            },
-            {
-              "prd_id": "1108204751",
-              "broadcast_date_label": "10월 1일(목) 20:45 방송",
-              "broadcast_iso": "2026-10-01T20:45:00",
-              "brand": "GS SHOP",
-              "name": "에버콜라겐 스킨앤헤어 12박스 헤어콜라겐 모발콜라겐",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1108204751"
-            },
-            {
-              "prd_id": "1102754761",
-              "broadcast_date_label": "10월 1일(목) 20:45 방송",
-              "broadcast_iso": "2026-10-01T20:45:00",
-              "brand": "GS SHOP",
-              "name": "에버콜라겐 스킨앤헤어 6박스 헤어콜라겐 모발콜라겐",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1102754761"
             }
           ]
         }
@@ -319,7 +335,7 @@
         {
           "date": "2026-10-09",
           "label": "10/09(금) 20:35 방송",
-          "collected_at": "2026-09-29T08:47:09.172102+09:00",
+          "collected_at": "2026-09-29T11:35:37.812563+09:00",
           "products": [
             {
               "prd_id": "1133786916",
@@ -416,8 +432,44 @@
         {
           "date": "2026-10-02",
           "label": "10/02(금) 20:35 방송",
-          "collected_at": "2026-09-29T08:47:09.172102+09:00",
+          "collected_at": "2026-09-29T11:35:37.812563+09:00",
           "products": [
+            {
+              "prd_id": "1100521278",
+              "broadcast_date_label": "10월 2일(금) 20:35 방송",
+              "broadcast_iso": "2026-10-02T20:35:00",
+              "brand": "GS SHOP",
+              "name": "[미세스문] LK_코튼텐셀 침구 풀세트",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1100521278"
+            },
+            {
+              "prd_id": "1100521414",
+              "broadcast_date_label": "10월 2일(금) 20:35 방송",
+              "broadcast_iso": "2026-10-02T20:35:00",
+              "brand": "GS SHOP",
+              "name": "[미세스문] SK_코튼텐셀 침구 풀세트",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1100521414"
+            },
+            {
+              "prd_id": "1100521442",
+              "broadcast_date_label": "10월 2일(금) 20:35 방송",
+              "broadcast_iso": "2026-10-02T20:35:00",
+              "brand": "GS SHOP",
+              "name": "[미세스문] Q_코튼텐셀 침구 풀세트",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1100521442"
+            },
+            {
+              "prd_id": "1100521478",
+              "broadcast_date_label": "10월 2일(금) 20:35 방송",
+              "broadcast_iso": "2026-10-02T20:35:00",
+              "brand": "GS SHOP",
+              "name": "[미세스문] SS_코튼텐셀 침구 풀세트",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1100521478"
+            },
             {
               "prd_id": "1128885173",
               "broadcast_date_label": "10월 2일(금) 20:35 방송",
@@ -480,42 +532,6 @@
               "name": "모즈 스웨덴 온도조절 전기포트 MC-1500",
               "price": null,
               "link": "https://m.gsshop.com/prd/prd.gs?prdid=1136713513"
-            },
-            {
-              "prd_id": "1100521278",
-              "broadcast_date_label": "10월 2일(금) 20:35 방송",
-              "broadcast_iso": "2026-10-02T20:35:00",
-              "brand": "GS SHOP",
-              "name": "[미세스문] LK_코튼텐셀 침구 풀세트",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1100521278"
-            },
-            {
-              "prd_id": "1100521414",
-              "broadcast_date_label": "10월 2일(금) 20:35 방송",
-              "broadcast_iso": "2026-10-02T20:35:00",
-              "brand": "GS SHOP",
-              "name": "[미세스문] SK_코튼텐셀 침구 풀세트",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1100521414"
-            },
-            {
-              "prd_id": "1100521442",
-              "broadcast_date_label": "10월 2일(금) 20:35 방송",
-              "broadcast_iso": "2026-10-02T20:35:00",
-              "brand": "GS SHOP",
-              "name": "[미세스문] Q_코튼텐셀 침구 풀세트",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1100521442"
-            },
-            {
-              "prd_id": "1100521478",
-              "broadcast_date_label": "10월 2일(금) 20:35 방송",
-              "broadcast_iso": "2026-10-02T20:35:00",
-              "brand": "GS SHOP",
-              "name": "[미세스문] SS_코튼텐셀 침구 풀세트",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1100521478"
             }
           ]
         }
@@ -530,6 +546,37 @@
       "detail_link": "https://www.lotteimall.com/contstmpl/viewContsTmplDetail.lotte?conts_no=73",
       "program_image": "",
       "broadcasts": [
+        {
+          "date": "2026-10-08",
+          "label": "10/08(목) 20:45 방송",
+          "collected_at": "2026-09-29T11:35:37.812563+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "10/08 목요일 20:45",
+              "brand": "베르판",
+              "name": "[베르판] 팬탑 포터블 램프 VERPAN PANTOP Portable Lamp",
+              "price": 270000,
+              "image": "https://image2.lotteimall.com/goods/76/29/92/12922976_6.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12922976"
+            },
+            {
+              "broadcast_date_label": "10/08 목요일 20:45",
+              "brand": "베르판",
+              "name": "[베르판] VP 글로브 펜던트 280 VP Globe Pendant",
+              "price": 1620000,
+              "image": "https://image2.lotteimall.com/goods/14/44/92/12924414_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12924414"
+            },
+            {
+              "broadcast_date_label": "10/08 목요일 20:45",
+              "brand": "베르판",
+              "name": "[베르판] VP 글로브 펜던트 400 VP Globe Pendant",
+              "price": 2538000,
+              "image": "https://image2.lotteimall.com/goods/37/44/92/12924437_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12924437"
+            }
+          ]
+        },
         {
           "date": "2026-10-08",
           "label": "10/08(목) 19:35 방송",
@@ -564,7 +611,7 @@
         {
           "date": "2026-10-03",
           "label": "10/03(토) 08:20 방송",
-          "collected_at": "2026-09-29T08:47:09.172102+09:00",
+          "collected_at": "2026-09-29T11:35:37.812563+09:00",
           "products": [
             {
               "broadcast_date_label": "10/03 토요일 08:20",
@@ -607,7 +654,7 @@
         {
           "date": "2026-10-01",
           "label": "10/01(목) 20:45 방송",
-          "collected_at": "2026-09-29T08:47:09.172102+09:00",
+          "collected_at": "2026-09-29T11:35:37.812563+09:00",
           "products": [
             {
               "broadcast_date_label": "10/01 목요일 20:45",
@@ -689,7 +736,7 @@
         {
           "date": "2026-10-05",
           "label": "10/05(월) 19:35 방송",
-          "collected_at": "2026-09-29T08:47:09.172102+09:00",
+          "collected_at": "2026-09-29T11:35:37.812563+09:00",
           "products": [
             {
               "broadcast_date_label": "10/05(월) 19:35",
@@ -704,27 +751,24 @@
               "brand": "로마",
               "name": "[굿라이프패키지] LOMA 너리싱 샴푸 1L 3통+에센셜 샴푸 1L 1통+딥컨디셔너 237ml 1개+ 쇼핑백 2매",
               "price": 184000,
-              "image": "goods_images/20/549/2093680549L.jpg?timestamp=20260915154529",
-              "link": "https://display.cjonstyle.com/p/item/2093680549?channelCode=30002002",
-              "verify": true
+              "image": "https://image.cjonstyle.net/goods_images/20/549/2093680549L.jpg?timestamp=20260915154529",
+              "link": "https://item.cjonstyle.com/item/2093680549?channelCode=30002002"
             },
             {
               "broadcast_date_label": "10/05(월) 19:35",
               "brand": "로마",
               "name": "[더블패키지] LOMA  너리싱 샴푸 1L 6통+에센셜 샴푸 1L 2통+딥컨디셔너 237ml 2개+ 쇼핑백 4매",
               "price": 362000,
-              "image": "goods_images/20/776/2093758776L.jpg?timestamp=20260915154717",
-              "link": "https://display.cjonstyle.com/p/item/2093758776?channelCode=30002002",
-              "verify": true
+              "image": "https://image.cjonstyle.net/goods_images/20/776/2093758776L.jpg?timestamp=20260915154717",
+              "link": "https://item.cjonstyle.com/item/2093758776?channelCode=30002002"
             },
             {
               "broadcast_date_label": "10/05(월) 19:35",
               "brand": "로마",
               "name": "[기본패키지] LOMA 너리싱 샴푸 1L 2통",
               "price": 112000,
-              "image": "goods_images/20/958/2093758958L.jpg?timestamp=20260915154904",
-              "link": "https://display.cjonstyle.com/p/item/2093758958?channelCode=30002002",
-              "verify": true
+              "image": "https://image.cjonstyle.net/goods_images/20/958/2093758958L.jpg?timestamp=20260915154904",
+              "link": "https://item.cjonstyle.com/item/2093758958?channelCode=30002002"
             },
             {
               "broadcast_date_label": "10/05(월) 19:35",
@@ -787,7 +831,7 @@
         {
           "date": "2026-10-13",
           "label": "10/13(화) 19:35 방송",
-          "collected_at": "2026-09-29T08:47:09.172102+09:00",
+          "collected_at": "2026-09-29T11:35:37.812563+09:00",
           "products": [
             {
               "broadcast_date_label": "10/13(화) 19:35",
@@ -810,7 +854,7 @@
         {
           "date": "2026-10-06",
           "label": "10/06(화) 19:35 방송",
-          "collected_at": "2026-09-29T08:47:09.172102+09:00",
+          "collected_at": "2026-09-29T11:35:37.812563+09:00",
           "products": [
             {
               "broadcast_date_label": "10/06(화) 19:35",
@@ -852,7 +896,7 @@
         {
           "date": "2026-10-02",
           "label": "10/02(금) 22:45 방송",
-          "collected_at": "2026-09-29T08:47:09.172102+09:00",
+          "collected_at": "2026-09-29T11:35:37.812563+09:00",
           "products": [
             {
               "broadcast_date_label": "10/02(금) 22:45",
@@ -912,7 +956,7 @@
         {
           "date": "2026-10-10",
           "label": "10/10(토) 08:20 방송",
-          "collected_at": "2026-09-29T08:47:09.172102+09:00",
+          "collected_at": "2026-09-29T11:35:37.812563+09:00",
           "products": [
             {
               "broadcast_date_label": "10/10(토) 08:20",
@@ -959,7 +1003,7 @@
         {
           "date": "2026-10-08",
           "label": "10/08(목) 20:45 방송",
-          "collected_at": "2026-09-29T08:47:09.172102+09:00",
+          "collected_at": "2026-09-29T11:35:37.812563+09:00",
           "products": [
             {
               "broadcast_date_label": "10/08(목) 20:45",
@@ -982,7 +1026,7 @@
         {
           "date": "2026-10-03",
           "label": "10/03(토) 08:20 방송",
-          "collected_at": "2026-09-29T08:47:09.172102+09:00",
+          "collected_at": "2026-09-29T11:35:37.812563+09:00",
           "products": [
             {
               "broadcast_date_label": "10/03(토) 08:20",
@@ -1039,7 +1083,7 @@
         {
           "date": "2026-10-01",
           "label": "10/01(목) 20:45 방송",
-          "collected_at": "2026-09-29T08:47:09.172102+09:00",
+          "collected_at": "2026-09-29T11:35:37.812563+09:00",
           "products": [
             {
               "broadcast_date_label": "10/01(목) 20:45",
