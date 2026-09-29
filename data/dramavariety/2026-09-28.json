@@ -1,0 +1,131 @@
+{
+  "weekStart": "2026-09-28",
+  "weekEnd": "2026-10-04",
+  "collectedAt": "2026-09-29T11:42:44.656109+09:00",
+  "programs": [
+    {
+      "id": "drama_엄마가 미쳤어요_KBS1_오후 08:30",
+      "category": "drama",
+      "channel": "KBS1",
+      "title": "엄마가 미쳤어요",
+      "days": [
+        "월",
+        "화",
+        "수",
+        "목",
+        "금"
+      ],
+      "time": "오후 08:30",
+      "rating": 7.7,
+      "ratingDate": "09.28",
+      "ratingByDay": {
+        "월": {
+          "rating": 7.7,
+          "ratingDate": "09.28"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41897238&qvt=0&query=%EC%97%84%EB%A7%88%EA%B0%80%20%EB%AF%B8%EC%B3%A4%EC%96%B4%EC%9A%94",
+      "isNew": true,
+      "newReason": "firstAir"
+    },
+    {
+      "id": "variety_연애전쟁_JTBC_오후 09:50",
+      "category": "variety",
+      "channel": "JTBC",
+      "title": "연애전쟁",
+      "days": [
+        "월"
+      ],
+      "time": "오후 09:50",
+      "rating": 1.9,
+      "ratingDate": "09.28",
+      "ratingByDay": {
+        "월": {
+          "rating": 1.9,
+          "ratingDate": "09.28"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40893402&qvt=0&query=%EC%97%B0%EC%95%A0%EC%A0%84%EC%9F%81"
+    },
+    {
+      "id": "variety_가요무대_KBS1_오후 10:00",
+      "category": "variety",
+      "channel": "KBS1",
+      "title": "가요무대",
+      "days": [
+        "월"
+      ],
+      "time": "오후 10:00",
+      "rating": 4.7,
+      "ratingDate": "09.28",
+      "ratingByDay": {
+        "월": {
+          "rating": 4.7,
+          "ratingDate": "09.28"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=659651&qvt=0&query=%EA%B0%80%EC%9A%94%EB%AC%B4%EB%8C%80"
+    },
+    {
+      "id": "variety_탐정들의 영업비밀_채널A_오후 10:00",
+      "category": "variety",
+      "channel": "채널A",
+      "title": "탐정들의 영업비밀",
+      "days": [
+        "월"
+      ],
+      "time": "오후 10:00",
+      "rating": 2.1,
+      "ratingDate": "09.28",
+      "ratingByDay": {
+        "월": {
+          "rating": 2.1,
+          "ratingDate": "09.28"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=33545463&qvt=0&query=%ED%83%90%EC%A0%95%EB%93%A4%EC%9D%98%20%EC%98%81%EC%97%85%EB%B9%84%EB%B0%80"
+    },
+    {
+      "id": "variety_말자쇼_KBS2_오후 10:30",
+      "category": "variety",
+      "channel": "KBS2",
+      "title": "말자쇼",
+      "days": [
+        "월"
+      ],
+      "time": "오후 10:30",
+      "rating": 2.6,
+      "ratingDate": "09.28",
+      "ratingByDay": {
+        "월": {
+          "rating": 2.6,
+          "ratingDate": "09.28"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40281127&qvt=0&query=%EB%A7%90%EC%9E%90%EC%87%BC"
+    }
+  ],
+  "newBelowCutoff": [
+    {
+      "id": "variety_계약결혼_KBS Joy_오후 10:30",
+      "category": "variety",
+      "channel": "KBS Joy",
+      "title": "계약결혼",
+      "days": [
+        "월"
+      ],
+      "time": "오후 10:30",
+      "rating": 0.6,
+      "ratingDate": "09.28",
+      "ratingByDay": {
+        "월": {
+          "rating": 0.6,
+          "ratingDate": "09.28"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41997702&qvt=0&query=%EA%B3%84%EC%95%BD%EA%B2%B0%ED%98%BC",
+      "isNew": true,
+      "newReason": "firstAir"
+    }
+  ]
+}
