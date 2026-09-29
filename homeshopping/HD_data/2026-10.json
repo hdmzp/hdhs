@@ -2,7 +2,7 @@
   "company": "HD",
   "broadcast": "data",
   "month": "2026-10",
-  "updated_at": "2026-09-29T11:45:40+09:00",
+  "updated_at": "2026-09-29T18:59:23+09:00",
   "days": {
     "2026-10-01": [
       {
@@ -106,7 +106,7 @@
       },
       {
         "start": "03:55",
-        "end": "04:20",
+        "end": "04:00",
         "brand": "라스튜디오",
         "product": "라스튜디오 FUAX 레더 니트카라 패딩자켓",
         "price": 39900,
@@ -115,7 +115,7 @@
       },
       {
         "start": "03:55",
-        "end": "04:20",
+        "end": "04:00",
         "brand": "라스튜디오",
         "product": "라스튜디오 루렉스 프릴 티블라우스",
         "price": 59900,
@@ -124,7 +124,7 @@
       },
       {
         "start": "03:55",
-        "end": "04:20",
+        "end": "04:00",
         "brand": "라스튜디오",
         "product": "라스튜디오 세미배럴 밴딩팬츠",
         "price": 59900,
@@ -132,8 +132,17 @@
         "category": "의류"
       },
       {
+        "start": "04:00",
+        "end": "04:20",
+        "brand": "김소형원방",
+        "product": "120시간 달인 도라지고 스틱 100포",
+        "price": 198000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2239484215&preview=true",
+        "category": "건강식품"
+      },
+      {
         "start": "04:20",
-        "end": "06:00",
+        "end": "05:20",
         "brand": "올바이오",
         "product": "캘리포니아 유기농 레몬즙 총 120포",
         "price": 44700,
@@ -141,8 +150,26 @@
         "category": "건강식품"
       },
       {
+        "start": "05:20",
+        "end": "06:00",
+        "brand": "밀레",
+        "product": "26FW M그립 워킹화",
+        "price": 79000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253151385&preview=true",
+        "category": "잡화/주얼리"
+      },
+      {
+        "start": "05:20",
+        "end": "06:00",
+        "brand": "밀레",
+        "product": "26FW M그립 워킹화",
+        "price": 79000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253151363&preview=true",
+        "category": "잡화/주얼리"
+      },
+      {
         "start": "06:00",
-        "end": "07:40",
+        "end": "06:40",
         "brand": "울시",
         "product": "여성 하프넥 풀오버니트 2종세트",
         "price": 79900,
@@ -151,21 +178,39 @@
       },
       {
         "start": "06:00",
-        "end": "07:40",
+        "end": "06:40",
         "brand": "울시",
         "product": "남성 하프넥 풀오버니트 2종세트",
         "price": 79900,
-        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252800025&preview=true",
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253919773&preview=true",
         "category": "의류"
       },
       {
         "start": "06:00",
-        "end": "07:40",
+        "end": "06:40",
         "brand": "울시",
         "product": "남성 가을 우븐팬츠",
         "price": 109000,
         "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252832159&preview=true",
         "category": "의류"
+      },
+      {
+        "start": "06:40",
+        "end": "07:40",
+        "brand": "헬로바이오",
+        "product": "알파CD 원데이핏 알파시클로덱스트린 난소화성말토덱스트린 14포 6 총 168포",
+        "price": 54900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2239438244&preview=true",
+        "category": "건강식품"
+      },
+      {
+        "start": "06:40",
+        "end": "07:40",
+        "brand": "헬로바이오",
+        "product": "알파CD 원데이핏 알파시클로덱스트린 난소화성말토덱스트린 14포 총 84포",
+        "price": 29900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2238799803&preview=true",
+        "category": "건강식품"
       },
       {
         "start": "07:40",
@@ -214,7 +259,7 @@
       },
       {
         "start": "14:20",
-        "end": "19:40",
+        "end": "17:40",
         "brand": "도띠",
         "product": "도티 26FW 레스트 볼륨 데님 팬츠 여성",
         "price": 49900,
@@ -223,7 +268,7 @@
       },
       {
         "start": "14:20",
-        "end": "19:40",
+        "end": "17:40",
         "brand": "도띠",
         "product": "도티 26FW 레스트 볼륨 데님 팬츠 남성",
         "price": 49900,
@@ -231,13 +276,130 @@
         "category": "의류"
       },
       {
+        "start": "17:40",
+        "end": "18:40",
+        "brand": "푸마",
+        "product": "26FW 푸마 여성 배럴핏 미세기모 팬츠 세트 _Q3-4",
+        "price": 79900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252773945&preview=true",
+        "category": "의류"
+      },
+      {
+        "start": "17:40",
+        "end": "18:40",
+        "brand": "푸마",
+        "product": "26FW 푸마 남성 레귤러핏 미세기모 팬츠 세트 _Q3-4",
+        "price": 79900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252774008&preview=true",
+        "category": "언더웨어"
+      },
+      {
+        "start": "18:40",
+        "end": "19:40",
+        "brand": "베네통",
+        "product": "베네통 모달 퓨징 런닝형 브라팬티",
+        "price": 109900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253394977&preview=true",
+        "category": "언더웨어"
+      },
+      {
+        "start": "18:40",
+        "end": "19:40",
+        "brand": "베네통",
+        "product": "베네통 모달 퓨징 스트랩 브라팬티",
+        "price": 109900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253395018&preview=true",
+        "category": "언더웨어"
+      },
+      {
         "start": "19:40",
-        "end": "20:39",
+        "end": "21:40",
         "brand": "바디프랜드",
         "product": "바디프랜드 뉴팔콘 안마의자 렌탈",
         "price": 4200000,
         "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2244124257&preview=true",
         "category": "일반렌탈"
+      },
+      {
+        "start": "21:40",
+        "end": "22:40",
+        "brand": "오션투유리조트",
+        "product": "설악/고성/속초 오션투유 리조트",
+        "price": 299000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252756895&preview=true",
+        "category": "여행"
+      },
+      {
+        "start": "21:40",
+        "end": "22:40",
+        "brand": "오션투유리조트",
+        "product": "설악/고성/속초 오션투유 리조트",
+        "price": 249000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252756995&preview=true",
+        "category": "여행"
+      },
+      {
+        "start": "21:40",
+        "end": "22:40",
+        "brand": "오션투유리조트",
+        "product": "설악/고성/속초 오션투유 리조트",
+        "price": 199000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252757655&preview=true",
+        "category": "여행"
+      },
+      {
+        "start": "21:40",
+        "end": "22:40",
+        "brand": "오션투유리조트",
+        "product": "설악/고성/속초 오션투유 리조트",
+        "price": 199000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252757780&preview=true",
+        "category": "여행"
+      },
+      {
+        "start": "21:40",
+        "end": "22:40",
+        "brand": "오션투유리조트",
+        "product": "설악/고성/속초 오션투유 리조트",
+        "price": 169000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252757673&preview=true",
+        "category": "여행"
+      },
+      {
+        "start": "21:40",
+        "end": "22:40",
+        "brand": "오션투유리조트",
+        "product": "설악/고성/속초 오션투유 리조트",
+        "price": 139000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252757662&preview=true",
+        "category": "여행"
+      },
+      {
+        "start": "22:40",
+        "end": "23:39",
+        "brand": "라코스테",
+        "product": "26FW 시그니쳐 남성 드로즈 패키지",
+        "price": 89000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253150200&preview=true",
+        "category": "언더웨어"
+      },
+      {
+        "start": "22:40",
+        "end": "23:39",
+        "brand": "라코스테",
+        "product": "2026 남성 아이코닉 면100% 트렁크 패키지",
+        "price": 89000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2246266235&preview=true",
+        "category": "언더웨어"
+      },
+      {
+        "start": "22:40",
+        "end": "23:39",
+        "brand": "라코스테",
+        "product": "26FW 시그니쳐 남성 드로즈",
+        "price": 39000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253355422&preview=true",
+        "category": "언더웨어"
       }
     ],
     "2026-10-02": [
@@ -318,7 +480,7 @@
         "end": "02:55",
         "brand": "",
         "product": "26FW 아디다스 피치기모 긴팔 브라티 패키지",
-        "price": 99000,
+        "price": 109000,
         "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253559655&preview=true",
         "category": "언더웨어"
       },
@@ -333,7 +495,7 @@
       },
       {
         "start": "02:55",
-        "end": "06:00",
+        "end": "04:00",
         "brand": "",
         "product": "26FW 아디다스 스퀘어넥 런닝형 브라탑 패키지",
         "price": 99000,
@@ -342,16 +504,16 @@
       },
       {
         "start": "02:55",
-        "end": "06:00",
+        "end": "04:00",
         "brand": "",
         "product": "26FW 아디다스 피치기모 긴팔 브라티 패키지",
-        "price": 99000,
+        "price": 109000,
         "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253559655&preview=true",
         "category": "언더웨어"
       },
       {
         "start": "02:55",
-        "end": "06:00",
+        "end": "04:00",
         "brand": "",
         "product": "26FW 아디다스 여성 사각팬티",
         "price": 59000,
@@ -359,13 +521,121 @@
         "category": "언더웨어"
       },
       {
+        "start": "04:00",
+        "end": "04:15",
+        "brand": "베네통",
+        "product": "26FW 아트웍 카라 니트",
+        "price": 159000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253560836&preview=true",
+        "category": "의류"
+      },
+      {
+        "start": "04:00",
+        "end": "04:15",
+        "brand": "베네통",
+        "product": "26FW 여성 코듀로이 팬츠",
+        "price": 69000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253560932&preview=true",
+        "category": "의류"
+      },
+      {
+        "start": "04:15",
+        "end": "04:30",
+        "brand": "베네통",
+        "product": "26FW 아트웍 카라 니트",
+        "price": 159000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253560836&preview=true",
+        "category": "의류"
+      },
+      {
+        "start": "04:15",
+        "end": "04:30",
+        "brand": "베네통",
+        "product": "26FW 여성 코듀로이 팬츠",
+        "price": 69000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253560932&preview=true",
+        "category": "의류"
+      },
+      {
+        "start": "04:30",
+        "end": "04:45",
+        "brand": "베네통",
+        "product": "26FW 아트웍 카라 니트",
+        "price": 159000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253560836&preview=true",
+        "category": "의류"
+      },
+      {
+        "start": "04:30",
+        "end": "04:45",
+        "brand": "베네통",
+        "product": "26FW 여성 코듀로이 팬츠",
+        "price": 69000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253560932&preview=true",
+        "category": "의류"
+      },
+      {
+        "start": "04:45",
+        "end": "05:00",
+        "brand": "베네통",
+        "product": "26FW 아트웍 카라 니트",
+        "price": 159000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253560836&preview=true",
+        "category": "의류"
+      },
+      {
+        "start": "04:45",
+        "end": "05:00",
+        "brand": "베네통",
+        "product": "26FW 여성 코듀로이 팬츠",
+        "price": 69000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253560932&preview=true",
+        "category": "의류"
+      },
+      {
+        "start": "05:00",
+        "end": "06:00",
+        "brand": "베네통",
+        "product": "26FW 아트웍 카라 니트",
+        "price": 159000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253560836&preview=true",
+        "category": "의류"
+      },
+      {
+        "start": "05:00",
+        "end": "06:00",
+        "brand": "베네통",
+        "product": "26FW 여성 코듀로이 팬츠",
+        "price": 69000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253560932&preview=true",
+        "category": "의류"
+      },
+      {
         "start": "06:00",
-        "end": "14:20",
+        "end": "06:40",
         "brand": "아놀드파마",
         "product": "F26 아놀드파마 남성 소프트코튼 라운드니트",
         "price": 49900,
         "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252669598&preview=true",
         "category": "의류"
+      },
+      {
+        "start": "06:40",
+        "end": "14:20",
+        "brand": "헬로바이오",
+        "product": "프리미엄 카무트 효소 with 카무트 브랜드 밀 30포 8",
+        "price": 99900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252756748&preview=true",
+        "category": "건강식품"
+      },
+      {
+        "start": "06:40",
+        "end": "14:20",
+        "brand": "헬로바이오",
+        "product": "프리미엄 카무트 효소 with 카무트 브랜드 밀 30포",
+        "price": 49900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252758652&preview=true",
+        "category": "건강식품"
       },
       {
         "start": "14:20",
@@ -414,15 +684,42 @@
       },
       {
         "start": "18:00",
-        "end": "18:39",
+        "end": "18:40",
         "brand": "온작",
         "product": "온작 통통육포 x 18봉 매콩통통육포 x 2봉",
         "price": 49900,
         "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253464994&preview=true",
         "category": "일반식품"
+      },
+      {
+        "start": "18:40",
+        "end": "19:39",
+        "brand": "푸마",
+        "product": "26FW 푸마 여성 미세기모 긴팔티",
+        "price": 69900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252900382&preview=true",
+        "category": "언더웨어"
+      },
+      {
+        "start": "18:40",
+        "end": "19:39",
+        "brand": "푸마",
+        "product": "26FW 푸마 남성 미세기모 긴팔티",
+        "price": 69900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252900601&preview=true",
+        "category": "언더웨어"
       }
     ],
     "2026-10-03": [
+      {
+        "start": "02:20",
+        "end": "03:00",
+        "brand": "매일유업",
+        "product": "프로틴 고소한맛 304gx5캔 보틀1개",
+        "price": 89900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2250312315&preview=true",
+        "category": "건강식품"
+      },
       {
         "start": "03:00",
         "end": "03:05",
@@ -446,7 +743,7 @@
         "end": "03:10",
         "brand": "",
         "product": "26FW 아디다스 피치기모 긴팔 브라티 패키지",
-        "price": 99000,
+        "price": 109000,
         "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253559655&preview=true",
         "category": "언더웨어"
       },
@@ -491,7 +788,7 @@
         "end": "03:20",
         "brand": "",
         "product": "26FW 아디다스 피치기모 긴팔 브라티 패키지",
-        "price": 99000,
+        "price": 109000,
         "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253559655&preview=true",
         "category": "언더웨어"
       },
@@ -518,7 +815,7 @@
         "end": "03:30",
         "brand": "",
         "product": "26FW 아디다스 피치기모 긴팔 브라티 패키지",
-        "price": 99000,
+        "price": 109000,
         "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253559655&preview=true",
         "category": "언더웨어"
       },
@@ -605,7 +902,7 @@
       },
       {
         "start": "04:35",
-        "end": "04:39",
+        "end": "16:40",
         "brand": "라코스테",
         "product": "26FW 시그니쳐 남성 드로즈 패키지",
         "price": 89000,
@@ -614,7 +911,7 @@
       },
       {
         "start": "04:35",
-        "end": "04:39",
+        "end": "16:40",
         "brand": "라코스테",
         "product": "26FW 시그니쳐 남성 드로즈",
         "price": 39000,
@@ -623,18 +920,54 @@
       },
       {
         "start": "04:35",
-        "end": "04:39",
+        "end": "16:40",
         "brand": "라코스테",
         "product": "2026 남성 아이코닉 면100% 트렁크 패키지",
         "price": 89000,
         "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2246266235&preview=true",
+        "category": "언더웨어"
+      },
+      {
+        "start": "16:40",
+        "end": "18:40",
+        "brand": "사시제철",
+        "product": "만능 보리새우 x 9팩",
+        "price": 39900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253445698&preview=true",
+        "category": "일반식품"
+      },
+      {
+        "start": "16:40",
+        "end": "18:40",
+        "brand": "사시제철",
+        "product": "만능 보리새우 x 7팩",
+        "price": 39900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253445801&preview=true",
+        "category": "일반식품"
+      },
+      {
+        "start": "18:40",
+        "end": "19:39",
+        "brand": "베네통",
+        "product": "베네통 모달 퓨징 런닝형 브라팬티",
+        "price": 109900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253394977&preview=true",
+        "category": "언더웨어"
+      },
+      {
+        "start": "18:40",
+        "end": "19:39",
+        "brand": "베네통",
+        "product": "베네통 모달 퓨징 스트랩 브라팬티",
+        "price": 109900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253395018&preview=true",
         "category": "언더웨어"
       }
     ],
     "2026-10-04": [
       {
         "start": "03:20",
-        "end": "06:00",
+        "end": "04:00",
         "brand": "바다본가",
         "product": "메로구이 목살스테이크 x 8팩 메로구이 소스 1병",
         "price": 59900,
@@ -642,8 +975,26 @@
         "category": "일반식품"
       },
       {
+        "start": "04:00",
+        "end": "06:00",
+        "brand": "헬로바이오",
+        "product": "프리미엄 카무트 효소 with 카무트 브랜드 밀 30포 8",
+        "price": 99900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252756748&preview=true",
+        "category": "건강식품"
+      },
+      {
+        "start": "04:00",
+        "end": "06:00",
+        "brand": "헬로바이오",
+        "product": "프리미엄 카무트 효소 with 카무트 브랜드 밀 30포",
+        "price": 49900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252758652&preview=true",
+        "category": "건강식품"
+      },
+      {
         "start": "06:00",
-        "end": "06:39",
+        "end": "11:20",
         "brand": "김정문",
         "product": "알로에 기초 풀세트",
         "price": 69900,
@@ -652,7 +1003,7 @@
       },
       {
         "start": "06:00",
-        "end": "06:39",
+        "end": "11:20",
         "brand": "김정문",
         "product": "큐어 하이드라 수딩 스킨 로션 기초세트",
         "price": 19800,
@@ -661,7 +1012,7 @@
       },
       {
         "start": "06:00",
-        "end": "06:39",
+        "end": "11:20",
         "brand": "김정문",
         "product": "톤업크림 1 1",
         "price": 23900,
@@ -670,7 +1021,7 @@
       },
       {
         "start": "06:00",
-        "end": "06:39",
+        "end": "11:20",
         "brand": "김정문",
         "product": "릴렉싱 패드 본품1 리필1",
         "price": 22900,
@@ -679,7 +1030,7 @@
       },
       {
         "start": "06:00",
-        "end": "06:39",
+        "end": "11:20",
         "brand": "김정문",
         "product": "큐어 알로에 톤업 크림 매니아패키지",
         "price": 109000,
@@ -688,7 +1039,7 @@
       },
       {
         "start": "06:00",
-        "end": "06:39",
+        "end": "11:20",
         "brand": "김정문",
         "product": "큐어 하이드라 수딩 스킨 로션 기초세트",
         "price": 81000,
@@ -697,7 +1048,7 @@
       },
       {
         "start": "06:00",
-        "end": "06:39",
+        "end": "11:20",
         "brand": "김정문",
         "product": "큐어 알로에 톤업 크림 기본패키지",
         "price": 69900,
@@ -706,12 +1057,147 @@
       },
       {
         "start": "06:00",
-        "end": "06:39",
+        "end": "11:20",
         "brand": "김정문",
         "product": "큐어 알로에 톤업 크림 기본구성ⓢ",
         "price": 59000,
         "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2153800940&preview=true",
         "category": "미용"
+      },
+      {
+        "start": "11:20",
+        "end": "15:40",
+        "brand": "캘빈클라인",
+        "product": "스포츠 26FW 남성 긴팔 티셔츠 패키지",
+        "price": 89000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252890482&preview=true",
+        "category": "언더웨어"
+      },
+      {
+        "start": "11:20",
+        "end": "15:40",
+        "brand": "캘빈클라인",
+        "product": "캘빈클라인 스포츠 26FW 여성 긴팔 티셔츠",
+        "price": 49000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253130932&preview=true",
+        "category": "언더웨어"
+      },
+      {
+        "start": "11:20",
+        "end": "15:40",
+        "brand": "캘빈클라인",
+        "product": "캘빈클라인 스포츠 26FW 남성 긴팔 티셔츠",
+        "price": 49000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253130752&preview=true",
+        "category": "언더웨어"
+      },
+      {
+        "start": "11:20",
+        "end": "15:40",
+        "brand": "캘빈클라인",
+        "product": "스포츠 26FW 여성 긴팔 티셔츠 패키지",
+        "price": 89000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252890845&preview=true",
+        "category": "언더웨어"
+      },
+      {
+        "start": "15:40",
+        "end": "17:40",
+        "brand": "박정수",
+        "product": "올바른가 자연산 한입 조기 140토막",
+        "price": 49900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2239540042&preview=true",
+        "category": "일반식품"
+      },
+      {
+        "start": "17:40",
+        "end": "20:40",
+        "brand": "베네통",
+        "product": "26FW 아트웍 카라 니트",
+        "price": 159000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253560836&preview=true",
+        "category": "의류"
+      },
+      {
+        "start": "17:40",
+        "end": "20:40",
+        "brand": "베네통",
+        "product": "26FW 여성 코듀로이 팬츠",
+        "price": 69000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253560932&preview=true",
+        "category": "의류"
+      },
+      {
+        "start": "20:40",
+        "end": "22:40",
+        "brand": "오션투유리조트",
+        "product": "설악/고성/속초 오션투유 리조트",
+        "price": 299000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252756895&preview=true",
+        "category": "여행"
+      },
+      {
+        "start": "20:40",
+        "end": "22:40",
+        "brand": "오션투유리조트",
+        "product": "설악/고성/속초 오션투유 리조트",
+        "price": 249000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252756995&preview=true",
+        "category": "여행"
+      },
+      {
+        "start": "20:40",
+        "end": "22:40",
+        "brand": "오션투유리조트",
+        "product": "설악/고성/속초 오션투유 리조트",
+        "price": 199000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252757655&preview=true",
+        "category": "여행"
+      },
+      {
+        "start": "20:40",
+        "end": "22:40",
+        "brand": "오션투유리조트",
+        "product": "설악/고성/속초 오션투유 리조트",
+        "price": 199000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252757780&preview=true",
+        "category": "여행"
+      },
+      {
+        "start": "20:40",
+        "end": "22:40",
+        "brand": "오션투유리조트",
+        "product": "설악/고성/속초 오션투유 리조트",
+        "price": 169000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252757673&preview=true",
+        "category": "여행"
+      },
+      {
+        "start": "20:40",
+        "end": "22:40",
+        "brand": "오션투유리조트",
+        "product": "설악/고성/속초 오션투유 리조트",
+        "price": 139000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252757662&preview=true",
+        "category": "여행"
+      },
+      {
+        "start": "22:40",
+        "end": "23:39",
+        "brand": "에버바디",
+        "product": "무지외반증 발가락교정기 PRO 양발용 케어밴드",
+        "price": 79000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2200218205&preview=true",
+        "category": "가전"
+      },
+      {
+        "start": "22:40",
+        "end": "23:39",
+        "brand": "에버바디",
+        "product": "무지외반증 발가락교정기 PRO 한발용",
+        "price": 59000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2201466068&preview=true",
+        "category": "가전"
       }
     ]
   }
