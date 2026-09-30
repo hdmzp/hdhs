@@ -1,7 +1,7 @@
 {
   "weekStart": "2026-09-21",
   "weekEnd": "2026-09-27",
-  "collectedAt": "2026-09-30T18:38:18.249351+09:00",
+  "collectedAt": "2026-10-01T02:40:20.753710+09:00",
   "programs": [
     {
       "id": "variety_연애전쟁_JTBC_오후 09:50",
@@ -229,7 +229,9 @@
           "ratingDate": "09.23"
         }
       },
-      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41868939&qvt=0&query=%EA%B5%AC%EB%A5%B4%EB%AF%B8%20%EB%8B%A4%EC%8B%9C%20%EA%B7%B8%EB%A6%B0%20%EB%8B%AC%EB%B9%9B"
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41868939&qvt=0&query=%EA%B5%AC%EB%A5%B4%EB%AF%B8%20%EB%8B%A4%EC%8B%9C%20%EA%B7%B8%EB%A6%B0%20%EB%8B%AC%EB%B9%9B",
+      "isEnded": true,
+      "endDate": "2026-09-23"
     },
     {
       "id": "variety_전설의 사내_MBN_오후 09:40",
@@ -806,6 +808,30 @@
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41977097&qvt=0&query=%EB%8B%88%EB%8F%88%EB%82%B4%EC%82%B0",
       "isNew": true,
       "newReason": "firstAir"
+    },
+    {
+      "id": "drama_그래, 이혼하자_KBS Drama_오후 11:00",
+      "category": "drama",
+      "channel": "KBS Drama",
+      "title": "그래, 이혼하자",
+      "days": [
+        "수",
+        "목"
+      ],
+      "time": "오후 11:00",
+      "rating": 0.3,
+      "ratingDate": "09.24",
+      "ratingByDay": {
+        "목": {
+          "rating": 0.3,
+          "ratingDate": "09.24",
+          "episode": 12
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41779533&qvt=0&query=%EA%B7%B8%EB%9E%98%20%EC%9D%B4%ED%98%BC%ED%95%98%EC%9E%90",
+      "isEnded": true,
+      "endDate": "2026-09-24",
+      "episode": 12
     }
   ]
 }
