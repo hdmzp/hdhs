@@ -250,12 +250,16 @@ def test_sweeps_next_broadcast_day():
         orig_tpl = sweep.LIVE_DIR_TEMPLATE
         sweep.LIVE_DIR_TEMPLATE = os.path.join(tmp, "{company}_live_{ym}.json")
         sweep._LIVE_DAYS_CACHE.clear()
+        # tv-list 직접 훑기(tv_list_program_days)는 여기선 빈 편성으로 막는다
+        orig_fetch = rehd.fetch_day_items
+        rehd.fetch_day_items = lambda brod_dt: []
         try:
             days = rehd.upcoming_lineup_days(["최은경쇼", "최은경"],
                                              already_done=this_week)
         finally:
             sweep.LIVE_DIR_TEMPLATE = orig_tpl
             sweep._LIVE_DAYS_CACHE.clear()
+            rehd.fetch_day_items = orig_fetch
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
 
@@ -363,6 +367,31 @@ def test_off_air_is_week_level():
         rehd._SCHEDULE_HAS_CACHE.clear()
 
 
+def test_tv_list_lookahead_beyond_local():
+    """로컬 편성(HD_live, +5일까지) 너머의 회차도 tv-list를 직접 훑어 찾는다.
+
+    실측: 2026-09-30 기준 최은경쇼 10/7(수) - Hmall 편성표에서 날짜를 10/7로
+    넘기면 머티리얼랩 라인업 상품코드가 이미 있었는데 못 긁어왔다."""
+    print("[11] 로컬 편성 너머(+7일) 회차도 tv-list에서 찾는다")
+    today = datetime.now(rehd.KST).date()
+    far = today + timedelta(days=7)
+    other = today + timedelta(days=6)
+    day_items = {
+        far.strftime("%Y%m%d"): [tv_item("19:30", "21:45", "최은경쇼", "10", "머티리얼랩", "니트 셋업")],
+        # 제목 없는 날/남의 방송은 시간대가 같아도 고르면 안 된다
+        other.strftime("%Y%m%d"): [tv_item("19:30", "21:45", "황정민쇼", "11", "남의", "상품")],
+    }
+    orig_fetch = rehd.fetch_day_items
+    rehd.fetch_day_items = lambda brod_dt: list(day_items.get(brod_dt, []))
+    try:
+        days = rehd.tv_list_program_days(["최은경쇼", "최은경"])
+        check("+7일 회차 발견, 남의 방송 제외", sorted(days), [far])
+        days = rehd.tv_list_program_days(["최은경쇼", "최은경"], already_done=far)
+        check("이미 훑은 날은 제외", sorted(days), [])
+    finally:
+        rehd.fetch_day_items = orig_fetch
+
+
 def main():
     test_two_broadcasts_same_day()
     test_same_product_in_both_slots()
@@ -375,6 +404,7 @@ def main():
     test_sweeps_next_broadcast_day()
     test_schedule_dates_win()
     test_off_air_is_week_level()
+    test_tv_list_lookahead_beyond_local()
 
     print()
     if FAILURES:
