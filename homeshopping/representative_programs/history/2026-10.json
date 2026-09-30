@@ -1,6 +1,6 @@
 {
   "month": "2026-10",
-  "updated_at": "2026-09-30T15:27:19.044409+09:00",
+  "updated_at": "2026-09-30T20:45:13.131448+09:00",
   "programs": [
     {
       "program_key": "HD_HJM",
@@ -14,12 +14,12 @@
         {
           "date": "2026-10-05",
           "label": "10/05(월) 19:30 방송",
-          "collected_at": "2026-09-30T15:27:19.019911+09:00",
+          "collected_at": "2026-09-30T20:45:13.115239+09:00",
           "products": [
             {
               "broadcast_date_label": "10/05(월) 19:30 방송",
               "brand": "다이슨",
-              "name": "다이슨 에어랩 오리진 블루코퍼 + 트래블백 + 키토산크림",
+              "name": "[황쇼패키지]다이슨 에어랩 오리진 블루코퍼 + 트래블백 + 키토산크림",
               "price": 532000,
               "image": "https://image.hmall.com/2250396601_0.jpg",
               "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2250396601"
@@ -80,7 +80,7 @@
         {
           "date": "2026-10-06",
           "label": "10/06(화) 19:30 방송",
-          "collected_at": "2026-09-30T15:27:19.019911+09:00",
+          "collected_at": "2026-09-30T20:45:13.115239+09:00",
           "products": [
             {
               "broadcast_date_label": "10/06(화) 19:30 방송",
@@ -106,7 +106,7 @@
         {
           "date": "2026-10-03",
           "label": "10/03(토) 08:20 방송",
-          "collected_at": "2026-09-30T15:27:19.019911+09:00",
+          "collected_at": "2026-09-30T20:45:13.115239+09:00",
           "products": [
             {
               "broadcast_date_label": "10/03(토) 08:20 방송",
@@ -169,6 +169,64 @@
       ]
     },
     {
+      "program_key": "HD_CEK",
+      "company": "HD",
+      "tab_name": "최은경",
+      "program_title": "최은경쇼",
+      "schedule_raw": "매주 수요일 19시 30분",
+      "detail_link": "https://www.hmall.com/md/dpa/pgmComm?sectId=3142330",
+      "program_image": "",
+      "broadcasts": [
+        {
+          "date": "2026-10-07",
+          "label": "10/07(수) 19:30 방송",
+          "collected_at": "2026-09-30T20:45:13.115239+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "10/07(수) 19:30 방송",
+              "brand": "머티리얼랩",
+              "name": "머티리얼랩 26FW 밀리언마일러 레이스 니트 셋업",
+              "price": 158000,
+              "image": "https://image.hmall.com/2253934288_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253934288"
+            },
+            {
+              "broadcast_date_label": "10/07(수) 19:30 방송",
+              "brand": "머티리얼랩",
+              "name": "[Handmade] Swarovski 社 머티리얼랩 26FW 크리스털 펄 마그넷 목걸이",
+              "price": 249000,
+              "image": "https://image.hmall.com/2253523942_0.png",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253523942"
+            },
+            {
+              "broadcast_date_label": "10/07(수) 19:30 방송",
+              "brand": "머티리얼랩",
+              "name": "[Handmade/주문제작] 머티리얼랩 26FW 젬스톤 마그네틱 굿럭 목걸이",
+              "price": 189900,
+              "image": "https://image.hmall.com/2252831953_0.png",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252831953"
+            },
+            {
+              "broadcast_date_label": "10/07(수) 19:30 방송",
+              "brand": "머티리얼랩",
+              "name": "머티리얼랩 26FW 밀리언마일러 레이스 후드 집업",
+              "price": 109000,
+              "image": "https://image.hmall.com/2253700254_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253700254"
+            },
+            {
+              "broadcast_date_label": "10/07(수) 19:30 방송",
+              "brand": "머티리얼랩",
+              "name": "머티리얼랩 26FW 밀리언마일러 레이스 니트 팬츠",
+              "price": 99000,
+              "image": "https://image.hmall.com/2253700346_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253700346"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "program_key": "GS_BJY",
       "company": "GS",
       "tab_name": "백지연",
@@ -178,9 +236,25 @@
       "program_image": "",
       "broadcasts": [
         {
+          "date": "2026-10-08",
+          "label": "10/08(목) 20:45 방송",
+          "collected_at": "2026-09-30T20:45:13.115239+09:00",
+          "products": [
+            {
+              "prd_id": "1101552186",
+              "broadcast_date_label": "10월 8일(목) 20:45 방송",
+              "broadcast_iso": "2026-10-08T20:45:00",
+              "brand": "GS SHOP",
+              "name": "하이랜드 프레쉬 100% 블루베리 착즙 주스 48팩 120mL",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1101552186"
+            }
+          ]
+        },
+        {
           "date": "2026-10-01",
           "label": "10/01(목) 20:45 방송",
-          "collected_at": "2026-09-30T15:27:19.019911+09:00",
+          "collected_at": "2026-09-30T20:45:13.115239+09:00",
           "products": [
             {
               "prd_id": "1131120574",
@@ -369,7 +443,7 @@
         {
           "date": "2026-10-09",
           "label": "10/09(금) 20:35 방송",
-          "collected_at": "2026-09-30T15:27:19.019911+09:00",
+          "collected_at": "2026-09-30T20:45:13.115239+09:00",
           "products": [
             {
               "prd_id": "1133786916",
@@ -466,7 +540,7 @@
         {
           "date": "2026-10-02",
           "label": "10/02(금) 20:35 방송",
-          "collected_at": "2026-09-30T15:27:19.019911+09:00",
+          "collected_at": "2026-09-30T20:45:13.115239+09:00",
           "products": [
             {
               "prd_id": "1100521278",
@@ -583,7 +657,7 @@
         {
           "date": "2026-10-10",
           "label": "10/10(토) 08:20 방송",
-          "collected_at": "2026-09-30T15:27:19.019911+09:00",
+          "collected_at": "2026-09-30T20:45:13.115239+09:00",
           "products": [
             {
               "broadcast_date_label": "10/10 토요일 08:20",
@@ -626,7 +700,7 @@
         {
           "date": "2026-10-08",
           "label": "10/08(목) 20:45 방송",
-          "collected_at": "2026-09-30T15:27:19.019911+09:00",
+          "collected_at": "2026-09-30T20:45:13.115239+09:00",
           "products": [
             {
               "broadcast_date_label": "10/08 목요일 20:45",
@@ -704,7 +778,7 @@
         {
           "date": "2026-10-03",
           "label": "10/03(토) 08:20 방송",
-          "collected_at": "2026-09-30T15:27:19.019911+09:00",
+          "collected_at": "2026-09-30T20:45:13.115239+09:00",
           "products": [
             {
               "broadcast_date_label": "10/03 토요일 08:20",
@@ -747,7 +821,7 @@
         {
           "date": "2026-10-01",
           "label": "10/01(목) 20:45 방송",
-          "collected_at": "2026-09-30T15:27:19.019911+09:00",
+          "collected_at": "2026-09-30T20:45:13.115239+09:00",
           "products": [
             {
               "broadcast_date_label": "10/01 목요일 20:45",
@@ -829,7 +903,7 @@
         {
           "date": "2026-10-05",
           "label": "10/05(월) 19:35 방송",
-          "collected_at": "2026-09-30T15:27:19.019911+09:00",
+          "collected_at": "2026-09-30T20:45:13.115239+09:00",
           "products": [
             {
               "broadcast_date_label": "10/05(월) 19:35",
@@ -907,6 +981,105 @@
               "image": "goods_images/20/827/2022990827L.jpg?timestamp=20260818174527",
               "link": "https://display.cjonstyle.com/p/item/2022990827?channelCode=30002002",
               "verify": true
+            },
+            {
+              "broadcast_date_label": "10/05(월) 19:35",
+              "brand": "로마",
+              "name": "너리싱 샴푸 1L 1통",
+              "price": 79000,
+              "image": "goods_images/20/218/2004778218L.jpg?timestamp=20240711162316",
+              "link": "https://display.cjonstyle.com/p/item/2004778218?channelCode=30002002",
+              "verify": true
+            },
+            {
+              "broadcast_date_label": "10/05(월) 19:35",
+              "brand": "로마",
+              "name": "LOMA 로마 너리싱 오일 에센스 100ml",
+              "price": 49000,
+              "image": "goods_images/20/403/2004778403L.jpg?timestamp=20220803101809",
+              "link": "https://display.cjonstyle.com/p/item/2004778403?channelCode=30002002",
+              "verify": true
+            },
+            {
+              "broadcast_date_label": "10/05(월) 19:35",
+              "brand": "로마",
+              "name": "[깡주은 PICK] [LOMA 로마 포팅파잉 토닉 에센스 100ml",
+              "price": 49000,
+              "image": "goods_images/20/266/2016707266L.jpg?timestamp=20241221001507",
+              "link": "https://display.cjonstyle.com/p/item/2016707266?channelCode=30002002",
+              "verify": true
+            },
+            {
+              "broadcast_date_label": "10/05(월) 19:35",
+              "brand": "로마",
+              "name": "LOMA 데일리 샴푸 1L 1통",
+              "price": 69000,
+              "image": "goods_images/20/132/2020489132L.jpg?timestamp=20240226213150",
+              "link": "https://display.cjonstyle.com/p/item/2020489132?channelCode=30002002",
+              "verify": true
+            },
+            {
+              "broadcast_date_label": "10/05(월) 19:35",
+              "brand": "로마",
+              "name": "데일리 컨디셔너 1L",
+              "price": 71000,
+              "image": "goods_images/20/729/2020489729L.jpg?timestamp=20230829163116",
+              "link": "https://display.cjonstyle.com/p/item/2020489729?channelCode=30002002",
+              "verify": true
+            },
+            {
+              "broadcast_date_label": "10/05(월) 19:35",
+              "brand": "로마",
+              "name": "LOMA 로마 모이스처라이징 샴푸 1L",
+              "price": 73000,
+              "image": "goods_images/20/413/2077431413L.jpg?timestamp=20260121124900",
+              "link": "https://display.cjonstyle.com/p/item/2077431413?channelCode=30002002",
+              "verify": true
+            },
+            {
+              "broadcast_date_label": "10/05(월) 19:35",
+              "brand": "로마",
+              "name": "LOMA 로마 모이스처라이징 트리트먼트 1L",
+              "price": 75000,
+              "image": "goods_images/20/740/2077431740L.jpg?timestamp=20260121125215",
+              "link": "https://display.cjonstyle.com/p/item/2077431740?channelCode=30002002",
+              "verify": true
+            },
+            {
+              "broadcast_date_label": "10/05(월) 19:35",
+              "brand": "로마",
+              "name": "[스페셜] 미국 너리싱 샴푸 1L+너리싱 컨디셔너 1L+베스트셀러 어메니티 5종+파우치+쇼핑백",
+              "price": 159000,
+              "image": "goods_images/20/675/2078997675L.jpg?timestamp=20260306153722",
+              "link": "https://display.cjonstyle.com/p/item/2078997675?channelCode=30002002",
+              "verify": true
+            },
+            {
+              "broadcast_date_label": "10/05(월) 19:35",
+              "brand": "로마",
+              "name": "[스페셜] 미국 너리싱 샴푸 1L+너리싱 컨디셔너 1L+데일리샴푸 88ml+파우치+쇼핑백",
+              "price": 159000,
+              "image": "goods_images/20/875/2078997875L.jpg?timestamp=20260306153758",
+              "link": "https://display.cjonstyle.com/p/item/2078997875?channelCode=30002002",
+              "verify": true
+            },
+            {
+              "broadcast_date_label": "10/05(월) 19:35",
+              "brand": "로마",
+              "name": "[스페셜] 미국 딥컨디셔너 237ml 2개+너리싱 샴푸 88ml+파우치+쇼핑백",
+              "price": 118000,
+              "image": "goods_images/20/038/2078998038L.jpg?timestamp=20260306153824",
+              "link": "https://display.cjonstyle.com/p/item/2078998038?channelCode=30002002",
+              "verify": true
+            },
+            {
+              "broadcast_date_label": "10/05(월) 19:35",
+              "brand": "로마",
+              "name": "[기본패키지] LOMA 에센셜 샴푸 1L 2통+쇼핑백 1매",
+              "price": 198000,
+              "image": "goods_images/20/228/2084458228L.jpg?timestamp=20260512120114",
+              "link": "https://display.cjonstyle.com/p/item/2084458228?channelCode=30002002",
+              "verify": true
             }
           ]
         }
@@ -924,7 +1097,7 @@
         {
           "date": "2026-10-20",
           "label": "10/20(화) 19:35 방송",
-          "collected_at": "2026-09-30T15:27:19.019911+09:00",
+          "collected_at": "2026-09-30T20:45:13.115239+09:00",
           "products": [
             {
               "broadcast_date_label": "10/20(화) 19:35",
@@ -939,7 +1112,7 @@
         {
           "date": "2026-10-13",
           "label": "10/13(화) 19:35 방송",
-          "collected_at": "2026-09-30T15:27:19.019911+09:00",
+          "collected_at": "2026-09-30T20:45:13.115239+09:00",
           "products": [
             {
               "broadcast_date_label": "10/13(화) 19:35",
@@ -962,7 +1135,7 @@
         {
           "date": "2026-10-06",
           "label": "10/06(화) 19:35 방송",
-          "collected_at": "2026-09-30T15:27:19.019911+09:00",
+          "collected_at": "2026-09-30T20:45:13.115239+09:00",
           "products": [
             {
               "broadcast_date_label": "10/06(화) 19:35",
@@ -1012,14 +1185,14 @@
         {
           "date": "2026-10-02",
           "label": "10/02(금) 22:45 방송",
-          "collected_at": "2026-09-30T15:27:19.019911+09:00",
+          "collected_at": "2026-09-30T20:45:13.115239+09:00",
           "products": [
             {
               "broadcast_date_label": "10/02(금) 22:45",
               "brand": "클리판",
               "name": "26FW 최신상 프리미엄 비스코스코튼 타올 스폐셜세트 노르딕믹스",
               "price": 129000,
-              "image": "https://image.cjonstyle.net/goods_images/20/668/2094268668L.jpg?timestamp=20260930111805",
+              "image": "https://image.cjonstyle.net/goods_images/20/668/2094268668L.jpg?timestamp=20260930182034",
               "link": "https://item.cjonstyle.com/item/2094268668?channelCode=30002002"
             },
             {
@@ -1072,7 +1245,7 @@
         {
           "date": "2026-10-10",
           "label": "10/10(토) 08:20 방송",
-          "collected_at": "2026-09-30T15:27:19.019911+09:00",
+          "collected_at": "2026-09-30T20:45:13.115239+09:00",
           "products": [
             {
               "broadcast_date_label": "10/10(토) 08:20",
@@ -1119,7 +1292,7 @@
         {
           "date": "2026-10-08",
           "label": "10/08(목) 20:45 방송",
-          "collected_at": "2026-09-30T15:27:19.019911+09:00",
+          "collected_at": "2026-09-30T20:45:13.115239+09:00",
           "products": [
             {
               "broadcast_date_label": "10/08(목) 20:45",
@@ -1142,7 +1315,7 @@
         {
           "date": "2026-10-03",
           "label": "10/03(토) 08:20 방송",
-          "collected_at": "2026-09-30T15:27:19.019911+09:00",
+          "collected_at": "2026-09-30T20:45:13.115239+09:00",
           "products": [
             {
               "broadcast_date_label": "10/03(토) 08:20",
@@ -1164,7 +1337,7 @@
               "broadcast_date_label": "10/03(토) 08:20",
               "brand": "로보",
               "name": "[미리주문 5%] 26FW 베지터블 하이넥 케이프",
-              "price": 664050,
+              "price": 654050,
               "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/729/2091800729L.jpg?timestamp=20260908115354",
               "link": "https://item.cjonstyle.com/item/2091800729?channelCode=30002002"
             },
@@ -1172,9 +1345,17 @@
               "broadcast_date_label": "10/03(토) 08:20",
               "brand": "로보",
               "name": "[미리주문 5%] 26FW 스웨이드 하이넥 케이프",
-              "price": 759050,
+              "price": 749050,
               "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/871/2091800871L.jpg?timestamp=20260908141132",
               "link": "https://item.cjonstyle.com/item/2091800871?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "10/03(토) 08:20",
+              "brand": "로보",
+              "name": "[미리주문 10%] 26FW 베지터블 무스탕카라 더블 롱코트",
+              "price": 981000,
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/295/2093452295L.jpg?timestamp=20260930123306",
+              "link": "https://item.cjonstyle.com/item/2093452295?channelCode=30002002"
             },
             {
               "broadcast_date_label": "10/03(토) 08:20",
@@ -1199,7 +1380,7 @@
         {
           "date": "2026-10-01",
           "label": "10/01(목) 20:45 방송",
-          "collected_at": "2026-09-30T15:27:19.019911+09:00",
+          "collected_at": "2026-09-30T20:45:13.115239+09:00",
           "products": [
             {
               "broadcast_date_label": "10/01(목) 20:45",
