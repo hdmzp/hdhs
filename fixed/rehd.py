@@ -140,6 +140,14 @@ TV_LIST_API = (
     "&brodDt={brod_dt}&brodPrrgPage={page}&brodType=etv&deviceInfo=pc"
 )
 
+# 편성표(tv-list)를 직접 훑어 '다음 회차'를 찾는 범위(오늘+1 ~ +N일).
+# 로컬 편성(HD_live)은 hd_scraper.py가 어제~+5일만 모아서, 그 너머에 이미
+# 라인업이 꽂혀 있는 회차를 못 봤다. 실측: 2026-09-30 기준 최은경쇼 10/7(수)
+# 회차 - Hmall 편성표에서 날짜를 10/7로 넘기면 머티리얼랩 라인업(상품코드)이
+# 이미 다 들어 있었는데, HD_live가 10/5까지라 수집 대상에서 빠졌다.
+# Hmall 편성표 날짜 탭은 대략 +7일까지 열리므로 여유 있게 14일을 본다.
+TV_LIST_LOOKAHEAD_DAYS = 14
+
 NAME_FIELD_CANDIDATES = ["slitmNm", "convertedSlitmNm", "goodsNm", "itemNm", "displayItemName", "name"]
 PRICE_FIELD_CANDIDATES = ["sellPrc", "salePrice", "price", "bbprc"]
 IMAGE_FIELD_CANDIDATES = ["orglImgNm", "simgNm", "imgUrl", "image", "thumbnail"]
@@ -223,7 +231,22 @@ def make_exact_label(brod_date, start_hm: str) -> str:
     return label + " 방송"
 
 
+_DAY_ITEMS_CACHE = {}
+
+
 def fetch_day_items(brod_dt: str) -> list:
+    """_fetch_day_items의 캐시 래퍼. 같은 날짜를 프로그램 4개 x (라인업 수집,
+    휴방 판정, 다음 회차 탐색)에서 반복해서 부르므로 한 실행 안에서는 한 번만
+    받는다. 빈 결과(일시 오류/편성 미공개)는 캐시하지 않는다."""
+    if brod_dt in _DAY_ITEMS_CACHE:
+        return list(_DAY_ITEMS_CACHE[brod_dt])
+    items = _fetch_day_items(brod_dt)
+    if items:
+        _DAY_ITEMS_CACHE[brod_dt] = items
+    return list(items)
+
+
+def _fetch_day_items(brod_dt: str) -> list:
     """tv-list 편성 API에서 brod_dt(YYYYMMDD) 하루치 편성 아이템을 전부 가져온다.
     (예전에는 여기서 방송 시간대까지 걸렀는데, 그러면 같은 날 2회 방송하는 날의
      나머지 회차를 통째로 놓친다 - 아래 select_program_slots가 프로그램명으로
@@ -556,7 +579,38 @@ def upcoming_lineup_days(program_names, already_done=None) -> list:
         if d <= today or d == already_done:
             continue
         days.add(d)
+    days.update(tv_list_program_days(program_names, already_done=already_done,
+                                     skip=days))
     return sorted(days)
+
+
+def tv_list_program_days(program_names, already_done=None, skip=(),
+                         lookahead=None) -> set:
+    """tv-list 편성 API를 오늘+1 ~ +lookahead일까지 직접 훑어, 방송 제목(brodTitl)이
+    이 프로그램인 날짜를 돌려준다.
+
+    로컬 편성(HD_live)은 +5일까지만 있어서, 편성표 날짜 탭을 넘기면 보이는
+    일주일 뒤 회차(2026-09-30 기준 최은경쇼 10/7 머티리얼랩 라인업)를 놓쳤다.
+    제목으로만 고른다 - 시간대만 보고 고르면 휴방 주에 남의 방송을 가져온다
+    (collect_lineup_products의 2026-09-21 황정민쇼 사고 참고)."""
+    lookahead = TV_LIST_LOOKAHEAD_DAYS if lookahead is None else lookahead
+    today = datetime.now(KST).date()
+    found = set()
+    for i in range(1, lookahead + 1):
+        d = today + timedelta(days=i)
+        if d == already_done or d in skip:
+            continue
+        entries = [
+            (it.get("brodStrtDtm") or "", it.get("brodEndDtm") or "",
+             it.get("brodTitl") or "", it)
+            for it in fetch_day_items(d.strftime("%Y%m%d"))
+        ]
+        if select_program_slots(entries, program_names):
+            found.add(d)
+    if found:
+        print(f"    -> tv-list 편성표에서 '{program_names[0]}' 다음 회차 발견: "
+              f"{', '.join(str(d) for d in sorted(found))}")
+    return found
 
 
 def collect_lineup_products(brod_date, program_names, brod_start=None, brod_end=None,
