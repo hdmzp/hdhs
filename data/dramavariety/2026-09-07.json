@@ -1,7 +1,7 @@
 {
   "weekStart": "2026-09-07",
   "weekEnd": "2026-09-13",
-  "collectedAt": "2026-10-01T19:04:29.625390+09:00",
+  "collectedAt": "2026-10-02T03:05:36.682746+09:00",
   "programs": [
     {
       "id": "drama_욕망의 덫_KBS2_오후 07:50",
@@ -1408,6 +1408,101 @@
       "isEnded": true,
       "endDate": "2026-09-08",
       "episode": 14
+    },
+    {
+      "id": "variety_보석이네 건강수다_SBS_오전 11:00",
+      "category": "variety",
+      "channel": "SBS",
+      "title": "보석이네 건강수다",
+      "days": [
+        "월"
+      ],
+      "time": "오전 11:00",
+      "rating": 0.2,
+      "ratingDate": "09.07",
+      "ratingByDay": {
+        "월": {
+          "rating": 0.2,
+          "ratingDate": "09.07"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=36984024&qvt=0&query=%EB%B3%B4%EC%84%9D%EC%9D%B4%EB%84%A4%20%EA%B1%B4%EA%B0%95%EC%88%98%EB%8B%A4"
+    },
+    {
+      "id": "variety_히든카드_SBS_오전 11:00",
+      "category": "variety",
+      "channel": "SBS",
+      "title": "히든카드",
+      "days": [
+        "화"
+      ],
+      "time": "오전 11:00",
+      "rating": 0.2,
+      "ratingDate": "09.08",
+      "ratingByDay": {
+        "화": {
+          "rating": 0.2,
+          "ratingDate": "09.08"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=36860088&qvt=0&query=%ED%9E%88%EB%93%A0%EC%B9%B4%EB%93%9C"
+    },
+    {
+      "id": "variety_트롯챔피언_MBC ON_오후 08:00",
+      "category": "variety",
+      "channel": "MBC ON",
+      "title": "트롯챔피언",
+      "days": [
+        "목"
+      ],
+      "time": "오후 08:00",
+      "rating": 0.2,
+      "ratingDate": "09.10",
+      "ratingByDay": {
+        "목": {
+          "rating": 0.2,
+          "ratingDate": "09.10"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=28672336&qvt=0&query=%ED%8A%B8%EB%A1%AF%EC%B1%94%ED%94%BC%EC%96%B8"
+    },
+    {
+      "id": "variety_오늘부터 인생 2막_SBS_오전 10:00",
+      "category": "variety",
+      "channel": "SBS",
+      "title": "오늘부터 인생 2막",
+      "days": [
+        "토"
+      ],
+      "time": "오전 10:00",
+      "rating": 0.3,
+      "ratingDate": "09.12",
+      "ratingByDay": {
+        "토": {
+          "rating": 0.3,
+          "ratingDate": "09.12"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=35162154&qvt=0&query=%EC%98%A4%EB%8A%98%EB%B6%80%ED%84%B0%20%EC%9D%B8%EC%83%9D%202%EB%A7%89"
+    },
+    {
+      "id": "variety_주문하신 음식 나왔쏭_TV조선_오후 11:00",
+      "category": "variety",
+      "channel": "TV조선",
+      "title": "주문하신 음식 나왔쏭",
+      "days": [
+        "일"
+      ],
+      "time": "오후 11:00",
+      "rating": 0.3,
+      "ratingDate": "09.13",
+      "ratingByDay": {
+        "일": {
+          "rating": 0.3,
+          "ratingDate": "09.13"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41903138&qvt=0&query=%EC%A3%BC%EB%AC%B8%ED%95%98%EC%8B%A0%20%EC%9D%8C%EC%8B%9D%20%EB%82%98%EC%99%94%EC%8F%AD"
     }
   ]
 }
