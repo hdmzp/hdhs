@@ -15,6 +15,7 @@ from datetime import datetime, date as date_cls, timedelta, timezone
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup
 from playwright.sync_api import sync_playwright
+import nielsen_backfill
 
 DRAMA_URL = "https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query=%EB%B0%A9%EC%98%81%EC%A4%91%ED%95%9C%EA%B5%AD%EB%93%9C%EB%9D%BC%EB%A7%88"
 # 기존 URL에는 1회성 세션 토큰(tqi, ackey)이 하드코딩돼 있어, 매 실행마다
@@ -898,6 +899,12 @@ def _merge_programs_into_file(out_dir: str, monday_date, programs: list):
               f" ({p['channel']}, ratingDate={p.get('ratingDate')}) 제거 — 이 주차 범위 밖의 날짜")
 
     by_id = {p["id"]: p for p in existing_programs}
+    # 이 주의 앞선 회차가 컷오프 미만이라 newBelowCutoff에만 보관돼 있던
+    # 프로그램이 이번 회차로 컷오프를 넘어 표에 오르는 경우(예: 2026-09-28
+    # 주차 '로또 1등도 출근합니다' 월 3.5% → 화 5.0%). 앞선 회차 값을 함께
+    # 가져와야 그 요일 칸이 비어 그리드가 다른 요일 값으로 폴백하지 않는다.
+    below_by_id = {p["id"]: p for p in (existing_below or [])
+                   if isinstance(p, dict) and p.get("id")}
     for p in programs:
         if p["id"] in by_id:
             # 요일별 시청률은 "이번에 새로 들어온 요일"만 덮어쓰고, 나머지
@@ -905,6 +912,8 @@ def _merge_programs_into_file(out_dir: str, monday_date, programs: list):
             # 월화수목 같은 그룹에서 매일 실행할 때마다 그날 요일만 갱신되고
             # 나머지 요일이 그날 값으로 덮어써지지 않는다.
             _carry_over_history(by_id[p["id"]], p)
+        elif p["id"] in below_by_id:
+            _carry_over_history(below_by_id[p["id"]], p)
         by_id[p["id"]] = p
 
     # 기존에 누적 저장된 데이터(과거 회차에 말줄임으로 박혀있을 수 있음)와
@@ -978,8 +987,9 @@ def dispatch_below_cutoff(out_dir: str, programs: list):
 
     용도: 신규(1회차) 프로그램인데 시청률이 컷오프(드라마 5%/예능 1%) 미만이라
     표(programs)에 안 실리는 경우, 표 아래에 "New" 목록으로 알려주기 위함.
-    저장 시점에는 첫 방송일을 모를 수 있어 일단 다 담아두고, 신규가 아닌 것으로
-    판명된 항목(첫 방송일이 그 주 밖)은 recompute_new_flags가 정리한다."""
+    저장 시점에는 첫 방송일을 모를 수 있어 일단 다 담아두고, 신규·종영 판정은
+    recompute_new_flags가 붙인다. 신규가 아니어도 지우지 않는다 — 기준 미만
+    회차 기록은 다음 주 카드의 전주 대비 증감 계산에 쓰인다."""
     today = datetime.now(KST).date()
     today_monday = monday_of(today)
 
@@ -1010,7 +1020,24 @@ def dispatch_below_cutoff(out_dir: str, programs: list):
 
         existing = data.get("newBelowCutoff", [])
         by_id = {p["id"]: p for p in existing}
+        table = data.get("programs", [])
+        table_idx = {p["id"]: i for i, p in enumerate(table)}
+        merged_into_table = 0
         for p in bucket:
+            if p["id"] in table_idx:
+                # 이 주에 이미 컷오프를 넘어 표에 실린 프로그램의 다른 회차가
+                # 컷오프 미만으로 나온 경우. 표 항목의 요일별 시청률에 합쳐
+                # 그 요일 칸이 비지(그리드가 다른 요일 값으로 폴백하지) 않게
+                # 한다. 대표 시청률은 표 항목과 같은 규칙으로 최신 회차를 따른다.
+                old = table[table_idx[p["id"]]]
+                _carry_over_history(old, p)
+                old_resolved = resolve_rating_date(old.get("ratingDate"), today)
+                new_resolved = resolve_rating_date(p.get("ratingDate"), today)
+                if new_resolved and old_resolved and new_resolved < old_resolved:
+                    p["rating"], p["ratingDate"] = old["rating"], old["ratingDate"]
+                table[table_idx[p["id"]]] = p
+                merged_into_table += 1
+                continue
             if p["id"] in by_id:
                 _carry_over_history(by_id[p["id"]], p)
                 # 시청률은 더 최신 회차 값으로 유지
@@ -1035,6 +1062,8 @@ def dispatch_below_cutoff(out_dir: str, programs: list):
             list(by_id.values()), {p["id"] for p in bucket})
         with open(file_path, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
+        if merged_into_table:
+            print(f"  [컷오프 미만] {file_date}.json 표 항목의 요일별 시청률에 {merged_into_table}건 합침")
         print(f"  [컷오프 미만] {file_date}.json newBelowCutoff에 {len(data['newBelowCutoff'])}건 유지")
 
 
@@ -1898,22 +1927,25 @@ def recompute_new_flags(out_dir: str):
             end_count += 1 if ended else 0
 
         # 컷오프 미만 목록(newBelowCutoff): 같은 판정을 적용하되,
-        # - 표(programs)에 이미 있는 프로그램(주중에 컷오프를 넘은 경우)은 제거
-        #   → 그리드 카드의 배지가 대신 보여준다
-        # - 신규도 종영도 아닌 것으로 확정된 항목은 제거(보여줄 게 없음)
-        # - 첫 방송일을 아직 모르는 항목은 나중에 판정할 수 있게 보류(표시는 안 됨)
+        # - 표(programs)에 이미 있는 프로그램(주중에 컷오프를 넘은 경우)은 요일별
+        #   시청률을 표 항목에 합친 뒤 제거 → 그리드 카드의 배지가 대신 보여준다
+        # - 신규·종영이 아닌 항목도 지우지 않고 남긴다. '기준 미만이라 표에 없는'
+        #   회차 기록이 있어야 다음 주 카드에 전주 대비 증감을 보여줄 수 있다
+        #   (화면에는 isNew/isEnded인 것만 나오므로 표시는 달라지지 않는다)
         below = data.get("newBelowCutoff", [])
         if below:
-            main_keys = {_first_air_key(p) for p in programs}
+            main_by_key = {_first_air_key(p): p for p in programs}
             kept_below = []
             below_new, below_end = 0, 0
             for p in below:
-                if _first_air_key(p) in main_keys:
+                main_p = main_by_key.get(_first_air_key(p))
+                if main_p is not None:
+                    main_p["ratingByDay"] = _merge_rating_by_day(
+                        p.get("ratingByDay"), main_p.get("ratingByDay"))
                     changed = True
                     continue
                 touched, is_new, ended = apply_flags(p)
                 changed = changed or touched
-                _, _, known = judge(p)
                 # 정합성: 이 배열은 '컷오프 미만이라 표에 못 실린 것'만 담아야
                 # 한다. 종영작의 마지막 회차 시청률을 뒤늦게 회수해 컷오프를
                 # 넘게 된 항목은 표(programs)로 올린다.
@@ -1922,14 +1954,9 @@ def recompute_new_flags(out_dir: str):
                     changed = True
                     print(f"  [정합성] {name}: '{p['title']}' {p['rating']}% — 컷오프 이상이므로 표로 이동")
                     continue
-                if is_new or ended:
-                    below_new += 1 if is_new else 0
-                    below_end += 1 if ended else 0
-                    kept_below.append(p)
-                elif known:
-                    changed = True  # 신규·종영 아님 확정 → 목록에서 제거
-                else:
-                    kept_below.append(p)  # 첫 방송일 미확인 — 판정 보류
+                below_new += 1 if is_new else 0
+                below_end += 1 if ended else 0
+                kept_below.append(p)
             data["newBelowCutoff"] = kept_below
             if below_new or below_end:
                 print(f"  [판정] {name}: 컷오프 미만 신규 {below_new}건 / 종영 {below_end}건")
@@ -2033,6 +2060,13 @@ def main():
 
     # 위젯 수집에서 놓친 주차를 상세 페이지에서 받아둔 시청률로 메운다.
     fill_missing_weeks_from_cache(final_out_dir)
+
+    # 위젯이 놓친 요일을 닐슨코리아 공개 순위로 메운다(표에 실린 프로그램과
+    # 기준 미만 기록의 빈 방영 요일만). 조회 실패는 수집 결과에 영향 없음.
+    try:
+        nielsen_backfill.backfill_recent_weeks(final_out_dir, today)
+    except Exception as e:
+        print(f"  [닐슨 보강] 단계 실패(무시하고 진행): {e}")
 
     # 저장이 끝난 뒤 전체 주차를 다시 훑어 신규(New)·종영(End) 여부를 갱신한다.
     # 이번 실행에서 과거 주차로 소급 반영된 데이터까지 반영되도록 마지막에 돈다.
