@@ -51,12 +51,22 @@
         "금"
       ],
       "time": "오후 07:05",
-      "rating": 5.0,
-      "ratingDate": "09.17",
+      "rating": 4.5,
+      "ratingDate": "09.18",
       "ratingByDay": {
         "월": {
           "rating": 5.2,
           "ratingDate": "09.14"
+        },
+        "수": {
+          "rating": 4.6,
+          "ratingDate": "09.16",
+          "source": "nielsen"
+        },
+        "금": {
+          "rating": 4.5,
+          "ratingDate": "09.18",
+          "source": "nielsen"
         }
       },
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41317408&qvt=0&query=%EA%B0%80%EC%A1%B1%EA%B4%80%EA%B3%84%EC%A6%9D%EB%AA%85%EC%84%9C"
@@ -264,6 +274,11 @@
         "화": {
           "rating": 5.2,
           "ratingDate": "09.15"
+        },
+        "월": {
+          "rating": 3.9,
+          "ratingDate": "09.14",
+          "source": "nielsen"
         }
       },
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^blFB^VmJEX0NQYw==^TEdOX0tJVA==&pkid=356&os=41532093&qvt=0&query=%EB%A1%9C%EB%98%90%201%EB%93%B1%EB%8F%84%20%EC%B6%9C%EA%B7%BC%ED%95%A9%EB%8B%88%EB%8B%A4",
