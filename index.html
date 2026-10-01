@@ -1511,6 +1511,11 @@
     font-weight: 500;
     font-size: 10px;
   }
+  .dv-card .dv-rating-none {
+    color: var(--ink-faint);
+    font-weight: 600;
+    font-size: 10px;
+  }
 
   td.dv-empty-cell { background: var(--paper-dim); opacity: 0.4; }
 
@@ -4663,12 +4668,14 @@ function dvRenderGrid(data) {
         html += `<td class="${cellClass}">`;
         for (const p of dayPrograms) {
           // 주 다회 편성 프로그램은 요일마다 회차가 다르므로, 그 요일의
-          // 시청률(ratingByDay)을 우선 표시한다. 해당 요일 값이 아직 없으면
-          // (미방영 요일, ratingByDay 도입 이전의 과거 주차 데이터) 기존처럼
-          // 최신 회차 값으로 폴백한다.
+          // 시청률(ratingByDay)만 표시한다. 요일별 값이 있는 데이터에서 해당
+          // 요일 값이 없으면(미방영·미수집) 다른 요일 회차 값을 끌어오지 않고
+          // 비워 둔다 — 끌어오면 월요일 칸에 화요일 시청률이 찍힌다.
+          // ratingByDay 자체가 없는(또는 빈) 과거 주차 데이터만 최신 회차 값으로 폴백한다.
           const dayEntry = (p.ratingByDay && p.ratingByDay[day]) || null;
-          const dayRating = dayEntry ? dayEntry.rating : p.rating;
-          const dayRatingDate = dayEntry ? dayEntry.ratingDate : p.ratingDate;
+          const hasByDay = !!p.ratingByDay && Object.keys(p.ratingByDay).length > 0;
+          const dayRating = dayEntry ? dayEntry.rating : (hasByDay ? null : p.rating);
+          const dayRatingDate = dayEntry ? dayEntry.ratingDate : (hasByDay ? null : p.ratingDate);
           const isHighRating = dvFilter !== "high" && (
             (p.category === 'drama' && dayRating >= 8) ||
             (p.category === 'variety' && dayRating >= 3)
@@ -4695,7 +4702,15 @@ function dvRenderGrid(data) {
           html += `<a class="${cardCls}" href="${safeLink}" target="_blank" rel="noopener">`;
           html += `<span class="dv-title"><span class="dv-channel">[${dvEscapeHtml(p.channel)}]</span> ${dvEscapeHtml(p.title)}${newBadge}${endBadge}</span>`;
           html += `<span class="dv-meta">(${dvEscapeHtml(p.days.join(', '))}) ${dvEscapeHtml(p.time)}</span>`;
-          html += `<span class="dv-rating">${dvEscapeHtml(dayRating)}%</span> <span class="dv-rating-date">${dayRatingDate ? '(' + dvEscapeHtml(dayRatingDate) + ')' : ''}</span>`;
+          if (dayRating != null) {
+            html += `<span class="dv-rating">${dvEscapeHtml(dayRating)}%</span> <span class="dv-rating-date">${dayRatingDate ? '(' + dvEscapeHtml(dayRatingDate) + ')' : ''}</span>`;
+          } else {
+            // 시청률은 방송 다음 날 나오므로, 오늘 이후 요일은 '방영 전'으로 구분한다
+            const cellDate = new Date(weekStart + "T00:00:00");
+            cellDate.setDate(cellDate.getDate() + DV_DAYS.indexOf(day));
+            const notYet = toLocalDateStr(cellDate) >= toLocalDateStr(new Date());
+            html += `<span class="dv-rating-none">${notYet ? '방영 전' : '시청률 미집계'}</span>`;
+          }
           html += `</a>`;
         }
         // 결방 카드는 그 요일 칸 맨 아래에 (방영분 다음에) 붙인다
