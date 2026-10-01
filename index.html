@@ -1511,17 +1511,16 @@
     font-weight: 500;
     font-size: 10px;
   }
-  /* 전주 대비 증감: 상승 빨강 / 하락 파랑 / 동일·기록 없음 회색 */
+  /* 전주 대비 증감: 상승 빨강 / 하락 파랑 / 동일·결방 회색. 날짜 옆에 한 줄로 */
   .dv-card .dv-delta {
-    display: block;
+    margin-left: 4px;
     font-size: 10px;
-    font-weight: 600;
-    margin-top: 1px;
+    font-weight: 700;
   }
-  .dv-card .dv-delta-up { color: #DC2626; }
-  .dv-card .dv-delta-down { color: #2563EB; }
-  .dv-card .dv-delta-flat,
-  .dv-card .dv-delta-none { color: var(--ink-faint); }
+  .dv-delta-up { color: #DC2626; }
+  .dv-delta-down { color: #2563EB; }
+  .dv-delta-flat,
+  .dv-delta-none { color: var(--ink-faint); }
 
   td.dv-empty-cell { background: var(--paper-dim); opacity: 0.4; }
 
@@ -4546,7 +4545,8 @@ function dvRenderBasis() {
   if (!el) return;
 
   const newNote = ' /● <span class="dv-new-badge">New</span> : 신규 편성(1회차)'
-                + ' · <span class="dv-end-badge">End</span> : 종영';
+                + ' · <span class="dv-end-badge">End</span> : 종영'
+                + ' /● <span class="dv-delta-up">▲</span><span class="dv-delta-down">▼</span> : 전주 같은 요일 대비(%p)';
 
   if (dvFilter === "high") {
     el.innerHTML = '● 고시청률 기준: <strong>[드라마]</strong> 시청률 8% 이상 · <strong>[예능]</strong> 시청률 3% 이상' + newNote;
@@ -4644,22 +4644,24 @@ function dvPrevWeekRatings(prevData) {
   return map;
 }
 
-// 카드의 '전주대비' 표기. 지난주 같은 요일 값이 있으면 증감(%p), 신규 편성이거나
-// 결방으로 확인되면 '전주 미진행', 그 외에 값이 없으면 '전주 기록 없음'.
+// 카드의 전주 대비 표기(기호만, 설명은 상단 조회 기준 줄의 범례에). 지난주 같은
+// 요일 값이 있으면 ▲1.2%p / ▼0.4%p / ＝, 결방으로 확인되면 '결방', 그 외에
+// 값이 없으면(신규 편성 포함) 아무것도 붙이지 않는다 — 긴 문구는 카드 가독성을 해친다.
 function dvDeltaHtml(prevByKey, prevOffAir, p, day, dayRating) {
   if (dayRating == null || !p.ratingByDay || Object.keys(p.ratingByDay).length === 0) return '';
   const prev = (prevByKey[dvProgramKey(p)] || {})[day];
   if (prev && prev.rating != null) {
     const diff = Math.round((dayRating - prev.rating) * 10) / 10;
-    const cls = diff > 0 ? 'dv-delta-up' : (diff < 0 ? 'dv-delta-down' : 'dv-delta-flat');
     const tip = `지난주 ${day}요일 ${prev.rating}%${prev.ratingDate ? ' (' + prev.ratingDate + ')' : ''} 대비`;
-    return `<span class="dv-delta ${cls}" title="${dvEscapeHtml(tip)}">전주대비 ${diff > 0 ? '+' : ''}${diff.toFixed(1)}%p</span>`;
+    if (diff === 0) return `<span class="dv-delta dv-delta-flat" title="${dvEscapeHtml(tip)} 변동 없음">＝</span>`;
+    const cls = diff > 0 ? 'dv-delta-up' : 'dv-delta-down';
+    return `<span class="dv-delta ${cls}" title="${dvEscapeHtml(tip)}">${diff > 0 ? '▲' : '▼'}${Math.abs(diff).toFixed(1)}%p</span>`;
   }
   const offs = (prevOffAir[p.category] || {})[day] || [];
-  if (p.isNew === true || offs.some(o => o.title === p.title && o.channel === p.channel)) {
-    return `<span class="dv-delta dv-delta-none" title="지난주 같은 요일에는 방송이 없었습니다">전주 미진행</span>`;
+  if (offs.some(o => o.title === p.title && o.channel === p.channel)) {
+    return `<span class="dv-delta dv-delta-none" title="지난주 같은 요일은 결방이었습니다">결방</span>`;
   }
-  return `<span class="dv-delta dv-delta-none" title="지난주 같은 요일의 시청률 기록이 없습니다">전주 기록 없음</span>`;
+  return '';
 }
 
 function dvRenderGrid(data) {
