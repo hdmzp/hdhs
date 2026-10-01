@@ -1,6 +1,6 @@
 {
  "date": "2026-10-03",
- "collectedAt": "2026-10-01T10:03:27+09:00",
+ "collectedAt": "2026-10-02T01:58:26+09:00",
  "games": [
   {
    "time": "06:30",
@@ -25,7 +25,7 @@
    "venue": "가스가이 컨트리 클럽",
    "hasKorea": true,
    "medal": true,
-   "tv": true,
+   "tv": false,
    "link": "https://m.sports.naver.com/game/2026GLFMTEAMFNL000400"
   },
   {
@@ -51,19 +51,8 @@
    "venue": "가스가이 컨트리 클럽",
    "hasKorea": true,
    "medal": true,
-   "tv": true,
-   "link": "https://m.sports.naver.com/game/2026GLFWTEAMFNL000400"
-  },
-  {
-   "time": "09:00",
-   "discipline": "럭비",
-   "event": "남자 9-12위 순위전",
-   "countries": [],
-   "venue": "나고야시 미즈호 럭비장",
-   "hasKorea": false,
-   "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026RU7MTEAM7SF9000100"
+   "link": "https://m.sports.naver.com/game/2026GLFWTEAMFNL000400"
   },
   {
    "time": "09:00",
@@ -87,96 +76,22 @@
    "venue": "오카자키 주오 소고 공원",
    "hasKorea": true,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026ARCWINDIVIDQFNL000100"
   },
   {
    "time": "09:00",
    "discipline": "주짓수",
    "event": "남자 -85kg급 32강",
-   "countries": [],
+   "countries": [
+    "김민규",
+    "임란 마고메도프"
+   ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026JJIM85KGR32000100"
-  },
-  {
-   "time": "09:00",
-   "discipline": "주짓수",
-   "event": "남자 -85kg급 32강",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026JJIM85KGR32000200"
-  },
-  {
-   "time": "09:00",
-   "discipline": "주짓수",
-   "event": "남자 -85kg급 32강",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026JJIM85KGR32000300"
-  },
-  {
-   "time": "09:00",
-   "discipline": "주짓수",
-   "event": "남자 -85kg급 32강",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026JJIM85KGR32000400"
-  },
-  {
-   "time": "09:00",
-   "discipline": "주짓수",
-   "event": "남자 -85kg급 32강",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026JJIM85KGR32000500"
-  },
-  {
-   "time": "09:00",
-   "discipline": "주짓수",
-   "event": "남자 -85kg급 32강",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026JJIM85KGR32000600"
-  },
-  {
-   "time": "09:00",
-   "discipline": "주짓수",
-   "event": "남자 -85kg급 32강",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026JJIM85KGR32000700"
-  },
-  {
-   "time": "09:00",
-   "discipline": "주짓수",
-   "event": "남자 -85kg급 32강",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026JJIM85KGR32000800"
   },
   {
    "time": "09:00",
@@ -305,6 +220,20 @@
   {
    "time": "09:05",
    "discipline": "주짓수",
+   "event": "남자 -85kg급 32강",
+   "countries": [
+    "아쿠스 후 유 이",
+    "응우옌 티엔 찌엔"
+   ],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026JJIM85KGR32000200"
+  },
+  {
+   "time": "09:05",
+   "discipline": "주짓수",
    "event": "여자 -63kg급 32강",
    "countries": [
     "최희주",
@@ -313,8 +242,22 @@
    "venue": "아이치현 무도관",
    "hasKorea": true,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026JJIW63KGR32000200"
+  },
+  {
+   "time": "09:10",
+   "discipline": "주짓수",
+   "event": "남자 -85kg급 32강",
+   "countries": [
+    "아마드 알-쿠라다기",
+    "알리셰르 가리브쇼예프"
+   ],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026JJIM85KGR32000300"
   },
   {
    "time": "09:10",
@@ -347,6 +290,20 @@
   {
    "time": "09:15",
    "discipline": "주짓수",
+   "event": "남자 -85kg급 32강",
+   "countries": [
+    "우츠기 고",
+    "수킷피라랏 잔타나카"
+   ],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026JJIM85KGR32000400"
+  },
+  {
+   "time": "09:15",
+   "discipline": "주짓수",
    "event": "여자 -63kg급 32강",
    "countries": [
     "아이샤 알주네이비",
@@ -361,6 +318,20 @@
   {
    "time": "09:20",
    "discipline": "주짓수",
+   "event": "남자 -85kg급 32강",
+   "countries": [
+    "비토 루이스 루주리아가",
+    "알탄게렐 바야르후우"
+   ],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026JJIM85KGR32000500"
+  },
+  {
+   "time": "09:20",
+   "discipline": "주짓수",
    "event": "여자 -63kg급 32강",
    "countries": [
     "칼리운 엥흐바아타르",
@@ -371,17 +342,6 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026JJIW63KGR32000500"
-  },
-  {
-   "time": "09:22",
-   "discipline": "럭비",
-   "event": "남자 9-12위 순위전",
-   "countries": [],
-   "venue": "나고야시 미즈호 럭비장",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026RU7MTEAM7SF9000200"
   },
   {
    "time": "09:24",
@@ -474,6 +434,20 @@
   {
    "time": "09:25",
    "discipline": "주짓수",
+   "event": "남자 -85kg급 32강",
+   "countries": [
+    "송태무",
+    "아흐메드 사아드 알레사 A"
+   ],
+   "venue": "아이치현 무도관",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026JJIM85KGR32000600"
+  },
+  {
+   "time": "09:25",
+   "discipline": "주짓수",
    "event": "여자 -63kg급 32강",
    "countries": [
     "인 자슬린 이",
@@ -507,8 +481,22 @@
    "venue": "오카자키 주오 소고 공원",
    "hasKorea": true,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026ARCWINDIVIDQFNL000300"
+  },
+  {
+   "time": "09:30",
+   "discipline": "주짓수",
+   "event": "남자 -85kg급 32강",
+   "countries": [
+    "압두라만 무르탈리예프",
+    "나세르 압둘카림"
+   ],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026JJIM85KGR32000700"
   },
   {
    "time": "09:30",
@@ -527,6 +515,20 @@
   {
    "time": "09:35",
    "discipline": "주짓수",
+   "event": "남자 -85kg급 32강",
+   "countries": [
+    "파라즈 알아울라키",
+    "람셰드 압둘로예프"
+   ],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026JJIM85KGR32000800"
+  },
+  {
+   "time": "09:35",
+   "discipline": "주짓수",
    "event": "여자 -63kg급 16강",
    "countries": [
     "샴마 알칼바니",
@@ -541,90 +543,16 @@
   {
    "time": "09:40",
    "discipline": "주짓수",
-   "event": "남자 -85kg급 16강",
-   "countries": [],
+   "event": "남자 -85kg급 32강",
+   "countries": [
+    "오사마 나바스",
+    "타나팟 폴풋"
+   ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026JJIM85KG8FNL000100"
-  },
-  {
-   "time": "09:40",
-   "discipline": "주짓수",
-   "event": "남자 -85kg급 16강",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026JJIM85KG8FNL000200"
-  },
-  {
-   "time": "09:40",
-   "discipline": "주짓수",
-   "event": "남자 -85kg급 16강",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026JJIM85KG8FNL000300"
-  },
-  {
-   "time": "09:40",
-   "discipline": "주짓수",
-   "event": "남자 -85kg급 16강",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026JJIM85KG8FNL000400"
-  },
-  {
-   "time": "09:40",
-   "discipline": "주짓수",
-   "event": "남자 -85kg급 16강",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026JJIM85KG8FNL000500"
-  },
-  {
-   "time": "09:40",
-   "discipline": "주짓수",
-   "event": "남자 -85kg급 16강",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026JJIM85KG8FNL000600"
-  },
-  {
-   "time": "09:40",
-   "discipline": "주짓수",
-   "event": "남자 -85kg급 16강",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026JJIM85KG8FNL000700"
-  },
-  {
-   "time": "09:40",
-   "discipline": "주짓수",
-   "event": "남자 -85kg급 16강",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026JJIM85KG8FNL000800"
+   "link": "https://m.sports.naver.com/game/2026JJIM85KGR32000900"
   },
   {
    "time": "09:40",
@@ -668,6 +596,20 @@
   {
    "time": "09:45",
    "discipline": "주짓수",
+   "event": "남자 -85kg급 32강",
+   "countries": [
+    "데이비드 미란다",
+    "바트바야르 바트수흐"
+   ],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026JJIM85KGR32001000"
+  },
+  {
+   "time": "09:45",
+   "discipline": "주짓수",
    "event": "여자 -63kg급 16강",
    "countries": [
     "마리안 주라블레바",
@@ -682,6 +624,20 @@
   {
    "time": "09:50",
    "discipline": "주짓수",
+   "event": "남자 -85kg급 16강",
+   "countries": [
+    "사이드 알쿠바이시",
+    "미정"
+   ],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026JJIM85KG8FNL000100"
+  },
+  {
+   "time": "09:50",
+   "discipline": "주짓수",
    "event": "여자 -63kg급 16강",
    "countries": [
     "미정",
@@ -692,6 +648,17 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026JJIW63KG8FNL000400"
+  },
+  {
+   "time": "09:55",
+   "discipline": "주짓수",
+   "event": "남자 -85kg급 16강",
+   "countries": [],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026JJIM85KG8FNL000200"
   },
   {
    "time": "09:55",
@@ -831,6 +798,31 @@
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SALWIQFOILBPREL001400"
+  },
+  {
+   "time": "10:00",
+   "discipline": "요트",
+   "event": "여자 청소년 윈드서핑 - 레이스 15",
+   "countries": [],
+   "venue": "카이요 요트 하버",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SALWIQFOILBPREL001500"
+  },
+  {
+   "time": "10:00",
+   "discipline": "주짓수",
+   "event": "남자 -85kg급 16강",
+   "countries": [
+    "유세프 아부알라게브",
+    "미정"
+   ],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026JJIM85KG8FNL000300"
   },
   {
    "time": "10:00",
@@ -1032,9 +1024,45 @@
    "countries": [],
    "venue": "카이요 요트 하버",
    "hasKorea": false,
-   "medal": true,
+   "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SALMIQFOILBPREL001400"
+  },
+  {
+   "time": "10:05",
+   "discipline": "요트",
+   "event": "남자 청소년 윈드서핑 - 레이스 15",
+   "countries": [],
+   "venue": "카이요 요트 하버",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SALMIQFOILBPREL001500"
+  },
+  {
+   "time": "10:05",
+   "discipline": "요트",
+   "event": "여자 윈드서핑 - 레이스 10",
+   "countries": [],
+   "venue": "카이요 요트 하버",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SALWIQFOILPREL001000"
+  },
+  {
+   "time": "10:05",
+   "discipline": "주짓수",
+   "event": "남자 -85kg급 16강",
+   "countries": [
+    "미정",
+    "압둘라 타리크 나다 N"
+   ],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026JJIM85KG8FNL000400"
   },
   {
    "time": "10:06",
@@ -1051,9 +1079,11 @@
    "time": "10:10",
    "discipline": "요트",
    "event": "여자 청소년 딩기 - 레이스 11",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "카이요 요트 하버",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SALWILCA7BPREL001100"
@@ -1062,12 +1092,28 @@
    "time": "10:10",
    "discipline": "요트",
    "event": "여자 청소년 딩기 - 레이스 12",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "카이요 요트 하버",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SALWILCA7BPREL001200"
+  },
+  {
+   "time": "10:10",
+   "discipline": "주짓수",
+   "event": "남자 -85kg급 16강",
+   "countries": [
+    "알리 이만베르디예프",
+    "미정"
+   ],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026JJIM85KG8FNL000500"
   },
   {
    "time": "10:10",
@@ -1080,7 +1126,7 @@
    "venue": "아이치현 무도관",
    "hasKorea": true,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026JJIW63KG8FNL000700"
   },
   {
@@ -1097,6 +1143,20 @@
   {
    "time": "10:15",
    "discipline": "주짓수",
+   "event": "남자 -85kg급 16강",
+   "countries": [
+    "소판하 머은 림",
+    "미정"
+   ],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026JJIM85KG8FNL000600"
+  },
+  {
+   "time": "10:15",
+   "discipline": "주짓수",
    "event": "여자 -63kg급 8강",
    "countries": [],
    "venue": "아이치현 무도관",
@@ -1108,6 +1168,17 @@
   {
    "time": "10:20",
    "discipline": "주짓수",
+   "event": "남자 -85kg급 16강",
+   "countries": [],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026JJIM85KG8FNL000700"
+  },
+  {
+   "time": "10:20",
+   "discipline": "주짓수",
    "event": "여자 -63kg급 8강",
    "countries": [],
    "venue": "아이치현 무도관",
@@ -1115,6 +1186,20 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026JJIW63KGQFNL000200"
+  },
+  {
+   "time": "10:25",
+   "discipline": "주짓수",
+   "event": "남자 -85kg급 16강",
+   "countries": [
+    "메레이 캅둘라예프",
+    "미정"
+   ],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026JJIM85KG8FNL000800"
   },
   {
    "time": "10:25",
@@ -1966,6 +2051,17 @@
   {
    "time": "10:30",
    "discipline": "주짓수",
+   "event": "남자 -85kg급 8강",
+   "countries": [],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026JJIM85KGQFNL000100"
+  },
+  {
+   "time": "10:30",
+   "discipline": "주짓수",
    "event": "여자 -63kg급 8강",
    "countries": [],
    "venue": "아이치현 무도관",
@@ -1988,6 +2084,17 @@
   {
    "time": "10:35",
    "discipline": "주짓수",
+   "event": "남자 -85kg급 8강",
+   "countries": [],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026JJIM85KGQFNL000200"
+  },
+  {
+   "time": "10:35",
+   "discipline": "주짓수",
    "event": "여자 -63kg급 준결승 A",
    "countries": [],
    "venue": "아이치현 무도관",
@@ -1999,6 +2106,17 @@
   {
    "time": "10:40",
    "discipline": "주짓수",
+   "event": "남자 -85kg급 8강",
+   "countries": [],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026JJIM85KGQFNL000300"
+  },
+  {
+   "time": "10:40",
+   "discipline": "주짓수",
    "event": "여자 -63kg급 준결승 B",
    "countries": [],
    "venue": "아이치현 무도관",
@@ -2006,6 +2124,17 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026JJIW63KGSFNL000200"
+  },
+  {
+   "time": "10:45",
+   "discipline": "주짓수",
+   "event": "남자 -85kg급 8강",
+   "countries": [],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026JJIM85KGQFNL000400"
   },
   {
    "time": "10:45",
@@ -2039,6 +2168,17 @@
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026ARCWINDIVIDFNL000100"
+  },
+  {
+   "time": "10:50",
+   "discipline": "주짓수",
+   "event": "남자 -85kg급 준결승 A",
+   "countries": [],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026JJIM85KGSFNL000100"
   },
   {
    "time": "10:50",
@@ -2142,57 +2282,13 @@
   {
    "time": "10:55",
    "discipline": "주짓수",
-   "event": "남자 -85kg급 8강",
+   "event": "남자 -85kg급 준결승 B",
    "countries": [],
    "venue": "아이치현 무도관",
    "hasKorea": false,
    "medal": false,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026JJIM85KGQFNL000100"
-  },
-  {
-   "time": "10:55",
-   "discipline": "주짓수",
-   "event": "남자 -85kg급 8강",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026JJIM85KGQFNL000200"
-  },
-  {
-   "time": "10:55",
-   "discipline": "주짓수",
-   "event": "남자 -85kg급 8강",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026JJIM85KGQFNL000300"
-  },
-  {
-   "time": "10:55",
-   "discipline": "주짓수",
-   "event": "남자 -85kg급 8강",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026JJIM85KGQFNL000400"
-  },
-  {
-   "time": "11:00",
-   "discipline": "요트",
-   "event": "여자 윈드서핑 - 레이스 10",
-   "countries": [],
-   "venue": "카이요 요트 하버",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SALWIQFOILPREL001000"
+   "link": "https://m.sports.naver.com/game/2026JJIM85KGSFNL000200"
   },
   {
    "time": "11:00",
@@ -2234,9 +2330,20 @@
    "countries": [],
    "venue": "카이요 요트 하버",
    "hasKorea": false,
-   "medal": true,
+   "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SALWIQFOILPREL001400"
+  },
+  {
+   "time": "11:00",
+   "discipline": "요트",
+   "event": "여자 윈드서핑 - 레이스 15",
+   "countries": [],
+   "venue": "카이요 요트 하버",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SALWIQFOILPREL001500"
   },
   {
    "time": "11:00",
@@ -2265,6 +2372,17 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026JUDXTEAM68FNL00020000"
+  },
+  {
+   "time": "11:00",
+   "discipline": "주짓수",
+   "event": "남자 -85kg급 패자부활전",
+   "countries": [],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026JJIM85KGREP1000100"
   },
   {
    "time": "11:05",
@@ -2301,9 +2419,33 @@
    ],
    "venue": "카이요 요트 하버",
    "hasKorea": true,
-   "medal": true,
+   "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026SALMIQFOILPREL001400"
+  },
+  {
+   "time": "11:05",
+   "discipline": "요트",
+   "event": "남자 윈드서핑 - 레이스 15",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "카이요 요트 하버",
+   "hasKorea": true,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026SALMIQFOILPREL001500"
+  },
+  {
+   "time": "11:05",
+   "discipline": "주짓수",
+   "event": "남자 -85kg급 패자부활전",
+   "countries": [],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026JJIM85KGREP1000200"
   },
   {
    "time": "11:10",
@@ -2440,39 +2582,6 @@
    "link": "https://m.sports.naver.com/game/2026TKWM68KGQFNL000400"
   },
   {
-   "time": "11:40",
-   "discipline": "주짓수",
-   "event": "남자 -85kg급 준결승 B",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026JJIM85KGSFNL000200"
-  },
-  {
-   "time": "11:40",
-   "discipline": "주짓수",
-   "event": "남자 -85kg급 패자부활전",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026JJIM85KGREP1000100"
-  },
-  {
-   "time": "11:40",
-   "discipline": "주짓수",
-   "event": "남자 -85kg급 패자부활전",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026JJIM85KGREP1000200"
-  },
-  {
    "time": "11:45",
    "discipline": "파델",
    "event": "남자 복식 동메달전",
@@ -2560,7 +2669,7 @@
    "venue": "아이치 인터내셔널 아레나",
    "hasKorea": true,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026JUDXTEAM6QFNL00010000"
   },
   {
@@ -2650,17 +2759,6 @@
    "link": "https://m.sports.naver.com/game/2026TKWMO80KGQFNL000400"
   },
   {
-   "time": "12:10",
-   "discipline": "주짓수",
-   "event": "남자 -85kg급 준결승 A",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026JJIM85KGSFNL000100"
-  },
-  {
    "time": "12:18",
    "discipline": "럭비",
    "event": "남자 준결승",
@@ -2708,9 +2806,11 @@
    "time": "13:00",
    "discipline": "리듬 체조",
    "event": "개인 종합 결승",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "나고야시 종합체육관",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026GRYW1AAFNL000100"
@@ -2763,6 +2863,39 @@
    "link": "https://m.sports.naver.com/game/2026ARCMINDIVIDQFNL000100"
   },
   {
+   "time": "13:00",
+   "discipline": "주짓수",
+   "event": "남자 -85kg급 동메달전 A",
+   "countries": [],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026JJIM85KGREPF000100"
+  },
+  {
+   "time": "13:05",
+   "discipline": "주짓수",
+   "event": "남자 -85kg급 동메달전 B",
+   "countries": [],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026JJIM85KGREPF000200"
+  },
+  {
+   "time": "13:10",
+   "discipline": "주짓수",
+   "event": "남자 -85kg급 결승",
+   "countries": [],
+   "venue": "아이치현 무도관",
+   "hasKorea": false,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026JJIM85KGFNL000100"
+  },
+  {
    "time": "13:15",
    "discipline": "양궁 리커브",
    "event": "남자 개인 8강 2경기",
@@ -2773,7 +2906,7 @@
    "venue": "오카자키 주오 소고 공원",
    "hasKorea": true,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026ARCMINDIVIDQFNL000200"
   },
   {
@@ -2950,28 +3083,6 @@
    "link": "https://m.sports.naver.com/game/2026ARCMINDIVIDSFNL000200"
   },
   {
-   "time": "14:20",
-   "discipline": "주짓수",
-   "event": "남자 -85kg급 동메달전 A",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026JJIM85KGREPF000100"
-  },
-  {
-   "time": "14:20",
-   "discipline": "주짓수",
-   "event": "남자 -85kg급 동메달전 B",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026JJIM85KGREPF000200"
-  },
-  {
    "time": "14:30",
    "discipline": "태권도 겨루기",
    "event": "여자 -57kg급 준결승",
@@ -3047,17 +3158,6 @@
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026ARCMINDIVIDFNL000200"
-  },
-  {
-   "time": "14:35",
-   "discipline": "주짓수",
-   "event": "남자 -85kg급 결승",
-   "countries": [],
-   "venue": "아이치현 무도관",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026JJIM85KGFNL000100"
   },
   {
    "time": "14:37",
@@ -3840,7 +3940,7 @@
    "venue": "오카자키 중앙종합공원 체육관",
    "hasKorea": false,
    "medal": true,
-   "tv": true,
+   "tv": false,
    "link": "https://m.sports.naver.com/game/2026VVOMTEAM6FNL000100"
   },
   {
