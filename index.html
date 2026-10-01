@@ -1511,6 +1511,17 @@
     font-weight: 500;
     font-size: 10px;
   }
+  /* 전주 대비 증감: 상승 빨강 / 하락 파랑 / 동일·기록 없음 회색 */
+  .dv-card .dv-delta {
+    display: block;
+    font-size: 10px;
+    font-weight: 600;
+    margin-top: 1px;
+  }
+  .dv-card .dv-delta-up { color: #DC2626; }
+  .dv-card .dv-delta-down { color: #2563EB; }
+  .dv-card .dv-delta-flat,
+  .dv-card .dv-delta-none { color: var(--ink-faint); }
 
   td.dv-empty-cell { background: var(--paper-dim); opacity: 0.4; }
 
@@ -4461,8 +4472,12 @@ let _industryTabLoaded = false;
 
 let dvWeekStart = "2026-06-22";
 let dvFilter = "all";
+let dvPrevWeekData = null;   // 지난주 파일(전주 대비 증감용). dvRefresh가 채운다.
 let dvCache = {};
 const DV_DAYS = ["월", "화", "수", "목", "금", "토", "일"];
+// 조회 기준(수집기의 MIN_RATING_DRAMA/MIN_RATING_VARIETY와 같은 값). 이 미만인
+// 회차는 파일에 기록으로만 남고(전주 대비 계산용) 표에는 싣지 않는다.
+const DV_CUTOFF = { drama: 5, variety: 1 };
 const DV_GENRES = [
   { key: "drama", label: "드라마" },
   { key: "variety", label: "예능" }
@@ -4612,6 +4627,41 @@ function dvOffAirCardHtml(off) {
     + `</div>`;
 }
 
+// 프로그램 식별키(분류|제목|채널). 주차가 달라도 같은 프로그램을 찾는 데 쓴다.
+function dvProgramKey(p) {
+  return `${p.category}|${p.title}|${p.channel}`;
+}
+
+// 지난주 파일의 요일별 시청률을 프로그램 키로 묶는다. 표(programs)뿐 아니라
+// 기준 미만이라 표에 없던 기록(newBelowCutoff)도 포함한다.
+function dvPrevWeekRatings(prevData) {
+  const map = {};
+  if (!prevData) return map;
+  for (const p of [...(prevData.programs || []), ...(prevData.newBelowCutoff || [])]) {
+    const key = dvProgramKey(p);
+    map[key] = Object.assign(map[key] || {}, p.ratingByDay || {});
+  }
+  return map;
+}
+
+// 카드의 '전주대비' 표기. 지난주 같은 요일 값이 있으면 증감(%p), 신규 편성이거나
+// 결방으로 확인되면 '전주 미진행', 그 외에 값이 없으면 '전주 기록 없음'.
+function dvDeltaHtml(prevByKey, prevOffAir, p, day, dayRating) {
+  if (dayRating == null || !p.ratingByDay || Object.keys(p.ratingByDay).length === 0) return '';
+  const prev = (prevByKey[dvProgramKey(p)] || {})[day];
+  if (prev && prev.rating != null) {
+    const diff = Math.round((dayRating - prev.rating) * 10) / 10;
+    const cls = diff > 0 ? 'dv-delta-up' : (diff < 0 ? 'dv-delta-down' : 'dv-delta-flat');
+    const tip = `지난주 ${day}요일 ${prev.rating}%${prev.ratingDate ? ' (' + prev.ratingDate + ')' : ''} 대비`;
+    return `<span class="dv-delta ${cls}" title="${dvEscapeHtml(tip)}">전주대비 ${diff > 0 ? '+' : ''}${diff.toFixed(1)}%p</span>`;
+  }
+  const offs = (prevOffAir[p.category] || {})[day] || [];
+  if (p.isNew === true || offs.some(o => o.title === p.title && o.channel === p.channel)) {
+    return `<span class="dv-delta dv-delta-none" title="지난주 같은 요일에는 방송이 없었습니다">전주 미진행</span>`;
+  }
+  return `<span class="dv-delta dv-delta-none" title="지난주 같은 요일의 시청률 기록이 없습니다">전주 기록 없음</span>`;
+}
+
 function dvRenderGrid(data) {
   const wrap = document.getElementById('dvGridWrap');
   const programs = (data && data.programs) ? data.programs : [];
@@ -4637,6 +4687,9 @@ function dvRenderGrid(data) {
   // 현재 보고 있는 주차(dvWeekStart)를 기준으로 삼는다.
   const weekStart = (data && data.weekStart) || dvWeekStart;
   const offAirByGenre = (dvFilter === "high") ? {} : dvOffAirForWeek(weekStart);
+  // 전주 대비 증감용: 지난주 같은 프로그램·같은 요일 값과 결방 정보
+  const prevByKey = dvPrevWeekRatings(dvPrevWeekData);
+  const prevOffAir = dvOffAirForWeek(dvShiftWeek(weekStart, -1));
   const visibleOffAir = genres.reduce(
     (n, g) => n + dvOffAirCount(offAirByGenre[g.key]), 0);
 
@@ -4656,16 +4709,19 @@ function dvRenderGrid(data) {
       const genreClass = genre.key === 'drama' ? 'dv-genre-drama' : 'dv-genre-variety';
       html += `<tr><td class="dv-genre-label ${genreClass}">${genre.label}</td>`;
       for (const day of DV_DAYS) {
-        // 그 요일에 자기 시청률이 집계된 프로그램만 그 요일 칸에 싣는다.
-        // 요일별 값이 없는 날(기준 미만·미방영·미수집)은 카드를 내지 않는다
-        // — 다른 요일 회차 값으로 채우면 월요일 칸에 화요일 시청률이 찍힌다
-        // (2026-09-28 주차 '로또 1등도 출근합니다': 월 3.5%는 기준 미만이라
-        // 수집에 없는데 화 5.0%가 월요일 칸에 표시됨).
+        // 그 요일에 자기 시청률이 집계되고 조회 기준 이상인 프로그램만 그 요일
+        // 칸에 싣는다. 값이 없는 날(미방영·미수집)이나 기준 미만인 날은 카드를
+        // 내지 않는다 — 기준 미만 회차는 파일에 기록으로만 남아 전주 대비 계산에
+        // 쓰이고, 다른 요일 회차 값으로 채우면 월요일 칸에 화요일 시청률이 찍힌다
+        // (2026-09-28 주차 '로또 1등도 출근합니다': 월 3.5%는 기준 미만인데
+        // 화 5.0%가 월요일 칸에 표시됐던 문제).
         // ratingByDay 자체가 없는 과거 주차 데이터만 편성 요일 전체에 싣는다.
         const dayPrograms = genrePrograms.filter(p => {
           if (!p.days.includes(day)) return false;
           const byDay = p.ratingByDay || {};
-          return Object.keys(byDay).length === 0 || byDay[day] != null;
+          if (Object.keys(byDay).length === 0) return true;
+          const entry = byDay[day];
+          return entry != null && entry.rating != null && entry.rating >= (DV_CUTOFF[p.category] || 0);
         });
         const dayOffAir = genreOffAir[day] || [];
         const cellClass = (dayPrograms.length || dayOffAir.length)
@@ -4705,6 +4761,7 @@ function dvRenderGrid(data) {
           html += `<span class="dv-title"><span class="dv-channel">[${dvEscapeHtml(p.channel)}]</span> ${dvEscapeHtml(p.title)}${newBadge}${endBadge}</span>`;
           html += `<span class="dv-meta">(${dvEscapeHtml(p.days.join(', '))}) ${dvEscapeHtml(p.time)}</span>`;
           html += `<span class="dv-rating">${dvEscapeHtml(dayRating)}%</span> <span class="dv-rating-date">${dayRatingDate ? '(' + dvEscapeHtml(dayRatingDate) + ')' : ''}</span>`;
+          html += dvDeltaHtml(prevByKey, prevOffAir, p, day, dayRating);
           html += `</a>`;
         }
         // 결방 카드는 그 요일 칸 맨 아래에 (방영분 다음에) 붙인다
@@ -4786,6 +4843,7 @@ async function dvRefresh(weekStart) {
   if (dvPickerEl) dvPickerEl.value = weekStart;
   document.getElementById('dvPrevWeek').disabled = (weekStart <= DV_MIN_WEEK_START);
   const data = await dvLoadWeek(weekStart);
+  dvPrevWeekData = await dvLoadWeek(dvShiftWeek(weekStart, -1));
   dvRenderUpdated(data);
   dvRenderBasis();
   dvRenderGrid(data);
