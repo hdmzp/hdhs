@@ -1,6 +1,6 @@
 {
  "date": "2026-09-30",
- "collectedAt": "2026-10-01T01:22:09+09:00",
+ "collectedAt": "2026-10-01T10:03:27+09:00",
  "games": [
   {
    "time": "06:30",
@@ -417,9 +417,11 @@
    "time": "10:00",
    "discipline": "스포츠클라이밍",
    "event": "여자 볼더 준결승",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "나고야 국제 전시장",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026CLBWBOULDERSFNL000100"

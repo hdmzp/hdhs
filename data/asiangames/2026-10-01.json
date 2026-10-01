@@ -1,33 +1,7 @@
 {
  "date": "2026-10-01",
- "collectedAt": "2026-10-01T01:22:09+09:00",
+ "collectedAt": "2026-10-01T10:03:27+09:00",
  "games": [
-  {
-   "time": "06:30",
-   "discipline": "골프",
-   "event": "남자 개인 2라운드",
-   "countries": [
-    "대한민국"
-   ],
-   "venue": "가스가이 컨트리 클럽",
-   "hasKorea": true,
-   "medal": false,
-   "tv": true,
-   "link": "https://m.sports.naver.com/game/2026GLFMINDIVIDFNL000200"
-  },
-  {
-   "time": "06:30",
-   "discipline": "골프",
-   "event": "남자 단체 2라운드",
-   "countries": [
-    "대한민국"
-   ],
-   "venue": "가스가이 컨트리 클럽",
-   "hasKorea": true,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026GLFMTEAMFNL000200"
-  },
   {
    "time": "06:30",
    "discipline": "골프",
@@ -204,7 +178,7 @@
    "venue": "도요하시 체육관",
    "hasKorea": true,
    "medal": false,
-   "tv": true,
+   "tv": false,
    "link": "https://m.sports.naver.com/game/2026POEWPOOMSAESFNL000100"
   },
   {
@@ -297,7 +271,7 @@
    "event": "남자 -69kg급 32강",
    "countries": [
     "누르잔 바티르베코프",
-    "미정"
+    "오마르 알파들리"
    ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
@@ -310,7 +284,7 @@
    "discipline": "양궁 컴파운드",
    "event": "여자 개인 8강 2경기",
    "countries": [
-    "우니에르",
+    "웨니얼",
     "강연서"
    ],
    "venue": "오카자키 주오 소고 공원",
@@ -630,7 +604,7 @@
    "event": "남자 -69kg급 32강",
    "countries": [
     "알리누르 쿠아툴리",
-    "미정"
+    "후쿠시마 세이야"
    ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
@@ -696,23 +670,14 @@
    "time": "10:00",
    "discipline": "사이클 트랙",
    "event": "남자 옴니엄 - 스크래치 레이스 1/4",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "이즈 벨로드롬",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026CTRMOMNIUMSCR000100"
-  },
-  {
-   "time": "10:00",
-   "discipline": "사이클 트랙",
-   "event": "여자 스프린트 예선",
-   "countries": [],
-   "venue": "이즈 벨로드롬",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRWSPRINTQUAL000100"
   },
   {
    "time": "10:00",
@@ -915,7 +880,7 @@
    "event": "남자 -62kg급 16강",
    "countries": [
     "칼레드 알셰히",
-    "미정"
+    "니와 히류"
    ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
@@ -1076,7 +1041,10 @@
    "time": "10:05",
    "discipline": "주짓수",
    "event": "남자 -62kg급 16강",
-   "countries": [],
+   "countries": [
+    "사르바르베크 라흐몬베르디예프",
+    "에르데네바아타르 울지이토그토흐"
+   ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
    "medal": false,
@@ -1167,7 +1135,10 @@
    "time": "10:10",
    "discipline": "주짓수",
    "event": "남자 -62kg급 16강",
-   "countries": [],
+   "countries": [
+    "다니야르 자만쿨로프",
+    "칼레드 알리 하밥 S"
+   ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
    "medal": false,
@@ -1192,9 +1163,12 @@
    "time": "10:12",
    "discipline": "양궁 컴파운드",
    "event": "여자 개인 준결승 1경기",
-   "countries": [],
+   "countries": [
+    "누리사 디안 아시리파",
+    "강연서"
+   ],
    "venue": "오카자키 주오 소고 공원",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026CMPWINDIVIDSFNL000100"
@@ -1204,11 +1178,11 @@
    "discipline": "주짓수",
    "event": "남자 -62kg급 16강",
    "countries": [
-    "미정",
+    "양병준",
     "압둘라 바티르벡"
    ],
    "venue": "아이치현 무도관",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026JJIM62KG8FNL000400"
@@ -1277,7 +1251,7 @@
    "event": "남자 -62kg급 16강",
    "countries": [
     "바티르 테니즈바이",
-    "미정"
+    "오마르 알수와이디"
    ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
@@ -1303,7 +1277,10 @@
    "time": "10:25",
    "discipline": "주짓수",
    "event": "남자 -62kg급 16강",
-   "countries": [],
+   "countries": [
+    "카이모니 리차바트 오페라나",
+    "바야르툴가 바트수우리"
+   ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
    "medal": false,
@@ -1382,6 +1359,19 @@
   },
   {
    "time": "10:30",
+   "discipline": "사이클 트랙",
+   "event": "여자 스프린트 예선",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "이즈 벨로드롬",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026CTRWSPRINTQUAL000100"
+  },
+  {
+   "time": "10:30",
    "discipline": "스쿼시",
    "event": "여자 단체 준결승 2경기",
    "countries": [
@@ -1398,9 +1388,12 @@
    "time": "10:30",
    "discipline": "양궁 컴파운드",
    "event": "여자 개인 준결승 2경기",
-   "countries": [],
+   "countries": [
+    "박정윤",
+    "아마야 암파로 코주앙코"
+   ],
    "venue": "오카자키 주오 소고 공원",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026CMPWINDIVIDSFNL000200"
@@ -1421,7 +1414,7 @@
    "discipline": "주짓수",
    "event": "남자 -69kg급 32강",
    "countries": [
-    "미정",
+    "알리 아슈카나니",
     "주성현"
    ],
    "venue": "아이치현 무도관",
@@ -1461,9 +1454,12 @@
    "time": "10:35",
    "discipline": "주짓수",
    "event": "남자 -69kg급 16강",
-   "countries": [],
+   "countries": [
+    "누르잔 바티르베코프",
+    "이재영"
+   ],
    "venue": "아이치현 무도관",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026JJIM69KG8FNL000100"
@@ -1512,6 +1508,32 @@
   },
   {
    "time": "10:40",
+   "discipline": "골프",
+   "event": "남자 개인 2라운드",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "가스가이 컨트리 클럽",
+   "hasKorea": true,
+   "medal": false,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/2026GLFMINDIVIDFNL000200"
+  },
+  {
+   "time": "10:40",
+   "discipline": "골프",
+   "event": "남자 단체 2라운드",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "가스가이 컨트리 클럽",
+   "hasKorea": true,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026GLFMTEAMFNL000200"
+  },
+  {
+   "time": "10:40",
    "discipline": "주짓수",
    "event": "남자 -62kg급 8강",
    "countries": [],
@@ -1525,7 +1547,10 @@
    "time": "10:40",
    "discipline": "주짓수",
    "event": "남자 -69kg급 16강",
-   "countries": [],
+   "countries": [
+    "마크 알렉산더 림",
+    "당 딘 퉁"
+   ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
    "medal": false,
@@ -1867,7 +1892,7 @@
    "link": "https://m.sports.naver.com/game/2026TENWSINGLESSFNL000100"
   },
   {
-   "time": "11:05",
+   "time": "11:02",
    "discipline": "사이클 트랙",
    "event": "여자 스프린트 32강 - 1조",
    "countries": [],
@@ -1887,61 +1912,6 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026CTRWSPRINTR32000200"
-  },
-  {
-   "time": "11:05",
-   "discipline": "사이클 트랙",
-   "event": "여자 스프린트 32강 - 3조",
-   "countries": [],
-   "venue": "이즈 벨로드롬",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRWSPRINTR32000300"
-  },
-  {
-   "time": "11:05",
-   "discipline": "사이클 트랙",
-   "event": "여자 스프린트 32강 - 4조",
-   "countries": [],
-   "venue": "이즈 벨로드롬",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRWSPRINTR32000400"
-  },
-  {
-   "time": "11:05",
-   "discipline": "사이클 트랙",
-   "event": "여자 스프린트 32강 - 5조",
-   "countries": [],
-   "venue": "이즈 벨로드롬",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRWSPRINTR32000500"
-  },
-  {
-   "time": "11:05",
-   "discipline": "사이클 트랙",
-   "event": "여자 스프린트 32강 - 6조",
-   "countries": [],
-   "venue": "이즈 벨로드롬",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRWSPRINTR32000600"
-  },
-  {
-   "time": "11:05",
-   "discipline": "사이클 트랙",
-   "event": "여자 스프린트 32강 - 7조",
-   "countries": [],
-   "venue": "이즈 벨로드롬",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRWSPRINTR32000700"
   },
   {
    "time": "11:05",
@@ -2000,6 +1970,17 @@
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026CMPWINDIVIDFNL000200"
+  },
+  {
+   "time": "11:08",
+   "discipline": "사이클 트랙",
+   "event": "여자 스프린트 32강 - 3조",
+   "countries": [],
+   "venue": "이즈 벨로드롬",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026CTRWSPRINTR32000300"
   },
   {
    "time": "11:09",
@@ -2119,6 +2100,17 @@
    "link": "https://m.sports.naver.com/game/2026JJIM69KG8FNL000800"
   },
   {
+   "time": "11:11",
+   "discipline": "사이클 트랙",
+   "event": "여자 스프린트 32강 - 4조",
+   "countries": [],
+   "venue": "이즈 벨로드롬",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026CTRWSPRINTR32000400"
+  },
+  {
    "time": "11:12",
    "discipline": "럭비",
    "event": "여자 A조",
@@ -2131,6 +2123,17 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026RU7WTEAM7GPA000100"
+  },
+  {
+   "time": "11:14",
+   "discipline": "사이클 트랙",
+   "event": "여자 스프린트 32강 - 5조",
+   "countries": [],
+   "venue": "이즈 벨로드롬",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026CTRWSPRINTR32000500"
   },
   {
    "time": "11:15",
@@ -2167,6 +2170,17 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026JJIM69KGQFNL000100"
+  },
+  {
+   "time": "11:17",
+   "discipline": "사이클 트랙",
+   "event": "여자 스프린트 32강 - 6조",
+   "countries": [],
+   "venue": "이즈 벨로드롬",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026CTRWSPRINTR32000600"
   },
   {
    "time": "11:18",
@@ -2209,6 +2223,17 @@
   },
   {
    "time": "11:20",
+   "discipline": "사이클 트랙",
+   "event": "여자 스프린트 32강 - 7조",
+   "countries": [],
+   "venue": "이즈 벨로드롬",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026CTRWSPRINTR32000700"
+  },
+  {
+   "time": "11:20",
    "discipline": "유도",
    "event": "여자 -57kg급 16강",
    "countries": [
@@ -2245,6 +2270,17 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026JJIW48KGR32000100"
+  },
+  {
+   "time": "11:23",
+   "discipline": "사이클 트랙",
+   "event": "여자 스프린트 32강 - 8조",
+   "countries": [],
+   "venue": "이즈 벨로드롬",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026CTRWSPRINTR32000800"
   },
   {
    "time": "11:25",
@@ -2431,9 +2467,11 @@
    "time": "11:32",
    "discipline": "사이클 트랙",
    "event": "남자 옴니엄 - 템포 레이스 2/4",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "이즈 벨로드롬",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026CTRMOMNIUMTEMP000100"
@@ -3010,17 +3048,6 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026WFRW62KGQFNL000300"
-  },
-  {
-   "time": "11:55",
-   "discipline": "사이클 트랙",
-   "event": "여자 스프린트 32강 - 8조",
-   "countries": [],
-   "venue": "이즈 벨로드롬",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRWSPRINTR32000800"
   },
   {
    "time": "11:55",
@@ -4133,72 +4160,6 @@
   },
   {
    "time": "13:15",
-   "discipline": "사이클 트랙",
-   "event": "여자 스프린트 16강 - 1조",
-   "countries": [],
-   "venue": "이즈 벨로드롬",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRWSPRINT8FNL000100"
-  },
-  {
-   "time": "13:15",
-   "discipline": "사이클 트랙",
-   "event": "여자 스프린트 16강 - 2조",
-   "countries": [],
-   "venue": "이즈 벨로드롬",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRWSPRINT8FNL000200"
-  },
-  {
-   "time": "13:15",
-   "discipline": "사이클 트랙",
-   "event": "여자 스프린트 16강 - 3조",
-   "countries": [],
-   "venue": "이즈 벨로드롬",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRWSPRINT8FNL000300"
-  },
-  {
-   "time": "13:15",
-   "discipline": "사이클 트랙",
-   "event": "여자 스프린트 16강 - 4조",
-   "countries": [],
-   "venue": "이즈 벨로드롬",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRWSPRINT8FNL000400"
-  },
-  {
-   "time": "13:15",
-   "discipline": "사이클 트랙",
-   "event": "여자 스프린트 16강 - 5조",
-   "countries": [],
-   "venue": "이즈 벨로드롬",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRWSPRINT8FNL000500"
-  },
-  {
-   "time": "13:15",
-   "discipline": "사이클 트랙",
-   "event": "여자 스프린트 16강 - 6조",
-   "countries": [],
-   "venue": "이즈 벨로드롬",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRWSPRINT8FNL000600"
-  },
-  {
-   "time": "13:15",
    "discipline": "소프트볼",
    "event": "예선 라운드 23경기",
    "countries": [
@@ -4458,28 +4419,6 @@
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026ESPOLOLSFNL000200"
-  },
-  {
-   "time": "13:40",
-   "discipline": "사이클 트랙",
-   "event": "여자 스프린트 16강 패자부활전 - 1조",
-   "countries": [],
-   "venue": "이즈 벨로드롬",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRWSPRINTREP3000100"
-  },
-  {
-   "time": "13:40",
-   "discipline": "사이클 트랙",
-   "event": "여자 스프린트 16강 패자부활전 - 2조",
-   "countries": [],
-   "venue": "이즈 벨로드롬",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CTRWSPRINTREP3000200"
   },
   {
    "time": "13:42",
@@ -4909,9 +4848,11 @@
    "time": "15:27",
    "discipline": "사이클 트랙",
    "event": "남자 옴니엄 - 엘리미네이션 레이스 3/4",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "이즈 벨로드롬",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026CTRMOMNIUMELIM000100"
@@ -5003,9 +4944,11 @@
    "time": "15:45",
    "discipline": "사이클 트랙",
    "event": "여자 매디슨 결승",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "이즈 벨로드롬",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026CTRWMADISONFNL000100"
@@ -5239,6 +5182,50 @@
    "link": "https://m.sports.naver.com/game/2026CTRMSPRINTFNL00010000"
   },
   {
+   "time": "16:39",
+   "discipline": "사이클 트랙",
+   "event": "여자 스프린트 16강 - 1조",
+   "countries": [],
+   "venue": "이즈 벨로드롬",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026CTRWSPRINT8FNL000100"
+  },
+  {
+   "time": "16:42",
+   "discipline": "사이클 트랙",
+   "event": "여자 스프린트 16강 - 2조",
+   "countries": [],
+   "venue": "이즈 벨로드롬",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026CTRWSPRINT8FNL000200"
+  },
+  {
+   "time": "16:45",
+   "discipline": "사이클 트랙",
+   "event": "여자 스프린트 16강 - 3조",
+   "countries": [],
+   "venue": "이즈 벨로드롬",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026CTRWSPRINT8FNL000300"
+  },
+  {
+   "time": "16:48",
+   "discipline": "사이클 트랙",
+   "event": "여자 스프린트 16강 - 4조",
+   "countries": [],
+   "venue": "이즈 벨로드롬",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026CTRWSPRINT8FNL000400"
+  },
+  {
    "time": "16:49",
    "discipline": "럭비",
    "event": "여자 A조",
@@ -5251,6 +5238,28 @@
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026RU7WTEAM7GPA000400"
+  },
+  {
+   "time": "16:51",
+   "discipline": "사이클 트랙",
+   "event": "여자 스프린트 16강 - 5조",
+   "countries": [],
+   "venue": "이즈 벨로드롬",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026CTRWSPRINT8FNL000500"
+  },
+  {
+   "time": "16:54",
+   "discipline": "사이클 트랙",
+   "event": "여자 스프린트 16강 - 6조",
+   "countries": [],
+   "venue": "이즈 벨로드롬",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026CTRWSPRINT8FNL000600"
   },
   {
    "time": "17:00",
@@ -5267,9 +5276,11 @@
    "time": "17:03",
    "discipline": "사이클 트랙",
    "event": "남자 옴니엄 - 포인트 레이스 4/4",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "이즈 벨로드롬",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026CTRMOMNIUMPTS000100"
@@ -5444,6 +5455,28 @@
    "medal": true,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026JUDM81KGREPF000200"
+  },
+  {
+   "time": "17:48",
+   "discipline": "사이클 트랙",
+   "event": "여자 스프린트 16강 패자부활전 - 1조",
+   "countries": [],
+   "venue": "이즈 벨로드롬",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026CTRWSPRINTREP3000100"
+  },
+  {
+   "time": "17:51",
+   "discipline": "사이클 트랙",
+   "event": "여자 스프린트 16강 패자부활전 - 2조",
+   "countries": [],
+   "venue": "이즈 벨로드롬",
+   "hasKorea": false,
+   "medal": false,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026CTRWSPRINTREP3000200"
   },
   {
    "time": "17:52",
@@ -5693,9 +5726,11 @@
    "time": "20:12",
    "discipline": "스포츠클라이밍",
    "event": "남자 스피드4 8강 4조",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "나고야 국제 전시장",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026CLBMSPEED4QFNL000400"
