@@ -1,7 +1,7 @@
 {
   "weekStart": "2026-09-21",
   "weekEnd": "2026-09-27",
-  "collectedAt": "2026-10-02T06:31:31.806374+09:00",
+  "collectedAt": "2026-10-02T11:32:19.633545+09:00",
   "programs": [
     {
       "id": "variety_연애전쟁_JTBC_오후 09:50",
@@ -661,6 +661,26 @@
         }
       },
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=36712715&qvt=0&query=%EC%9D%B8%EC%83%9D%EC%9D%B4%20%EC%98%81%ED%99%94"
+    },
+    {
+      "id": "drama_포핸즈_tvN_오후 09:30",
+      "category": "drama",
+      "channel": "tvN",
+      "title": "포핸즈",
+      "days": [
+        "토"
+      ],
+      "time": "오후 09:30",
+      "rating": 7.2,
+      "ratingDate": "09.27",
+      "ratingByDay": {
+        "토": {
+          "rating": 7.2,
+          "ratingDate": "09.26",
+          "source": "nielsen"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40520424&qvt=0&query=%ED%8F%AC%ED%95%B8%EC%A6%88"
     }
   ],
   "newBelowCutoff": [
