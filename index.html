@@ -6883,10 +6883,6 @@ async function celInitLoad() {
 // 상품명으로 추론하고(fixed/celeb_brand.py), 못 찾은 상품엔 'GS SHOP'을 남긴다.
 // 자리표시자 브랜드는 없는 것으로 취급한다 - 추정치를 만들어 적느니 생략한다.
 const CEL_BRAND_PLACEHOLDER = /^(gs\s*shop|gs샵)$/i;
-function celBrandKey(p) {
-  const b = String(p.brand || '').trim();
-  return (b && !CEL_BRAND_PLACEHOLDER.test(b)) ? b : '';
-}
 
 // 한 브랜드가 상품코드 여러 개로 노출되는 그룹은 목록이 하염없이 길어진다.
 // 5개까지만 보여주고 나머지는 펼치기/접기로 숨긴다.
@@ -7113,15 +7109,8 @@ function celRenderBand(file) {
   const weeks = Object.keys(weekMap).map(Number).sort((a, b) => b - a);
   // 휴방 회차는 '이번 달 방송 N회'에서 뺀다 (방송이 없던 주다)
   const bcastCnt = broadcasts.filter(b => !b.offAir).length;
-  // 한 브랜드가 여러 상품코드로 노출돼 상품 수는 과잉집계라, 고유 브랜드 수로 센다.
-  // 브랜드를 하나도 못 뽑은 밴드(GS 추론이 전부 실패한 달 등)는 brandCnt가 0이 되고
-  // 요약에서 브랜드 표기가 생략된다.
-  const brandSet = new Set();
-  broadcasts.forEach(b => b.products.forEach(p => {
-    const key = celBrandKey(p);
-    if (key) brandSet.add(key);
-  }));
-  const brandCnt = brandSet.size;
+  // 브랜드 개수는 안 센다 - GS는 사전·대괄호에 없는 브랜드(키직, 샤크 등)를 못 뽑아
+  // 숫자가 실제보다 작게 나온다. 틀린 숫자를 보여주느니 뺀다.
 
   const bodyHtml = emptyMsg
     ? `<div class="cel-col-empty" style="flex:1;">${emptyMsg}</div>`
@@ -7179,7 +7168,7 @@ function celRenderBand(file) {
           titleHtml +
           (meta.schedule_raw ? `<div class="cel-col-sched">${normalizeScheduleRaw(meta.schedule_raw)}</div>` : '') +
           ((bcastCnt || sinceBadge)
-            ? `<div class="cel-band-cnt">${bcastCnt ? `이번 달 방송 <b>${bcastCnt}회</b>${brandCnt ? ` · 브랜드 <b>${brandCnt}개</b>` : ''}` : ''}${sinceBadge}</div>`
+            ? `<div class="cel-band-cnt">${bcastCnt ? `이번 달 방송 <b>${bcastCnt}회</b>` : ''}${sinceBadge}</div>`
             : '') +
           celFailBadgeHtml(file) +
         `</div>` +
