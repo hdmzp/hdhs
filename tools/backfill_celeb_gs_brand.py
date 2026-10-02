@@ -13,8 +13,10 @@
     build_celeb_history가 '방송 전' 회차를 자리표시자 그대로 다시 덮어쓴다.
 
 동작:
-  1) GS 프로그램의 상품 중 브랜드가 자리표시자(또는 빈 값)인 것만 상품명에서
-     추론해 채운다. 못 찾으면 그대로 둔다.
+  1) GS 프로그램의 상품 브랜드를 현재 규칙으로 다시 계산한다. GS 기록의 브랜드는
+     전부 추론값이라(상세페이지엔 브랜드가 없다) 이미 채워진 값도 규칙이 바뀌면
+     같이 바뀌어야 한다. 바뀐 것만 기록하고, 추론 실패는 자리표시자로 되돌린다
+     (원래 빈 값이던 편성표 상품은 빈 값 유지). 몇 번 돌려도 결과는 같다.
   2) 상품 목록·수집 시각(updated_at/collected_at)·정정 이력(revisions)은 건드리지
      않는다 - 브랜드 칸을 채운 것이지 라인업이 바뀌거나 수집을 한 게 아니다.
      확정(final) 회차도 같은 이유로 대상에 넣는다.
@@ -34,7 +36,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 sys.path.insert(0, os.path.join(ROOT, "fixed"))
 
-from celeb_brand import resolve_gs_brand  # noqa: E402
+from celeb_brand import recompute_gs_brand  # noqa: E402
 
 REP_DIR = os.path.join("homeshopping", "representative_programs")
 DEFAULT_TARGETS = [
@@ -58,11 +60,11 @@ def iter_gs_products(data: dict):
 
 
 def backfill_data(data: dict, log=None) -> int:
-    """GS 상품의 자리표시자 브랜드를 상품명 추론으로 채운다. 반환: 바뀐 상품 수."""
+    """GS 상품의 브랜드를 현재 추론 규칙으로 다시 계산한다. 반환: 바뀐 상품 수."""
     changed = 0
     for product in iter_gs_products(data):
         before = product.get("brand") or ""
-        after = resolve_gs_brand(before, product.get("name") or "")
+        after = recompute_gs_brand(before, product.get("name") or "")
         if after == before:
             continue
         product["brand"] = after
