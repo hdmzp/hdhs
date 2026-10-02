@@ -1,6 +1,6 @@
 {
   "month": "2026-10",
-  "updated_at": "2026-10-02T07:11:31.195584+09:00",
+  "updated_at": "2026-10-02T11:11:39.503186+09:00",
   "programs": [
     {
       "program_key": "HD_HJM",
@@ -29,7 +29,7 @@
         {
           "date": "2026-10-05",
           "label": "10/05(월) 19:30 방송",
-          "collected_at": "2026-10-02T07:11:31.175747+09:00",
+          "collected_at": "2026-10-02T11:11:39.492560+09:00",
           "products": [
             {
               "broadcast_date_label": "10/05(월) 19:30 방송",
@@ -95,7 +95,7 @@
         {
           "date": "2026-10-06",
           "label": "10/06(화) 19:30 방송",
-          "collected_at": "2026-10-02T07:11:31.175747+09:00",
+          "collected_at": "2026-10-02T11:11:39.492560+09:00",
           "products": [
             {
               "broadcast_date_label": "10/06(화) 19:30 방송",
@@ -137,7 +137,7 @@
         {
           "date": "2026-10-10",
           "label": "10/10(토) 08:20 방송",
-          "collected_at": "2026-10-02T07:11:31.175747+09:00",
+          "collected_at": "2026-10-02T11:11:39.492560+09:00",
           "products": [
             {
               "broadcast_date_label": "10/10(토) 08:20 방송",
@@ -160,7 +160,7 @@
         {
           "date": "2026-10-03",
           "label": "10/03(토) 08:20 방송",
-          "collected_at": "2026-10-02T07:11:31.175747+09:00",
+          "collected_at": "2026-10-02T11:11:39.492560+09:00",
           "products": [
             {
               "broadcast_date_label": "10/03(토) 08:20 방송",
@@ -234,8 +234,40 @@
         {
           "date": "2026-10-07",
           "label": "10/07(수) 19:30 방송",
-          "collected_at": "2026-10-02T07:11:31.175747+09:00",
+          "collected_at": "2026-10-02T11:11:39.492560+09:00",
           "products": [
+            {
+              "broadcast_date_label": "10/07(수) 19:30 방송",
+              "brand": "머티리얼랩",
+              "name": "머티리얼랩 26FW 퓨어 캐시미어 100 헨리넥 니트",
+              "price": 199000,
+              "image": "https://image.hmall.com/2252505099_0.png",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252505099"
+            },
+            {
+              "broadcast_date_label": "10/07(수) 19:30 방송",
+              "brand": "머티리얼랩",
+              "name": "[Handmade/주문제작] 머티리얼랩 26FW 오벌 젬스톤 실버925 소가죽 롱 목걸이",
+              "price": 269000,
+              "image": "https://image.hmall.com/2253696075_0.png",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253696075"
+            },
+            {
+              "broadcast_date_label": "10/07(수) 19:30 방송",
+              "brand": "머티리얼랩",
+              "name": "머티리얼랩 26FW 이태리 ve·ra 스웨이드 레더 벨트",
+              "price": 99000,
+              "image": "https://image.hmall.com/2252754952_0.png",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252754952"
+            },
+            {
+              "broadcast_date_label": "10/07(수) 19:30 방송",
+              "brand": "머티리얼랩",
+              "name": "머티리얼랩 26FW 컴포트 스트레이트핏 데님 팬츠",
+              "price": 99000,
+              "image": "https://image.hmall.com/2252939398_0.png",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252939398"
+            },
             {
               "broadcast_date_label": "10/07(수) 19:30 방송",
               "brand": "머티리얼랩",
@@ -251,14 +283,6 @@
               "price": 249000,
               "image": "https://image.hmall.com/2253523942_0.png",
               "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253523942"
-            },
-            {
-              "broadcast_date_label": "10/07(수) 19:30 방송",
-              "brand": "머티리얼랩",
-              "name": "[Handmade/주문제작] 머티리얼랩 26FW 젬스톤 마그네틱 굿럭 목걸이",
-              "price": 189900,
-              "image": "https://image.hmall.com/2252831953_0.png",
-              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252831953"
             },
             {
               "broadcast_date_label": "10/07(수) 19:30 방송",
@@ -290,9 +314,106 @@
       "program_image": "",
       "broadcasts": [
         {
+          "date": "2026-10-15",
+          "label": "10/15(목) 20:45 방송",
+          "collected_at": "2026-10-02T11:11:39.492560+09:00",
+          "products": [
+            {
+              "prd_id": "1098474288",
+              "broadcast_date_label": "10월 15일(목) 20:45 방송",
+              "broadcast_iso": "2026-10-15T20:45:00",
+              "brand": "GS SHOP",
+              "name": "[지금,백지연 단독] 오로라 고함량 리포좀 비타민C 3,000mg (액상, 6박스)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1098474288"
+            },
+            {
+              "prd_id": "1099970750",
+              "broadcast_date_label": "10월 15일(목) 20:45 방송",
+              "broadcast_iso": "2026-10-15T20:45:00",
+              "brand": "GS SHOP",
+              "name": "오로라 고함량 리포좀 비타민C 3,000mg 6박스 (액상, 6달분)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1099970750"
+            },
+            {
+              "prd_id": "1097006982",
+              "broadcast_date_label": "10월 15일(목) 20:45 방송",
+              "broadcast_iso": "2026-10-15T20:45:00",
+              "brand": "GS SHOP",
+              "name": "오로라 고함량 리포좀 비타민C 3,000mg 3박스 (액상, 3달분)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1097006982"
+            },
+            {
+              "prd_id": "1086075184",
+              "broadcast_date_label": "10월 15일(목) 20:45 방송",
+              "broadcast_iso": "2026-10-15T20:45:00",
+              "brand": "GS SHOP",
+              "name": "오로라 고함량 리포좀 비타민C 3,000mg 1박스 (액상, 1달분)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1086075184"
+            },
+            {
+              "prd_id": "1136463076",
+              "broadcast_date_label": "10월 15일(목) 20:45 방송",
+              "broadcast_iso": "2026-10-15T20:45:00",
+              "brand": "GS SHOP",
+              "name": "[비밀특가] 오로라 리포좀 비타민C 3박스+ 비타민B 3박스+ 멜라토닌 3박스 (액상, 총9박스)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1136463076"
+            },
+            {
+              "prd_id": "1135941240",
+              "broadcast_date_label": "10월 15일(목) 20:45 방송",
+              "broadcast_iso": "2026-10-15T20:45:00",
+              "brand": "GS SHOP",
+              "name": "[비밀특가] 오로라 고함량 액상 리포좀 비타민C 5박스 (160포)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1135941240"
+            },
+            {
+              "prd_id": "1135942929",
+              "broadcast_date_label": "10월 15일(목) 20:45 방송",
+              "broadcast_iso": "2026-10-15T20:45:00",
+              "brand": "GS SHOP",
+              "name": "[비밀특가] 오로라 액상 리포좀 비타민C 2박스+ 글루타치온 2박스",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1135942929"
+            },
+            {
+              "prd_id": "1135943481",
+              "broadcast_date_label": "10월 15일(목) 20:45 방송",
+              "broadcast_iso": "2026-10-15T20:45:00",
+              "brand": "GS SHOP",
+              "name": "[비밀특가] 오로라 액상 리포좀 비타민C 2박스+ 비타민B 2박스",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1135943481"
+            },
+            {
+              "prd_id": "1116440908",
+              "broadcast_date_label": "10월 15일(목) 20:45 방송",
+              "broadcast_iso": "2026-10-15T20:45:00",
+              "brand": "GS SHOP",
+              "name": "오로라 액상 리포좀 비타민C 2박스+ 글루타치온 2박스+ 멜라토닌 1박스 (쇼핑백4매)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1116440908"
+            },
+            {
+              "prd_id": "1116445583",
+              "broadcast_date_label": "10월 15일(목) 20:45 방송",
+              "broadcast_iso": "2026-10-15T20:45:00",
+              "brand": "GS SHOP",
+              "name": "오로라 액상 리포좀 비타민C 2박스+ 글루타치온 2박스 (쇼핑백2매)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1116445583"
+            }
+          ]
+        },
+        {
           "date": "2026-10-08",
           "label": "10/08(목) 20:45 방송",
-          "collected_at": "2026-10-02T07:11:31.175747+09:00",
+          "collected_at": "2026-10-02T11:11:39.492560+09:00",
           "products": [
             {
               "prd_id": "1101552186",
@@ -302,6 +423,15 @@
               "name": "하이랜드 프레쉬 100% 블루베리 착즙 주스 48팩 120mL (지금 백지연)",
               "price": null,
               "link": "https://m.gsshop.com/prd/prd.gs?prdid=1101552186"
+            },
+            {
+              "prd_id": "1107902603",
+              "broadcast_date_label": "10월 8일(목) 20:45 방송",
+              "broadcast_iso": "2026-10-08T20:45:00",
+              "brand": "GS SHOP",
+              "name": "하이랜드 프레쉬 100% 블루베리 착즙 주스 96팩 120ml (지금 백지연)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1107902603"
             },
             {
               "prd_id": "1104113220",
@@ -338,15 +468,6 @@
               "name": "하이랜드 프레쉬 100% 토마토 착즙 주스 24팩 200ml",
               "price": null,
               "link": "https://m.gsshop.com/prd/prd.gs?prdid=1088835045"
-            },
-            {
-              "prd_id": "1107902603",
-              "broadcast_date_label": "10월 8일(목) 20:45 방송",
-              "broadcast_iso": "2026-10-08T20:45:00",
-              "brand": "GS SHOP",
-              "name": "하이랜드 프레쉬 100% 블루베리 착즙 주스 96팩 120ml (지금 백지연)",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1107902603"
             }
           ]
         },
@@ -542,7 +663,7 @@
         {
           "date": "2026-10-09",
           "label": "10/09(금) 20:35 방송",
-          "collected_at": "2026-10-02T07:11:31.175747+09:00",
+          "collected_at": "2026-10-02T11:11:39.492560+09:00",
           "products": [
             {
               "prd_id": "1133786916",
@@ -639,71 +760,8 @@
         {
           "date": "2026-10-02",
           "label": "10/02(금) 20:35 방송",
-          "collected_at": "2026-10-02T07:11:31.175747+09:00",
+          "collected_at": "2026-10-02T11:11:39.492560+09:00",
           "products": [
-            {
-              "prd_id": "1128885173",
-              "broadcast_date_label": "10월 2일(금) 20:35 방송",
-              "broadcast_iso": "2026-10-02T20:35:00",
-              "brand": "GS SHOP",
-              "name": "스칸디나비안포레스트 최신상 빅핸들 텀블러 2종 (600ml+800ml+전용빨대+지비츠 포함)",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1128885173"
-            },
-            {
-              "prd_id": "1128889171",
-              "broadcast_date_label": "10월 2일(금) 20:35 방송",
-              "broadcast_iso": "2026-10-02T20:35:00",
-              "brand": "GS SHOP",
-              "name": "스칸디나비안포레스트 최신상 대용량 텀블러 1,300ml+전용빨대+지비츠 포함 (색상 선택)",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1128889171"
-            },
-            {
-              "prd_id": "1130102724",
-              "broadcast_date_label": "10월 2일(금) 20:35 방송",
-              "broadcast_iso": "2026-10-02T20:35:00",
-              "brand": "GS SHOP",
-              "name": "스칸디나비안포레스트 텀블러 1300ml",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1130102724"
-            },
-            {
-              "prd_id": "1130815631",
-              "broadcast_date_label": "10월 2일(금) 20:35 방송",
-              "broadcast_iso": "2026-10-02T20:35:00",
-              "brand": "GS SHOP",
-              "name": "스칸디나비안포레스트 텀블러 600ml 스텐 316",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1130815631"
-            },
-            {
-              "prd_id": "1133269899",
-              "broadcast_date_label": "10월 2일(금) 20:35 방송",
-              "broadcast_iso": "2026-10-02T20:35:00",
-              "brand": "GS SHOP",
-              "name": "모즈 스웨덴 무선 리모컨 선풍기 MCF-180R(탁상용 BLDC모터)",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1133269899"
-            },
-            {
-              "prd_id": "1134224750",
-              "broadcast_date_label": "10월 2일(금) 20:35 방송",
-              "broadcast_iso": "2026-10-02T20:35:00",
-              "brand": "GS SHOP",
-              "name": "스칸디나비안포레스트 텀블러 2종세트(600ml+800ml) 스텐 316",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1134224750"
-            },
-            {
-              "prd_id": "1136713513",
-              "broadcast_date_label": "10월 2일(금) 20:35 방송",
-              "broadcast_iso": "2026-10-02T20:35:00",
-              "brand": "GS SHOP",
-              "name": "모즈 스웨덴 온도조절 전기포트 MC-1500",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1136713513"
-            },
             {
               "prd_id": "1100521278",
               "broadcast_date_label": "10월 2일(금) 20:35 방송",
@@ -793,6 +851,69 @@
               "name": "[미세스문] LK_삶아쓰는 로얄 퍼케일 침구 세트",
               "price": null,
               "link": "https://m.gsshop.com/prd/prd.gs?prdid=1079431597"
+            },
+            {
+              "prd_id": "1128885173",
+              "broadcast_date_label": "10월 2일(금) 20:35 방송",
+              "broadcast_iso": "2026-10-02T20:35:00",
+              "brand": "GS SHOP",
+              "name": "스칸디나비안포레스트 최신상 빅핸들 텀블러 2종 (600ml+800ml+전용빨대+지비츠 포함)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1128885173"
+            },
+            {
+              "prd_id": "1128889171",
+              "broadcast_date_label": "10월 2일(금) 20:35 방송",
+              "broadcast_iso": "2026-10-02T20:35:00",
+              "brand": "GS SHOP",
+              "name": "스칸디나비안포레스트 최신상 대용량 텀블러 1,300ml+전용빨대+지비츠 포함 (색상 선택)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1128889171"
+            },
+            {
+              "prd_id": "1130102724",
+              "broadcast_date_label": "10월 2일(금) 20:35 방송",
+              "broadcast_iso": "2026-10-02T20:35:00",
+              "brand": "GS SHOP",
+              "name": "스칸디나비안포레스트 텀블러 1300ml",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1130102724"
+            },
+            {
+              "prd_id": "1130815631",
+              "broadcast_date_label": "10월 2일(금) 20:35 방송",
+              "broadcast_iso": "2026-10-02T20:35:00",
+              "brand": "GS SHOP",
+              "name": "스칸디나비안포레스트 텀블러 600ml 스텐 316",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1130815631"
+            },
+            {
+              "prd_id": "1133269899",
+              "broadcast_date_label": "10월 2일(금) 20:35 방송",
+              "broadcast_iso": "2026-10-02T20:35:00",
+              "brand": "GS SHOP",
+              "name": "모즈 스웨덴 무선 리모컨 선풍기 MCF-180R(탁상용 BLDC모터)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1133269899"
+            },
+            {
+              "prd_id": "1134224750",
+              "broadcast_date_label": "10월 2일(금) 20:35 방송",
+              "broadcast_iso": "2026-10-02T20:35:00",
+              "brand": "GS SHOP",
+              "name": "스칸디나비안포레스트 텀블러 2종세트(600ml+800ml) 스텐 316",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1134224750"
+            },
+            {
+              "prd_id": "1136713513",
+              "broadcast_date_label": "10월 2일(금) 20:35 방송",
+              "broadcast_iso": "2026-10-02T20:35:00",
+              "brand": "GS SHOP",
+              "name": "모즈 스웨덴 온도조절 전기포트 MC-1500",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1136713513"
             }
           ]
         }
@@ -810,7 +931,7 @@
         {
           "date": "2026-10-10",
           "label": "10/10(토) 08:20 방송",
-          "collected_at": "2026-10-02T07:11:31.175747+09:00",
+          "collected_at": "2026-10-02T11:11:39.492560+09:00",
           "products": [
             {
               "broadcast_date_label": "10/10 토요일 08:20",
@@ -853,7 +974,7 @@
         {
           "date": "2026-10-08",
           "label": "10/08(목) 20:45 방송",
-          "collected_at": "2026-10-02T07:11:31.175747+09:00",
+          "collected_at": "2026-10-02T11:11:39.492560+09:00",
           "products": [
             {
               "broadcast_date_label": "10/08 목요일 20:45",
@@ -915,7 +1036,7 @@
         {
           "date": "2026-10-03",
           "label": "10/03(토) 08:20 방송",
-          "collected_at": "2026-10-02T07:11:31.175747+09:00",
+          "collected_at": "2026-10-02T11:11:39.492560+09:00",
           "products": [
             {
               "broadcast_date_label": "10/03 토요일 08:20",
@@ -1040,7 +1161,7 @@
         {
           "date": "2026-10-05",
           "label": "10/05(월) 19:35 방송",
-          "collected_at": "2026-10-02T07:11:31.175747+09:00",
+          "collected_at": "2026-10-02T11:11:39.492560+09:00",
           "products": [
             {
               "broadcast_date_label": "10/05(월) 19:35",
@@ -1234,7 +1355,7 @@
         {
           "date": "2026-10-07",
           "label": "10/07(수) 20:45 방송",
-          "collected_at": "2026-10-02T07:11:31.175747+09:00",
+          "collected_at": "2026-10-02T11:11:39.492560+09:00",
           "products": [
             {
               "broadcast_date_label": "10/07(수) 20:45",
@@ -1268,7 +1389,7 @@
         {
           "date": "2026-10-20",
           "label": "10/20(화) 19:35 방송",
-          "collected_at": "2026-10-02T07:11:31.175747+09:00",
+          "collected_at": "2026-10-02T11:11:39.492560+09:00",
           "products": [
             {
               "broadcast_date_label": "10/20(화) 19:35",
@@ -1283,7 +1404,7 @@
         {
           "date": "2026-10-13",
           "label": "10/13(화) 19:35 방송",
-          "collected_at": "2026-10-02T07:11:31.175747+09:00",
+          "collected_at": "2026-10-02T11:11:39.492560+09:00",
           "products": [
             {
               "broadcast_date_label": "10/13(화) 19:35",
@@ -1306,7 +1427,7 @@
         {
           "date": "2026-10-06",
           "label": "10/06(화) 19:35 방송",
-          "collected_at": "2026-10-02T07:11:31.175747+09:00",
+          "collected_at": "2026-10-02T11:11:39.492560+09:00",
           "products": [
             {
               "broadcast_date_label": "10/06(화) 19:35",
@@ -1356,7 +1477,7 @@
         {
           "date": "2026-10-06",
           "label": "10/06(화) 19:00 방송",
-          "collected_at": "2026-10-02T07:11:31.175747+09:00",
+          "collected_at": "2026-10-02T11:11:39.492560+09:00",
           "products": [
             {
               "broadcast_date_label": "10/06(화) 19:00",
@@ -2083,30 +2204,30 @@
         {
           "date": "2026-10-02",
           "label": "10/02(금) 22:45 방송",
-          "collected_at": "2026-10-02T07:11:31.175747+09:00",
+          "collected_at": "2026-10-02T11:11:39.492560+09:00",
           "products": [
             {
               "broadcast_date_label": "10/02(금) 22:45",
               "brand": "클리판",
-              "name": "26FW 최신상 프리미엄 비스코스코튼 타올 스폐셜세트 노르딕믹스",
+              "name": "26FW 최신상 프리미엄 비스코스코튼 타올 스폐셜 12종세트 노르딕믹스",
               "price": 129000,
-              "image": "https://image.cjonstyle.net/goods_images/20/668/2094268668L.jpg?timestamp=20260930182034",
+              "image": "https://image.cjonstyle.net/goods_images/20/668/2094268668L.jpg?timestamp=20261002095532",
               "link": "https://item.cjonstyle.com/item/2094268668?channelCode=30002002"
             },
             {
               "broadcast_date_label": "10/02(금) 22:45",
               "brand": "클리판",
-              "name": "26FW 최신상 프리미엄 비스코스코튼 타올 스폐셜세트 브루노브라운",
+              "name": "26FW 최신상 프리미엄 비스코스코튼 타올 스폐셜 12종세트 브루노브라운",
               "price": 129000,
-              "image": "https://image.cjonstyle.net/goods_images/20/851/2094268851L.jpg?timestamp=20260930104416",
+              "image": "https://image.cjonstyle.net/goods_images/20/851/2094268851L.jpg?timestamp=20261002100235",
               "link": "https://item.cjonstyle.com/item/2094268851?channelCode=30002002"
             },
             {
               "broadcast_date_label": "10/02(금) 22:45",
               "brand": "클리판",
-              "name": "26FW 최신상 프리미엄 비스코스코튼 타올 스폐셜세트 브루노블루",
+              "name": "26FW 최신상 프리미엄 비스코스코튼 타올 스폐셜 12종세트 브루노블루",
               "price": 129000,
-              "image": "https://image.cjonstyle.net/goods_images/20/330/2094269330L.jpg?timestamp=20260930104514",
+              "image": "https://image.cjonstyle.net/goods_images/20/330/2094269330L.jpg?timestamp=20261002100303",
               "link": "https://item.cjonstyle.com/item/2094269330?channelCode=30002002"
             },
             {
@@ -2143,7 +2264,7 @@
         {
           "date": "2026-10-10",
           "label": "10/10(토) 08:20 방송",
-          "collected_at": "2026-10-02T07:11:31.175747+09:00",
+          "collected_at": "2026-10-02T11:11:39.492560+09:00",
           "products": [
             {
               "broadcast_date_label": "10/10(토) 08:20",
@@ -2222,7 +2343,7 @@
         {
           "date": "2026-10-08",
           "label": "10/08(목) 20:45 방송",
-          "collected_at": "2026-10-02T07:11:31.175747+09:00",
+          "collected_at": "2026-10-02T11:11:39.492560+09:00",
           "products": [
             {
               "broadcast_date_label": "10/08(목) 20:45",
@@ -2239,13 +2360,22 @@
               "price": 109100,
               "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/472/2091330472L.jpg?timestamp=20260902112336",
               "link": "https://item.cjonstyle.com/item/2091330472?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "10/08(목) 20:45",
+              "brand": "빈블랑",
+              "name": "빈블랑 4단 모듈 수납장",
+              "price": 419000,
+              "image": "goods_images/20/195/2080087195L.jpg?timestamp=20260227141541",
+              "link": "https://display.cjonstyle.com/p/item/2080087195?channelCode=30002002",
+              "verify": true
             }
           ]
         },
         {
           "date": "2026-10-03",
           "label": "10/03(토) 08:20 방송",
-          "collected_at": "2026-10-02T07:11:31.175747+09:00",
+          "collected_at": "2026-10-02T11:11:39.492560+09:00",
           "products": [
             {
               "broadcast_date_label": "10/03(토) 08:20",
@@ -2294,6 +2424,38 @@
               "price": 599000,
               "image": "https://image.cjonstyle.net/goods_images/20/119/2093108119L.jpg?timestamp=20260910093521",
               "link": "https://item.cjonstyle.com/item/2093108119?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "10/03(토) 08:20",
+              "brand": "베라왕",
+              "name": "26FW 캐시미어100 홀가먼트 비쥬 가디건",
+              "price": 149000,
+              "image": "https://image.cjonstyle.net/goods_images/20/469/2093114469L.jpg?timestamp=20260910165045",
+              "link": "https://item.cjonstyle.com/item/2093114469?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "10/03(토) 08:20",
+              "brand": "베라왕",
+              "name": "26FW 캐시미어100 롤넥 풀오버",
+              "price": 119000,
+              "image": "https://image.cjonstyle.net/goods_images/20/761/2093118761L.jpg?timestamp=20260915115035",
+              "link": "https://item.cjonstyle.com/item/2093118761?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "10/03(토) 08:20",
+              "brand": "베라왕",
+              "name": "26FW FAUX레더 렉싱턴 사파리",
+              "price": 139000,
+              "image": "https://image.cjonstyle.net/goods_images/20/096/2090809096L.jpg?timestamp=20260824100839",
+              "link": "https://item.cjonstyle.com/item/2090809096?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "10/03(토) 08:20",
+              "brand": "베라왕",
+              "name": "26FW 호주산 메리노울 블렌드 레이스 니트",
+              "price": 79900,
+              "image": "https://image.cjonstyle.net/goods_images/20/887/2091325887L.jpg?timestamp=20260819114323",
+              "link": "https://item.cjonstyle.com/item/2091325887?channelCode=30002002"
             },
             {
               "broadcast_date_label": "10/03(토) 08:20",
