@@ -46,6 +46,7 @@ from tools import scrape_guard
 from infer_brand import is_marketing_copy, pick_brand_from_prefix
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from celeb_day_sweep import supplement_missing_slots, merge_continuous_slots
+from celeb_brand import resolve_gs_brand
 
 WEEKDAY_KR = ["월", "화", "수", "목", "금", "토", "일"]
 
@@ -168,7 +169,10 @@ def fetch_gs_product_details_fixed(prd_id):
                 else:
                     brand = "GS SHOP"
                     name = full_title
-                return brand, name, price
+                # og:title의 대괄호는 "[GS SHOP] 상품명"처럼 쇼핑몰명이라 위 분기로는
+                # 브랜드가 안 나온다(전 상품 'GS SHOP'). 자리표시자면 상품명에서
+                # 추론하고, 못 찾으면 자리표시자 그대로 둔다 (celeb_brand.py 참고).
+                return resolve_gs_brand(brand, name), name, price
 
             name_tag = soup.select_one("p.prd-name, h2.prd-nm, .product_title, .pdp-tit, .prd-tit")
             name = name_tag.get_text(strip=True) if name_tag else None
@@ -176,7 +180,7 @@ def fetch_gs_product_details_fixed(prd_id):
             brand = brand_tag.get_text(strip=True) if brand_tag else "GS SHOP"
 
             if name:
-                return brand, name, price
+                return resolve_gs_brand(brand, name), name, price
 
             # og:title도, 백업 셀렉터도 다 실패한 경우 -> 실제로 뭐가 왔는지
             # <title> 태그를 그대로 출력해서 바로 원인을 알 수 있게 한다.

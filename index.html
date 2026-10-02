@@ -6879,7 +6879,8 @@ async function celInitLoad() {
   await celSetMonth(celMonth || celThisMonth());
 }
 
-// GS 스크래퍼는 실제 브랜드를 못 뽑고 전 상품에 'GS SHOP'을 넣는다.
+// GS 스크래퍼는 상품 상세에서 브랜드를 못 뽑아(og:title이 "[GS SHOP] 상품명")
+// 상품명으로 추론하고(fixed/celeb_brand.py), 못 찾은 상품엔 'GS SHOP'을 남긴다.
 // 자리표시자 브랜드는 없는 것으로 취급한다 - 추정치를 만들어 적느니 생략한다.
 const CEL_BRAND_PLACEHOLDER = /^(gs\s*shop|gs샵)$/i;
 function celBrandKey(p) {
@@ -6901,7 +6902,7 @@ function celRenderProductList(products) {
 
 function celRenderProductRow(p) {
   const priceText = p.price ? Number(p.price).toLocaleString() + '원' : '';
-  // 자리표시자 브랜드('GS SHOP')는 태그로도 안 보여준다 (전 상품 동일해서 정보가 없음)
+  // 자리표시자 브랜드('GS SHOP' = 브랜드 추론 못 한 GS 상품)는 태그로도 안 보여준다
   const brandShown = (p.brand && !CEL_BRAND_PLACEHOLDER.test(String(p.brand).trim())) ? p.brand : '';
   const brandTag = brandShown ? `<span class="cel-prod-brand">${brandShown}</span>` : '';
   // 롯데처럼 한 방송이 구간별로 쪼개져 편성되는 경우, 묶인 회차 안에서
@@ -7113,7 +7114,8 @@ function celRenderBand(file) {
   // 휴방 회차는 '이번 달 방송 N회'에서 뺀다 (방송이 없던 주다)
   const bcastCnt = broadcasts.filter(b => !b.offAir).length;
   // 한 브랜드가 여러 상품코드로 노출돼 상품 수는 과잉집계라, 고유 브랜드 수로 센다.
-  // 브랜드를 못 뽑는 회사(GS)는 brandCnt가 0이 되고 요약에서 브랜드 표기가 생략된다.
+  // 브랜드를 하나도 못 뽑은 밴드(GS 추론이 전부 실패한 달 등)는 brandCnt가 0이 되고
+  // 요약에서 브랜드 표기가 생략된다.
   const brandSet = new Set();
   broadcasts.forEach(b => b.products.forEach(p => {
     const key = celBrandKey(p);
