@@ -4,8 +4,10 @@ build_celeb_history 누적 규칙 테스트 (pytest 없이 그냥 실행:
 python tools/test_build_celeb_history.py)
 
 지키려는 것은 서로 반대 방향의 두 가지다.
-  (A) 방송 직전/직후에 빠지거나 코드가 바뀐 상품이 확정 기록에 반영될 것
-      -> 2026-08-31 강주은 굿라이프 '농협 영암 무화과' 사고
+  (A) 방송 전에 편성에서 빠진 상품은 기록에서 빠지고(방송 전 통째 교체),
+      방송 시작 후 사라진 상품은 기록에 남을 것
+      -> 2026-08-31 강주은 '무화과'(방송 직전 편성 제외) /
+         2026-10-03 동가게 '로보'(방송 후 방송한정 코드 내림)
   (B) 방송이 끝난 뒤의 잔여 노출이 확정 기록을 덮어쓰지 않을 것
       -> 2026-08-22 왕영은의 톡투게더 사고
 둘 중 하나만 만족시키는 수정은 반대쪽 사고를 되살린다. 규칙을 손볼 땐
@@ -89,29 +91,31 @@ def test_phase():
 
 # ------------------------------------------------------------ diff/정정
 def test_reconcile_removal():
-    """(A) 2026-08-31 강주은 굿라이프 재현: 방송 직전에 빠진 상품이 제거돼야 한다."""
-    print("[2] 정정 창 안의 '상품 제외' 반영 (2026-08-31 무화과 사고)")
-    kept = broadcast("08/31(월) 19:35 방송", [
-        product("올트라이탄 데일리패키지 16종", "2091642625"),
-        product("올트라이탄 대용량패키지 6종", "2091649594"),
-        product("도투락 야생 빌베리 퓨레 100% 8박스", "2091508600"),
-        product("도투락 야생 빌베리 퓨레 100% 1박스", "2089942607"),
-        product("유러피안데일리베지믹스 230g x 16봉", "2091538799"),
-        product("유러피안데일리베지믹스 230g x 32봉", "2092274747"),
-        product("영암 햇 생 무화과 500g x 4팩 총 2kg", "2091300670"),  # <- 방송 29분 전 제외
-        product("유러피안데일리베지믹스 230g x 12봉", "2091320090"),
+    """(A) 2026-10-03 동가게 재현: 방송 시작 후 사라진 상품은 지우지 않는다.
+    로보 3종은 08:20~09:05 실제 방송했는데, 구간이 끝나자 방송한정 코드가
+    페이지/편성표에서 내려갔고 10:55 정정이 이를 '제외'로 받아 지웠다."""
+    print("[2] 방송 시작 후 사라진 상품은 유지 (2026-10-03 동가게 로보)")
+    kept = broadcast("10/03(토) 08:20", [
+        product("YOGA 토마토주스", "1"),
+        product("[미리주문 5%] 로보 베지터블 하이넥 케이프", "2"),
+        product("[미리주문 5%] 로보 스웨이드 하이넥 케이프", "3"),
+        product("[미리주문 10%] 로보 무스탕카라 롱코트", "4"),
+        product("베라왕 니트코트", "5"), product("베라왕 가디건", "6"),
+        product("베라왕 풀오버", "7"), product("베라왕 사파리", "8"),
     ])
-    new = broadcast("08/31(월) 19:35 방송",
-                    [p for p in kept["products"] if "무화과" not in p["name"]])
+    after = [p for p in kept["products"] if "로보" not in p["name"]]
 
-    merged, note = bch.reconcile_broadcast(kept, new, "2026-08-31T20:10:00+09:00")
-    check("정정이 적용됨", merged is not None, True)
-    check("건수 8 -> 7", len(merged["products"]), 7)
-    check("무화과가 빠짐",
-          any("무화과" in p["name"] for p in merged["products"]), False)
-    check("정정 이력에 제외 상품명이 남음",
-          merged["revisions"][-1]["removed"], ["영암 햇 생 무화과 500g x 4팩 총 2kg"])
-    check("reconciled_at 기록됨", merged["reconciled_at"], "2026-08-31T20:10:00+09:00")
+    merged, note = bch.reconcile_broadcast(kept, broadcast("10/03(토) 08:20", after),
+                                           "2026-10-03T10:55:00+09:00")
+    check("사라지기만 했으면 기존 기록 그대로", merged, None)
+
+    with_add = after + [product("YOGA 3팩", "9")]
+    merged, note = bch.reconcile_broadcast(kept, broadcast("10/03(토) 08:20", with_add),
+                                           "2026-10-03T10:55:00+09:00")
+    check("추가분은 반영", any(p["name"] == "YOGA 3팩" for p in merged["products"]), True)
+    check("로보 3종 유지", sum("로보" in p["name"] for p in merged["products"]), 3)
+    check("removed로 안 남음", "removed" in merged["revisions"][-1], False)
+    check("missing_after_start 기록", len(merged["revisions"][-1]["missing_after_start"]), 3)
 
 
 def test_reconcile_code_change():
@@ -157,9 +161,9 @@ def test_gate_retention():
     check("정정 거부", merged, None)
     check("사유에 건수가 남음", "8건 중 1건" in note, True)
 
-    # 8건 중 5건 남음(62.5%) -> 임계 위라 정상 정정
+    # 8건 중 5건 남음(62.5%) + 추가 1건 -> 임계 위라 정상 정정
     new_ok = broadcast("08/31(월) 19:35 방송",
-                       [product(f"상품{i}", str(i)) for i in range(5)])
+                       [product(f"상품{i}", str(i)) for i in range(5)] + [product("새상품", "99")])
     merged_ok, _ = bch.reconcile_broadcast(kept, new_ok, "2026-08-31T20:10:00+09:00")
     check("임계 위면 정정 적용", merged_ok is not None, True)
 
@@ -183,12 +187,13 @@ def test_merge_into_month():
         return existing["programs"][0]["broadcasts"][0]
 
     before = run("2026-08-31T10:22:00")
-    check("before - 최신 수집분으로 교체", len(before["products"]), 3)
+    check("before - 최신 수집분으로 교체 (방송 전 편성 제외는 여기서 빠짐)",
+          len(before["products"]), 3)
     check("before - 정정 이력은 안 남김", "revisions" in before, False)
 
     mid = run("2026-08-31T20:10:00")
-    check("reconcile - 제외 반영", len(mid["products"]), 3)
-    check("reconcile - 정정 이력 남김", mid["revisions"][-1]["removed"], ["무화과"])
+    check("reconcile - 방송 후 사라진 상품은 유지", len(mid["products"]), 4)
+    check("reconcile - 사라지기만 했으면 정정 이력 없음", "revisions" in mid, False)
 
     final = run("2026-09-02T09:00:00")
     check("final - 확정 기록 보존", len(final["products"]), 4)

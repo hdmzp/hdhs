@@ -37,9 +37,9 @@ homeshopping/representative_programs/history/{YYYY-MM}.json
 그래서 회차를 세 단계로 나눈다 (broadcast_phase()):
 
   before    방송 시작 전. 라인업이 계속 바뀌므로 최신 수집분으로 통째 교체.
-  reconcile 방송 시작 ~ +RECONCILE_HOURS. 상품 단위로 '정정'을 반영한다
-            (추가 / 제외 / 상품코드 변경). 방송 중·직후 수집분이 그 회차의
-            실제 라인업을 가장 정확히 말해주는 구간이다.
+  reconcile 방송 시작 ~ +RECONCILE_HOURS. 상품 단위로 '정정'을 반영하되
+            **추가 / 상품코드 변경만** 받는다. 방송 시작 후에는 기록에서
+            상품을 절대 빼지 않는다 (아래 '방송 후 제외 금지' 참고).
   final     그 뒤. 확정 기록 - 무슨 일이 있어도 안 건드린다.
 
 reconcile 구간에도 아무 수집분이나 받지는 않는다. 방송이 끝나면 사이트
@@ -52,8 +52,19 @@ reconcile 구간에도 아무 수집분이나 받지는 않는다. 방송이 끝
            (기존 기록 라벨의 HH:MM과 일치해야 함 - 잔여 표기는 시각이 없어
             여기서 걸린다)
   게이트2  기존 기록의 MIN_RETENTION 이상이 새 수집분에도 남아 있어야
-           '제외'로 인정한다. 절반 넘게 사라지면 수집 실패/잔여 노출로 보고
-           정정을 거부한다.
+           정정(추가/코드변경)을 받는다. 절반 넘게 사라지면 수집 실패/잔여
+           노출로 보고 정정을 거부한다.
+
+== 방송 후 제외 금지 ==
+방송이 시작된 뒤 수집분에서 상품이 사라지는 건 '라인업 제외'가 아니다.
+사이트는 방송한 구간이 끝나면 방송한정 코드를 페이지/편성표에서 내린다.
+실측: 2026-10-03 동가게(08:20~10:20) 로보 3종은 08:20~09:05에 실제로
+방송했는데, 그 뒤 페이지/편성표에서 사라졌고 10:55 정정이 이를 '제외'로
+받아 기록에서 지웠다. 브랜드별 방송 구간은 데이터에 없어서 시각으로도
+가를 수 없다. 그래서 방송 시작 후 사라진 상품은 기록에 남기고, 정정
+이력에 missing_after_start로만 적는다.
+방송 전에 편성에서 빠진 상품(2026-08-31 무화과 - 타사가 방송 직전 편성에서
+뺐다)은 방송 전(before) 수집분의 통째 교체로 걸러지는 게 맞다.
 
 같은 상품인지는 상품코드(링크의 /item/{코드}) -> 상품명 순으로 본다.
 코드만 바뀌고 이름이 같으면 '제외+추가'가 아니라 '상품코드 변경'으로 남긴다.
@@ -286,24 +297,28 @@ def reconcile_broadcast(kept: dict, new: dict, now_iso: str):
     if not new_products:
         return None, "새 수집분에 상품이 없음"
 
-    added, removed, code_changed, matched = diff_products(kept_products, new_products)
-    if not (added or removed or code_changed):
-        return None, ""  # 변경 없음 - 매 실행 반복되는 정상 상황이라 조용히 넘어간다
+    added, missing, code_changed, matched = diff_products(kept_products, new_products)
 
-    # 게이트2: 기존 기록의 절반 이상이 남아야 '제외'로 인정한다.
+    # 게이트2: 기존 기록의 절반 이상이 남아야 정정을 받는다.
     if kept_products and matched / len(kept_products) < MIN_RETENTION:
         return None, (f"기존 {len(kept_products)}건 중 {matched}건만 남아 정정 거부"
                       f"(수집 실패/잔여 노출 의심)")
 
+    # 방송 시작 후 사라진 상품은 제외하지 않는다 (위 '방송 후 제외 금지').
+    # 사라지기만 했으면 기록을 건드릴 게 없다.
+    if not (added or code_changed):
+        return None, ""  # 매 실행 반복되는 정상 상황이라 조용히 넘어간다
+
     revision = {"at": now_iso}
     if added:
         revision["added"] = [p.get("name") or "" for p in added]
-    if removed:
-        revision["removed"] = [p.get("name") or "" for p in removed]
+    if missing:
+        revision["missing_after_start"] = [p.get("name") or "" for p in missing]
     if code_changed:
         revision["code_changed"] = code_changed
 
     merged = dict(new)
+    merged["products"] = list(new_products) + list(missing)
     merged["label"] = kept.get("label") or new.get("label")
     merged["reconciled_at"] = now_iso
     merged["revisions"] = ((kept.get("revisions") or []) + [revision])[-MAX_REVISIONS:]
@@ -311,8 +326,8 @@ def reconcile_broadcast(kept: dict, new: dict, now_iso: str):
     parts = []
     if added:
         parts.append(f"추가 {len(added)}건")
-    if removed:
-        parts.append("제외 " + ", ".join(f"'{p.get('name') or ''}'" for p in removed))
+    if missing:
+        parts.append(f"방송 후 사라진 {len(missing)}건은 유지")
     if code_changed:
         parts.append("코드변경 " + ", ".join(f"{c['from']}->{c['to']}" for c in code_changed))
     return merged, " / ".join(parts)
