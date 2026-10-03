@@ -37,9 +37,9 @@ homeshopping/representative_programs/history/{YYYY-MM}.json
 그래서 회차를 세 단계로 나눈다 (broadcast_phase()):
 
   before    방송 시작 전. 라인업이 계속 바뀌므로 최신 수집분으로 통째 교체.
-  reconcile 방송 시작 ~ +RECONCILE_HOURS. 상품 단위로 '정정'을 반영한다
-            (추가 / 제외 / 상품코드 변경). 방송 중·직후 수집분이 그 회차의
-            실제 라인업을 가장 정확히 말해주는 구간이다.
+  reconcile 방송 시작 ~ +RECONCILE_HOURS. 상품 단위로 '정정'을 반영하되
+            **추가 / 상품코드 변경만** 받는다. 방송 시작 후에는 기록에서
+            상품을 절대 빼지 않는다 (아래 '방송 후 제외 금지' 참고).
   final     그 뒤. 확정 기록 - 무슨 일이 있어도 안 건드린다.
 
 reconcile 구간에도 아무 수집분이나 받지는 않는다. 방송이 끝나면 사이트
@@ -52,8 +52,19 @@ reconcile 구간에도 아무 수집분이나 받지는 않는다. 방송이 끝
            (기존 기록 라벨의 HH:MM과 일치해야 함 - 잔여 표기는 시각이 없어
             여기서 걸린다)
   게이트2  기존 기록의 MIN_RETENTION 이상이 새 수집분에도 남아 있어야
-           '제외'로 인정한다. 절반 넘게 사라지면 수집 실패/잔여 노출로 보고
-           정정을 거부한다.
+           정정(추가/코드변경)을 받는다. 절반 넘게 사라지면 수집 실패/잔여
+           노출로 보고 정정을 거부한다.
+
+== 방송 후 제외 금지 ==
+방송이 시작된 뒤 수집분에서 상품이 사라지는 건 '라인업 제외'가 아니다.
+사이트는 방송한 구간이 끝나면 방송한정 코드를 페이지/편성표에서 내린다.
+실측: 2026-10-03 동가게(08:20~10:20) 로보 3종은 08:20~09:05에 실제로
+방송했는데, 그 뒤 페이지/편성표에서 사라졌고 10:55 정정이 이를 '제외'로
+받아 기록에서 지웠다. 브랜드별 방송 구간은 데이터에 없어서 시각으로도
+가를 수 없다. 그래서 방송 시작 후 사라진 상품은 기록에 남기고, 정정
+이력에 missing_after_start로만 적는다.
+방송 전에 편성에서 빠진 상품(2026-08-31 무화과 - 타사가 방송 직전 편성에서
+뺐다)은 방송 전(before) 수집분의 통째 교체로 걸러지는 게 맞다.
 
 같은 상품인지는 상품코드(링크의 /item/{코드}) -> 상품명 순으로 본다.
 코드만 바뀌고 이름이 같으면 '제외+추가'가 아니라 '상품코드 변경'으로 남긴다.
@@ -111,17 +122,6 @@ MIN_RETENTION = 0.5
 # 방송 항목당 보관할 정정 이력 건수 (최근 것부터)
 MAX_REVISIONS = 5
 
-# 방송이 '끝난 뒤' 수집분에서 사라진 상품은 제외로 보지 않는다.
-# 방송이 끝나면 사이트가 판매 종료된 상품(미리주문 등)을 페이지/편성표에서
-# 내린다. 실측: 2026-10-03 동가게(08:20~10:20) 로보 3종(미리주문 케이프/코트)
-# - 09:13 편성표엔 있었는데 방송 종료 후 10:52 페이지·11:32 편성표에서 사라졌고,
-# 정정 창이 이걸 '라인업 제외'로 받아 60분 방송한 로보가 기록에서 지워졌다.
-# 방송 전·중에 빠진 상품(2026-08-31 무화과 - 방송 중 20:10 수집에서 빠짐)은
-# 지금처럼 제외한다.
-# 종료 시각은 편성표({회사}_live)에서 읽고, 못 읽으면 시작 + 이 값(분)으로 본다.
-DEFAULT_BROADCAST_MINUTES = 60
-LIVE_PATH_TEMPLATE = os.path.join("homeshopping", "{company}_live", "{ym}.json")
-
 # 회사별 broadcast_date_label 형식 (전부 월/일 포함, 연도 없음):
 #   HD: "07/21(화) 19:30 방송" / "7/21(화) 방송상품"
 #   GS: "7월 23일(목) 20:45 방송"
@@ -167,67 +167,6 @@ def broadcast_start(date_iso: str, *time_hints):
             return datetime(brod_date.year, brod_date.month, brod_date.day,
                             hm[0], hm[1], tzinfo=KST)
     return None
-
-
-_LIVE_DAY_CACHE = {}
-
-
-def _live_day_entries(company: str, date_iso: str) -> list:
-    """편성표({회사}_live/{YYYY-MM}.json)의 그날 항목들. 없으면 []."""
-    key = (LIVE_PATH_TEMPLATE, company, date_iso)
-    if key not in _LIVE_DAY_CACHE:
-        path = LIVE_PATH_TEMPLATE.format(company=company, ym=date_iso[:7])
-        entries = []
-        try:
-            with open(path, "r", encoding="utf-8") as f:
-                entries = (json.load(f).get("days") or {}).get(date_iso) or []
-        except (OSError, ValueError):
-            pass
-        _LIVE_DAY_CACHE[key] = entries
-    return _LIVE_DAY_CACHE[key]
-
-
-def broadcast_end(company: str, date_iso: str, start: datetime, products=()):
-    """방송 종료 시각(datetime). 읽는 순서:
-      1. 상품의 segment_time("08:20-09:20(60')") 중 가장 늦은 끝
-      2. 편성표({회사}_live)에서 그 시각에 시작하는 편성의 종료시각
-         (같은 프로그램이 이어 붙은 구간은 끝까지 따라간다)
-      3. 시작 + DEFAULT_BROADCAST_MINUTES"""
-    if start is None:
-        return None
-
-    def at(hm_text):
-        hm = parse_hm(hm_text)
-        if not hm:
-            return None
-        end = start.replace(hour=hm[0], minute=hm[1])
-        return end + timedelta(days=1) if end <= start else end
-
-    ends = []
-    for product in products or ():
-        m = re.search(r"-\s*(\d{1,2}:\d{2})", product.get("segment_time") or "")
-        if m and at(m.group(1)):
-            ends.append(at(m.group(1)))
-    if ends:
-        return max(ends)
-
-    entries = _live_day_entries(company, date_iso)
-    start_hm = start.strftime("%H:%M")
-    first = [e for e in entries if e.get("start") == start_hm and e.get("end")]
-    if first:
-        pgm = first[0].get("pgm") or ""
-        end_hm = max(e["end"] for e in first)
-        # 같은 프로그램이 구간을 쪼개 이어 붙인 경우 (09:20 끝 -> 09:20 시작)
-        while pgm:
-            nxt = [e for e in entries if e.get("start") == end_hm
-                   and (e.get("pgm") or "") == pgm and e.get("end")]
-            if not nxt:
-                break
-            end_hm = max(e["end"] for e in nxt)
-        if at(end_hm):
-            return at(end_hm)
-
-    return start + timedelta(minutes=DEFAULT_BROADCAST_MINUTES)
 
 
 def broadcast_phase(date_iso: str, now: datetime, *time_hints) -> str:
@@ -341,12 +280,8 @@ def diff_products(kept: list, new: list):
     return added, removed, code_changed, matched
 
 
-def reconcile_broadcast(kept: dict, new: dict, now_iso: str, end_at: datetime = None):
+def reconcile_broadcast(kept: dict, new: dict, now_iso: str):
     """정정 창 안에서 기존 기록을 새 수집분으로 정정한다.
-
-    end_at: 방송 종료 시각. 새 수집분이 이 시각 이후에 수집됐으면, 거기서
-    사라진 상품은 '제외'가 아니라 방송 후 판매 종료로 내려간 것으로 보고
-    기록에 남긴다 (DEFAULT_BROADCAST_MINUTES 위 설명 - 2026-10-03 동가게 로보).
 
     반환: (정정된 방송 항목 or None, 사람이 읽을 사유 문자열).
     None이면 기존 기록을 그대로 둔다."""
@@ -362,41 +297,28 @@ def reconcile_broadcast(kept: dict, new: dict, now_iso: str, end_at: datetime = 
     if not new_products:
         return None, "새 수집분에 상품이 없음"
 
-    added, removed, code_changed, matched = diff_products(kept_products, new_products)
+    added, missing, code_changed, matched = diff_products(kept_products, new_products)
 
-    kept_after_end = []
-    if removed and end_at is not None:
-        try:
-            collected = datetime.fromisoformat(new.get("collected_at") or now_iso)
-        except (TypeError, ValueError):
-            collected = None
-        if collected is not None and collected.tzinfo is None:
-            collected = collected.replace(tzinfo=KST)
-        if collected is not None and collected >= end_at:
-            kept_after_end, removed = removed, []
-
-    if not (added or removed or code_changed):
-        return None, ""  # 변경 없음 - 매 실행 반복되는 정상 상황이라 조용히 넘어간다
-
-    # 게이트2: 기존 기록의 절반 이상이 남아야 '제외'로 인정한다.
+    # 게이트2: 기존 기록의 절반 이상이 남아야 정정을 받는다.
     if kept_products and matched / len(kept_products) < MIN_RETENTION:
         return None, (f"기존 {len(kept_products)}건 중 {matched}건만 남아 정정 거부"
                       f"(수집 실패/잔여 노출 의심)")
 
+    # 방송 시작 후 사라진 상품은 제외하지 않는다 (위 '방송 후 제외 금지').
+    # 사라지기만 했으면 기록을 건드릴 게 없다.
+    if not (added or code_changed):
+        return None, ""  # 매 실행 반복되는 정상 상황이라 조용히 넘어간다
+
     revision = {"at": now_iso}
     if added:
         revision["added"] = [p.get("name") or "" for p in added]
-    if removed:
-        revision["removed"] = [p.get("name") or "" for p in removed]
+    if missing:
+        revision["missing_after_start"] = [p.get("name") or "" for p in missing]
     if code_changed:
         revision["code_changed"] = code_changed
 
-    if kept_after_end:
-        revision["kept_after_end"] = [p.get("name") or "" for p in kept_after_end]
-
     merged = dict(new)
-    if kept_after_end:
-        merged["products"] = list(new_products) + list(kept_after_end)
+    merged["products"] = list(new_products) + list(missing)
     merged["label"] = kept.get("label") or new.get("label")
     merged["reconciled_at"] = now_iso
     merged["revisions"] = ((kept.get("revisions") or []) + [revision])[-MAX_REVISIONS:]
@@ -404,12 +326,10 @@ def reconcile_broadcast(kept: dict, new: dict, now_iso: str, end_at: datetime = 
     parts = []
     if added:
         parts.append(f"추가 {len(added)}건")
-    if removed:
-        parts.append("제외 " + ", ".join(f"'{p.get('name') or ''}'" for p in removed))
+    if missing:
+        parts.append(f"방송 후 사라진 {len(missing)}건은 유지")
     if code_changed:
         parts.append("코드변경 " + ", ".join(f"{c['from']}->{c['to']}" for c in code_changed))
-    if kept_after_end:
-        parts.append(f"방송 종료 후 사라진 {len(kept_after_end)}건은 유지")
     return merged, " / ".join(parts)
 
 
@@ -700,13 +620,8 @@ def merge_into_month(existing: dict, program_key: str, meta: dict,
             continue
 
         if phase == "reconcile":
-            start = broadcast_start(date_iso, kept.get("label"),
-                                    broadcast.get("label"), meta.get("schedule_raw"))
-            end_at = broadcast_end(program_key.split("_", 1)[0], date_iso, start,
-                                   (kept.get("products") or []) + (broadcast.get("products") or []))
             merged, note = reconcile_broadcast(kept, broadcast,
-                                               broadcast.get("collected_at") or now.isoformat(),
-                                               end_at)
+                                               broadcast.get("collected_at") or now.isoformat())
             if merged is not None:
                 by_date[slot_key] = merged
                 print(f"[정정] {program_key} {date_iso}: {note} "
