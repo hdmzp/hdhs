@@ -1,6 +1,6 @@
 {
  "date": "2026-10-03",
- "collectedAt": "2026-10-03T09:54:48+09:00",
+ "collectedAt": "2026-10-03T23:38:40+09:00",
  "games": [
   {
    "time": "06:30",
@@ -51,7 +51,7 @@
    "venue": "가스가이 컨트리 클럽",
    "hasKorea": true,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026GLFMTEAMFNL000400"
   },
   {
@@ -732,31 +732,9 @@
    "countries": [],
    "venue": "카이요 요트 하버",
    "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SALWIQFOILBPREL001100"
-  },
-  {
-   "time": "10:00",
-   "discipline": "요트",
-   "event": "여자 청소년 윈드서핑 - 레이스 12",
-   "countries": [],
-   "venue": "카이요 요트 하버",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SALWIQFOILBPREL001200"
-  },
-  {
-   "time": "10:00",
-   "discipline": "요트",
-   "event": "여자 청소년 윈드서핑 - 레이스 13",
-   "countries": [],
-   "venue": "카이요 요트 하버",
-   "hasKorea": false,
    "medal": true,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SALWIQFOILBPREL001300"
+   "link": "https://m.sports.naver.com/game/2026SALWIQFOILBPREL001100"
   },
   {
    "time": "10:00",
@@ -832,34 +810,14 @@
    "time": "10:05",
    "discipline": "요트",
    "event": "남자 청소년 윈드서핑 - 레이스 11",
-   "countries": [],
+   "countries": [
+    "대한민국"
+   ],
    "venue": "카이요 요트 하버",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SALMIQFOILBPREL001100"
-  },
-  {
-   "time": "10:05",
-   "discipline": "요트",
-   "event": "남자 청소년 윈드서핑 - 레이스 12",
-   "countries": [],
-   "venue": "카이요 요트 하버",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SALMIQFOILBPREL001200"
-  },
-  {
-   "time": "10:05",
-   "discipline": "요트",
-   "event": "남자 청소년 윈드서핑 - 레이스 13",
-   "countries": [],
-   "venue": "카이요 요트 하버",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SALMIQFOILBPREL001300"
+   "link": "https://m.sports.naver.com/game/2026SALMIQFOILBPREL001100"
   },
   {
    "time": "10:10",
@@ -914,7 +872,7 @@
    "venue": "도요하시 체육관",
    "hasKorea": true,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026TKWWO67KG8FNL000800"
   },
   {
@@ -1128,11 +1086,14 @@
    "time": "10:35",
    "discipline": "양궁 리커브",
    "event": "여자 개인 동메달전",
-   "countries": [],
+   "countries": [
+    "주징이",
+    "황위웨이"
+   ],
    "venue": "오카자키 주오 소고 공원",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026ARCWINDIVIDFNL000200"
   },
   {
@@ -1346,7 +1307,10 @@
    "time": "10:45",
    "discipline": "주짓수",
    "event": "여자 -63kg급 8강",
-   "countries": [],
+   "countries": [
+    "응우옌 티 민 브엉",
+    "나란히시그 바아산자르갈"
+   ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
    "medal": false,
@@ -1371,18 +1335,24 @@
    "time": "10:50",
    "discipline": "양궁 리커브",
    "event": "여자 개인 금메달전",
-   "countries": [],
+   "countries": [
+    "쿰쿰 아닐 모호드",
+    "오예진"
+   ],
    "venue": "오카자키 주오 소고 공원",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026ARCWINDIVIDFNL000100"
   },
   {
    "time": "10:52",
    "discipline": "주짓수",
    "event": "남자 -85kg급 16강",
-   "countries": [],
+   "countries": [
+    "파라즈 알아울라키",
+    "오사마 나바스"
+   ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
    "medal": false,
@@ -1393,7 +1363,10 @@
    "time": "10:52",
    "discipline": "주짓수",
    "event": "여자 -63kg급 8강",
-   "countries": [],
+   "countries": [
+    "마리안 주라블레바",
+    "알렉산드리아 루즈 엔리케스"
+   ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
    "medal": false,
@@ -1475,8 +1448,8 @@
    "discipline": "주짓수",
    "event": "남자 -85kg급 16강",
    "countries": [
-    "메레이 캅둘라예프",
-    "미정"
+    "바트바야르 바트수흐",
+    "메레이 캅둘라예프"
    ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
@@ -1488,7 +1461,10 @@
    "time": "10:59",
    "discipline": "주짓수",
    "event": "여자 -63kg급 8강",
-   "countries": [],
+   "countries": [
+    "오라파 세나탐",
+    "안드레아 로이스 라오"
+   ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
    "medal": false,
@@ -1602,7 +1578,7 @@
     "장추링"
    ],
    "venue": "도요하시 체육관",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026TKWW57KGQFNL000300"
@@ -1639,9 +1615,12 @@
    "time": "11:06",
    "discipline": "주짓수",
    "event": "남자 -85kg급 8강",
-   "countries": [],
+   "countries": [
+    "김민규",
+    "아쿠스 후 유 이"
+   ],
    "venue": "아이치현 무도관",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026JJIM85KGQFNL000100"
@@ -1650,11 +1629,14 @@
    "time": "11:06",
    "discipline": "주짓수",
    "event": "여자 -63kg급 8강",
-   "countries": [],
+   "countries": [
+    "마야 이샤카트",
+    "성기라"
+   ],
    "venue": "아이치현 무도관",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026JJIW63KGQFNL000400"
   },
   {
@@ -1689,7 +1671,10 @@
    "time": "11:13",
    "discipline": "주짓수",
    "event": "남자 -85kg급 8강",
-   "countries": [],
+   "countries": [
+    "우츠기 고",
+    "압둘라 타리크 나다 N"
+   ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
    "medal": false,
@@ -1700,7 +1685,10 @@
    "time": "11:13",
    "discipline": "주짓수",
    "event": "여자 -63kg급 준결승 A",
-   "countries": [],
+   "countries": [
+    "나란히시그 바아산자르갈",
+    "알렉산드리아 루즈 엔리케스"
+   ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
    "medal": false,
@@ -1767,9 +1755,12 @@
    "time": "11:20",
    "discipline": "주짓수",
    "event": "남자 -85kg급 8강",
-   "countries": [],
+   "countries": [
+    "송태무",
+    "압두라만 무르탈리예프"
+   ],
    "venue": "아이치현 무도관",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026JJIM85KGQFNL000300"
@@ -1778,7 +1769,10 @@
    "time": "11:20",
    "discipline": "주짓수",
    "event": "여자 -63kg급 준결승 B",
-   "countries": [],
+   "countries": [
+    "오라파 세나탐",
+    "마야 이샤카트"
+   ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
    "medal": false,
@@ -1831,7 +1825,10 @@
    "time": "11:27",
    "discipline": "주짓수",
    "event": "남자 -85kg급 8강",
-   "countries": [],
+   "countries": [
+    "오사마 나바스",
+    "메레이 캅둘라예프"
+   ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
    "medal": false,
@@ -1842,7 +1839,10 @@
    "time": "11:27",
    "discipline": "주짓수",
    "event": "여자 -63kg급 패자부활전",
-   "countries": [],
+   "countries": [
+    "응우옌 티 민 브엉",
+    "마리안 주라블레바"
+   ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
    "medal": false,
@@ -1869,19 +1869,22 @@
    "event": "남자 -68kg급 8강",
    "countries": [
     "문진호",
-    "미정"
+    "사미르혼 아바키로프"
    ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026TKWM68KGQFNL000400"
   },
   {
    "time": "11:28",
    "discipline": "태권도 겨루기",
    "event": "여자 +67kg급 8강",
-   "countries": [],
+   "countries": [
+    "박 티 키엠",
+    "스베틀라나 사이도바"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": false,
@@ -1932,45 +1935,6 @@
   },
   {
    "time": "11:30",
-   "discipline": "요트",
-   "event": "남자 윈드서핑 - 레이스 12",
-   "countries": [
-    "대한민국"
-   ],
-   "venue": "카이요 요트 하버",
-   "hasKorea": true,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SALMIQFOILPREL001200"
-  },
-  {
-   "time": "11:30",
-   "discipline": "요트",
-   "event": "남자 윈드서핑 - 레이스 13",
-   "countries": [
-    "대한민국"
-   ],
-   "venue": "카이요 요트 하버",
-   "hasKorea": true,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SALMIQFOILPREL001300"
-  },
-  {
-   "time": "11:30",
-   "discipline": "요트",
-   "event": "남자 윈드서핑 - 레이스 14",
-   "countries": [
-    "대한민국"
-   ],
-   "venue": "카이요 요트 하버",
-   "hasKorea": true,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SALMIQFOILPREL001400"
-  },
-  {
-   "time": "11:30",
    "discipline": "하키",
    "event": "남자 7-8위전",
    "countries": [
@@ -2001,9 +1965,12 @@
    "time": "11:34",
    "discipline": "주짓수",
    "event": "남자 -85kg급 준결승 A",
-   "countries": [],
+   "countries": [
+    "김민규",
+    "압둘라 타리크 나다 N"
+   ],
    "venue": "아이치현 무도관",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026JJIM85KGSFNL000100"
@@ -2012,45 +1979,15 @@
    "time": "11:34",
    "discipline": "주짓수",
    "event": "여자 -63kg급 패자부활전",
-   "countries": [],
+   "countries": [
+    "안드레아 로이스 라오",
+    "성기라"
+   ],
    "venue": "아이치현 무도관",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026JJIW63KGREP1000200"
-  },
-  {
-   "time": "11:35",
-   "discipline": "요트",
-   "event": "여자 윈드서핑 - 레이스 11",
-   "countries": [],
-   "venue": "카이요 요트 하버",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SALWIQFOILPREL001100"
-  },
-  {
-   "time": "11:35",
-   "discipline": "요트",
-   "event": "여자 윈드서핑 - 레이스 12",
-   "countries": [],
-   "venue": "카이요 요트 하버",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SALWIQFOILPREL001200"
-  },
-  {
-   "time": "11:35",
-   "discipline": "요트",
-   "event": "여자 윈드서핑 - 레이스 13",
-   "countries": [],
-   "venue": "카이요 요트 하버",
-   "hasKorea": false,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026SALWIQFOILPREL001300"
   },
   {
    "time": "11:38",
@@ -2058,7 +1995,7 @@
    "event": "남자 자유형 57kg급 16강 268",
    "countries": [
     "로우렌수 다 코스타",
-    "미정"
+    "벡자트 알마즈 울루"
    ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
@@ -2099,8 +2036,8 @@
    "discipline": "태권도 겨루기",
    "event": "여자 +67kg급 8강",
    "countries": [
-    "미정",
-    "무웬제"
+    "칸나럭 추엔추클린",
+    "무원저"
    ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
@@ -2114,7 +2051,7 @@
    "event": "여자 +67kg급 8강",
    "countries": [
     "두냐 사베르",
-    "미정"
+    "파테메 아흐마디"
    ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
@@ -2126,7 +2063,10 @@
    "time": "11:40",
    "discipline": "태권도 겨루기",
    "event": "여자 +67kg급 8강",
-   "countries": [],
+   "countries": [
+    "라마 아보알루브",
+    "송다빈"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": false,
@@ -2137,7 +2077,10 @@
    "time": "11:41",
    "discipline": "주짓수",
    "event": "남자 -85kg급 준결승 B",
-   "countries": [],
+   "countries": [
+    "압두라만 무르탈리예프",
+    "메레이 캅둘라예프"
+   ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
    "medal": false,
@@ -2163,7 +2106,7 @@
    "discipline": "레슬링 자유형",
    "event": "남자 자유형 57kg급 16강 243",
    "countries": [
-    "미정",
+    "한정성",
     "에카나야케 무디얀셀라게"
    ],
    "venue": "나고야시 이나에 스포츠센터",
@@ -2177,7 +2120,7 @@
    "discipline": "레슬링 자유형",
    "event": "남자 자유형 57kg급 16강 269",
    "countries": [
-    "미정",
+    "이브라힘 알타바",
     "김성권"
    ],
    "venue": "나고야시 이나에 스포츠센터",
@@ -2190,7 +2133,10 @@
    "time": "11:48",
    "discipline": "주짓수",
    "event": "남자 -85kg급 패자부활전",
-   "countries": [],
+   "countries": [
+    "아쿠스 후 유 이",
+    "우츠기 고"
+   ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
    "medal": false,
@@ -2202,8 +2148,8 @@
    "discipline": "레슬링 자유형",
    "event": "남자 자유형 57kg급 16강 219",
    "countries": [
-    "팜 누 즈이",
-    "미정"
+    "다바아반디 뭉흐에르덴",
+    "팜 누 즈이"
    ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
@@ -2243,7 +2189,10 @@
    "time": "11:52",
    "discipline": "태권도 겨루기",
    "event": "남자 +80kg급 8강",
-   "countries": [],
+   "countries": [
+    "모하마드 알아다르비",
+    "베이바리스 캅란"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": false,
@@ -2255,7 +2204,7 @@
    "discipline": "태권도 겨루기",
    "event": "남자 +80kg급 8강",
    "countries": [
-    "미정",
+    "탕하오",
     "아리안 살리미"
    ],
    "venue": "도요하시 체육관",
@@ -2270,7 +2219,7 @@
    "event": "남자 +80kg급 8강",
    "countries": [
     "마라트 마블로노프",
-    "미정"
+    "황유젠"
    ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
@@ -2296,9 +2245,12 @@
    "time": "11:55",
    "discipline": "주짓수",
    "event": "남자 -85kg급 패자부활전",
-   "countries": [],
+   "countries": [
+    "송태무",
+    "오사마 나바스"
+   ],
    "venue": "아이치현 무도관",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026JJIM85KGREP1000200"
@@ -2309,7 +2261,7 @@
    "event": "남자 자유형 57kg급 16강 220",
    "countries": [
     "아만",
-    "미정"
+    "오가와 야마토"
    ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
@@ -2323,7 +2275,7 @@
    "event": "남자 자유형 74kg급 8강 245",
    "countries": [
     "수레시 추나라",
-    "미정"
+    "오로조벡 토크토맘베토프"
    ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
@@ -2336,7 +2288,7 @@
    "discipline": "레슬링 자유형",
    "event": "남자 자유형 74kg급 8강 271",
    "countries": [
-    "미정",
+    "누르코자 카이파노프",
     "한대길"
    ],
    "venue": "나고야시 이나에 스포츠센터",
@@ -2379,7 +2331,7 @@
    "event": "혼성 단체 8강",
    "countries": [
     "카자흐스탄",
-    "미정"
+    "키르기스스탄"
    ],
    "venue": "아이치 인터내셔널 아레나",
    "hasKorea": false,
@@ -2393,7 +2345,7 @@
    "event": "혼성 단체 8강",
    "countries": [
     "몽골",
-    "미정"
+    "차이니스 타이베이"
    ],
    "venue": "아이치 인터내셔널 아레나",
    "hasKorea": false,
@@ -2420,7 +2372,7 @@
    "discipline": "태권도 겨루기",
    "event": "남자 +80kg급 8강",
    "countries": [
-    "미정",
+    "잭 메르세르",
     "강상현"
    ],
    "venue": "도요하시 체육관",
@@ -2433,7 +2385,10 @@
    "time": "12:06",
    "discipline": "레슬링 자유형",
    "event": "남자 자유형 74kg급 8강 221",
-   "countries": [],
+   "countries": [
+    "유네스 에마미고가에이",
+    "사가르 자글란"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": false,
@@ -2444,7 +2399,10 @@
    "time": "12:08",
    "discipline": "레슬링 자유형",
    "event": "남자 자유형 74kg급 8강 246",
-   "countries": [],
+   "countries": [
+    "빅토르 랏사딘",
+    "아오야기 요시노스케"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": false,
@@ -2457,7 +2415,7 @@
    "event": "남자 자유형 97kg급 8 272",
    "countries": [
     "리후이풍 빈센트",
-    "미정"
+    "디팍 푸니아"
    ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
@@ -2469,7 +2427,10 @@
    "time": "12:15",
    "discipline": "레슬링 자유형",
    "event": "남자 자유형 97kg급 8강 222",
-   "countries": [],
+   "countries": [
+    "셰르조드 포요노프",
+    "간후야그 간바아타르"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": false,
@@ -2480,7 +2441,10 @@
    "time": "12:17",
    "discipline": "레슬링 자유형",
    "event": "남자 자유형 97kg급 8강 247",
-   "countries": [],
+   "countries": [
+    "리자벡 아이무칸",
+    "요시다 아라쉬"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": false,
@@ -2492,7 +2456,7 @@
    "discipline": "레슬링 자유형",
    "event": "남자 자유형 97kg급 8강 273",
    "countries": [
-    "미정",
+    "아미랄리 아자르피라",
     "샤틀리크 헤멜랴예프"
    ],
    "venue": "나고야시 이나에 스포츠센터",
@@ -2519,7 +2483,10 @@
    "time": "12:25",
    "discipline": "레슬링 자유형",
    "event": "여자 자유형 57kg급 8강 223",
-   "countries": [],
+   "countries": [
+    "마니샤",
+    "후지나미 아카리"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": false,
@@ -2532,7 +2499,7 @@
    "event": "여자 자유형 57kg급 8강 248",
    "countries": [
     "닐루파르 라이모바",
-    "미정"
+    "라일로혼 소비로바"
    ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
@@ -2544,7 +2511,10 @@
    "time": "12:28",
    "discipline": "레슬링 자유형",
    "event": "여자 자유형 57kg급 8강 274",
-   "countries": [],
+   "countries": [
+    "료페이영",
+    "홍케신"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": false,
@@ -2582,7 +2552,10 @@
    "time": "12:35",
    "discipline": "레슬링 자유형",
    "event": "남자 자유형 57kg급 8강 249",
-   "countries": [],
+   "countries": [
+    "조우완하오",
+    "한정성"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": false,
@@ -2595,7 +2568,7 @@
    "event": "여자 자유형 53kg급 8강 275",
    "countries": [
     "바탄술톤 샤카르쇼예바",
-    "미정"
+    "키요오카 모에"
    ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
@@ -2609,7 +2582,7 @@
    "event": "여자 자유형 53kg급 8강 225",
    "countries": [
     "사킵자말 에스보시노바",
-    "미정"
+    "안팀"
    ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
@@ -2621,7 +2594,10 @@
    "time": "12:42",
    "discipline": "레슬링 자유형",
    "event": "남자 자유형 57kg급 8강 250",
-   "countries": [],
+   "countries": [
+    "벡자트 알마즈 울루",
+    "팜 누 즈이"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": false,
@@ -2632,9 +2608,12 @@
    "time": "12:43",
    "discipline": "레슬링 자유형",
    "event": "남자 자유형 57kg급 8강 276",
-   "countries": [],
+   "countries": [
+    "아이알 벨롤류브스키",
+    "김성권"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026WFRM57KGQFNL000300"
@@ -2685,7 +2664,7 @@
    "discipline": "레슬링 자유형",
    "event": "여자 자유형 53kg급 8강 251",
    "countries": [
-    "미정",
+    "오트곤투야 바얀뭉흐",
     "응우옌 티 미 린"
    ],
    "venue": "나고야시 이나에 스포츠센터",
@@ -2698,7 +2677,10 @@
    "time": "12:50",
    "discipline": "레슬링 자유형",
    "event": "남자 자유형 57kg급 8강 277",
-   "countries": [],
+   "countries": [
+    "아만",
+    "누르다낫 아이타노프"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": false,
@@ -2709,7 +2691,10 @@
    "time": "12:50",
    "discipline": "유도",
    "event": "혼성 단체 패자부활전",
-   "countries": [],
+   "countries": [
+    "중국",
+    "키르기스스탄"
+   ],
    "venue": "아이치 인터내셔널 아레나",
    "hasKorea": false,
    "medal": false,
@@ -2720,7 +2705,10 @@
    "time": "12:50",
    "discipline": "유도",
    "event": "혼성 단체 패자부활전",
-   "countries": [],
+   "countries": [
+    "차이니스 타이베이",
+    "우즈베키스탄"
+   ],
    "venue": "아이치 인터내셔널 아레나",
    "hasKorea": false,
    "medal": false,
@@ -2731,7 +2719,10 @@
    "time": "12:55",
    "discipline": "레슬링 자유형",
    "event": "남자 자유형 97kg급 준결승 227",
-   "countries": [],
+   "countries": [
+    "디팍 푸니아",
+    "셰르조드 포요노프"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": false,
@@ -2742,7 +2733,10 @@
    "time": "12:56",
    "discipline": "레슬링 자유형",
    "event": "남자 자유형 74kg급 준결승 252",
-   "countries": [],
+   "countries": [
+    "오로조벡 토크토맘베토프",
+    "아오야기 요시노스케"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": false,
@@ -2753,7 +2747,10 @@
    "time": "12:57",
    "discipline": "레슬링 자유형",
    "event": "남자 자유형 74kg급 준결승 278",
-   "countries": [],
+   "countries": [
+    "유네스 에마미고가에이",
+    "누르코자 카이파노프"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": false,
@@ -2833,7 +2830,10 @@
    "time": "13:00",
    "discipline": "주짓수",
    "event": "남자 -85kg급 동메달전 A",
-   "countries": [],
+   "countries": [
+    "아쿠스 후 유 이",
+    "압두라만 무르탈리예프"
+   ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
    "medal": true,
@@ -2857,7 +2857,10 @@
    "time": "13:05",
    "discipline": "레슬링 자유형",
    "event": "남자 자유형 97kg급 준결승 253",
-   "countries": [],
+   "countries": [
+    "요시다 아라쉬",
+    "아미랄리 아자르피라"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": false,
@@ -2868,7 +2871,10 @@
    "time": "13:05",
    "discipline": "레슬링 자유형",
    "event": "여자 자유형 57kg급 준결승 228",
-   "countries": [],
+   "countries": [
+    "후지나미 아카리",
+    "손일심"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": false,
@@ -2879,7 +2885,10 @@
    "time": "13:06",
    "discipline": "레슬링 자유형",
    "event": "여자 자유형 57kg급 준결승 279",
-   "countries": [],
+   "countries": [
+    "닐루파르 라이모바",
+    "홍케신"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": false,
@@ -2890,9 +2899,12 @@
    "time": "13:08",
    "discipline": "주짓수",
    "event": "남자 -85kg급 동메달전 B",
-   "countries": [],
+   "countries": [
+    "송태무",
+    "김민규"
+   ],
    "venue": "아이치현 무도관",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026JJIM85KGREPF000200"
@@ -2901,7 +2913,10 @@
    "time": "13:13",
    "discipline": "레슬링 자유형",
    "event": "여자 자유형 53kg급 준결승 229",
-   "countries": [],
+   "countries": [
+    "안팀",
+    "장진"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": false,
@@ -2912,7 +2927,10 @@
    "time": "13:14",
    "discipline": "레슬링 자유형",
    "event": "남자 자유형 57kg급 준결승 280",
-   "countries": [],
+   "countries": [
+    "아이알 벨롤류브스키",
+    "아만"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": false,
@@ -2923,7 +2941,10 @@
    "time": "13:15",
    "discipline": "레슬링 자유형",
    "event": "남자 자유형 57kg급 준결승 254",
-   "countries": [],
+   "countries": [
+    "한정성",
+    "벡자트 알마즈 울루"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": false,
@@ -2948,7 +2969,10 @@
    "time": "13:16",
    "discipline": "주짓수",
    "event": "남자 -85kg급 결승",
-   "countries": [],
+   "countries": [
+    "압둘라 타리크 나다 N",
+    "메레이 캅둘라예프"
+   ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
    "medal": true,
@@ -2959,7 +2983,10 @@
    "time": "13:20",
    "discipline": "레슬링 자유형",
    "event": "남자 자유형 97kg 패자부활전 230",
-   "countries": [],
+   "countries": [
+    "마고메드 샤리포프",
+    "간후야그 간바아타르"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": false,
@@ -2970,7 +2997,10 @@
    "time": "13:21",
    "discipline": "레슬링 자유형",
    "event": "남자 자유형 74kg 패자부활전 281",
-   "countries": [],
+   "countries": [
+    "길랑 일하자",
+    "빅토르 랏사딘"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": false,
@@ -2981,7 +3011,10 @@
    "time": "13:22",
    "discipline": "레슬링 자유형",
    "event": "여자 자유형 53kg급 준결승 255",
-   "countries": [],
+   "countries": [
+    "키요오카 모에",
+    "오트곤투야 바얀뭉흐"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": false,
@@ -2992,7 +3025,10 @@
    "time": "13:24",
    "discipline": "주짓수",
    "event": "여자 -63kg급 동메달전 A",
-   "countries": [],
+   "countries": [
+    "마리안 주라블레바",
+    "마야 이샤카트"
+   ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
    "medal": true,
@@ -3003,18 +3039,24 @@
    "time": "13:25",
    "discipline": "유도",
    "event": "혼성 단체 준결승 A",
-   "countries": [],
+   "countries": [
+    "대한민국",
+    "카자흐스탄"
+   ],
    "venue": "아이치 인터내셔널 아레나",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026JUDXTEAM6SFNL00010000"
   },
   {
    "time": "13:25",
    "discipline": "유도",
    "event": "혼성 단체 준결승 B",
-   "countries": [],
+   "countries": [
+    "몽골",
+    "일본"
+   ],
    "venue": "아이치 인터내셔널 아레나",
    "hasKorea": false,
    "medal": false,
@@ -3025,7 +3067,10 @@
    "time": "13:29",
    "discipline": "레슬링 자유형",
    "event": "남자 자유형 57kg 패자부활전 256",
-   "countries": [],
+   "countries": [
+    "엠디 마하붑 알람",
+    "에카나야케 무디얀셀라게"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": false,
@@ -3035,19 +3080,11 @@
   {
    "time": "13:30",
    "discipline": "레슬링 자유형",
-   "event": "남자 자유형 57kg 패자부활전 282",
-   "countries": [],
-   "venue": "나고야시 이나에 스포츠센터",
-   "hasKorea": false,
-   "medal": false,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026WFRM57KGREP2000100"
-  },
-  {
-   "time": "13:30",
-   "discipline": "레슬링 자유형",
    "event": "여자 자유형 57kg 패자부활전 231",
-   "countries": [],
+   "countries": [
+    "네트미 아힌사 페르난도 포루토타게",
+    "료페이영"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": false,
@@ -3086,7 +3123,10 @@
    "time": "13:32",
    "discipline": "주짓수",
    "event": "여자 -63kg급 동메달전 B",
-   "countries": [],
+   "countries": [
+    "안드레아 로이스 라오",
+    "나란히시그 바아산자르갈"
+   ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
    "medal": true,
@@ -3097,7 +3137,10 @@
    "time": "13:36",
    "discipline": "레슬링 자유형",
    "event": "남자 자유형 97kg 패자부활전 257",
-   "countries": [],
+   "countries": [
+    "무함마드 굴자르",
+    "샤틀리크 헤멜랴예프"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": false,
@@ -3108,7 +3151,10 @@
    "time": "13:37",
    "discipline": "레슬링 자유형",
    "event": "남자 자유형 74kg 패자부활전 283",
-   "countries": [],
+   "countries": [
+    "라잠베크 자말로프",
+    "사가르 자글란"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": false,
@@ -3119,7 +3165,10 @@
    "time": "13:38",
    "discipline": "레슬링 자유형",
    "event": "여자 자유형 57kg 패자부활전 232",
-   "countries": [],
+   "countries": [
+    "응우옌 티 미 짱",
+    "시왕기 두베"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": false,
@@ -3130,7 +3179,10 @@
    "time": "13:40",
    "discipline": "주짓수",
    "event": "여자 -63kg급 결승",
-   "countries": [],
+   "countries": [
+    "알렉산드리아 루즈 엔리케스",
+    "오라파 세나탐"
+   ],
    "venue": "아이치현 무도관",
    "hasKorea": false,
    "medal": true,
@@ -3155,7 +3207,10 @@
    "time": "13:46",
    "discipline": "레슬링 자유형",
    "event": "남자 자유형 57kg 패자부활전 284",
-   "countries": [],
+   "countries": [
+    "오가와 야마토",
+    "누르다낫 아이타노프"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": false,
@@ -3166,7 +3221,10 @@
    "time": "13:46",
    "discipline": "레슬링 자유형",
    "event": "여자 자유형 53kg 패자부활전 233",
-   "countries": [],
+   "countries": [
+    "슈글라 오미르벡",
+    "사킵자말 에스보시노바"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": false,
@@ -3177,9 +3235,12 @@
    "time": "13:46",
    "discipline": "레슬링 자유형",
    "event": "여자 자유형 53kg 패자부활전 258",
-   "countries": [],
+   "countries": [
+    "박서영",
+    "바탄술톤 샤카르쇼예바"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026WFRW53KGREP1000200"
@@ -3188,7 +3249,10 @@
    "time": "13:53",
    "discipline": "레슬링 자유형",
    "event": "남자 자유형 57kg 패자부활전 259",
-   "countries": [],
+   "countries": [
+    "엠디 마하붑 알람",
+    "조우완하오"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": false,
@@ -3213,11 +3277,14 @@
    "time": "14:00",
    "discipline": "양궁 리커브",
    "event": "남자 개인 준결승 1경기",
-   "countries": [],
+   "countries": [
+    "디라즈 봄마데바라",
+    "이우석"
+   ],
    "venue": "오카자키 주오 소고 공원",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026ARCMINDIVIDSFNL000100"
   },
   {
@@ -3293,7 +3360,10 @@
    "time": "14:15",
    "discipline": "양궁 리커브",
    "event": "남자 개인 준결승 2경기",
-   "countries": [],
+   "countries": [
+    "나카니시 준야",
+    "니라지 차우한"
+   ],
    "venue": "오카자키 주오 소고 공원",
    "hasKorea": false,
    "medal": false,
@@ -3332,7 +3402,10 @@
    "time": "14:30",
    "discipline": "태권도 겨루기",
    "event": "여자 -57kg급 준결승",
-   "countries": [],
+   "countries": [
+    "낫카몬 와사나",
+    "파디아 키르판"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": true,
@@ -3343,7 +3416,10 @@
    "time": "14:35",
    "discipline": "양궁 리커브",
    "event": "남자 개인 동메달전",
-   "countries": [],
+   "countries": [
+    "디라즈 봄마데바라",
+    "니라지 차우한"
+   ],
    "venue": "오카자키 주오 소고 공원",
    "hasKorea": false,
    "medal": true,
@@ -3368,7 +3444,10 @@
    "time": "14:44",
    "discipline": "태권도 겨루기",
    "event": "여자 -57kg급 준결승",
-   "countries": [],
+   "countries": [
+    "장추링",
+    "린웨이춘"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": true,
@@ -3393,11 +3472,14 @@
    "time": "14:50",
    "discipline": "양궁 리커브",
    "event": "남자 개인 금메달전",
-   "countries": [],
+   "countries": [
+    "이우석",
+    "나카니시 준야"
+   ],
    "venue": "오카자키 주오 소고 공원",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026ARCMINDIVIDFNL000100"
   },
   {
@@ -3418,7 +3500,10 @@
    "time": "14:55",
    "discipline": "태권도 겨루기",
    "event": "남자 -68kg급 준결승",
-   "countries": [],
+   "countries": [
+    "자이드 압둘 카림",
+    "마흐디 하지무사에이나푸티"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": true,
@@ -3457,11 +3542,14 @@
    "time": "15:12",
    "discipline": "태권도 겨루기",
    "event": "남자 -68kg급 준결승",
-   "countries": [],
+   "countries": [
+    "반룽 텁팀당",
+    "문진호"
+   ],
    "venue": "도요하시 체육관",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026TKWM68KGSFNL000200"
   },
   {
@@ -3482,7 +3570,10 @@
    "time": "15:26",
    "discipline": "태권도 겨루기",
    "event": "여자 +67kg급 준결승",
-   "countries": [],
+   "countries": [
+    "스베틀라나 사이도바",
+    "무원저"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": true,
@@ -3521,11 +3612,14 @@
    "time": "15:40",
    "discipline": "태권도 겨루기",
    "event": "여자 +67kg급 준결승",
-   "countries": [],
+   "countries": [
+    "파테메 아흐마디",
+    "송다빈"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026TKWWO67KGSFNL000200"
   },
   {
@@ -3533,8 +3627,8 @@
    "discipline": "수구",
    "event": "남자 5-6위전",
    "countries": [
-    "홍콩",
-    "대한민국"
+    "대한민국",
+    "홍콩"
    ],
    "venue": "나고야시 종합체육관",
    "hasKorea": true,
@@ -3546,7 +3640,10 @@
    "time": "15:54",
    "discipline": "브레이킹",
    "event": "비걸 준결승 1",
-   "countries": [],
+   "countries": [
+    "궈푸",
+    "나카라이 아야네"
+   ],
    "venue": "아이치 스카이 엑스포 홀 F",
    "hasKorea": false,
    "medal": false,
@@ -3557,7 +3654,10 @@
    "time": "15:54",
    "discipline": "태권도 겨루기",
    "event": "남자 +80kg급 준결승",
-   "countries": [],
+   "countries": [
+    "모하마드 알아다르비",
+    "아리안 살리미"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": true,
@@ -3610,7 +3710,10 @@
    "time": "16:02",
    "discipline": "브레이킹",
    "event": "비걸 준결승 2",
-   "countries": [],
+   "countries": [
+    "류칭이",
+    "후쿠시마 아유미"
+   ],
    "venue": "아이치 스카이 엑스포 홀 F",
    "hasKorea": false,
    "medal": false,
@@ -3621,7 +3724,10 @@
    "time": "16:05",
    "discipline": "럭비",
    "event": "여자 7-8위 순위전",
-   "countries": [],
+   "countries": [
+    "싱가포르",
+    "말레이시아"
+   ],
    "venue": "나고야시 미즈호 럭비장",
    "hasKorea": false,
    "medal": false,
@@ -3632,18 +3738,24 @@
    "time": "16:08",
    "discipline": "태권도 겨루기",
    "event": "남자 +80kg급 준결승",
-   "countries": [],
+   "countries": [
+    "마라트 마블로노프",
+    "강상현"
+   ],
    "venue": "도요하시 체육관",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026TKWMO80KGSFNL000200"
   },
   {
    "time": "16:10",
    "discipline": "브레이킹",
    "event": "비보이 준결승 1",
-   "countries": [],
+   "countries": [
+    "나카라이 시게유키",
+    "히시카와 잇신"
+   ],
    "venue": "아이치 스카이 엑스포 홀 F",
    "hasKorea": false,
    "medal": false,
@@ -3654,9 +3766,12 @@
    "time": "16:19",
    "discipline": "브레이킹",
    "event": "비보이 준결승 2",
-   "countries": [],
+   "countries": [
+    "왕루이미아오",
+    "김홍열"
+   ],
    "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": false,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026BKGMINDIVIDSFNL000200"
@@ -3665,7 +3780,10 @@
    "time": "16:30",
    "discipline": "럭비",
    "event": "여자 5-6위 순위전",
-   "countries": [],
+   "countries": [
+    "인도",
+    "카자흐스탄"
+   ],
    "venue": "나고야시 미즈호 럭비장",
    "hasKorea": false,
    "medal": false,
@@ -3683,14 +3801,17 @@
    "venue": "기후현 그린 스타디움",
    "hasKorea": true,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026HOCMTEAM11FNL000200"
   },
   {
    "time": "16:38",
    "discipline": "브레이킹",
    "event": "비걸 동메달 배틀",
-   "countries": [],
+   "countries": [
+    "나카라이 아야네",
+    "류칭이"
+   ],
    "venue": "아이치 스카이 엑스포 홀 F",
    "hasKorea": false,
    "medal": true,
@@ -3701,7 +3822,10 @@
    "time": "16:40",
    "discipline": "태권도 겨루기",
    "event": "여자 -57kg급 결승",
-   "countries": [],
+   "countries": [
+    "파디아 키르판",
+    "장추링"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": true,
@@ -3712,7 +3836,10 @@
    "time": "16:47",
    "discipline": "브레이킹",
    "event": "비보이 동메달 배틀",
-   "countries": [],
+   "countries": [
+    "히시카와 잇신",
+    "왕루이미아오"
+   ],
    "venue": "아이치 스카이 엑스포 홀 F",
    "hasKorea": false,
    "medal": true,
@@ -3723,7 +3850,10 @@
    "time": "16:55",
    "discipline": "럭비",
    "event": "남자 7-8위 순위전",
-   "countries": [],
+   "countries": [
+    "아랍에미리트",
+    "스리랑카"
+   ],
    "venue": "나고야시 미즈호 럭비장",
    "hasKorea": false,
    "medal": false,
@@ -3734,7 +3864,10 @@
    "time": "16:55",
    "discipline": "태권도 겨루기",
    "event": "남자 -68kg급 결승",
-   "countries": [],
+   "countries": [
+    "마흐디 하지무사에이나푸티",
+    "반룽 텁팀당"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": true,
@@ -3745,7 +3878,10 @@
    "time": "16:56",
    "discipline": "브레이킹",
    "event": "비걸 금메달 배틀",
-   "countries": [],
+   "countries": [
+    "궈푸",
+    "후쿠시마 아유미"
+   ],
    "venue": "아이치 스카이 엑스포 홀 F",
    "hasKorea": false,
    "medal": true,
@@ -3756,7 +3892,10 @@
    "time": "17:05",
    "discipline": "유도",
    "event": "혼성 단체 동메달전 A",
-   "countries": [],
+   "countries": [
+    "중국",
+    "몽골"
+   ],
    "venue": "아이치 인터내셔널 아레나",
    "hasKorea": false,
    "medal": true,
@@ -3767,9 +3906,12 @@
    "time": "17:06",
    "discipline": "브레이킹",
    "event": "비보이 금메달 배틀",
-   "countries": [],
+   "countries": [
+    "나카라이 시게유키",
+    "김홍열"
+   ],
    "venue": "아이치 스카이 엑스포 홀 F",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026BKGMINDIVIDFNL000100"
@@ -3778,18 +3920,24 @@
    "time": "17:10",
    "discipline": "태권도 겨루기",
    "event": "여자 +67kg급 결승",
-   "countries": [],
+   "countries": [
+    "무원저",
+    "송다빈"
+   ],
    "venue": "도요하시 체육관",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026TKWWO67KGFNL000100"
   },
   {
    "time": "17:20",
    "discipline": "럭비",
    "event": "남자 5-6위 순위전",
-   "countries": [],
+   "countries": [
+    "말레이시아",
+    "필리핀"
+   ],
    "venue": "나고야시 미즈호 럭비장",
    "hasKorea": false,
    "medal": false,
@@ -3801,8 +3949,8 @@
    "discipline": "수구",
    "event": "남자 동메달전",
    "countries": [
-    "이란",
-    "중국"
+    "중국",
+    "이란"
    ],
    "venue": "나고야시 종합체육관",
    "hasKorea": false,
@@ -3814,7 +3962,10 @@
    "time": "17:25",
    "discipline": "태권도 겨루기",
    "event": "남자 +80kg급 결승",
-   "countries": [],
+   "countries": [
+    "아리안 살리미",
+    "마라트 마블로노프"
+   ],
    "venue": "도요하시 체육관",
    "hasKorea": false,
    "medal": true,
@@ -3822,35 +3973,27 @@
    "link": "https://m.sports.naver.com/game/2026TKWMO80KGFNL000100"
   },
   {
-   "time": "17:30",
-   "discipline": "파델",
-   "event": "남자 복식 금메달전",
-   "countries": [
-    "카타르",
-    "말레이시아"
-   ],
-   "venue": "나고야시 히가시 스포츠센터",
-   "hasKorea": false,
-   "medal": true,
-   "tv": true,
-   "link": "https://m.sports.naver.com/game/2026PDLMDOUBLESFNL000100"
-  },
-  {
    "time": "17:40",
    "discipline": "유도",
    "event": "혼성 단체 동메달전 B",
-   "countries": [],
+   "countries": [
+    "우즈베키스탄",
+    "대한민국"
+   ],
    "venue": "아이치 인터내셔널 아레나",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
-   "tv": false,
+   "tv": true,
    "link": "https://m.sports.naver.com/game/2026JUDXTEAM6REPF00020000"
   },
   {
    "time": "17:45",
    "discipline": "럭비",
    "event": "여자 동메달전",
-   "countries": [],
+   "countries": [
+    "태국",
+    "홍콩"
+   ],
    "venue": "나고야시 미즈호 럭비장",
    "hasKorea": false,
    "medal": true,
@@ -3859,27 +4002,28 @@
   },
   {
    "time": "18:00",
+   "discipline": "AG",
+   "event": "슛포러브 현지 LIVE - 바밤바X김동완 대한민국 축구 결승전",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/20261003SFLAG2026"
+  },
+  {
+   "time": "18:00",
    "discipline": "레슬링 자유형",
    "event": "남자 자유형 57kg급 동메달전 285",
-   "countries": [],
+   "countries": [
+    "조우완하오",
+    "벡자트 알마즈 울루"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026WFRM57KGREPF000100"
-  },
-  {
-   "time": "18:00",
-   "discipline": "스포츠클라이밍",
-   "event": "남자 리드 결승",
-   "countries": [
-    "대한민국"
-   ],
-   "venue": "나고야 국제 전시장",
-   "hasKorea": true,
-   "medal": true,
-   "tv": false,
-   "link": "https://m.sports.naver.com/game/2026CLBMLEADFNL000100"
   },
   {
    "time": "18:00",
@@ -3898,7 +4042,10 @@
    "time": "18:07",
    "discipline": "레슬링 자유형",
    "event": "남자 자유형 57kg급 동메달전 286",
-   "countries": [],
+   "countries": [
+    "오가와 야마토",
+    "아이알 벨롤류브스키"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": true,
@@ -3909,9 +4056,12 @@
    "time": "18:10",
    "discipline": "럭비",
    "event": "남자 동메달전",
-   "countries": [],
+   "countries": [
+    "대한민국",
+    "일본"
+   ],
    "venue": "나고야시 미즈호 럭비장",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026RU7MTEAM7FNL000200"
@@ -3920,7 +4070,10 @@
    "time": "18:14",
    "discipline": "레슬링 자유형",
    "event": "남자 자유형 57kg급 결승 287",
-   "countries": [],
+   "countries": [
+    "한정성",
+    "아만"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": true,
@@ -3931,7 +4084,10 @@
    "time": "18:21",
    "discipline": "레슬링 자유형",
    "event": "남자 자유형 74kg급 동메달전 288",
-   "countries": [],
+   "countries": [
+    "빅토르 랏사딘",
+    "오로조벡 토크토맘베토프"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": true,
@@ -3940,9 +4096,23 @@
   },
   {
    "time": "18:30",
+   "discipline": "AG",
+   "event": "[박종윤(축구)] 축구 결승전 대한민국 vs 일본 같이보기",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/20261003PJYAG2026"
+  },
+  {
+   "time": "18:30",
    "discipline": "레슬링 자유형",
    "event": "남자 자유형 74kg급 동메달전 289",
-   "countries": [],
+   "countries": [
+    "사가르 자글란",
+    "누르코자 카이파노프"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": true,
@@ -3953,18 +4123,24 @@
    "time": "18:30",
    "discipline": "유도",
    "event": "혼성 단체 결승",
-   "countries": [],
+   "countries": [
+    "카자흐스탄",
+    "일본"
+   ],
    "venue": "아이치 인터내셔널 아레나",
    "hasKorea": false,
    "medal": true,
-   "tv": true,
+   "tv": false,
    "link": "https://m.sports.naver.com/game/2026JUDXTEAM6FNL00010000"
   },
   {
    "time": "18:39",
    "discipline": "레슬링 자유형",
    "event": "남자 자유형 74kg급 결승 290",
-   "countries": [],
+   "countries": [
+    "아오야기 요시노스케",
+    "유네스 에마미고가에이"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": true,
@@ -3975,7 +4151,10 @@
    "time": "18:40",
    "discipline": "럭비",
    "event": "여자 금메달전",
-   "countries": [],
+   "countries": [
+    "중국",
+    "일본"
+   ],
    "venue": "나고야시 미즈호 럭비장",
    "hasKorea": false,
    "medal": true,
@@ -3983,10 +4162,27 @@
    "link": "https://m.sports.naver.com/game/2026RU7WTEAM7FNL000100"
   },
   {
+   "time": "18:45",
+   "discipline": "파델",
+   "event": "남자 복식 금메달전",
+   "countries": [
+    "카타르",
+    "말레이시아"
+   ],
+   "venue": "나고야시 히가시 스포츠센터",
+   "hasKorea": false,
+   "medal": true,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/2026PDLMDOUBLESFNL000100"
+  },
+  {
    "time": "18:48",
    "discipline": "레슬링 자유형",
    "event": "남자 자유형 97kg급 동메달전 291",
-   "countries": [],
+   "countries": [
+    "간후야그 간바아타르",
+    "디팍 푸니아"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": true,
@@ -3997,7 +4193,10 @@
    "time": "18:58",
    "discipline": "레슬링 자유형",
    "event": "남자 자유형 97kg급 동메달전 292",
-   "countries": [],
+   "countries": [
+    "샤틀리크 헤멜랴예프",
+    "요시다 아라쉬"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": true,
@@ -4036,14 +4235,27 @@
    "discipline": "수구",
    "event": "남자 금메달전",
    "countries": [
-    "일본",
-    "카자흐스탄"
+    "카자흐스탄",
+    "일본"
    ],
    "venue": "나고야시 종합체육관",
    "hasKorea": false,
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026WPOMTEAM7FNL000100"
+  },
+  {
+   "time": "19:00",
+   "discipline": "스포츠클라이밍",
+   "event": "남자 리드 결승",
+   "countries": [
+    "대한민국"
+   ],
+   "venue": "나고야 국제 전시장",
+   "hasKorea": true,
+   "medal": true,
+   "tv": false,
+   "link": "https://m.sports.naver.com/game/2026CLBMLEADFNL000100"
   },
   {
    "time": "19:00",
@@ -4063,7 +4275,10 @@
    "time": "19:08",
    "discipline": "레슬링 자유형",
    "event": "남자 자유형 97kg급 결승 293",
-   "countries": [],
+   "countries": [
+    "셰르조드 포요노프",
+    "아미랄리 아자르피라"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": true,
@@ -4074,7 +4289,10 @@
    "time": "19:10",
    "discipline": "럭비",
    "event": "남자 금메달전",
-   "countries": [],
+   "countries": [
+    "홍콩",
+    "중국"
+   ],
    "venue": "나고야시 미즈호 럭비장",
    "hasKorea": false,
    "medal": true,
@@ -4085,7 +4303,10 @@
    "time": "19:18",
    "discipline": "레슬링 자유형",
    "event": "여자 자유형 53kg급 동메달전 294",
-   "countries": [],
+   "countries": [
+    "슈글라 오미르벡",
+    "장진"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": true,
@@ -4103,16 +4324,19 @@
    "venue": "오카자키 중앙종합공원 체육관",
    "hasKorea": false,
    "medal": true,
-   "tv": true,
+   "tv": false,
    "link": "https://m.sports.naver.com/game/2026VVOMTEAM6FNL000100"
   },
   {
    "time": "19:25",
    "discipline": "레슬링 자유형",
    "event": "여자 자유형 53kg급 동메달전 295",
-   "countries": [],
+   "countries": [
+    "박서영",
+    "오트곤투야 바얀뭉흐"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
-   "hasKorea": false,
+   "hasKorea": true,
    "medal": true,
    "tv": false,
    "link": "https://m.sports.naver.com/game/2026WFRW53KGREPF000200"
@@ -4135,7 +4359,10 @@
    "time": "19:32",
    "discipline": "레슬링 자유형",
    "event": "여자 자유형 53kg급 결승 296",
-   "countries": [],
+   "countries": [
+    "안팀",
+    "키요오카 모에"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": true,
@@ -4146,7 +4373,10 @@
    "time": "19:39",
    "discipline": "레슬링 자유형",
    "event": "여자 자유형 57kg급 동메달전 297",
-   "countries": [],
+   "countries": [
+    "네트미 아힌사 페르난도 포루토타게",
+    "닐루파르 라이모바"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": true,
@@ -4157,7 +4387,10 @@
    "time": "19:47",
    "discipline": "레슬링 자유형",
    "event": "여자 자유형 57kg급 동메달전 298",
-   "countries": [],
+   "countries": [
+    "응우옌 티 미 짱",
+    "후지나미 아카리"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": true,
@@ -4168,7 +4401,10 @@
    "time": "19:55",
    "discipline": "레슬링 자유형",
    "event": "여자 자유형 57kg급 결승 299",
-   "countries": [],
+   "countries": [
+    "홍케신",
+    "손일심"
+   ],
    "venue": "나고야시 이나에 스포츠센터",
    "hasKorea": false,
    "medal": true,
