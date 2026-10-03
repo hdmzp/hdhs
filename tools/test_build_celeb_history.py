@@ -373,6 +373,76 @@ def test_time_unknown_folded():
           [b["label"] for b in existing2["programs"][0]["broadcasts"]], ["08/31(월) 방송"])
 
 
+def test_kept_after_broadcast_end():
+    """2026-10-03 동가게(08:20~10:20) 재현: 방송 종료 후 수집분에서 사라진
+    상품(판매 종료된 미리주문 로보 3종)은 제외하지 않는다. 방송 중에 빠진
+    상품(무화과 사고)은 여전히 제외한다."""
+    print("[12] 방송 종료 후 사라진 상품은 유지 (2026-10-03 동가게 로보)")
+    kept = broadcast("10/03(토) 08:20", [
+        product("YOGA 토마토주스", "1"),
+        product("[미리주문 5%] 로보 베지터블 하이넥 케이프", "2"),
+        product("[미리주문 5%] 로보 스웨이드 하이넥 케이프", "3"),
+        product("[미리주문 10%] 로보 무스탕카라 롱코트", "4"),
+        product("베라왕 니트코트", "5"), product("베라왕 가디건", "6"),
+        product("베라왕 풀오버", "7"), product("베라왕 사파리", "8"),
+    ], date="2026-10-03")
+    after = [p for p in kept["products"] if "로보" not in p["name"]] + [product("YOGA 3팩", "9")]
+    end_at = at("2026-10-03T10:20:00")
+
+    new = broadcast("10/03(토) 08:20", after, date="2026-10-03",
+                    collected_at="2026-10-03T10:55:46+09:00")
+    merged, note = bch.reconcile_broadcast(kept, new, new["collected_at"], end_at)
+    check("정정 적용(추가분 반영)", merged is not None, True)
+    check("로보 3종 유지", sum("로보" in p["name"] for p in merged["products"]), 3)
+    check("추가 상품 반영", any(p["name"] == "YOGA 3팩" for p in merged["products"]), True)
+    check("removed로 안 남음", "removed" in merged["revisions"][-1], False)
+    check("kept_after_end 기록", len(merged["revisions"][-1]["kept_after_end"]), 3)
+
+    # 추가분 없이 사라지기만 했으면 기록을 아예 안 건드린다
+    new2 = broadcast("10/03(토) 08:20", after[:-1], date="2026-10-03",
+                     collected_at="2026-10-03T10:55:46+09:00")
+    merged2, _ = bch.reconcile_broadcast(kept, new2, new2["collected_at"], end_at)
+    check("사라지기만 했으면 기존 기록 그대로", merged2, None)
+
+    # 방송 중 수집분에서 빠진 건 지금처럼 제외 (무화과 사고 방어 유지)
+    new3 = broadcast("10/03(토) 08:20", after[:-1], date="2026-10-03",
+                     collected_at="2026-10-03T09:13:00+09:00")
+    merged3, _ = bch.reconcile_broadcast(kept, new3, new3["collected_at"], end_at)
+    check("방송 중 빠진 상품은 제외", len(merged3["products"]), 5)
+
+
+def test_broadcast_end_from_live():
+    print("[13] 방송 종료 시각 - segment_time > 편성표 > 기본값")
+    import json, shutil, tempfile
+    tmp = tempfile.mkdtemp()
+    orig = bch.LIVE_PATH_TEMPLATE
+    try:
+        os.makedirs(os.path.join(tmp, "CJ_live"))
+        with open(os.path.join(tmp, "CJ_live", "2026-10.json"), "w", encoding="utf-8") as f:
+            json.dump({"days": {"2026-10-03": [
+                {"start": "07:20", "end": "08:20", "pgm": None},
+                {"start": "08:20", "end": "09:20", "pgm": "동가게"},
+                {"start": "09:20", "end": "10:20", "pgm": "동가게"},
+                {"start": "10:20", "end": "12:40", "pgm": None},
+            ]}}, f, ensure_ascii=False)
+        bch.LIVE_PATH_TEMPLATE = os.path.join(tmp, "{company}_live", "{ym}.json")
+        bch._LIVE_DAY_CACHE.clear()
+        start = at("2026-10-03T08:20:00")
+        check("편성표 이어진 구간 끝까지", bch.broadcast_end("CJ", "2026-10-03", start),
+              at("2026-10-03T10:20:00"))
+        check("segment_time 우선",
+              bch.broadcast_end("CJ", "2026-10-03", start,
+                                [{"segment_time": "08:20-11:00(160')"}]),
+              at("2026-10-03T11:00:00"))
+        check("편성표 없으면 시작+기본값",
+              bch.broadcast_end("GS", "2026-10-03", start),
+              start + timedelta(minutes=bch.DEFAULT_BROADCAST_MINUTES))
+    finally:
+        bch.LIVE_PATH_TEMPLATE = orig
+        bch._LIVE_DAY_CACHE.clear()
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
 def main():
     test_phase()
     test_reconcile_removal()
@@ -384,6 +454,8 @@ def main():
     test_same_day_two_broadcasts()
     test_absorbed_slot_removed()
     test_time_unknown_folded()
+    test_kept_after_broadcast_end()
+    test_broadcast_end_from_live()
 
     print()
     if FAILURES:
