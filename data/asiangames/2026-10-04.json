@@ -1,6 +1,6 @@
 {
  "date": "2026-10-04",
- "collectedAt": "2026-10-03T23:38:40+09:00",
+ "collectedAt": "2026-10-04T09:21:01+09:00",
  "games": [
   {
    "time": "09:30",
@@ -29,6 +29,17 @@
    "link": "https://m.sports.naver.com/game/2026EJPOINDIVID15FNL000100"
   },
   {
+   "time": "14:00",
+   "discipline": "AG",
+   "event": "SPOTIME 아시안게임 NOW",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/20261004SPOAG2026"
+  },
+  {
    "time": "18:00",
    "discipline": "폐회식",
    "event": "",
@@ -40,6 +51,17 @@
    "medal": false,
    "tv": true,
    "link": "https://m.sports.naver.com/game/2026CERCLOSING"
+  },
+  {
+   "time": "20:00",
+   "discipline": "AG",
+   "event": "SPOTIME 아시안게임 NOW",
+   "countries": [],
+   "venue": "",
+   "hasKorea": false,
+   "medal": false,
+   "tv": true,
+   "link": "https://m.sports.naver.com/game/20261004SPOTVAG2026"
   }
  ]
 }
