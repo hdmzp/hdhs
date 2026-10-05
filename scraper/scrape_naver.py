@@ -93,6 +93,15 @@ AIR_END_RECHECK_DAYS = 7
 # 드라마가 통째로 빈 채로 남았다. 하루 4회 실행 사이에 최소 한 번은 다시
 # 보도록 6시간으로 잡는다.
 CURRENT_WEEK_RECHECK_HOURS = 6
+# 종영 누락 방지(재발 방지). 2026-10-04 포핸즈(tvN 토일) 사례: 종영 당일 오전
+# 11:50에 마지막으로 확인했는데(그때는 아직 "2026.08.29. ~") 그날 밤 최종회가
+# 나간 뒤로는 7일 주기(AIR_END_RECHECK_DAYS)만 남아 다음 확인이 10-11 —
+# 그 사이 종영(End)이 통째로 빠졌다. 종영 직후를 놓치지 않도록 두 경로를 둔다.
+#  1) 위젯 이탈: 최근 DROPPED_RECENT_WEEKS 주차 파일에 있던 프로그램이 이번
+#     수집(방영중 위젯)에서 빠졌으면 종영 신호로 보고 6시간 주기로 확인한다.
+#  2) 주차 마감: 지난주 파일에 있던 프로그램 중 마지막 확인이 이번 주 월요일
+#     이전이면, 그 주 방송이 다 끝난 뒤 한 번 더 확인한다(주 1회).
+DROPPED_RECENT_WEEKS = 2
 
 
 def monday_of(date_obj):
@@ -1373,6 +1382,21 @@ def current_week_missing_keys(out_dir: str, today):
     return missing
 
 
+def recent_week_keys(out_dir: str, weeks: int, before=None):
+    """최근 주차 파일 weeks개(before 주차 이전만)에 등장한 프로그램 키 집합."""
+    names = [n for n in _week_files(out_dir) if before is None or n[:-5] < before]
+    keys = set()
+    for name in names[-weeks:] if weeks > 0 else []:
+        try:
+            with open(os.path.join(out_dir, name), encoding="utf-8") as f:
+                d = json.load(f)
+        except Exception:
+            continue
+        for p in d.get("programs", []) + d.get("newBelowCutoff", []):
+            keys.add(_first_air_key(p))
+    return keys
+
+
 def lookup_air_periods(page, programs: list, out_dir: str):
     """프로그램들의 방영 기간(첫방송일/종영일)을 상세 페이지에서 조회해
     캐시(first_air_dates.json)에 채운다.
@@ -1381,7 +1405,9 @@ def lookup_air_periods(page, programs: list, out_dir: str):
       1) 첫방송일조차 모르는 프로그램 (신규 판정에 바로 필요)
       2) 이번 주에 이미 방영했는데 주차 파일에 값이 없는 프로그램
          (그 주가 지나기 전에 시청률을 확보해야 하므로 가장 급하다)
-      3) 방영 중으로 알고 있는데 마지막 확인이 오래된 프로그램 (종영 여부 확인)
+      3) 최근까지 보이다가 이번 수집에서 빠진 프로그램 (종영 직후일 가능성)
+      4) 지난주에 방영했는데 주차 마감 뒤 아직 확인 안 한 프로그램
+      5) 방영 중으로 알고 있는데 마지막 확인이 오래된 프로그램 (종영 여부 확인)
     종영일까지 확보한 프로그램은 더 이상 조회하지 않는다."""
     cache = load_first_air_cache(out_dir)
     today = datetime.now(KST).date()
@@ -1412,7 +1438,22 @@ def lookup_air_periods(page, programs: list, out_dir: str):
 
     missing_this_week = current_week_missing_keys(out_dir, today)
 
-    need_start, need_current, need_end, need_rating = [], [], [], []
+    # 종영 직후 감지용(DROPPED_RECENT_WEEKS 주석 참고). 이번 수집이 비었으면
+    # (수집 실패) 전부 '이탈'로 보이므로 위젯 이탈 경로는 끈다.
+    this_monday = monday_of(today)
+    collected_keys = {_first_air_key(p) for p in programs}
+    recent_keys = (recent_week_keys(out_dir, DROPPED_RECENT_WEEKS)
+                   if collected_keys else set())
+    last_week_keys = recent_week_keys(out_dir, 1, before=this_monday.isoformat())
+
+    def checked_before(ent, day):
+        try:
+            return datetime.fromisoformat(ent.get("checkedAt", "")).date() < day
+        except (TypeError, ValueError):
+            return True
+
+    need_start, need_current, need_dropped, need_weekend = [], [], [], []
+    need_end, need_rating = [], []
     for key, link in targets.items():
         ent = cache.get(key)
         if not ent:
@@ -1436,11 +1477,21 @@ def lookup_air_periods(page, programs: list, out_dir: str):
                 and hours_since_check(ent) >= CURRENT_WEEK_RECHECK_HOURS):
             need_current.append((key, link))
             continue
+        # 최근까지 위젯에 있다가 이번에 빠졌다 — 종영했을 가능성이 높다
+        if (key in recent_keys and key not in collected_keys
+                and hours_since_check(ent) >= CURRENT_WEEK_RECHECK_HOURS):
+            need_dropped.append((key, link))
+            continue
+        # 지난주 방송이 다 끝난 뒤 아직 한 번도 안 봤다 — 최종회였을 수 있다
+        if key in last_week_keys and checked_before(ent, this_monday):
+            need_weekend.append((key, link))
+            continue
         # 첫방송일은 아는데 종영 여부를 모르는 상태 — 주기적으로 다시 확인
         if days_since_check(ent) >= AIR_END_RECHECK_DAYS:
             need_end.append((key, link))
 
-    queue = need_start + need_current + need_end + need_rating
+    queue = (need_start + need_current + need_dropped + need_weekend
+             + need_end + need_rating)
     if len(queue) > FIRST_AIR_LOOKUP_MAX:
         print(f"  [방영기간] 조회 대기 {len(queue)}건 중 이번 실행은 {FIRST_AIR_LOOKUP_MAX}건만 "
               f"— 나머지는 다음 실행에서 계속 (신규 판정 우선)")
@@ -1495,10 +1546,12 @@ def lookup_air_periods(page, programs: list, out_dir: str):
         save_first_air_cache(out_dir, cache)
     known = sum(1 for v in cache.values() if v.get("date"))
     ended = sum(1 for v in cache.values() if v.get("endDate"))
-    queued = len(need_start) + len(need_current) + len(need_end)
+    queued = (len(need_start) + len(need_current) + len(need_dropped)
+              + len(need_weekend) + len(need_end))
     print(f"  [방영기간] 캐시 현황: 첫방송 {known}건 / 종영 {ended}건 / 전체 {len(cache)}건"
           f" (이번 실행 {looked}건 조회, 대기 {max(0, queued - looked)}건,"
-          f" 이번 주 미확보 {len(need_current)}건)")
+          f" 이번 주 미확보 {len(need_current)}건, 위젯 이탈 {len(need_dropped)}건,"
+          f" 주차 마감 확인 {len(need_weekend)}건)")
     return cache
 
 
