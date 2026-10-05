@@ -1,7 +1,7 @@
 {
   "weekStart": "2026-09-28",
   "weekEnd": "2026-10-04",
-  "collectedAt": "2026-10-05T19:20:45.499092+09:00",
+  "collectedAt": "2026-10-06T08:02:08.912666+09:00",
   "programs": [
     {
       "id": "drama_엄마가 미쳤어요_KBS1_오후 08:30",
@@ -948,6 +948,29 @@
         }
       },
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=659653&qvt=0&query=%EA%B0%9C%EA%B7%B8%EC%BD%98%EC%84%9C%ED%8A%B8"
+    },
+    {
+      "id": "drama_신병4 : 사보타주_ENA_오후 10:00",
+      "category": "drama",
+      "channel": "ENA",
+      "title": "신병4 : 사보타주",
+      "days": [
+        "화"
+      ],
+      "time": "오후 10:00",
+      "rating": 5.2,
+      "ratingDate": "09.29",
+      "ratingByDay": {
+        "화": {
+          "rating": 5.2,
+          "ratingDate": "09.29",
+          "episode": 12
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40950257&qvt=0&query=%EC%8B%A0%EB%B3%914%20%EC%82%AC%EB%B3%B4%ED%83%80%EC%A3%BC",
+      "isEnded": true,
+      "endDate": "2026-09-29",
+      "episode": 12
     }
   ],
   "newBelowCutoff": [
@@ -1581,6 +1604,29 @@
         }
       },
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41825488&qvt=0&query=%EC%9D%B4%ED%98%84%EC%9A%B0%EC%9D%98%20%EC%B2%B4%ED%81%AC%EC%9D%B8%20%EC%BD%98%EC%84%9C%ED%8A%B8"
+    },
+    {
+      "id": "variety_짐쌀라비움_ENA_오후 07:50",
+      "category": "variety",
+      "channel": "ENA",
+      "title": "짐쌀라비움",
+      "days": [
+        "토"
+      ],
+      "time": "오후 07:50",
+      "rating": 0.2,
+      "ratingDate": "10.03",
+      "ratingByDay": {
+        "토": {
+          "rating": 0.2,
+          "ratingDate": "10.03",
+          "episode": 10
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41362924&qvt=0&query=%EC%A7%90%EC%8C%80%EB%9D%BC%EB%B9%84%EC%9B%80",
+      "isEnded": true,
+      "endDate": "2026-10-03",
+      "episode": 10
     }
   ]
 }
