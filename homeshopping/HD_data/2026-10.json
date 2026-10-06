@@ -2,7 +2,7 @@
   "company": "HD",
   "broadcast": "data",
   "month": "2026-10",
-  "updated_at": "2026-10-06T03:47:22+09:00",
+  "updated_at": "2026-10-06T10:31:10+09:00",
   "days": {
     "2026-10-01": [
       {
@@ -3935,7 +3935,7 @@
         "end": "04:40",
         "brand": "황금구렁이",
         "product": "건강기능식품 황금구렁이 오리지널 차전자피 식이섬유 30포 X",
-        "price": 198000,
+        "price": 199000,
         "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253438265&preview=true",
         "category": "건강식품"
       },
@@ -4726,7 +4726,7 @@
       },
       {
         "start": "06:40",
-        "end": "14:00",
+        "end": "09:40",
         "brand": "뼈엔MBP",
         "product": "뼈엔 엠비피 MBP",
         "price": 459000,
@@ -4735,7 +4735,7 @@
       },
       {
         "start": "06:40",
-        "end": "14:00",
+        "end": "09:40",
         "brand": "뼈엔MBP",
         "product": "뼈엔 엠비피 MBP",
         "price": 268000,
@@ -4744,7 +4744,7 @@
       },
       {
         "start": "06:40",
-        "end": "14:00",
+        "end": "09:40",
         "brand": "뼈엔MBP",
         "product": "뼈엔 엠비피 MBP",
         "price": 69000,
@@ -4752,8 +4752,17 @@
         "category": "건강식품"
       },
       {
+        "start": "09:40",
+        "end": "14:00",
+        "brand": "인터쿡",
+        "product": "토마호크 로스돔 세트",
+        "price": 109000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2247721571&preview=true",
+        "category": "리빙/주방"
+      },
+      {
         "start": "14:00",
-        "end": "15:20",
+        "end": "14:40",
         "brand": "티비제이",
         "product": "TBJ 26FW 여성 소로나 퀼팅 점퍼",
         "price": 39900,
@@ -4762,12 +4771,21 @@
       },
       {
         "start": "14:00",
-        "end": "15:20",
+        "end": "14:40",
         "brand": "티비제이",
         "product": "TBJ 26FW 남성 소로나 퀼팅 점퍼",
         "price": 39900,
         "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252960753&preview=true",
         "category": "의류"
+      },
+      {
+        "start": "14:40",
+        "end": "15:20",
+        "brand": "클리오",
+        "product": "올뉴 마그넷팩트 F/W에디션 방송패키지",
+        "price": 89900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253635330&preview=true",
+        "category": "미용"
       },
       {
         "start": "15:20",
@@ -4782,7 +4800,7 @@
         "start": "17:20",
         "end": "20:40",
         "brand": "푸마",
-        "product": "26FW 푸마 남성 기모 모크넥",
+        "product": "26FW 푸마 남성 웜기모 모크넥",
         "price": 69900,
         "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253556371&preview=true",
         "category": "언더웨어"
@@ -4791,10 +4809,10 @@
         "start": "17:20",
         "end": "20:40",
         "brand": "푸마",
-        "product": "26FW 푸마 여성 기모 모크넥",
+        "product": "26FW 푸마 여성 웜기모 모크넥",
         "price": 69900,
         "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253555810&preview=true",
-        "category": "의류"
+        "category": "언더웨어"
       },
       {
         "start": "20:40",
@@ -4816,12 +4834,30 @@
       },
       {
         "start": "22:40",
-        "end": "23:39",
+        "end": "23:40",
         "brand": "린찐",
         "product": "삼선 누룽지탕 8팩 강황누룽지 8팩",
         "price": 69900,
         "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2147258691&preview=true",
         "category": "일반식품"
+      },
+      {
+        "start": "23:40",
+        "end": "00:39",
+        "brand": "알레보",
+        "product": "디엣지 플러스 유리 밥용기 1 1세트_",
+        "price": 59800,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2250158734&preview=true",
+        "category": "리빙/주방"
+      },
+      {
+        "start": "23:40",
+        "end": "00:39",
+        "brand": "알레보",
+        "product": "디엣지 플러스 유리 밥용기 기본세트",
+        "price": 39900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2250158887&preview=true",
+        "category": "리빙/주방"
       }
     ],
     "2026-10-08": [
@@ -4910,7 +4946,7 @@
     "2026-10-09": [
       {
         "start": "01:40",
-        "end": "03:40",
+        "end": "02:30",
         "brand": "블라우풍트",
         "product": "오픈픽 무선 이어폰",
         "price": 191350,
@@ -4918,8 +4954,143 @@
         "category": "가전"
       },
       {
+        "start": "02:30",
+        "end": "02:45",
+        "brand": "메종노아",
+        "product": "호주산 양모 이불 2장",
+        "price": 179900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253929523&preview=true",
+        "category": "리빙/주방"
+      },
+      {
+        "start": "02:30",
+        "end": "02:45",
+        "brand": "메종노아",
+        "product": "호주산 양모 이불 2장",
+        "price": 159900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253931035&preview=true",
+        "category": "리빙/주방"
+      },
+      {
+        "start": "02:30",
+        "end": "02:45",
+        "brand": "메종노아",
+        "product": "호주산 양모 이불 2장",
+        "price": 139900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253931149&preview=true",
+        "category": "리빙/주방"
+      },
+      {
+        "start": "02:45",
+        "end": "03:00",
+        "brand": "메종노아",
+        "product": "호주산 양모 이불 2장",
+        "price": 179900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253929523&preview=true",
+        "category": "리빙/주방"
+      },
+      {
+        "start": "02:45",
+        "end": "03:00",
+        "brand": "메종노아",
+        "product": "호주산 양모 이불 2장",
+        "price": 159900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253931035&preview=true",
+        "category": "리빙/주방"
+      },
+      {
+        "start": "02:45",
+        "end": "03:00",
+        "brand": "메종노아",
+        "product": "호주산 양모 이불 2장",
+        "price": 139900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253931149&preview=true",
+        "category": "리빙/주방"
+      },
+      {
+        "start": "03:00",
+        "end": "03:15",
+        "brand": "메종노아",
+        "product": "호주산 양모 이불 2장",
+        "price": 179900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253929523&preview=true",
+        "category": "리빙/주방"
+      },
+      {
+        "start": "03:00",
+        "end": "03:15",
+        "brand": "메종노아",
+        "product": "호주산 양모 이불 2장",
+        "price": 159900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253931035&preview=true",
+        "category": "리빙/주방"
+      },
+      {
+        "start": "03:00",
+        "end": "03:15",
+        "brand": "메종노아",
+        "product": "호주산 양모 이불 2장",
+        "price": 139900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253931149&preview=true",
+        "category": "리빙/주방"
+      },
+      {
+        "start": "03:15",
+        "end": "03:30",
+        "brand": "메종노아",
+        "product": "호주산 양모 이불 2장",
+        "price": 179900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253929523&preview=true",
+        "category": "리빙/주방"
+      },
+      {
+        "start": "03:15",
+        "end": "03:30",
+        "brand": "메종노아",
+        "product": "호주산 양모 이불 2장",
+        "price": 159900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253931035&preview=true",
+        "category": "리빙/주방"
+      },
+      {
+        "start": "03:15",
+        "end": "03:30",
+        "brand": "메종노아",
+        "product": "호주산 양모 이불 2장",
+        "price": 139900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253931149&preview=true",
+        "category": "리빙/주방"
+      },
+      {
+        "start": "03:30",
+        "end": "03:40",
+        "brand": "메종노아",
+        "product": "호주산 양모 이불 2장",
+        "price": 179900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253929523&preview=true",
+        "category": "리빙/주방"
+      },
+      {
+        "start": "03:30",
+        "end": "03:40",
+        "brand": "메종노아",
+        "product": "호주산 양모 이불 2장",
+        "price": 159900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253931035&preview=true",
+        "category": "리빙/주방"
+      },
+      {
+        "start": "03:30",
+        "end": "03:40",
+        "brand": "메종노아",
+        "product": "호주산 양모 이불 2장",
+        "price": 139900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253931149&preview=true",
+        "category": "리빙/주방"
+      },
+      {
         "start": "03:40",
-        "end": "06:00",
+        "end": "04:20",
         "brand": "코지마",
         "product": "코지마 코지플렉스 마사지매트 CMM-701WL",
         "price": 398000,
@@ -4928,7 +5099,7 @@
       },
       {
         "start": "03:40",
-        "end": "06:00",
+        "end": "04:20",
         "brand": "코지마",
         "product": "목어깨 마사지기 컴포넥맥스",
         "price": 198000,
@@ -4937,7 +5108,7 @@
       },
       {
         "start": "03:40",
-        "end": "06:00",
+        "end": "04:20",
         "brand": "코지마",
         "product": "코지마 코지스키니 무선 종아리 마사지기 CML-60WL",
         "price": 198000,
@@ -4946,7 +5117,7 @@
       },
       {
         "start": "03:40",
-        "end": "06:00",
+        "end": "04:20",
         "brand": "코지마",
         "product": "발마사지기 하이팝 CMF-390",
         "price": 398000,
@@ -4955,7 +5126,7 @@
       },
       {
         "start": "03:40",
-        "end": "06:00",
+        "end": "04:20",
         "brand": "코지마",
         "product": "목어깨 마사지기 트위스터",
         "price": 99000,
@@ -4964,7 +5135,7 @@
       },
       {
         "start": "03:40",
-        "end": "06:00",
+        "end": "04:20",
         "brand": "코지마",
         "product": "EMS 복부 저주파 마사지기 코지코어맥스",
         "price": 159000,
@@ -4973,7 +5144,7 @@
       },
       {
         "start": "03:40",
-        "end": "06:00",
+        "end": "04:20",
         "brand": "코지마",
         "product": "EMS 복부저주파 마사지기",
         "price": 149000,
@@ -4982,7 +5153,7 @@
       },
       {
         "start": "03:40",
-        "end": "06:00",
+        "end": "04:20",
         "brand": "코지마",
         "product": "손복부 마사지기 투핸즈 그레이",
         "price": 168000,
@@ -4991,7 +5162,7 @@
       },
       {
         "start": "03:40",
-        "end": "06:00",
+        "end": "04:20",
         "brand": "코지마",
         "product": "손복부 마사지기 투핸즈",
         "price": 168000,
@@ -5000,7 +5171,7 @@
       },
       {
         "start": "03:40",
-        "end": "06:00",
+        "end": "04:20",
         "brand": "코지마",
         "product": "눈마사지기 아이오",
         "price": 99000,
@@ -5009,7 +5180,7 @@
       },
       {
         "start": "03:40",
-        "end": "06:00",
+        "end": "04:20",
         "brand": "코지마",
         "product": "자동전자 혈압계",
         "price": 79000,
@@ -5018,12 +5189,21 @@
       },
       {
         "start": "03:40",
-        "end": "06:00",
+        "end": "04:20",
         "brand": "코지마",
         "product": "목어깨마사지기 컴포넥",
         "price": 198000,
         "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2229037754&preview=true",
         "category": "가전"
+      },
+      {
+        "start": "04:20",
+        "end": "06:00",
+        "brand": "시크릿빨간스캔들",
+        "product": "빨간스캔들 리얼석류 100포",
+        "price": 196000,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253957015&preview=true",
+        "category": "건강식품"
       },
       {
         "start": "06:00",
@@ -5065,12 +5245,30 @@
     "2026-10-10": [
       {
         "start": "03:00",
-        "end": "07:40",
+        "end": "06:00",
         "brand": "마마꼬레",
         "product": "마마꼬레 쏠 라이프 피디알앤 진생 탈모샴푸 x 패들브러쉬",
         "price": 42900,
         "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253074410&preview=true",
         "category": "미용"
+      },
+      {
+        "start": "06:00",
+        "end": "07:40",
+        "brand": "키스해링",
+        "product": "레이어드 니트 풀오버",
+        "price": 79900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253576560&preview=true",
+        "category": "의류"
+      },
+      {
+        "start": "06:00",
+        "end": "07:40",
+        "brand": "키스해링",
+        "product": "러플 모달 라운드티",
+        "price": 59900,
+        "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253576183&preview=true",
+        "category": "의류"
       },
       {
         "start": "07:40",
