@@ -1,7 +1,7 @@
 {
   "weekStart": "2026-09-28",
   "weekEnd": "2026-10-04",
-  "collectedAt": "2026-10-06T08:02:08.912666+09:00",
+  "collectedAt": "2026-10-06T12:18:38.969905+09:00",
   "programs": [
     {
       "id": "drama_엄마가 미쳤어요_KBS1_오후 08:30",
@@ -591,12 +591,16 @@
         "토"
       ],
       "time": "오후 09:30",
-      "rating": 8.7,
-      "ratingDate": "10.03",
+      "rating": 9.4,
+      "ratingDate": "10.04",
       "ratingByDay": {
         "토": {
           "rating": 8.7,
           "ratingDate": "10.03"
+        },
+        "일": {
+          "rating": 9.4,
+          "ratingDate": "10.04"
         }
       },
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40520424&qvt=0&query=%ED%8F%AC%ED%95%B8%EC%A6%88",
@@ -626,14 +630,14 @@
       "endDate": "2026-10-04"
     },
     {
-      "id": "variety_놀라운 토요일_tvN_오후 06:00",
+      "id": "variety_놀라운 토요일_tvN_오후 07:30",
       "category": "variety",
       "channel": "tvN",
       "title": "놀라운 토요일",
       "days": [
         "토"
       ],
-      "time": "오후 06:00",
+      "time": "오후 07:30",
       "rating": 1.2,
       "ratingDate": "10.03",
       "ratingByDay": {
@@ -664,14 +668,14 @@
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=3052901&qvt=0&query=%EC%95%84%EB%8A%94%20%ED%98%95%EB%8B%98"
     },
     {
-      "id": "variety_전지적 참견 시점_MBC_오후 10:20",
+      "id": "variety_전지적 참견 시점_MBC_오후 11:10",
       "category": "variety",
       "channel": "MBC",
       "title": "전지적 참견 시점",
       "days": [
         "토"
       ],
-      "time": "오후 10:20",
+      "time": "오후 11:10",
       "rating": 2.9,
       "ratingDate": "10.03",
       "ratingByDay": {
