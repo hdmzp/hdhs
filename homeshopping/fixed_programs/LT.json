@@ -1,6 +1,6 @@
 {
   "company": "LT",
-  "collectedAt": "2026-10-05T07:27:13.590508+09:00",
+  "collectedAt": "2026-10-06T09:55:19.611878+09:00",
   "seed_conts_no": "417",
   "programs": [
     {
@@ -25,30 +25,6 @@
         }
       ],
       "discovered_from": []
-    },
-    {
-      "conts_no": "1288",
-      "title": "엘라이브 가구단지",
-      "schedule_raw": "엘단지로 완성하는 우리집 스타일링",
-      "thumbnail": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1288_11_20260605153943.png/dims/resizemc/1200x430/cropcenter/1200x430/optimize",
-      "logo": "",
-      "detail_link": "https://www.lotteimall.com/contstmpl/viewContsTmplDetail.lotte?conts_no=1288",
-      "upcoming_products": [],
-      "discovered_from": [
-        "417"
-      ]
-    },
-    {
-      "conts_no": "107",
-      "title": "김지애의 쇼핑리스트",
-      "schedule_raw": "매주 일 15시",
-      "thumbnail": "https://image.lotteimall.com/upload/display/conts_tmpl/base/107_11_20260226140305.jpg/dims/resizemc/1200x430/cropcenter/1200x430/optimize",
-      "logo": "https://image.lotteimall.com/upload/display/conts_tmpl/base/107_12_20260105091545.png",
-      "detail_link": "https://www.lotteimall.com/contstmpl/viewContsTmplDetail.lotte?conts_no=107",
-      "upcoming_products": [],
-      "discovered_from": [
-        "417"
-      ]
     },
     {
       "conts_no": "1147",
@@ -84,21 +60,6 @@
         }
       ],
       "discovered_from": [
-        "1288",
-        "417"
-      ]
-    },
-    {
-      "conts_no": "1299",
-      "title": "언니 어디꺼예요?",
-      "schedule_raw": "매주 목요일 오전 9시",
-      "thumbnail": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1299_11_20260528134157.png/dims/resizemc/1200x430/cropcenter/1200x430/optimize",
-      "logo": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1299_12_20260528133459.png",
-      "detail_link": "https://www.lotteimall.com/contstmpl/viewContsTmplDetail.lotte?conts_no=1299",
-      "upcoming_products": [],
-      "discovered_from": [
-        "107",
-        "1288",
         "417"
       ]
     },
@@ -111,22 +72,208 @@
       "detail_link": "https://www.lotteimall.com/contstmpl/viewContsTmplDetail.lotte?conts_no=1275",
       "upcoming_products": [],
       "discovered_from": [
-        "107",
-        "1288",
         "417"
       ]
     },
     {
-      "conts_no": "1142",
-      "title": "미숙씨 X 가전 LIVE",
-      "schedule_raw": "",
-      "thumbnail": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1142_11_20260107154720.jpg/dims/resizemc/1200x430/cropcenter/1200x430/optimize",
-      "logo": "",
-      "detail_link": "https://www.lotteimall.com/contstmpl/viewContsTmplDetail.lotte?conts_no=1142",
+      "conts_no": "1169",
+      "title": "L.SHOW",
+      "schedule_raw": "매주 토요일 밤 10시 30분",
+      "thumbnail": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1169_11_20260212180400.jpg/dims/resizemc/1200x430/cropcenter/1200x430/optimize",
+      "logo": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1169_12_20260129083636.png",
+      "detail_link": "https://www.lotteimall.com/contstmpl/viewContsTmplDetail.lotte?conts_no=1169",
       "upcoming_products": [],
       "discovered_from": [
-        "1288",
+        "1147",
         "417"
+      ]
+    },
+    {
+      "conts_no": "1168",
+      "title": "LOOK AT ME",
+      "schedule_raw": "매주 목요일 오전 7시 15분",
+      "thumbnail": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1168_11_20260213100918.jpg/dims/resizemc/1200x430/cropcenter/1200x430/optimize",
+      "logo": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1168_12_20260129081950.png",
+      "detail_link": "https://www.lotteimall.com/contstmpl/viewContsTmplDetail.lotte?conts_no=1168",
+      "upcoming_products": [
+        {
+          "name": "[룩앳미] 마니커 버팔로봉골드 400gX4봉",
+          "price": 32500,
+          "image": "https://image2.lotteimall.com/goods/81/71/92/12927181_1.jpg/dims/resizemc/640x360/optimize",
+          "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12927181"
+        },
+        {
+          "name": "[룩앳미] 마니커 버팔로봉골드 400gX4봉",
+          "price": 32500,
+          "image": "https://image2.lotteimall.com/goods/81/71/92/12927181_1.jpg/dims/resizemc/640x360/optimize",
+          "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12927181"
+        }
+      ],
+      "discovered_from": [
+        "1147",
+        "1169",
+        "417"
+      ]
+    },
+    {
+      "conts_no": "957",
+      "title": "맘심톡톡",
+      "schedule_raw": "",
+      "thumbnail": "https://image.lotteimall.com/upload/display/conts_tmpl/base/957_11_20260825170733.png/dims/resizemc/1200x430/cropcenter/1200x430/optimize",
+      "logo": "",
+      "detail_link": "https://www.lotteimall.com/contstmpl/viewContsTmplDetail.lotte?conts_no=957",
+      "upcoming_products": [
+        {
+          "name": "[크림하우스] 프리2 폴더매트 (140x210x4cm)",
+          "price": 213920,
+          "image": "https://image2.lotteimall.com/goods/92/42/63/2861634292_1.jpg/dims/resizemc/550x550/optimize",
+          "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=2861634292"
+        }
+      ],
+      "discovered_from": [
+        "1168",
+        "417"
+      ]
+    },
+    {
+      "conts_no": "1149",
+      "title": "더퍼스트 유난희",
+      "schedule_raw": "매주 목요일 오전 09시25분",
+      "thumbnail": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1149_11_20260223183610.jpg/dims/resizemc/1200x430/cropcenter/1200x430/optimize",
+      "logo": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1149_12_20260129103459.png",
+      "detail_link": "https://www.lotteimall.com/contstmpl/viewContsTmplDetail.lotte?conts_no=1149",
+      "upcoming_products": [
+        {
+          "name": "[이태리 직수입] BOJOLA 라운드 크로스백",
+          "price": 367080,
+          "image": "https://image2.lotteimall.com/goods/94/76/89/12897694_1.jpg/dims/resizemc/640x360/optimize",
+          "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12897694"
+        },
+        {
+          "name": "[이태리 직수입] BOJOLA 바케타 토트백",
+          "price": 459080,
+          "image": "https://image2.lotteimall.com/goods/95/76/89/12897695_1.jpg/dims/resizemc/640x360/optimize",
+          "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12897695"
+        },
+        {
+          "name": "[이태리 직수입] BOJOLA 더블 클러치백",
+          "price": 275080,
+          "image": "https://image2.lotteimall.com/goods/96/76/89/12897696_1.jpg/dims/resizemc/640x360/optimize",
+          "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12897696"
+        },
+        {
+          "name": "[ 더 퍼스트 유난희 단독! ]가이아 프레쉬 엑스트라버진 올리브오일 500ml 4병+옥시멜로 발사믹 식초 1병+쇼핑백 2장",
+          "price": 198000,
+          "image": "https://image2.lotteimall.com/goods/01/56/92/12925601_1.jpg/dims/resizemc/640x360/optimize",
+          "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12925601"
+        },
+        {
+          "name": "[ 더 퍼스트 유난희 단독초특가 ]황성주 박사의 데이업 프로틴 쉐이크 4가지맛세트[오리지널, 단호박고구마, 바나나, 초코](45gx7포x4박스)",
+          "price": 79000,
+          "image": "https://image2.lotteimall.com/goods/09/56/92/12925609_1.jpg/dims/resizemc/640x360/optimize",
+          "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12925609"
+        },
+        {
+          "name": "[릴리오] by 오일릴리 26FW 에센셜 울 100 시퀸 터틀 니트",
+          "price": 89000,
+          "image": "https://image2.lotteimall.com/goods/25/48/91/12914825_1.jpg/dims/resizemc/640x360/optimize",
+          "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12914825"
+        },
+        {
+          "name": "[릴리오] by 오일릴리 26FW 에센셜 캐시미어 가디건",
+          "price": 149000,
+          "image": "https://image2.lotteimall.com/goods/79/72/91/12917279_1.jpg/dims/resizemc/640x360/optimize",
+          "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12917279"
+        },
+        {
+          "name": "[릴리오] by 오일릴리 26FW 캐시미어100 페이즐리 머플러",
+          "price": 109000,
+          "image": "https://image2.lotteimall.com/goods/78/97/91/12919778_1.jpg/dims/resizemc/640x360/optimize",
+          "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12919778"
+        },
+        {
+          "name": "[릴리오] by 오일릴리 26FW 캐시미어 울 헤어리 니트",
+          "price": 109000,
+          "image": "https://image2.lotteimall.com/goods/69/24/92/12922469_1.jpg/dims/resizemc/640x360/optimize",
+          "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12922469"
+        }
+      ],
+      "discovered_from": [
+        "1147",
+        "1169",
+        "417"
+      ]
+    },
+    {
+      "conts_no": "1170",
+      "title": "영스타일",
+      "schedule_raw": "매주 수 21:45/금 08:15",
+      "thumbnail": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1170_11_20260324140047.jpg/dims/resizemc/1200x430/cropcenter/1200x430/optimize",
+      "logo": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1170_12_20260129090507.png",
+      "detail_link": "https://www.lotteimall.com/contstmpl/viewContsTmplDetail.lotte?conts_no=1170",
+      "upcoming_products": [],
+      "discovered_from": [
+        "1147",
+        "1149",
+        "1169",
+        "417"
+      ]
+    },
+    {
+      "conts_no": "1318",
+      "title": "리빙패스",
+      "schedule_raw": "최저가 리빙템! 리빙패스!",
+      "thumbnail": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1318_11_20260804114821.jpg/dims/resizemc/1200x430/cropcenter/1200x430/optimize",
+      "logo": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1318_12_20260804114821.png",
+      "detail_link": "https://www.lotteimall.com/contstmpl/viewContsTmplDetail.lotte?conts_no=1318",
+      "upcoming_products": [],
+      "discovered_from": [
+        "1147",
+        "1149",
+        "1168",
+        "1170",
+        "417",
+        "957"
+      ]
+    },
+    {
+      "conts_no": "107",
+      "title": "김지애의 쇼핑리스트",
+      "schedule_raw": "매주 일 15시",
+      "thumbnail": "https://image.lotteimall.com/upload/display/conts_tmpl/base/107_11_20260226140305.jpg/dims/resizemc/1200x430/cropcenter/1200x430/optimize",
+      "logo": "https://image.lotteimall.com/upload/display/conts_tmpl/base/107_12_20260105091545.png",
+      "detail_link": "https://www.lotteimall.com/contstmpl/viewContsTmplDetail.lotte?conts_no=107",
+      "upcoming_products": [],
+      "discovered_from": [
+        "1149",
+        "1168",
+        "1169",
+        "417",
+        "957"
+      ]
+    },
+    {
+      "conts_no": "1141",
+      "title": "섭PD의 어섭쇼!",
+      "schedule_raw": "",
+      "thumbnail": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1141_11_20260105163613.jpg/dims/resizemc/1200x430/cropcenter/1200x430/optimize",
+      "logo": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1141_12_20260319180257.png",
+      "detail_link": "https://www.lotteimall.com/contstmpl/viewContsTmplDetail.lotte?conts_no=1141",
+      "upcoming_products": [
+        {
+          "name": "[국내산콩]신덕재 명인의 쫄깃두부면 총20팩(두부면 20팩+들기름막국수소스7개+멸치스프7개+비빔소스6개) (T)",
+          "price": 43910,
+          "image": "https://image2.lotteimall.com/goods/89/11/92/12921189_1.jpg/dims/resizemc/550x550/optimize",
+          "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12921189"
+        }
+      ],
+      "discovered_from": [
+        "107",
+        "1149",
+        "1168",
+        "1318",
+        "417",
+        "957"
       ]
     },
     {
@@ -138,25 +285,66 @@
       "detail_link": "https://www.lotteimall.com/contstmpl/viewContsTmplDetail.lotte?conts_no=1167",
       "upcoming_products": [],
       "discovered_from": [
-        "1142",
         "1147",
-        "1299",
-        "417"
+        "1149",
+        "1169",
+        "1318"
       ]
     },
     {
-      "conts_no": "1168",
-      "title": "LOOK AT ME",
-      "schedule_raw": "매주 목요일 오전 7시 15분",
-      "thumbnail": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1168_11_20260213100918.jpg/dims/resizemc/1200x430/cropcenter/1200x430/optimize",
-      "logo": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1168_12_20260129081950.png",
-      "detail_link": "https://www.lotteimall.com/contstmpl/viewContsTmplDetail.lotte?conts_no=1168",
+      "conts_no": "1284",
+      "title": "가전패스",
+      "schedule_raw": "가전! 엘라이브 가전패스",
+      "thumbnail": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1284_11_20260604093447.jpg/dims/resizemc/1200x430/cropcenter/1200x430/optimize",
+      "logo": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1284_12_20260602184847.png",
+      "detail_link": "https://www.lotteimall.com/contstmpl/viewContsTmplDetail.lotte?conts_no=1284",
       "upcoming_products": [],
       "discovered_from": [
         "107",
+        "1141",
+        "1147",
+        "1149",
         "1167",
-        "1288",
-        "417"
+        "1318"
+      ]
+    },
+    {
+      "conts_no": "1316",
+      "title": "쇼핑마스터",
+      "schedule_raw": "",
+      "thumbnail": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1316_11_20260804091422.jpg/dims/resizemc/1200x430/cropcenter/1200x430/optimize",
+      "logo": "",
+      "detail_link": "https://www.lotteimall.com/contstmpl/viewContsTmplDetail.lotte?conts_no=1316",
+      "upcoming_products": [],
+      "discovered_from": [
+        "107",
+        "1141",
+        "1147",
+        "1149",
+        "1167",
+        "1168",
+        "1170",
+        "1284",
+        "1318",
+        "957"
+      ]
+    },
+    {
+      "conts_no": "1299",
+      "title": "언니 어디꺼예요?",
+      "schedule_raw": "매주 목요일 오전 9시",
+      "thumbnail": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1299_11_20260528134157.png/dims/resizemc/1200x430/cropcenter/1200x430/optimize",
+      "logo": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1299_12_20260528133459.png",
+      "detail_link": "https://www.lotteimall.com/contstmpl/viewContsTmplDetail.lotte?conts_no=1299",
+      "upcoming_products": [],
+      "discovered_from": [
+        "1147",
+        "1149",
+        "1167",
+        "1168",
+        "1169",
+        "1316",
+        "957"
       ]
     },
     {
@@ -224,103 +412,45 @@
       ],
       "discovered_from": [
         "107",
-        "1142",
-        "1168",
-        "1288",
-        "417"
-      ]
-    },
-    {
-      "conts_no": "1318",
-      "title": "리빙패스",
-      "schedule_raw": "최저가 리빙템! 리빙패스!",
-      "thumbnail": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1318_11_20260804114821.jpg/dims/resizemc/1200x430/cropcenter/1200x430/optimize",
-      "logo": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1318_12_20260804114821.png",
-      "detail_link": "https://www.lotteimall.com/contstmpl/viewContsTmplDetail.lotte?conts_no=1318",
-      "upcoming_products": [],
-      "discovered_from": [
-        "1147",
-        "1167",
-        "1299",
-        "417",
-        "73"
-      ]
-    },
-    {
-      "conts_no": "1316",
-      "title": "쇼핑마스터",
-      "schedule_raw": "",
-      "thumbnail": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1316_11_20260804091422.jpg/dims/resizemc/1200x430/cropcenter/1200x430/optimize",
-      "logo": "",
-      "detail_link": "https://www.lotteimall.com/contstmpl/viewContsTmplDetail.lotte?conts_no=1316",
-      "upcoming_products": [],
-      "discovered_from": [
-        "107",
-        "1147",
-        "1167",
-        "1168",
-        "1288",
-        "1299",
-        "1318",
-        "73"
-      ]
-    },
-    {
-      "conts_no": "1284",
-      "title": "가전패스",
-      "schedule_raw": "가전! 엘라이브 가전패스",
-      "thumbnail": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1284_11_20260604093447.jpg/dims/resizemc/1200x430/cropcenter/1200x430/optimize",
-      "logo": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1284_12_20260602184847.png",
-      "detail_link": "https://www.lotteimall.com/contstmpl/viewContsTmplDetail.lotte?conts_no=1284",
-      "upcoming_products": [],
-      "discovered_from": [
-        "107",
-        "1142",
-        "1147",
-        "1167",
-        "1288",
-        "1299"
-      ]
-    },
-    {
-      "conts_no": "1141",
-      "title": "섭PD의 어섭쇼!",
-      "schedule_raw": "",
-      "thumbnail": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1141_11_20260105163613.jpg/dims/resizemc/1200x430/cropcenter/1200x430/optimize",
-      "logo": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1141_12_20260319180257.png",
-      "detail_link": "https://www.lotteimall.com/contstmpl/viewContsTmplDetail.lotte?conts_no=1141",
-      "upcoming_products": [],
-      "discovered_from": [
-        "107",
-        "1142",
-        "1167",
-        "1168",
-        "1288",
-        "1299",
-        "1316",
-        "1318",
-        "73"
-      ]
-    },
-    {
-      "conts_no": "1169",
-      "title": "L.SHOW",
-      "schedule_raw": "매주 토요일 밤 10시 30분",
-      "thumbnail": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1169_11_20260212180400.jpg/dims/resizemc/1200x430/cropcenter/1200x430/optimize",
-      "logo": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1169_12_20260129083636.png",
-      "detail_link": "https://www.lotteimall.com/contstmpl/viewContsTmplDetail.lotte?conts_no=1169",
-      "upcoming_products": [],
-      "discovered_from": [
-        "107",
         "1141",
-        "1142",
-        "1147",
-        "1167",
-        "1168",
+        "1169",
+        "1170",
         "1284",
         "1299",
+        "957"
+      ]
+    },
+    {
+      "conts_no": "1142",
+      "title": "미숙씨 X 가전 LIVE",
+      "schedule_raw": "",
+      "thumbnail": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1142_11_20260107154720.jpg/dims/resizemc/1200x430/cropcenter/1200x430/optimize",
+      "logo": "",
+      "detail_link": "https://www.lotteimall.com/contstmpl/viewContsTmplDetail.lotte?conts_no=1142",
+      "upcoming_products": [],
+      "discovered_from": [
+        "107",
+        "1167",
+        "1168",
+        "1169",
+        "1170",
+        "1299",
+        "1316"
+      ]
+    },
+    {
+      "conts_no": "1288",
+      "title": "엘라이브 가구단지",
+      "schedule_raw": "엘단지로 완성하는 우리집 스타일링",
+      "thumbnail": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1288_11_20260605153943.png/dims/resizemc/1200x430/cropcenter/1200x430/optimize",
+      "logo": "",
+      "detail_link": "https://www.lotteimall.com/contstmpl/viewContsTmplDetail.lotte?conts_no=1288",
+      "upcoming_products": [],
+      "discovered_from": [
+        "1316",
         "1318",
-        "73"
+        "73",
+        "957"
       ]
     },
     {
@@ -339,162 +469,10 @@
         }
       ],
       "discovered_from": [
-        "107",
-        "1141",
-        "1142",
-        "1147",
         "1167",
-        "1168",
-        "1299"
-      ]
-    },
-    {
-      "conts_no": "957",
-      "title": "맘심톡톡",
-      "schedule_raw": "",
-      "thumbnail": "https://image.lotteimall.com/upload/display/conts_tmpl/base/957_11_20260825170733.png/dims/resizemc/1200x430/cropcenter/1200x430/optimize",
-      "logo": "",
-      "detail_link": "https://www.lotteimall.com/contstmpl/viewContsTmplDetail.lotte?conts_no=957",
-      "upcoming_products": [
-        {
-          "name": "[크림하우스] 프리2 폴더매트 (140x210x4cm)",
-          "price": 213920,
-          "image": "https://image2.lotteimall.com/goods/92/42/63/2861634292_1.jpg/dims/resizemc/550x550/optimize",
-          "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=2861634292"
-        }
-      ],
-      "discovered_from": [
-        "1141",
-        "1142",
-        "1147",
-        "1168",
-        "1299",
-        "1309",
-        "73"
-      ]
-    },
-    {
-      "conts_no": "1170",
-      "title": "영스타일",
-      "schedule_raw": "매주 수 21:45/금 08:15",
-      "thumbnail": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1170_11_20260324140047.jpg/dims/resizemc/1200x430/cropcenter/1200x430/optimize",
-      "logo": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1170_12_20260129090507.png",
-      "detail_link": "https://www.lotteimall.com/contstmpl/viewContsTmplDetail.lotte?conts_no=1170",
-      "upcoming_products": [],
-      "discovered_from": [
-        "1141",
-        "1147",
-        "1167",
-        "1168",
-        "1169",
+        "1170",
         "1284",
-        "1299",
-        "1309",
         "1316",
-        "1318",
-        "73"
-      ]
-    },
-    {
-      "conts_no": "1149",
-      "title": "더퍼스트 유난희",
-      "schedule_raw": "매주 목요일 오전 09시25분",
-      "thumbnail": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1149_11_20260223183610.jpg/dims/resizemc/1200x430/cropcenter/1200x430/optimize",
-      "logo": "https://image.lotteimall.com/upload/display/conts_tmpl/base/1149_12_20260129103459.png",
-      "detail_link": "https://www.lotteimall.com/contstmpl/viewContsTmplDetail.lotte?conts_no=1149",
-      "upcoming_products": [
-        {
-          "name": "[GF 페레] (상시가 358,000원) 26FW 아틀리에 자켓",
-          "price": 159000,
-          "image": "https://image2.lotteimall.com/goods/58/60/92/12926058_1.jpg/dims/resizemc/640x360/optimize",
-          "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12926058"
-        },
-        {
-          "name": "[GF 페레] (상시가 259,000원) 26FW 루미에르 니트",
-          "price": 139000,
-          "image": "https://image2.lotteimall.com/goods/19/09/92/12920919_1.jpg/dims/resizemc/640x360/optimize",
-          "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12920919"
-        },
-        {
-          "name": "[GF 페레] (상시가 199,000원) 26FW 페레 스웨이드 팬츠",
-          "price": 99000,
-          "image": "https://image2.lotteimall.com/goods/11/48/92/12924811_1.jpg/dims/resizemc/640x360/optimize",
-          "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12924811"
-        },
-        {
-          "name": "[이태리 직수입] 피오니 울100 그랑데 스카프",
-          "price": 299000,
-          "image": "https://image2.lotteimall.com/goods/67/51/92/12925167_1.jpg/dims/resizemc/640x360/optimize",
-          "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12925167"
-        },
-        {
-          "name": "[이태리 직수입/런칭가:348,000원] 사보이아(SAVOIA)토트백",
-          "price": 348000,
-          "image": "https://image2.lotteimall.com/goods/14/21/88/12882114_1.jpg/dims/resizemc/640x360/optimize",
-          "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12882114"
-        },
-        {
-          "name": "[이태리 직수입] BOJOLA 라운드 크로스백",
-          "price": 367080,
-          "image": "https://image2.lotteimall.com/goods/94/76/89/12897694_1.jpg/dims/resizemc/640x360/optimize",
-          "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12897694"
-        },
-        {
-          "name": "[이태리 직수입] BOJOLA 바케타 토트백",
-          "price": 459080,
-          "image": "https://image2.lotteimall.com/goods/95/76/89/12897695_1.jpg/dims/resizemc/640x360/optimize",
-          "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12897695"
-        },
-        {
-          "name": "[이태리 직수입] BOJOLA 더블 클러치백",
-          "price": 275080,
-          "image": "https://image2.lotteimall.com/goods/96/76/89/12897696_1.jpg/dims/resizemc/640x360/optimize",
-          "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12897696"
-        },
-        {
-          "name": "[ 더 퍼스트 유난희 단독! ]가이아 프레쉬 엑스트라버진 올리브오일 500ml 4병+옥시멜로 발사믹 식초 1병+쇼핑백 2장",
-          "price": 198000,
-          "image": "https://image2.lotteimall.com/goods/01/56/92/12925601_1.jpg/dims/resizemc/640x360/optimize",
-          "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12925601"
-        },
-        {
-          "name": "[ 더 퍼스트 유난희 단독초특가 ]황성주 박사의 데이업 프로틴 쉐이크 4가지맛세트[오리지널, 단호박고구마, 바나나, 초코](45gx7포x4박스)",
-          "price": 79000,
-          "image": "https://image2.lotteimall.com/goods/09/56/92/12925609_1.jpg/dims/resizemc/640x360/optimize",
-          "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12925609"
-        },
-        {
-          "name": "[릴리오] by 오일릴리 26FW 에센셜 울 100 시퀸 터틀 니트",
-          "price": 89000,
-          "image": "https://image2.lotteimall.com/goods/25/48/91/12914825_1.jpg/dims/resizemc/640x360/optimize",
-          "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12914825"
-        },
-        {
-          "name": "[릴리오] by 오일릴리 26FW 에센셜 캐시미어 가디건",
-          "price": 149000,
-          "image": "https://image2.lotteimall.com/goods/79/72/91/12917279_1.jpg/dims/resizemc/640x360/optimize",
-          "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12917279"
-        },
-        {
-          "name": "[릴리오] by 오일릴리 26FW 캐시미어100 페이즐리 머플러",
-          "price": 109000,
-          "image": "https://image2.lotteimall.com/goods/78/97/91/12919778_1.jpg/dims/resizemc/640x360/optimize",
-          "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12919778"
-        },
-        {
-          "name": "[릴리오] by 오일릴리 26FW 캐시미어 울 헤어리 니트",
-          "price": 109000,
-          "image": "https://image2.lotteimall.com/goods/69/24/92/12922469_1.jpg/dims/resizemc/640x360/optimize",
-          "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12922469"
-        }
-      ],
-      "discovered_from": [
-        "1141",
-        "1142",
-        "1147",
-        "1167",
-        "1316",
-        "1318",
         "957"
       ]
     }
