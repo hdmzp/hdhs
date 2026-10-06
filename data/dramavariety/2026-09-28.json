@@ -1,7 +1,7 @@
 {
   "weekStart": "2026-09-28",
   "weekEnd": "2026-10-04",
-  "collectedAt": "2026-10-06T12:18:38.969905+09:00",
+  "collectedAt": "2026-10-06T19:11:41.816665+09:00",
   "programs": [
     {
       "id": "drama_엄마가 미쳤어요_KBS1_오후 08:30",
@@ -687,14 +687,14 @@
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=6272014&qvt=0&query=%EC%A0%84%EC%A7%80%EC%A0%81%20%EC%B0%B8%EA%B2%AC%20%EC%8B%9C%EC%A0%90"
     },
     {
-      "id": "variety_살림하는 남자들 시즌2_KBS2_오후 10:55",
+      "id": "variety_살림하는 남자들 시즌2_KBS2_오후 10:35",
       "category": "variety",
       "channel": "KBS2",
       "title": "살림하는 남자들 시즌2",
       "days": [
         "토"
       ],
-      "time": "오후 10:55",
+      "time": "오후 10:35",
       "rating": 2.0,
       "ratingDate": "10.03",
       "ratingByDay": {
@@ -764,14 +764,14 @@
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=9329702&qvt=0&query=%EC%82%AC%EC%9E%A5%EB%8B%98%20%EA%B7%80%EB%8A%94%20%EB%8B%B9%EB%82%98%EA%B7%80%20%EA%B7%80"
     },
     {
-      "id": "variety_열린음악회_KBS1_오후 04:40",
+      "id": "variety_열린음악회_KBS1_오후 05:40",
       "category": "variety",
       "channel": "KBS1",
       "title": "열린음악회",
       "days": [
         "일"
       ],
-      "time": "오후 04:40",
+      "time": "오후 05:40",
       "rating": 2.0,
       "ratingDate": "10.04",
       "ratingByDay": {
@@ -1349,6 +1349,7 @@
       "channel": "KBS2",
       "title": "너 말고 다른 연애",
       "days": [
+        "토",
         "일"
       ],
       "time": "오후 09:20",
