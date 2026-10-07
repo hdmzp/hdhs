@@ -593,10 +593,10 @@
   .tl-b.tiny b { display: none; }
   /* 지상파·종편·케이블 줄의 현재 온에어 방송만 배경색으로 구분 (홈쇼핑 4사는 카테고리 색 유지) */
   .tl-row:not(.hs) .tl-b.now {
-    background: #FFE1E1;
-    border-left: 3px solid #EF4444;
+    background: #FFF1B8;
+    border-left: 3px solid #F5B700;
   }
-  .tl-row:not(.hs) .tl-b.now b { font-weight: 700; color: #B91C1C; }
+  .tl-row:not(.hs) .tl-b.now b { font-weight: 700; color: #6B4E00; }
   .tl-nowline { position: absolute; top: 0; bottom: 0; border-left: 2px solid #EF4444; z-index: 2; pointer-events: none; }
   .tl-nowline span {
     position: absolute; top: 4px; left: -22px;
@@ -3649,7 +3649,7 @@
     <button id="tabBtnFixedPgm">고정PGM</button>
     <button id="tabBtnCelebrity">셀럽PGM</button>
     <button id="tabBtnIndustry">편성맵</button>
-    <button id="tabBtnSchedule">지상파·종편·케이블</button>
+    <button id="tabBtnSchedule">지상파·종편</button>
     <button id="tabBtnDramaVariety">드라마·예능</button>
     <button id="tabBtnWeather">날씨</button>
     <button id="tabBtnRanking">랭킹</button>
@@ -4099,7 +4099,7 @@ const TAB_TIPS = {
     ],
   },
   schedule: {
-    title: '지상파·종편·케이블 탭은?',
+    title: '지상파·종편 탭은?',
     items: [
       '네이버 편성표 검색 결과를 가져와요',
       '<b>타임라인형</b>은 위쪽에 동시간대 4사 편성을 함께 보여줘요 (시간표형으로 전환 가능)',
