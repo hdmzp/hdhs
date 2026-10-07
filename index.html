@@ -915,6 +915,7 @@
   .in-ep-line { font-size: 11.5px; color: var(--ink-soft); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .in-ep-hs { font-size: 12px; line-height: 1.5; color: var(--ink-soft); }
   .in-ep-hs.hit { color: var(--ink); font-weight: 600; }
+  .in-ep-hs.qhit { background: #E8F0FF; border-radius: 4px; padding: 0 3px; margin: 0 -3px; }
   .in-ep-hs b { color: var(--ink); font-weight: 700; }
   .in-ep-t { font-size: 11px; color: var(--ink-faint); }
   .in-trk-eps mark { background: #FFE58A; color: inherit; padding: 0 1px; border-radius: 2px; }
@@ -4068,6 +4069,7 @@
       <div class="in-trk-head">
         <b>📡 건강프로그램 추적</b>
         <button type="button" class="lv-go-btn" id="inTrkBtn">조회</button>
+        <input type="search" id="inTrkSearch" class="lv-search-input" placeholder="상품명·브랜드·프로그램 검색" aria-label="상품명·브랜드·프로그램 검색">
       </div>
       <div class="lv-slicer" id="inTrkChSlicer" style="margin:8px 0 4px;"></div>
       <p class="in-muted" style="font-size:11.5px;margin:0 0 4px;">※ 케이블(tvN·ENA·MBC every1·SBS Plus) 편성은 2026-10-06부터 수집 시작</p>
@@ -9882,6 +9884,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
   }
 
   let inTrkStarOnly = false; // ⭐ 소재 일치 회차만 보기
+  let inTrkQuery = '';       // 상품명·브랜드·프로그램 검색어 (공백·기호 제거 후 부분일치)
   // 회차 단서를 키워드로만 보여줄 때, ⭐ 판정 단어(IN_TRK_INGR) 외에 주제로 뽑을 단어 (표시용)
   const IN_TRK_TOPICS = [
     '심장', '위암', '대장암', '간암', '폐암', '유방암', '용종', '노화', '탈모', '고지혈', '염증', '노폐물', '면역력',
@@ -9931,13 +9934,22 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
       const hotGroups = IN_TRK_INGR.filter(g => g.some(k => hitWords.has(k)));
       const hot = new Set([].concat(...hotGroups));
       if (inTrkStarOnly && !star) return;
+      // 검색: 동시간 상품명·브랜드, 프로그램명, 회차 단서 중 하나라도 포함하면 남긴다. 상품이 걸리면 그 상품을 맨 위로.
+      if (inTrkQuery) {
+        hs.forEach(x => { x.q = inTrkNorm(x.r.brand + ' ' + x.r.prod).includes(inTrkQuery); });
+        const inHs = hs.some(x => x.q);
+        if (!inHs && !inTrkNorm(ep.ch + ep.series).includes(inTrkQuery) && !inTrkNorm(texts.join(' ')).includes(inTrkQuery)) return;
+        hs.sort((x, y) => (y.q === true) - (x.q === true));
+      }
       rows.push({ ep: ep, c: c, texts: texts, found: found, hs: hs, star: star, hot: hot });
     });
     rows.sort((x, y) => (y.ep.d.localeCompare(x.ep.d)) || (x.ep.a - y.ep.a));
 
     const starCnt = rows.filter(r => r.star).length;
+    const qCnt = inTrkQuery ? rows.filter(r => r.hs.some(x => x.q)).length : 0;
     let html = '<div class="in-trk-bar"><p class="in-trk-sum">조회 ' + inTrkResult.days + '일 · 건강프로그램 본방 <b>' + rows.length + '회</b>'
-      + ' · 소재 일치 ⭐ <b>' + starCnt + '회</b></p>'
+      + ' · 소재 일치 ⭐ <b>' + starCnt + '회</b>'
+      + (inTrkQuery ? ' · 검색 상품이 동시간에 나간 회차 <b>' + qCnt + '회</b>' : '') + '</p>'
       + '<label class="in-trk-star"><input type="checkbox" id="inTrkStarOnly"' + (inTrkStarOnly ? ' checked' : '') + '> ⭐ 일치 회차만</label></div>';
 
     if (!rows.length) {
@@ -9989,7 +10001,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
         hsHtml = hs.slice(0, MAX).map(x => {
           const name = (x.r.brand && !x.r.prod.includes(x.r.brand) ? x.r.brand + ' ' : '') + x.r.prod;
           const nm = x.r.link ? '<a href="' + inEsc(x.r.link) + '" target="_blank" rel="noopener">' + mark(name, x.hit) + '</a>' : mark(name, x.hit);
-          return '<div class="in-ep-hs' + (x.hit.length ? ' hit' : '') + '">' + (x.hit.length ? '⭐ ' : '')
+          return '<div class="in-ep-hs' + (x.hit.length ? ' hit' : '') + (x.q ? ' qhit' : '') + '">' + (x.hit.length ? '⭐ ' : '')
             + '<span class="in-ep-t">' + inEsc(x.r.st) + '</span> <b>' + inEsc(x.r.label) + '</b> ' + nm + '</div>';
         }).join('') + (hs.length > MAX ? '<div class="in-muted">외 ' + (hs.length - MAX) + '건</div>' : '');
       }
@@ -10037,6 +10049,14 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     $('inEndPicker').addEventListener('change', e => { if (e.target.value) inSetRange(inStart, e.target.value); });
     $('inQueryBtn').addEventListener('click', inQuery);
     $('inTrkBtn').addEventListener('click', inAnalyzePpl);
+    let inTrkSearchTimer = null;
+    $('inTrkSearch').addEventListener('input', e => {
+      clearTimeout(inTrkSearchTimer);
+      inTrkSearchTimer = setTimeout(() => {
+        inTrkQuery = inTrkNorm(e.target.value);
+        if (inTrkResult) inRenderPpl();
+      }, 200);
+    });
     inRenderTrkChSlicer();
     inRenderTrkDaySlicer();
     inRenderTrkSlicer();
