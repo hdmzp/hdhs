@@ -114,7 +114,7 @@ def clean(t: str) -> str:
 
 
 # 단서로 쓸 수 없는 결과: 불법 다운로드·파일공유 제목, 편성표 목록 텍스트
-JUNK = re.compile(r"다시보기|다운로드|스트리밍|1080p|720p|WANNA|파일쿠키|filekuki|토렌트|torrent|\.E\s?\d+|\bE\s?\d{2,}\b|›|www\.", re.I)
+JUNK = re.compile(r"다시보기|다운로드|스트리밍|1080p|720p|WANNA|파일쿠키|filekuki|토렌트|torrent|\.E\s?\d+|\bE\s?\d{2,}\b|›|www\.|관련문서|더보기$", re.I)
 
 
 def parse_official(html: str, ch: str):
@@ -136,40 +136,103 @@ def parse_official(html: str, ch: str):
 
 
 def parse_clues(html: str, series: str, epi: str, date: str):
-    """검색 결과에서 '프로그램명' + 'N회'(또는 방송 날짜)가 함께 들어간 제목만 단서로 모은다."""
+    """검색 결과 제목 중 그 회차 이야기인 것만 단서로 모은다.
+
+    네이버 PC 결과는 제목이 잘려('...관절 비상 1위는 누구? |') 프로그램명·회차가 제목에서 빠지는 경우가 많다.
+    그래서 제목 자체가 아니라, 제목이 속한 결과 묶음(제목+설명+출처) 안에 프로그램명과 'N회'(회차가 없으면
+    방송 날짜)가 함께 있는지로 판단한다.
+    """
     soup = BeautifulSoup(html, "html.parser")
     ns = norm(series)
     md = datetime.strptime(date, "%Y-%m-%d")
-    date_pats = [f"{md.month}월 {md.day}일", f"{md.month}월{md.day}일", md.strftime("%y%m%d"), md.strftime("%Y.%m.%d")]
-    clues, seen = [], set()
+    date_pats = [f"{md.month}월 {md.day}일", f"{md.month}월{md.day}일", md.strftime("%y%m%d"), md.strftime("%Y.%m.%d"),
+                 md.strftime("%y/%m/%d")]
+    epi_re = re.compile(rf"(?<!\d){epi}\s*(회|화)") if epi else None
+
+    def about_episode(text: str) -> bool:
+        if ns not in norm(text):
+            return False
+        return bool(epi_re.search(text)) if epi_re else any(p in text for p in date_pats)
+
+    now = datetime.now(KST).replace(tzinfo=None)
+
+    def posted_at(text: str):
+        """결과 카드의 게시 시각 ('5일 전', '1주 전', '2026.09.24.') -> datetime 또는 None"""
+        m = re.search(r"(\d+)\s*(분|시간|일|주)\s*전", text)
+        if m:
+            n = int(m.group(1))
+            return now - {"분": timedelta(minutes=n), "시간": timedelta(hours=n),
+                          "일": timedelta(days=n), "주": timedelta(weeks=n)}[m.group(2)]
+        m = re.search(r"(20\d{2})\.(\d{1,2})\.(\d{1,2})\.", text)
+        if m:
+            return datetime(int(m.group(1)), int(m.group(2)), int(m.group(3)))
+        return None
+
+    def card_of(a):
+        """제목 링크가 속한 결과 카드(제목+설명+출처+게시일). 너무 크면 다른 결과가 섞이므로 None."""
+        node = a
+        for _ in range(4):
+            node = node.parent
+            if node is None:
+                return None
+            t = node.get_text(" ", strip=True)
+            if len(t) > 700:
+                return None
+            if ns in norm(t) and posted_at(t):
+                return t
+        return None
+
+    # 후보 제목
+    #  (1) 제목 자체에 프로그램명+회차(또는 날짜)가 있는 링크
+    #  (2) 네이버가 제목을 잘라('...1위는 누구? | 스타건강랭킹 넘버....') 회차가 빠진 결과:
+    #      카드에 프로그램명이 있고, 다른 회차 번호가 없고, 방송일 2주 전~1주 후에 올라온 글
+    cand = []
     for a in soup.find_all("a"):
+        txt = a.get_text(" ", strip=True)
+        if about_episode(txt):
+            cand.append(a)
+            continue
+        card = card_of(a)
+        if not card:
+            continue
+        other_epis = {n for n, _ in re.findall(r"(?<!\d)(\d{1,4})\s*(회|화)", card)} - ({epi} if epi else set())
+        if other_epis:
+            continue
+        pa = posted_at(card)
+        if not (md - timedelta(days=14) <= pa <= md + timedelta(days=7)):
+            continue
+        cand.append(a)
+
+    clues, seen = [], set()
+    for a in cand:
         t = clean(a.get_text(" ", strip=True))
-        if not (8 <= len(t) <= 160):
-            continue
-        if ns not in norm(t):
-            continue
-        if epi:
-            if not re.search(rf"(?<!\d){epi}\s*(회|화)", t):
-                continue
-        elif not any(p in t for p in date_pats):
+        t = re.sub(r"\s*(\||\.{2,}|…)\s*$", "", t).strip()   # 잘린 제목 끝의 '|', '....'
+        if not (8 <= len(t) <= 260):
             continue
         if JUNK.search(t) or len(re.findall(r"\d{1,2}:\d{2}", t)) >= 2:
+            continue
+        if re.search(r"\bEP\.?\s*\d+", t, re.I):  # 다른 프로그램 클립 ('Show Champion l EP.543')
             continue
         # 다른 해 방송분 ('굿모닝대한민국 2012년 10월 5일')
         years = re.findall(r"(?<!\d)(20\d{2})\s*년", t)
         if years and str(md.year) not in years:
             continue
+        # 'KBS 250919 방송'처럼 방송일 표기가 있으면 그 회차 방송일 근처여야 한다
+        stamps = re.findall(r"(?<!\d)(\d{2})(\d{2})(\d{2})\s*방송", t)
+        if stamps and not any(md - timedelta(days=14) <= datetime(2000 + int(y), int(mo), int(dd)) <= md + timedelta(days=7)
+                              for y, mo, dd in stamps if 1 <= int(mo) <= 12 and 1 <= int(dd) <= 31):
+            continue
         # 프로그램명·회차·채널·날짜 말고 내용이 거의 없는 제목 ('엄지의 제왕 714회')은 버린다
         rest = norm(t).replace(ns, "", 1)
         rest = re.sub(rf"{epi}(회|화)" if epi else "", "", rest)
-        rest = re.sub(r"\d+|tv조선|tvchosun|채널a|mbn|jtbc|kbs\d?|mbc|sbs|tvn|ena|방송|예고|회차|본방", "", rest)
+        rest = re.sub(r"\d+|tv조선|tvchosun|채널a|mbn|jtbc|kbs\d?|mbc|sbs|tvn|ena|방송|예고|회차|본방|셋탑|위치|감독|출연|상영시간", "", rest)
         if len(rest) < 6:
             continue
         k = norm(t)
         if k in seen or any(k in s or s in k for s in seen):
             continue
         seen.add(k)
-        clues.append(t)
+        clues.append(t[:200])
         if len(clues) >= MAX_CLUES:
             break
     return clues
