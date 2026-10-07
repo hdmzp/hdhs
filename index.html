@@ -900,15 +900,19 @@
   .in-trk-eps { white-space: normal; }
   .in-trk-eps td { vertical-align: top; white-space: normal; word-break: keep-all; overflow-wrap: anywhere; }
   .in-trk-eps td:nth-child(1) { min-width: 170px; }
-  .in-trk-eps td:nth-child(2) { min-width: 260px; max-width: 420px; }
-  .in-trk-eps td:nth-child(3) { min-width: 300px; }
+  .in-trk-eps td:nth-child(2) { min-width: 320px; }
+  .in-trk-eps td:nth-child(3) { min-width: 180px; max-width: 280px; }
   .in-trk-eps tr.star td { background: #FFFBEA; }
   .in-ep-when { font-size: 11px; color: var(--ink-faint); font-weight: 600; }
   .in-ep-prog { font-weight: 600; }
   .in-ep-ch { color: var(--ink-soft); font-weight: 600; }
   .in-ep-no { color: var(--ink-soft); font-size: 11.5px; }
-  .in-ep-clue { font-size: 12px; line-height: 1.45; color: var(--ink); margin-bottom: 3px; }
-  .in-ep-tag { font-size: 10px; font-weight: 700; color: var(--brand-blue); border: 1px solid var(--brand-blue); border-radius: 4px; padding: 0 3px; }
+  .in-ep-clue { font-size: 12px; line-height: 1.5; color: var(--ink); margin-bottom: 4px; display: flex; flex-wrap: wrap; align-items: center; gap: 3px 4px; }
+  .in-ep-tag { font-size: 10px; font-weight: 700; color: var(--brand-blue); border: 1px solid var(--brand-blue); border-radius: 4px; padding: 0 3px; margin-right: 2px; flex: none; }
+  .in-ep-tag.blog { color: #0E9F6E; border-color: #0E9F6E; }
+  .in-ep-kw { font-size: 11.5px; font-weight: 600; background: var(--paper-dim); border-radius: 10px; padding: 1px 7px; }
+  .in-ep-kw.hot { background: #FFE58A; }
+  .in-ep-line { font-size: 11.5px; color: var(--ink-soft); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .in-ep-hs { font-size: 12px; line-height: 1.5; color: var(--ink-soft); }
   .in-ep-hs.hit { color: var(--ink); font-weight: 600; }
   .in-ep-hs b { color: var(--ink); font-weight: 700; }
@@ -9878,6 +9882,19 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
   }
 
   let inTrkStarOnly = false; // ⭐ 소재 일치 회차만 보기
+  // 회차 단서를 키워드로만 보여줄 때, ⭐ 판정 단어(IN_TRK_INGR) 외에 주제로 뽑을 단어 (표시용)
+  const IN_TRK_TOPICS = [
+    '심장', '위암', '대장암', '간암', '폐암', '유방암', '용종', '노화', '탈모', '고지혈', '염증', '노폐물', '면역력',
+    '허리', '척추', '디스크', '갑상선', '폐건강', '스트레스', '우울', '호르몬', '체중', '혈류', '저속노화', '해독',
+  ];
+  const IN_TRK_KW_ALL = [].concat(...IN_TRK_INGR, IN_TRK_TOPICS);
+  const inTrkKwLabel = k => /^[a-z0-9]+$/.test(k) ? k.toUpperCase() : k;
+  // 문장에서 키워드만 뽑는다 (긴 단어에 포함된 짧은 단어는 뺀다: '위건강'이 있으면 '건강' 제외 등)
+  const inTrkKeywords = text => {
+    const n = inTrkNorm(text);
+    const hit = [...new Set(IN_TRK_KW_ALL.filter(k => n.includes(k)))];
+    return hit.filter(k => !hit.some(o => o !== k && o.includes(k)));
+  };
 
   function inRenderPpl() {
     const body = $('inTrkBody');
@@ -9909,8 +9926,12 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
         })
         .sort((x, y) => (y.hit.length > 0) - (x.hit.length > 0) || x.m - y.m);
       const star = hs.some(x => x.hit.length);
+      // ⭐를 만든 묶음의 단어 (단서 키워드 중 강조할 것)
+      const hitWords = new Set([].concat(...hs.map(x => x.hit)));
+      const hotGroups = IN_TRK_INGR.filter(g => g.some(k => hitWords.has(k)));
+      const hot = new Set([].concat(...hotGroups));
       if (inTrkStarOnly && !star) return;
-      rows.push({ ep: ep, c: c, texts: texts, found: found, hs: hs, star: star });
+      rows.push({ ep: ep, c: c, texts: texts, found: found, hs: hs, star: star, hot: hot });
     });
     rows.sort((x, y) => (y.ep.d.localeCompare(x.ep.d)) || (x.ep.a - y.ep.a));
 
@@ -9932,9 +9953,9 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     };
 
     html += '<div class="in-trk-scroll"><table class="in-trk-table in-trk-eps"><thead><tr>'
-      + '<th>방송</th><th>회차 단서</th><th>동시간 홈쇼핑 건강식품</th>'
+      + '<th>프로그램</th><th>동시간 홈쇼핑 건강식품</th><th>회차 단서</th>'
       + '</tr></thead><tbody>';
-    rows.forEach(({ ep, c, texts, found, hs, star }) => {
+    rows.forEach(({ ep, c, texts, found, hs, star, hot }) => {
       const q = ep.series + (ep.epi ? ' ' + ep.epi + '회' : '');
       const naver = 'https://search.naver.com/search.naver?query=' + encodeURIComponent(q);
       const md = ep.d.slice(5).replace('-', '/') + '(' + IN_DAYS[inWeekday(ep.d)] + ')';
@@ -9943,11 +9964,21 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
         + '<a href="' + naver + '" target="_blank" rel="noopener">' + inEsc(ep.series) + '</a>'
         + (ep.epi ? ' <span class="in-ep-no">' + ep.epi + '회</span>' : '') + '</div>';
 
+      // 회차 단서는 출처(공식 회차정보 / 블로그·뉴스 등 검색 제목)별로 키워드만. 키워드가 없으면 한 줄 요약.
       let clueHtml;
       if (texts.length) {
-        clueHtml = texts.slice(0, 3).map((t, i) =>
-          '<div class="in-ep-clue">' + (i === 0 && c.official ? '<span class="in-ep-tag">공식</span> ' : '')
-          + mark(t.length > 110 ? t.slice(0, 110) + '…' : t, found) + '</div>').join('');
+        const srcs = [];
+        if (c.official) srcs.push(['공식', [c.official]]);
+        if ((c.clues || []).length) srcs.push(['블로그', c.clues]);
+        clueHtml = srcs.map(([label, list]) => {
+          const full = list.join(' / ');
+          const kws = inTrkKeywords(full).slice(0, 5);
+          const bodyHtml = kws.length
+            ? kws.map(k => '<span class="in-ep-kw' + (hot.has(k) ? ' hot' : '') + '">' + inEsc(inTrkKwLabel(k)) + '</span>').join('')
+            : '<span class="in-ep-line">' + inEsc(list[0]) + '</span>';
+          return '<div class="in-ep-clue" title="' + inEsc(full) + '"><span class="in-ep-tag' + (label === '블로그' ? ' blog' : '') + '">'
+            + label + '</span>' + bodyHtml + '</div>';
+        }).join('');
       } else {
         clueHtml = '<span class="in-muted">' + (ep.d < IN_TRK_CLUE_FROM ? '수집 전' : '–') + '</span>';
       }
@@ -9962,7 +9993,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
             + '<span class="in-ep-t">' + inEsc(x.r.st) + '</span> <b>' + inEsc(x.r.label) + '</b> ' + nm + '</div>';
         }).join('') + (hs.length > MAX ? '<div class="in-muted">외 ' + (hs.length - MAX) + '건</div>' : '');
       }
-      html += '<tr' + (star ? ' class="star"' : '') + '><td>' + prog + '</td><td>' + clueHtml + '</td><td>' + hsHtml + '</td></tr>';
+      html += '<tr' + (star ? ' class="star"' : '') + '><td>' + prog + '</td><td>' + hsHtml + '</td><td>' + clueHtml + '</td></tr>';
     });
     html += '</tbody></table></div>'
       + '<p class="lv-table-note">동시간 = TV 방송 시작 ~ 종료 ' + IN_TRK_AFTER_MIN + '분 후 사이에 시작한 홈쇼핑 건강식품'
