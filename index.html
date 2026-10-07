@@ -3232,6 +3232,8 @@
     vertical-align: 1px;
   }
   .cel-notice-detail { color: var(--ink-soft); }
+  .cel-notice-link { color: var(--brand-blue); font-weight: 700; text-decoration: none; }
+  .cel-notice-link:hover { text-decoration: underline; }
   .cel-notice-empty { font-size: 12px; color: var(--ink-soft); }
 
   .cel-week { flex: 0 0 auto; }
@@ -7258,9 +7260,10 @@ function celBuildOverlaps(files) {
         const g = groups[it.item] || (groups[it.item] = { category: it.category, rows: {}, files: new Set() });
         g.files.add(file);
         const key = file + '|' + (b.date || b.label);
-        const row = g.rows[key] || (g.rows[key] = { company: meta.company || '', title: meta.title || '', date: b.date || '', brands: [] });
+        const row = g.rows[key] || (g.rows[key] = { company: meta.company || '', title: meta.title || '', date: b.date || '', brands: [], link: '' });
         const brand = String(p.brand || '').trim();
         if (brand && !CEL_BRAND_PLACEHOLDER.test(brand) && !row.brands.includes(brand)) row.brands.push(brand);
+        if (!row.link && p.link) row.link = p.link;  // 브랜드를 못 찾은 GS 회차의 '확인↗' 링크
       });
     });
   });
@@ -7290,8 +7293,14 @@ function celRenderNotice(files) {
           const rows = o.rows.map(r => {
             const md = r.date ? `${parseInt(r.date.slice(5, 7), 10)}/${parseInt(r.date.slice(8, 10), 10)}` : '';
             // GS는 상품명으로 브랜드를 추론하는데(fixed/celeb_brand.py) 못 찾은 회차는
-            // 빈칸 대신 '(브랜드 미정)'으로 남긴다 - 누락처럼 보이지 않게. 다른 회사는 그대로 생략.
-            const brandText = r.brands.length ? r.brands.join('/') : (r.company === 'GS' ? '(브랜드 미정)' : '');
+            // 빈칸 대신 '확인↗'(그 품목 상품 페이지 링크)을 단다 - 누락처럼 보이지 않고
+            // 바로 열어 브랜드를 볼 수 있게. 다른 회사의 빈 브랜드는 그대로 생략.
+            const brandText = r.brands.length ? r.brands.join('/')
+              : (r.company === 'GS'
+                  ? (r.link
+                      ? `<a class="cel-notice-link" href="${r.link}" target="_blank" rel="noopener noreferrer" title="브랜드를 못 찾은 상품이에요 - 상품 페이지에서 확인">확인↗</a>`
+                      : '확인필요')
+                  : '');
             return [r.company, r.title, md, brandText].filter(Boolean).join(' ');
           }).join(', ');
           return `<div class="cel-notice-row">` +

@@ -95,11 +95,14 @@ def build_overlaps(hist: dict, items: list, hide=frozenset()):
                     "program": prog.get("program_title") or prog.get("tab_name", ""),
                     "date": b.get("date", ""),
                     "brands": [],
+                    "link": "",
                     "category": it["category"],
                 })
                 brand = (p.get("brand") or "").strip()
                 if brand and not re.match(r"^(gs\s*shop|gs샵)$", brand, re.I) and brand not in e["brands"]:
                     e["brands"].append(brand)
+                if not e["link"] and p.get("link"):
+                    e["link"] = p["link"]
     out = []
     for item, entries in groups.items():
         programs = {k[0] for k in entries}
@@ -158,8 +161,8 @@ def main():
             parts = []
             for e in rows:
                 md = f"{int(e['date'][5:7])}/{int(e['date'][8:10])}" if e["date"] else ""
-                # 화면과 같은 규칙: GS 브랜드를 못 찾은 회차는 '(브랜드 미정)'
-                brand_text = "/".join(e["brands"]) or ("(브랜드 미정)" if e["company"] == "GS" else "")
+                # 화면과 같은 규칙: GS 브랜드를 못 찾은 회차는 '확인↗'(화면에선 상품 페이지 링크)
+                brand_text = "/".join(e["brands"]) or (f"확인↗ {e['link']}".strip() if e["company"] == "GS" else "")
                 parts.append(" ".join(x for x in [e["company"], e["program"], md, brand_text] if x))
             print(f"  [{rows[0]['category']}] {item} {len(rows)}회 편성 ({', '.join(parts)})")
 
