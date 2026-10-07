@@ -154,23 +154,54 @@ def parse_clues(html: str, series: str, epi: str, date: str):
             return False
         return bool(epi_re.search(text)) if epi_re else any(p in text for p in date_pats)
 
-    # 후보 제목: (1) 제목 자체에 프로그램명+회차가 있는 링크
-    #           (2) 네이버가 검색어를 강조(<mark>)한 곳에서 가장 가까운 결과 묶음 안의 링크
-    #               - 검색어가 설명·출처에만 있고 제목은 잘린 결과를 살리기 위함
-    cand = [a for a in soup.find_all("a") if about_episode(a.get_text(" ", strip=True))]
-    for mk in soup.find_all("mark"):
-        ctx = mk.parent.get_text(" ", strip=True) if mk.parent else ""
-        if not about_episode(ctx):
-            continue
-        node = mk
-        for _ in range(6):
+    now = datetime.now(KST).replace(tzinfo=None)
+
+    def posted_at(text: str):
+        """결과 카드의 게시 시각 ('5일 전', '1주 전', '2026.09.24.') -> datetime 또는 None"""
+        m = re.search(r"(\d+)\s*(분|시간|일|주)\s*전", text)
+        if m:
+            n = int(m.group(1))
+            return now - {"분": timedelta(minutes=n), "시간": timedelta(hours=n),
+                          "일": timedelta(days=n), "주": timedelta(weeks=n)}[m.group(2)]
+        m = re.search(r"(20\d{2})\.(\d{1,2})\.(\d{1,2})\.", text)
+        if m:
+            return datetime(int(m.group(1)), int(m.group(2)), int(m.group(3)))
+        return None
+
+    def card_of(a):
+        """제목 링크가 속한 결과 카드(제목+설명+출처+게시일). 너무 크면 다른 결과가 섞이므로 None."""
+        node = a
+        for _ in range(4):
             node = node.parent
-            if node is None or node.name in ("body", "html"):
-                break
-            links = [a for a in node.find_all("a") if 8 <= len(clean(a.get_text(" ", strip=True))) <= 260]
-            if links:
-                cand.extend(links)
-                break
+            if node is None:
+                return None
+            t = node.get_text(" ", strip=True)
+            if len(t) > 700:
+                return None
+            if ns in norm(t) and posted_at(t):
+                return t
+        return None
+
+    # 후보 제목
+    #  (1) 제목 자체에 프로그램명+회차(또는 날짜)가 있는 링크
+    #  (2) 네이버가 제목을 잘라('...1위는 누구? | 스타건강랭킹 넘버....') 회차가 빠진 결과:
+    #      카드에 프로그램명이 있고, 다른 회차 번호가 없고, 방송일 2주 전~1주 후에 올라온 글
+    cand = []
+    for a in soup.find_all("a"):
+        txt = a.get_text(" ", strip=True)
+        if about_episode(txt):
+            cand.append(a)
+            continue
+        card = card_of(a)
+        if not card:
+            continue
+        other_epis = {n for n, _ in re.findall(r"(?<!\d)(\d{1,4})\s*(회|화)", card)} - ({epi} if epi else set())
+        if other_epis:
+            continue
+        pa = posted_at(card)
+        if not (md - timedelta(days=14) <= pa <= md + timedelta(days=7)):
+            continue
+        cand.append(a)
 
     clues, seen = [], set()
     for a in cand:
