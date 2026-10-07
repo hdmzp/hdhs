@@ -4319,15 +4319,17 @@ function renderGrid(data, dateStr) {
   const nowMin = nowWithinDay(dateStr);
   const hours = buildHourMarks();
 
+  // 케이블은 오늘부터만 수집하므로, 데이터가 없는 날짜엔 열을 숨긴다
+  const shown = CHANNELS.filter(ch => ch.group !== 'cable' || data[ch.key]);
   const channelPrograms = {};
-  CHANNELS.forEach(ch => {
+  shown.forEach(ch => {
     const list = (data[ch.key] || []).slice().sort((a,b) => timeToMinutes(a.start) - timeToMinutes(b.start));
     channelPrograms[ch.key] = list;
   });
 
   let html = '<div class="scroll-x"><table class="schedule"><thead><tr>';
   html += '<th class="time-col">시간</th>';
-  CHANNELS.forEach(ch => {
+  shown.forEach(ch => {
     html += `<th class="${ch.group}">${ch.key}<span class="ch-band"></span></th>`;
   });
   html += '</tr></thead><tbody>';
@@ -4336,7 +4338,7 @@ function renderGrid(data, dateStr) {
     html += '<tr>';
     html += `<td class="time-col"><span class="hh">${String(h).padStart(2,'0')}</span>:00</td>`;
 
-    CHANNELS.forEach(ch => {
+    shown.forEach(ch => {
       const progs = channelPrograms[ch.key];
       const inThisHour = progs.filter(p => Math.floor(timeToMinutes(p.start) / 60) === h);
 

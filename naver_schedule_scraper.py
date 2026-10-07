@@ -41,7 +41,7 @@ import re
 import json
 import time
 import os
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from bs4 import BeautifulSoup
 
 HEADERS = {
@@ -67,6 +67,9 @@ CHANNELS = {
     "MBC every1": "mbc every1",
     "SBS Plus": "sbs plus",
 }
+
+# 케이블은 과거 날짜를 채우지 않고 오늘(KST)부터만 저장한다
+FUTURE_ONLY_CHANNELS = {"tvN", "ENA", "MBC every1", "SBS Plus"}
 
 OUTPUT_DIR = "data"
 REQUEST_DELAY_SEC = 1.5
@@ -263,6 +266,7 @@ def scrape_channel(channel_name: str, channel_query: str, ref_year: int):
 def main():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     ref_year = datetime.now().year
+    today_kst = datetime.now(timezone(timedelta(hours=9))).strftime("%Y-%m-%d")
 
     all_data = {}
 
@@ -279,6 +283,8 @@ def main():
         else:
             print(f"  [버전 {version}] {channel_name}")
             for iso_date, programs in sorted(by_date.items()):
+                if channel_name in FUTURE_ONLY_CHANNELS and iso_date < today_kst:
+                    continue
                 all_data.setdefault(iso_date, {})[channel_name] = programs
                 print(f"    {iso_date}: {len(programs)}개 프로그램")
 
