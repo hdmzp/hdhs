@@ -161,8 +161,10 @@ def main():
             parts = []
             for e in rows:
                 md = f"{int(e['date'][5:7])}/{int(e['date'][8:10])}" if e["date"] else ""
-                # 화면과 같은 규칙: GS 브랜드를 못 찾은 회차는 '확인↗'(화면에선 상품 페이지 링크)
-                brand_text = "/".join(e["brands"]) or (f"확인↗ {e['link']}".strip() if e["company"] == "GS" else "")
+                # 화면과 같은 규칙: 브랜드를 못 찾은 회차는 GS '확인↗' / 그 외 '상품↗'
+                # (화면에선 상품 페이지 링크. 여기선 주소를 같이 찍는다)
+                brand_text = "/".join(e["brands"]) or \
+                    f"{'확인' if e['company'] == 'GS' else '상품'}↗ {e['link']}".strip()
                 parts.append(" ".join(x for x in [e["company"], e["program"], md, brand_text] if x))
             print(f"  [{rows[0]['category']}] {item} {len(rows)}회 편성 ({', '.join(parts)})")
 
