@@ -2,7 +2,7 @@
   "company": "GS",
   "broadcast": "data",
   "month": "2026-10",
-  "updated_at": "2026-10-07T09:18:56+09:00",
+  "updated_at": "2026-10-07T11:53:48+09:00",
   "days": {
     "2026-10-01": [
       {
@@ -2581,11 +2581,264 @@
     ],
     "2026-10-07": [
       {
+        "start": "00:38",
+        "end": "01:39",
+        "brand": "라비오라",
+        "product": "라비오라 레몬허니워시오프팩 시즌3 배종옥 패키지",
+        "price": 99000,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1087102799&brddate=20261012083600&pgmID=6737&ordChannel=WE&tveshop=Y",
+        "category": "미용",
+        "lavangba_category": "화장품/미용",
+        "hsshow_id": "3359351b9ac19d4d7c2df100d148f284"
+      },
+      {
+        "start": "01:50",
+        "end": "01:55",
+        "brand": "덴프스",
+        "product": "덴프스 덴티 자일리톨12",
+        "price": 298000,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1134697445&brddate=20261009024600&pgmID=13352&ordChannel=WE&tveshop=Y",
+        "category": "건강식품",
+        "lavangba_category": "식품",
+        "hsshow_id": "4cd15fdfe17d0c9bd6162e7d35288fee"
+      },
+      {
+        "start": "01:55",
+        "end": "02:00",
+        "brand": "코어",
+        "product": "코어 어센틱 26FW FAUX 레더 다운 베스트",
+        "price": 99900,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1132130350&brddate=20261007015500&pgmID=13307&ordChannel=WE&tveshop=Y",
+        "category": "의류",
+        "lavangba_category": "패션의류",
+        "hsshow_id": "add099d4ec7c8395d3badb775c68a9a5"
+      },
+      {
+        "start": "02:00",
+        "end": "02:05",
+        "brand": "제이슨우",
+        "product": "제이슨우 26FW Audrey 퀼팅 헝가리 구스다운 바라클라바 숏 베스트 _",
+        "price": 89900,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1128104017&brddate=20261007034200&pgmID=13307&ordChannel=WE&tveshop=Y",
+        "category": "의류",
+        "lavangba_category": "패션의류",
+        "hsshow_id": "aea7ca7e56cc0566e2bb007ce60c335c"
+      },
+      {
+        "start": "02:05",
+        "end": "02:10",
+        "brand": "",
+        "product": "더마콜라겐 바이탈 리포좀C 8",
+        "price": 379500,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1136832876&brddate=20261007040800&pgmID=13352&ordChannel=WE&tveshop=Y",
+        "category": "건강식품",
+        "lavangba_category": "식품",
+        "hsshow_id": "3b26bd0272510b64bbd0c9bc29fdf3db"
+      },
+      {
+        "start": "02:25",
+        "end": "02:31",
+        "brand": "까스텔바작",
+        "product": "까스텔바작 26FW 씬패딩 트렌치 자켓 여성용",
+        "price": 129000,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1135920821&brddate=20261008034700&pgmID=12502&ordChannel=WE&tveshop=Y",
+        "category": "의류",
+        "lavangba_category": "스포츠/레저",
+        "hsshow_id": "0623bfc93f59e1b8b9452aed4487be43"
+      },
+      {
+        "start": "02:36",
+        "end": "02:41",
+        "brand": "바스키아",
+        "product": "바스키아 26FW 여성 씬 라이트 후드 경량패딩 / GS단독상품",
+        "price": 59900,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1134725820&brddate=20261008050000&pgmID=12557&ordChannel=WE&tveshop=Y",
+        "category": "의류",
+        "lavangba_category": "패션의류",
+        "hsshow_id": "a8035a595889a9146c5c009eb13070ed"
+      },
+      {
+        "start": "02:46",
+        "end": "02:52",
+        "brand": "SJ와니",
+        "product": "SJ와니 26FW 알파카 핸드메이드 자수 후드 니트",
+        "price": 129900,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1130691984&brddate=20261007024600&pgmID=13307&ordChannel=WE&tveshop=Y",
+        "category": "의류",
+        "lavangba_category": "패션의류",
+        "hsshow_id": "b00d7de084273b0981b062db8b018125"
+      },
+      {
+        "start": "03:01",
+        "end": "03:06",
+        "brand": "디아골드",
+        "product": "디아골드 24K순금 클로버 원터치 귀걸이",
+        "price": 699000,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1136563566&brddate=20261008050500&pgmID=6754&ordChannel=WE&tveshop=Y",
+        "category": "잡화/주얼리",
+        "lavangba_category": "패션잡화",
+        "hsshow_id": "ed96cd06630d252fb7df3089c035f141"
+      },
+      {
+        "start": "03:12",
+        "end": "03:17",
+        "brand": "모르간",
+        "product": "모르간 26FW 스탠딩 울 하프코트",
+        "price": 119900,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1126625006&brddate=20261008153800&pgmID=13307&ordChannel=WE&tveshop=Y",
+        "category": "의류",
+        "lavangba_category": "패션의류",
+        "hsshow_id": "d72afdbc27db95e97aac4aa2831eadf1"
+      },
+      {
+        "start": "03:37",
+        "end": "03:42",
+        "brand": "바스키아",
+        "product": "바스키아 26FW 여성 씬 라이트 후드 경량패딩 / GS단독상품",
+        "price": 59900,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1134725820&brddate=20261008050000&pgmID=12557&ordChannel=WE&tveshop=Y",
+        "category": "의류",
+        "lavangba_category": "패션의류",
+        "hsshow_id": "914090a9465bdd3d2ab27b5b97df4572"
+      },
+      {
+        "start": "03:47",
+        "end": "03:53",
+        "brand": "브루마스",
+        "product": "브루마스 26FW 돌체 천연소가죽 스니커즈",
+        "price": 69800,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1133073257&brddate=20261008193800&pgmID=6736&ordChannel=WE&tveshop=Y",
+        "category": "잡화/주얼리",
+        "lavangba_category": "패션잡화",
+        "hsshow_id": "44ccbb8d08d574f5ad8ed13358021117"
+      },
+      {
+        "start": "03:53",
+        "end": "03:58",
+        "brand": "르네크루",
+        "product": "르네크루 26FW 울실크 맥시 코트",
+        "price": 179900,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1127028062&brddate=20261007043400&pgmID=13307&ordChannel=WE&tveshop=Y",
+        "category": "의류",
+        "lavangba_category": "패션의류",
+        "hsshow_id": "7ff7dfc5c1b522c9b6ce323d02631578"
+      },
+      {
+        "start": "04:03",
+        "end": "04:09",
+        "brand": "모르간",
+        "product": "모르간 26FW 누보 울캐시 재킷",
+        "price": 299900,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1126637983&brddate=20261008040800&pgmID=13307&ordChannel=WE&tveshop=Y",
+        "category": "의류",
+        "lavangba_category": "패션의류",
+        "hsshow_id": "2d07bf6eedf3430a01c5b7c1fd27a535"
+      },
+      {
+        "start": "04:13",
+        "end": "04:18",
+        "brand": "모르간",
+        "product": "모르간 26FW 스탠딩 울 하프코트",
+        "price": 119900,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1126625006&brddate=20261008153800&pgmID=13307&ordChannel=WE&tveshop=Y",
+        "category": "의류",
+        "lavangba_category": "패션의류",
+        "hsshow_id": "a67f76ce84c1dccd01a91ee02f19fb27"
+      },
+      {
+        "start": "04:34",
+        "end": "04:39",
+        "brand": "르네크루",
+        "product": "르네크루 26FW 울실크 맥시 코트",
+        "price": 179900,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1127028062&brddate=20261007043400&pgmID=13307&ordChannel=WE&tveshop=Y",
+        "category": "의류",
+        "lavangba_category": "패션의류",
+        "hsshow_id": "6801cad4f490e15b34bcfc70c6ddd3ac"
+      },
+      {
+        "start": "04:39",
+        "end": "04:44",
+        "brand": "스튜디오디페",
+        "product": "스튜디오디페 FAUX 무스탕 하프 코트",
+        "price": 109900,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1130689927&brddate=20261007043900&pgmID=13307&ordChannel=WE&tveshop=Y",
+        "category": "의류",
+        "lavangba_category": "패션의류",
+        "hsshow_id": "3dbe2a35991a84e0e8ce7f9893c3b476"
+      },
+      {
+        "start": "04:55",
+        "end": "05:15",
+        "brand": "제이슨우",
+        "product": "제이슨우 26FW Fallon 코튼 유틸리티 재킷",
+        "price": 79900,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1121335267&brddate=20261011211800&pgmID=13307&ordChannel=WE&tveshop=Y",
+        "category": "의류",
+        "lavangba_category": "패션의류",
+        "hsshow_id": "7c173c8cde62b8de2ddab18f26109dab"
+      },
+      {
+        "start": "05:15",
+        "end": "05:55",
+        "brand": "헉슬리",
+        "product": "헉슬리 26FW 양가죽 컴포트 스니커즈",
+        "price": 69800,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1133277256&brddate=20261010073600&pgmID=13403&ordChannel=WE&tveshop=Y",
+        "category": "잡화/주얼리",
+        "lavangba_category": "패션잡화",
+        "hsshow_id": "dfe60d1f7bad238ebafb6d4a18c8316c"
+      },
+      {
+        "start": "05:55",
+        "end": "06:36",
+        "brand": "닥터오기덤",
+        "product": "닥터오기덤 앰플 인 마스크팩 방송특가구성",
+        "price": 49900,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1116224880&brddate=20261011073600&pgmID=6737&ordChannel=WE&tveshop=Y",
+        "category": "미용",
+        "lavangba_category": "화장품/미용",
+        "hsshow_id": "a5453758832ca876d8e318cc50ae7c8e"
+      },
+      {
+        "start": "06:36",
+        "end": "07:36",
+        "brand": "비에날씬",
+        "product": "다이어트 유산균 비에날씬 슬림3박스",
+        "price": 548000,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1116587687&brddate=20261007063600&pgmID=13352&ordChannel=WE&tveshop=Y",
+        "category": "건강식품",
+        "lavangba_category": "식품",
+        "hsshow_id": "e6a9ee9f88deb570cbbce56af4dabc83"
+      },
+      {
+        "start": "07:36",
+        "end": "08:36",
+        "brand": "SJ와니",
+        "product": "SJ와니 26FW 커프 디테일 리브드 티셔츠",
+        "price": 69900,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1130688099&brddate=20261007073600&pgmID=13307&ordChannel=WE&tveshop=Y",
+        "category": "의류",
+        "lavangba_category": "패션의류",
+        "hsshow_id": "eff32746ced43e33d8da97c8a8f2ffab"
+      },
+      {
+        "start": "08:36",
+        "end": "09:36",
+        "brand": "엔니튜드",
+        "product": "엔니튜드 26FW 하프 니트",
+        "price": 59900,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1129232032&brddate=20261007083600&pgmID=12557&ordChannel=WE&tveshop=Y",
+        "category": "의류",
+        "lavangba_category": "패션의류",
+        "hsshow_id": "c27d9a35cc86c994e0f7fdcb6266f475"
+      },
+      {
         "start": "09:36",
         "end": "10:36",
         "brand": "브루마스",
         "product": "브루마스 26FW 천연양가죽 컴포트 구두",
-        "price": 69800,
+        "price": 59800,
         "link": "https://www.gsshop.com/prd/prd.gs?prdid=1133069458&brddate=20261007093600&pgmID=6736&ordChannel=WE&tveshop=Y",
         "category": "잡화/주얼리",
         "lavangba_category": "패션잡화",
@@ -2652,7 +2905,7 @@
         "brand": "산지애",
         "product": "산지애 햇사과",
         "price": 99900,
-        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1134622533&brddate=20261007145700&pgmID=6997&ordChannel=WE&tveshop=Y",
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1134622533&brddate=20261007145700&pgmID=13462&ordChannel=WE&tveshop=Y",
         "category": "일반식품",
         "lavangba_category": "식품",
         "hsshow_id": "73b1d2b7a5c6768f39a81a0a9652470e"
@@ -2718,7 +2971,7 @@
         "brand": "엔니튜드",
         "product": "엔니튜드 26FW 울 코위찬 집업 니트 재킷 여성용",
         "price": 79900,
-        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1132739216&brddate=20261007203800&pgmID=13403&ordChannel=WE&tveshop=Y",
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1132739216&brddate=20261010123600&pgmID=12557&ordChannel=WE&tveshop=Y",
         "category": "의류",
         "lavangba_category": "패션의류",
         "hsshow_id": "4617e8691ada0a203bba0b2d1f85a24b"
@@ -2729,7 +2982,7 @@
         "brand": "폴햄",
         "product": "폴햄 26FW 여성 점퍼 폴라플리스 재킷 SET",
         "price": 69900,
-        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1134555683&brddate=20261007223800&pgmID=12557&ordChannel=WE&tveshop=Y",
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1134555683&brddate=20261009013300&pgmID=12557&ordChannel=WE&tveshop=Y",
         "category": "의류",
         "lavangba_category": "패션의류",
         "hsshow_id": "b5251d70478a09fa2661ab2dd03ecbde"
@@ -2825,26 +3078,37 @@
         "hsshow_id": "e09438d93bd2875ddd8c0ac2ff9fee1c"
       },
       {
+        "start": "02:10",
+        "end": "02:15",
+        "brand": "덴프스",
+        "product": "덴프스 덴티 자일리톨12",
+        "price": 298000,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1134697445&brddate=20261009024600&pgmID=13352&ordChannel=WE&tveshop=Y",
+        "category": "건강식품",
+        "lavangba_category": "식품",
+        "hsshow_id": "7b30540e7ed7dfb9a23324a6ec19920d"
+      },
+      {
+        "start": "02:15",
+        "end": "02:20",
+        "brand": "폴햄",
+        "product": "폴햄 26FW 여성 점퍼 폴라플리스 재킷 SET",
+        "price": 69900,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1134555683&brddate=20261009013300&pgmID=12557&ordChannel=WE&tveshop=Y",
+        "category": "의류",
+        "lavangba_category": "패션의류",
+        "hsshow_id": "14b783e9339815b3cb67e037de96af3d"
+      },
+      {
         "start": "02:20",
         "end": "02:25",
         "brand": "로보",
-        "product": "로보 26FW 가죽트리밍 크롭셔링 점퍼",
+        "product": "로보 26FW 레더트림 셔링 스웨이드 점퍼",
         "price": 699000,
         "link": "https://www.gsshop.com/prd/prd.gs?prdid=1135840096&brddate=20261009011300&pgmID=13307&ordChannel=WE&tveshop=Y",
         "category": "의류",
         "lavangba_category": "패션의류",
         "hsshow_id": "f3e83feb5397d426cd78b3d82bfd8494"
-      },
-      {
-        "start": "02:41",
-        "end": "02:46",
-        "brand": "바스키아",
-        "product": "바스키아 26FW 여성 씬 라이트 후드 경량패딩 / GS단독상품",
-        "price": 59900,
-        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1134725820&brddate=20261008050000&pgmID=12557&ordChannel=WE&tveshop=Y",
-        "category": "의류",
-        "lavangba_category": "패션의류",
-        "hsshow_id": "e6089327d987bc326fd4b7952303372f"
       },
       {
         "start": "03:12",
@@ -2924,6 +3188,28 @@
         "hsshow_id": "b4792c49e78f466589d5cb1c621d9cca"
       },
       {
+        "start": "04:18",
+        "end": "04:23",
+        "brand": "폴햄",
+        "product": "폴햄 26FW 여성 점퍼 폴라플리스 재킷 SET",
+        "price": 69900,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1134555683&brddate=20261009013300&pgmID=12557&ordChannel=WE&tveshop=Y",
+        "category": "의류",
+        "lavangba_category": "패션의류",
+        "hsshow_id": "757d3062e88beef61346cbd0cabd0a0e"
+      },
+      {
+        "start": "04:23",
+        "end": "04:28",
+        "brand": "덴프스",
+        "product": "덴프스 덴티 자일리톨12",
+        "price": 298000,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1134697445&brddate=20261009024600&pgmID=13352&ordChannel=WE&tveshop=Y",
+        "category": "건강식품",
+        "lavangba_category": "식품",
+        "hsshow_id": "09c868dde3112c5744f28f58b719387f"
+      },
+      {
         "start": "04:39",
         "end": "04:44",
         "brand": "라삐아프",
@@ -2933,17 +3219,6 @@
         "category": "의류",
         "lavangba_category": "패션의류",
         "hsshow_id": "c398cbdddd44e7bf94b309c8f9b764a0"
-      },
-      {
-        "start": "04:55",
-        "end": "05:00",
-        "brand": "베네통",
-        "product": "베네통 젤라또 핏 모달 심리스 팬티",
-        "price": 69900,
-        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1136312889&brddate=20261009030600&pgmID=6753&ordChannel=WE&tveshop=Y",
-        "category": "언더웨어",
-        "lavangba_category": "패션의류",
-        "hsshow_id": "689fac607532d7f56ac6837e7928b1dd"
       },
       {
         "start": "05:00",
@@ -2966,6 +3241,39 @@
         "category": "잡화/주얼리",
         "lavangba_category": "패션잡화",
         "hsshow_id": "3adec0f2027a85f381e6ea5d40099a72"
+      },
+      {
+        "start": "05:10",
+        "end": "05:15",
+        "brand": "쏘울",
+        "product": "쏘울 26FW 로얄 캐시울100 인타샤 니트",
+        "price": 99900,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1133552008&brddate=20261008051000&pgmID=13307&ordChannel=WE&tveshop=Y",
+        "category": "의류",
+        "lavangba_category": "패션의류",
+        "hsshow_id": "8e1efebb0404553e43414562b172abe2"
+      },
+      {
+        "start": "05:15",
+        "end": "05:55",
+        "brand": "고려은단",
+        "product": "고려은단 멀티비타민 올인원 맨 30정 5",
+        "price": 79000,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1118838507&brddate=20261008051500&pgmID=13352&ordChannel=WE&tveshop=Y",
+        "category": "건강식품",
+        "lavangba_category": "식품",
+        "hsshow_id": "12d956a80f4a9da7b32c81659ff0ff8f"
+      },
+      {
+        "start": "05:55",
+        "end": "06:35",
+        "brand": "",
+        "product": "특허받은 기능성 브이존 4계절 메쉬 양말 24켤레",
+        "price": 39900,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1136406701&brddate=20261008055500&pgmID=6742&ordChannel=WE&tveshop=Y",
+        "category": "잡화/주얼리",
+        "lavangba_category": "스포츠/레저",
+        "hsshow_id": "c557a32d7c7e1c163835b6aabb402946"
       },
       {
         "start": "07:36",
@@ -3067,6 +3375,17 @@
         "hsshow_id": "f515f392d8a062a800aa1236099ebbd1"
       },
       {
+        "start": "19:38",
+        "end": "20:38",
+        "brand": "브루마스",
+        "product": "브루마스 26FW 돌체 천연소가죽 스니커즈",
+        "price": 69800,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1133073257&brddate=20261008193800&pgmID=6736&ordChannel=WE&tveshop=Y",
+        "category": "잡화/주얼리",
+        "lavangba_category": "패션잡화",
+        "hsshow_id": "25d63edc409639738c7f901de7306b9d"
+      },
+      {
         "start": "20:38",
         "end": "21:38",
         "brand": "스케쳐스",
@@ -3127,7 +3446,7 @@
         "start": "01:13",
         "end": "01:18",
         "brand": "로보",
-        "product": "로보 26FW 가죽트리밍 크롭셔링 점퍼",
+        "product": "로보 26FW 레더트림 셔링 스웨이드 점퍼",
         "price": 699000,
         "link": "https://www.gsshop.com/prd/prd.gs?prdid=1135840096&brddate=20261009011300&pgmID=13307&ordChannel=WE&tveshop=Y",
         "category": "의류",
@@ -3146,15 +3465,15 @@
         "hsshow_id": "97713972c5b5aa3e808423a16983d0f5"
       },
       {
-        "start": "01:39",
-        "end": "01:44",
-        "brand": "모르간",
-        "product": "모르간 26FW 기모 밴딩 팬츠",
-        "price": 89900,
-        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1130383665&brddate=20261010031200&pgmID=13307&ordChannel=WE&tveshop=Y",
+        "start": "01:33",
+        "end": "01:38",
+        "brand": "폴햄",
+        "product": "폴햄 26FW 여성 점퍼 폴라플리스 재킷 SET",
+        "price": 69900,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1134555683&brddate=20261009013300&pgmID=12557&ordChannel=WE&tveshop=Y",
         "category": "의류",
         "lavangba_category": "패션의류",
-        "hsshow_id": "77760984dcbc239a9fdce95a2f39d0d2"
+        "hsshow_id": "5573fabfbfafca780c4670bc4776b0cc"
       },
       {
         "start": "02:00",
@@ -3166,6 +3485,17 @@
         "category": "미용",
         "lavangba_category": "화장품/미용",
         "hsshow_id": "ef632d5dbd0d82816e51ef218f2aea73"
+      },
+      {
+        "start": "02:05",
+        "end": "02:10",
+        "brand": "아쿠아리모네",
+        "product": "아쿠아리모네 퍼피 울 블렌디드 니트",
+        "price": 79900,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1135896625&brddate=20261010020000&pgmID=12557&ordChannel=WE&tveshop=Y",
+        "category": "의류",
+        "lavangba_category": "패션의류",
+        "hsshow_id": "5b193b3aef7d22beaaca55240fb80f99"
       },
       {
         "start": "02:10",
@@ -3199,17 +3529,6 @@
         "category": "의류",
         "lavangba_category": "패션의류",
         "hsshow_id": "54a4eef2bc454664ea8255ed73d88a1a"
-      },
-      {
-        "start": "02:51",
-        "end": "02:56",
-        "brand": "모르간",
-        "product": "모르간 26FW 기모 밴딩 팬츠",
-        "price": 89900,
-        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1130383665&brddate=20261010031200&pgmID=13307&ordChannel=WE&tveshop=Y",
-        "category": "의류",
-        "lavangba_category": "패션의류",
-        "hsshow_id": "4138ad87b2c069990c0b43db163ce4f8"
       },
       {
         "start": "03:06",
@@ -3267,6 +3586,17 @@
         "hsshow_id": "50c5c54d851f01f07c181f3a1c36b35f"
       },
       {
+        "start": "04:03",
+        "end": "04:08",
+        "brand": "아쿠아리모네",
+        "product": "아쿠아리모네 퍼피 울 블렌디드 니트",
+        "price": 79900,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1135896625&brddate=20261010020000&pgmID=12557&ordChannel=WE&tveshop=Y",
+        "category": "의류",
+        "lavangba_category": "패션의류",
+        "hsshow_id": "34e5c609c0556f3467bacf2deb938920"
+      },
+      {
         "start": "04:08",
         "end": "04:13",
         "brand": "제메이스",
@@ -3309,17 +3639,6 @@
         "category": "의류",
         "lavangba_category": "패션의류",
         "hsshow_id": "de8556fd3dd28995cf95a5fc8b7eb2ab"
-      },
-      {
-        "start": "04:59",
-        "end": "05:04",
-        "brand": "쏘울",
-        "product": "쏘울 26FW 알파카 부클 니트 재킷",
-        "price": 179900,
-        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1133552602&brddate=20261010023600&pgmID=13307&ordChannel=WE&tveshop=Y",
-        "category": "의류",
-        "lavangba_category": "패션잡화",
-        "hsshow_id": "9d968ce42e696e166e71f5c2d6f706d4"
       },
       {
         "start": "05:04",
@@ -3377,6 +3696,17 @@
         "hsshow_id": "a7691f0e12078fe81213db0b50030f5a"
       },
       {
+        "start": "09:36",
+        "end": "10:36",
+        "brand": "분트로이",
+        "product": "분트로이 26FW 웜에어 구스다운 경량 셔츠",
+        "price": 99900,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1128108459&brddate=20261009093600&pgmID=12557&ordChannel=WE&tveshop=Y",
+        "category": "의류",
+        "lavangba_category": "패션의류",
+        "hsshow_id": "226f684ae3aece816788f1fa1e6cb748"
+      },
+      {
         "start": "10:36",
         "end": "11:36",
         "brand": "덴프스",
@@ -3388,6 +3718,17 @@
         "hsshow_id": "8eb587c700a77f5bf69ed3a5468cccdb"
       },
       {
+        "start": "11:36",
+        "end": "12:36",
+        "brand": "쏘내추럴",
+        "product": "쏘내추럴 26FW 캐시미어 홀가먼트 V넥 니트",
+        "price": 69900,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1129705164&brddate=20261009113600&pgmID=13307&ordChannel=WE&tveshop=Y",
+        "category": "의류",
+        "lavangba_category": "패션의류",
+        "hsshow_id": "b8f2165570d7cf808eb01cee97c619a1"
+      },
+      {
         "start": "12:36",
         "end": "13:36",
         "brand": "타투그리모",
@@ -3397,6 +3738,17 @@
         "category": "미용",
         "lavangba_category": "화장품/미용",
         "hsshow_id": "46e35bd904eac8434428580c5d62ce0b"
+      },
+      {
+        "start": "13:37",
+        "end": "14:37",
+        "brand": "",
+        "product": "살사랑 631 파운데이세럼 본품3 브러쉬 퍼프2",
+        "price": 79800,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1080124315&brddate=20261009133700&pgmID=6737&ordChannel=WE&tveshop=Y",
+        "category": "미용",
+        "lavangba_category": "화장품/미용",
+        "hsshow_id": "d7f1be76576fdcfb46662a451c9bc725"
       },
       {
         "start": "14:37",
@@ -3426,7 +3778,7 @@
         "brand": "라코스테",
         "product": "26FW 라코스테 시그니처 드로즈 패키지",
         "price": 89000,
-        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1133737583&brddate=20261009163800&pgmID=13454&ordChannel=WE&tveshop=Y",
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1133737583&brddate=20261012193800&pgmID=13454&ordChannel=WE&tveshop=Y",
         "category": "언더웨어",
         "lavangba_category": "패션의류",
         "hsshow_id": "01b70ea73fd80ba3ab50ee1d1fb5addd"
@@ -3544,6 +3896,17 @@
         "hsshow_id": "a678d18a4991b943df6db66ccbb87012"
       },
       {
+        "start": "02:00",
+        "end": "02:05",
+        "brand": "아쿠아리모네",
+        "product": "아쿠아리모네 퍼피 울 블렌디드 니트",
+        "price": 79900,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1135896625&brddate=20261010020000&pgmID=12557&ordChannel=WE&tveshop=Y",
+        "category": "의류",
+        "lavangba_category": "패션의류",
+        "hsshow_id": "7cedcac7188d98f5941073e9b619b2e7"
+      },
+      {
         "start": "02:05",
         "end": "02:10",
         "brand": "제메이스",
@@ -3586,17 +3949,6 @@
         "category": "의류",
         "lavangba_category": "패션잡화",
         "hsshow_id": "f721bd184dace2467da11009dc64ebc6"
-      },
-      {
-        "start": "02:41",
-        "end": "02:46",
-        "brand": "쏘울",
-        "product": "쏘울 26FW 핸드메이드 뉴 캐시울 코트",
-        "price": 269900,
-        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1133515256&brddate=20261010024100&pgmID=13307&ordChannel=WE&tveshop=Y",
-        "category": "의류",
-        "lavangba_category": "패션의류",
-        "hsshow_id": "f63c185f5989cc2028b76bff9b292a71"
       },
       {
         "start": "03:06",
@@ -3663,6 +4015,17 @@
         "category": "의류",
         "lavangba_category": "패션의류",
         "hsshow_id": "0059d3943fea3b81642996330e3a582a"
+      },
+      {
+        "start": "04:13",
+        "end": "04:18",
+        "brand": "아쿠아리모네",
+        "product": "아쿠아리모네 퍼피 울 블렌디드 니트",
+        "price": 79900,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1135896625&brddate=20261010020000&pgmID=12557&ordChannel=WE&tveshop=Y",
+        "category": "의류",
+        "lavangba_category": "패션의류",
+        "hsshow_id": "3d1ba771935845ad606601f4ecf9fe7d"
       },
       {
         "start": "04:28",
@@ -3733,12 +4096,12 @@
       {
         "start": "07:36",
         "end": "08:36",
-        "brand": "에버콜라겐",
-        "product": "에버콜라겐 레티놀A GPH콜라겐 19병",
-        "price": 629000,
-        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1075770861&brddate=20261011053500&pgmID=13352&ordChannel=WE&tveshop=Y",
-        "category": "건강식품",
-        "lavangba_category": "식품",
+        "brand": "헉슬리",
+        "product": "헉슬리 26FW 양가죽 컴포트 스니커즈",
+        "price": 69800,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1133277256&brddate=20261010073600&pgmID=13403&ordChannel=WE&tveshop=Y",
+        "category": "잡화/주얼리",
+        "lavangba_category": "패션잡화",
         "hsshow_id": "95432c19ad739cd5d668e87ecc6c7285"
       },
       {
@@ -3786,6 +4149,17 @@
         "hsshow_id": "15ae26d6f08baa25fcf5fff02205e543"
       },
       {
+        "start": "12:36",
+        "end": "13:36",
+        "brand": "엔니튜드",
+        "product": "엔니튜드 26FW 울 코위찬 집업 니트 재킷 여성용",
+        "price": 79900,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1132739216&brddate=20261010123600&pgmID=12557&ordChannel=WE&tveshop=Y",
+        "category": "의류",
+        "lavangba_category": "패션의류",
+        "hsshow_id": "8d6d041d462ee0f8313165ee7f6d356e"
+      },
+      {
         "start": "13:37",
         "end": "14:37",
         "brand": "기절베개",
@@ -3806,6 +4180,17 @@
         "category": "의류",
         "lavangba_category": "패션의류",
         "hsshow_id": "f224a2d7d4f70420a4a5f58315ff5628"
+      },
+      {
+        "start": "17:38",
+        "end": "18:38",
+        "brand": "일월",
+        "product": "일월 원적외선 카본매트 블랙다이아 26년형 싱글",
+        "price": 89000,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1134531242&brddate=20261010173800&pgmID=872&ordChannel=WE&tveshop=Y",
+        "category": "가전",
+        "lavangba_category": "",
+        "hsshow_id": "a2bbbaf5214b4dbee4bc8dcfd28abc41"
       },
       {
         "start": "19:38",
@@ -3931,6 +4316,17 @@
         "hsshow_id": "c3b2429b1b9fc83230fbc847a9c0a04b"
       },
       {
+        "start": "11:36",
+        "end": "12:36",
+        "brand": "스케쳐스",
+        "product": "스케쳐스 26FW 여성용 이지고잉 슬립인스 로퍼",
+        "price": 129000,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1116907979&brddate=20261011113600&pgmID=12502&ordChannel=WE&tveshop=Y",
+        "category": "잡화/주얼리",
+        "lavangba_category": "스포츠/레저",
+        "hsshow_id": "1ff1654a930e5bfa5237a5a1e748aca2"
+      },
+      {
         "start": "12:36",
         "end": "13:36",
         "brand": "비트",
@@ -3986,8 +4382,19 @@
         "hsshow_id": "5116714d987d313e550d18f552bee0a1"
       },
       {
+        "start": "18:38",
+        "end": "19:38",
+        "brand": "",
+        "product": "빌트모아 26FW 남성셔츠 3종SET",
+        "price": 49000,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1135394923&brddate=20261011183800&pgmID=12502&ordChannel=WE&tveshop=Y",
+        "category": "의류",
+        "lavangba_category": "패션의류",
+        "hsshow_id": "c149140229df46085a32b368363d381d"
+      },
+      {
         "start": "20:38",
-        "end": "21:38",
+        "end": "21:18",
         "brand": "제이슨우",
         "product": "제이슨우 26FW NEW Delia 페디드 코튼 체크 셔츠",
         "price": 69900,
@@ -3997,12 +4404,12 @@
         "hsshow_id": "a44603768338d7f55a05206e7ef5b72a"
       },
       {
-        "start": "21:38",
+        "start": "21:18",
         "end": "22:38",
         "brand": "제이슨우",
         "product": "제이슨우 26FW Brooklyn 캐시미어 딥 V넥 폴로 니트",
         "price": 79900,
-        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1125641342&brddate=20261011213800&pgmID=13307&ordChannel=WE&tveshop=Y",
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1125641342&brddate=20261011211800&pgmID=13307&ordChannel=WE&tveshop=Y",
         "category": "의류",
         "lavangba_category": "패션의류",
         "hsshow_id": "3f836be4e9ab6effcda0d425b4fcd945"
@@ -4019,6 +4426,139 @@
         "hsshow_id": "6877603ccab3a635aa4e407e4a31e3ee"
       }
     ],
-    "2026-10-12": []
+    "2026-10-12": [
+      {
+        "start": "04:34",
+        "end": "05:14",
+        "brand": "바밤",
+        "product": "바밤 실온보관 국산 단호박 건강죽 혼합 22팩",
+        "price": 54900,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1132021300&brddate=20261012043400&pgmID=6997&ordChannel=WE&tveshop=Y",
+        "category": "일반식품",
+        "lavangba_category": "식품",
+        "hsshow_id": "588d9e341e13d181344cdb1ab5751438"
+      },
+      {
+        "start": "05:15",
+        "end": "05:55",
+        "brand": "베스트하임",
+        "product": "베스트하임 초고속 파워 블렌더",
+        "price": 159000,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1131684883&brddate=20261012051500&pgmID=872&ordChannel=WE&tveshop=Y",
+        "category": "가전",
+        "lavangba_category": "디지털/가전",
+        "hsshow_id": "a610b1ed654f14d13385c47c57378c24"
+      },
+      {
+        "start": "06:36",
+        "end": "07:36",
+        "brand": "질경이",
+        "product": "질경이 비건 여성청결제 모닝 폼 워시 GS 특별세트",
+        "price": 63900,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1113512049&brddate=20261012063600&pgmID=6737&ordChannel=WE&tveshop=Y",
+        "category": "리빙/주방",
+        "lavangba_category": "화장품/미용",
+        "hsshow_id": "e6ab46504b5234a4c8b0c0f46d5039c7"
+      },
+      {
+        "start": "08:36",
+        "end": "09:36",
+        "brand": "라비오라",
+        "product": "라비오라 레몬허니워시오프팩 시즌3 배종옥 패키지",
+        "price": 99000,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1087102799&brddate=20261012083600&pgmID=6737&ordChannel=WE&tveshop=Y",
+        "category": "미용",
+        "lavangba_category": "화장품/미용",
+        "hsshow_id": "d46efcd7a23cb553b84190d99e1b9984"
+      },
+      {
+        "start": "10:36",
+        "end": "11:36",
+        "brand": "브루마스",
+        "product": "브루마스 비바 스니커즈",
+        "price": 59800,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1091687255&brddate=20261012103600&pgmID=6736&ordChannel=WE&tveshop=Y",
+        "category": "잡화/주얼리",
+        "lavangba_category": "패션잡화",
+        "hsshow_id": "68eb199ff4b8c0b2146b8bcc84203d70"
+      },
+      {
+        "start": "12:36",
+        "end": "13:36",
+        "brand": "",
+        "product": "조이너스 26FW 큐빅 풀오버",
+        "price": 49900,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1135047954&brddate=20261012123600&pgmID=12557&ordChannel=WE&tveshop=Y",
+        "category": "의류",
+        "lavangba_category": "패션잡화",
+        "hsshow_id": "3d7ce60c76dcf1cc071c386fc7019b2e"
+      },
+      {
+        "start": "13:37",
+        "end": "13:57",
+        "brand": "",
+        "product": "한생원 천연 육수팩 4팩 천연버섯소금3종",
+        "price": 34900,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1028263499&brddate=20261012133700&pgmID=13190&ordChannel=WE&tveshop=Y",
+        "category": "일반식품",
+        "lavangba_category": "식품",
+        "hsshow_id": "e5beda9ace62a06d44a46f4c4aab8a6a"
+      },
+      {
+        "start": "14:37",
+        "end": "15:37",
+        "brand": "엔니튜드",
+        "product": "엔니튜드 26FW 여성 체크 니트 셔츠",
+        "price": 79900,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1130773621&brddate=20261012143700&pgmID=13403&ordChannel=WE&tveshop=Y",
+        "category": "의류",
+        "lavangba_category": "패션의류",
+        "hsshow_id": "a69d52fdcf0a017c054dc3786a463479"
+      },
+      {
+        "start": "17:38",
+        "end": "18:38",
+        "brand": "",
+        "product": "D한식천하 진한 도가니탕 13팩",
+        "price": 59900,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1122436793&brddate=20261012173800&pgmID=6997&ordChannel=WE&tveshop=Y",
+        "category": "일반식품",
+        "lavangba_category": "식품",
+        "hsshow_id": "a61677358a79565732c4afbc633a4fe9"
+      },
+      {
+        "start": "18:38",
+        "end": "19:38",
+        "brand": "빅마마",
+        "product": "빅마마 이혜정의 아주 맛있는 진 우삼겹 13팩, 총",
+        "price": 60900,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1133083057&brddate=20261012183800&pgmID=6997&ordChannel=WE&tveshop=Y",
+        "category": "일반식품",
+        "lavangba_category": "식품",
+        "hsshow_id": "19b7923fe134dc3c33ee95750dc7d2a2"
+      },
+      {
+        "start": "19:38",
+        "end": "20:38",
+        "brand": "라코스테",
+        "product": "26FW 라코스테 시그니처 드로즈 패키지",
+        "price": 89000,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1133737583&brddate=20261012193800&pgmID=13454&ordChannel=WE&tveshop=Y",
+        "category": "언더웨어",
+        "lavangba_category": "패션의류",
+        "hsshow_id": "16a0179bd99bd6a5ad0bd81e44f4f6e6"
+      },
+      {
+        "start": "21:38",
+        "end": "22:38",
+        "brand": "FILA",
+        "product": "FILA 휠라 시그니처 에디션 브라팬티",
+        "price": 159900,
+        "link": "https://www.gsshop.com/prd/prd.gs?prdid=1133751704&brddate=20261012213800&pgmID=6753&ordChannel=WE&tveshop=Y",
+        "category": "의류",
+        "lavangba_category": "패션의류",
+        "hsshow_id": "28ad7edfe4bfa56269ef516104800a15"
+      }
+    ]
   }
 }
