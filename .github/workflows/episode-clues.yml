@@ -1,0 +1,64 @@
+name: 건강프로그램 회차 단서 수집 (Naver)
+
+on:
+  schedule:
+    # 매일 KST 10:20 = UTC 01:20. 전날 방송분의 회차 소개·블로그 글이 올라온 뒤에 돈다.
+    # 단서를 못 찾은 회차는 다음 날 다시 시도(최대 3번)하므로 최근 4일치를 본다.
+    - cron: "20 1 * * *"
+  workflow_dispatch:
+    inputs:
+      days:
+        description: "오늘 포함 며칠 전 방영분까지 (지난 기간 채우기용)"
+        default: "4"
+  push:  # [임시] 작업 브랜치에서 실제 네이버 응답으로 시험 (저장 없이 출력만)
+    branches: [ccr-25350af0-w3rmp4]
+    paths: [episode_clue_scraper.py, .github/workflows/episode-clues.yml]
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install requests beautifulsoup4
+
+      - name: 회차 단서 수집
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            python episode_clue_scraper.py --days 2 --dry-run
+          else
+            python episode_clue_scraper.py --days "${{ inputs.days || '4' }}"
+          fi
+
+      - name: 결과 커밋 & 푸시
+        id: commit
+        if: github.ref == 'refs/heads/main' && github.event_name != 'push'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/episode_clues/*.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "chore: 건강프로그램 회차 단서 갱신 $(date -u +%Y-%m-%d)"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+          git pull --rebase --autostash origin main
+          git push
+
+      - name: Pages 재배포 트리거
+        if: steps.commit.outputs.changed == 'true'
+        run: |
+          curl -L -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/pages-deploy.yml/dispatches" \
+            -d '{"ref":"main"}'
