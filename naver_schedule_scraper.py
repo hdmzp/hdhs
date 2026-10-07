@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-네이버 검색 'TV 편성표' 위젯에서 지상파+종편 8개 채널의
+네이버 검색 'TV 편성표' 위젯에서 지상파+종편+케이블 채널의
 주간(7일) 시간대별 프로그램을 크롤링하는 파서.
 
 == 알아낸 구조 (네이버가 두 가지 마크업을 번갈아 보여줌) ==
@@ -33,7 +33,7 @@
     pip install requests beautifulsoup4
     python naver_schedule_scraper.py
 
-결과: ./output/{YYYY-MM-DD}.json (날짜별 1파일, 8개 채널 다 포함)
+결과: ./data/{YYYY-MM-DD}.json (날짜별 1파일, 수집된 채널 다 포함)
 """
 
 import requests
@@ -41,7 +41,7 @@ import re
 import json
 import time
 import os
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from bs4 import BeautifulSoup
 
 HEADERS = {
@@ -61,7 +61,15 @@ CHANNELS = {
     "MBN": "mbn",
     "TV조선": "tv조선",
     "채널A": "채널a",
+    # 케이블: 네이버 편성표 위젯이 지상파·종편과 같은 마크업이라 파서를 그대로 쓴다
+    "tvN": "tvn",
+    "ENA": "ena",
+    "MBC every1": "mbc every1",
+    "SBS Plus": "sbs plus",
 }
+
+# 케이블은 과거 날짜를 채우지 않고 오늘(KST)부터만 저장한다
+FUTURE_ONLY_CHANNELS = {"tvN", "ENA", "MBC every1", "SBS Plus"}
 
 OUTPUT_DIR = "data"
 REQUEST_DELAY_SEC = 1.5
@@ -258,6 +266,7 @@ def scrape_channel(channel_name: str, channel_query: str, ref_year: int):
 def main():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     ref_year = datetime.now().year
+    today_kst = datetime.now(timezone(timedelta(hours=9))).strftime("%Y-%m-%d")
 
     all_data = {}
 
@@ -274,6 +283,8 @@ def main():
         else:
             print(f"  [버전 {version}] {channel_name}")
             for iso_date, programs in sorted(by_date.items()):
+                if channel_name in FUTURE_ONLY_CHANNELS and iso_date < today_kst:
+                    continue
                 all_data.setdefault(iso_date, {})[channel_name] = programs
                 print(f"    {iso_date}: {len(programs)}개 프로그램")
 
@@ -281,6 +292,15 @@ def main():
 
     for iso_date, channels_data in sorted(all_data.items()):
         out_path = os.path.join(OUTPUT_DIR, f"{iso_date}.json")
+        # 이번 실행에서 수집에 실패한 채널은 기존 파일의 데이터를 그대로 남긴다
+        if os.path.exists(out_path):
+            try:
+                with open(out_path, encoding="utf-8") as f:
+                    prev = json.load(f)
+                channels_data = {**prev, **channels_data}
+            except (OSError, ValueError):
+                pass
+        channels_data = {ch: channels_data[ch] for ch in CHANNELS if ch in channels_data}
         with open(out_path, "w", encoding="utf-8") as f:
             json.dump(channels_data, f, ensure_ascii=False, indent=2)
         print(f"[저장] {out_path}")

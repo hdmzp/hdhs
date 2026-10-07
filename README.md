@@ -15,7 +15,7 @@ hdhs/
 ├── index.html                       # 웹사이트 본체 (8개 탭, 전부 JSON fetch로 렌더링, GA4 연동)
 │
 ├── .github/workflows/                # 자동화 파이프라인 (기능별로 분리된 워크플로우)
-│   ├── schedule.yml                    # 지상파·종편 편성표
+│   ├── schedule.yml                    # 지상파·종편·케이블 편성표
 │   ├── homeshopping.yml                # 홈쇼핑 4사(HD/GS/CJ/LT)
 │   ├── etc-scrape.yml                  # 홈쇼핑 기타 7개사
 │   ├── scrape-dramavariety.yml         # 드라마/예능 시청률
@@ -30,7 +30,7 @@ hdhs/
 │   ├── telegram-daily-food.yml         # 텔레그램 아침 알림(식품방송 리스트)
 │   └── pages-deploy.yml                # 위 워크플로우들이 커밋 후 강제 트리거하는 배포 전용 워크플로우
 │
-├── naver_schedule_scraper.py        # [편성표] 지상파·종편 8채널 수집
+├── naver_schedule_scraper.py        # [편성표] 지상파·종편 8채널 + 케이블(tvN·ENA·MBC every1·SBS Plus) 수집
 ├── hd_scraper.py / gs_scraper.py     # [홈쇼핑] 현대 / GS(라방바 경유)
 ├── cj_scraper.py / lt_scraper.py     # [홈쇼핑] CJ온스타일 / 롯데
 ├── etc_scraper.py                    # [홈쇼핑] 기타 7개사(공영/홈앤/K쇼핑/신세계/NS/쇼핑엔티/SK스토아, 라방바 경유)
@@ -91,7 +91,7 @@ hdhs/
 | `scrape-dramavariety.yml` | 02:00, 08:30, 12:10, 21:00 (하루 4회) | 드라마/예능 시청률 | - |
 | `scrape-celebpgm.yml` | 03:00 | 셀럽PGM(13개 프로그램) 상품 데이터 | 스크립트별 `\|\| echo` + 건전성 검사(2-1) |
 | `scrape-fixed-pgm.yml` | 04:30 | 고정PGM 4사 | 스크래퍼별 `continue-on-error` + 건전성 검사(2-1) |
-| `schedule.yml` | 05:00, 21:00 (하루 2회) | 지상파·종편 편성표 | - |
+| `schedule.yml` | 05:00, 21:00 (하루 2회) | 지상파·종편·케이블 편성표 | - |
 | `weather.yml` | 05:30 | 날씨(ASOS+단기예보)+공휴일+절기 | - |
 | `homeshopping.yml` | 05:50, 08:50, 12:20, 14:30, 18:30 (하루 5회) | 홈쇼핑 4사(HD/GS/CJ/LT) | 스크래퍼별 `continue-on-error` |
 | `etc-scrape.yml` | 06:10, 09:30, 12:40, 15:00, 17:00 (하루 5회) | 홈쇼핑 기타 7개사 | `continue-on-error` |
@@ -367,7 +367,7 @@ Actions → "라방바 방송 수집 (11개사)" → Run workflow 에서 `start_
 
 공통 구조: 모든 데이터는 fetch로 JSON을 불러와 그리드/표로 렌더링하는 정적 SPA 한 페이지. 데이터 fetch는 전부 `?t=${Date.now()}` 캐시버스팅 적용(브라우저가 옛 응답을 캐싱해 화면이 안 갱신되는 문제 방지). GA4(`G-EZ7V7Y9SFC`)로 `tab_view`, `filter_click`, `outbound_click`, `feedback_submit` 이벤트를 수집.
 
-탭 순서(index.html 기준): **홈쇼핑 → 고정PGM → 셀럽PGM → 편성맵 → 지상파·종편 → 드라마·예능 → 날씨 → 랭킹 → 카드할인 → 의견**
+탭 순서(index.html 기준): **홈쇼핑 → 고정PGM → 셀럽PGM → 편성맵 → 지상파·종편·케이블 → 드라마·예능 → 날씨 → 랭킹 → 카드할인 → 의견**
 
 ### 🛒 홈쇼핑 탭 (기본 진입 탭)
 - 일 단위 조회, 24시간 × 회사 그리드 (라이브방송/데이터방송 토글)
@@ -388,9 +388,9 @@ Actions → "라방바 방송 수집 (11개사)" → Run workflow 에서 `start_
   - 키워드는 셀럽PGM 누적 상품명에서 여러 프로그램에 반복된 품목 단어로 만들었다. `python tools/suggest_celeb_item_keywords.py [YYYY-MM]`이 화면과 같은 규칙으로 그 달 겹침을 출력하고, 사전에 안 걸린 반복 단어(후보)와 홈쇼핑 데이터 다수결 카테고리를 보여준다 — 사전 수정은 사람이 판단
 - **신규 론칭 배지**: `CEL_LAUNCH_INFO`에 론칭일을 등록한 프로그램은 밴드 헤더 제목 옆에 배지가 붙는다. 론칭일 전에는 `론칭예정`(파랑), 론칭 후 `CEL_NEW_BADGE_DAYS`(60일) 동안 `NEW`(빨강), 그 뒤엔 자동으로 사라진다(날짜 기준 판단이라 배지를 지우러 다시 손댈 필요 없음). 현재 등록: `CJ_KSY.json`(김신영이 산다, 2026-08-18 론칭)
 
-### 📅 지상파·종편 탭
-- 일 단위 조회, 24시간 × 8채널 그리드
-- 지상파/종편 색상 범례, 현재 방송 중인 칸은 자동 스크롤로 보여줌
+### 📅 지상파·종편·케이블 탭
+- 일 단위 조회, 24시간 × 12채널(지상파4·종편4·케이블4) 그리드
+- 지상파/종편/케이블 색상 범례, 현재 방송 중인 칸은 자동 스크롤로 보여줌
 - **조회 가능 시작일: 2026-06-20**
 
 ### 🎬 드라마·예능 탭
