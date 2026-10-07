@@ -16,6 +16,7 @@ hdhs/
 │
 ├── .github/workflows/                # 자동화 파이프라인 (기능별로 분리된 워크플로우)
 │   ├── schedule.yml                    # 지상파·종편·케이블 편성표
+│   ├── episode-clues.yml               # 건강프로그램 회차 단서 (PPL 소재 추정)
 │   ├── homeshopping.yml                # 홈쇼핑 4사(HD/GS/CJ/LT)
 │   ├── etc-scrape.yml                  # 홈쇼핑 기타 7개사
 │   ├── scrape-dramavariety.yml         # 드라마/예능 시청률
@@ -31,6 +32,7 @@ hdhs/
 │   └── pages-deploy.yml                # 위 워크플로우들이 커밋 후 강제 트리거하는 배포 전용 워크플로우
 │
 ├── naver_schedule_scraper.py        # [편성표] 지상파·종편 8채널 + 케이블(tvN·ENA·MBC every1·SBS Plus) 수집
+├── episode_clue_scraper.py          # [편성맵] 건강프로그램 본방 회차 단서(네이버 회차정보·검색 제목) → data/episode_clues/
 ├── hd_scraper.py / gs_scraper.py     # [홈쇼핑] 현대 / GS(라방바 경유)
 ├── cj_scraper.py / lt_scraper.py     # [홈쇼핑] CJ온스타일 / 롯데
 ├── etc_scraper.py                    # [홈쇼핑] 기타 7개사(공영/홈앤/K쇼핑/신세계/NS/쇼핑엔티/SK스토아, 라방바 경유)
@@ -92,6 +94,7 @@ hdhs/
 | `scrape-celebpgm.yml` | 03:00 | 셀럽PGM(13개 프로그램) 상품 데이터 | 스크립트별 `\|\| echo` + 건전성 검사(2-1) |
 | `scrape-fixed-pgm.yml` | 04:30 | 고정PGM 4사 | 스크래퍼별 `continue-on-error` + 건전성 검사(2-1) |
 | `schedule.yml` | 05:00, 21:00 (하루 2회) | 지상파·종편·케이블 편성표 | - |
+| `episode-clues.yml` | 10:20 | 건강프로그램 회차 단서 (최근 4일 본방, 못 찾으면 최대 3번 재시도) | - |
 | `weather.yml` | 05:30 | 날씨(ASOS+단기예보)+공휴일+절기 | - |
 | `homeshopping.yml` | 05:50, 08:50, 12:20, 14:30, 18:30 (하루 5회) | 홈쇼핑 4사(HD/GS/CJ/LT) | 스크래퍼별 `continue-on-error` |
 | `etc-scrape.yml` | 06:10, 09:30, 12:40, 15:00, 17:00 (하루 5회) | 홈쇼핑 기타 7개사 | `continue-on-error` |
