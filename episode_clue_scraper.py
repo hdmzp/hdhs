@@ -114,7 +114,7 @@ def clean(t: str) -> str:
 
 
 # 단서로 쓸 수 없는 결과: 불법 다운로드·파일공유 제목, 편성표 목록 텍스트
-JUNK = re.compile(r"다시보기|다운로드|스트리밍|1080p|720p|WANNA|파일쿠키|filekuki|토렌트|torrent|\.E\s?\d+|\bE\s?\d{2,}\b", re.I)
+JUNK = re.compile(r"다시보기|다운로드|스트리밍|1080p|720p|WANNA|파일쿠키|filekuki|토렌트|torrent|\.E\s?\d+|\bE\s?\d{2,}\b|›|www\.", re.I)
 
 
 def parse_official(html: str, ch: str):
@@ -155,6 +155,10 @@ def parse_clues(html: str, series: str, epi: str, date: str):
             continue
         if JUNK.search(t) or len(re.findall(r"\d{1,2}:\d{2}", t)) >= 2:
             continue
+        # 다른 해 방송분 ('굿모닝대한민국 2012년 10월 5일')
+        years = re.findall(r"(?<!\d)(20\d{2})\s*년", t)
+        if years and str(md.year) not in years:
+            continue
         # 프로그램명·회차·채널·날짜 말고 내용이 거의 없는 제목 ('엄지의 제왕 714회')은 버린다
         rest = norm(t).replace(ns, "", 1)
         rest = re.sub(rf"{epi}(회|화)" if epi else "", "", rest)
@@ -181,7 +185,7 @@ def load_month(ym: str) -> dict:
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--days", type=int, default=4, help="오늘 포함 며칠 전 방영분까지 볼지")
+    ap.add_argument("--days", type=int, default=30, help="오늘 포함 며칠 전 방영분까지 볼지 (이미 단서를 찾은 회차는 건너뜀)")
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
 
