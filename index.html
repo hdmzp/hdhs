@@ -3206,25 +3206,21 @@
     padding: 12px 14px;
     align-items: flex-start;
   }
-  /* 특이사항(겹치는 품목) 셀 - 밴드 맨 위. 높이는 JS(celFitNoticeHeight)가
-     아래 밴드 높이 중간값의 절반으로 잡고, 넘치는 줄은 셀 안에서 스크롤한다. */
-  .cel-notice { --cel-notice-h: 400px; max-height: var(--cel-notice-h); }
-  .cel-notice .cel-band-head { display: flex; align-items: center; padding: 20px 18px; }
+  /* 특이사항(겹치는 품목) 셀 - 밴드 맨 위. 스크롤 없이 데이터만큼 늘어난다.
+     카테고리 열(카드)은 폭이 모자라면 다음 줄로 내려간다. */
+  .cel-notice .cel-band-head { padding: 20px 18px; }
   .cel-notice-title { font-size: 16px; font-weight: 800; color: var(--ink); margin-bottom: 6px; letter-spacing: -0.2px; }
   .cel-notice .cel-col-sched { line-height: 1.5; }
   .cel-notice .cel-band-cnt { margin-top: 10px; font-size: 12px; }
-  /* 카테고리별 열(카드): 열이 많으면 가로 스크롤, 열 안이 길면 그 열만 세로 스크롤 */
-  .cel-notice .cel-band-body { gap: 14px; align-items: stretch; min-height: 0; padding: 16px 18px; }
+  .cel-notice .cel-band-body { flex-wrap: wrap; gap: 14px; align-items: flex-start; overflow: visible; padding: 16px 18px; }
   .cel-notice-col {
-    flex: 1 0 260px;   /* 열이 적으면 남는 폭을 나눠 채우고, 많으면 260px씩 가로 스크롤 */
-    max-height: calc(var(--cel-notice-h) - 34px);
-    overflow-y: auto;
+    flex: 1 1 260px;
+    min-width: 0;
     background: var(--paper-dim);
     border-radius: var(--radius);
     padding: 0 16px 6px;
   }
   .cel-notice-col-head {
-    position: sticky; top: 0; z-index: 1;
     display: flex; align-items: center; gap: 8px;
     background: var(--paper-dim);
     padding: 14px 0 10px;
@@ -3253,7 +3249,8 @@
   .cel-notice-co.hd { color: #003C82; }
   .cel-notice-co.lt { color: #DA291C; }
   .cel-notice-prog { color: var(--ink-soft); white-space: nowrap; }
-  .cel-notice-brand { color: var(--ink); font-weight: 600; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cel-notice-brand { color: var(--ink); font-weight: 600; min-width: 0; }
+  .cel-notice-sep { color: var(--ink-soft); margin: 0 4px; font-weight: 400; }
   .cel-notice-cat {
     display: inline-block;
     font-size: 11px;
@@ -3263,7 +3260,8 @@
     border-radius: 20px;
     padding: 2px 10px;
   }
-  .cel-notice-link { color: var(--brand-blue); font-weight: 700; text-decoration: none; }
+  .cel-notice-link { color: inherit; font-weight: 700; text-decoration: none; }
+  .cel-notice-link:hover { color: var(--brand-blue); }
   .cel-notice-link:hover { text-decoration: underline; }
   .cel-notice-empty { font-size: 12.5px; color: var(--ink-soft); padding: 4px 0; }
 
@@ -3462,8 +3460,7 @@
     .cel-thumb-ph { font-size: 16px; }
     .cel-band-meta { min-width: 0; }
     .cel-bcast { width: 190px; }
-    .cel-notice { max-height: none; }
-    .cel-notice-col { flex: 0 0 250px; }
+    .cel-notice-col { flex: 1 1 100%; }
     .cel-notice .cel-band-head { padding: 12px 14px; }
     .cel-notice .cel-band-body { padding: 12px; gap: 10px; }
     .cel-col-title { font-size: 12.5px; }
@@ -7295,10 +7292,12 @@ function celBuildOverlaps(files) {
         const g = groups[it.item] || (groups[it.item] = { category: it.category, rows: {}, files: new Set() });
         g.files.add(file);
         const key = file + '|' + (b.date || b.label);
-        const row = g.rows[key] || (g.rows[key] = { company: meta.company || '', title: meta.title || '', date: b.date || '', brands: [], link: '' });
-        const brand = String(p.brand || '').trim();
-        if (brand && !CEL_BRAND_PLACEHOLDER.test(brand) && !row.brands.includes(brand)) row.brands.push(brand);
-        if (!row.link && p.link) row.link = p.link;  // 브랜드를 못 찾은 GS 회차의 '확인↗' 링크
+        const row = g.rows[key] || (g.rows[key] = { company: meta.company || '', title: meta.title || '', date: b.date || '', prods: [] });
+        // 바로가기: 브랜드마다 첫 상품 링크 하나(같은 브랜드 여러 구성은 하나로),
+        // 브랜드를 못 찾은 상품도 회차당 링크 하나를 남긴다.
+        const raw = String(p.brand || '').trim();
+        const brand = (raw && !CEL_BRAND_PLACEHOLDER.test(raw)) ? raw : '';
+        if (!row.prods.some(x => x.brand === brand)) row.prods.push({ brand, link: p.link || '' });
       });
     });
   });
@@ -7318,19 +7317,22 @@ const CEL_NOTICE_CAT_ORDER = ['식품', '리빙', '미용', '가전'];
 // 회차 한 줄: 회사(회사색·굵게) 프로그램 날짜 브랜드
 function celNoticeRowHtml(r) {
   const md = r.date ? `${parseInt(r.date.slice(5, 7), 10)}/${parseInt(r.date.slice(8, 10), 10)}` : '';
-  // GS는 상품명으로 브랜드를 추론하는데(fixed/celeb_brand.py) 못 찾은 회차는
-  // 빈칸 대신 '확인↗'(그 품목 상품 페이지 링크)을 단다 - 누락처럼 보이지 않고
-  // 바로 열어 브랜드를 볼 수 있게. 다른 회사의 빈 브랜드는 그대로 생략.
-  const brandText = r.brands.length ? r.brands.join('/')
-    : (r.company === 'GS'
-        ? (r.link
-            ? `<a class="cel-notice-link" href="${r.link}" target="_blank" rel="noopener noreferrer" title="브랜드를 못 찾은 상품이에요 - 상품 페이지에서 확인">확인↗</a>`
-            : '확인필요')
-        : '');
+  // 브랜드가 확인된 상품이 있으면 그것만, 없으면 브랜드 없는 상품의 링크 하나.
+  // 브랜드 없는 상품: GS는 상품명 추론(fixed/celeb_brand.py)에 실패한 것이라 '확인↗',
+  // 다른 회사는 '상품↗'. 누락처럼 보이지 않고 눌러서 바로 볼 수 있게.
+  const named = r.prods.filter(x => x.brand);
+  const shown = named.length ? named : r.prods.slice(0, 1);
+  const links = shown.map(x => {
+    const label = x.brand || (r.company === 'GS' ? '확인' : '상품');
+    const title = x.brand ? '상품 페이지로 이동' : '브랜드를 못 찾은 상품이에요 - 상품 페이지에서 확인';
+    return x.link
+      ? `<a class="cel-notice-link" href="${x.link}" target="_blank" rel="noopener noreferrer" title="${title}">${label}↗</a>`
+      : `<span>${label}</span>`;
+  }).join('<span class="cel-notice-sep">·</span>');
   const co = r.company ? `<b class="cel-notice-co ${r.company.toLowerCase()}">${r.company}</b>` : '';
   return `<div class="cel-notice-line">${co}` +
     `<span class="cel-notice-prog">${[r.title, md].filter(Boolean).join(' ')}</span>` +
-    (brandText ? `<span class="cel-notice-brand">${brandText}</span>` : '') +
+    (links ? `<span class="cel-notice-brand">${links}</span>` : '') +
     `</div>`;
 }
 
@@ -7383,18 +7385,6 @@ function celRenderNotice(files) {
   );
 }
 
-// 특이사항 셀 높이 = 아래 프로그램 밴드 높이(중간값). 밴드 높이가 달·선택마다
-// 달라서 그린 뒤에 잰다. 줄이 넘치면 셀 안에서 스크롤된다.
-function celFitNoticeHeight() {
-  const notice = document.getElementById('celNotice');
-  if (!notice) return;
-  const hs = [...document.querySelectorAll('#celGridWrap .cel-band:not(.cel-notice)')]
-    .map(el => el.offsetHeight).filter(h => h > 0).sort((a, b) => a - b);
-  // 열마다 세로 스크롤을 주려면 열도 높이를 알아야 해서 CSS 변수로 넘긴다
-  if (hs.length) notice.style.setProperty('--cel-notice-h', hs[Math.floor(hs.length / 2)] + 'px');
-  else notice.style.removeProperty('--cel-notice-h');
-}
-
 // 최근 갱신 시각. 조회 중인 달의 누적 파일이 마지막으로 쓰인 시각을 쓴다
 // (지난 달을 보면 그 달 데이터가 마지막으로 갱신된 시각이 나온다).
 // 누적 파일이 없어 라이브 데이터로 폴백한 달은 이번 달 수집 시각을 쓴다.
@@ -7421,7 +7411,6 @@ function celRenderCompare() {
   }
 
   wrap.innerHTML = celRenderNotice(selected) + selected.map(celRenderBand).join('');
-  celFitNoticeHeight();
 }
 
 // 펼치기/접기 버튼: 재렌더링마다 버튼이 새로 생기므로 컨테이너에 위임으로 한 번만 건다
@@ -7434,8 +7423,6 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
   moreRows.style.display = opening ? '' : 'none';
   btn.textContent = opening ? '접기 ▲' : `+ ${btn.dataset.more}개 펼치기`;
 });
-// 화면 폭이 바뀌면 밴드 높이도 바뀌므로 특이사항 셀 높이를 다시 맞춘다
-window.addEventListener('resize', celFitNoticeHeight);
 
 (async function init() {
   initInfoTip();
