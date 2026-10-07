@@ -486,6 +486,114 @@
     table.schedule { min-width: 760px; }
   }
 
+  /* ============ 편성표 보기 전환 (타임라인형 / 시간표형) ============ */
+  .sch-view-toggle {
+    display: inline-flex;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+  }
+  .sch-view-toggle button {
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 7px 12px;
+    border: none;
+    background: none;
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+  .sch-view-toggle button + button { border-left: 1px solid var(--rule); }
+  .sch-view-toggle button.active { background: var(--brand-blue); color: #fff; }
+
+  /* ============ 타임라인형 편성표 ============ */
+  .tl-scroll {
+    overflow-x: auto;
+    background: var(--paper);
+    font-family: 'Pretendard', -apple-system, sans-serif;
+    --tl-lab: 112px;
+  }
+  .tl-inner { display: inline-block; min-width: 100%; padding-bottom: 6px; }
+  .tl-row { display: flex; height: 40px; border-top: 1px solid var(--rule); }
+  .tl-row.hs { height: 44px; }
+  .tl-row.axis { height: 26px; border-top: none; }
+  .tl-lab {
+    width: var(--tl-lab);
+    flex: none;
+    position: sticky;
+    left: 0;
+    z-index: 3;
+    background: var(--paper);
+    border-right: 1px solid var(--rule);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding-left: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .tl-lab .band { width: 3px; height: 16px; border-radius: 2px; flex: none; }
+  .tl-lab .band.terrestrial { background: var(--terrestrial); }
+  .tl-lab .band.comprehensive { background: var(--comprehensive); }
+  .tl-lab .band.cable { background: var(--cable); }
+  .tl-sec {
+    position: sticky;
+    left: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 14px 12px 8px;
+    font-size: 13px;
+    font-weight: 700;
+    background: var(--paper);
+    width: max-content;
+    max-width: 100vw;
+    box-sizing: border-box;
+  }
+  .tl-sec small { font-weight: 400; color: var(--ink-soft); }
+  .tl-legend { display: flex; flex-wrap: wrap; gap: 4px 10px; font-size: 11px; font-weight: 400; color: var(--ink-soft); }
+  .tl-legend i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 3px; vertical-align: -1px; }
+  .tl-track { position: relative; flex: none; }
+  .tl-tick { position: absolute; top: 6px; font-size: 11px; font-weight: 600; color: var(--ink-faint); transform: translateX(-50%); }
+  .tl-tick:first-child { transform: none; padding-left: 4px; }
+  .tl-grid { position: absolute; top: 0; bottom: 0; border-left: 1px dashed var(--rule); }
+  .tl-b {
+    position: absolute;
+    top: 3px;
+    bottom: 3px;
+    border-radius: 5px;
+    background: var(--paper-dim);
+    padding: 2px 6px;
+    box-sizing: border-box;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 11.5px;
+    line-height: 1.35;
+    color: inherit;
+    text-decoration: none;
+  }
+  .tl-b:hover { filter: brightness(0.96); }
+  .tl-b b { font-weight: 600; display: block; overflow: hidden; text-overflow: ellipsis; }
+  .tl-b .t { font-size: 9.5px; color: var(--ink-faint); font-weight: 600; display: block; }
+  .tl-b .sub { position: absolute; right: 6px; top: 2px; font-size: 9.5px; color: var(--ink-soft); }
+  .tl-b.narrow .t, .tl-b.narrow .sub { display: none; }
+  .tl-b.narrow b { margin-top: 13px; }
+  .tl-b.tiny b { display: none; }
+  .tl-b.now { outline: 2px solid #EF4444; outline-offset: -2px; }
+  .tl-nowline { position: absolute; top: 0; bottom: 0; border-left: 2px solid #EF4444; z-index: 2; pointer-events: none; }
+  .tl-nowline span {
+    position: absolute; top: 4px; left: -22px;
+    background: #EF4444; color: #fff; font-size: 10px; font-weight: 700;
+    padding: 1px 5px; border-radius: 8px;
+  }
+  @media (max-width: 720px) {
+    .tl-scroll { --tl-lab: 84px; }
+    .tl-lab { padding-left: 8px; font-size: 11px; }
+  }
+
   /* ============ 탭 전환 ============ */
   .main-tabs {
     display: flex;
@@ -3562,6 +3670,10 @@
   </div>
   <button class="search-btn" id="searchBtn">조회</button>
   <button class="today-btn" id="gotoToday">오늘로 이동</button>
+  <div class="sch-view-toggle" id="schViewToggle">
+    <button type="button" data-view="timeline">타임라인형</button>
+    <button type="button" data-view="table">시간표형</button>
+  </div>
   <div class="legend">
     <span><span class="dot terrestrial"></span>지상파</span>
     <span><span class="dot comprehensive"></span>종합편성</span>
@@ -3976,6 +4088,7 @@ const TAB_TIPS = {
     title: '지상파·종편·케이블 탭은?',
     items: [
       '네이버 편성표 검색 결과를 가져와요',
+      '<b>타임라인형</b>은 위쪽에 같은 시간 홈쇼핑 4사 편성을 함께 보여줘요 (시간표형으로 전환 가능)',
       '방송 셀을 클릭하면 <b>네이버 검색결과</b>로 이동해요',
     ],
   },
@@ -4305,7 +4418,38 @@ function nowWithinDay(dateStr) {
   return now.getHours() * 60 + now.getMinutes();
 }
 
-function renderGrid(data, dateStr) {
+// ============ 보기 전환: 타임라인형(기본) / 시간표형 ============
+let schView = 'timeline';
+try { if (localStorage.getItem('schView') === 'table') schView = 'table'; } catch (e) { }
+
+// 타임라인 위쪽 띠: 같은 시간 홈쇼핑 4사 본방송 편성
+const TL_HS_CHANNELS = [
+  { dir: 'HD_live', label: '현대' },
+  { dir: 'GS_live', label: 'GS' },
+  { dir: 'CJ_live', label: 'CJ' },
+  { dir: 'LT_live', label: '롯데' },
+];
+const TL_PX_PER_MIN = 3.6;
+const _tlHsMonthCache = {}; // 'HD_live/2026-10' -> Promise<json|null>
+
+function tlLoadHsMonth(dir, ym) {
+  const k = dir + '/' + ym;
+  if (!(k in _tlHsMonthCache)) _tlHsMonthCache[k] = fetchJsonSafe(`./homeshopping/${dir}/${ym}.json`);
+  return _tlHsMonthCache[k];
+}
+
+async function getHsForDate(dateStr) {
+  if (location.protocol === 'file:') return {};
+  const ym = dateStr.slice(0, 7);
+  const months = await Promise.all(TL_HS_CHANNELS.map(c => tlLoadHsMonth(c.dir, ym)));
+  const out = {};
+  TL_HS_CHANNELS.forEach((c, i) => {
+    out[c.dir] = (months[i] && months[i].days && months[i].days[dateStr]) || [];
+  });
+  return out;
+}
+
+function renderGrid(data, dateStr, hsData) {
   const wrap = document.getElementById('gridWrap');
   const noData = document.getElementById('noData');
 
@@ -4315,6 +4459,11 @@ function renderGrid(data, dateStr) {
     return;
   }
   noData.style.display = 'none';
+
+  if (schView === 'timeline') {
+    renderTimeline(data, dateStr, hsData || {});
+    return;
+  }
 
   const nowMin = nowWithinDay(dateStr);
   const hours = buildHourMarks();
@@ -4381,18 +4530,141 @@ function renderGrid(data, dateStr) {
   }
 }
 
+function renderTimeline(data, dateStr, hsData) {
+  const wrap = document.getElementById('gridWrap');
+  const nowMin = nowWithinDay(dateStr);
+  const PX = TL_PX_PER_MIN;
+  const W = 24 * 60 * PX;
+  const span = (st, en) => {
+    const a = timeToMinutes(st);
+    let b = en === '24:00' ? 1440 : timeToMinutes(en);
+    if (b <= a) b = 1440; // 자정을 넘기는 방송은 이 날짜 끝까지만 그린다
+    return [a, b];
+  };
+  const grid = () => {
+    let g = '';
+    for (let h = 1; h < 24; h++) g += `<div class="tl-grid" style="left:${h * 60 * PX}px"></div>`;
+    return g;
+  };
+  const nowLine = (withLabel) => nowMin === null ? '' :
+    `<div class="tl-nowline" style="left:${nowMin * PX}px">${withLabel ? '<span>' + String(Math.floor(nowMin / 60)).padStart(2, '0') + ':' + String(nowMin % 60).padStart(2, '0') + '</span>' : ''}</div>`;
+  const attr = v => escapeHtml(v).replace(/"/g, '&quot;');
+  // o: {a, b, st, en, title, sub, color, href, tip}
+  const block = (o) => {
+    const x = o.a * PX, w = (o.b - o.a) * PX - 2;
+    const cls = (w < 26 ? ' narrow tiny' : w < 110 ? ' narrow' : '') +
+      (nowMin !== null && nowMin >= o.a && nowMin < o.b ? ' now' : '');
+    const style = `left:${x}px;width:${Math.max(w, 2)}px;` +
+      (o.color ? `background:${o.color}26;border-left:3px solid ${o.color};` : '');
+    const tag = o.href ? `a href="${attr(o.href)}" target="_blank" rel="noopener"` : 'div';
+    return `<${tag} class="tl-b${cls}" style="${style}" title="${attr(o.tip)}">` +
+      `<span class="t">${o.st}–${o.en}</span>` +
+      (o.sub ? `<span class="sub">${escapeHtml(o.sub)}</span>` : '') +
+      `<b>${escapeHtml(o.title)}</b></${o.href ? 'a' : 'div'}>`;
+  };
+
+  let ticks = '';
+  for (let h = 0; h < 24; h++) ticks += `<div class="tl-tick" style="left:${h * 60 * PX}px">${String(h).padStart(2, '0')}:00</div>`;
+  const axis = `<div class="tl-row axis"><div class="tl-lab"></div><div class="tl-track" style="width:${W}px">${ticks}${nowLine(true)}</div></div>`;
+
+  // --- 홈쇼핑 4사: 같은 시작·종료 시각의 상품들은 한 블록으로 묶는다 ---
+  const usedCats = new Set();
+  let hsRows = '';
+  TL_HS_CHANNELS.forEach(c => {
+    const groups = new Map();
+    (hsData[c.dir] || []).forEach(r => {
+      const k = r.start + '|' + r.end;
+      if (!groups.has(k)) groups.set(k, []);
+      groups.get(k).push(r);
+    });
+    let blocks = '';
+    [...groups.values()].sort((x, y) => timeToMinutes(x[0].start) - timeToMinutes(y[0].start)).forEach(rs => {
+      const r = rs[0];
+      const [a, b] = span(r.start, r.end);
+      const cat = r.category || '';
+      if (cat) usedCats.add(cat);
+      const brandProd = (r.brand && !String(r.product).includes(r.brand) ? r.brand + ' ' : '') + r.product;
+      blocks += block({
+        a, b, st: r.start, en: r.end,
+        title: brandProd,
+        sub: cat + (rs.length > 1 ? ` 외 ${rs.length - 1}` : ''),
+        color: hsCategoryColor(cat),
+        href: r.link,
+        tip: `${r.start}–${r.end}\n` + rs.map(x => `[${x.category || '-'}] ${x.product}`).join('\n'),
+      });
+    });
+    hsRows += `<div class="tl-row hs"><div class="tl-lab">${c.label}</div><div class="tl-track" style="width:${W}px">${grid()}${blocks}${nowLine(false)}</div></div>`;
+  });
+  const legend = [...usedCats].map(cat => `<span><i style="background:${hsCategoryColor(cat)}"></i>${escapeHtml(cat)}</span>`).join('');
+
+  // --- 지상파·종편·케이블 ---
+  const shown = CHANNELS.filter(ch => ch.group !== 'cable' || data[ch.key]);
+  let tvRows = '';
+  shown.forEach(ch => {
+    const list = (data[ch.key] || []).slice().sort((x, y) => timeToMinutes(x.start) - timeToMinutes(y.start));
+    let blocks = '';
+    list.forEach(p => {
+      const [a, b] = span(p.start, p.end);
+      const naverQ = ch.key + ' ' + String(p.title).replace(/\s*\(\s*\d+\s*회\s*\)\s*$/, '').trim();
+      blocks += block({
+        a, b, st: p.start, en: p.end, title: p.title,
+        href: 'https://search.naver.com/search.naver?query=' + encodeURIComponent(naverQ),
+        tip: `${ch.key} ${p.start}–${p.end}\n${p.title}`,
+      });
+    });
+    tvRows += `<div class="tl-row"><div class="tl-lab"><i class="band ${ch.group}"></i>${escapeHtml(ch.key)}</div><div class="tl-track" style="width:${W}px">${grid()}${blocks}${nowLine(false)}</div></div>`;
+  });
+
+  wrap.innerHTML = '<div class="tl-scroll"><div class="tl-inner">' +
+    `<div class="tl-sec">같은 시간 홈쇼핑 편성 <small>본방송 4사</small><span class="tl-legend">${legend}</span></div>` +
+    axis + hsRows +
+    '<div class="tl-sec">지상파·종편·케이블</div>' +
+    axis + tvRows +
+    '</div></div>';
+
+  // 오늘이면 현재 시각 1시간 전, 아니면 저녁 프라임(18시)부터 보이게
+  const sc = wrap.querySelector('.tl-scroll');
+  const startMin = nowMin !== null ? Math.max(0, nowMin - 60) : 18 * 60;
+  sc.dataset.startX = String(startMin * PX);
+  tlApplyInitialScroll();
+}
+
+// 탭이 숨겨진 상태에서 그리면 scrollLeft가 0으로 잘리므로, 탭이 보일 때 한 번 더 적용한다
+function tlApplyInitialScroll() {
+  const sc = document.querySelector('#gridWrap .tl-scroll');
+  if (!sc || !sc.dataset.startX || !sc.clientWidth) return;
+  sc.scrollLeft = Number(sc.dataset.startX);
+  delete sc.dataset.startX;
+}
+
 function escapeHtml(str) {
   const div = document.createElement('div');
   div.textContent = str;
   return div.innerHTML;
 }
 
+let _schLast = null; // 보기 전환 시 재조회 없이 다시 그리기용
+
+function syncSchViewToggle() {
+  document.querySelectorAll('#schViewToggle button').forEach(b => b.classList.toggle('active', b.dataset.view === schView));
+}
+syncSchViewToggle();
+document.querySelectorAll('#schViewToggle button').forEach(b => b.addEventListener('click', () => {
+  if (schView === b.dataset.view) return;
+  schView = b.dataset.view;
+  try { localStorage.setItem('schView', schView); } catch (e) { }
+  syncSchViewToggle();
+  if (typeof gaEvent === 'function') gaEvent('filter_click', { filter_group: 'schedule_view', filter_value: schView });
+  if (_schLast) renderGrid(_schLast.data, _schLast.dateStr, _schLast.hsData);
+}));
+
 async function refresh(dateStr) {
   document.getElementById('dateText').textContent = formatDateLabel(dateStr);
   document.getElementById('todayBadge').style.display = isToday(dateStr) ? 'inline-block' : 'none';
   document.getElementById('prevDay').disabled = (dateStr <= SCHEDULE_MIN_DATE);
-  const data = await getDataForDate(dateStr);
-  renderGrid(data, dateStr);
+  const [data, hsData] = await Promise.all([getDataForDate(dateStr), getHsForDate(dateStr)]);
+  _schLast = { data, dateStr, hsData };
+  renderGrid(data, dateStr, hsData);
 
   const weather = await getWeatherForDate(dateStr);
   renderWeatherBar(weather);
@@ -6324,6 +6596,7 @@ function switchTab(tab) {
 
   currentActiveTab = tab;
   updateInfoTip(tab);
+  if (tab === 'schedule') tlApplyInitialScroll();
 
   if (tab === 'weather' && !_weatherTabLoaded) {
     _weatherTabLoaded = true;
