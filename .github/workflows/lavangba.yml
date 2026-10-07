@@ -51,7 +51,7 @@ jobs:
           python-version: "3.11"
 
       - name: 패키지 설치
-        run: pip install requests
+        run: pip install requests pandas openpyxl  # pandas/openpyxl: brand_display(infer_brand 브랜드 사전)
 
       - name: 라방바 수집기 실행 (v2, 로그인 불필요)
         continue-on-error: true
