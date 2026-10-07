@@ -3208,17 +3208,31 @@
   }
   /* 특이사항(겹치는 품목) 셀 - 밴드 맨 위. 높이는 JS(celFitNoticeHeight)가
      아래 밴드 높이 중간값의 절반으로 잡고, 넘치는 줄은 셀 안에서 스크롤한다. */
-  .cel-notice { max-height: 200px; }
+  .cel-notice { --cel-notice-h: 200px; max-height: var(--cel-notice-h); }
   .cel-notice .cel-band-head { display: flex; align-items: center; }
-  .cel-notice .cel-band-body {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 5px;
-    overflow-x: hidden;
+  /* 카테고리별 열: 열이 많으면 가로 스크롤, 열 안이 길면 그 열만 세로 스크롤 */
+  .cel-notice .cel-band-body { gap: 0; align-items: stretch; min-height: 0; }
+  .cel-notice-col {
+    flex: 1 0 260px;   /* 열이 적으면 남는 폭을 나눠 채우고, 많으면 260px씩 가로 스크롤 */
+    max-height: calc(var(--cel-notice-h) - 26px);
     overflow-y: auto;
-    min-height: 0;
+    padding-right: 12px;
   }
-  .cel-notice-row { font-size: 12px; line-height: 1.55; color: var(--ink); }
+  .cel-notice-col + .cel-notice-col { border-left: 1px dashed var(--rule); padding-left: 12px; }
+  .cel-notice-col-head {
+    position: sticky; top: 0;
+    background: #fff;
+    font-size: 11px; color: var(--ink-soft);
+    padding-bottom: 6px;
+  }
+  .cel-notice-item { margin-bottom: 8px; }
+  .cel-notice-item-title { font-size: 12px; color: var(--ink); line-height: 1.5; }
+  .cel-notice-line { font-size: 11.5px; line-height: 1.5; color: var(--ink-soft); padding-left: 8px; }
+  .cel-notice-co { font-weight: 800; }
+  .cel-notice-co.gs { color: #1AA663; }
+  .cel-notice-co.cj { color: #4B286D; }
+  .cel-notice-co.hd { color: #003C82; }
+  .cel-notice-co.lt { color: #DA291C; }
   .cel-notice-cat {
     display: inline-block;
     font-size: 10.5px;
@@ -3231,7 +3245,6 @@
     margin-right: 6px;
     vertical-align: 1px;
   }
-  .cel-notice-detail { color: var(--ink-soft); }
   .cel-notice-link { color: var(--brand-blue); font-weight: 700; text-decoration: none; }
   .cel-notice-link:hover { text-decoration: underline; }
   .cel-notice-empty { font-size: 12px; color: var(--ink-soft); }
@@ -3431,6 +3444,8 @@
     .cel-thumb-ph { font-size: 16px; }
     .cel-band-meta { min-width: 0; }
     .cel-bcast { width: 190px; }
+    .cel-notice { max-height: none; }
+    .cel-notice-col { flex: 0 0 230px; }
     .cel-col-title { font-size: 12.5px; }
     .cel-prod-name { font-size: 11px; }
   }
@@ -7277,6 +7292,25 @@ function celBuildOverlaps(files) {
     .sort((a, b) => (b.rows.length - a.rows.length) || a.item.localeCompare(b.item));
 }
 
+// 특이사항 열 순서 (패션은 hide_categories로 빠진다)
+const CEL_NOTICE_CAT_ORDER = ['식품', '리빙', '미용', '가전'];
+
+// 회차 한 줄: 회사(회사색·굵게) 프로그램 날짜 브랜드
+function celNoticeRowHtml(r) {
+  const md = r.date ? `${parseInt(r.date.slice(5, 7), 10)}/${parseInt(r.date.slice(8, 10), 10)}` : '';
+  // GS는 상품명으로 브랜드를 추론하는데(fixed/celeb_brand.py) 못 찾은 회차는
+  // 빈칸 대신 '확인↗'(그 품목 상품 페이지 링크)을 단다 - 누락처럼 보이지 않고
+  // 바로 열어 브랜드를 볼 수 있게. 다른 회사의 빈 브랜드는 그대로 생략.
+  const brandText = r.brands.length ? r.brands.join('/')
+    : (r.company === 'GS'
+        ? (r.link
+            ? `<a class="cel-notice-link" href="${r.link}" target="_blank" rel="noopener noreferrer" title="브랜드를 못 찾은 상품이에요 - 상품 페이지에서 확인">확인↗</a>`
+            : '확인필요')
+        : '');
+  const co = r.company ? `<b class="cel-notice-co ${r.company.toLowerCase()}">${r.company}</b>` : '';
+  return `<div class="cel-notice-line">${[co, r.title, md, brandText].filter(Boolean).join(' ')}</div>`;
+}
+
 function celRenderNotice(files) {
   let bodyHtml;
   let cntHtml = '';
@@ -7287,27 +7321,29 @@ function celRenderNotice(files) {
   } else {
     const overlaps = celBuildOverlaps(files);
     cntHtml = `<div class="cel-band-cnt">겹치는 품목 <b>${overlaps.length}개</b></div>`;
-    bodyHtml = overlaps.length === 0
-      ? `<div class="cel-notice-empty">이 달은 여러 프로그램에 겹쳐 편성된 품목이 없어요.</div>`
-      : overlaps.map(o => {
-          const rows = o.rows.map(r => {
-            const md = r.date ? `${parseInt(r.date.slice(5, 7), 10)}/${parseInt(r.date.slice(8, 10), 10)}` : '';
-            // GS는 상품명으로 브랜드를 추론하는데(fixed/celeb_brand.py) 못 찾은 회차는
-            // 빈칸 대신 '확인↗'(그 품목 상품 페이지 링크)을 단다 - 누락처럼 보이지 않고
-            // 바로 열어 브랜드를 볼 수 있게. 다른 회사의 빈 브랜드는 그대로 생략.
-            const brandText = r.brands.length ? r.brands.join('/')
-              : (r.company === 'GS'
-                  ? (r.link
-                      ? `<a class="cel-notice-link" href="${r.link}" target="_blank" rel="noopener noreferrer" title="브랜드를 못 찾은 상품이에요 - 상품 페이지에서 확인">확인↗</a>`
-                      : '확인필요')
-                  : '');
-            return [r.company, r.title, md, brandText].filter(Boolean).join(' ');
-          }).join(', ');
-          return `<div class="cel-notice-row">` +
-            `<span class="cel-notice-cat">${o.category}</span>` +
-            `<b>${o.item}</b> 상품 <b>${o.rows.length}회</b> 편성 ` +
-            `<span class="cel-notice-detail">(${rows})</span></div>`;
-        }).join('');
+    if (overlaps.length === 0) {
+      bodyHtml = `<div class="cel-notice-empty">이 달은 여러 프로그램에 겹쳐 편성된 품목이 없어요.</div>`;
+    } else {
+      // 카테고리별 열: 열 순서는 CEL_NOTICE_CAT_ORDER, 그 밖의 카테고리는 뒤에.
+      // 열 안 품목은 celBuildOverlaps가 정한 순서(회차 많은 순) 그대로.
+      const byCat = {};
+      overlaps.forEach(o => (byCat[o.category] = byCat[o.category] || []).push(o));
+      const cats = Object.keys(byCat).sort((a, b) => {
+        const ia = CEL_NOTICE_CAT_ORDER.indexOf(a), ib = CEL_NOTICE_CAT_ORDER.indexOf(b);
+        return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib) || a.localeCompare(b);
+      });
+      bodyHtml = cats.map(cat =>
+        `<div class="cel-notice-col">` +
+          `<div class="cel-notice-col-head"><span class="cel-notice-cat">${cat}</span>${byCat[cat].length}개 품목</div>` +
+          byCat[cat].map(o =>
+            `<div class="cel-notice-item">` +
+              `<div class="cel-notice-item-title"><b>${o.item}</b> 상품 <b>${o.rows.length}회</b> 편성</div>` +
+              o.rows.map(celNoticeRowHtml).join('') +
+            `</div>`
+          ).join('') +
+        `</div>`
+      ).join('');
+    }
   }
   return (
     `<div class="cel-band cel-notice" id="celNotice">` +
@@ -7330,7 +7366,9 @@ function celFitNoticeHeight() {
   if (!notice) return;
   const hs = [...document.querySelectorAll('#celGridWrap .cel-band:not(.cel-notice)')]
     .map(el => el.offsetHeight).filter(h => h > 0).sort((a, b) => a - b);
-  notice.style.maxHeight = hs.length ? Math.round(hs[Math.floor(hs.length / 2)] / 2) + 'px' : '';
+  // 열마다 세로 스크롤을 주려면 열도 높이를 알아야 해서 CSS 변수로 넘긴다
+  if (hs.length) notice.style.setProperty('--cel-notice-h', Math.round(hs[Math.floor(hs.length / 2)] / 2) + 'px');
+  else notice.style.removeProperty('--cel-notice-h');
 }
 
 // 최근 갱신 시각. 조회 중인 달의 누적 파일이 마지막으로 쓰인 시각을 쓴다
