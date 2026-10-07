@@ -237,6 +237,8 @@ def main():
     requests_used = 0
     official_cache = {}  # (ch, series) -> {epi: (date, desc)}
     done = skipped = 0
+    # 최신 방송분부터 검색한다. 요청 상한·차단으로 중간에 멈춰도 최근 회차가 먼저 채워지도록.
+    targets.sort(key=lambda t: (t[4], t[5]), reverse=True)
     for key, ch, series, epi, d, start in targets:
         store = store_for(d)
         rec = store.get(key) or {"ch": ch, "series": series, "epi": epi, "date": d, "start": start,
