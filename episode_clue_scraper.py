@@ -136,22 +136,47 @@ def parse_official(html: str, ch: str):
 
 
 def parse_clues(html: str, series: str, epi: str, date: str):
-    """검색 결과에서 '프로그램명' + 'N회'(또는 방송 날짜)가 함께 들어간 제목만 단서로 모은다."""
+    """검색 결과 제목 중 그 회차 이야기인 것만 단서로 모은다.
+
+    네이버 PC 결과는 제목이 잘려('...관절 비상 1위는 누구? |') 프로그램명·회차가 제목에서 빠지는 경우가 많다.
+    그래서 제목 자체가 아니라, 제목이 속한 결과 묶음(제목+설명+출처) 안에 프로그램명과 'N회'(회차가 없으면
+    방송 날짜)가 함께 있는지로 판단한다.
+    """
     soup = BeautifulSoup(html, "html.parser")
     ns = norm(series)
     md = datetime.strptime(date, "%Y-%m-%d")
-    date_pats = [f"{md.month}월 {md.day}일", f"{md.month}월{md.day}일", md.strftime("%y%m%d"), md.strftime("%Y.%m.%d")]
+    date_pats = [f"{md.month}월 {md.day}일", f"{md.month}월{md.day}일", md.strftime("%y%m%d"), md.strftime("%Y.%m.%d"),
+                 md.strftime("%y/%m/%d")]
+    epi_re = re.compile(rf"(?<!\d){epi}\s*(회|화)") if epi else None
+
+    def about_episode(text: str) -> bool:
+        if ns not in norm(text):
+            return False
+        return bool(epi_re.search(text)) if epi_re else any(p in text for p in date_pats)
+
+    # 후보 제목: (1) 제목 자체에 프로그램명+회차가 있는 링크
+    #           (2) 네이버가 검색어를 강조(<mark>)한 곳에서 가장 가까운 결과 묶음 안의 링크
+    #               - 검색어가 설명·출처에만 있고 제목은 잘린 결과를 살리기 위함
+    cand = [a for a in soup.find_all("a") if about_episode(a.get_text(" ", strip=True))]
+    for mk in soup.find_all("mark"):
+        ctx = mk.parent.get_text(" ", strip=True) if mk.parent else ""
+        if not about_episode(ctx):
+            continue
+        node = mk
+        for _ in range(6):
+            node = node.parent
+            if node is None or node.name in ("body", "html"):
+                break
+            links = [a for a in node.find_all("a") if 8 <= len(clean(a.get_text(" ", strip=True))) <= 260]
+            if links:
+                cand.extend(links)
+                break
+
     clues, seen = [], set()
-    for a in soup.find_all("a"):
+    for a in cand:
         t = clean(a.get_text(" ", strip=True))
-        if not (8 <= len(t) <= 160):
-            continue
-        if ns not in norm(t):
-            continue
-        if epi:
-            if not re.search(rf"(?<!\d){epi}\s*(회|화)", t):
-                continue
-        elif not any(p in t for p in date_pats):
+        t = re.sub(r"\s*(\||\.{2,}|…)\s*$", "", t).strip()   # 잘린 제목 끝의 '|', '....'
+        if not (8 <= len(t) <= 260):
             continue
         if JUNK.search(t) or len(re.findall(r"\d{1,2}:\d{2}", t)) >= 2:
             continue
@@ -162,14 +187,14 @@ def parse_clues(html: str, series: str, epi: str, date: str):
         # 프로그램명·회차·채널·날짜 말고 내용이 거의 없는 제목 ('엄지의 제왕 714회')은 버린다
         rest = norm(t).replace(ns, "", 1)
         rest = re.sub(rf"{epi}(회|화)" if epi else "", "", rest)
-        rest = re.sub(r"\d+|tv조선|tvchosun|채널a|mbn|jtbc|kbs\d?|mbc|sbs|tvn|ena|방송|예고|회차|본방", "", rest)
+        rest = re.sub(r"\d+|tv조선|tvchosun|채널a|mbn|jtbc|kbs\d?|mbc|sbs|tvn|ena|방송|예고|회차|본방|셋탑|위치|감독|출연|상영시간", "", rest)
         if len(rest) < 6:
             continue
         k = norm(t)
         if k in seen or any(k in s or s in k for s in seen):
             continue
         seen.add(k)
-        clues.append(t)
+        clues.append(t[:200])
         if len(clues) >= MAX_CLUES:
             break
     return clues

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""[임시 조사용] 회차 검색 결과에서 단서가 왜 안 잡히는지 확인"""
+"""[임시 조사용] 회차 검색 결과에서 단서가 왜 안 잡히는지 확인 (v2)"""
 import re, sys, requests
 from bs4 import BeautifulSoup
 sys.path.insert(0, ".")
