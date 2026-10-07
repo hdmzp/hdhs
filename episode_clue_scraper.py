@@ -97,7 +97,12 @@ def fetch(query: str) -> str:
 
 def clean(t: str) -> str:
     t = re.sub(r"새 창 열림|Keep에 저장|Keep에 바로가기", " ", t)
+    t = re.sub(r"^\d+\s*(분|시간|일|주)\s*전\s*", "", t.strip())  # '1일 전 ...' 같은 게시 시각 접두어
     return re.sub(r"\s+", " ", t).strip()
+
+
+# 단서로 쓸 수 없는 결과: 불법 다운로드·파일공유 제목, 편성표 목록 텍스트
+JUNK = re.compile(r"다시보기|다운로드|스트리밍|1080p|720p|WANNA|파일쿠키|filekuki|토렌트|torrent|\.E\s?\d+|\bE\s?\d{2,}\b", re.I)
 
 
 def parse_official(html: str, ch: str):
@@ -135,6 +140,14 @@ def parse_clues(html: str, series: str, epi: str, date: str):
             if not re.search(rf"(?<!\d){epi}\s*(회|화)", t):
                 continue
         elif not any(p in t for p in date_pats):
+            continue
+        if JUNK.search(t) or len(re.findall(r"\d{1,2}:\d{2}", t)) >= 2:
+            continue
+        # 프로그램명·회차·채널·날짜 말고 내용이 거의 없는 제목 ('엄지의 제왕 714회')은 버린다
+        rest = norm(t).replace(ns, "", 1)
+        rest = re.sub(rf"{epi}(회|화)" if epi else "", "", rest)
+        rest = re.sub(r"\d+|tv조선|tvchosun|채널a|mbn|jtbc|kbs\d?|mbc|sbs|tvn|ena|방송|예고|회차|본방", "", rest)
+        if len(rest) < 6:
             continue
         k = norm(t)
         if k in seen or any(k in s or s in k for s in seen):

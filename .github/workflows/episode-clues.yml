@@ -10,9 +10,6 @@ on:
       days:
         description: "오늘 포함 며칠 전 방영분까지 (지난 기간 채우기용)"
         default: "4"
-  push:  # [임시] 작업 브랜치에서 실제 네이버 응답으로 시험 (저장 없이 출력만)
-    branches: [ccr-25350af0-w3rmp4]
-    paths: [episode_clue_scraper.py, .github/workflows/episode-clues.yml]
 
 permissions:
   contents: write
@@ -31,15 +28,11 @@ jobs:
 
       - name: 회차 단서 수집
         run: |
-          if [ "${{ github.event_name }}" = "push" ]; then
-            python episode_clue_scraper.py --days 2 --dry-run
-          else
-            python episode_clue_scraper.py --days "${{ inputs.days || '4' }}"
-          fi
+          python episode_clue_scraper.py --days "${{ inputs.days || '4' }}"
 
       - name: 결과 커밋 & 푸시
         id: commit
-        if: github.ref == 'refs/heads/main' && github.event_name != 'push'
+        if: github.ref == 'refs/heads/main'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
