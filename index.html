@@ -25,6 +25,7 @@
     --terrestrial-soft: #EFF4FF;
     --comprehensive: #7C3AED;
     --comprehensive-soft: #F5F0FE;
+    --cable: #0D9488;
     --now-accent: #2563EB;
     --now-bg: #EFF4FF;
     --brand-blue: #2563EB;
@@ -322,6 +323,7 @@
   .legend .dot { width: 9px; height: 9px; border-radius: 2px; display: inline-block; }
   .dot.terrestrial { background: var(--terrestrial); }
   .dot.comprehensive { background: var(--comprehensive); }
+  .dot.cable { background: var(--cable); }
 
   .weather-bar {
     max-width: 1400px;
@@ -400,6 +402,7 @@
   }
   th.terrestrial .ch-band { background: var(--terrestrial); }
   th.comprehensive .ch-band { background: var(--comprehensive); }
+  th.cable .ch-band { background: var(--cable); }
 
   table.schedule td {
     border-bottom: 1px solid var(--rule);
@@ -3524,7 +3527,7 @@
     <button id="tabBtnFixedPgm">고정PGM</button>
     <button id="tabBtnCelebrity">셀럽PGM</button>
     <button id="tabBtnIndustry">편성맵</button>
-    <button id="tabBtnSchedule">지상파·종편</button>
+    <button id="tabBtnSchedule">지상파·종편·케이블</button>
     <button id="tabBtnDramaVariety">드라마·예능</button>
     <button id="tabBtnWeather">날씨</button>
     <button id="tabBtnRanking">랭킹</button>
@@ -3562,6 +3565,7 @@
   <div class="legend">
     <span><span class="dot terrestrial"></span>지상파</span>
     <span><span class="dot comprehensive"></span>종합편성</span>
+    <span><span class="dot cable"></span>케이블</span>
   </div>
 </div>
 
@@ -3969,7 +3973,7 @@ const TAB_TIPS = {
     ],
   },
   schedule: {
-    title: '지상파·종편 탭은?',
+    title: '지상파·종편·케이블 탭은?',
     items: [
       '네이버 편성표 검색 결과를 가져와요',
       '방송 셀을 클릭하면 <b>네이버 검색결과</b>로 이동해요',
@@ -4104,6 +4108,10 @@ const CHANNELS = [
   { key: "MBN",  group: "comprehensive" },
   { key: "TV조선", group: "comprehensive" },
   { key: "채널A", group: "comprehensive" },
+  { key: "tvN", group: "cable" },
+  { key: "ENA", group: "cable" },
+  { key: "MBC every1", group: "cable" },
+  { key: "SBS Plus", group: "cable" },
 ];
 
 // ============ 내장 데이터 (file://로 직접 열어도 동작하도록) ============
@@ -9265,10 +9273,11 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
 
     const terr = fmtGroup('지상파', 'terrestrial');
     const comp = fmtGroup('종편', 'comprehensive');
+    const cable = fmtGroup('케이블', 'cable');
     const el = $('inCrossref');
     if (!el) return;
-    el.innerHTML = (!terr && !comp) ? '' :
-      '<div class="in-cross"><b>이 시간대엔 주로 이런 방송이 진행돼요</b>' + terr + comp + '</div>';
+    el.innerHTML = (!terr && !comp && !cable) ? '' :
+      '<div class="in-cross"><b>이 시간대엔 주로 이런 방송이 진행돼요</b>' + terr + comp + cable + '</div>';
   }
 
   // ============ 건강프로그램 추적 ============
@@ -9373,7 +9382,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     inRenderPpl();
   }
 
-  // 채널(KBS1~채널A) 필터 - 이미 계산된 결과에서 표시 집계만 다시 한다
+  // 채널(KBS1~케이블) 필터 - 이미 계산된 결과에서 표시 집계만 다시 한다
   function inRenderTrkChSlicer() {
     const wrap = $('inTrkChSlicer');
     if (!wrap) return;
