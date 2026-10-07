@@ -483,7 +483,11 @@
 
   @media (max-width: 720px) {
     .controls { gap: 10px; }
-    table.schedule { min-width: 760px; }
+    /* 모바일에선 열이 너무 좁아 읽기 어려우므로 채널 열 하나당 약 125px 이상 확보 (가로 스크롤) */
+    table.schedule { min-width: 1560px; }
+    /* 가로로 넘겨도 시간 열은 왼쪽에 고정 */
+    table.schedule td.time-col { position: sticky; left: 0; z-index: 2; }
+    table.schedule thead th.time-col { left: 0; z-index: 4; }
   }
 
   /* ============ 편성표 보기 전환 (타임라인형 / 시간표형) ============ */
@@ -4088,7 +4092,7 @@ const TAB_TIPS = {
     title: '지상파·종편·케이블 탭은?',
     items: [
       '네이버 편성표 검색 결과를 가져와요',
-      '<b>타임라인형</b>은 위쪽에 같은 시간 홈쇼핑 4사 편성을 함께 보여줘요 (시간표형으로 전환 가능)',
+      '<b>타임라인형</b>은 위쪽에 동시간대 4사 편성을 함께 보여줘요 (시간표형으로 전환 가능)',
       '방송 셀을 클릭하면 <b>네이버 검색결과</b>로 이동해요',
     ],
   },
@@ -4422,7 +4426,7 @@ function nowWithinDay(dateStr) {
 let schView = 'timeline';
 try { if (localStorage.getItem('schView') === 'table') schView = 'table'; } catch (e) { }
 
-// 타임라인 위쪽 띠: 같은 시간 홈쇼핑 4사 본방송 편성
+// 타임라인 위쪽 띠: 동시간대 홈쇼핑 4사 본방송 편성
 const TL_HS_CHANNELS = [
   { dir: 'HD_live', label: '현대' },
   { dir: 'GS_live', label: 'GS' },
@@ -4557,7 +4561,7 @@ function renderTimeline(data, dateStr, hsData) {
     const style = `left:${x}px;width:${Math.max(w, 2)}px;` +
       (o.color ? `background:${o.color}26;border-left:3px solid ${o.color};` : '');
     const tag = o.href ? `a href="${attr(o.href)}" target="_blank" rel="noopener"` : 'div';
-    return `<${tag} class="tl-b${cls}" style="${style}" title="${attr(o.tip)}">` +
+    return `<${tag} class="tl-b${cls}" data-a="${o.a}" data-b="${o.b}" style="${style}" title="${attr(o.tip)}">` +
       `<span class="t">${o.st}–${o.en}</span>` +
       (o.sub ? `<span class="sub">${escapeHtml(o.sub)}</span>` : '') +
       `<b>${escapeHtml(o.title)}</b></${o.href ? 'a' : 'div'}>`;
@@ -4616,7 +4620,7 @@ function renderTimeline(data, dateStr, hsData) {
   });
 
   wrap.innerHTML = '<div class="tl-scroll"><div class="tl-inner">' +
-    `<div class="tl-sec">같은 시간 홈쇼핑 편성 <small>본방송 4사</small><span class="tl-legend">${legend}</span></div>` +
+    `<div class="tl-sec">동시간대 4사 편성<span class="tl-legend">${legend}</span></div>` +
     axis + hsRows +
     '<div class="tl-sec">지상파·종편·케이블</div>' +
     axis + tvRows +
@@ -4628,6 +4632,22 @@ function renderTimeline(data, dateStr, hsData) {
   sc.dataset.startX = String(startMin * PX);
   tlApplyInitialScroll();
 }
+
+// 현재 시각선은 보는 사람 브라우저 시계 기준이라, 페이지를 켜둔 동안 1분마다 따라 움직이게 한다
+function tlTickNow() {
+  if (!_schLast || schView !== 'timeline' || !isToday(_schLast.dateStr)) return;
+  const nowMin = nowWithinDay(_schLast.dateStr);
+  const label = String(Math.floor(nowMin / 60)).padStart(2, '0') + ':' + String(nowMin % 60).padStart(2, '0');
+  document.querySelectorAll('#gridWrap .tl-nowline').forEach(el => {
+    el.style.left = (nowMin * TL_PX_PER_MIN) + 'px';
+    const sp = el.querySelector('span');
+    if (sp) sp.textContent = label;
+  });
+  document.querySelectorAll('#gridWrap .tl-b').forEach(el => {
+    el.classList.toggle('now', nowMin >= Number(el.dataset.a) && nowMin < Number(el.dataset.b));
+  });
+}
+setInterval(tlTickNow, 60 * 1000);
 
 // 탭이 숨겨진 상태에서 그리면 scrollLeft가 0으로 잘리므로, 탭이 보일 때 한 번 더 적용한다
 function tlApplyInitialScroll() {
