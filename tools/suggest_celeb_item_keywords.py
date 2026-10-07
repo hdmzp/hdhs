@@ -44,6 +44,12 @@ def load_keywords():
         return json.load(f)["items"]
 
 
+def load_hide_categories():
+    """화면에서 숨기는 카테고리(패션). 품목 매칭은 그대로 하고 출력에서만 뺀다."""
+    with open(KEYWORDS_PATH, encoding="utf-8") as f:
+        return set(json.load(f).get("hide_categories", []))
+
+
 def main_text(name: str) -> str:
     """본품 부분만 - 화면(index.html celItemMainText)과 같은 규칙.
     1) [..] (..) 안은 지운다: 구성 표기·색상 옵션·사은품이 들어간다
@@ -72,7 +78,7 @@ def load_history(ym: str):
         return json.load(f)
 
 
-def build_overlaps(hist: dict, items: list):
+def build_overlaps(hist: dict, items: list, hide=frozenset()):
     """품목 -> 회차 목록. 서로 다른 프로그램 2곳 이상인 품목만 돌려준다."""
     groups = defaultdict(dict)  # item -> {(program_key, date): entry}
     for prog in hist.get("programs", []):
@@ -81,7 +87,7 @@ def build_overlaps(hist: dict, items: list):
                 continue
             for p in b.get("products", []):
                 it = match_item(p.get("name", ""), items)
-                if not it:
+                if not it or it["category"] in hide:
                     continue
                 key = (prog["program_key"], b.get("date", ""))
                 e = groups[it["item"]].setdefault(key, {
@@ -145,7 +151,7 @@ def main():
     if not hist:
         print("  (월별 누적 파일 없음)")
     else:
-        overlaps = build_overlaps(hist, items)
+        overlaps = build_overlaps(hist, items, load_hide_categories())
         if not overlaps:
             print("  없음")
         for item, rows in overlaps:
