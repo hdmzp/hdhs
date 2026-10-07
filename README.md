@@ -94,7 +94,7 @@ hdhs/
 | `scrape-celebpgm.yml` | 03:00 | 셀럽PGM(13개 프로그램) 상품 데이터 | 스크립트별 `\|\| echo` + 건전성 검사(2-1) |
 | `scrape-fixed-pgm.yml` | 04:30 | 고정PGM 4사 | 스크래퍼별 `continue-on-error` + 건전성 검사(2-1) |
 | `schedule.yml` | 05:00, 21:00 (하루 2회) | 지상파·종편·케이블 편성표 | - |
-| `episode-clues.yml` | 10:20 | 건강프로그램 회차 단서 (최근 4일 본방, 못 찾으면 최대 3번 재시도) | - |
+| `episode-clues.yml` | 10:20 | 건강프로그램 회차 단서 (최근 30일 본방 중 단서 없는 회차, 실행당 요청 80회, 못 찾으면 최대 3번) | - |
 | `weather.yml` | 05:30 | 날씨(ASOS+단기예보)+공휴일+절기 | - |
 | `homeshopping.yml` | 05:50, 08:50, 12:20, 14:30, 18:30 (하루 5회) | 홈쇼핑 4사(HD/GS/CJ/LT) | 스크래퍼별 `continue-on-error` |
 | `etc-scrape.yml` | 06:10, 09:30, 12:40, 15:00, 17:00 (하루 5회) | 홈쇼핑 기타 7개사 | `continue-on-error` |
