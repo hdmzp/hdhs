@@ -3264,6 +3264,25 @@
   .cel-notice-link:hover { color: var(--brand-blue); }
   .cel-notice-link:hover { text-decoration: underline; }
   .cel-notice-empty { font-size: 12.5px; color: var(--ink-soft); padding: 4px 0; }
+  .cel-notice-toggle {
+    margin-top: 12px;
+    font-size: 11.5px; font-weight: 700;
+    color: var(--ink-soft);
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 20px;
+    padding: 4px 12px;
+    cursor: pointer;
+  }
+  .cel-notice-toggle:hover { color: var(--brand-blue); border-color: var(--brand-blue); }
+  /* 접힌 상태: 본문·설명을 숨기고 제목·품목 수·펼치기만 한 줄로 */
+  .cel-notice.collapsed .cel-band-body,
+  .cel-notice.collapsed .cel-col-sched { display: none; }
+  .cel-notice.collapsed .cel-band-head { flex: 1; border-right: none; border-bottom: none; padding: 9px 18px; }
+  .cel-notice.collapsed .cel-band-meta { flex: 1; display: flex; align-items: center; gap: 12px; }
+  .cel-notice.collapsed .cel-notice-title { font-size: 14px; margin: 0; }
+  .cel-notice.collapsed .cel-band-cnt { margin: 0; }
+  .cel-notice.collapsed .cel-notice-toggle { margin: 0 0 0 auto; }
 
   .cel-week { flex: 0 0 auto; }
   .cel-week + .cel-week { border-left: 2px solid var(--rule); margin-left: 14px; padding-left: 14px; }
@@ -7262,6 +7281,11 @@ function celRenderBand(file) {
 // 사전 관리/검증: python tools/suggest_celeb_item_keywords.py (같은 규칙으로 출력)
 let celItemKeywords = null;    // [{item, category, match[], exclude[]}] (로드 실패 시 [])
 let celItemHideCats = new Set(); // 화면에서 숨기는 카테고리 (패션: 의류·잡화)
+// 특이사항 접기 상태 - 이 브라우저에만 기억한다 (저장소가 막혀 있으면 펼친 상태로 시작)
+const CEL_NOTICE_COLLAPSE_KEY = 'celNoticeCollapsed';
+let celNoticeCollapsed = (() => {
+  try { return localStorage.getItem(CEL_NOTICE_COLLAPSE_KEY) === '1'; } catch (e) { return false; }
+})();
 
 // 본품 부분만: [..] (..) 안(구성 표기·색상 옵션·사은품)을 지운 뒤 '+' 앞만.
 // 괄호를 먼저 지워야 "[1+1] 콜라겐 토너패드"가 "[1"로 잘리지 않는다.
@@ -7372,12 +7396,13 @@ function celRenderNotice(files) {
     }
   }
   return (
-    `<div class="cel-band cel-notice" id="celNotice">` +
+    `<div class="cel-band cel-notice${celNoticeCollapsed ? ' collapsed' : ''}" id="celNotice">` +
       `<div class="cel-band-head">` +
         `<div class="cel-band-meta">` +
           `<div class="cel-notice-title">특이사항</div>` +
           `<div class="cel-col-sched">같은 품목이 서로 다른 셀럽PGM에 편성된 현황 (패션 제외)</div>` +
           cntHtml +
+          `<button type="button" class="cel-notice-toggle">${celNoticeCollapsed ? '펼치기 ▼' : '접기 ▲'}</button>` +
         `</div>` +
       `</div>` +
       `<div class="cel-band-body">${bodyHtml}</div>` +
@@ -7415,6 +7440,17 @@ function celRenderCompare() {
 
 // 펼치기/접기 버튼: 재렌더링마다 버튼이 새로 생기므로 컨테이너에 위임으로 한 번만 건다
 document.getElementById('celGridWrap').addEventListener('click', (e) => {
+  // 특이사항 접기/펼치기 - 접으면 제목 한 줄만 남긴다
+  const toggle = e.target.closest('.cel-notice-toggle');
+  if (toggle) {
+    celNoticeCollapsed = !celNoticeCollapsed;
+    const notice = document.getElementById('celNotice');
+    if (notice) notice.classList.toggle('collapsed', celNoticeCollapsed);
+    toggle.textContent = celNoticeCollapsed ? '펼치기 ▼' : '접기 ▲';
+    try { localStorage.setItem(CEL_NOTICE_COLLAPSE_KEY, celNoticeCollapsed ? '1' : '0'); } catch (err) { /* 저장 못 해도 화면은 바뀐다 */ }
+    gaEvent('filter_click', { filter_group: 'celebrity_notice', filter_value: celNoticeCollapsed ? 'collapse' : 'expand' });
+    return;
+  }
   const btn = e.target.closest('.cel-more-btn');
   if (!btn) return;
   const moreRows = btn.previousElementSibling;
