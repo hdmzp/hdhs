@@ -46,8 +46,9 @@ HEADERS = {
 BASE_URL = "https://search.naver.com/search.naver"
 SCHEDULE_DIR = "data"
 OUT_DIR = os.path.join("data", "episode_clues")
-REQUEST_DELAY_SEC = 2.0
-MAX_REQUESTS = 150        # 한 번 실행에 네이버 요청 상한 (차단 방지). 남은 건 다음 실행에서 이어서.
+REQUEST_DELAY_SEC = 3.0
+MAX_REQUESTS = 80         # 한 번 실행에 네이버 요청 상한 (차단 방지). 남은 건 다음 실행에서 이어서.
+BLOCK_WAIT_SEC = 60       # 403/429(차단)를 받으면 이만큼 쉬고 한 번만 다시 시도, 또 막히면 이번 실행은 중단
 MAX_TRIES = 3             # 단서를 못 찾은 회차는 며칠에 걸쳐 최대 이만큼 다시 시도
 MAX_CLUES = 6
 KST = timezone(timedelta(hours=9))
@@ -89,10 +90,21 @@ def split_title(title: str):
     return title.strip(), ""
 
 
+class Blocked(Exception):
+    """네이버가 요청을 막음(403/429). 이어서 요청해도 소용없으므로 실행을 멈춘다."""
+
+
 def fetch(query: str) -> str:
-    resp = requests.get(BASE_URL, params={"where": "nexearch", "query": query}, headers=HEADERS, timeout=15)
-    resp.raise_for_status()
-    return resp.text
+    for attempt in range(2):
+        resp = requests.get(BASE_URL, params={"where": "nexearch", "query": query}, headers=HEADERS, timeout=15)
+        if resp.status_code in (403, 429):
+            if attempt == 0:
+                print(f"  [차단 {resp.status_code}] {BLOCK_WAIT_SEC}초 쉬고 다시 시도")
+                time.sleep(BLOCK_WAIT_SEC)
+                continue
+            raise Blocked(f"{resp.status_code} {query}")
+        resp.raise_for_status()
+        return resp.text
 
 
 def clean(t: str) -> str:
@@ -251,8 +263,13 @@ def main():
             rec["clues"] = parse_clues(fetch(q), series, epi, d)
             requests_used += 1
             time.sleep(REQUEST_DELAY_SEC)
+        except Blocked as e:
+            # 실패한 회차는 시도 횟수를 올리지 않고 저장도 하지 않는다 (다음 실행에서 처음부터 다시)
+            print(f"[중단] 네이버 차단: {e} - 지금까지 받은 것만 저장")
+            break
         except Exception as e:
             print(f"  [실패] {key}: {e}")
+            continue
 
         rec["tries"] = rec.get("tries", 0) + 1
         rec["updated"] = datetime.now(KST).isoformat(timespec="seconds")
