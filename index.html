@@ -7289,7 +7289,10 @@ function celRenderNotice(files) {
       : overlaps.map(o => {
           const rows = o.rows.map(r => {
             const md = r.date ? `${parseInt(r.date.slice(5, 7), 10)}/${parseInt(r.date.slice(8, 10), 10)}` : '';
-            return [r.company, r.title, md, r.brands.join('/')].filter(Boolean).join(' ');
+            // GS는 상품명으로 브랜드를 추론하는데(fixed/celeb_brand.py) 못 찾은 회차는
+            // 빈칸 대신 '(브랜드 미정)'으로 남긴다 - 누락처럼 보이지 않게. 다른 회사는 그대로 생략.
+            const brandText = r.brands.length ? r.brands.join('/') : (r.company === 'GS' ? '(브랜드 미정)' : '');
+            return [r.company, r.title, md, brandText].filter(Boolean).join(' ');
           }).join(', ');
           return `<div class="cel-notice-row">` +
             `<span class="cel-notice-cat">${o.category}</span>` +
