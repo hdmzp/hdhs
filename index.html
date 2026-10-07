@@ -865,6 +865,17 @@
   }
   .lv-notice b { color: #6f4805; }
 
+  /* 편성 히트맵 접기: 제목 한 줄만 남기고 슬라이서·요약·히트맵을 숨긴다 */
+  .in-heat-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .in-heat-head b { font-size: 14px; color: var(--ink); }
+  .in-heat-toggle {
+    font-family: inherit; font-size: 11.5px; font-weight: 700;
+    color: var(--ink-soft); background: #fff;
+    border: 1px solid var(--rule); border-radius: 20px;
+    padding: 4px 12px; cursor: pointer;
+  }
+  .in-heat-toggle:hover { color: var(--brand-blue); border-color: var(--brand-blue); }
+  .in-heat.collapsed .in-heat-content { display: none; }
   .in-trk { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--rule); }
   .in-trk-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
   .in-trk-head b { font-size: 14px; color: var(--ink); }
@@ -3996,12 +4007,20 @@
       <button type="button" class="lv-go-btn" id="inQueryBtn">조회</button>
       <span class="hs-time-note">※ 방송 시작시각 기준 시간대 집계 · 02~04시 생략</span>
     </div>
-    <div class="lv-slicer" id="inChannelSlicer" style="margin-bottom:8px;"></div>
-    <div class="lv-slicer" id="inCatSlicer" style="margin-bottom:12px;"></div>
-    <p class="lv-summary" id="inSummary"></p>
-    <div class="in-body">
-      <div class="in-heat-scroll"><div id="inHeatmap"></div></div>
-      <div class="in-insight" id="inInsight"></div>
+    <div class="in-heat" id="inHeat">
+      <div class="in-heat-head">
+        <b>🗺️ 편성 히트맵</b>
+        <button type="button" class="in-heat-toggle" id="inHeatToggle">접기 ▲</button>
+      </div>
+      <div class="in-heat-content">
+        <div class="lv-slicer" id="inChannelSlicer" style="margin-bottom:8px;"></div>
+        <div class="lv-slicer" id="inCatSlicer" style="margin-bottom:12px;"></div>
+        <p class="lv-summary" id="inSummary"></p>
+        <div class="in-body">
+          <div class="in-heat-scroll"><div id="inHeatmap"></div></div>
+          <div class="in-insight" id="inInsight"></div>
+        </div>
+      </div>
     </div>
 
     <div class="in-trk">
@@ -9588,6 +9607,25 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     el.innerHTML = (!terr && !comp && !cable) ? '' :
       '<div class="in-cross"><b>이 시간대엔 주로 이런 방송이 진행돼요</b>' + terr + comp + cable + '</div>';
   }
+
+  // ============ 편성 히트맵 접기 (이 브라우저에만 기억) ============
+  (function () {
+    const box = $('inHeat'), btn = $('inHeatToggle');
+    if (!box || !btn) return;
+    const apply = collapsed => {
+      box.classList.toggle('collapsed', collapsed);
+      btn.textContent = collapsed ? '펼치기 ▼' : '접기 ▲';
+    };
+    let collapsed = false;
+    try { collapsed = localStorage.getItem('inHeatCollapsed') === '1'; } catch (e) { }
+    apply(collapsed);
+    btn.addEventListener('click', () => {
+      collapsed = !collapsed;
+      apply(collapsed);
+      try { localStorage.setItem('inHeatCollapsed', collapsed ? '1' : '0'); } catch (e) { }
+      if (typeof gaEvent === 'function') gaEvent('filter_click', { filter_group: 'industry_heatmap_toggle', filter_value: collapsed ? 'collapse' : 'expand' });
+    });
+  })();
 
   // ============ 건강프로그램 추적 ============
   // 지상파·종편에서 건강 프로그램을 제목·이력 기준으로 선별하고, 방영일마다
