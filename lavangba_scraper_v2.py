@@ -35,6 +35,8 @@ v1(lavangba_scraper.py)과의 차이 - 왜 v2가 필요한가:
     python lavangba_scraper_v2.py 20260801 20260819  # 기간 지정
 
 필요 패키지: requests (playwright / cryptography 불필요)
+           + pandas, openpyxl (화면 표시용 브랜드 brand_display - infer_brand가
+             training_data.xlsx 브랜드 사전을 읽는다. 없으면 현대/CJ/롯데 브랜드만 채운다)
 
 이 파일은 비공개 저장소(hdmzp/hdhs_private)와 공개 저장소(hdmzp/hdhs)에 같은 내용으로
 둔다. 저장 경로(data/ vs lavangba/data/)와 편성표 위치(로컬 homeshopping/ vs GitHub raw)는
@@ -246,6 +248,39 @@ def extract_brand(name):
 
 
 _NON_ALNUM_RE = re.compile(r"[^0-9a-z가-힣]+")
+
+
+# ---- 화면 표시용 브랜드 (brand_display) ----
+# brand 필드는 편성표 brand가 비면 상품명 첫 어절(extract_brand)로 채워서, 편성표에
+# 브랜드가 없는 채널은 '2026', '프라이', '쉰내잡는' 같은 오추정이 많다. 화면에는
+# 믿을 만한 것만 보여주고 나머지는 빈 값('-'로 표시)으로 둔다:
+#   1) 현대/CJ/롯데: 자사몰 편성표의 브랜드(2026-09 실측 98% 이상 채워짐) - 괄호
+#      안내문만 걷어낸다 ('웰라쥬(화장품)' -> '웰라쥬'). 숫자·마케팅 문구는 버린다
+#   2) 그 외 채널(또는 1이 비면): 학습데이터 브랜드 사전(infer_brand) 매칭만
+# infer_brand는 공개 저장소에만 있다(비공개 저장소엔 없음) - 없으면 1만 쓴다.
+BRAND_TRUSTED_CHANNELS = {"현대홈쇼핑", "CJ온스타일", "롯데홈쇼핑"}
+try:
+    from infer_brand import infer_brand as _infer_brand, extract_core_brand as _core_brand, \
+        is_marketing_copy as _is_marketing_copy
+except Exception:  # 패키지(pandas/openpyxl) 또는 모듈 없음
+    _infer_brand = None
+    _core_brand = lambda b: re.sub(r"\([^)]*\)", "", str(b)).strip()
+    _is_marketing_copy = lambda b: False
+
+
+def display_brand(channel, brand, item_name):
+    """화면 표시용 브랜드. 확신이 낮으면 빈 문자열."""
+    b = _core_brand((brand or "").strip())
+    if channel in BRAND_TRUSTED_CHANNELS and b and not b.isdigit() and not _is_marketing_copy(b):
+        return b
+    if _infer_brand:
+        try:
+            inferred = _infer_brand(item_name or "")
+        except Exception:
+            inferred = ""
+        if inferred:
+            return _core_brand(inferred)
+    return ""
 
 
 def _norm_match_text(s):
@@ -462,13 +497,15 @@ def build_row(prep, date_str):
         "duration_min": duration_min,
         "pgm_title": title,
         "brand": brand,
+        # 화면 상품명 앞에 붙는 브랜드 (확신 낮으면 "" -> 화면 '-')
+        "brand_display": display_brand(prep["channel_label"], brand, item_name),
         "item_name": item_name,
         "type": "단순" if is_simple else "복합",
         # 방송 1건 = 1행이므로 상품 노출구간 = 방송 전체 구간.
         "item_start": start_label,
         "item_end": end_label,
         "item_duration_min": duration_min,
-        # 로그인 필요 -> 수집 불가 (총주문, index.html의 순주문도 이 값에서 파생)
+        # 로그인 필요 -> 수집 불가 (index.html 총주문. 9월 방송분부터는 라방바 이동 링크로 대체)
         "sales_amt": MISSING,
         "category": rep_entry.get("category", "") if rep_entry else "",
         "lavangba_category": (rep_entry.get("lavangba_category") or cat_name) if rep_entry else cat_name,
