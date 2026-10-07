@@ -459,6 +459,45 @@ def entry_brand(entry):
     return (entry.get("brand") or "").strip() or extract_brand(entry.get("product") or "")
 
 
+# ---- 고정PGM 이름 (pgm) ----
+# HD/GS/CJ/LT 편성표({코드}_live) 항목에는 고정PGM 이름(pgm)이 붙어 있다 - index.html
+# 홈쇼핑 탭의 고정PGM 뱃지와 같은 값. 라방바 행에도 옮겨 '단일/복합' 옆에 보여준다.
+PGM_CHANNEL_CODE = {"현대홈쇼핑": "HD", "GS홈쇼핑": "GS", "CJ온스타일": "CJ", "롯데홈쇼핑": "LT"}
+
+
+def matched_pgm(matched, rep_entry):
+    """매칭된 편성 항목의 고정PGM 이름. 대표 항목 우선, 없으면 다른 항목, 그래도 없으면 ''."""
+    if rep_entry and (rep_entry.get("pgm") or "").strip():
+        return rep_entry["pgm"].strip()
+    for m in matched or []:
+        if (m["entry"].get("pgm") or "").strip():
+            return m["entry"]["pgm"].strip()
+    return ""
+
+
+def pgm_from_schedule(channel, date_str, start_hm, end_hm):
+    """이미 저장된 행(소급용)의 고정PGM 이름: 그 날 편성표에서 방송 구간과 가장 많이
+    겹치는 pgm 항목. 겹침이 방송·항목 중 짧은 쪽의 절반 미만이면 ''(우연히 걸친 것)."""
+    code = PGM_CHANNEL_CODE.get(channel)
+    if not code or not start_hm or not end_hm:
+        return ""
+    date_hyphen = ymd_to_hyphen(date_str)
+    data = fetch_github_month(code, date_hyphen[:7]) or {}
+    entries = [e for e in ((data.get("days") or {}).get(date_hyphen) or [])
+               if (e.get("pgm") or "").strip() and e.get("start") and e.get("end")]
+    if not entries:
+        return ""
+    s, en = gh_entry_datetimes(date_hyphen, {"start": start_hm, "end": end_hm})
+    best, best_ov = "", 0
+    for e in entries:
+        es, ee = gh_entry_datetimes(date_hyphen, e)
+        ov = (min(en, ee) - max(s, es)).total_seconds()
+        shorter = min((en - s).total_seconds(), (ee - es).total_seconds())
+        if ov > best_ov and shorter > 0 and ov >= shorter / 2:
+            best, best_ov = e["pgm"].strip(), ov
+    return best
+
+
 def pick_representative(matched, title):
     """방송의 대표 편성 항목(= 단일코드) 하나를 고른다.
 
@@ -528,6 +567,8 @@ def build_row(prep, date_str):
         "brand_display": display_brand(prep["channel_label"], brand, item_name),
         "item_name": item_name,
         "type": "단순" if is_simple else "복합",
+        # 고정PGM 이름 (HD/GS/CJ/LT 편성표 pgm, 없으면 "")
+        "pgm": matched_pgm(matched, rep_entry),
         # 방송 1건 = 1행이므로 상품 노출구간 = 방송 전체 구간.
         "item_start": start_label,
         "item_end": end_label,
