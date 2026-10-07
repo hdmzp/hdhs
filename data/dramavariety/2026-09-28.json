@@ -1,7 +1,7 @@
 {
   "weekStart": "2026-09-28",
   "weekEnd": "2026-10-04",
-  "collectedAt": "2026-10-07T11:39:34.215798+09:00",
+  "collectedAt": "2026-10-07T19:12:07.976019+09:00",
   "programs": [
     {
       "id": "drama_엄마가 미쳤어요_KBS1_오후 08:30",
@@ -1632,6 +1632,25 @@
       "isEnded": true,
       "endDate": "2026-10-03",
       "episode": 10
+    },
+    {
+      "id": "variety_독립영화관_KBS1_오후 11:30",
+      "category": "variety",
+      "channel": "KBS1",
+      "title": "독립영화관",
+      "days": [
+        "금"
+      ],
+      "time": "오후 11:30",
+      "rating": 0.3,
+      "ratingDate": "10.02",
+      "ratingByDay": {
+        "금": {
+          "rating": 0.3,
+          "ratingDate": "10.02"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=665932&qvt=0&query=%EB%8F%85%EB%A6%BD%EC%98%81%ED%99%94%EA%B4%80"
     }
   ]
 }
