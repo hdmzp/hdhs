@@ -114,7 +114,7 @@ def clean(t: str) -> str:
 
 
 # 단서로 쓸 수 없는 결과: 불법 다운로드·파일공유 제목, 편성표 목록 텍스트
-JUNK = re.compile(r"다시보기|다운로드|스트리밍|1080p|720p|WANNA|파일쿠키|filekuki|토렌트|torrent|\.E\s?\d+|\bE\s?\d{2,}\b|›|www\.", re.I)
+JUNK = re.compile(r"다시보기|다운로드|스트리밍|1080p|720p|WANNA|파일쿠키|filekuki|토렌트|torrent|\.E\s?\d+|\bE\s?\d{2,}\b|›|www\.|관련문서|더보기$", re.I)
 
 
 def parse_official(html: str, ch: str):
@@ -211,9 +211,16 @@ def parse_clues(html: str, series: str, epi: str, date: str):
             continue
         if JUNK.search(t) or len(re.findall(r"\d{1,2}:\d{2}", t)) >= 2:
             continue
+        if re.search(r"\bEP\.?\s*\d+", t, re.I):  # 다른 프로그램 클립 ('Show Champion l EP.543')
+            continue
         # 다른 해 방송분 ('굿모닝대한민국 2012년 10월 5일')
         years = re.findall(r"(?<!\d)(20\d{2})\s*년", t)
         if years and str(md.year) not in years:
+            continue
+        # 'KBS 250919 방송'처럼 방송일 표기가 있으면 그 회차 방송일 근처여야 한다
+        stamps = re.findall(r"(?<!\d)(\d{2})(\d{2})(\d{2})\s*방송", t)
+        if stamps and not any(md - timedelta(days=14) <= datetime(2000 + int(y), int(mo), int(dd)) <= md + timedelta(days=7)
+                              for y, mo, dd in stamps if 1 <= int(mo) <= 12 and 1 <= int(dd) <= 31):
             continue
         # 프로그램명·회차·채널·날짜 말고 내용이 거의 없는 제목 ('엄지의 제왕 714회')은 버린다
         rest = norm(t).replace(ns, "", 1)
