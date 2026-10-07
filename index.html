@@ -3206,6 +3206,67 @@
     padding: 12px 14px;
     align-items: flex-start;
   }
+  /* 특이사항(겹치는 품목) 셀 - 밴드 맨 위. 높이는 JS(celFitNoticeHeight)가
+     아래 밴드 높이 중간값의 절반으로 잡고, 넘치는 줄은 셀 안에서 스크롤한다. */
+  .cel-notice { --cel-notice-h: 400px; max-height: var(--cel-notice-h); }
+  .cel-notice .cel-band-head { display: flex; align-items: center; padding: 20px 18px; }
+  .cel-notice-title { font-size: 16px; font-weight: 800; color: var(--ink); margin-bottom: 6px; letter-spacing: -0.2px; }
+  .cel-notice .cel-col-sched { line-height: 1.5; }
+  .cel-notice .cel-band-cnt { margin-top: 10px; font-size: 12px; }
+  /* 카테고리별 열(카드): 열이 많으면 가로 스크롤, 열 안이 길면 그 열만 세로 스크롤 */
+  .cel-notice .cel-band-body { gap: 14px; align-items: stretch; min-height: 0; padding: 16px 18px; }
+  .cel-notice-col {
+    flex: 1 0 260px;   /* 열이 적으면 남는 폭을 나눠 채우고, 많으면 260px씩 가로 스크롤 */
+    max-height: calc(var(--cel-notice-h) - 34px);
+    overflow-y: auto;
+    background: var(--paper-dim);
+    border-radius: var(--radius);
+    padding: 0 16px 6px;
+  }
+  .cel-notice-col-head {
+    position: sticky; top: 0; z-index: 1;
+    display: flex; align-items: center; gap: 8px;
+    background: var(--paper-dim);
+    padding: 14px 0 10px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .cel-notice-col-cnt { font-size: 11.5px; color: var(--ink-soft); }
+  .cel-notice-item { padding: 10px 0 12px; }
+  .cel-notice-item + .cel-notice-item { border-top: 1px dashed var(--rule); }
+  .cel-notice-item-title { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .cel-notice-item-name { font-size: 14px; font-weight: 800; color: var(--ink); letter-spacing: -0.2px; }
+  .cel-notice-item-cnt {
+    font-size: 11px; font-weight: 700;
+    color: var(--brand-blue); background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 20px;
+    padding: 1px 8px;
+  }
+  .cel-notice-line {
+    display: flex; align-items: baseline; gap: 6px;
+    font-size: 12.5px; line-height: 1.85;
+  }
+  .cel-notice-co { flex: 0 0 22px; font-size: 11.5px; font-weight: 800; }
+  .cel-notice-co.gs { color: #1AA663; }
+  .cel-notice-co.cj { color: #4B286D; }
+  .cel-notice-co.hd { color: #003C82; }
+  .cel-notice-co.lt { color: #DA291C; }
+  .cel-notice-prog { color: var(--ink-soft); white-space: nowrap; }
+  .cel-notice-brand { color: var(--ink); font-weight: 600; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cel-notice-cat {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 800;
+    color: #fff;
+    background: var(--brand-blue);
+    border-radius: 20px;
+    padding: 2px 10px;
+  }
+  .cel-notice-link { color: var(--brand-blue); font-weight: 700; text-decoration: none; }
+  .cel-notice-link:hover { text-decoration: underline; }
+  .cel-notice-empty { font-size: 12.5px; color: var(--ink-soft); padding: 4px 0; }
+
   .cel-week { flex: 0 0 auto; }
   .cel-week + .cel-week { border-left: 2px solid var(--rule); margin-left: 14px; padding-left: 14px; }
   .cel-week-label {
@@ -3401,6 +3462,10 @@
     .cel-thumb-ph { font-size: 16px; }
     .cel-band-meta { min-width: 0; }
     .cel-bcast { width: 190px; }
+    .cel-notice { max-height: none; }
+    .cel-notice-col { flex: 0 0 250px; }
+    .cel-notice .cel-band-head { padding: 12px 14px; }
+    .cel-notice .cel-band-body { padding: 12px; gap: 10px; }
     .cel-col-title { font-size: 12.5px; }
     .cel-prod-name { font-size: 11px; }
   }
@@ -3913,6 +3978,7 @@ const TAB_TIPS = {
       '홈쇼핑 4사 <b>대표 셀럽 프로그램</b>의 방송예정 상품을 각 사 사이트와 편성표에서 수집해요',
       '휴방이거나 다음 회차 편성이 아직 안 올라온 주는 <b>상품이 0건</b>으로 비어요',
       '수집이 실패한 프로그램은 <b>수집실패</b> 표시와 함께 마지막 성공 데이터를 보여줘요',
+      '맨 위 <b>특이사항</b>은 선택한 달에 같은 품목이 서로 다른 프로그램 2곳 이상에 편성된 현황이에요 (패션 제외)',
     ],
   },
   // feedback: 설명 없음 → 버튼 자체를 숨김
@@ -6843,6 +6909,13 @@ async function celInitLoad() {
   const statusData = await fetchJsonSafe('./homeshopping/representative_programs/status.json');
   celStatus = (statusData && statusData.programs) || {};
 
+  // 특이사항(겹치는 품목) 셀의 품목 키워드 사전
+  if (celItemKeywords === null) {
+    const kw = await fetchJsonSafe('./fixed/celeb_item_keywords.json');
+    celItemKeywords = (kw && Array.isArray(kw.items)) ? kw.items : [];
+    celItemHideCats = new Set((kw && kw.hide_categories) || []);
+  }
+
   const fetchPromises = CEL_FILES.map(async (file) => {
     const data = await fetchJsonSafe(`./homeshopping/representative_programs/${file}`);
     if (!data) return [];
@@ -7058,7 +7131,9 @@ function celFailBadgeHtml(file) {
 }
 
 
-function celRenderBand(file) {
+// 밴드 한 줄이 보여줄 {meta, broadcasts, emptyMsg}. 특이사항(겹치는 품목) 셀도
+// 같은 회차 목록을 써야 밴드와 숫자가 어긋나지 않아서 따로 뽑아 둔다.
+function celBandData(file) {
   const programKey = file.replace(/\.json$/, '');
   const hist = celHistoryCache[celMonth];
   const histProg = (hist && Array.isArray(hist.programs))
@@ -7097,6 +7172,11 @@ function celRenderBand(file) {
       });
     }
   }
+  return { meta, broadcasts, emptyMsg };
+}
+
+function celRenderBand(file) {
+  const { meta, broadcasts, emptyMsg } = celBandData(file);
 
   // 같은 주차끼리 묶음 (주차 배지 아래에 그 주의 방송 회차들, 최신 주가 앞)
   const weekMap = {};
@@ -7178,6 +7258,143 @@ function celRenderBand(file) {
   );
 }
 
+// ---- 특이사항: 겹치는 품목 ----
+// 조회 중인 달에 같은 품목이 '서로 다른' 셀럽PGM 2개 이상에 편성되면 알려준다.
+// 품목은 상품명 키워드 사전(fixed/celeb_item_keywords.json)으로 가른다 - 카테고리
+// (식품/리빙...)만으로 묶으면 그래놀라와 두유가 한데 묶여 거의 모든 게 겹침이 된다.
+// 사전 관리/검증: python tools/suggest_celeb_item_keywords.py (같은 규칙으로 출력)
+let celItemKeywords = null;    // [{item, category, match[], exclude[]}] (로드 실패 시 [])
+let celItemHideCats = new Set(); // 화면에서 숨기는 카테고리 (패션: 의류·잡화)
+
+// 본품 부분만: [..] (..) 안(구성 표기·색상 옵션·사은품)을 지운 뒤 '+' 앞만.
+// 괄호를 먼저 지워야 "[1+1] 콜라겐 토너패드"가 "[1"로 잘리지 않는다.
+function celItemMainText(name) {
+  return String(name || '').replace(/\[[^\]]*\]|\([^)]*\)/g, ' ').split('+')[0];
+}
+
+function celMatchItem(name) {
+  const text = celItemMainText(name);
+  for (const it of (celItemKeywords || [])) {
+    if ((it.exclude || []).some(x => text.includes(x))) continue;
+    if ((it.match || []).some(x => text.includes(x))) return it;
+  }
+  return null;
+}
+
+// [{item, category, rows: [{company, title, date, brands[]}]}] - 회차 많은 순
+function celBuildOverlaps(files) {
+  const groups = {};  // item -> {category, rows: {file|date: row}, files: Set}
+  files.forEach(file => {
+    const { meta, broadcasts } = celBandData(file);
+    broadcasts.forEach(b => {
+      if (b.offAir) return;
+      (b.products || []).forEach(p => {
+        const it = celMatchItem(p.name);
+        // 패션은 사전에서 매칭은 하되(다른 품목으로 새지 않게) 현황에선 뺀다
+        if (!it || celItemHideCats.has(it.category)) return;
+        const g = groups[it.item] || (groups[it.item] = { category: it.category, rows: {}, files: new Set() });
+        g.files.add(file);
+        const key = file + '|' + (b.date || b.label);
+        const row = g.rows[key] || (g.rows[key] = { company: meta.company || '', title: meta.title || '', date: b.date || '', brands: [], link: '' });
+        const brand = String(p.brand || '').trim();
+        if (brand && !CEL_BRAND_PLACEHOLDER.test(brand) && !row.brands.includes(brand)) row.brands.push(brand);
+        if (!row.link && p.link) row.link = p.link;  // 브랜드를 못 찾은 GS 회차의 '확인↗' 링크
+      });
+    });
+  });
+  return Object.keys(groups)
+    .filter(item => groups[item].files.size >= 2)
+    .map(item => ({
+      item,
+      category: groups[item].category,
+      rows: Object.values(groups[item].rows).sort((a, b) => a.date.localeCompare(b.date)),
+    }))
+    .sort((a, b) => (b.rows.length - a.rows.length) || a.item.localeCompare(b.item));
+}
+
+// 특이사항 열 순서 (패션은 hide_categories로 빠진다)
+const CEL_NOTICE_CAT_ORDER = ['식품', '리빙', '미용', '가전'];
+
+// 회차 한 줄: 회사(회사색·굵게) 프로그램 날짜 브랜드
+function celNoticeRowHtml(r) {
+  const md = r.date ? `${parseInt(r.date.slice(5, 7), 10)}/${parseInt(r.date.slice(8, 10), 10)}` : '';
+  // GS는 상품명으로 브랜드를 추론하는데(fixed/celeb_brand.py) 못 찾은 회차는
+  // 빈칸 대신 '확인↗'(그 품목 상품 페이지 링크)을 단다 - 누락처럼 보이지 않고
+  // 바로 열어 브랜드를 볼 수 있게. 다른 회사의 빈 브랜드는 그대로 생략.
+  const brandText = r.brands.length ? r.brands.join('/')
+    : (r.company === 'GS'
+        ? (r.link
+            ? `<a class="cel-notice-link" href="${r.link}" target="_blank" rel="noopener noreferrer" title="브랜드를 못 찾은 상품이에요 - 상품 페이지에서 확인">확인↗</a>`
+            : '확인필요')
+        : '');
+  const co = r.company ? `<b class="cel-notice-co ${r.company.toLowerCase()}">${r.company}</b>` : '';
+  return `<div class="cel-notice-line">${co}` +
+    `<span class="cel-notice-prog">${[r.title, md].filter(Boolean).join(' ')}</span>` +
+    (brandText ? `<span class="cel-notice-brand">${brandText}</span>` : '') +
+    `</div>`;
+}
+
+function celRenderNotice(files) {
+  let bodyHtml;
+  let cntHtml = '';
+  if (celItemKeywords === null || celItemKeywords.length === 0) {
+    bodyHtml = `<div class="cel-notice-empty">품목 사전을 불러오지 못했어요.</div>`;
+  } else if (files.length < 2) {
+    bodyHtml = `<div class="cel-notice-empty">프로그램을 2개 이상 선택하면 겹치는 품목을 보여줘요.</div>`;
+  } else {
+    const overlaps = celBuildOverlaps(files);
+    cntHtml = `<div class="cel-band-cnt">겹치는 품목 <b>${overlaps.length}개</b></div>`;
+    if (overlaps.length === 0) {
+      bodyHtml = `<div class="cel-notice-empty">이 달은 여러 프로그램에 겹쳐 편성된 품목이 없어요.</div>`;
+    } else {
+      // 카테고리별 열: 열 순서는 CEL_NOTICE_CAT_ORDER, 그 밖의 카테고리는 뒤에.
+      // 열 안 품목은 celBuildOverlaps가 정한 순서(회차 많은 순) 그대로.
+      const byCat = {};
+      overlaps.forEach(o => (byCat[o.category] = byCat[o.category] || []).push(o));
+      const cats = Object.keys(byCat).sort((a, b) => {
+        const ia = CEL_NOTICE_CAT_ORDER.indexOf(a), ib = CEL_NOTICE_CAT_ORDER.indexOf(b);
+        return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib) || a.localeCompare(b);
+      });
+      bodyHtml = cats.map(cat =>
+        `<div class="cel-notice-col">` +
+          `<div class="cel-notice-col-head"><span class="cel-notice-cat">${cat}</span><span class="cel-notice-col-cnt">${byCat[cat].length}개 품목</span></div>` +
+          byCat[cat].map(o =>
+            `<div class="cel-notice-item">` +
+              `<div class="cel-notice-item-title"><span class="cel-notice-item-name">${o.item} 상품</span>` +
+                `<span class="cel-notice-item-cnt">${o.rows.length}회 편성</span></div>` +
+              o.rows.map(celNoticeRowHtml).join('') +
+            `</div>`
+          ).join('') +
+        `</div>`
+      ).join('');
+    }
+  }
+  return (
+    `<div class="cel-band cel-notice" id="celNotice">` +
+      `<div class="cel-band-head">` +
+        `<div class="cel-band-meta">` +
+          `<div class="cel-notice-title">특이사항</div>` +
+          `<div class="cel-col-sched">같은 품목이 서로 다른 셀럽PGM에 편성된 현황 (패션 제외)</div>` +
+          cntHtml +
+        `</div>` +
+      `</div>` +
+      `<div class="cel-band-body">${bodyHtml}</div>` +
+    `</div>`
+  );
+}
+
+// 특이사항 셀 높이 = 아래 프로그램 밴드 높이(중간값). 밴드 높이가 달·선택마다
+// 달라서 그린 뒤에 잰다. 줄이 넘치면 셀 안에서 스크롤된다.
+function celFitNoticeHeight() {
+  const notice = document.getElementById('celNotice');
+  if (!notice) return;
+  const hs = [...document.querySelectorAll('#celGridWrap .cel-band:not(.cel-notice)')]
+    .map(el => el.offsetHeight).filter(h => h > 0).sort((a, b) => a - b);
+  // 열마다 세로 스크롤을 주려면 열도 높이를 알아야 해서 CSS 변수로 넘긴다
+  if (hs.length) notice.style.setProperty('--cel-notice-h', hs[Math.floor(hs.length / 2)] + 'px');
+  else notice.style.removeProperty('--cel-notice-h');
+}
+
 // 최근 갱신 시각. 조회 중인 달의 누적 파일이 마지막으로 쓰인 시각을 쓴다
 // (지난 달을 보면 그 달 데이터가 마지막으로 갱신된 시각이 나온다).
 // 누적 파일이 없어 라이브 데이터로 폴백한 달은 이번 달 수집 시각을 쓴다.
@@ -7203,7 +7420,8 @@ function celRenderCompare() {
     return;
   }
 
-  wrap.innerHTML = selected.map(celRenderBand).join('');
+  wrap.innerHTML = celRenderNotice(selected) + selected.map(celRenderBand).join('');
+  celFitNoticeHeight();
 }
 
 // 펼치기/접기 버튼: 재렌더링마다 버튼이 새로 생기므로 컨테이너에 위임으로 한 번만 건다
@@ -7216,6 +7434,8 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
   moreRows.style.display = opening ? '' : 'none';
   btn.textContent = opening ? '접기 ▲' : `+ ${btn.dataset.more}개 펼치기`;
 });
+// 화면 폭이 바뀌면 밴드 높이도 바뀌므로 특이사항 셀 높이를 다시 맞춘다
+window.addEventListener('resize', celFitNoticeHeight);
 
 (async function init() {
   initInfoTip();
