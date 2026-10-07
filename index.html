@@ -7386,7 +7386,7 @@ function celRenderNotice(files) {
           `<div class="cel-notice-col-head"><span class="cel-notice-cat">${cat}</span><span class="cel-notice-col-cnt">${byCat[cat].length}개 품목</span></div>` +
           byCat[cat].map(o =>
             `<div class="cel-notice-item">` +
-              `<div class="cel-notice-item-title"><span class="cel-notice-item-name">${o.item} 상품</span>` +
+              `<div class="cel-notice-item-title"><span class="cel-notice-item-name">${o.item}</span>` +
                 `<span class="cel-notice-item-cnt">${o.rows.length}회 편성</span></div>` +
               o.rows.map(celNoticeRowHtml).join('') +
             `</div>`
