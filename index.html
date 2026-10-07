@@ -785,6 +785,17 @@
   }
   .lv-type-tag.simple { background: var(--brand-blue-soft, #EBF2FF); color: var(--brand-blue); }
   .lv-type-tag.complex { background: #FEF3E2; color: #B45309; }
+  .sec-table td.lv-type { white-space: nowrap; }
+  /* 고정PGM 뱃지 (홈쇼핑 탭 .hs-pgm-badge와 같은 글자 규칙) */
+  .lv-pgm {
+    display: inline-block;
+    margin-left: 4px;
+    font-size: 10px; font-weight: 800; line-height: 1.6;
+    color: #fff; background: var(--brand-blue);
+    border-radius: 7px;
+    padding: 0 6px;
+    vertical-align: 1px;
+  }
   .lv-empty { text-align: center; padding: 40px 0; color: var(--ink-soft); font-size: 13px; }
   .sec-table td.lv-name a { color: var(--brand-blue); text-decoration: none; }
   .sec-table td.lv-name a:hover { text-decoration: underline; }
@@ -3896,7 +3907,7 @@
           <button class="arrow" id="lvNextDay" aria-label="기간 하루 다음으로">›</button>
         </div>
         <button type="button" class="lv-go-btn" id="lvQueryBtn">조회</button>
-        <input type="search" id="lvSearchInput" class="lv-search-input" placeholder="브랜드·상품명 검색" aria-label="브랜드·상품명 검색">
+        <input type="search" id="lvSearchInput" class="lv-search-input" placeholder="브랜드·상품명·고정PGM 검색" aria-label="브랜드·상품명·고정PGM 검색">
         <div class="lv-slicer" id="lvTimeSlicer">
           <button class="active" data-time="all">전체</button>
           <button data-time="normal">정규</button>
@@ -8060,7 +8071,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     { label: '채널',    key: r => LV_CH_ORDER[r.channel] ?? 99 },
     { label: '방송일자', key: r => String(r.date || '') },
     { label: '요일',    key: r => { const d8 = String(r.date || ''); return d8.length === 8 ? new Date(+d8.slice(0, 4), +d8.slice(4, 6) - 1, +d8.slice(6, 8)).getDay() : 7; } },
-    { label: '유형',    key: r => r.type || '' },
+    { label: '유형',    key: r => (r.type || '') + (r.pgm || ''), help: '단일/복합 · 고정PGM이면 홈쇼핑 탭과 같은 프로그램 뱃지' },
     { label: '상품시간', key: r => r.item_start || '' },
     { label: '노출분',  key: r => +r.item_duration_min || 0 },
     { label: '카테고리', key: r => lvCatOf(r) },
@@ -8284,7 +8295,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     const filtered = rows.filter(r => {
       if (!lvActive.has(r.channel)) return false;
       if (lvCatSel && !lvCatSel.has(lvCatOf(r))) return false;
-      if (lvSearch && !(String(r.brand_display || '') + ' ' + String(r.item_name || '')).toLowerCase().includes(lvSearch)) return false;
+      if (lvSearch && !(String(r.brand_display || '') + ' ' + String(r.item_name || '') + ' ' + String(r.pgm || '')).toLowerCase().includes(lvSearch)) return false;
       if (lvTime === 'night') return lvIsNight(r.broadcast_start);
       if (lvTime === 'normal') return !lvIsNight(r.broadcast_start);
       return true;
@@ -8348,7 +8359,10 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
         + '<td class="lv-ch"' + (chColor ? ' style="color:' + chColor + '"' : '') + '>' + esc(r.channel) + '</td>'
         + '<td class="lv-time">' + (d8.length === 8 ? d8.slice(4, 6) + '/' + d8.slice(6, 8) : esc(d8)) + '</td>'
         + '<td class="lv-time">' + (d8.length === 8 ? d8Weekday(d8) : '-') + '</td>'
-        + '<td>' + (r.type ? '<span class="lv-type-tag ' + typeCls + '">' + esc(typeLabel) + '</span>' : '-') + '</td>'
+        + '<td class="lv-type">' + (r.type ? '<span class="lv-type-tag ' + typeCls + '">' + esc(typeLabel) + '</span>' : '-')
+        // 고정PGM: 수집기가 HD/GS/CJ/LT 편성표 pgm을 옮겨 둔 값. 뱃지 글자는 홈쇼핑 탭과 같은 규칙(hsPgmBadgeLabel)
+        + (r.pgm ? '<span class="lv-pgm" title="고정PGM: ' + esc(r.pgm) + '">' + esc(hsPgmBadgeLabel(r.pgm)) + '</span>' : '')
+        + '</td>'
         + '<td class="lv-time">' + esc(r.item_start) + '~' + esc(r.item_end) + '</td>'
         + '<td class="lv-time">' + esc(r.item_duration_min) + '분</td>'
         + '<td>' + esc(lvCatOf(r)) + '</td>'
@@ -8408,7 +8422,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
       ['채널', r => r.channel], ['날짜', r => r.date],
       ['요일', r => String(r.date || '').length === 8 ? d8Weekday(String(r.date)) : ''],
       ['방송시작', r => r.broadcast_start], ['방송종료', r => r.broadcast_end],
-      ['유형', r => r.type === '단순' ? '단일' : r.type], ['브랜드', r => r.brand_display || '-'], ['상품명', r => r.item_name],
+      ['유형', r => r.type === '단순' ? '단일' : r.type], ['고정PGM', r => r.pgm || ''], ['브랜드', r => r.brand_display || '-'], ['상품명', r => r.item_name],
       ['상품시작', r => r.item_start], ['상품종료', r => r.item_end],
       ['노출분', r => r.item_duration_min], ['카테고리', r => r.lavangba_category || r.category],
       ['총주문', r => r.sales_amt],
