@@ -3208,46 +3208,64 @@
   }
   /* 특이사항(겹치는 품목) 셀 - 밴드 맨 위. 높이는 JS(celFitNoticeHeight)가
      아래 밴드 높이 중간값의 절반으로 잡고, 넘치는 줄은 셀 안에서 스크롤한다. */
-  .cel-notice { --cel-notice-h: 200px; max-height: var(--cel-notice-h); }
-  .cel-notice .cel-band-head { display: flex; align-items: center; }
-  /* 카테고리별 열: 열이 많으면 가로 스크롤, 열 안이 길면 그 열만 세로 스크롤 */
-  .cel-notice .cel-band-body { gap: 0; align-items: stretch; min-height: 0; }
+  .cel-notice { --cel-notice-h: 400px; max-height: var(--cel-notice-h); }
+  .cel-notice .cel-band-head { display: flex; align-items: center; padding: 20px 18px; }
+  .cel-notice-title { font-size: 16px; font-weight: 800; color: var(--ink); margin-bottom: 6px; letter-spacing: -0.2px; }
+  .cel-notice .cel-col-sched { line-height: 1.5; }
+  .cel-notice .cel-band-cnt { margin-top: 10px; font-size: 12px; }
+  /* 카테고리별 열(카드): 열이 많으면 가로 스크롤, 열 안이 길면 그 열만 세로 스크롤 */
+  .cel-notice .cel-band-body { gap: 14px; align-items: stretch; min-height: 0; padding: 16px 18px; }
   .cel-notice-col {
     flex: 1 0 260px;   /* 열이 적으면 남는 폭을 나눠 채우고, 많으면 260px씩 가로 스크롤 */
-    max-height: calc(var(--cel-notice-h) - 26px);
+    max-height: calc(var(--cel-notice-h) - 34px);
     overflow-y: auto;
-    padding-right: 12px;
+    background: var(--paper-dim);
+    border-radius: var(--radius);
+    padding: 0 16px 6px;
   }
-  .cel-notice-col + .cel-notice-col { border-left: 1px dashed var(--rule); padding-left: 12px; }
   .cel-notice-col-head {
-    position: sticky; top: 0;
-    background: #fff;
-    font-size: 11px; color: var(--ink-soft);
-    padding-bottom: 6px;
+    position: sticky; top: 0; z-index: 1;
+    display: flex; align-items: center; gap: 8px;
+    background: var(--paper-dim);
+    padding: 14px 0 10px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid var(--rule);
   }
-  .cel-notice-item { margin-bottom: 8px; }
-  .cel-notice-item-title { font-size: 12px; color: var(--ink); line-height: 1.5; }
-  .cel-notice-line { font-size: 11.5px; line-height: 1.5; color: var(--ink-soft); padding-left: 8px; }
-  .cel-notice-co { font-weight: 800; }
+  .cel-notice-col-cnt { font-size: 11.5px; color: var(--ink-soft); }
+  .cel-notice-item { padding: 10px 0 12px; }
+  .cel-notice-item + .cel-notice-item { border-top: 1px dashed var(--rule); }
+  .cel-notice-item-title { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .cel-notice-item-name { font-size: 14px; font-weight: 800; color: var(--ink); letter-spacing: -0.2px; }
+  .cel-notice-item-cnt {
+    font-size: 11px; font-weight: 700;
+    color: var(--brand-blue); background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 20px;
+    padding: 1px 8px;
+  }
+  .cel-notice-line {
+    display: flex; align-items: baseline; gap: 6px;
+    font-size: 12.5px; line-height: 1.85;
+  }
+  .cel-notice-co { flex: 0 0 22px; font-size: 11.5px; font-weight: 800; }
   .cel-notice-co.gs { color: #1AA663; }
   .cel-notice-co.cj { color: #4B286D; }
   .cel-notice-co.hd { color: #003C82; }
   .cel-notice-co.lt { color: #DA291C; }
+  .cel-notice-prog { color: var(--ink-soft); white-space: nowrap; }
+  .cel-notice-brand { color: var(--ink); font-weight: 600; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .cel-notice-cat {
     display: inline-block;
-    font-size: 10.5px;
+    font-size: 11px;
     font-weight: 800;
-    color: var(--brand-blue);
-    background: var(--brand-blue-soft);
-    border: 1px solid var(--brand-blue);
+    color: #fff;
+    background: var(--brand-blue);
     border-radius: 20px;
-    padding: 0 8px;
-    margin-right: 6px;
-    vertical-align: 1px;
+    padding: 2px 10px;
   }
   .cel-notice-link { color: var(--brand-blue); font-weight: 700; text-decoration: none; }
   .cel-notice-link:hover { text-decoration: underline; }
-  .cel-notice-empty { font-size: 12px; color: var(--ink-soft); }
+  .cel-notice-empty { font-size: 12.5px; color: var(--ink-soft); padding: 4px 0; }
 
   .cel-week { flex: 0 0 auto; }
   .cel-week + .cel-week { border-left: 2px solid var(--rule); margin-left: 14px; padding-left: 14px; }
@@ -3445,7 +3463,9 @@
     .cel-band-meta { min-width: 0; }
     .cel-bcast { width: 190px; }
     .cel-notice { max-height: none; }
-    .cel-notice-col { flex: 0 0 230px; }
+    .cel-notice-col { flex: 0 0 250px; }
+    .cel-notice .cel-band-head { padding: 12px 14px; }
+    .cel-notice .cel-band-body { padding: 12px; gap: 10px; }
     .cel-col-title { font-size: 12.5px; }
     .cel-prod-name { font-size: 11px; }
   }
@@ -7308,7 +7328,10 @@ function celNoticeRowHtml(r) {
             : '확인필요')
         : '');
   const co = r.company ? `<b class="cel-notice-co ${r.company.toLowerCase()}">${r.company}</b>` : '';
-  return `<div class="cel-notice-line">${[co, r.title, md, brandText].filter(Boolean).join(' ')}</div>`;
+  return `<div class="cel-notice-line">${co}` +
+    `<span class="cel-notice-prog">${[r.title, md].filter(Boolean).join(' ')}</span>` +
+    (brandText ? `<span class="cel-notice-brand">${brandText}</span>` : '') +
+    `</div>`;
 }
 
 function celRenderNotice(files) {
@@ -7334,10 +7357,11 @@ function celRenderNotice(files) {
       });
       bodyHtml = cats.map(cat =>
         `<div class="cel-notice-col">` +
-          `<div class="cel-notice-col-head"><span class="cel-notice-cat">${cat}</span>${byCat[cat].length}개 품목</div>` +
+          `<div class="cel-notice-col-head"><span class="cel-notice-cat">${cat}</span><span class="cel-notice-col-cnt">${byCat[cat].length}개 품목</span></div>` +
           byCat[cat].map(o =>
             `<div class="cel-notice-item">` +
-              `<div class="cel-notice-item-title"><b>${o.item}</b> 상품 <b>${o.rows.length}회</b> 편성</div>` +
+              `<div class="cel-notice-item-title"><span class="cel-notice-item-name">${o.item} 상품</span>` +
+                `<span class="cel-notice-item-cnt">${o.rows.length}회 편성</span></div>` +
               o.rows.map(celNoticeRowHtml).join('') +
             `</div>`
           ).join('') +
@@ -7349,7 +7373,7 @@ function celRenderNotice(files) {
     `<div class="cel-band cel-notice" id="celNotice">` +
       `<div class="cel-band-head">` +
         `<div class="cel-band-meta">` +
-          `<div class="cel-col-title">특이사항</div>` +
+          `<div class="cel-notice-title">특이사항</div>` +
           `<div class="cel-col-sched">같은 품목이 서로 다른 셀럽PGM에 편성된 현황 (패션 제외)</div>` +
           cntHtml +
         `</div>` +
@@ -7359,7 +7383,7 @@ function celRenderNotice(files) {
   );
 }
 
-// 특이사항 셀 높이 = 아래 프로그램 밴드 높이(중간값)의 절반. 밴드 높이가 달·선택마다
+// 특이사항 셀 높이 = 아래 프로그램 밴드 높이(중간값). 밴드 높이가 달·선택마다
 // 달라서 그린 뒤에 잰다. 줄이 넘치면 셀 안에서 스크롤된다.
 function celFitNoticeHeight() {
   const notice = document.getElementById('celNotice');
@@ -7367,7 +7391,7 @@ function celFitNoticeHeight() {
   const hs = [...document.querySelectorAll('#celGridWrap .cel-band:not(.cel-notice)')]
     .map(el => el.offsetHeight).filter(h => h > 0).sort((a, b) => a - b);
   // 열마다 세로 스크롤을 주려면 열도 높이를 알아야 해서 CSS 변수로 넘긴다
-  if (hs.length) notice.style.setProperty('--cel-notice-h', Math.round(hs[Math.floor(hs.length / 2)] / 2) + 'px');
+  if (hs.length) notice.style.setProperty('--cel-notice-h', hs[Math.floor(hs.length / 2)] + 'px');
   else notice.style.removeProperty('--cel-notice-h');
 }
 
