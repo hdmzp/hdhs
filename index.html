@@ -789,8 +789,12 @@
   .sec-table td.lv-name a { color: var(--brand-blue); text-decoration: none; }
   .sec-table td.lv-name a:hover { text-decoration: underline; }
   /* 상품명 앞 브랜드 (확실하지 않으면 '-') */
-  .sec-table td.lv-name .lv-brand { font-weight: 800; color: var(--ink); }
-  .sec-table td.lv-name .lv-brand.none { font-weight: 400; color: var(--ink-soft); }
+  /* 브랜드 열 (확실하지 않으면 '-') */
+  .sec-table td.lv-brand { white-space: nowrap; font-weight: 700; }
+  /* auto 레이아웃에선 td max-width가 무시돼서 상품명처럼 내부 래퍼로 자른다 */
+  .sec-table td.lv-brand .lv-brand-in { display: inline-block; max-width: 120px; overflow: hidden; text-overflow: ellipsis; vertical-align: bottom; }
+  .sec-table.lv-fixed td.lv-brand .lv-brand-in { display: inline; max-width: none; }
+  .sec-table td.lv-brand .lv-brand-none { font-weight: 400; color: var(--ink-soft); }
   /* 9월 방송분부터 총주문 대신 라방바 바로가기 */
   .sec-table td.lv-amt a.lv-go { font-weight: 700; font-size: 0.95em; }
   .sec-table th { position: relative; }
@@ -3903,10 +3907,10 @@
       </div>
       <div class="lv-slicer" id="lvChannelSlicer" style="margin-bottom:8px;"></div>
       <div class="lv-slicer" id="lvCatSlicer" style="margin-bottom:12px;"></div>
-      <p class="lv-notice">⚠️ 2026-08-21 라방바 보안정책 변경으로 <b>매출 수집 중단</b> — 8/20 방송분부터 총주문 <b>-</b>, 9/1 방송분부터는 총주문 대신 <b>라방바 이동 ↗</b> 바로가기, 복합 방송은 대표 상품 1행 집계 (8/19 이전은 그대로)</p>
+      <p class="lv-notice">⚠️ 2026-08-21 라방바 보안정책 변경으로 <b>매출 수집 중단</b> — 8/20 방송분부터 총주문 <b>-</b>, 9/1 방송분부터는 총주문 대신 라방바 <b>이동 ↗</b> 바로가기, 복합 방송은 대표 상품 1행 집계 (8/19 이전은 그대로)</p>
       <p class="lv-summary" id="lvSummary"></p>
       <div class="sec-table-wrap" id="lvTableWrap"></div>
-      <p class="lv-table-note">상품명 앞 굵은 글씨: 브랜드(현대·CJ·롯데는 자사 편성표, 그 외는 브랜드 사전으로 확실할 때만 · 아니면 <b>-</b>) · 금액: 1억 이상 O.O억 / 미만 백만 단위 · 총주문: 라방바 매출액(클릭 시 라방바 이동, 9월 방송분부터는 라방바 이동 바로가기) · 판매가: 100만원 미만 천원 / 이상 만원 단위 · 심야(방송시작 01:00~05:00) 방송은 회색 행 표시 · 헤더 클릭 시 정렬, 오른쪽 경계 드래그 시 열 너비 조정 · 조회 기간 최대 62일 · 총주문의 <b>-</b> 는 수집 불가(위 안내 참고)</p>
+      <p class="lv-table-note">브랜드: 현대·CJ·롯데는 자사 편성표, 그 외는 브랜드 사전으로 확실할 때만 (아니면 <b>-</b>) · 금액: 1억 이상 O.O억 / 미만 백만 단위 · 총주문: 라방바 매출액(클릭 시 라방바 이동, 9월 방송분부터는 라방바 <b>이동 ↗</b> 바로가기) · 판매가: 100만원 미만 천원 / 이상 만원 단위 · 심야(방송시작 01:00~05:00) 방송은 회색 행 표시 · 헤더 클릭 시 정렬, 오른쪽 경계 드래그 시 열 너비 조정 · 조회 기간 최대 62일 · 총주문의 <b>-</b> 는 수집 불가(위 안내 참고)</p>
     </div>
 
     <div class="lv-section" id="pwSection" style="display:none;">
@@ -8060,8 +8064,8 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     { label: '상품시간', key: r => r.item_start || '' },
     { label: '노출분',  key: r => +r.item_duration_min || 0 },
     { label: '카테고리', key: r => lvCatOf(r) },
-    { label: '상품명',  key: r => (r.brand_display || '') + ' ' + (r.item_name || ''),
-      help: '앞의 굵은 글씨는 브랜드(확실하지 않으면 -) · 클릭 시 상품페이지로 이동' },
+    { label: '브랜드',  key: r => r.brand_display || '\uffff', help: '현대·CJ·롯데는 자사 편성표, 그 외는 브랜드 사전으로 확실할 때만 · 아니면 -' },
+    { label: '상품명',  key: r => r.item_name || '', help: '클릭 시 상품페이지로 이동' },
     { label: '총주문',  key: r => +r.sales_amt || 0, help: '라방바 매출액 · 9월 방송분부터는 라방바 이동 바로가기' },
     { label: '판매가',  key: r => +r.price || 0 },
   ];
@@ -8329,14 +8333,14 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
         ? '<a href="' + esc(productLink) + '" target="_blank" rel="noopener">' + esc(r.item_name) + '</a>'
         : esc(r.item_name);
       const amtHtml = lvUseLink(r)
-        ? (lvLink ? '<a class="lv-go" href="' + esc(lvLink) + '" target="_blank" rel="noopener" title="라방바 상세 보기">라방바 이동 ↗</a>' : '-')
+        ? (lvLink ? '<a class="lv-go" href="' + esc(lvLink) + '" target="_blank" rel="noopener" title="라방바 상세 보기">이동 ↗</a>' : '-')
         : (lvLink
           ? '<a href="' + esc(lvLink) + '" target="_blank" rel="noopener" title="라방바 상세 보기">' + lvFmtAmt(r.sales_amt) + '</a>'
           : lvFmtAmt(r.sales_amt));
       // 브랜드: 수집기가 확신할 때만 채운다(lavangba_scraper_v2.display_brand) - 없으면 '-'
       const brandHtml = r.brand_display
-        ? '<b class="lv-brand">' + esc(r.brand_display) + '</b>'
-        : '<span class="lv-brand none">-</span>';
+        ? esc(r.brand_display)
+        : '<span class="lv-brand-none">-</span>';
       const chColor = LV_CH_COLOR[r.channel];
       const typeCls = r.type === '복합' ? 'complex' : 'simple';
       const typeLabel = r.type === '단순' ? '단일' : r.type; // 데이터 원본은 '단순'이지만 화면·CSV는 '단일'로 표기
@@ -8348,7 +8352,8 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
         + '<td class="lv-time">' + esc(r.item_start) + '~' + esc(r.item_end) + '</td>'
         + '<td class="lv-time">' + esc(r.item_duration_min) + '분</td>'
         + '<td>' + esc(lvCatOf(r)) + '</td>'
-        + '<td class="lv-name" title="' + esc((r.brand_display ? r.brand_display + ' ' : '') + r.item_name) + '"><span class="lv-name-in">' + brandHtml + ' ' + nameHtml + '</span></td>'
+        + '<td class="lv-brand" title="' + esc(r.brand_display || '') + '"><span class="lv-brand-in">' + brandHtml + '</span></td>'
+        + '<td class="lv-name" title="' + esc(r.item_name) + '"><span class="lv-name-in">' + nameHtml + '</span></td>'
         + '<td class="lv-amt">' + amtHtml + '</td>'
         + '<td class="lv-amt">' + lvFmtPrice(r.price) + '</td>'
         + '</tr>';
