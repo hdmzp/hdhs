@@ -542,17 +542,22 @@
   .tl-lab .band.terrestrial { background: var(--terrestrial); }
   .tl-lab .band.comprehensive { background: var(--comprehensive); }
   .tl-lab .band.cable { background: var(--cable); }
+  /* 구역 구분 띠: 가로 전체에 배경색, 제목은 왼쪽에 고정 */
   .tl-sec {
+    background: var(--paper-dim2);
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .tl-sec-in {
     position: sticky;
     left: 0;
     display: flex;
     align-items: center;
     gap: 12px;
     flex-wrap: wrap;
-    padding: 14px 12px 8px;
+    padding: 9px 12px;
     font-size: 13px;
     font-weight: 700;
-    background: var(--paper);
     width: max-content;
     max-width: 100vw;
     box-sizing: border-box;
@@ -586,7 +591,9 @@
   .tl-b.narrow .t, .tl-b.narrow .sub { display: none; }
   .tl-b.narrow b { margin-top: 13px; }
   .tl-b.tiny b { display: none; }
-  .tl-b.now { outline: 2px solid #EF4444; outline-offset: -2px; }
+  /* 현재 방송은 테두리 대신 지난 방송을 흐리게 해서 구분 (빨간 선 하나만 강조) */
+  .tl-b.past { opacity: 0.45; }
+  .tl-b.now b { font-weight: 700; }
   .tl-nowline { position: absolute; top: 0; bottom: 0; border-left: 2px solid #EF4444; z-index: 2; pointer-events: none; }
   .tl-nowline span {
     position: absolute; top: 4px; left: -22px;
@@ -4557,7 +4564,7 @@ function renderTimeline(data, dateStr, hsData) {
   const block = (o) => {
     const x = o.a * PX, w = (o.b - o.a) * PX - 2;
     const cls = (w < 26 ? ' narrow tiny' : w < 110 ? ' narrow' : '') +
-      (nowMin !== null && nowMin >= o.a && nowMin < o.b ? ' now' : '');
+      (nowMin === null ? '' : nowMin >= o.b ? ' past' : nowMin >= o.a ? ' now' : '');
     const style = `left:${x}px;width:${Math.max(w, 2)}px;` +
       (o.color ? `background:${o.color}26;border-left:3px solid ${o.color};` : '');
     const tag = o.href ? `a href="${attr(o.href)}" target="_blank" rel="noopener"` : 'div';
@@ -4620,9 +4627,9 @@ function renderTimeline(data, dateStr, hsData) {
   });
 
   wrap.innerHTML = '<div class="tl-scroll"><div class="tl-inner">' +
-    `<div class="tl-sec">동시간대 4사 편성<span class="tl-legend">${legend}</span></div>` +
+    `<div class="tl-sec"><div class="tl-sec-in">동시간대 4사 편성<span class="tl-legend">${legend}</span></div></div>` +
     axis + hsRows +
-    '<div class="tl-sec">지상파·종편·케이블</div>' +
+    '<div class="tl-sec"><div class="tl-sec-in">지상파·종편·케이블</div></div>' +
     axis + tvRows +
     '</div></div>';
 
@@ -4644,10 +4651,14 @@ function tlTickNow() {
     if (sp) sp.textContent = label;
   });
   document.querySelectorAll('#gridWrap .tl-b').forEach(el => {
-    el.classList.toggle('now', nowMin >= Number(el.dataset.a) && nowMin < Number(el.dataset.b));
+    const a = Number(el.dataset.a), b = Number(el.dataset.b);
+    el.classList.toggle('past', nowMin >= b);
+    el.classList.toggle('now', nowMin >= a && nowMin < b);
   });
 }
 setInterval(tlTickNow, 60 * 1000);
+// 다른 앱을 쓰다 돌아오면(백그라운드에선 타이머가 멈춤) 기다리지 않고 바로 맞춘다
+document.addEventListener('visibilitychange', () => { if (!document.hidden) tlTickNow(); });
 
 // 탭이 숨겨진 상태에서 그리면 scrollLeft가 0으로 잘리므로, 탭이 보일 때 한 번 더 적용한다
 function tlApplyInitialScroll() {
