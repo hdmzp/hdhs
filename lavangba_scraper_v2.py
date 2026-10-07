@@ -268,18 +268,45 @@ except Exception:  # 패키지(pandas/openpyxl) 또는 모듈 없음
     _is_marketing_copy = lambda b: False
 
 
+# 현대/CJ/롯데 편성표 brand 자리에도 브랜드가 아닌 값이 들어온다 (2026-06~10 실측):
+# 시즌('26SS', '25FW'), 프로그램 회차('심야재방 베스트 1부', '건강식품 2부'),
+# 숫자·순도('99.9', '24K', '925실버', '26년', '1++'), 장식 기호('★1등★', '■...26SS')
+_BRAND_DECOR_RE = re.compile(r"^[\s★☆■□◆◇●○▶▷※♥❤]+|[\s★☆■□◆◇●○▶▷※♥❤]+$")
+_BRAND_SEASON_SUFFIX_RE = re.compile(r"\s*(?:20)?\d{2}\s*(?:SS|FW|AW|S/S|F/W)$", re.I)
+_NOT_BRAND_RE = re.compile(
+    r"^(?:(?:20)?\d{2}\s*(?:SS|FW|AW|S/S|F/W|SUMMER|WINTER|SPRING|FALL|년)"  # 시즌·연도
+    r"|[\d\s.,+%]+"                                                         # 숫자뿐
+    r"|\d{2}K|925실버|\d+등)$"                                               # 순도·순위
+    r"|^(?:20)?\d{2}\s*(?:최신상|신상|썸머|윈터|년형)|^\d+(?:주년|초)"             # '26최신상', '2026년형', '300초'
+    r"|\d\s*부$|재방|1촌1명품",                                                # 프로그램 회차·기획전
+    re.I,
+)
+
+
+def _clean_trusted_brand(b):
+    """편성표 브랜드 정리. 브랜드가 아니면 빈 문자열."""
+    b = _BRAND_DECOR_RE.sub("", b)
+    b = _BRAND_SEASON_SUFFIX_RE.sub("", b).strip() or b   # '비버리힐스폴로클럽26SS' -> 앞부분
+    if not b or len(b) <= 1 or _NOT_BRAND_RE.search(b) or _is_marketing_copy(b):
+        return ""
+    return b
+
+
 def display_brand(channel, brand, item_name):
     """화면 표시용 브랜드. 확신이 낮으면 빈 문자열."""
     b = _core_brand((brand or "").strip())
-    if channel in BRAND_TRUSTED_CHANNELS and b and not b.isdigit() and not _is_marketing_copy(b):
-        return b
+    if channel in BRAND_TRUSTED_CHANNELS:
+        b = _clean_trusted_brand(b)
+        if b:
+            return b
     if _infer_brand:
         try:
             inferred = _infer_brand(item_name or "")
         except Exception:
             inferred = ""
-        if inferred:
-            return _core_brand(inferred)
+        inferred = _core_brand(inferred) if inferred else ""
+        if inferred and not _NOT_BRAND_RE.search(inferred):
+            return inferred
     return ""
 
 
