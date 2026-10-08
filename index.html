@@ -905,6 +905,7 @@
   .in-trk-eps tr.star td { background: #FFFBEA; }
   .in-ep-when { font-size: 11px; color: var(--ink-faint); font-weight: 600; }
   .in-ep-prog { font-weight: 600; }
+  .in-ep-item + .in-ep-item { margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--rule); }
   .in-ep-ch { color: var(--ink-soft); font-weight: 600; }
   .in-ep-no { color: var(--ink-soft); font-size: 11.5px; }
   .in-ep-clue { font-size: 12px; line-height: 1.5; color: var(--ink); margin-bottom: 4px; display: flex; flex-wrap: wrap; align-items: center; gap: 3px 4px; }
@@ -9908,14 +9909,15 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     }
 
     const clues = inTrkResult.clues;
-    const rows = [];
+    // 회차별로 단서·동시간 상품을 구한 뒤, 같은 시간대(앞 회차 방송 중에 시작한 회차)끼리 한 줄로 모은다.
+    // 동시간 상품이 거의 겹치므로 따로 보여 주면 같은 목록이 반복되고, 함께 보면 그 시간대 연계 후보를 한눈에 비교할 수 있다.
+    const items = [];
     inTrkResult.eps.forEach(ep => {
       if (!inTrkChSel.has(ep.ch) || !inTrkDaySel.has(inWeekday(ep.d))) return;
       const c = clues[ep.key] || null;
       const texts = c ? [c.official].concat(c.clues || []).filter(Boolean) : [];
       const clueNorm = inTrkNorm(texts.join(' '));
       const groups = IN_TRK_INGR.filter(g => g.some(k => clueNorm.includes(k)));
-      const found = [].concat(...groups.map(g => g.filter(k => clueNorm.includes(k))));   // 단서에서 강조할 단어
       const want = [].concat(...groups);                                                   // 상품명에서 찾을 단어
 
       // 동시간 홈쇼핑 건강식품: TV 시작 ~ 종료 30분 후 사이에 시작한 방송
@@ -9926,30 +9928,49 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
         .map(x => {
           const name = inTrkNorm(x.r.brand + ' ' + x.r.prod);
           return { r: x.r, m: x.m, hit: want.filter(k => name.includes(k)) };
-        })
-        .sort((x, y) => (y.hit.length > 0) - (x.hit.length > 0) || x.m - y.m);
+        });
       const star = hs.some(x => x.hit.length);
       // ⭐를 만든 묶음의 단어 (단서 키워드 중 강조할 것)
       const hitWords = new Set([].concat(...hs.map(x => x.hit)));
-      const hotGroups = IN_TRK_INGR.filter(g => g.some(k => hitWords.has(k)));
-      const hot = new Set([].concat(...hotGroups));
-      if (inTrkStarOnly && !star) return;
-      // 검색: 동시간 상품명·브랜드, 프로그램명, 회차 단서 중 하나라도 포함하면 남긴다. 상품이 걸리면 그 상품을 맨 위로.
-      if (inTrkQuery) {
-        hs.forEach(x => { x.q = inTrkNorm(x.r.brand + ' ' + x.r.prod).includes(inTrkQuery); });
-        const inHs = hs.some(x => x.q);
-        if (!inHs && !inTrkNorm(ep.ch + ep.series).includes(inTrkQuery) && !inTrkNorm(texts.join(' ')).includes(inTrkQuery)) return;
-        hs.sort((x, y) => (y.q === true) - (x.q === true));
-      }
-      rows.push({ ep: ep, c: c, texts: texts, found: found, hs: hs, star: star, hot: hot });
+      const hot = new Set([].concat(...IN_TRK_INGR.filter(g => g.some(k => hitWords.has(k)))));
+      items.push({ ep: ep, c: c, texts: texts, hs: hs, star: star, hot: hot });
     });
-    rows.sort((x, y) => (y.ep.d.localeCompare(x.ep.d)) || (x.ep.a - y.ep.a));
+    items.sort((x, y) => x.ep.d.localeCompare(y.ep.d) || x.ep.a - y.ep.a || x.ep.b - y.ep.b);
 
-    const starCnt = rows.filter(r => r.star).length;
-    const qCnt = inTrkQuery ? rows.filter(r => r.hs.some(x => x.q)).length : 0;
-    let html = '<div class="in-trk-bar"><p class="in-trk-sum">조회 ' + inTrkResult.days + '일 · 건강프로그램 본방 <b>' + rows.length + '회</b>'
+    let rows = [];
+    items.forEach(it => {
+      const g = rows[rows.length - 1];
+      if (g && g.d === it.ep.d && it.ep.a < g.anchorEnd) { g.items.push(it); return; }
+      rows.push({ d: it.ep.d, a: it.ep.a, anchorEnd: it.ep.b, items: [it] });
+    });
+    rows.forEach(g => {
+      const byRow = new Map();   // 같은 홈쇼핑 방송은 한 번만, 일치 단어는 합친다
+      g.items.forEach(it => it.hs.forEach(x => {
+        const e = byRow.get(x.r);
+        if (e) x.hit.forEach(k => { if (!e.hit.includes(k)) e.hit.push(k); });
+        else byRow.set(x.r, { r: x.r, m: x.m, hit: x.hit.slice() });
+      }));
+      g.hs = [...byRow.values()].sort((x, y) => (y.hit.length > 0) - (x.hit.length > 0) || x.m - y.m);
+      g.star = g.items.some(it => it.star);
+    });
+    if (inTrkStarOnly) rows = rows.filter(g => g.star);
+    // 검색: 동시간 상품명·브랜드, 프로그램명, 회차 단서 중 하나라도 포함하면 남긴다. 상품이 걸리면 그 상품을 맨 위로.
+    if (inTrkQuery) {
+      rows = rows.filter(g => {
+        g.hs.forEach(x => { x.q = inTrkNorm(x.r.brand + ' ' + x.r.prod).includes(inTrkQuery); });
+        g.qhit = g.hs.some(x => x.q);
+        return g.qhit || g.items.some(it => inTrkNorm(it.ep.ch + it.ep.series).includes(inTrkQuery) || inTrkNorm(it.texts.join(' ')).includes(inTrkQuery));
+      });
+      rows.forEach(g => g.hs.sort((x, y) => (y.q === true) - (x.q === true)));
+    }
+    rows.sort((x, y) => (y.d.localeCompare(x.d)) || (x.a - y.a));
+
+    const allItems = [].concat(...rows.map(g => g.items));
+    const starCnt = allItems.filter(it => it.star).length;
+    const qCnt = inTrkQuery ? rows.filter(g => g.qhit).length : 0;
+    let html = '<div class="in-trk-bar"><p class="in-trk-sum">조회 ' + inTrkResult.days + '일 · 건강프로그램 본방 <b>' + allItems.length + '회</b>'
       + ' · 소재 일치 ⭐ <b>' + starCnt + '회</b>'
-      + (inTrkQuery ? ' · 검색 상품이 동시간에 나간 회차 <b>' + qCnt + '회</b>' : '') + '</p>'
+      + (inTrkQuery ? ' · 검색 상품이 동시간에 나간 시간대 <b>' + qCnt + '곳</b>' : '') + '</p>'
       + '<label class="in-trk-star"><input type="checkbox" id="inTrkStarOnly"' + (inTrkStarOnly ? ' checked' : '') + '> ⭐ 일치 회차만</label></div>';
 
     if (!rows.length) {
@@ -9967,37 +9988,47 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     html += '<div class="in-trk-scroll"><table class="in-trk-table in-trk-eps"><thead><tr>'
       + '<th>프로그램</th><th>동시간 홈쇼핑 건강식품</th><th>회차 단서</th>'
       + '</tr></thead><tbody>';
-    rows.forEach(({ ep, c, texts, found, hs, star, hot }) => {
-      const q = ep.series + (ep.epi ? ' ' + ep.epi + '회' : '');
-      const naver = 'https://search.naver.com/search.naver?query=' + encodeURIComponent(q);
-      const md = ep.d.slice(5).replace('-', '/') + '(' + IN_DAYS[inWeekday(ep.d)] + ')';
-      const prog = '<div class="in-ep-when">' + md + ' ' + inEsc(ep.start) + '–' + inEsc(ep.end) + '</div>'
-        + '<div class="in-ep-prog">' + (star ? '⭐ ' : '') + '<span class="in-ep-ch">' + inEsc(ep.ch) + '</span> '
-        + '<a href="' + naver + '" target="_blank" rel="noopener">' + inEsc(ep.series) + '</a>'
-        + (ep.epi ? ' <span class="in-ep-no">' + ep.epi + '회</span>' : '') + '</div>';
+    rows.forEach(g => {
+      const md = g.d.slice(5).replace('-', '/') + '(' + IN_DAYS[inWeekday(g.d)] + ')';
+      const prog = g.items.map(({ ep, star }) => {
+        const q = ep.series + (ep.epi ? ' ' + ep.epi + '회' : '');
+        const naver = 'https://search.naver.com/search.naver?query=' + encodeURIComponent(q);
+        return '<div class="in-ep-item"><div class="in-ep-when">' + md + ' ' + inEsc(ep.start) + '–' + inEsc(ep.end) + '</div>'
+          + '<div class="in-ep-prog">' + (star ? '⭐ ' : '') + '<span class="in-ep-ch">' + inEsc(ep.ch) + '</span> '
+          + '<a href="' + naver + '" target="_blank" rel="noopener">' + inEsc(ep.series) + '</a>'
+          + (ep.epi ? ' <span class="in-ep-no">' + ep.epi + '회</span>' : '') + '</div></div>';
+      }).join('');
 
       // 회차 단서는 출처(공식 회차정보 / 블로그·뉴스 등 검색 제목)별로 키워드만. 키워드가 없으면 한 줄 요약.
-      let clueHtml;
-      if (texts.length) {
-        const srcs = [];
-        if (c.official) srcs.push(['공식', [c.official]]);
-        if ((c.clues || []).length) srcs.push(['블로그', c.clues]);
-        clueHtml = srcs.map(([label, list]) => {
-          const full = list.join(' / ');
-          const kws = inTrkKeywords(full).slice(0, 5);
-          const bodyHtml = kws.length
-            ? kws.map(k => '<span class="in-ep-kw' + (hot.has(k) ? ' hot' : '') + '">' + inEsc(inTrkKwLabel(k)) + '</span>').join('')
-            : '<span class="in-ep-line">' + inEsc(list[0]) + '</span>';
-          return '<div class="in-ep-clue" title="' + inEsc(full) + '"><span class="in-ep-tag' + (label === '블로그' ? ' blog' : '') + '">'
-            + label + '</span>' + bodyHtml + '</div>';
-        }).join('');
-      } else {
-        clueHtml = '<span class="in-muted">' + (ep.d < IN_TRK_CLUE_FROM ? '수집 전' : '–') + '</span>';
-      }
+      // 한 시간대에 여러 프로그램이면 프로그램 이름을 붙여 구분한다.
+      const multi = g.items.length > 1;
+      const clueHtml = g.items.map(({ ep, c, texts, hot }) => {
+        let body;
+        if (texts.length) {
+          const srcs = [];
+          if (c.official) srcs.push(['공식', [c.official]]);
+          if ((c.clues || []).length) srcs.push(['블로그', c.clues]);
+          body = srcs.map(([label, list]) => {
+            const full = list.join(' / ');
+            const kws = inTrkKeywords(full).slice(0, 5);
+            const bodyHtml = kws.length
+              ? kws.map(k => '<span class="in-ep-kw' + (hot.has(k) ? ' hot' : '') + '">' + inEsc(inTrkKwLabel(k)) + '</span>').join('')
+              : '<span class="in-ep-line">' + inEsc(list[0]) + '</span>';
+            return '<div class="in-ep-clue" title="' + inEsc(full) + '"><span class="in-ep-tag' + (label === '블로그' ? ' blog' : '') + '">'
+              + label + '</span>' + bodyHtml + '</div>';
+          }).join('');
+        } else {
+          body = '<span class="in-muted">' + (ep.d < IN_TRK_CLUE_FROM ? '수집 전' : '–') + '</span>';
+        }
+        return multi
+          ? '<div class="in-ep-item"><div class="in-ep-when">' + inEsc(ep.ch) + ' ' + inEsc(ep.series) + '</div>' + body + '</div>'
+          : body;
+      }).join('');
 
       let hsHtml = '<span class="in-muted">–</span>';
+      const hs = g.hs;
       if (hs.length) {
-        const MAX = 6;
+        const MAX = multi ? 8 : 6;
         hsHtml = hs.slice(0, MAX).map(x => {
           const name = (x.r.brand && !x.r.prod.includes(x.r.brand) ? x.r.brand + ' ' : '') + x.r.prod;
           const nm = x.r.link ? '<a href="' + inEsc(x.r.link) + '" target="_blank" rel="noopener">' + mark(name, x.hit) + '</a>' : mark(name, x.hit);
@@ -10005,7 +10036,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
             + '<span class="in-ep-t">' + inEsc(x.r.st) + '</span> <b>' + inEsc(x.r.label) + '</b> ' + nm + '</div>';
         }).join('') + (hs.length > MAX ? '<div class="in-muted">외 ' + (hs.length - MAX) + '건</div>' : '');
       }
-      html += '<tr' + (star ? ' class="star"' : '') + '><td>' + prog + '</td><td>' + hsHtml + '</td><td>' + clueHtml + '</td></tr>';
+      html += '<tr' + (g.star ? ' class="star"' : '') + '><td>' + prog + '</td><td>' + hsHtml + '</td><td>' + clueHtml + '</td></tr>';
     });
     html += '</tbody></table></div>'
       + '<p class="lv-table-note">동시간 = TV 방송 시작 ~ 종료 ' + IN_TRK_AFTER_MIN + '분 후 사이에 시작한 홈쇼핑 건강식품'
