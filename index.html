@@ -902,7 +902,6 @@
   .in-trk-eps td:nth-child(1) { min-width: 170px; }
   .in-trk-eps td:nth-child(2) { min-width: 320px; }
   .in-trk-eps td:nth-child(3) { min-width: 180px; max-width: 280px; }
-  .in-trk-eps tr.star td { background: #FFFBEA; }
   .in-ep-when { font-size: 11px; color: var(--ink-faint); font-weight: 600; }
   .in-ep-prog { font-weight: 600; }
   .in-ep-item + .in-ep-item { margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--rule); }
@@ -10032,8 +10031,8 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
         hsHtml = hs.slice(0, MAX).map(x => {
           const name = (x.r.brand && !x.r.prod.includes(x.r.brand) ? x.r.brand + ' ' : '') + x.r.prod;
           const nm = x.r.link ? '<a href="' + inEsc(x.r.link) + '" target="_blank" rel="noopener">' + mark(name, x.hit) + '</a>' : mark(name, x.hit);
-          return '<div class="in-ep-hs' + (x.hit.length ? ' hit' : '') + (x.q ? ' qhit' : '') + '">' + (x.hit.length ? '⭐ ' : '')
-            + '<span class="in-ep-t">' + inEsc(x.r.st) + '</span> <b>' + inEsc(x.r.label) + '</b> ' + nm + '</div>';
+          return '<div class="in-ep-hs' + (x.hit.length ? ' hit' : '') + (x.q ? ' qhit' : '') + '">'
+            + '<span class="in-ep-t">' + inEsc(x.r.st) + '</span> <b>' + inEsc(x.r.label) + '</b> ' + nm + (x.hit.length ? ' ⭐' : '') + '</div>';
         }).join('') + (hs.length > MAX ? '<div class="in-muted">외 ' + (hs.length - MAX) + '건</div>' : '');
       }
       html += '<tr' + (g.star ? ' class="star"' : '') + '><td>' + prog + '</td><td>' + hsHtml + '</td><td>' + clueHtml + '</td></tr>';
