@@ -1,7 +1,7 @@
 {
   "weekStart": "2026-09-28",
   "weekEnd": "2026-10-04",
-  "collectedAt": "2026-10-08T19:29:38.921000+09:00",
+  "collectedAt": "2026-10-09T03:28:21.534012+09:00",
   "programs": [
     {
       "id": "drama_엄마가 미쳤어요_KBS1_오후 08:30",
@@ -975,6 +975,27 @@
       "isEnded": true,
       "endDate": "2026-09-29",
       "episode": 12
+    },
+    {
+      "id": "variety_출발! 비디오 여행_MBC_오전 11:45",
+      "category": "variety",
+      "channel": "MBC",
+      "title": "출발! 비디오 여행",
+      "days": [
+        "일"
+      ],
+      "time": "오전 11:45",
+      "rating": 2.0,
+      "ratingDate": "10.04",
+      "ratingByDay": {
+        "일": {
+          "rating": 2.0,
+          "ratingDate": "10.04",
+          "episode": 1656
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=658855&qvt=0&query=%EC%B6%9C%EB%B0%9C%20%EB%B9%84%EB%94%94%EC%98%A4%20%EC%97%AC%ED%96%89",
+      "episode": 1656
     }
   ],
   "newBelowCutoff": [
