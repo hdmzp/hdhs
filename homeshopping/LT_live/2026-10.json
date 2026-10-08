@@ -2,7 +2,7 @@
   "company": "LT",
   "broadcast": "live",
   "month": "2026-10",
-  "updated_at": "2026-10-08T01:52:04+09:00",
+  "updated_at": "2026-10-08T09:27:04+09:00",
   "days": {
     "2026-10-01": [
       {
@@ -1798,22 +1798,22 @@
       {
         "start": "07:15",
         "end": "09:25",
+        "brand": "가이거",
+        "product": "양가죽 아리아 로퍼",
+        "price": 124200,
+        "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12917846",
+        "pgm": "진짜패션_LOOK AT ME",
+        "category": "잡화/주얼리"
+      },
+      {
+        "start": "07:15",
+        "end": "09:25",
         "brand": "마니커에프앤지",
         "product": "마니커 버팔로봉골드 400gX4봉",
         "price": 32500,
         "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12927181",
         "pgm": "진짜패션_LOOK AT ME",
         "category": "일반식품"
-      },
-      {
-        "start": "07:15",
-        "end": "09:25",
-        "brand": "가이거",
-        "product": "양가죽 아리아 로퍼",
-        "price": 138000,
-        "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12917846",
-        "pgm": "진짜패션_LOOK AT ME",
-        "category": "잡화/주얼리"
       },
       {
         "start": "07:15",
@@ -1840,7 +1840,7 @@
         "end": "09:25",
         "brand": "버버리",
         "product": "파크게이트 퀼팅 자켓",
-        "price": 1680000,
+        "price": 1580000,
         "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12920706",
         "pgm": "진짜패션_LOOK AT ME",
         "category": "잡화/주얼리"
@@ -1860,7 +1860,7 @@
         "end": "09:25",
         "brand": "살바토레 페라가모",
         "product": "간치니 골드 22mm",
-        "price": 1169000,
+        "price": 699000,
         "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12885906",
         "pgm": "진짜패션_LOOK AT ME",
         "category": "잡화/주얼리"
@@ -1870,7 +1870,7 @@
         "end": "10:30",
         "brand": "보욜라",
         "product": "BOJOLA 피렌체 구스다운 자켓",
-        "price": 459000,
+        "price": 389000,
         "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12925836",
         "pgm": "더퍼스트 유난희",
         "category": "잡화/주얼리"
@@ -1880,7 +1880,7 @@
         "end": "10:30",
         "brand": "",
         "product": "BOJOLA 뉴 더블숄더백",
-        "price": 689000,
+        "price": 579000,
         "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12927156",
         "pgm": "더퍼스트 유난희",
         "category": "잡화/주얼리"
@@ -1890,7 +1890,7 @@
         "end": "10:30",
         "brand": "",
         "product": "BOJOLA 더블 클러치백",
-        "price": 329000,
+        "price": 299000,
         "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12897696",
         "pgm": "더퍼스트 유난희",
         "category": "잡화/주얼리"
@@ -1900,7 +1900,7 @@
         "end": "10:30",
         "brand": "",
         "product": "BOJOLA 바케타 백",
-        "price": 549000,
+        "price": 499000,
         "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12897695",
         "pgm": "더퍼스트 유난희",
         "category": "잡화/주얼리"
@@ -1910,7 +1910,7 @@
         "end": "10:30",
         "brand": "",
         "product": "BOJOLA 시그니처 라운드 크로스백",
-        "price": 399000,
+        "price": 389000,
         "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12897694",
         "pgm": "더퍼스트 유난희",
         "category": "잡화/주얼리"
@@ -1920,7 +1920,7 @@
         "end": "10:30",
         "brand": "",
         "product": "BOJOLA 뉴 버킷백",
-        "price": 629000,
+        "price": 529000,
         "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12927164",
         "pgm": "더퍼스트 유난희",
         "category": "잡화/주얼리"
@@ -2038,6 +2038,16 @@
         "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12927230",
         "pgm": "최유라쇼",
         "category": "미용"
+      },
+      {
+        "start": "20:45",
+        "end": "22:50",
+        "brand": "LBL",
+        "product": "26FW 캐시미어100 로라 가든비딩 가디건",
+        "price": 189000,
+        "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12927290",
+        "pgm": "최유라쇼",
+        "category": "의류"
       },
       {
         "start": "22:50",
@@ -2485,16 +2495,6 @@
       {
         "start": "22:30",
         "end": "01:00",
-        "brand": "LBL",
-        "product": "26FW 퓨어라쿤100 V넥 니트",
-        "price": 99900,
-        "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12920910",
-        "pgm": "L.SHOW",
-        "category": "의류"
-      },
-      {
-        "start": "22:30",
-        "end": "01:00",
         "brand": "지지피엑스",
         "product": "26FW NEW 더블 롱 플리스 후디",
         "price": 69900,
@@ -2505,12 +2505,12 @@
       {
         "start": "22:30",
         "end": "01:00",
-        "brand": "베키아에누보",
-        "product": "베키아에누보 샌드위치 총 12개입",
-        "price": 39900,
-        "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12925762",
+        "brand": "LBL",
+        "product": "26FW 퓨어라쿤100 트라이앵글 숄 머플러",
+        "price": 79900,
+        "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12920912",
         "pgm": "L.SHOW",
-        "category": "일반식품"
+        "category": "의류"
       },
       {
         "start": "22:30",
@@ -2837,6 +2837,15 @@
         "category": "의류"
       },
       {
+        "start": "16:35",
+        "end": "17:35",
+        "brand": "흥국생명",
+        "product": "무배당 흥국생명 오튼튼 건강보험",
+        "price": 0,
+        "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12913343",
+        "category": "보험"
+      },
+      {
         "start": "17:35",
         "end": "18:35",
         "brand": "정성곳간",
@@ -2868,7 +2877,7 @@
         "end": "21:45",
         "brand": "버버리",
         "product": "카트론 퀼팅 자켓 블랙",
-        "price": 1280000,
+        "price": 1230000,
         "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12913487",
         "category": "잡화/주얼리"
       },
@@ -2911,15 +2920,6 @@
         "category": "의류"
       },
       {
-        "start": "01:55",
-        "end": "02:25",
-        "brand": "담고",
-        "product": "담고 김치냉장고 실버그레이/로즈골드",
-        "price": 629000,
-        "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12881278",
-        "category": "가전"
-      },
-      {
         "start": "03:25",
         "end": "03:45",
         "brand": "조르쥬 레쉬",
@@ -2933,7 +2933,7 @@
         "end": "04:45",
         "brand": "네메르",
         "product": "26SS 헤리티지 캐시미어울 니트 자켓",
-        "price": 299000,
+        "price": 254150,
         "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12886798",
         "category": "의류"
       },
@@ -3019,6 +3019,24 @@
         "category": "건강식품"
       },
       {
+        "start": "17:35",
+        "end": "18:35",
+        "brand": "메트라이프생명보험(주)",
+        "product": "오로지연금을위한 달러연금보험",
+        "price": 0,
+        "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12922258",
+        "category": "보험"
+      },
+      {
+        "start": "20:45",
+        "end": "21:45",
+        "brand": "카사베르디",
+        "product": "★카사베르디 유기농 레드와인 비니거 3병",
+        "price": 89000,
+        "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12907239",
+        "category": "건강식품"
+      },
+      {
         "start": "21:45",
         "end": "22:55",
         "brand": "르무통",
@@ -3035,6 +3053,15 @@
         "price": 1070000,
         "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12914294",
         "category": "잡화/주얼리"
+      },
+      {
+        "start": "23:55",
+        "end": "00:55",
+        "brand": "메리츠화재",
+        "product": "메리츠화재 받고 또 받는 암보험",
+        "price": 0,
+        "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12910985",
+        "category": "보험"
       }
     ]
   }
