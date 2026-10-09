@@ -4582,7 +4582,7 @@ function renderGrid(data, dateStr, hsData) {
           const naverQ = ch.key + ' ' + String(p.title).replace(/\s*\(\s*\d+\s*회\s*\)\s*$/, '').trim();
           const naverUrl = 'https://search.naver.com/search.naver?query=' + encodeURIComponent(naverQ);
           html += `<a class="prog-block${isNow ? ' now' : ''}" href="${naverUrl}" target="_blank" rel="noopener">`;
-          html += `<span class="ptime">${p.start}–${p.end === '24:00' ? '24:00' : p.end}</span>`;
+          html += `<span class="ptime">${p.carry ? '전날 ' + p.carry : p.start}–${p.end === '24:00' ? '24:00' : p.end}</span>`;
           html += escapeHtml(p.title);
           html += '</a>';
         });
@@ -4664,12 +4664,12 @@ function renderTimeline(data, dateStr, hsData) {
       if (cat) usedCats.add(cat);
       const brandProd = (r.brand && !String(r.product).includes(r.brand) ? r.brand + ' ' : '') + r.product;
       blocks += block({
-        a, b, st: r.start, en: r.end,
+        a, b, st: r.carry ? '전날 ' + r.carry : r.start, en: r.end,
         title: brandProd,
         sub: cat + (rs.length > 1 ? ` 외 ${rs.length - 1}` : ''),
         color: hsCategoryColor(cat),
         href: r.link,
-        tip: `${r.start}–${r.end}\n` + rs.map(x => `[${x.category || '-'}] ${x.product}`).join('\n'),
+        tip: `${r.carry ? '전날 ' + r.carry : r.start}–${r.end}\n` + rs.map(x => `[${x.category || '-'}] ${x.product}`).join('\n'),
       });
     });
     hsRows += `<div class="tl-row hs"><div class="tl-lab">${c.label}</div><div class="tl-track" style="width:${W}px">${grid()}${blocks}${nowLine(false)}</div></div>`;
@@ -4686,9 +4686,9 @@ function renderTimeline(data, dateStr, hsData) {
       const [a, b] = span(p.start, p.end);
       const naverQ = ch.key + ' ' + String(p.title).replace(/\s*\(\s*\d+\s*회\s*\)\s*$/, '').trim();
       blocks += block({
-        a, b, st: p.start, en: p.end, title: p.title,
+        a, b, st: p.carry ? '전날 ' + p.carry : p.start, en: p.end, title: p.title,
         href: 'https://search.naver.com/search.naver?query=' + encodeURIComponent(naverQ),
-        tip: `${ch.key} ${p.start}–${p.end}\n${p.title}`,
+        tip: `${ch.key} ${p.carry ? "전날 " + p.carry : p.start}–${p.end}\n${p.title}`,
       });
     });
     tvRows += `<div class="tl-row"><div class="tl-lab"><i class="band ${ch.group}"></i>${escapeHtml(ch.key)}</div><div class="tl-track" style="width:${W}px">${grid()}${blocks}${nowLine(false)}</div></div>`;
@@ -4774,11 +4774,46 @@ document.querySelectorAll('#schViewToggle button').forEach(b => b.addEventListen
   if (_schLast) renderGrid(_schLast.data, _schLast.dateStr, _schLast.hsData);
 }));
 
+// 자정을 넘겨 이어지는 방송은 전날 날짜 데이터에만 들어 있다 (편성표: 전날 마지막 프로그램은 '24:00'까지로 저장,
+// 홈쇼핑: 전날 '22:40–01:10'처럼 저장). 그래서 오늘 00:00 이후가 비어 보이므로 전날 것을 00:00부터 이어 붙인다.
+// carry = 원래 시작 시각 (표시용)
+function withCarryOver(data, prevData) {
+  if (!data || !prevData) return data;
+  const out = Object.assign({}, data);
+  CHANNELS.forEach(ch => {
+    const today = (data[ch.key] || []).slice().sort((x, y) => timeToMinutes(x.start) - timeToMinutes(y.start));
+    const prev = prevData[ch.key] || [];
+    if (!today.length || !prev.length) return;
+    const first = today[0].start;
+    if (timeToMinutes(first) <= 0) return;
+    const last = prev.slice().sort((x, y) => timeToMinutes(x.start) - timeToMinutes(y.start))[prev.length - 1];
+    out[ch.key] = [{ start: '00:00', end: first, title: last.title, carry: last.start }].concat(today);
+  });
+  return out;
+}
+
+function hsWithCarryOver(hsData, prevHs) {
+  if (!hsData || !prevHs) return hsData;
+  const out = {};
+  for (const dir in hsData) {
+    const carry = (prevHs[dir] || [])
+      .filter(r => r.start && r.end && timeToMinutes(r.end) < timeToMinutes(r.start) && timeToMinutes(r.end) > 0)
+      .map(r => Object.assign({}, r, { start: '00:00', carry: r.start }));
+    out[dir] = carry.concat(hsData[dir] || []);
+  }
+  return out;
+}
+
 async function refresh(dateStr) {
   document.getElementById('dateText').textContent = formatDateLabel(dateStr);
   document.getElementById('todayBadge').style.display = isToday(dateStr) ? 'inline-block' : 'none';
   document.getElementById('prevDay').disabled = (dateStr <= SCHEDULE_MIN_DATE);
-  const [data, hsData] = await Promise.all([getDataForDate(dateStr), getHsForDate(dateStr)]);
+  const prevStr = shiftDate(dateStr, -1);
+  const [rawData, rawHs, prevData, prevHs] = await Promise.all([
+    getDataForDate(dateStr), getHsForDate(dateStr), getDataForDate(prevStr), getHsForDate(prevStr),
+  ]);
+  const data = withCarryOver(rawData, prevData);
+  const hsData = hsWithCarryOver(rawHs, prevHs);
   _schLast = { data, dateStr, hsData };
   renderGrid(data, dateStr, hsData);
 
