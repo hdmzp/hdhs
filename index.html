@@ -4701,9 +4701,9 @@ function renderTimeline(data, dateStr, hsData) {
     axis + tvRows +
     '</div></div>';
 
-  // 오늘이면 현재 시각 1시간 전, 아니면 저녁 프라임(18시)부터 보이게
+  // 오늘이면 현재 시각 1시간 전, 다른 날짜로 이동하면 00:00부터 보이게
   const sc = wrap.querySelector('.tl-scroll');
-  const startMin = nowMin !== null ? Math.max(0, nowMin - 60) : 18 * 60;
+  const startMin = nowMin !== null ? Math.max(0, nowMin - 60) : 0;
   sc.dataset.startX = String(startMin * PX);
   tlApplyInitialScroll();
 }
