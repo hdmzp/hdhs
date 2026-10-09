@@ -9929,6 +9929,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
 
   let inTrkStarOnly = false; // ⭐ 소재 일치 회차만 보기
   let inTrkFirstOnly = false; // 본방만 보기 (재방 제외)
+  let inTrkHsOnly = false;    // 선택한 홈쇼핑사 편성이 동시간에 있는 시간대만 보기
   let inTrkQuery = '';       // 상품명·브랜드·프로그램 검색어 (공백·기호 제거 후 부분일치)
   // 회차 단서를 키워드로만 보여줄 때, ⭐ 판정 단어(IN_TRK_INGR) 외에 주제로 뽑을 단어 (표시용)
   const IN_TRK_TOPICS = [
@@ -9999,6 +10000,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
       g.star = g.items.some(it => it.star);
     });
     if (inTrkStarOnly) rows = rows.filter(g => g.star);
+    if (inTrkHsOnly) rows = rows.filter(g => g.hs.length);
     // 검색: 동시간 상품명·브랜드, 프로그램명, 회차 단서 중 하나라도 포함하면 남긴다. 상품이 걸리면 그 상품을 맨 위로.
     if (inTrkQuery) {
       rows = rows.filter(g => {
@@ -10018,12 +10020,14 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
       + ' · 소재 일치 ⭐ <b>' + starCnt + '회</b>'
       + (inTrkQuery ? ' · 검색 상품이 동시간에 나간 시간대 <b>' + qCnt + '곳</b>' : '') + '</p>'
       + '<label class="in-trk-star"><input type="checkbox" id="inTrkStarOnly"' + (inTrkStarOnly ? ' checked' : '') + '> ⭐ 일치 회차만</label>'
-      + '<label class="in-trk-star"><input type="checkbox" id="inTrkFirstOnly"' + (inTrkFirstOnly ? ' checked' : '') + '> 본방만</label></div>';
+      + '<label class="in-trk-star"><input type="checkbox" id="inTrkFirstOnly"' + (inTrkFirstOnly ? ' checked' : '') + '> 본방만</label>'
+      + '<label class="in-trk-star"><input type="checkbox" id="inTrkHsOnly"' + (inTrkHsOnly ? ' checked' : '') + '> 선택 홈쇼핑사 편성만</label></div>';
 
     if (!rows.length) {
       body.innerHTML = html + '<p class="in-muted" style="font-size:12.5px;">해당하는 회차가 없습니다.</p>';
       $('inTrkStarOnly').addEventListener('change', e => { inTrkStarOnly = e.target.checked; inRenderPpl(); });
     $('inTrkFirstOnly').addEventListener('change', e => { inTrkFirstOnly = e.target.checked; inRenderPpl(); });
+    $('inTrkHsOnly').addEventListener('change', e => { inTrkHsOnly = e.target.checked; inRenderPpl(); });
       return;
     }
 
@@ -10095,6 +10099,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     body.innerHTML = html;
     $('inTrkStarOnly').addEventListener('change', e => { inTrkStarOnly = e.target.checked; inRenderPpl(); });
     $('inTrkFirstOnly').addEventListener('change', e => { inTrkFirstOnly = e.target.checked; inRenderPpl(); });
+    $('inTrkHsOnly').addEventListener('change', e => { inTrkHsOnly = e.target.checked; inRenderPpl(); });
   }
 
   async function inQuery() {
