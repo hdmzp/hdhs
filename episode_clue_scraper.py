@@ -23,13 +23,13 @@ data/episode_clues/{YYYY-MM}.json (방송일 기준 월별)
 
 == 수집 범위 (실행마다) ==
 1) 최근 --days일 ~ 편성이 있는 미래 날짜
-2) 지난 달 채우기: 이미 수집한 가장 이른 달이 다 찼으면 그 한 달 전 (예: 9/1부터 있으면 8/1~8/31).
-   그 달에 아직 안 본 회차가 남아 있으면 그 달을 마저 채운다. BACKFILL_FROM 이전은 수집하지 않는다.
+2) 지난 달 채우기: 이미 수집한 가장 이른 달의 한 달 전 (예: 9/1부터 있으면 8/1~8/31).
+   가장 이른 달에 빠진 회차(나중에 추가된 프로그램 등)도 같이 채운다. BACKFILL_FROM 이전은 수집하지 않는다.
    (BACKFILL_FROM 달까지 다 차면 이후 실행은 1)만 한다)
 
 == 사용법 ==
     python episode_clue_scraper.py                       # 위 범위, 요청 상한 MAX_REQUESTS
-    python episode_clue_scraper.py --max-requests 500    # 지난 달 한 달치를 한 번에 (수동 실행용)
+    python episode_clue_scraper.py --max-requests 700    # 지난 달 한 달치를 한 번에 (수동 실행용)
     python episode_clue_scraper.py --dry-run             # 저장 없이 결과만 출력
 """
 
@@ -265,15 +265,19 @@ def prev_month(ym: str) -> str:
     return f"{y - 1}-12" if m == 1 else f"{y}-{m - 1:02d}"
 
 
-def pick_backfill_month(all_targets, today_ym: str):
-    """지난 달 채우기 대상 달. 수집한 가장 이른 달에 아직 안 본 회차가 있으면 그 달, 다 찼으면 한 달 전."""
+def pick_backfill_months(all_targets, today_ym: str):
+    """지난 달 채우기 대상 달: 수집한 가장 이른 달의 한 달 전 (매 실행 한 달씩 더 과거로).
+    가장 이른 달에 빠진 회차(나중에 건강프로그램 목록에 추가된 프로그램 등)가 있으면 그것도 같이 채운다."""
     files = sorted(glob.glob(os.path.join(OUT_DIR, "????-??.json")))
     earliest = os.path.basename(files[0])[:7] if files else today_ym
     seen = load_month(earliest)
+    months = set()
     if any(t[4][:7] == earliest and t[4] >= BACKFILL_FROM and t[0] not in seen for t in all_targets):
-        return earliest
+        months.add(earliest)
     ym = prev_month(earliest)
-    return ym if ym >= BACKFILL_FROM[:7] else None
+    if ym >= BACKFILL_FROM[:7]:
+        months.add(ym)
+    return sorted(months)
 
 
 def main():
@@ -318,10 +322,10 @@ def main():
             max_epi[k] = max(max_epi.get(k, 0), n)
 
     # 2) 범위: 최근 --days일 ~ 미래 편성 + 지난 달 채우기 한 달
-    backfill = pick_backfill_month(all_targets, today.isoformat()[:7])
-    print(f"범위: {recent_from} ~ 편성 끝" + (f" + 지난 달 채우기 {backfill}" if backfill else " (지난 달 채우기 끝)"))
+    backfill = pick_backfill_months(all_targets, today.isoformat()[:7])
+    print(f"범위: {recent_from} ~ 편성 끝" + (f" + 지난 달 채우기 {', '.join(backfill)}" if backfill else " (지난 달 채우기 끝)"))
     targets = [t for t in all_targets
-               if t[4] >= recent_from or (backfill and t[4][:7] == backfill and t[4] >= BACKFILL_FROM)]
+               if t[4] >= recent_from or (t[4][:7] in backfill and t[4] >= BACKFILL_FROM)]
 
     months = {}
     def store_for(d):

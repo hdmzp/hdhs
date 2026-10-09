@@ -10,11 +10,11 @@ on:
   workflow_dispatch:
     inputs:
       days:
-        description: "오늘 포함 며칠 전 방영분까지 (지난 기간 채우기용)"
+        description: "최근 며칠치 다시 볼지 (지난 달 채우기와 별개, 보통 30)"
         default: "30"
       max_requests:
-        description: "네이버 요청 상한 (지난 달 한 달치는 약 400회)"
-        default: "500"
+        description: "네이버 요청 상한 (지난 달 한 달치 + 최근분은 약 500회)"
+        default: "700"
 
 permissions:
   contents: write
