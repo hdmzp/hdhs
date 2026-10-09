@@ -3,14 +3,18 @@ name: 건강프로그램 회차 단서 수집 (Naver)
 on:
   schedule:
     # 매일 KST 10:20 = UTC 01:20. 전날 방송분의 회차 소개·블로그 글이 올라온 뒤에 돈다.
-    # 최근 30일 본방 중 아직 단서가 없는 회차만 검색한다(찾은 회차는 건너뜀, 못 찾으면 최대 3번).
-    # 실행당 네이버 요청 80회 상한이라 밀린 회차는 다음 날 이어서 채워진다.
+    # 최근 30일 ~ 미래 편성 본방 중 아직 단서가 없는 회차만 검색한다(찾은 회차는 건너뜀, 못 찾으면 최대 3번).
+    # 남은 요청으로 지난 달 채우기(수집한 가장 이른 달의 한 달 전, 2026-07까지)도 이어서 한다.
+    # 정기 실행은 네이버 요청 80회 상한이라 밀린 회차는 다음 날 이어서 채워진다.
     - cron: "20 1 * * *"
   workflow_dispatch:
     inputs:
       days:
         description: "오늘 포함 며칠 전 방영분까지 (지난 기간 채우기용)"
         default: "30"
+      max_requests:
+        description: "네이버 요청 상한 (지난 달 한 달치는 약 400회)"
+        default: "500"
 
 permissions:
   contents: write
@@ -19,7 +23,7 @@ permissions:
 jobs:
   scrape:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -29,7 +33,7 @@ jobs:
 
       - name: 회차 단서 수집
         run: |
-          python episode_clue_scraper.py --days "${{ inputs.days || '30' }}"
+          python episode_clue_scraper.py --days "${{ inputs.days || '30' }}" --max-requests "${{ inputs.max_requests || '80' }}"
 
       - name: 결과 커밋 & 푸시
         id: commit
