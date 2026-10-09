@@ -907,6 +907,7 @@
   .in-ep-item + .in-ep-item { margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--rule); }
   .in-ep-ch { color: var(--ink-soft); font-weight: 600; }
   .in-ep-no { color: var(--ink-soft); font-size: 11.5px; }
+  .in-ep-rerun { font-size: 10px; font-weight: 700; color: var(--ink-soft); border: 1px solid var(--rule); border-radius: 4px; padding: 0 3px; vertical-align: 1px; }
   .in-ep-clue { font-size: 12px; line-height: 1.5; color: var(--ink); margin-bottom: 4px; display: flex; flex-wrap: wrap; align-items: center; gap: 3px 4px; }
   .in-ep-tag { font-size: 10px; font-weight: 700; color: var(--brand-blue); border: 1px solid var(--brand-blue); border-radius: 4px; padding: 0 3px; margin-right: 2px; flex: none; }
   .in-ep-tag.blog { color: #0E9F6E; border-color: #0E9F6E; }
@@ -9709,7 +9710,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
   ];
   const IN_TRK_AFTER_MIN = 30;          // 동시간 = TV 방송 시작 ~ 종료 후 이만큼(분) 사이에 시작한 홈쇼핑 방송
   const IN_TRK_CLUE_FROM = '2026-09-01'; // 회차 단서 수집 시작 방송일
-  const IN_TRK_RERUN = /스페셜|특별판|베스트|하이라이트|다시보기|다시보는|재방/;
+  const IN_TRK_RERUN = /스페셜|특별판|베스트|하이라이트|다시보기|다시보는|재방|앙코르/; // 표시용. 단서 수집기 RERUN엔 앙코르를 넣지 않는다(앙코르 회차 단서도 수집)
   // 프로그램 이름 자체에 재방 표기 단어가 들어 있는 경우 (재방 판정 전에 지운다)
   const IN_TRK_RERUN_NAME = /건강\s*스페셜(?=\s*한양촌)|(?<=주부들)\s*스페셜/g;
   const inTrkIsRerun = title => IN_TRK_RERUN.test(String(title || '').replace(IN_TRK_RERUN_NAME, ''));
@@ -9781,8 +9782,10 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
       const clueFiles = await Promise.all(months.map(ym => fetchJsonSafe(`./data/episode_clues/${ym}.json`)));
       const clues = Object.assign({}, ...clueFiles.map(f => f || {}));
 
-      // 본방 회차만: 재방송도 '(151회)'처럼 회차가 붙으므로, 날짜순으로 훑으며 그 프로그램이
-      // 앞서 방영한 회차보다 큰 번호가 처음 나온 날만 본방으로 본다. 회차 없는 프로그램은 날짜별 1건.
+      // 재방도 넣되 rerun 표시를 붙인다 (연계 PPL이 재방 시간대에도 붙는다).
+      // 재방 판정: 제목에 재방 표기(IN_TRK_RERUN)가 있거나, 재방송도 '(151회)'처럼 회차가 붙으므로 날짜순으로 훑으며
+      // 그 프로그램이 앞서 방영한 회차 이하의 번호이거나 이미 나온 회차. 회차 없는 프로그램은 날짜별 첫 방송만 본방.
+      // 재방도 key는 본방과 같아서 본방 회차 단서를 그대로 쓴다.
       const eps = [], seen = new Set(), maxEpi = {};
       let loadedDays = 0;
       dates.forEach(d => {
@@ -9792,20 +9795,20 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
         const dayMax = {};
         CHANNELS.forEach(ch => {
           (data[ch.key] || []).forEach(p => {
-            if (!inTrkIsHealth(p.title) || inTrkIsRerun(p.title)) return;
+            if (!inTrkIsHealth(p.title)) return;
             const series = inTrkSeries(p.title), epi = inTrkEpi(p.title);
             const sk = ch.key + '|' + series;
-            if (epi) {
-              if (+epi <= (maxEpi[sk] || 0)) return;
-              dayMax[sk] = Math.max(dayMax[sk] || 0, +epi);
-            }
             const key = sk + '|' + (epi || d);
-            if (seen.has(key)) return;
+            let rerun = inTrkIsRerun(p.title) || seen.has(key);
+            if (epi && !rerun) {
+              if (+epi <= (maxEpi[sk] || 0)) rerun = true;
+              else dayMax[sk] = Math.max(dayMax[sk] || 0, +epi);
+            }
             seen.add(key);
             const a = inTrkMin(p.start);
             let b = p.end === '24:00' ? 1440 : inTrkMin(p.end);
             if (isNaN(b) || b <= a) b = 1440;
-            eps.push({ d: d, ch: ch.key, series: series, epi: epi, start: p.start, end: p.end, a: a, b: b, key: key });
+            eps.push({ d: d, ch: ch.key, series: series, epi: epi, start: p.start, end: p.end, a: a, b: b, key: key, rerun: rerun });
           });
         });
         for (const k in dayMax) maxEpi[k] = Math.max(maxEpi[k] || 0, dayMax[k]);
@@ -9888,6 +9891,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
   }
 
   let inTrkStarOnly = false; // ⭐ 소재 일치 회차만 보기
+  let inTrkFirstOnly = false; // 본방만 보기 (재방 제외)
   let inTrkQuery = '';       // 상품명·브랜드·프로그램 검색어 (공백·기호 제거 후 부분일치)
   // 회차 단서를 키워드로만 보여줄 때, ⭐ 판정 단어(IN_TRK_INGR) 외에 주제로 뽑을 단어 (표시용)
   const IN_TRK_TOPICS = [
@@ -9917,6 +9921,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     const items = [];
     inTrkResult.eps.forEach(ep => {
       if (!inTrkChSel.has(ep.ch) || !inTrkDaySel.has(inWeekday(ep.d))) return;
+      if (inTrkFirstOnly && ep.rerun) return;
       const c = clues[ep.key] || null;
       const texts = c ? [c.official].concat(c.clues || []).filter(Boolean) : [];
       const clueNorm = inTrkNorm(texts.join(' '));
@@ -9971,14 +9976,17 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     const allItems = [].concat(...rows.map(g => g.items));
     const starCnt = allItems.filter(it => it.star).length;
     const qCnt = inTrkQuery ? rows.filter(g => g.qhit).length : 0;
-    let html = '<div class="in-trk-bar"><p class="in-trk-sum">조회 ' + inTrkResult.days + '일 · 건강프로그램 본방 <b>' + allItems.length + '회</b>'
+    let html = '<div class="in-trk-bar"><p class="in-trk-sum">조회 ' + inTrkResult.days + '일 · 건강프로그램 본방 <b>' + allItems.filter(it => !it.ep.rerun).length + '회</b>'
+      + (inTrkFirstOnly ? '' : ' · 재방 <b>' + allItems.filter(it => it.ep.rerun).length + '회</b>')
       + ' · 소재 일치 ⭐ <b>' + starCnt + '회</b>'
       + (inTrkQuery ? ' · 검색 상품이 동시간에 나간 시간대 <b>' + qCnt + '곳</b>' : '') + '</p>'
-      + '<label class="in-trk-star"><input type="checkbox" id="inTrkStarOnly"' + (inTrkStarOnly ? ' checked' : '') + '> ⭐ 일치 회차만</label></div>';
+      + '<label class="in-trk-star"><input type="checkbox" id="inTrkStarOnly"' + (inTrkStarOnly ? ' checked' : '') + '> ⭐ 일치 회차만</label>'
+      + '<label class="in-trk-star"><input type="checkbox" id="inTrkFirstOnly"' + (inTrkFirstOnly ? ' checked' : '') + '> 본방만</label></div>';
 
     if (!rows.length) {
       body.innerHTML = html + '<p class="in-muted" style="font-size:12.5px;">해당하는 회차가 없습니다.</p>';
       $('inTrkStarOnly').addEventListener('change', e => { inTrkStarOnly = e.target.checked; inRenderPpl(); });
+    $('inTrkFirstOnly').addEventListener('change', e => { inTrkFirstOnly = e.target.checked; inRenderPpl(); });
       return;
     }
 
@@ -9999,7 +10007,8 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
         return '<div class="in-ep-item"><div class="in-ep-when">' + md + ' ' + inEsc(ep.start) + '–' + inEsc(ep.end) + '</div>'
           + '<div class="in-ep-prog">' + (star ? '⭐ ' : '') + '<span class="in-ep-ch">' + inEsc(ep.ch) + '</span> '
           + '<a href="' + naver + '" target="_blank" rel="noopener">' + inEsc(ep.series) + '</a>'
-          + (ep.epi ? ' <span class="in-ep-no">' + ep.epi + '회</span>' : '') + '</div></div>';
+          + (ep.epi ? ' <span class="in-ep-no">' + ep.epi + '회</span>' : '')
+          + (ep.rerun ? ' <span class="in-ep-rerun">재방</span>' : '') + '</div></div>';
       }).join('');
 
       // 회차 단서는 출처(공식 회차정보 / 블로그·뉴스 등 검색 제목)별로 키워드만. 키워드가 없으면 한 줄 요약.
@@ -10048,6 +10057,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
 
     body.innerHTML = html;
     $('inTrkStarOnly').addEventListener('change', e => { inTrkStarOnly = e.target.checked; inRenderPpl(); });
+    $('inTrkFirstOnly').addEventListener('change', e => { inTrkFirstOnly = e.target.checked; inRenderPpl(); });
   }
 
   async function inQuery() {
