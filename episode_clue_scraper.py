@@ -58,13 +58,16 @@ KEYWORD = re.compile(r"건강|몸신|명의|닥터|의사|병원|질병|혈당|�
 KEYWORD_EXCL = re.compile(r"드라마|영화|뮤지컬|시네마|무비|극장|월드컵|프로야구|뉴스")
 DRAMA_EXCL = ["닥터x", "하얀마피아"]
 TITLES = [
-    "기분좋은날", "굿모닝대한민국", "히든카드", "시크릿코드", "세개의시선", "트루맨쇼",
-    "인생2막", "알콩달콩", "인생의연장전", "퍼펙트라이프", "중독자들", "쌀롱하우스",
-    "지킬박사", "생존의비밀", "생존의단서", "아모르바디", "가화만사성", "엄마를부탁해",
-    "편스토랑", "바디인사이트", "아픈사이", "슈퍼푸드", "나비효과", "다큐프라임",
+    "기분좋은날", "굿모닝대한민국", "히든카드", "시크릿코드", "세개의시선", "트루맨쇼", "인생2막", "알콩달콩", "인생의연장전", "퍼펙트라이프", "중독자들",
+    "쌀롱하우스", "지킬박사", "생존의비밀", "생존의단서", "아모르바디", "가화만사성", "엄마를부탁해", "편스토랑", "바디인사이트", "아픈사이", "슈퍼푸드", "나비효과",
+    "다큐프라임", "너의몸소리가들려", "잡학자들", "70억의선택", "평행이론", "소문난건강법", "장수상회", "건강다큐", "내몸의비밀", "질병의법칙", "역전의한방",
+    "100세더하기", "중증건강센터", "명의보감", "굿모닝정보세상", "보석이네건강수다", "알약방", "건강히어로", "비밀서고", "천기누설", "깡있는아침", "이토록위대한몸",
+    "아이엠닥터", "헬스판사", "위기의주부들", "몸신", "한양촌", "몸몸몸", "건강한식당", "건강왕",
 ]
 # 재방·편집본은 새 회차가 아니므로 검색하지 않는다
-RERUN = re.compile(r"스페셜|특별판|베스트|하이라이트|다시보기|재방")
+RERUN = re.compile(r"스페셜|특별판|베스트|하이라이트|다시보기|다시보는|재방")
+# 프로그램 이름 자체에 재방 표기 단어가 들어 있는 경우 (재방 판정 전에 지운다)
+RERUN_NAME = re.compile(r"건강\s*스페셜(?=\s*한양촌)")
 
 # 채널 키 -> 네이버 방송정보 '편성' 표기 (공식 회차정보가 엉뚱한 동명 프로그램이 아닌지 확인용)
 CH_ALIASES = {
@@ -80,6 +83,10 @@ def is_health(title: str) -> bool:
     if any(t in n for t in DRAMA_EXCL):
         return False
     return (bool(KEYWORD.search(title)) and not KEYWORD_EXCL.search(title)) or any(t in n for t in TITLES)
+
+
+def is_rerun(title: str) -> bool:
+    return bool(RERUN.search(RERUN_NAME.sub("", title)))
 
 
 def split_title(title: str):
@@ -272,7 +279,7 @@ def main():
         for ch, progs in sched.items():
             for prog in progs:
                 title = prog.get("title", "")
-                if not is_health(title) or RERUN.search(title):
+                if not is_health(title) or is_rerun(title):
                     continue
                 series, epi = split_title(title)
                 if epi:
