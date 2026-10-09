@@ -9711,7 +9711,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
   const IN_TRK_CLUE_FROM = '2026-09-01'; // 회차 단서 수집 시작 방송일
   const IN_TRK_RERUN = /스페셜|특별판|베스트|하이라이트|다시보기|다시보는|재방/;
   // 프로그램 이름 자체에 재방 표기 단어가 들어 있는 경우 (재방 판정 전에 지운다)
-  const IN_TRK_RERUN_NAME = /건강\s*스페셜(?=\s*한양촌)/;
+  const IN_TRK_RERUN_NAME = /건강\s*스페셜(?=\s*한양촌)|(?<=주부들)\s*스페셜/g;
   const inTrkIsRerun = title => IN_TRK_RERUN.test(String(title || '').replace(IN_TRK_RERUN_NAME, ''));
   // 단서 ↔ 상품명 일치 판정용 단어 묶음. 단서에 묶음 안 단어가 하나라도 나오면, 상품명에 같은 묶음 단어가 있을 때 ⭐.
   // (예: 단서 '위력(胃力)' ↔ 상품 '위엔 매스틱', 단서 '치매' ↔ 상품 'PS 포스파티딜세린')
