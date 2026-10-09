@@ -9709,7 +9709,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     '아이엠닥터', '헬스판사', '위기의주부들', '몸신', '한양촌', '몸몸몸', '건강한식당', '건강왕',
   ];
   const IN_TRK_AFTER_MIN = 30;          // 동시간 = TV 방송 시작 ~ 종료 후 이만큼(분) 사이에 시작한 홈쇼핑 방송
-  const IN_TRK_CLUE_FROM = '2026-09-01'; // 회차 단서 수집 시작 방송일
+  let inTrkClueFrom = '2026-09-01'; // 회차 단서 수집 시작 방송일 (조회 때 data/episode_clues/index.json 값으로 바꾼다)
   const IN_TRK_RERUN = /스페셜|특별판|베스트|하이라이트|다시보기|다시보는|재방|앙코르/; // 표시용. 단서 수집기 RERUN엔 앙코르를 넣지 않는다(앙코르 회차 단서도 수집)
   // 프로그램 이름 자체에 재방 표기 단어가 들어 있는 경우 (재방 판정 전에 지운다)
   const IN_TRK_RERUN_NAME = /건강\s*스페셜(?=\s*한양촌)|(?<=주부들)\s*스페셜/g;
@@ -9779,7 +9779,9 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
         }));
       }
       const months = [...new Set(dates.map(d => d.slice(0, 7)))];
-      const clueFiles = await Promise.all(months.map(ym => fetchJsonSafe(`./data/episode_clues/${ym}.json`)));
+      const [clueIdx, ...clueFiles] = await Promise.all([fetchJsonSafe('./data/episode_clues/index.json')]
+        .concat(months.map(ym => fetchJsonSafe(`./data/episode_clues/${ym}.json`))));
+      if (clueIdx && clueIdx.from) inTrkClueFrom = clueIdx.from;
       const clues = Object.assign({}, ...clueFiles.map(f => f || {}));
 
       // 재방도 넣되 rerun 표시를 붙인다 (연계 PPL이 재방 시간대에도 붙는다).
@@ -10030,7 +10032,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
               + label + '</span>' + bodyHtml + '</div>';
           }).join('');
         } else {
-          body = '<span class="in-muted">' + (ep.d < IN_TRK_CLUE_FROM ? '수집 전' : '–') + '</span>';
+          body = '<span class="in-muted">' + (ep.d < inTrkClueFrom ? '수집 전' : '–') + '</span>';
         }
         return multi
           ? '<div class="in-ep-item"><div class="in-ep-when">' + inEsc(ep.ch) + ' ' + inEsc(ep.series) + '</div>' + body + '</div>'
@@ -10053,7 +10055,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     html += '</tbody></table></div>'
       + '<p class="lv-table-note">동시간 = TV 방송 시작 ~ 종료 ' + IN_TRK_AFTER_MIN + '분 후 사이에 시작한 홈쇼핑 건강식품'
       + ' · ⭐ = 회차 단서에 나온 성분이 상품명에도 있음 · 회차 단서는 '
-      + IN_TRK_CLUE_FROM.slice(5).replace('-', '/') + ' 방송분부터</p>';
+      + inTrkClueFrom.slice(5).replace('-', '/') + ' 방송분부터</p>';
 
     body.innerHTML = html;
     $('inTrkStarOnly').addEventListener('change', e => { inTrkStarOnly = e.target.checked; inRenderPpl(); });

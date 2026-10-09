@@ -21,10 +21,16 @@ data/episode_clues/{YYYY-MM}.json (방송일 기준 월별)
       "clues": ["검색 결과 제목", ...],
       "tries": 시도 횟수, "updated": ISO시각 } }
 
+== 수집 범위 (실행마다) ==
+1) 최근 --days일 ~ 편성이 있는 미래 날짜
+2) 지난 달 채우기: 이미 수집한 가장 이른 달이 다 찼으면 그 한 달 전 (예: 9/1부터 있으면 8/1~8/31).
+   그 달에 아직 안 본 회차가 남아 있으면 그 달을 마저 채운다. BACKFILL_FROM 이전은 수집하지 않는다.
+   (BACKFILL_FROM 달까지 다 차면 이후 실행은 1)만 한다)
+
 == 사용법 ==
-    python episode_clue_scraper.py              # 최근 4일(오늘 포함) 방영분
-    python episode_clue_scraper.py --days 30    # 지난 30일 채우기 (요청 상한 MAX_REQUESTS)
-    python episode_clue_scraper.py --dry-run    # 저장 없이 결과만 출력
+    python episode_clue_scraper.py                       # 위 범위, 요청 상한 MAX_REQUESTS
+    python episode_clue_scraper.py --max-requests 500    # 지난 달 한 달치를 한 번에 (수동 실행용)
+    python episode_clue_scraper.py --dry-run             # 저장 없이 결과만 출력
 """
 
 import argparse
@@ -47,7 +53,8 @@ BASE_URL = "https://search.naver.com/search.naver"
 SCHEDULE_DIR = "data"
 OUT_DIR = os.path.join("data", "episode_clues")
 REQUEST_DELAY_SEC = 3.0
-MAX_REQUESTS = 80         # 한 번 실행에 네이버 요청 상한 (차단 방지). 남은 건 다음 실행에서 이어서.
+MAX_REQUESTS = 80         # 한 번 실행에 네이버 요청 기본 상한 (차단 방지). 남은 건 다음 실행에서 이어서.
+BACKFILL_FROM = "2026-07-01"  # 지난 달 채우기는 이 날짜 방송분까지만
 BLOCK_WAIT_SEC = 60       # 403/429(차단)를 받으면 이만큼 쉬고 한 번만 다시 시도, 또 막히면 이번 실행은 중단
 MAX_TRIES = 3             # 단서를 못 찾은 회차는 며칠에 걸쳐 최대 이만큼 다시 시도
 MAX_CLUES = 6
@@ -253,26 +260,41 @@ def load_month(ym: str) -> dict:
     return {}
 
 
+def prev_month(ym: str) -> str:
+    y, m = int(ym[:4]), int(ym[5:7])
+    return f"{y - 1}-12" if m == 1 else f"{y}-{m - 1:02d}"
+
+
+def pick_backfill_month(all_targets, today_ym: str):
+    """지난 달 채우기 대상 달. 수집한 가장 이른 달에 아직 안 본 회차가 있으면 그 달, 다 찼으면 한 달 전."""
+    files = sorted(glob.glob(os.path.join(OUT_DIR, "????-??.json")))
+    earliest = os.path.basename(files[0])[:7] if files else today_ym
+    seen = load_month(earliest)
+    if any(t[4][:7] == earliest and t[4] >= BACKFILL_FROM and t[0] not in seen for t in all_targets):
+        return earliest
+    ym = prev_month(earliest)
+    return ym if ym >= BACKFILL_FROM[:7] else None
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--days", type=int, default=30, help="오늘 포함 며칠 전 방영분까지 볼지 (이미 단서를 찾은 회차는 건너뜀)")
+    ap.add_argument("--max-requests", type=int, default=MAX_REQUESTS, help="이번 실행의 네이버 요청 상한")
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
 
     today = datetime.now(KST).date()
-    window = {(today - timedelta(days=i)).isoformat() for i in range(args.days)}
+    recent_from = (today - timedelta(days=args.days - 1)).isoformat()
 
     # 1) 대상 회차 목록 - 본방만.
     #    재방송도 '(151회)'처럼 회차가 붙어 나오므로, 수집된 편성 전체를 날짜순으로 훑으며
     #    그 프로그램이 앞서 방영한 회차 번호보다 큰 번호가 처음 나온 날만 본방으로 본다.
     #    회차 번호가 없는 프로그램(매일 생방 등)은 날짜별로 하나씩.
-    targets = []  # (key, ch, series, epi, date, start)
+    all_targets = []  # (key, ch, series, epi, date, start)
     seen_keys = set()
     max_epi = {}  # (ch, series) -> 이전 날짜까지 방영한 최대 회차
     for p in sorted(glob.glob(os.path.join(SCHEDULE_DIR, "????-??-??.json"))):
         d = os.path.basename(p)[:10]
-        if d > today.isoformat():
-            break
         with open(p, encoding="utf-8") as f:
             sched = json.load(f)
         day_max = {}
@@ -287,15 +309,19 @@ def main():
                     if n <= max_epi.get((ch, series), 0):
                         continue  # 예전 회차 재방송
                     day_max[(ch, series)] = max(day_max.get((ch, series), 0), n)
-                if d not in window:
-                    continue
                 key = f"{ch}|{series}|{epi or d}"
                 if key in seen_keys:
                     continue
                 seen_keys.add(key)
-                targets.append((key, ch, series, epi, d, prog.get("start", "")))
+                all_targets.append((key, ch, series, epi, d, prog.get("start", "")))
         for k, n in day_max.items():
             max_epi[k] = max(max_epi.get(k, 0), n)
+
+    # 2) 범위: 최근 --days일 ~ 미래 편성 + 지난 달 채우기 한 달
+    backfill = pick_backfill_month(all_targets, today.isoformat()[:7])
+    print(f"범위: {recent_from} ~ 편성 끝" + (f" + 지난 달 채우기 {backfill}" if backfill else " (지난 달 채우기 끝)"))
+    targets = [t for t in all_targets
+               if t[4] >= recent_from or (backfill and t[4][:7] == backfill and t[4] >= BACKFILL_FROM)]
 
     months = {}
     def store_for(d):
@@ -308,6 +334,7 @@ def main():
     official_cache = {}  # (ch, series) -> {epi: (date, desc)}
     done = skipped = 0
     # 최신 방송분부터 검색한다. 요청 상한·차단으로 중간에 멈춰도 최근 회차가 먼저 채워지도록.
+    # (지난 달 채우기는 최근 범위가 다 찬 뒤 남은 요청으로, 그 달 마지막 날부터 거꾸로)
     targets.sort(key=lambda t: (t[4], t[5]), reverse=True)
     for key, ch, series, epi, d, start in targets:
         store = store_for(d)
@@ -316,8 +343,8 @@ def main():
         if rec.get("official") or rec.get("clues") or rec.get("tries", 0) >= MAX_TRIES:
             skipped += 1
             continue
-        if requests_used >= MAX_REQUESTS:
-            print(f"[중단] 요청 상한 {MAX_REQUESTS}회 도달 - 남은 회차는 다음 실행에서")
+        if requests_used >= args.max_requests:
+            print(f"[중단] 요청 상한 {args.max_requests}회 도달 - 남은 회차는 다음 실행에서")
             break
 
         try:
@@ -347,6 +374,8 @@ def main():
             print(f"  [실패] {key}: {e}")
             continue
 
+        if d > today.isoformat() and not (rec["official"] or rec["clues"]):
+            continue  # 아직 방송 전이라 못 찾은 것은 시도 횟수로 치지 않는다 (방송 뒤 다시 검색)
         rec["tries"] = rec.get("tries", 0) + 1
         rec["updated"] = datetime.now(KST).isoformat(timespec="seconds")
         store[key] = rec
@@ -366,6 +395,12 @@ def main():
         with open(os.path.join(OUT_DIR, f"{ym}.json"), "w", encoding="utf-8") as f:
             json.dump(dict(sorted(store.items(), key=lambda kv: (kv[1]["date"], kv[1]["start"]))),
                       f, ensure_ascii=False, indent=1)
+    # 화면(건강프로그램 추적)의 '회차 단서는 MM/DD 방송분부터' 표시용: 수집된 가장 이른 방송일
+    dates = [v["date"] for fp in glob.glob(os.path.join(OUT_DIR, "????-??.json"))
+             for v in json.load(open(fp, encoding="utf-8")).values()]
+    if dates:
+        with open(os.path.join(OUT_DIR, "index.json"), "w", encoding="utf-8") as f:
+            json.dump({"from": min(dates)}, f, ensure_ascii=False)
 
 
 if __name__ == "__main__":
