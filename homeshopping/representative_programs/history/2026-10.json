@@ -1,6 +1,6 @@
 {
   "month": "2026-10",
-  "updated_at": "2026-10-10T11:18:41.643603+09:00",
+  "updated_at": "2026-10-10T15:51:44.708083+09:00",
   "programs": [
     {
       "program_key": "HD_HJM",
@@ -14,7 +14,7 @@
         {
           "date": "2026-10-12",
           "label": "10/12(월) 19:30 방송",
-          "collected_at": "2026-10-10T11:18:41.629528+09:00",
+          "collected_at": "2026-10-10T15:51:44.686092+09:00",
           "products": [
             {
               "broadcast_date_label": "10/12(월) 19:30 방송",
@@ -103,7 +103,7 @@
         {
           "date": "2026-10-13",
           "label": "10/13(화) 19:30 방송",
-          "collected_at": "2026-10-10T11:18:41.629528+09:00",
+          "collected_at": "2026-10-10T15:51:44.686092+09:00",
           "products": [
             {
               "broadcast_date_label": "10/13(화) 19:30 방송",
@@ -201,16 +201,8 @@
         {
           "date": "2026-10-10",
           "label": "10/10(토) 08:20 방송",
-          "collected_at": "2026-10-10T07:04:26.186392+09:00",
+          "collected_at": "2026-10-10T15:51:44.686092+09:00",
           "products": [
-            {
-              "broadcast_date_label": "10/10(토) 08:20 방송",
-              "brand": "LG전자",
-              "name": "LG 디오스 오브제 김치냉장고 4도어",
-              "price": 3190000,
-              "image": "https://image.hmall.com/2254495886_0.jpg",
-              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2254495886&preview=true"
-            },
             {
               "broadcast_date_label": "10/10(토) 08:20 방송",
               "brand": "이브롬",
@@ -221,11 +213,27 @@
             },
             {
               "broadcast_date_label": "10/10(토) 08:20 방송",
+              "brand": "LG전자",
+              "name": "LG 디오스 오브제 김치냉장고 4도어",
+              "price": 3190000,
+              "image": "https://image.hmall.com/2254495886_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2254495886&preview=true"
+            },
+            {
+              "broadcast_date_label": "10/10(토) 08:20 방송",
               "brand": "AURELI ",
               "name": "아우렐리 유기농 당근주스 7병 자색당근주스 2병",
               "price": 86900,
               "image": "https://image.hmall.com/2249227608_0.jpg",
               "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2249227608&preview=true"
+            },
+            {
+              "broadcast_date_label": "10/10(토) 08:20 방송",
+              "brand": "수협",
+              "name": "촉촉함을 담은 바로먹는 말랑 오징어 3팩 말랑 오징어채2팩",
+              "price": 59900,
+              "image": "https://image.hmall.com/2252527670_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252527670&preview=true"
             },
             {
               "broadcast_date_label": "10/10(토) 방송상품",
@@ -235,6 +243,18 @@
               "image": "https://image.hmall.com/2254495635_0.jpg",
               "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2254495635",
               "time_unknown": true
+            }
+          ],
+          "reconciled_at": "2026-10-10T15:51:44.686092+09:00",
+          "revisions": [
+            {
+              "at": "2026-10-10T15:51:44.686092+09:00",
+              "added": [
+                "촉촉함을 담은 바로먹는 말랑 오징어 3팩 말랑 오징어채2팩"
+              ],
+              "missing_after_start": [
+                "[왕톡세일] LG 디오스 오브제 김치냉장고 3도어 324L [Z334MQQ171S]"
+              ]
             }
           ]
         },
@@ -300,7 +320,7 @@
         {
           "date": "2026-10-14",
           "label": "10/14(수) 19:30 방송",
-          "collected_at": "2026-10-10T11:18:41.629528+09:00",
+          "collected_at": "2026-10-10T15:51:44.686092+09:00",
           "products": [
             {
               "broadcast_date_label": "10/14(수) 19:30 방송",
@@ -502,7 +522,7 @@
         {
           "date": "2026-10-15",
           "label": "10/15(목) 20:45 방송",
-          "collected_at": "2026-10-10T11:18:41.629528+09:00",
+          "collected_at": "2026-10-10T15:51:44.686092+09:00",
           "products": [
             {
               "prd_id": "1137327625",
@@ -894,7 +914,7 @@
         {
           "date": "2026-10-23",
           "label": "10/23(금) 20:35 방송",
-          "collected_at": "2026-10-10T11:18:41.629528+09:00",
+          "collected_at": "2026-10-10T15:51:44.686092+09:00",
           "products": [
             {
               "prd_id": "1120171341",
@@ -991,7 +1011,7 @@
         {
           "date": "2026-10-16",
           "label": "10/16(금) 20:35 방송",
-          "collected_at": "2026-10-10T11:18:41.629528+09:00",
+          "collected_at": "2026-10-10T15:51:44.686092+09:00",
           "products": [
             {
               "prd_id": "1061229354",
@@ -1482,7 +1502,7 @@
         {
           "date": "2026-10-18",
           "label": "10/18(일) 10:00 방송",
-          "collected_at": "2026-10-10T11:18:41.629528+09:00",
+          "collected_at": "2026-10-10T15:51:44.686092+09:00",
           "products": [
             {
               "broadcast_date_label": "10/18 일요일 10:00",
@@ -1529,7 +1549,7 @@
         {
           "date": "2026-10-17",
           "label": "10/17(토) 08:20 방송",
-          "collected_at": "2026-10-10T11:18:41.629528+09:00",
+          "collected_at": "2026-10-10T15:51:44.686092+09:00",
           "products": [
             {
               "broadcast_date_label": "10/17 토요일 08:20",
@@ -1584,7 +1604,7 @@
         {
           "date": "2026-10-15",
           "label": "10/15(목) 20:45 방송",
-          "collected_at": "2026-10-10T11:18:41.629528+09:00",
+          "collected_at": "2026-10-10T15:51:44.686092+09:00",
           "products": [
             {
               "broadcast_date_label": "10/15 목요일 20:45",
@@ -1896,7 +1916,7 @@
         {
           "date": "2026-10-12",
           "label": "10/12(월) 19:35 방송",
-          "collected_at": "2026-10-10T11:18:41.629528+09:00",
+          "collected_at": "2026-10-10T15:51:44.686092+09:00",
           "products": [
             {
               "broadcast_date_label": "10/12(월) 19:35",
@@ -2130,7 +2150,7 @@
         {
           "date": "2026-10-14",
           "label": "10/14(수) 20:45 방송",
-          "collected_at": "2026-10-10T11:18:41.629528+09:00",
+          "collected_at": "2026-10-10T15:51:44.686092+09:00",
           "products": [
             {
               "broadcast_date_label": "10/14(수) 20:45",
@@ -2318,7 +2338,7 @@
         {
           "date": "2026-10-14",
           "label": "10/14(수) 08:15 방송",
-          "collected_at": "2026-10-10T11:18:41.629528+09:00",
+          "collected_at": "2026-10-10T15:51:44.686092+09:00",
           "products": [
             {
               "broadcast_date_label": "10/14(수) 08:15",
@@ -2498,7 +2518,7 @@
         {
           "date": "2026-10-20",
           "label": "10/20(화) 19:35 방송",
-          "collected_at": "2026-10-10T11:18:41.629528+09:00",
+          "collected_at": "2026-10-10T15:51:44.686092+09:00",
           "products": [
             {
               "broadcast_date_label": "10/20(화) 19:35",
@@ -2529,7 +2549,7 @@
         {
           "date": "2026-10-13",
           "label": "10/13(화) 19:35 방송",
-          "collected_at": "2026-10-10T11:18:41.629528+09:00",
+          "collected_at": "2026-10-10T15:51:44.686092+09:00",
           "products": [
             {
               "broadcast_date_label": "10/13(화) 19:35",
@@ -2619,7 +2639,7 @@
         {
           "date": "2026-10-13",
           "label": "10/13(화) 19:00 방송",
-          "collected_at": "2026-10-10T11:18:41.629528+09:00",
+          "collected_at": "2026-10-10T15:51:44.686092+09:00",
           "products": [
             {
               "broadcast_date_label": "10/13(화) 19:00",
@@ -4157,7 +4177,7 @@
         {
           "date": "2026-10-17",
           "label": "10/17(토) 08:20 방송",
-          "collected_at": "2026-10-10T11:18:41.629528+09:00",
+          "collected_at": "2026-10-10T15:51:44.686092+09:00",
           "products": [
             {
               "broadcast_date_label": "10/17(토) 08:20",
@@ -4180,7 +4200,7 @@
         {
           "date": "2026-10-15",
           "label": "10/15(목) 20:45 방송",
-          "collected_at": "2026-10-10T11:18:41.629528+09:00",
+          "collected_at": "2026-10-10T15:51:44.686092+09:00",
           "products": [
             {
               "broadcast_date_label": "10/15(목) 20:45",
