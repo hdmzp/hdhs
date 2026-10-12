@@ -1,6 +1,6 @@
 {
   "month": "2026-10",
-  "updated_at": "2026-10-12T06:18:26.666515+09:00",
+  "updated_at": "2026-10-12T11:20:45.584525+09:00",
   "programs": [
     {
       "program_key": "HD_HJM",
@@ -14,7 +14,7 @@
         {
           "date": "2026-10-12",
           "label": "10/12(월) 19:30 방송",
-          "collected_at": "2026-10-12T06:18:26.651061+09:00",
+          "collected_at": "2026-10-12T11:20:45.570120+09:00",
           "products": [
             {
               "broadcast_date_label": "10/12(월) 19:30 방송",
@@ -103,8 +103,16 @@
         {
           "date": "2026-10-13",
           "label": "10/13(화) 19:30 방송",
-          "collected_at": "2026-10-12T06:18:26.651061+09:00",
+          "collected_at": "2026-10-12T11:20:45.570120+09:00",
           "products": [
+            {
+              "broadcast_date_label": "10/13(화) 19:30 방송",
+              "brand": "마루킨",
+              "name": "[방송에서만] 111년전통 일본직수입 마루킨 규슈낫또 60+8팩",
+              "price": 59900,
+              "image": "https://image.hmall.com/2250161810_0.png",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2250161810"
+            },
             {
               "broadcast_date_label": "10/13(화) 19:30 방송",
               "brand": "저스트레오",
@@ -198,6 +206,37 @@
       "detail_link": "https://www.hmall.com/md/dpa/pgmComm?sectId=2683513",
       "program_image": "",
       "broadcasts": [
+        {
+          "date": "2026-10-17",
+          "label": "10/17(토) 08:20 방송",
+          "collected_at": "2026-10-12T11:20:45.570120+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "10/17(토) 08:20 방송",
+              "brand": "타이거모닝",
+              "name": "[왕톡단독] 타이거모닝 진저샷 플러스 6병(350ml)+미니 2박스(총16병)+전용샷잔 1개",
+              "price": 119000,
+              "image": "https://image.hmall.com/2248936971_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2248936971"
+            },
+            {
+              "broadcast_date_label": "10/17(토) 08:20 방송",
+              "brand": "타이거모닝",
+              "name": "[최신상]타이거모닝 진저샷 플러스 3병/1박스(각 350ml 샷잔 없음)",
+              "price": 69800,
+              "image": "https://image.hmall.com/2248938116_0.jpeg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2248938116"
+            },
+            {
+              "broadcast_date_label": "10/17(토) 08:20 방송",
+              "brand": "타이거모닝",
+              "name": "[최신상] 타이거모닝 진저샷 플러스 미니 1박스(총8병X40ml)",
+              "price": 31800,
+              "image": "https://image.hmall.com/2248938456_0.png",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2248938456"
+            }
+          ]
+        },
         {
           "date": "2026-10-10",
           "label": "10/10(토) 08:20 방송",
@@ -320,7 +359,7 @@
         {
           "date": "2026-10-14",
           "label": "10/14(수) 19:30 방송",
-          "collected_at": "2026-10-12T06:18:26.651061+09:00",
+          "collected_at": "2026-10-12T11:20:45.570120+09:00",
           "products": [
             {
               "broadcast_date_label": "10/14(수) 19:30 방송",
@@ -522,7 +561,7 @@
         {
           "date": "2026-10-15",
           "label": "10/15(목) 20:45 방송",
-          "collected_at": "2026-10-12T06:18:26.651061+09:00",
+          "collected_at": "2026-10-12T11:20:45.570120+09:00",
           "products": [
             {
               "prd_id": "1137327625",
@@ -914,7 +953,7 @@
         {
           "date": "2026-10-23",
           "label": "10/23(금) 20:35 방송",
-          "collected_at": "2026-10-12T06:18:26.651061+09:00",
+          "collected_at": "2026-10-12T11:20:45.570120+09:00",
           "products": [
             {
               "prd_id": "1120171341",
@@ -1011,7 +1050,7 @@
         {
           "date": "2026-10-16",
           "label": "10/16(금) 20:35 방송",
-          "collected_at": "2026-10-12T06:18:26.651061+09:00",
+          "collected_at": "2026-10-12T11:20:45.570120+09:00",
           "products": [
             {
               "prd_id": "1137498469",
@@ -1500,9 +1539,24 @@
       "program_image": "",
       "broadcasts": [
         {
+          "date": "2026-10-22",
+          "label": "10/22(목) 20:45 방송",
+          "collected_at": "2026-10-12T11:20:45.570120+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "10/22 목요일 20:45",
+              "brand": "스칸맘",
+              "name": "[실속세트]스칸맘 행주 13종세트(스칸맘9(무료체험1포함)+롱스칸맘4)",
+              "price": 49900,
+              "image": "https://image2.lotteimall.com/goods/26/52/92/12925226_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12925226"
+            }
+          ]
+        },
+        {
           "date": "2026-10-18",
           "label": "10/18(일) 10:00 방송",
-          "collected_at": "2026-10-12T06:18:26.651061+09:00",
+          "collected_at": "2026-10-12T11:20:45.570120+09:00",
           "products": [
             {
               "broadcast_date_label": "10/18 일요일 10:00",
@@ -1549,7 +1603,7 @@
         {
           "date": "2026-10-17",
           "label": "10/17(토) 08:20 방송",
-          "collected_at": "2026-10-12T06:18:26.651061+09:00",
+          "collected_at": "2026-10-12T11:20:45.570120+09:00",
           "products": [
             {
               "broadcast_date_label": "10/17 토요일 08:20",
@@ -1604,7 +1658,7 @@
         {
           "date": "2026-10-15",
           "label": "10/15(목) 20:45 방송",
-          "collected_at": "2026-10-12T06:18:26.651061+09:00",
+          "collected_at": "2026-10-12T11:20:45.570120+09:00",
           "products": [
             {
               "broadcast_date_label": "10/15 목요일 20:45",
@@ -1914,10 +1968,74 @@
       "program_image": "https://image.cjonstyle.net/public/confirm/assets/pgm/shop/100009/2026/8/20/93586ef267914bef9090c0155edc2d6e39e9d887.jpg",
       "broadcasts": [
         {
+          "date": "2026-10-19",
+          "label": "10/19(월) 19:35 방송",
+          "collected_at": "2026-10-12T11:20:45.570120+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "10/19(월) 19:35",
+              "brand": "드리미",
+              "name": "아쿠아20 울트라 롤러형 스팀 로봇청소기",
+              "price": 1790000,
+              "image": "https://image.cjonstyle.net/public/confirm/assets/tag/module/2026/10/6/7b2f335c1e417b7ce14c9a0ffc8c45632cf3e21b.png",
+              "link": "https://item.cjonstyle.com/item/2091121129?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "10/19(월) 19:35",
+              "brand": "드리미",
+              "name": "아쿠아20 울트라 스팀 마스터 롤러형 로봇청소기",
+              "price": 1990000,
+              "image": "goods_images/20/367/2095055367L.jpg?timestamp=20261002170230",
+              "link": "https://display.cjonstyle.com/p/item/2095055367?channelCode=30002002",
+              "verify": true
+            }
+          ]
+        },
+        {
           "date": "2026-10-12",
           "label": "10/12(월) 19:35 방송",
-          "collected_at": "2026-10-12T06:18:26.651061+09:00",
+          "collected_at": "2026-10-12T11:20:45.570120+09:00",
           "products": [
+            {
+              "broadcast_date_label": "10/12(월) 19:35",
+              "brand": "리드볼트",
+              "name": "[굿라이프PICK]오딧 20사이즈 기내용 캐리어",
+              "price": 305000,
+              "image": "https://image.cjonstyle.net/goods_images/20/018/2084920018L.jpg?timestamp=20260916165353",
+              "link": "https://item.cjonstyle.com/item/2084920018?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "10/12(월) 19:35",
+              "brand": "리드볼트",
+              "name": "[굿라이프PICK]오딧 24인치 수하물용 캐리어",
+              "price": 340000,
+              "image": "https://image.cjonstyle.net/goods_images/20/478/2084921478L.jpg?timestamp=20260916165402",
+              "link": "https://item.cjonstyle.com/item/2084921478?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "10/12(월) 19:35",
+              "brand": "리드볼트",
+              "name": "[굿라이프PICK]오딧 26사이즈 수하물용 캐리어",
+              "price": 360000,
+              "image": "https://image.cjonstyle.net/goods_images/20/713/2084922713L.jpg?timestamp=20260916165416",
+              "link": "https://item.cjonstyle.com/item/2084922713?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "10/12(월) 19:35",
+              "brand": "리드볼트",
+              "name": "[굿라이프PICK]오딧 29사이즈 수하물용 캐리어",
+              "price": 380000,
+              "image": "https://image.cjonstyle.net/goods_images/20/733/2084923733L.jpg?timestamp=20260916165428",
+              "link": "https://item.cjonstyle.com/item/2084923733?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "10/12(월) 19:35",
+              "brand": "리드볼트",
+              "name": "[굿라이프PICK]오딧 플랩 20사이즈 기내용 캐리어",
+              "price": 320000,
+              "image": "https://image.cjonstyle.net/goods_images/20/256/2084928256L.jpg?timestamp=20260916164957",
+              "link": "https://item.cjonstyle.com/item/2084928256?channelCode=30002002"
+            },
             {
               "broadcast_date_label": "10/12(월) 19:35",
               "brand": "이브자리",
@@ -2150,7 +2268,7 @@
         {
           "date": "2026-10-17",
           "label": "10/17(토) 19:30 방송",
-          "collected_at": "2026-10-12T06:18:26.651061+09:00",
+          "collected_at": "2026-10-12T11:20:45.570120+09:00",
           "products": [
             {
               "broadcast_date_label": "10/17(토) 19:30",
@@ -2249,13 +2367,45 @@
               "price": 1640000,
               "image": "goods_images/20/600/2079108600L.jpg?timestamp=20260830190410",
               "link": "https://display.cjonstyle.com/p/item/2079108600?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "10/17(토) 19:30",
+              "brand": "로보락",
+              "name": "[스팀 Ver.]  S10 MaxV Ultra Steam 로봇청소기, 화이트 스팀모델",
+              "price": 1590000,
+              "image": "goods_images/20/649/2095362649L.jpg?timestamp=20261008191953",
+              "link": "https://display.cjonstyle.com/p/item/2095362649?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "10/17(토) 19:30",
+              "brand": "로보락",
+              "name": "[스팀 Ver.]  S10 MaxV Ultra Steam 로봇청소기, 블랙 스팀모델",
+              "price": 1590000,
+              "image": "goods_images/20/667/2095362667L.jpg?timestamp=20261010184732",
+              "link": "https://display.cjonstyle.com/p/item/2095362667?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "10/17(토) 19:30",
+              "brand": "로보락",
+              "name": "[스팀 Ver.]  S10 MaxV Ultra Steam 직배수 로봇청소기, 화이트 스팀모델",
+              "price": 1740000,
+              "image": "goods_images/20/772/2095362772L.jpg?timestamp=20261010184845",
+              "link": "https://display.cjonstyle.com/p/item/2095362772?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "10/17(토) 19:30",
+              "brand": "로보락",
+              "name": "[스팀 Ver.]  S10 MaxV Ultra Steam 직배수 로봇청소기, 블랙 스팀모델",
+              "price": 1740000,
+              "image": "goods_images/20/784/2095362784L.jpg?timestamp=20261010184934",
+              "link": "https://display.cjonstyle.com/p/item/2095362784?channelCode=30002002"
             }
           ]
         },
         {
           "date": "2026-10-14",
           "label": "10/14(수) 20:45 방송",
-          "collected_at": "2026-10-12T06:18:26.651061+09:00",
+          "collected_at": "2026-10-12T11:20:45.570120+09:00",
           "products": [
             {
               "broadcast_date_label": "10/14(수) 20:45",
@@ -2443,7 +2593,7 @@
         {
           "date": "2026-10-14",
           "label": "10/14(수) 08:15 방송",
-          "collected_at": "2026-10-12T06:18:26.651061+09:00",
+          "collected_at": "2026-10-12T11:20:45.570120+09:00",
           "products": [
             {
               "broadcast_date_label": "10/14(수) 08:15",
@@ -2639,7 +2789,7 @@
         {
           "date": "2026-10-20",
           "label": "10/20(화) 19:35 방송",
-          "collected_at": "2026-10-12T06:18:26.651061+09:00",
+          "collected_at": "2026-10-12T11:20:45.570120+09:00",
           "products": [
             {
               "broadcast_date_label": "10/20(화) 19:35",
@@ -2678,7 +2828,7 @@
         {
           "date": "2026-10-13",
           "label": "10/13(화) 19:35 방송",
-          "collected_at": "2026-10-12T06:18:26.651061+09:00",
+          "collected_at": "2026-10-12T11:20:45.570120+09:00",
           "products": [
             {
               "broadcast_date_label": "10/13(화) 19:35",
@@ -2768,7 +2918,7 @@
         {
           "date": "2026-10-13",
           "label": "10/13(화) 19:00 방송",
-          "collected_at": "2026-10-12T06:18:26.651061+09:00",
+          "collected_at": "2026-10-12T11:20:45.570120+09:00",
           "products": [
             {
               "broadcast_date_label": "10/13(화) 19:00",
@@ -2791,7 +2941,7 @@
               "brand": "세인트제임스",
               "name": "[정상가 178,000원] 봉봉 쁘띠 맨투맨 Bon Bon Petit 6종",
               "price": 178000,
-              "image": "https://image.cjonstyle.net/goods_images/20/953/2067216953L.jpg?timestamp=20260929092909",
+              "image": "https://image.cjonstyle.net/goods_images/20/953/2067216953L.jpg?timestamp=20261012100221",
               "link": "https://item.cjonstyle.com/item/2067216953?channelCode=30002002"
             },
             {
@@ -2799,7 +2949,7 @@
               "brand": "세인트제임스",
               "name": "[정상가 218,000원] 봉봉 후디 집업 3종 택1",
               "price": 218000,
-              "image": "https://image.cjonstyle.net/goods_images/20/096/2094762096L.jpg?timestamp=20260929191208",
+              "image": "https://image.cjonstyle.net/goods_images/20/096/2094762096L.jpg?timestamp=20261012102832",
               "link": "https://item.cjonstyle.com/item/2094762096?channelCode=30002002"
             },
             {
@@ -2885,10 +3035,26 @@
             {
               "broadcast_date_label": "10/13(화) 19:00",
               "brand": "세인트제임스",
+              "name": "[정상가 168,000원] 메르디앙 II 엘보 패치 긴팔 티셔츠 5종 1택",
+              "price": 168000,
+              "image": "https://image.cjonstyle.net/goods_images/20/654/2095273654L.jpg?timestamp=20261007200936",
+              "link": "https://item.cjonstyle.com/item/2095273654?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "10/13(화) 19:00",
+              "brand": "세인트제임스",
               "name": "[정상가 428,000원] 블랑슈 자켓 (OTM) ASJF243KR24-OTM",
               "price": 299000,
-              "image": "https://image.cjonstyle.net/goods_images/20/865/2040814865L.jpg?timestamp=20241008191655",
+              "image": "https://image.cjonstyle.net/goods_images/20/865/2040814865L.jpg?timestamp=20261012103418",
               "link": "https://item.cjonstyle.com/item/2040814865?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "10/13(화) 19:00",
+              "brand": "세인트제임스",
+              "name": "[정상가 488,000원] 엘르 코트 체크 ASJF253KR85-CHK",
+              "price": 341600,
+              "image": "https://image.cjonstyle.net/goods_images/20/257/2068182257L.jpg?timestamp=20251105114411",
+              "link": "https://item.cjonstyle.com/item/2068182257?channelCode=30002002"
             },
             {
               "broadcast_date_label": "10/13(화) 19:00",
@@ -2925,6 +3091,14 @@
             {
               "broadcast_date_label": "10/13(화) 19:00",
               "brand": "세인트제임스",
+              "name": "[정상가 398,000원] 퓌이 퀼팅 자켓 2종 1택",
+              "price": 398000,
+              "image": "https://image.cjonstyle.net/goods_images/20/630/2095273630L.jpg?timestamp=20261007201326",
+              "link": "https://item.cjonstyle.com/item/2095273630?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "10/13(화) 19:00",
+              "brand": "세인트제임스",
               "name": "[정상가 378,000원] [26FW 뉴컬러] 보너흐 자켓 (LBE) ASJF2G3KR14-LBE",
               "price": 378000,
               "image": "https://image.cjonstyle.net/goods_images/20/630/2092455630L.jpg?timestamp=20260917154225",
@@ -2945,6 +3119,30 @@
               "price": 198000,
               "image": "https://image.cjonstyle.net/goods_images/20/213/2091795213L.jpg?timestamp=20260821141506",
               "link": "https://item.cjonstyle.com/item/2091795213?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "10/13(화) 19:00",
+              "brand": "세인트제임스",
+              "name": "[정상가 398,000원] 풀 탑 니트 2종 1택",
+              "price": 189000,
+              "image": "https://image.cjonstyle.net/goods_images/20/614/2095273614L.jpg?timestamp=20261007201515",
+              "link": "https://item.cjonstyle.com/item/2095273614?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "10/13(화) 19:00",
+              "brand": "세인트제임스",
+              "name": "[정상가 378,000원] 폴로 쾨르 2종 1택",
+              "price": 189000,
+              "image": "https://image.cjonstyle.net/goods_images/20/617/2095273617L.jpg?timestamp=20261007201734",
+              "link": "https://item.cjonstyle.com/item/2095273617?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "10/13(화) 19:00",
+              "brand": "세인트제임스",
+              "name": "[정상가 278,000원] 봉봉 울 플리스 2종 1택",
+              "price": 278000,
+              "image": "https://image.cjonstyle.net/goods_images/20/689/2095273689L.jpg?timestamp=20261007202050",
+              "link": "https://item.cjonstyle.com/item/2095273689?channelCode=30002002"
             },
             {
               "broadcast_date_label": "10/13(화) 19:00",
@@ -4306,7 +4504,7 @@
         {
           "date": "2026-10-17",
           "label": "10/17(토) 08:20 방송",
-          "collected_at": "2026-10-12T06:18:26.651061+09:00",
+          "collected_at": "2026-10-12T11:20:45.570120+09:00",
           "products": [
             {
               "broadcast_date_label": "10/17(토) 08:20",
@@ -4321,15 +4519,16 @@
               "brand": "바이오렉트라",
               "name": "바이오렉트라 마그네슘 울트라 다이렉트 7박스(210포)",
               "price": 179000,
-              "image": "https://image.cjonstyle.net/public/confirm/assets/tag/module/2026/10/6/7b2f335c1e417b7ce14c9a0ffc8c45632cf3e21b.png",
-              "link": "https://item.cjonstyle.com/item/2081631615?channelCode=30002002"
+              "image": "goods_images/20/615/2081631615L.jpg?timestamp=20260323131944",
+              "link": "https://display.cjonstyle.com/p/item/2081631615?channelCode=30002002",
+              "verify": true
             }
           ]
         },
         {
           "date": "2026-10-15",
           "label": "10/15(목) 20:45 방송",
-          "collected_at": "2026-10-12T06:18:26.651061+09:00",
+          "collected_at": "2026-10-12T11:20:45.570120+09:00",
           "products": [
             {
               "broadcast_date_label": "10/15(목) 20:45",
