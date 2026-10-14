@@ -1,12 +1,12 @@
 {
-  "collected_at": "2026-10-14T10:19:09+09:00",
+  "collected_at": "2026-10-14T18:02:19+09:00",
   "companies": {
     "HD": {
       "name": "현대홈쇼핑",
       "source": "https://www.hmall.com/md/dpl/index",
       "status": "ok",
       "error": "",
-      "last_success": "2026-10-14T10:19:09+09:00",
+      "last_success": "2026-10-14T18:02:19+09:00",
       "days": {
         "2026-08-02": [
           {
@@ -699,14 +699,14 @@
         ],
         "2026-10-15": [
           {
-            "card": "롯데카드",
-            "type": "즉시할인",
-            "rate": 5
-          },
-          {
             "card": "현대카드",
             "type": "즉시할인",
             "rate": 7
+          },
+          {
+            "card": "롯데카드",
+            "type": "즉시할인",
+            "rate": 5
           }
         ],
         "2026-10-16": [
@@ -735,7 +735,7 @@
       "source": "https://m.gsshop.com/index.gs",
       "status": "ok",
       "error": "",
-      "last_success": "2026-10-14T10:19:09+09:00",
+      "last_success": "2026-10-14T18:02:19+09:00",
       "days": {
         "2026-08-02": [
           {
@@ -1568,7 +1568,7 @@
       "source": "https://display.cjonstyle.com/p/homeTab/main?hmtabMenuId=H00009",
       "status": "ok",
       "error": "",
-      "last_success": "2026-10-14T10:19:09+09:00",
+      "last_success": "2026-10-14T18:02:19+09:00",
       "days": {
         "2026-08-02": [
           {
@@ -2613,7 +2613,7 @@
       "source": "https://www.lotteimall.com/main/viewMain.lotte?dpml_no=1",
       "status": "ok",
       "error": "",
-      "last_success": "2026-10-14T10:19:09+09:00",
+      "last_success": "2026-10-14T18:02:19+09:00",
       "days": {
         "2026-08-02": [
           {
