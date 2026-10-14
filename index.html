@@ -2397,6 +2397,13 @@
     max-height: calc(100vh - 150px);
     border-bottom: 1px solid var(--rule);
   }
+  /* PC: 표 높이를 화면 아래 끝에 맞춰, 페이지를 내리지 않아도 가로 스크롤바(기타·전체(16))가
+     보이게 한다. --hs-scroll-top 은 표 윗변의 문서 기준 위치로 hsFitScrollHeight()가 잰다
+     (윗줄 컨트롤·카테고리 칩이 줄바꿈되면 달라지므로 고정값을 쓰지 않는다).
+     모바일은 컨트롤이 세로로 쌓여 윗변이 아래로 내려가 표가 너무 낮아지므로 기존 높이를 쓴다. */
+  @media (min-width: 701px) {
+    .hs-scroll { max-height: calc(100vh - var(--hs-scroll-top, 165px) - 12px); }
+  }
 
   table.hs-table {
     width: 100%;
@@ -6553,11 +6560,23 @@ function hsRenderBody() {
 
   if (hsCategoryFilters.size === 0) {
     wrap.innerHTML = hsRenderGridView(datasets, nowMin);
+    hsFitScrollHeight();
     if (hsTimeFilter === 'all') hsScrollToCurrentHour(wrap, nowMin);
   } else {
     wrap.innerHTML = hsRenderListView(datasets, nowMin);
   }
 }
+
+// .hs-scroll 윗변의 문서 기준 위치를 재서 CSS 변수로 넘긴다 (높이 계산은 CSS가 한다).
+// 탭이 숨겨져 있으면 잴 수 없으니 건너뛰고, 탭 전환·창 크기 변경 때 다시 잰다.
+function hsFitScrollHeight() {
+  const wrap = document.getElementById('hsGridWrap');
+  const el = wrap && wrap.querySelector('.hs-scroll');
+  if (!el || !el.offsetParent) return;
+  const top = el.getBoundingClientRect().top + window.scrollY;
+  wrap.style.setProperty('--hs-scroll-top', `${Math.round(top)}px`);
+}
+window.addEventListener('resize', hsFitScrollHeight);
 
 function hsScrollToCurrentHour(wrap, nowMin) {
   if (nowMin === null) return;
@@ -6754,6 +6773,7 @@ function switchTab(tab) {
   currentActiveTab = tab;
   updateInfoTip(tab);
   if (tab === 'schedule') tlApplyInitialScroll();
+  if (tab === 'homeshop') hsFitScrollHeight();
 
   if (tab === 'weather' && !_weatherTabLoaded) {
     _weatherTabLoaded = true;
