@@ -50,7 +50,7 @@ from datetime import datetime, date, timedelta, timezone
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from tools import scrape_guard
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from celeb_day_sweep import supplement_missing_slots, merge_continuous_slots
+from celeb_day_sweep import supplement_missing_slots, merge_continuous_slots, label_cj
 
 KST = timezone(timedelta(hours=9))
 OUTPUT_DIR = os.path.join("homeshopping", "representative_programs")
@@ -121,8 +121,12 @@ PROGRAMS = [
     # 상품에 따라 요일·시간대가 바뀐다 -> schedule_raw는 매번 API에서 새로 읽는다.
     # fallback_schedule: pgmShop API가 편성 문구를 아직 안 내려주는 신규PGM용
     # 임시 표기 (API에 값이 생기면 그쪽이 우선).
+    # schedule_probe_days: pgmShop 라인업이 편성보다 늦게 올라오는 프로그램용.
+    # 편성표(tvSchedule)를 오늘~N일 뒤까지 직접 훑어 회차를 찾는다 (2026-10-14:
+    # 10/20(화) 21:45 편성·상품이 CJ에 올라왔는데 pgmShop MSRT06엔 '지난방송상품'만
+    # 있고, CJ_live는 오늘+5일까지라 6일 뒤 회차가 어디에도 안 잡혀 0개로 남음).
     {"tab_name": "김신영", "program_title": "김신영이 산다", "pgm_cd": "100078", "output_file": "CJ_KSY.json",
-     "keywords": ("김신영",), "fallback_schedule": "화 21:45"},
+     "keywords": ("김신영",), "fallback_schedule": "화 21:45", "schedule_probe_days": 14},
     # 동가게: 목 20:45 / 토 08:20 주 2회. 셀럽PGM 탭에는 2026-10부터 편입
     # (9월 이전 회차는 안 쌓는다 -> since보다 이른 방송일 상품은 버린다).
     {"tab_name": "동가게", "program_title": "동가게", "pgm_cd": "100013", "output_file": "CJ_DGG.json",
@@ -177,15 +181,52 @@ def parse_label_datetime(label: str):
     return d, f"{hh:02d}:{mi:02d}"
 
 
+_TV_SCHEDULE_CACHE = {}
+
+
+def fetch_tv_programs(session: requests.Session, bd_dt: str):
+    """편성표 bd_dt(YYYYMMDD)의 programList. 프로그램 여러 개가 같은 날짜를
+    조회하므로 실행 중엔 캐시한다. 실패/미편성이면 []."""
+    if bd_dt not in _TV_SCHEDULE_CACHE:
+        data = fetch_json(session, TV_SCHEDULE_URL.format(bd_dt=bd_dt))
+        # 아직 편성이 안 잡힌 날짜(예: 2주 뒤 방송)는 200 OK에 result가 null로 온다.
+        # get("result", {})는 이 경우 {}가 아니라 None을 돌려주므로 or {}로 막는다.
+        programs = ((data or {}).get("result") or {}).get("programList", []) or []
+        if data:
+            _TV_SCHEDULE_CACHE[bd_dt] = programs
+        return programs
+    return _TV_SCHEDULE_CACHE[bd_dt]
+
+
+def probe_schedule_labels(session: requests.Session, keywords, days: int):
+    """편성표를 오늘~days일 뒤까지 직접 훑어 pgmNm이 keywords에 맞는
+    아직 시작 안 한 방송 회차 라벨(CJ 형식 '10/20(화) 21:45') 목록."""
+    if not keywords:
+        return []
+    now = datetime.now(KST)
+    labels = []
+    for off in range(days + 1):
+        bd_dt = (now + timedelta(days=off)).strftime("%Y%m%d")
+        for pg in fetch_tv_programs(session, bd_dt):
+            start_ms = pg.get("bdStrDtm")
+            if not start_ms:
+                continue
+            start = datetime.fromtimestamp(start_ms / 1000, tz=KST)
+            if start <= now:
+                continue
+            if not any(k in (pg.get("pgmNm") or "") for k in keywords):
+                continue
+            label = label_cj(start.date(), start.strftime("%H:%M"))
+            if label not in labels:
+                labels.append(label)
+        time.sleep(0.2)
+    return labels
+
+
 def fetch_schedule_lineup(session: requests.Session, bd_dt: str, start_hm: str, keywords):
     """편성표에서 bd_dt(YYYYMMDD) start_hm에 시작하는 방송의 itemList 전체를 반환.
     keywords가 있으면 pgmNm 확인으로 다른 방송 오매칭을 방어한다."""
-    data = fetch_json(session, TV_SCHEDULE_URL.format(bd_dt=bd_dt))
-    if not data:
-        return []
-    # 아직 편성이 안 잡힌 날짜(예: 2주 뒤 방송)는 200 OK에 result가 null로 온다.
-    # get("result", {})는 이 경우 {}가 아니라 None을 돌려주므로 or {}로 막는다.
-    for pg in (data.get("result") or {}).get("programList", []) or []:
+    for pg in fetch_tv_programs(session, bd_dt):
         start_ms = pg.get("bdStrDtm")
         if not start_ms:
             continue
@@ -566,6 +607,19 @@ def crawl_cj_program(session: requests.Session, config: dict):
         if added:
             print(f"    -> [{code}] 구좌에서 +{added}개")
 
+    # pgmShop 라인업이 늦게 올라오는 프로그램은 편성표를 직접 훑어 빠진 회차를
+    # 찾는다. 찾은 회차는 탭 수집(페이지에 탭이 생겼으면)과 편성표 itemList
+    # 보강(empty_future_labels) 대상으로 넘긴다.
+    probe_days = config.get("schedule_probe_days")
+    if probe_days:
+        known = {re.sub(r"\s+", "", l) for l in future_labels}
+        probed = probe_schedule_labels(session, config.get("keywords"), probe_days)
+        new_labels = [l for l in probed if re.sub(r"\s+", "", l) not in known]
+        print(f"    -> [편성표 탐색] {probe_days}일 내 회차 {probed or '없음'}"
+              + (f" / pgmShop에 없는 회차 {new_labels}" if new_labels else ""))
+        future_labels.extend(new_labels)
+        empty_future_labels.extend(new_labels)
+
     # 날짜 탭을 페이지에서 직접 눌러 공개된 상품을 전부 가져온다. 첫 탭도
     # 다시 읽는다 - moduleList가 탭당 대표상품만 주는 프로그램이 있고(강주은),
     # 페이지에서 읽은 회차여야 편성표 추가분을 '확인필요'로 가를 수 있다.
@@ -653,4 +707,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main()
