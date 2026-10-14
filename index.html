@@ -7731,7 +7731,7 @@ function celRenderBand(file) {
 // ---- 특이사항: 겹치는 품목 ----
 // 조회 중인 달에 같은 품목이 '서로 다른' 셀럽PGM 2개 이상에 편성되면 알려준다.
 // 품목은 상품명 키워드 사전(fixed/celeb_item_keywords.json)으로 가른다 - 카테고리
-// (식품/리빙...)만으로 묶으면 그래놀라와 두유가 한데 묶여 거의 모든 게 겹침이 된다.
+// (식품/리빙주방...)만으로 묶으면 그래놀라와 두유가 한데 묶여 거의 모든 게 겹침이 된다.
 // 사전 관리/검증: python tools/suggest_celeb_item_keywords.py (같은 규칙으로 출력)
 let celItemKeywords = null;    // [{item, category, match[], exclude[]}] (로드 실패 시 [])
 let celItemHideCats = new Set(); // 화면에서 숨기는 카테고리 (패션: 의류·잡화)
@@ -7790,7 +7790,7 @@ function celBuildOverlaps(files) {
 }
 
 // 특이사항 열 순서 (패션은 hide_categories로 빠진다)
-const CEL_NOTICE_CAT_ORDER = ['식품', '리빙', '미용', '가전'];
+const CEL_NOTICE_CAT_ORDER = ['식품', '리빙주방', '미용', '가전'];
 
 // 회차 한 줄: 회사(회사색·굵게) 프로그램 날짜 브랜드
 function celNoticeRowHtml(r) {
