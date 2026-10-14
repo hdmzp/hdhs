@@ -515,6 +515,9 @@ def crawl_cj_program(session: requests.Session, config: dict):
     # 모듈 인벤토리 로그 (새 구좌 유형이 생기면 여기서 코드 확인)
     inventory = [m.get("moduleBaseInfo", {}).get("repModulTpCd") for m in modules]
     print(f"    -> 모듈 구성: {inventory}")
+    for _m in modules:  # TEMP-DEBUG MBRD09 스키마 확인
+        if (_m.get("moduleBaseInfo") or {}).get("repModulTpCd") == "MBRD09":
+            print("    [DEBUG MBRD09] " + json.dumps(_m, ensure_ascii=False)[:6000])
 
     target_module = next(
         (m for m in modules if m.get("moduleBaseInfo", {}).get("repModulTpCd") == TARGET_MODULE_CODE),
