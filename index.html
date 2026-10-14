@@ -198,10 +198,11 @@
     .info-tip-bubble { right: -8px; }
   }
 
+  /* 지상파·종편 편성표는 PC에서 화면 가로를 거의 꽉 채운다 (최대 1760px, 좌우 여백 20px. 홈쇼핑 탭과 동일) */
   .controls {
-    max-width: 1400px;
+    max-width: 1760px;
     margin: 0 auto;
-    padding: 14px 24px;
+    padding: 14px 20px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -341,9 +342,9 @@
   .dot.cable { background: var(--cable); }
 
   .weather-bar {
-    max-width: 1400px;
+    max-width: 1760px;
     margin: 0 auto;
-    padding: 8px 24px 10px;
+    padding: 8px 20px 10px;
     text-align: center;
     font-family: 'Pretendard', -apple-system, sans-serif;
     font-size: 12.5px;
@@ -366,9 +367,9 @@
   .weather-bar .w-empty, .hs-daymeta .w-empty { font-style: italic; opacity: 0.6; }
 
   .grid-wrap {
-    max-width: 1400px;
+    max-width: 1760px;
     margin: 0 auto;
-    padding: 0 24px;
+    padding: 0 20px;
   }
 
   .scroll-x {
@@ -487,7 +488,7 @@
   }
 
   .no-data {
-    max-width: 1400px;
+    max-width: 1760px;
     margin: 60px auto;
     text-align: center;
     font-family: 'Pretendard', -apple-system, sans-serif;
@@ -2301,10 +2302,11 @@
     font-family: 'Pretendard', -apple-system, sans-serif;
   }
 
+  /* 홈쇼핑 편성표는 PC에서 화면 가로를 거의 꽉 채운다 (최대 1760px, 좌우 여백 20px) */
   .hs-controls {
-    max-width: 1400px;
+    max-width: 1760px;
     margin: 0 auto;
-    padding: 14px 24px;
+    padding: 14px 20px;
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
@@ -2385,9 +2387,9 @@
   .hs-time-note .hs-updated:empty { display: none; }
 
   .hs-grid-wrap {
-    max-width: 1400px;
+    max-width: 1760px;
     margin: 0 auto;
-    padding: 0 24px 60px;
+    padding: 0 20px 60px;
   }
 
   .hs-scroll {
@@ -2440,7 +2442,7 @@
   }
   /* 전체(16) 탭: 16개 열을 모두 표시.
      - 화면 폭에 맞추지 않고 항상 가로 스크롤(.hs-scroll)로 본다 (고정PGM 탭과 동일한 사용감)
-     - 열 너비는 라이브(4열, PC 기준 약 330px)의 절반 수준인 168px 고정
+     - 열 너비는 라이브(4열) 열의 절반 이하인 168px 고정
      - 시간 열은 좌측 고정(sticky)해 우측으로 스크롤해도 몇 시 행인지 알 수 있게 한다 */
   table.hs-table.hs-table-all {
     width: max-content;
@@ -2667,9 +2669,9 @@
   .hs-hitbest:last-child { border-bottom: none; }
 
   .hs-cat-legend {
-    max-width: 1400px;
+    max-width: 1760px;
     margin: 0 auto;
-    padding: 10px 24px 0;
+    padding: 10px 20px 0;
     display: flex;
     flex-wrap: wrap;
     gap: 6px 8px;
