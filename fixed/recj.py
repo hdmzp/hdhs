@@ -50,7 +50,7 @@ from datetime import datetime, date, timedelta, timezone
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from tools import scrape_guard
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from celeb_day_sweep import supplement_missing_slots, merge_continuous_slots
+from celeb_day_sweep import supplement_missing_slots, merge_continuous_slots, label_cj
 
 KST = timezone(timedelta(hours=9))
 OUTPUT_DIR = os.path.join("homeshopping", "representative_programs")
@@ -83,6 +83,21 @@ MODULE_CODE_PREFIX = "MSRT"
 PAST_LABEL_STOP_WORDS = ("지난", "놓친")
 
 LABEL_FIELD_CANDIDATES = ("srttbNm", "bdDtmNm", "bdTmNm", "broadcastDtmNm")
+
+# 메인탭 상단 '라이브 캘린더'/'★편성표' 모듈. MSRT06(방송 라인업)보다 먼저
+# 갱신되는 경우가 있다 (2026-10-14 김신영이 산다: 페이지엔 10/20(화) 21:45
+# 닌자 마스터쿠커가 떠 있는데 MSRT06엔 '지난방송상품'만 있어 0개로 수집됨).
+# 구조 (2026-10-14 응답 덤프로 확인):
+#   contentList[].broadcastList[]:
+#     bdStrDtm "2026-10-20T21:45:00" / itemCd / mainTit("닌자 마스터쿠커_...",
+#     브랜드가 앞에 붙은 상품명) / imgUrlAddr
+#   itemCd가 null인 항목은 상품 없이 회차만 예고된 것 (편성표 보강 대상).
+CALENDAR_MODULE_CODE = "MBRD09"
+
+# 편성표(tvSchedule)를 오늘~N일 뒤까지 직접 훑어 pgmShop에 없는 회차를 찾는다.
+# CJ_live(cj_scraper)는 오늘+5일까지라 그 뒤 회차는 sweep으로 못 잡는다.
+# 프로그램별로 schedule_probe_days로 바꿀 수 있다.
+SCHEDULE_PROBE_DAYS = 14
 
 
 def walk_collect_items(node, current_label, out):
@@ -177,15 +192,52 @@ def parse_label_datetime(label: str):
     return d, f"{hh:02d}:{mi:02d}"
 
 
+_TV_SCHEDULE_CACHE = {}
+
+
+def fetch_tv_programs(session: requests.Session, bd_dt: str):
+    """편성표 bd_dt(YYYYMMDD)의 programList. 프로그램 여러 개가 같은 날짜를
+    조회하므로 실행 중엔 캐시한다. 실패/미편성이면 []."""
+    if bd_dt not in _TV_SCHEDULE_CACHE:
+        data = fetch_json(session, TV_SCHEDULE_URL.format(bd_dt=bd_dt))
+        # 아직 편성이 안 잡힌 날짜(예: 2주 뒤 방송)는 200 OK에 result가 null로 온다.
+        # get("result", {})는 이 경우 {}가 아니라 None을 돌려주므로 or {}로 막는다.
+        programs = ((data or {}).get("result") or {}).get("programList", []) or []
+        if data:
+            _TV_SCHEDULE_CACHE[bd_dt] = programs
+        return programs
+    return _TV_SCHEDULE_CACHE[bd_dt]
+
+
+def probe_schedule_labels(session: requests.Session, keywords, days: int):
+    """편성표를 오늘~days일 뒤까지 직접 훑어 pgmNm이 keywords에 맞는
+    아직 시작 안 한 방송 회차 라벨(CJ 형식 '10/20(화) 21:45') 목록."""
+    if not keywords:
+        return []
+    now = datetime.now(KST)
+    labels = []
+    for off in range(days + 1):
+        bd_dt = (now + timedelta(days=off)).strftime("%Y%m%d")
+        for pg in fetch_tv_programs(session, bd_dt):
+            start_ms = pg.get("bdStrDtm")
+            if not start_ms:
+                continue
+            start = datetime.fromtimestamp(start_ms / 1000, tz=KST)
+            if start <= now:
+                continue
+            if not any(k in (pg.get("pgmNm") or "") for k in keywords):
+                continue
+            label = label_cj(start.date(), start.strftime("%H:%M"))
+            if label not in labels:
+                labels.append(label)
+        time.sleep(0.2)
+    return labels
+
+
 def fetch_schedule_lineup(session: requests.Session, bd_dt: str, start_hm: str, keywords):
     """편성표에서 bd_dt(YYYYMMDD) start_hm에 시작하는 방송의 itemList 전체를 반환.
     keywords가 있으면 pgmNm 확인으로 다른 방송 오매칭을 방어한다."""
-    data = fetch_json(session, TV_SCHEDULE_URL.format(bd_dt=bd_dt))
-    if not data:
-        return []
-    # 아직 편성이 안 잡힌 날짜(예: 2주 뒤 방송)는 200 OK에 result가 null로 온다.
-    # get("result", {})는 이 경우 {}가 아니라 None을 돌려주므로 or {}로 막는다.
-    for pg in (data.get("result") or {}).get("programList", []) or []:
+    for pg in fetch_tv_programs(session, bd_dt):
         start_ms = pg.get("bdStrDtm")
         if not start_ms:
             continue
@@ -239,6 +291,19 @@ def supplement_from_schedule(session: requests.Session, config: dict, products: 
             continue
         items = fetch_schedule_lineup(session, bdate.strftime("%Y%m%d"), start_hm,
                                       config.get("keywords"))
+        # 라이브 캘린더(MBRD09)에서 온 상품은 가격이 없다 -> 같은 상품코드면 채운다
+        by_code = {}
+        for p in products:
+            m = re.search(r"/item/(\d+)", p.get("link") or "")
+            if m and p["broadcast_date_label"] == label:
+                by_code[m.group(1)] = p
+        for it in items:
+            p = by_code.get(str(it.get("itemCd") or ""))
+            if p is not None:
+                if p.get("price") is None and it.get("salePrice") is not None:
+                    p["price"] = it.get("salePrice")
+                if not p.get("image"):
+                    p["image"] = to_https(it.get("itemImgUrl") or it.get("imgUrl") or "")
         new_items = [it for it in items
                      if it.get("itemCd") and str(it["itemCd"]) not in seen_codes
                      and (it.get("itemNm") or "") not in seen_names]
@@ -416,6 +481,27 @@ def fetch_tabs_via_browser(pgm_cd: str, labels):
     return out
 
 
+def collect_calendar_slots(modules):
+    """라이브 캘린더(MBRD09) 모듈에서 아직 시작 안 한 회차를 읽는다.
+    반환: [(라벨, item 또는 None), ...] - item은 {itemCd, mainTit, imgUrlAddr}."""
+    now = datetime.now(KST)
+    out = []
+    for m in modules:
+        if (m.get("moduleBaseInfo") or {}).get("repModulTpCd") != CALENDAR_MODULE_CODE:
+            continue
+        for content in m.get("contentList") or []:
+            for bd in content.get("broadcastList") or []:
+                try:
+                    start = datetime.fromisoformat(bd.get("bdStrDtm") or "").replace(tzinfo=KST)
+                except ValueError:
+                    continue
+                if start <= now:
+                    continue
+                label = label_cj(start.date(), start.strftime("%H:%M"))
+                out.append((label, bd if bd.get("itemCd") else None))
+    return out
+
+
 def get_tab_id(session: requests.Session, pgm_cd: str):
     """1단계: pgmShop 기본정보 API에서 tabId + 편성텍스트 + 프로그램 이미지를 얻는다."""
     url = STEP1_URL_TEMPLATE.format(pgm_cd=pgm_cd)
@@ -566,6 +652,48 @@ def crawl_cj_program(session: requests.Session, config: dict):
         if added:
             print(f"    -> [{code}] 구좌에서 +{added}개")
 
+    # MSRT06 날짜 탭에 없는 회차를 라이브 캘린더(MBRD09)와 편성표(tvSchedule)
+    # 직접 탐색으로 찾는다. 찾은 회차는 탭 수집(페이지에 탭이 생겼으면)과
+    # 편성표 itemList 보강 대상으로 넘긴다.
+    def norm(label):
+        return re.sub(r"\s+", "", label or "")
+
+    def add_future_label(label, source):
+        if norm(label) in {norm(l) for l in future_labels}:
+            return
+        future_labels.append(label)
+        print(f"    -> [{source}] MSRT06에 없는 회차 {label}")
+        if not any(norm(p["broadcast_date_label"]) == norm(label) for p in products):
+            empty_future_labels.append(label)
+
+    calendar = collect_calendar_slots(modules)
+    if calendar:
+        brand_map = fetch_repbrands(session, [str(bd["itemCd"]) for _, bd in calendar if bd])
+        for label, bd in calendar:
+            if bd:
+                cd = str(bd["itemCd"])
+                brand = brand_map.get(cd, "")
+                name = (bd.get("mainTit") or "").strip()
+                # mainTit은 '닌자 마스터쿠커_...'처럼 브랜드가 앞에 붙어 온다
+                if brand and name.startswith(brand):
+                    name = name[len(brand):].strip()
+                if add_product(label, {
+                    "itemCd": cd,
+                    "displayItemName": name,
+                    "repBrandNm": brand,
+                    "imgUrlList": [bd["imgUrlAddr"]] if bd.get("imgUrlAddr") else [],
+                    "itemLink": f"https://display.cjonstyle.com/p/item/{cd}",
+                }):
+                    print(f"    -> [라이브 캘린더] {label} +1개 ([{brand}] {name[:30]})")
+            add_future_label(label, "라이브 캘린더")
+
+    probe_days = config.get("schedule_probe_days", SCHEDULE_PROBE_DAYS)
+    if probe_days:
+        probed = probe_schedule_labels(session, config.get("keywords"), probe_days)
+        print(f"    -> [편성표 탐색] {probe_days}일 내 회차 {probed or '없음'}")
+        for label in probed:
+            add_future_label(label, "편성표 탐색")
+
     # 날짜 탭을 페이지에서 직접 눌러 공개된 상품을 전부 가져온다. 첫 탭도
     # 다시 읽는다 - moduleList가 탭당 대표상품만 주는 프로그램이 있고(강주은),
     # 페이지에서 읽은 회차여야 편성표 추가분을 '확인필요'로 가를 수 있다.
@@ -653,4 +781,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main()
