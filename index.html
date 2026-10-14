@@ -5254,12 +5254,16 @@ function dvRenderGrid(data) {
         // 쓰이고, 다른 요일 회차 값으로 채우면 월요일 칸에 화요일 시청률이 찍힌다
         // (2026-09-28 주차 '로또 1등도 출근합니다': 월 3.5%는 기준 미만인데
         // 화 5.0%가 월요일 칸에 표시됐던 문제).
-        // ratingByDay 자체가 없는 과거 주차 데이터만 편성 요일 전체에 싣는다.
+        // ratingByDay 키 자체가 없는 과거 주차 데이터(2026-06-22 주까지)만 편성
+        // 요일 전체에 싣는다. 키는 있는데 비어 있는 {}는 '이 슬롯 요일엔 아직
+        // 시청률 근거가 없음'이라 싣지 않는다 — 네이버가 한 카드에 '(월,화,수,금)
+        // 07:05 / (목) 07:10'처럼 시간대를 나눠 보여주면 시청률(화 10.13)은 화요일이
+        // 든 슬롯에만 붙고 목요일 슬롯은 {}가 되는데, 이를 폴백으로 처리하면 아직
+        // 방영 전인 목요일 칸에 화요일 시청률이 찍혔다(2026-10-12 주차 '가족관계증명서').
         const dayPrograms = genrePrograms.filter(p => {
           if (!p.days.includes(day)) return false;
-          const byDay = p.ratingByDay || {};
-          if (Object.keys(byDay).length === 0) return true;
-          const entry = byDay[day];
+          if (!p.ratingByDay) return true;
+          const entry = p.ratingByDay[day];
           return entry != null && entry.rating != null && entry.rating >= (DV_CUTOFF[p.category] || 0);
         });
         const dayOffAir = genreOffAir[day] || [];
