@@ -99,7 +99,14 @@ GITHUB_CODE = {
 # 제외: hs_hmallplus / hs_gsshopmyshop / hs_lotteimallonetv / hs_nsmallshopplus /
 #       hs_cjonstyleplus (TV 11개사 외 데이터홈쇼핑/플러스 채널 - 필요하면 위 맵에 추가)
 
-API_HEADERS = {"content-type": "application/json", "domain": "ecomm-data.com"}
+API_HEADERS = {
+    "Content-Type": "application/json",
+    "Origin": "https://live.ecomm-data.com",
+    "Referer": "https://live.ecomm-data.com/schedule/hs",
+    "User-Agent": ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                   "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"),
+}
+LIST_HS_REQUEST_DELAY_SEC = 0.5  # 채널별 list_hs 호출 사이 대기 (라방바 서버 부담 완화)
 
 # 인자 없이 실행할 때 "빠진 날짜"를 찾아볼 기간(어제 기준 과거 며칠).
 # 하루 실패해서 생긴 구멍도 메우되, 한 번에 너무 긴 기간을 긁지 않도록 상한 역할도 한다.
@@ -132,15 +139,33 @@ def _request_with_retry(method, url, **kwargs):
 
 
 def fetch_list_hs(date_str):
-    """그날의 방송 목록. 로그인 불필요(공개 스케줄) - 매출 필드는 어차피 안 씀."""
-    res = _request_with_retry(
-        "POST",
-        "https://live.ecomm-data.com/api/schedule/list_hs",
-        headers=API_HEADERS,
-        json={"date": date_str[2:]},
-    )
-    data = res.json()
-    return [x for x in data.get("list", []) if x.get("platform_id") in GITHUB_CODE]
+    """그날의 방송 목록. 로그인 불필요(공개 스케줄) - 매출 필드는 어차피 안 씀.
+
+    반드시 채널(platform_id)별로 따로 요청한다. 2026-09-09경부터 라방바가 채널 필터
+    없는 전체 조회에는 하루 편성의 일부(시간대마다 몇 건씩, 11개사 합계 ~105건)만
+    돌려준다 - 채널 필터를 건 요청은 여전히 하루치 전체가 온다(etc_scraper.py와 같은
+    방식). 한 채널이라도 실패하면 예외를 던져 그날을 통째로 건너뛴다 - 일부 채널만
+    저장되면 '이미 수집한 날'로 잡혀 다음 실행에서 다시 채워지지 않기 때문."""
+    out, seen = [], set()
+    for platform_id in GITHUB_CODE:
+        res = _request_with_retry(
+            "POST",
+            "https://live.ecomm-data.com/api/schedule/list_hs",
+            headers=API_HEADERS,
+            json={"date": date_str[2:], "type": None, "platform": [platform_id], "cid": None},
+        )
+        shows = [x for x in res.json().get("list", []) or [] if x.get("platform_id") == platform_id]
+        if not shows:
+            print(f"  [경고] {platform_id} 방송 0건")
+        for x in shows:
+            sid = str(x.get("hsshow_id") or "")
+            if sid and sid in seen:
+                continue
+            seen.add(sid)
+            out.append(x)
+        time.sleep(LIST_HS_REQUEST_DELAY_SEC)
+    out.sort(key=lambda x: x.get("hsshow_datetime_start") or "")  # 전체 조회 때처럼 시간순
+    return out
 
 
 _github_cache = {}
