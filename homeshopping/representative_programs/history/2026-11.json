@@ -1,7 +1,57 @@
 {
   "month": "2026-11",
-  "updated_at": "2026-10-19T14:56:29.946575+09:00",
+  "updated_at": "2026-10-20T02:26:47.992060+09:00",
   "programs": [
+    {
+      "program_key": "CJ_KCO",
+      "company": "CJ",
+      "tab_name": "김창옥",
+      "program_title": "더 김창옥 라이브",
+      "schedule_raw": "화요일 19시 35분",
+      "detail_link": "https://display.cjonstyle.com/m/pgmShop/563907",
+      "program_image": "https://image.cjonstyle.net/public/confirm/assets/pgm/shop/563907/2026/2/3/7041270f12d2ab6e9d229dc91dfb95dcd41518e7.png",
+      "broadcasts": [
+        {
+          "date": "2026-11-03",
+          "label": "11/03(화) 19:35 방송",
+          "collected_at": "2026-10-20T02:26:47.961911+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "11/03(화) 19:35",
+              "brand": "아디다스 골프",
+              "name": "[최초공개] 26FW 남성 트리코트 본딩 팬츠 3종",
+              "price": null,
+              "image": "https://image.cjonstyle.net/goods_images/20/890/2094184890L.jpg?timestamp=20261020022438",
+              "link": "https://display.cjonstyle.com/p/item/2094184890"
+            },
+            {
+              "broadcast_date_label": "11/03(화) 19:35",
+              "brand": "아디다스 골프",
+              "name": "[최초공개] 26FW 여성 트리코트 본딩 팬츠 3종",
+              "price": 239000,
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/038/2094186038L.jpg?timestamp=20261016141201",
+              "link": "https://item.cjonstyle.com/item/2094186038?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/03(화) 19:35",
+              "brand": "아디다스 골프",
+              "name": "[최신상] 26FW 남성 모크넥 4종",
+              "price": 109000,
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/910/2091470910L.jpg?timestamp=20260918165245",
+              "link": "https://item.cjonstyle.com/item/2091470910?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/03(화) 19:35",
+              "brand": "아디다스 골프",
+              "name": "[최신상] 26FW 여성 모크넥 4종",
+              "price": 109000,
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/020/2091471020L.jpg?timestamp=20260918165432",
+              "link": "https://item.cjonstyle.com/item/2091471020?channelCode=30002002"
+            }
+          ]
+        }
+      ]
+    },
     {
       "program_key": "CJ_DGG",
       "company": "CJ",
@@ -14,14 +64,14 @@
         {
           "date": "2026-11-05",
           "label": "11/05(목) 20:45 방송",
-          "collected_at": "2026-10-19T14:56:29.918799+09:00",
+          "collected_at": "2026-10-20T02:26:47.961911+09:00",
           "products": [
             {
               "broadcast_date_label": "11/05(목) 20:45",
               "brand": "옐로우에이유",
               "name": "[동가게PICK] 호주직수입 프로폴리스 스프레이 1500+ 5+3병 더",
               "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/665/2093831665L.jpg?timestamp=20261019145603",
+              "image": "https://image.cjonstyle.net/goods_images/20/665/2093831665L.jpg?timestamp=20261020022538",
               "link": "https://display.cjonstyle.com/p/item/2093831665"
             }
           ]
