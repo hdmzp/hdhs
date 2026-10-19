@@ -1,7 +1,7 @@
 {
   "weekStart": "2026-08-24",
   "weekEnd": "2026-08-30",
-  "collectedAt": "2026-09-07T03:45:55.140622+09:00",
+  "collectedAt": "2026-10-19T17:47:04.858551+09:00",
   "programs": [
     {
       "id": "drama_욕망의 덫_KBS2_오후 07:50",
@@ -1483,6 +1483,25 @@
         }
       },
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40393258&qvt=0&query=%EC%9C%A0%EB%B6%80%EB%85%80%20%ED%82%AC%EB%9F%AC"
+    },
+    {
+      "id": "variety_TVCHOSUN 슈퍼콘서트_TV조선_오후 07:50",
+      "category": "variety",
+      "channel": "TV조선",
+      "title": "TVCHOSUN 슈퍼콘서트",
+      "days": [
+        "일"
+      ],
+      "time": "오후 07:50",
+      "rating": 1.2,
+      "ratingDate": "08.30",
+      "ratingByDay": {
+        "일": {
+          "rating": 1.2,
+          "ratingDate": "08.30"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=31719057&qvt=0&query=TV%EC%A1%B0%EC%84%A0%20%EC%8A%88%ED%8D%BC%EC%BD%98%EC%84%9C%ED%8A%B8"
     }
   ],
   "newBelowCutoff": [
