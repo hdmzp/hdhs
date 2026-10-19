@@ -50,6 +50,35 @@ def load_hide_categories():
         return set(json.load(f).get("hide_categories", []))
 
 
+def load_beauty_guard():
+    """화장품 판별 규칙 (식품 품목으로 새는 것 방지). 없으면 빈 dict."""
+    with open(KEYWORDS_PATH, encoding="utf-8") as f:
+        return json.load(f).get("beauty_guard", {})
+
+
+def _norm(s: str) -> str:
+    """공백·대소문자·괄호 부기 무시 비교용 ("LIE317(라이)" -> "LIE317")."""
+    return re.sub(r"\([^)]*\)|\s", "", str(s or "")).upper()
+
+
+def is_beauty(name: str, brand: str, guard: dict) -> bool:
+    """화장품 브랜드이거나 본품 부분에 화장품 키워드가 있으면 True - 화면(index.html celIsBeauty)과 같은 규칙.
+    브랜드 칸이 비어 있으면 상품명에 화장품 브랜드가 들어 있는지 본다."""
+    if not guard:
+        return False
+    brands = {_norm(b) for b in guard.get("brands", [])}
+    b = _norm(brand)
+    if b:
+        if b in brands:
+            return True
+    elif any(x in _norm(name) for x in brands):
+        return True
+    text = _norm(main_text(name))
+    for x in guard.get("keyword_exclude", []):
+        text = text.replace(_norm(x), "")
+    return any(_norm(k) in text for k in guard.get("keywords", []))
+
+
 def main_text(name: str) -> str:
     """본품 부분만 - 화면(index.html celItemMainText)과 같은 규칙.
     1) [..] (..) 안은 지운다: 구성 표기·색상 옵션·사은품이 들어간다
@@ -60,9 +89,13 @@ def main_text(name: str) -> str:
     return text.split("+")[0]
 
 
-def match_item(name: str, items: list):
+def match_item(name: str, items: list, brand: str = "", guard: dict = None):
     text = main_text(name)
+    # 화장품이면 식품 품목은 건너뛴다 ("비타민 인리치드 페이스베이스"가 비타민(식품)으로 가는 것 방지)
+    blocked = set(guard.get("block_categories", [])) if guard and is_beauty(name, brand, guard) else set()
     for it in items:
+        if it["category"] in blocked:
+            continue
         if any(x in text for x in it.get("exclude", [])):
             continue
         if any(x in text for x in it["match"]):
@@ -78,7 +111,7 @@ def load_history(ym: str):
         return json.load(f)
 
 
-def build_overlaps(hist: dict, items: list, hide=frozenset()):
+def build_overlaps(hist: dict, items: list, hide=frozenset(), guard: dict = None):
     """품목 -> 회차 목록. 서로 다른 프로그램 2곳 이상인 품목만 돌려준다."""
     groups = defaultdict(dict)  # item -> {(program_key, date): entry}
     for prog in hist.get("programs", []):
@@ -86,7 +119,7 @@ def build_overlaps(hist: dict, items: list, hide=frozenset()):
             if b.get("off_air"):
                 continue
             for p in b.get("products", []):
-                it = match_item(p.get("name", ""), items)
+                it = match_item(p.get("name", ""), items, p.get("brand") or "", guard)
                 if not it or it["category"] in hide:
                     continue
                 key = (prog["program_key"], b.get("date", ""))
@@ -121,7 +154,7 @@ def all_celeb_products():
         for prog in hist.get("programs", []):
             for b in prog.get("broadcasts", []):
                 for p in b.get("products", []):
-                    yield prog["program_key"], p.get("name", "")
+                    yield prog["program_key"], p.get("name", ""), p.get("brand") or ""
 
 
 def homeshop_category_votes(words):
@@ -148,13 +181,14 @@ def homeshop_category_votes(words):
 def main():
     ym = sys.argv[1] if len(sys.argv) > 1 else date.today().strftime("%Y-%m")
     items = load_keywords()
+    guard = load_beauty_guard()
 
     hist = load_history(ym)
     print(f"== {ym} 겹치는 품목 ==")
     if not hist:
         print("  (월별 누적 파일 없음)")
     else:
-        overlaps = build_overlaps(hist, items, load_hide_categories())
+        overlaps = build_overlaps(hist, items, load_hide_categories(), guard)
         if not overlaps:
             print("  없음")
         for item, rows in overlaps:
@@ -170,8 +204,8 @@ def main():
 
     # 후보: 서로 다른 프로그램 2곳 이상에 나온 단어 중 사전에 안 걸리는 것
     word_cnt, word_progs = Counter(), defaultdict(set)
-    for program_key, name in all_celeb_products():
-        if match_item(name, items):
+    for program_key, name, brand in all_celeb_products():
+        if match_item(name, items, brand, guard):
             continue
         text = main_text(name)
         for w in set(re.findall(r"[가-힣]{2,}", text)):

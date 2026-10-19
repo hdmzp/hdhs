@@ -7410,6 +7410,7 @@ async function celInitLoad() {
     const kw = await fetchJsonSafe('./fixed/celeb_item_keywords.json');
     celItemKeywords = (kw && Array.isArray(kw.items)) ? kw.items : [];
     celItemHideCats = new Set((kw && kw.hide_categories) || []);
+    celBeautyGuard = (kw && kw.beauty_guard) || null;
   }
 
   const fetchPromises = CEL_FILES.map(async (file) => {
@@ -7761,6 +7762,7 @@ function celRenderBand(file) {
 // 사전 관리/검증: python tools/suggest_celeb_item_keywords.py (같은 규칙으로 출력)
 let celItemKeywords = null;    // [{item, category, match[], exclude[]}] (로드 실패 시 [])
 let celItemHideCats = new Set(); // 화면에서 숨기는 카테고리 (패션: 의류·잡화)
+let celBeautyGuard = null;        // 화장품 판별 규칙 {brands, keywords, keyword_exclude, block_categories}
 // 특이사항 접기 상태 - 이 브라우저에만 기억한다 (저장소가 막혀 있으면 펼친 상태로 시작)
 const CEL_NOTICE_COLLAPSE_KEY = 'celNoticeCollapsed';
 let celNoticeCollapsed = (() => {
@@ -7773,9 +7775,31 @@ function celItemMainText(name) {
   return String(name || '').replace(/\[[^\]]*\]|\([^)]*\)/g, ' ').split('+')[0];
 }
 
-function celMatchItem(name) {
+// 공백·대소문자·괄호 부기 무시 비교용 ("LIE317(라이)" -> "LIE317")
+function celNorm(s) {
+  return String(s || '').replace(/\([^)]*\)|\s/g, '').toUpperCase();
+}
+
+// 화장품 브랜드이거나 본품 부분에 화장품 키워드가 있으면 true.
+// 브랜드 칸이 비어 있으면 상품명에 화장품 브랜드가 들어 있는지 본다.
+// (tools/suggest_celeb_item_keywords.py is_beauty와 같은 규칙)
+function celIsBeauty(name, brand) {
+  const g = celBeautyGuard;
+  if (!g) return false;
+  const brands = (g.brands || []).map(celNorm);
+  const b = celNorm(brand);
+  if (b ? brands.includes(b) : brands.some(x => celNorm(name).includes(x))) return true;
+  let text = celNorm(celItemMainText(name));
+  (g.keyword_exclude || []).forEach(x => { text = text.split(celNorm(x)).join(''); });
+  return (g.keywords || []).some(k => text.includes(celNorm(k)));
+}
+
+function celMatchItem(name, brand) {
   const text = celItemMainText(name);
+  // 화장품이면 식품 품목은 건너뛴다 ("비타민 인리치드 페이스베이스"가 비타민(식품)으로 가는 것 방지)
+  const blocked = (celBeautyGuard && celIsBeauty(name, brand)) ? (celBeautyGuard.block_categories || []) : [];
   for (const it of (celItemKeywords || [])) {
+    if (blocked.includes(it.category)) continue;
     if ((it.exclude || []).some(x => text.includes(x))) continue;
     if ((it.match || []).some(x => text.includes(x))) return it;
   }
@@ -7790,7 +7814,7 @@ function celBuildOverlaps(files) {
     broadcasts.forEach(b => {
       if (b.offAir) return;
       (b.products || []).forEach(p => {
-        const it = celMatchItem(p.name);
+        const it = celMatchItem(p.name, p.brand);
         // 패션은 사전에서 매칭은 하되(다른 품목으로 새지 않게) 현황에선 뺀다
         if (!it || celItemHideCats.has(it.category)) return;
         const g = groups[it.item] || (groups[it.item] = { category: it.category, rows: {}, files: new Set() });
