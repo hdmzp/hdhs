@@ -3281,6 +3281,9 @@
     color: #fff;
   }
 
+  /* 요일 슬라이서: 프로그램 슬라이서와 같은 모양, 버튼만 조금 좁게 */
+  .cel-day-slicer button { padding: 7px 12px; }
+
   .cel-slicer button:hover:not(.active) {
     background: #fff;
     color: var(--ink);
@@ -3970,6 +3973,16 @@
       <button class="active" data-file="CJ_SIH.json">소이현 겟잇스타일</button>
       <button class="active" data-file="CJ_DGG.json">동가게</button>
       <button class="active" data-file="HD_WYE.json">왕영은 톡투게더</button>
+    </div>
+    <div class="cel-slicer cel-day-slicer" id="celDaySlicer">
+      <button class="active" data-day="전체">전체</button>
+      <button data-day="월">월</button>
+      <button data-day="화">화</button>
+      <button data-day="수">수</button>
+      <button data-day="목">목</button>
+      <button data-day="금">금</button>
+      <button data-day="토">토</button>
+      <button data-day="일">일</button>
     </div>
   </div>
   <div class="cel-fail-notice" id="celFailNotice" style="display:none;"></div>
@@ -7289,6 +7302,7 @@ let celProgramMeta = {};       // file -> {title, company, schedule_raw, detail_
 let celStatus = {};            // file -> {status, last_success, products, reason}
                                // (status.json - 수집실패 뱃지용)
 let celSelectedFiles = new Set(CEL_FILES); // 기본값: 전체 선택 상태로 시작
+let celSelectedDay = '전체';   // 요일 슬라이서 (전체/월~일 중 하나)
 let celIsSample = false; // 실제 수집 데이터가 하나도 없어 예시 데이터로 미리보기 중인지
 
 // ---- 월별 조회 (history/{YYYY-MM}.json) ----
@@ -7410,6 +7424,7 @@ async function celInitLoad() {
     const kw = await fetchJsonSafe('./fixed/celeb_item_keywords.json');
     celItemKeywords = (kw && Array.isArray(kw.items)) ? kw.items : [];
     celItemHideCats = new Set((kw && kw.hide_categories) || []);
+    celBeautyGuard = (kw && kw.beauty_guard) || null;
   }
 
   const fetchPromises = CEL_FILES.map(async (file) => {
@@ -7761,6 +7776,7 @@ function celRenderBand(file) {
 // 사전 관리/검증: python tools/suggest_celeb_item_keywords.py (같은 규칙으로 출력)
 let celItemKeywords = null;    // [{item, category, match[], exclude[]}] (로드 실패 시 [])
 let celItemHideCats = new Set(); // 화면에서 숨기는 카테고리 (패션: 의류·잡화)
+let celBeautyGuard = null;        // 화장품 판별 규칙 {brands, keywords, keyword_exclude, block_categories}
 // 특이사항 접기 상태 - 이 브라우저에만 기억한다 (저장소가 막혀 있으면 펼친 상태로 시작)
 const CEL_NOTICE_COLLAPSE_KEY = 'celNoticeCollapsed';
 let celNoticeCollapsed = (() => {
@@ -7773,9 +7789,31 @@ function celItemMainText(name) {
   return String(name || '').replace(/\[[^\]]*\]|\([^)]*\)/g, ' ').split('+')[0];
 }
 
-function celMatchItem(name) {
+// 공백·대소문자·괄호 부기 무시 비교용 ("LIE317(라이)" -> "LIE317")
+function celNorm(s) {
+  return String(s || '').replace(/\([^)]*\)|\s/g, '').toUpperCase();
+}
+
+// 화장품 브랜드이거나 본품 부분에 화장품 키워드가 있으면 true.
+// 브랜드 칸이 비어 있으면 상품명에 화장품 브랜드가 들어 있는지 본다.
+// (tools/suggest_celeb_item_keywords.py is_beauty와 같은 규칙)
+function celIsBeauty(name, brand) {
+  const g = celBeautyGuard;
+  if (!g) return false;
+  const brands = (g.brands || []).map(celNorm);
+  const b = celNorm(brand);
+  if (b ? brands.includes(b) : brands.some(x => celNorm(name).includes(x))) return true;
+  let text = celNorm(celItemMainText(name));
+  (g.keyword_exclude || []).forEach(x => { text = text.split(celNorm(x)).join(''); });
+  return (g.keywords || []).some(k => text.includes(celNorm(k)));
+}
+
+function celMatchItem(name, brand) {
   const text = celItemMainText(name);
+  // 화장품이면 식품 품목은 건너뛴다 ("비타민 인리치드 페이스베이스"가 비타민(식품)으로 가는 것 방지)
+  const blocked = (celBeautyGuard && celIsBeauty(name, brand)) ? (celBeautyGuard.block_categories || []) : [];
   for (const it of (celItemKeywords || [])) {
+    if (blocked.includes(it.category)) continue;
     if ((it.exclude || []).some(x => text.includes(x))) continue;
     if ((it.match || []).some(x => text.includes(x))) return it;
   }
@@ -7790,7 +7828,7 @@ function celBuildOverlaps(files) {
     broadcasts.forEach(b => {
       if (b.offAir) return;
       (b.products || []).forEach(p => {
-        const it = celMatchItem(p.name);
+        const it = celMatchItem(p.name, p.brand);
         // 패션은 사전에서 매칭은 하되(다른 품목으로 새지 않게) 현황에선 뺀다
         if (!it || celItemHideCats.has(it.category)) return;
         const g = groups[it.item] || (groups[it.item] = { category: it.category, rows: {}, files: new Set() });
@@ -7900,6 +7938,25 @@ function celRenderUpdated() {
   el.textContent = (hist && hist.updated_at) ? fpFormatUpdated(hist.updated_at) : '';
 }
 
+// 프로그램이 방송하는 요일 집합. 월·수 두 요일에 하면 둘 다 들어간다.
+// 1) 편성 문구(schedule_raw): "매주 수요일 20:45", "목 20:45 / 토 08:20" 등
+//    요일 글자 뒤가 '요일'·공백·숫자·'/'·끝일 때만 요일로 본다 ("수시 업데이트"의 '수'는 제외)
+// 2) 조회 중인 달의 실제 방송 날짜 요일 (편성 문구에 없는 특집 회차도 반영)
+const CEL_WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
+function celProgramDays(file) {
+  const { meta, broadcasts } = celBandData(file);
+  const days = new Set();
+  const re = /(^|[^가-힣])([월화수목금토일])(?=요일|[\s\d/,·]|$)/g;
+  let m;
+  while ((m = re.exec(meta.schedule_raw || '')) !== null) days.add(m[2]);
+  broadcasts.forEach(b => {
+    if (b.offAir || !/^\d{4}-\d{2}-\d{2}/.test(b.date || '')) return;
+    const [y, mo, d] = b.date.slice(0, 10).split('-').map(Number);
+    days.add(CEL_WEEKDAYS[new Date(y, mo - 1, d).getDay()]);
+  });
+  return days;
+}
+
 function celRenderCompare() {
   const wrap = document.getElementById('celGridWrap');
   if (!wrap) return;
@@ -7908,10 +7965,17 @@ function celRenderCompare() {
   celRenderFailNotice();
 
   const viewMonth = celMonth || celThisMonth();
-  const selected = CEL_FILES.filter(f => celSelectedFiles.has(f)
+  const picked = CEL_FILES.filter(f => celSelectedFiles.has(f)
     && !(CEL_START_MONTH[f] && viewMonth < CEL_START_MONTH[f]));
-  if (selected.length === 0) {
+  if (picked.length === 0) {
     wrap.innerHTML = '<div class="cel-empty">비교할 셀럽PGM을 선택하세요 (여러 개 중복 선택 가능)</div>';
+    return;
+  }
+  const selected = celSelectedDay === '전체'
+    ? picked
+    : picked.filter(f => celProgramDays(f).has(celSelectedDay));
+  if (selected.length === 0) {
+    wrap.innerHTML = `<div class="cel-empty">${celSelectedDay}요일에 방송하는 셀럽PGM이 없어요</div>`;
     return;
   }
 
@@ -8268,6 +8332,19 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
 
       celRenderCompare();
       gaEvent('filter_click', { filter_group: 'celebrity_program', filter_value: file });
+    });
+  }
+
+  // 셀럽PGM 요일 슬라이서 (하나만 선택, 프로그램 슬라이서와 함께 걸린다)
+  const celDaySlicer = document.getElementById('celDaySlicer');
+  if (celDaySlicer) {
+    celDaySlicer.addEventListener('click', (e) => {
+      const btn = e.target.closest('button');
+      if (!btn) return;
+      celSelectedDay = btn.dataset.day;
+      celDaySlicer.querySelectorAll('button').forEach(b => b.classList.toggle('active', b === btn));
+      celRenderCompare();
+      gaEvent('filter_click', { filter_group: 'celebrity_day', filter_value: celSelectedDay });
     });
   }
 
