@@ -3281,6 +3281,9 @@
     color: #fff;
   }
 
+  /* 요일 슬라이서: 프로그램 슬라이서와 같은 모양, 버튼만 조금 좁게 */
+  .cel-day-slicer button { padding: 7px 12px; }
+
   .cel-slicer button:hover:not(.active) {
     background: #fff;
     color: var(--ink);
@@ -3970,6 +3973,16 @@
       <button class="active" data-file="CJ_SIH.json">소이현 겟잇스타일</button>
       <button class="active" data-file="CJ_DGG.json">동가게</button>
       <button class="active" data-file="HD_WYE.json">왕영은 톡투게더</button>
+    </div>
+    <div class="cel-slicer cel-day-slicer" id="celDaySlicer">
+      <button class="active" data-day="전체">전체</button>
+      <button data-day="월">월</button>
+      <button data-day="화">화</button>
+      <button data-day="수">수</button>
+      <button data-day="목">목</button>
+      <button data-day="금">금</button>
+      <button data-day="토">토</button>
+      <button data-day="일">일</button>
     </div>
   </div>
   <div class="cel-fail-notice" id="celFailNotice" style="display:none;"></div>
@@ -7289,6 +7302,7 @@ let celProgramMeta = {};       // file -> {title, company, schedule_raw, detail_
 let celStatus = {};            // file -> {status, last_success, products, reason}
                                // (status.json - 수집실패 뱃지용)
 let celSelectedFiles = new Set(CEL_FILES); // 기본값: 전체 선택 상태로 시작
+let celSelectedDay = '전체';   // 요일 슬라이서 (전체/월~일 중 하나)
 let celIsSample = false; // 실제 수집 데이터가 하나도 없어 예시 데이터로 미리보기 중인지
 
 // ---- 월별 조회 (history/{YYYY-MM}.json) ----
@@ -7924,6 +7938,25 @@ function celRenderUpdated() {
   el.textContent = (hist && hist.updated_at) ? fpFormatUpdated(hist.updated_at) : '';
 }
 
+// 프로그램이 방송하는 요일 집합. 월·수 두 요일에 하면 둘 다 들어간다.
+// 1) 편성 문구(schedule_raw): "매주 수요일 20:45", "목 20:45 / 토 08:20" 등
+//    요일 글자 뒤가 '요일'·공백·숫자·'/'·끝일 때만 요일로 본다 ("수시 업데이트"의 '수'는 제외)
+// 2) 조회 중인 달의 실제 방송 날짜 요일 (편성 문구에 없는 특집 회차도 반영)
+const CEL_WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
+function celProgramDays(file) {
+  const { meta, broadcasts } = celBandData(file);
+  const days = new Set();
+  const re = /(^|[^가-힣])([월화수목금토일])(?=요일|[\s\d/,·]|$)/g;
+  let m;
+  while ((m = re.exec(meta.schedule_raw || '')) !== null) days.add(m[2]);
+  broadcasts.forEach(b => {
+    if (b.offAir || !/^\d{4}-\d{2}-\d{2}/.test(b.date || '')) return;
+    const [y, mo, d] = b.date.slice(0, 10).split('-').map(Number);
+    days.add(CEL_WEEKDAYS[new Date(y, mo - 1, d).getDay()]);
+  });
+  return days;
+}
+
 function celRenderCompare() {
   const wrap = document.getElementById('celGridWrap');
   if (!wrap) return;
@@ -7932,10 +7965,17 @@ function celRenderCompare() {
   celRenderFailNotice();
 
   const viewMonth = celMonth || celThisMonth();
-  const selected = CEL_FILES.filter(f => celSelectedFiles.has(f)
+  const picked = CEL_FILES.filter(f => celSelectedFiles.has(f)
     && !(CEL_START_MONTH[f] && viewMonth < CEL_START_MONTH[f]));
-  if (selected.length === 0) {
+  if (picked.length === 0) {
     wrap.innerHTML = '<div class="cel-empty">비교할 셀럽PGM을 선택하세요 (여러 개 중복 선택 가능)</div>';
+    return;
+  }
+  const selected = celSelectedDay === '전체'
+    ? picked
+    : picked.filter(f => celProgramDays(f).has(celSelectedDay));
+  if (selected.length === 0) {
+    wrap.innerHTML = `<div class="cel-empty">${celSelectedDay}요일에 방송하는 셀럽PGM이 없어요</div>`;
     return;
   }
 
@@ -8292,6 +8332,19 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
 
       celRenderCompare();
       gaEvent('filter_click', { filter_group: 'celebrity_program', filter_value: file });
+    });
+  }
+
+  // 셀럽PGM 요일 슬라이서 (하나만 선택, 프로그램 슬라이서와 함께 걸린다)
+  const celDaySlicer = document.getElementById('celDaySlicer');
+  if (celDaySlicer) {
+    celDaySlicer.addEventListener('click', (e) => {
+      const btn = e.target.closest('button');
+      if (!btn) return;
+      celSelectedDay = btn.dataset.day;
+      celDaySlicer.querySelectorAll('button').forEach(b => b.classList.toggle('active', b === btn));
+      celRenderCompare();
+      gaEvent('filter_click', { filter_group: 'celebrity_day', filter_value: celSelectedDay });
     });
   }
 
