@@ -1,7 +1,7 @@
 {
   "weekStart": "2026-10-19",
   "weekEnd": "2026-10-25",
-  "collectedAt": "2026-10-23T10:56:22.358679+09:00",
+  "collectedAt": "2026-10-23T17:29:22.576217+09:00",
   "programs": [
     {
       "id": "drama_나의 유죄인간_tvN_오후 08:50",
@@ -1142,6 +1142,25 @@
         }
       },
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=42155286&qvt=0&query=%EC%8B%AD%EC%98%A4%EC%95%BC%20%EA%B3%A8%EB%93%A0%EB%B2%A8"
+    },
+    {
+      "id": "drama_키드냅 게임_채널A_오후 10:00",
+      "category": "drama",
+      "channel": "채널A",
+      "title": "키드냅 게임",
+      "days": [
+        "화"
+      ],
+      "time": "오후 10:00",
+      "rating": 0.3,
+      "ratingDate": "10.20",
+      "ratingByDay": {
+        "화": {
+          "rating": 0.3,
+          "ratingDate": "10.20"
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41188209&qvt=0&query=%ED%82%A4%EB%93%9C%EB%83%85%20%EA%B2%8C%EC%9E%84"
     }
   ]
 }
