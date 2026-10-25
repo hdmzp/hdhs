@@ -1,7 +1,7 @@
 {
   "weekStart": "2026-10-19",
   "weekEnd": "2026-10-25",
-  "collectedAt": "2026-10-26T00:37:57.887543+09:00",
+  "collectedAt": "2026-10-26T04:25:42.721709+09:00",
   "programs": [
     {
       "id": "drama_나의 유죄인간_tvN_오후 08:50",
@@ -1905,6 +1905,29 @@
         }
       },
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41301756&qvt=0&query=%EB%81%9D%EA%B9%8C%EC%A7%80%20%EA%B0%84%EB%8B%A4%20%EB%8F%85%EB%B0%95%ED%88%AC%EC%96%B4"
+    },
+    {
+      "id": "variety_스트릿 월드 파이터 : 디렉터스 워_Mnet_오후 10:00",
+      "category": "variety",
+      "channel": "Mnet",
+      "title": "스트릿 월드 파이터 : 디렉터스 워",
+      "days": [
+        "화"
+      ],
+      "time": "오후 10:00",
+      "rating": 0.6,
+      "ratingDate": "10.20",
+      "ratingByDay": {
+        "화": {
+          "rating": 0.6,
+          "ratingDate": "10.20",
+          "episode": 9
+        }
+      },
+      "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41138497&qvt=0&query=%EC%8A%A4%ED%8A%B8%EB%A6%BF%20%EC%9B%94%EB%93%9C%20%ED%8C%8C%EC%9D%B4%ED%84%B0%20%EB%94%94%EB%A0%89%ED%84%B0%EC%8A%A4%20%EC%9B%8C",
+      "isEnded": true,
+      "endDate": "2026-10-20",
+      "episode": 9
     }
   ]
 }
