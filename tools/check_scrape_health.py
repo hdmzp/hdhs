@@ -115,6 +115,7 @@ SPECS = {
         (f"{REP}/GS_BJY.json", count_products, 0, True),
         (f"{REP}/GS_SYJ.json", count_products, 0, True),
         (f"{REP}/LT_CYR.json", count_products, 0, True),
+        (f"{REP}/LT_YNH.json", count_products, 0, True),
         (f"{REP}/CJ_KJE.json", count_products, 0, True),
         (f"{REP}/CJ_CHJ.json", count_products, 0, True),
         (f"{REP}/CJ_KCO.json", count_products, 0, True),
@@ -142,7 +143,7 @@ SPECS = {
 PRODUCER = {
     "HD_HJM": "fixed/rehd.py", "HD_OGS": "fixed/rehd.py", "HD_WYE": "fixed/rehd.py",
     "GS_BJY": "fixed/regs.py", "GS_SYJ": "fixed/regs.py",
-    "LT_CYR": "fixed/relt.py",
+    "LT_CYR": "fixed/relt.py", "LT_YNH": "fixed/relt.py",
     "CJ_KJE": "fixed/recj.py", "CJ_CHJ": "fixed/recj.py",
     "CJ_KCO": "fixed/recj.py", "CJ_SIH": "fixed/recj.py", "CJ_KSY": "fixed/recj.py",
     "CJ_DGG": "fixed/recj.py", "CJ_LMT": "fixed/recj.py",

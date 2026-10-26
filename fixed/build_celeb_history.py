@@ -98,6 +98,7 @@ SOURCE_FILES = [
     "GS_BJY.json",
     "GS_SYJ.json",
     "LT_CYR.json",
+    "LT_YNH.json",   # 더퍼스트 유난희 (셀럽PGM 편입 2026-10)
     "CJ_KJE.json",
     "CJ_CHJ.json",
     "CJ_KCO.json",

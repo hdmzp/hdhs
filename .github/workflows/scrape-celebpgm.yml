@@ -57,7 +57,7 @@ jobs:
         echo "HD 대표 PGM(황정민쇼, 오감쇼) 수집 시작..."
         python tools/run_step.py fixed/rehd.py
 
-        echo "LT 최유라쇼 수집 시작..."
+        echo "LT 최유라쇼, 더퍼스트 유난희 수집 시작..."
         python tools/run_step.py fixed/relt.py
 
         echo "셀럽PGM merged.json 갱신..."
