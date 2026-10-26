@@ -8139,7 +8139,7 @@ function celBuildNews(files, ym) {
       const weekAll = list.filter(b => b.start.getTime() >= wk && b.start.getTime() < wk + 7 * DAY);
       if (!flagged && weekAll.length > usualPerWeek) {
         const ended = weekAll.every(b => b.start <= now);
-        const wkLabel = wk === thisWeek ? '이번주' : `${md(new Date(wk))} 주`;
+        const wkLabel = wk === thisWeek ? '이번주' : `${md(new Date(wk))}주차`;
         push(weekAll[0].start, ended, wkLabel, `${weekAll.length}회`,
              weekAll.map(b => `${WD[b.wd]} ${md(b.start)} ${celNewsHm(b.hm)}`).join(', ') + ` · 평소 주 ${usualPerWeek}회`, null);
       }
