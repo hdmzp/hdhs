@@ -7975,7 +7975,8 @@ function celNoticeRowHtml(r) {
 //   시간: 그 요일 방송의 최빈 시작시각 (요일별로 따로).
 //   횟수: 주(월~일)별 방송 횟수의 최빈값.
 // 이미 끝난(시작한) 회차는 알리지 않는다. 휴방 기록은 계산에서 뺀다.
-const CEL_NEWS_LOOKBACK_DAYS = 56;
+const CEL_NEWS_LOOKBACK_DAYS = 56;       // 평소 = 직전 8주 최빈값
+const CEL_NEWS_LOOKBACK_MAX_DAYS = 84;   // 8주로 평소 요일을 못 정하면 12주까지 넓힌다
 let celNewsCollapsed = (() => {
   try { return window.matchMedia('(max-width: 720px)').matches; } catch (e) { return false; }
 })();
@@ -8060,15 +8061,19 @@ function celBuildNews(files, ym) {
     });
 
     for (const [wk, inMonth] of weeks) {
-      const past = list.filter(b => b.start.getTime() >= wk - CEL_NEWS_LOOKBACK_DAYS * DAY && b.start.getTime() < wk);
-      if (past.length < 2) continue;  // 기준으로 삼을 기록이 부족한 신규 PGM은 판단 보류
+      // 평소 요일 (주 2회 정규 편성 포함) - 직전 8주, 부족하면 12주
+      let past = [], usualDays = [];
+      for (const days of [CEL_NEWS_LOOKBACK_DAYS, CEL_NEWS_LOOKBACK_MAX_DAYS]) {
+        past = list.filter(b => b.start.getTime() >= wk - days * DAY && b.start.getTime() < wk);
+        const wdMode = celNewsMode(past.map(b => b.wd));
+        usualDays = [...wdMode.counts.entries()]
+          .filter(([, n]) => n >= Math.max(2, Math.ceil(wdMode.count / 2)))
+          .map(([wd]) => wd).sort((a, b) => ((a + 6) % 7) - ((b + 6) % 7));
+        if (usualDays.length) break;
+      }
+      if (usualDays.length === 0) continue;  // 12주로도 2회 이상 나온 요일이 없으면 판단 보류 (신규·중간 편입 직후)
 
-      // 평소 요일 (주 2회 정규 편성 포함) / 요일별 시간 / 주간 횟수 / 하루 최대 횟수
-      const wdMode = celNewsMode(past.map(b => b.wd));
-      const usualDays = [...wdMode.counts.entries()]
-        .filter(([, n]) => n >= Math.max(2, Math.ceil(wdMode.count / 2)))
-        .map(([wd]) => wd).sort((a, b) => ((a + 6) % 7) - ((b + 6) % 7));
-      if (usualDays.length === 0) continue;  // 2회 이상 나온 요일이 없으면 평소를 정할 수 없다 (중간 편입 직후)
+      // 요일별 시간 / 주간 횟수 / 하루 최대 횟수
       const usualTime = {};
       usualDays.forEach(wd => { usualTime[wd] = celNewsMode(past.filter(b => b.wd === wd).map(b => b.hm)).value; });
       const perWeek = new Map(), perDay = new Map();
@@ -8141,7 +8146,7 @@ function celRenderNews(files, ym) {
     `<div class="cel-news${celNewsCollapsed ? ' collapsed' : ''}" id="celNews">` +
       `<div class="cel-news-head">` +
         `<span class="cel-news-title">[${label}]</span>` +
-        `<span class="cel-news-cnt">평소(직전 8주 최빈)와 다른 방송 ${items.length}건 · 예정 ${upcoming}건</span>` +
+        `<span class="cel-news-cnt">평소(직전 8주 최빈, 부족하면 12주)와 다른 방송 ${items.length}건 · 예정 ${upcoming}건</span>` +
         `<button type="button" class="cel-news-toggle">${celNewsCollapsed ? '펼치기 ▼' : '접기 ▲'}</button>` +
       `</div>` +
       body +
