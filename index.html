@@ -3553,6 +3553,7 @@
   .cel-news-pname.hd { color: #003C82; }
   .cel-news-pname.lt { color: #DA291C; }
   .cel-news-detail { color: var(--ink-soft); }
+  .cel-news-day { color: #111; font-weight: 800; }
   .cel-news-list li.ended { color: var(--ink-soft); }
   /* 예정(미래) 회차는 붉은색 */
   .cel-news-list li.up { color: #DC2626; }
@@ -8099,8 +8100,10 @@ function celBuildNews(files, ym) {
 
       // text: 동사 앞까지("평소와 다른 시간에"). 끝난 회차는 '방송됐어요', 남은 회차는 '방송 예정이에요'.
       // merge: 같은 프로그램에서 같은 종류·같은 평소·같은 상태(종료/예정)면 대상 회차를 ' & '로 잇는다.
-      const push = (start, ended, text, detail, merge) => items.push({
-        file, co, name, start, ended, text, detail, merge });
+      // day: 줄 맨 앞에 굵게 붙이는 회차 날짜("10/14 수") - 눈에 띄게
+      const push = (start, ended, day, text, detail, merge) => items.push({
+        file, co, name, start, ended, days: [day], text, detail, merge });
+      const dayOf = (b) => `${md(b.start)} ${WD[b.wd]}`;
       let flagged = false;
 
       // 1) 하루 여러 번 (원데이 2회 등) - 그 날 회차는 이 한 줄로 묶는다
@@ -8111,7 +8114,7 @@ function celBuildNews(files, ym) {
         if (bs.length <= usualPerDay) continue;
         multiDays.add(date);
         const ended = bs.every(b => b.start <= now);
-        push(bs[0].start, ended, `${md(bs[0].start)}(${WD[bs[0].wd]}) 하루 ${bs.length}회`,
+        push(bs[0].start, ended, dayOf(bs[0]), `하루 ${bs.length}회`,
              `${bs.map(b => celNewsHm(b.hm)).join(', ')} · 평소 ${usualText}`, null);
         flagged = true;
       }
@@ -8127,7 +8130,7 @@ function celBuildNews(files, ym) {
         if (!dayDiff && !timeDiff) continue;
         const what = dayDiff && timeDiff ? '요일·시간' : dayDiff ? '요일' : '시간';
         const usual = dayDiff ? usualText : `${WD[b.wd]} ${celNewsHm(usualTime[b.wd])}`;
-        push(b.start, ended, `평소와 다른 ${what}에`, `평소 ${usual} → ${when}`,
+        push(b.start, ended, dayOf(b), `평소와 다른 ${what}에`, `평소 ${usual} → ${when}`,
              { key: `${what}|${usual}|${ended}`, usual, target: when });
         flagged = true;
       }
@@ -8136,8 +8139,8 @@ function celBuildNews(files, ym) {
       const weekAll = list.filter(b => b.start.getTime() >= wk && b.start.getTime() < wk + 7 * DAY);
       if (!flagged && weekAll.length > usualPerWeek) {
         const ended = weekAll.every(b => b.start <= now);
-        const wkLabel = wk === thisWeek ? '이번주' : `${md(new Date(wk))} 주에`;
-        push(weekAll[0].start, ended, `${wkLabel} ${weekAll.length}회`,
+        const wkLabel = wk === thisWeek ? '이번주' : `${md(new Date(wk))} 주`;
+        push(weekAll[0].start, ended, wkLabel, `${weekAll.length}회`,
              weekAll.map(b => `${WD[b.wd]} ${md(b.start)} ${celNewsHm(b.hm)}`).join(', ') + ` · 평소 주 ${usualPerWeek}회`, null);
       }
     }
@@ -8152,9 +8155,10 @@ function celBuildNews(files, ym) {
     const same = it.merge && lines.find(l => l.merge && l.merge.key === it.merge.key);
     if (same) {
       same.targets.push(it.merge.target);
+      same.days.push(...it.days);
       same.detail = `평소 ${same.merge.usual} → ${same.targets.join(' & ')}`;
     } else {
-      lines.push({ ...it, targets: it.merge ? [it.merge.target] : [] });
+      lines.push({ ...it, days: [...it.days], targets: it.merge ? [it.merge.target] : [] });
     }
   }
   return [...progs.values()];
@@ -8166,7 +8170,7 @@ function celRenderNews(files, ym) {
   const lines = progs.flatMap(p => p.lines);
   const upcoming = lines.filter(l => !l.ended).length;
   const lineHtml = (l) =>
-    `${l.text} ${l.ended ? '방송됐어요' : '방송 예정이에요'} <span class="cel-news-detail">(${l.detail})</span>` +
+    `<b class="cel-news-day">${l.days.join(', ')}</b> ${l.text} ${l.ended ? '방송됐어요' : '방송 예정이에요'} <span class="cel-news-detail">(${l.detail})</span>` +
     (l.ended ? ' <span class="cel-news-tag">종료</span>' : ' <span class="cel-news-tag up">예정</span>');
   const who = (p) => `<b class="cel-news-pname ${p.co.toLowerCase()}">${p.co} ${p.name}</b>`;
   // 한 프로그램에 한 줄뿐이면 "CJ 최화정쇼가 …" 한 줄로, 여러 줄이면 프로그램명 아래에 나열
