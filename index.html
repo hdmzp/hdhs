@@ -3568,6 +3568,9 @@
   }
   .cel-news-tag.up { color: #B4234A; border-color: #F6CBD6; }
   .cel-news-empty { color: var(--ink-soft); margin-top: 4px; }
+  .cel-news-missing { margin-top: 6px; padding-top: 6px; border-top: 1px dashed #F6CBD6; color: var(--ink-soft); }
+  .cel-news-missing b { color: var(--ink); }
+  .cel-news.collapsed .cel-news-missing,
   .cel-news.collapsed .cel-news-list,
   .cel-news.collapsed .cel-news-empty { display: none; }
 
@@ -8035,12 +8038,14 @@ function celNewsBroadcasts(file, base) {
   const out = [];
   let title = '';
   const seen = new Set();
+  const recordDates = new Set();  // 기록이 있는 날 (휴방·시각 없는 회차 포함) - '상품 없음' 판정용
   for (const d of [-3, -2, -1, 0, 1]) {
     const hist = celHistoryCache[celShiftMonth(base, d)];
     const prog = hist && Array.isArray(hist.programs) && hist.programs.find(p => p.program_key === key);
     if (!prog) continue;
     title = title || prog.program_title || prog.tab_name || '';
     for (const b of prog.broadcasts || []) {
+      if (b.date) recordDates.add(b.date);
       const m = String(b.label || '').match(/(\d{1,2}):(\d{2})/);
       if (!b.date || !m || b.off_air) continue;
       const hm = `${m[1].padStart(2, '0')}:${m[2]}`;
@@ -8053,7 +8058,7 @@ function celNewsBroadcasts(file, base) {
     }
   }
   out.sort((a, b) => a.start - b.start);
-  return { title, list: out };
+  return { title, list: out, recordDates };
 }
 
 function celNewsMode(values) {
@@ -8079,6 +8084,60 @@ function celNewsMonday(d) {
   const x = new Date(d.getFullYear(), d.getMonth(), d.getDate());
   x.setDate(x.getDate() - ((x.getDay() + 6) % 7));
   return x;
+}
+
+// 그 주(wk = 월요일 0시 ms) 기준 평소 요일 - 직전 12주에 최다 요일의 절반 이상(최소 2회) 나온 요일
+function celNewsUsualDays(list, wk) {
+  const past = list.filter(b => b.start.getTime() >= wk - CEL_NEWS_LOOKBACK_DAYS * 86400000 && b.start.getTime() < wk);
+  const wdMode = celNewsMode(past.map(b => b.wd));
+  const usualDays = [...wdMode.counts.entries()]
+    .filter(([, n]) => n >= Math.max(2, Math.ceil(wdMode.count / 2)))
+    .map(([wd]) => wd).sort((a, b) => ((a + 6) % 7) - ((b + 6) % 7));
+  return { past, usualDays };
+}
+
+// 평소 방송 요일인데 그날 기록(상품)이 아예 없는 날 - 코드 등록 전인지 휴방인지 알 수 없다.
+// 이번 달 1일 ~ 오늘+CEL_NEWS_MISSING_AHEAD_DAYS일만 본다 (그 뒤는 원래 코드가 안 올라올 때라).
+// 첫 기록 전 날짜(중간 편입)와 휴방으로 기록된 날은 뺀다. 오탐을 줄이려고:
+//   - 그 주 방송 횟수가 평소 주간 횟수보다 적을 때만 (다른 요일로 옮겨 방송했으면 빠진 게 아니다)
+//   - 평소 요일 수가 주간 횟수보다 많아 요일을 예측할 수 없는 프로그램은 뺀다 (겟잇스타일)
+//   - 직전 12주 중 방송한 주가 70% 미만인 비정기 프로그램은 뺀다 (김신영이 산다)
+const CEL_NEWS_MISSING_AHEAD_DAYS = 7;
+function celBuildMissing(files, ym) {
+  const WD = ['일', '월', '화', '수', '목', '금', '토'];
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const [y, m] = ym.split('-').map(Number);
+  const first = new Date(y, m - 1, 1);
+  const last = new Date(Math.min(new Date(y, m, 0).getTime(),
+                                 today.getTime() + CEL_NEWS_MISSING_AHEAD_DAYS * 86400000));
+  const out = [];
+  for (const file of files) {
+    const { title, list, recordDates } = celNewsBroadcasts(file, ym);
+    if (list.length === 0) continue;
+    const firstRec = list[0].start;
+    const co = file.split('_')[0];
+    for (let d = new Date(first); d <= last; d.setDate(d.getDate() + 1)) {
+      if (d < new Date(firstRec.getFullYear(), firstRec.getMonth(), firstRec.getDate())) continue;
+      const iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+      if (recordDates.has(iso)) continue;
+      const wk = celNewsMonday(d).getTime();
+      const { past, usualDays } = celNewsUsualDays(list, wk);
+      if (!usualDays.includes(d.getDay())) continue;
+      const perWeek = new Map();
+      past.forEach(b => { const k = celNewsMonday(b.start).getTime(); perWeek.set(k, (perWeek.get(k) || 0) + 1); });
+      const usualPerWeek = celNewsMode([...perWeek.values()]).value || 1;
+      if (usualDays.length > usualPerWeek) continue;
+      const firstWk = celNewsMonday(firstRec).getTime();
+      const spanWeeks = Math.round((wk - Math.max(firstWk, wk - CEL_NEWS_LOOKBACK_DAYS * 86400000)) / (7 * 86400000));
+      if (spanWeeks < 2 || perWeek.size / spanWeeks < 0.7) continue;
+      const weekCnt = list.filter(b => b.start.getTime() >= wk && b.start.getTime() < wk + 7 * 86400000).length;
+      if (weekCnt >= usualPerWeek) continue;
+      out.push({ start: new Date(d), text: `${co} ${title || file} ${d.getMonth() + 1}/${d.getDate()} ${WD[d.getDay()]}` });
+    }
+  }
+  out.sort((a, b) => a.start - b.start);
+  return out;
 }
 
 function celBuildNews(files, ym) {
@@ -8194,6 +8253,7 @@ function celBuildNews(files, ym) {
 
 function celRenderNews(files, ym) {
   const progs = celBuildNews(files, ym);
+  const missing = celBuildMissing(files, ym);
   const label = `${Number(ym.slice(5, 7))}월 방송 체크`;
   const lines = progs.flatMap(p => p.lines);
   const upcoming = lines.filter(l => !l.ended).length;
@@ -8209,6 +8269,9 @@ function celRenderNews(files, ym) {
             p.lines.map(l => `<li class="${l.ended ? 'ended' : 'up'}">${lineHtml(l)}</li>`).join('') +
           `</ul></li>`).join('')}</ul>`
     : `<div class="cel-news-empty">이 달은 평소와 다르게 편성된 방송이 없어요.</div>`;
+  const missingHtml = missing.length
+    ? `<div class="cel-news-missing">📭 <b>${missing.map(x => x.text).join(', ')}</b> - 평소 방송일인데 상품이 없어요. 코드 등록 전이거나 휴방일 수 있어요.</div>`
+    : '';
   return (
     `<div class="cel-news${celNewsCollapsed ? ' collapsed' : ''}" id="celNews">` +
       `<div class="cel-news-head">` +
@@ -8216,7 +8279,7 @@ function celRenderNews(files, ym) {
         `<span class="cel-news-cnt">평소(직전 12주 최빈)와 다른 방송 · 프로그램 ${progs.length}개 · 예정 ${upcoming}건</span>` +
         `<button type="button" class="cel-news-toggle">${celNewsCollapsed ? '펼치기 ▼' : '접기 ▲'}</button>` +
       `</div>` +
-      body +
+      body + missingHtml +
     `</div>`
   );
 }
