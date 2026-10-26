@@ -3541,6 +3541,15 @@
   .cel-news-list li { line-height: 1.8; color: var(--ink); }
   .cel-news-list li::before { content: "· "; color: #B4234A; font-weight: 800; }
   .cel-news-detail { color: var(--ink-soft); }
+  .cel-news-list li.ended { color: var(--ink-soft); }
+  .cel-news-list li.ended b { color: var(--ink-soft); }
+  .cel-news-tag {
+    font-size: 10.5px; font-weight: 700;
+    color: var(--ink-soft); background: #fff;
+    border: 1px solid var(--rule); border-radius: 10px;
+    padding: 0 6px; margin-left: 2px; white-space: nowrap;
+  }
+  .cel-news-tag.up { color: #B4234A; border-color: #F6CBD6; }
   .cel-news-empty { color: var(--ink-soft); margin-top: 4px; }
   .cel-news.collapsed .cel-news-list,
   .cel-news.collapsed .cel-news-empty { display: none; }
@@ -7421,7 +7430,7 @@ async function celSetMonth(ym) {
   if (prevBtn) prevBtn.disabled = ym <= CEL_HISTORY_MIN_MONTH;
   if (nextBtn) nextBtn.disabled = ym >= maxMonth;
 
-  await Promise.all([celLoadHistory(ym), celLoadNewsMonths()]);
+  await Promise.all([celLoadHistory(ym), celLoadNewsMonths(ym)]);
   celRenderCompare();
 }
 
@@ -7959,7 +7968,7 @@ function celNoticeRowHtml(r) {
     `</div>`;
 }
 
-// ---- 월 방송 체크: 평소와 다른 요일·시간·횟수의 '예정' 회차 (조회 중인 달 전체) ----
+// ---- 월 방송 체크: 평소와 다른 요일·시간·횟수의 회차 (조회 중인 달 전체, 지난 회차는 '종료') ----
 // 평소 = 지난 8주(오늘 전 56일) 방송의 최빈값.
 //   요일: 최다 요일의 절반 이상(최소 2회) 나온 요일은 모두 '평소 요일'로 본다
 //         (동가게 목/토, 최유라쇼 목/토처럼 주 2회 정규 편성).
@@ -7972,17 +7981,15 @@ let celNewsCollapsed = (() => {
 })();
 
 // 오늘 기준 지난 2개월 ~ 다음 달 누적 파일 (8주 전 ~ 다음 주가 걸치는 범위)
-async function celLoadNewsMonths() {
-  const base = celThisMonth();
+async function celLoadNewsMonths(base) {
   await Promise.all([-2, -1, 0, 1].map(d => celLoadHistory(celShiftMonth(base, d))));
 }
 
-function celNewsBroadcasts(file) {
+function celNewsBroadcasts(file, base) {
   const key = file.replace(/\.json$/, '');
   const out = [];
   let title = '';
   const seen = new Set();
-  const base = celThisMonth();
   for (const d of [-2, -1, 0, 1]) {
     const hist = celHistoryCache[celShiftMonth(base, d)];
     const prog = hist && Array.isArray(hist.programs) && hist.programs.find(p => p.program_key === key);
@@ -8031,64 +8038,90 @@ function celNewsMonday(d) {
 
 function celBuildNews(files, ym) {
   const WD = ['일', '월', '화', '수', '목', '금', '토'];
+  const DAY = 86400000;
   const now = new Date();
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const since = new Date(today); since.setDate(since.getDate() - CEL_NEWS_LOOKBACK_DAYS);
   const md = (d) => `${d.getMonth() + 1}/${d.getDate()}`;
-  const thisWeek = celNewsMonday(today).getTime();
+  const thisWeek = celNewsMonday(now).getTime();
   const items = [];
 
   for (const file of files) {
-    const { title, list } = celNewsBroadcasts(file);
-    const past = list.filter(b => b.start >= since && b.start < today);
-    if (past.length < 2) continue;  // 기준으로 삼을 기록이 부족한 신규 PGM은 판단 보류
+    const { title, list } = celNewsBroadcasts(file, ym);
     const co = file.split('_')[0];
     const name = title || file;
     const who = `<b>${co} ${name}</b>${celNewsJosa(name)}`;
 
-    // 평소 요일 (주 2회 정규 편성 포함)
-    const wdMode = celNewsMode(past.map(b => b.wd));
-    const usualDays = [...wdMode.counts.entries()]
-      .filter(([, n]) => n >= Math.max(2, Math.ceil(wdMode.count / 2)))
-      .map(([wd]) => wd).sort((a, b) => ((a + 6) % 7) - ((b + 6) % 7));
-    const usualTime = {};
-    usualDays.forEach(wd => { usualTime[wd] = celNewsMode(past.filter(b => b.wd === wd).map(b => b.hm)).value; });
-
-    // 평소 주간 횟수
-    const perWeek = new Map();
-    past.forEach(b => { const k = celNewsMonday(b.start).getTime(); perWeek.set(k, (perWeek.get(k) || 0) + 1); });
-    const usualPerWeek = celNewsMode([...perWeek.values()]).value || 1;
-
-    // 조회 중인 달의 아직 시작 안 한 회차를 주(월~일) 단위로 본다
-    const upcoming = list.filter(b => b.date.slice(0, 7) === ym && b.start > now);
+    // 조회 중인 달의 회차를 주(월~일) 단위로 본다. 평소 기준은 '그 주 시작 전 8주'
+    // - 지난 회차가 자기 자신을 기준에 넣지 않게 주마다 따로 잡는다.
     const weeks = new Map();
-    upcoming.forEach(b => {
+    list.filter(b => b.date.slice(0, 7) === ym).forEach(b => {
       const k = celNewsMonday(b.start).getTime();
       if (!weeks.has(k)) weeks.set(k, []);
       weeks.get(k).push(b);
     });
 
-    for (const [wk, ups] of weeks) {
-      // 그 주 전체 횟수(이미 끝난 회차 포함)가 평소보다 많으면 한 줄로 알린다
-      // (회차별 요일/시간 알림은 생략)
-      const weekEnd = wk + 7 * 86400000;
-      const weekCnt = list.filter(b => b.start.getTime() >= wk && b.start.getTime() < weekEnd).length;
-      if (weekCnt > usualPerWeek) {
-        const wkLabel = wk === thisWeek ? '이번주' : `${md(new Date(wk))} 주에`;
-        items.push({ start: ups[0].start, html: `${who} ${wkLabel} ${weekCnt}회 방송돼요 ` +
-          `<span class="cel-news-detail">(` +
-          ups.map(b => `${WD[b.wd]} ${md(b.start)} ${celNewsHm(b.hm)}`).join(', ') + `)</span>` });
-        continue;
+    for (const [wk, inMonth] of weeks) {
+      const past = list.filter(b => b.start.getTime() >= wk - CEL_NEWS_LOOKBACK_DAYS * DAY && b.start.getTime() < wk);
+      if (past.length < 2) continue;  // 기준으로 삼을 기록이 부족한 신규 PGM은 판단 보류
+
+      // 평소 요일 (주 2회 정규 편성 포함) / 요일별 시간 / 주간 횟수 / 하루 최대 횟수
+      const wdMode = celNewsMode(past.map(b => b.wd));
+      const usualDays = [...wdMode.counts.entries()]
+        .filter(([, n]) => n >= Math.max(2, Math.ceil(wdMode.count / 2)))
+        .map(([wd]) => wd).sort((a, b) => ((a + 6) % 7) - ((b + 6) % 7));
+      if (usualDays.length === 0) continue;  // 2회 이상 나온 요일이 없으면 평소를 정할 수 없다 (중간 편입 직후)
+      const usualTime = {};
+      usualDays.forEach(wd => { usualTime[wd] = celNewsMode(past.filter(b => b.wd === wd).map(b => b.hm)).value; });
+      const perWeek = new Map(), perDay = new Map();
+      past.forEach(b => {
+        const k = celNewsMonday(b.start).getTime();
+        perWeek.set(k, (perWeek.get(k) || 0) + 1);
+        perDay.set(b.date, (perDay.get(b.date) || 0) + 1);
+      });
+      const usualPerWeek = celNewsMode([...perWeek.values()]).value || 1;
+      const usualPerDay = celNewsMode([...perDay.values()]).value || 1;
+      const usualText = usualDays.map(wd => `${WD[wd]} ${celNewsHm(usualTime[wd])}`).join(' / ');
+
+      const push = (start, ended, text, detail) => items.push({
+        start, ended,
+        html: `${who} ${text}${ended ? '어요' : '요'} <span class="cel-news-detail">(${detail})</span>` });
+      const verb = (ended) => ended ? '방송됐' : '방송돼';
+      let flagged = false;
+
+      // 1) 하루 여러 번 (원데이 2회 등) - 그 날 회차는 이 한 줄로 묶는다
+      const byDay = new Map();
+      inMonth.forEach(b => { if (!byDay.has(b.date)) byDay.set(b.date, []); byDay.get(b.date).push(b); });
+      const multiDays = new Set();
+      for (const [date, bs] of byDay) {
+        if (bs.length <= usualPerDay) continue;
+        multiDays.add(date);
+        const ended = bs.every(b => b.start <= now);
+        push(bs[0].start, ended, `${md(bs[0].start)}(${WD[bs[0].wd]}) 하루 ${bs.length}회 ${verb(ended)}`,
+             `${bs.map(b => celNewsHm(b.hm)).join(', ')} · 평소 ${usualText}`);
+        flagged = true;
       }
-      for (const b of ups) {
+
+      // 2) 평소와 다른 요일 / 시간
+      const overallTime = celNewsMode(past.map(b => b.hm)).value;
+      for (const b of inMonth) {
+        if (multiDays.has(b.date)) continue;
+        const ended = b.start <= now;
         const when = `${md(b.start)} ${WD[b.wd]} ${celNewsHm(b.hm)}`;
-        if (!usualDays.includes(b.wd)) {
-          items.push({ start: b.start, html: `${who} 평소와 다른 요일에 방송돼요 ` +
-            `<span class="cel-news-detail">(평소 ${usualDays.map(wd => WD[wd]).join('/')} → ${when})</span>` });
-        } else if (usualTime[b.wd] && usualTime[b.wd] !== b.hm) {
-          items.push({ start: b.start, html: `${who} 평소와 다른 시간에 방송돼요 ` +
-            `<span class="cel-news-detail">(평소 ${WD[b.wd]} ${celNewsHm(usualTime[b.wd])} → ${when})</span>` });
-        }
+        const dayDiff = !usualDays.includes(b.wd);
+        const timeDiff = dayDiff ? b.hm !== overallTime : (usualTime[b.wd] && usualTime[b.wd] !== b.hm);
+        if (!dayDiff && !timeDiff) continue;
+        const what = dayDiff && timeDiff ? '요일·시간' : dayDiff ? '요일' : '시간';
+        push(b.start, ended, `평소와 다른 ${what}에 ${verb(ended)}`,
+             `평소 ${dayDiff ? usualText : `${WD[b.wd]} ${celNewsHm(usualTime[b.wd])}`} → ${when}`);
+        flagged = true;
+      }
+
+      // 3) 위로 설명 안 되는 주간 횟수 초과 (평소 요일·시간대로 한 번 더 방송 등)
+      const weekAll = list.filter(b => b.start.getTime() >= wk && b.start.getTime() < wk + 7 * DAY);
+      if (!flagged && weekAll.length > usualPerWeek) {
+        const ended = weekAll.every(b => b.start <= now);
+        const wkLabel = wk === thisWeek ? '이번주' : `${md(new Date(wk))} 주에`;
+        push(weekAll[0].start, ended, `${wkLabel} ${weekAll.length}회 ${verb(ended)}`,
+             weekAll.map(b => `${WD[b.wd]} ${md(b.start)} ${celNewsHm(b.hm)}`).join(', ') + ` · 평소 주 ${usualPerWeek}회`);
       }
     }
   }
@@ -8099,14 +8132,16 @@ function celBuildNews(files, ym) {
 function celRenderNews(files, ym) {
   const items = celBuildNews(files, ym);
   const label = `${Number(ym.slice(5, 7))}월 방송 체크`;
+  const upcoming = items.filter(it => !it.ended).length;
   const body = items.length
-    ? `<ul class="cel-news-list">${items.map(it => `<li>${it.html}</li>`).join('')}</ul>`
-    : `<div class="cel-news-empty">이 달 남은 방송 중 평소와 다르게 편성된 프로그램이 없어요.</div>`;
+    ? `<ul class="cel-news-list">${items.map(it =>
+        `<li class="${it.ended ? 'ended' : ''}">${it.html}${it.ended ? ' <span class="cel-news-tag">종료</span>' : ' <span class="cel-news-tag up">예정</span>'}</li>`).join('')}</ul>`
+    : `<div class="cel-news-empty">이 달은 평소와 다르게 편성된 방송이 없어요.</div>`;
   return (
     `<div class="cel-news${celNewsCollapsed ? ' collapsed' : ''}" id="celNews">` +
       `<div class="cel-news-head">` +
         `<span class="cel-news-title">[${label}]</span>` +
-        `<span class="cel-news-cnt">평소(지난 8주 최빈)와 다른 예정 편성 ${items.length}건</span>` +
+        `<span class="cel-news-cnt">평소(직전 8주 최빈)와 다른 방송 ${items.length}건 · 예정 ${upcoming}건</span>` +
         `<button type="button" class="cel-news-toggle">${celNewsCollapsed ? '펼치기 ▼' : '접기 ▲'}</button>` +
       `</div>` +
       body +
@@ -8217,7 +8252,7 @@ function celRenderCompare() {
     return;
   }
 
-  const newsHtml = viewMonth >= celThisMonth() ? celRenderNews(selected, viewMonth) : '';
+  const newsHtml = celRenderNews(selected, viewMonth);
   wrap.innerHTML = newsHtml + celRenderNotice(selected) + selected.map(celRenderBand).join('');
 }
 
