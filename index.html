@@ -7250,8 +7250,11 @@ const CEL_FILES = [
 // (편입 전 달은 수집하지 않으므로 빈 밴드만 남는다).
 const CEL_START_MONTH = {
   'CJ_DGG.json': '2026-10',
-  'CJ_LMT.json': '2026-10',
-  'LT_YNH.json': '2026-10',
+  // 'YYYY-MM-DD'로 적으면 배지에 날짜까지 쓴다 ("'26.10.26부터 수집").
+  // 밴드 표시 여부는 달(앞 7자리)로만 가른다. 림잇티드/유난희는 10/26부터
+  // 수집 시작이고, 그 전 10월 회차는 편성표에서 소급해 채웠다.
+  'CJ_LMT.json': '2026-10-26',
+  'LT_YNH.json': '2026-10-26',
 };
 // 신규 론칭 프로그램 배지. 론칭일 전에는 '론칭예정', 론칭 후
 // CEL_NEW_BADGE_DAYS일 동안 'NEW'를 붙이고 그 뒤엔 저절로 사라진다
@@ -7754,8 +7757,11 @@ function celRenderBand(file) {
   const newBadge = celLaunchBadgeHtml(file);
   // 중간 편입 프로그램: 언제부터 수집했는지 표시 ('2026-10' -> "'26.10부터 수집")
   const sinceYm = CEL_START_MONTH[file];
+  const sinceText = sinceYm
+    ? `'${sinceYm.slice(2, 4)}.${sinceYm.slice(5, 7)}${sinceYm.length > 7 ? '.' + sinceYm.slice(8, 10) : ''}`
+    : '';
   const sinceBadge = sinceYm
-    ? `<span class="cel-since-badge" title="셀럽PGM 탭에는 이 달부터 수집해요">'${sinceYm.slice(2, 4)}.${sinceYm.slice(5, 7)}부터 수집</span>`
+    ? `<span class="cel-since-badge" title="셀럽PGM 탭에는 이때부터 수집해요">${sinceText}부터 수집</span>`
     : '';
   const titleHtml = meta.detail_link
     ? `<a class="cel-col-title" href="${meta.detail_link}" target="_blank" rel="noopener noreferrer">${meta.title}${newBadge} ↗</a>`
@@ -7977,7 +7983,7 @@ function celRenderCompare() {
 
   const viewMonth = celMonth || celThisMonth();
   const picked = CEL_FILES.filter(f => celSelectedFiles.has(f)
-    && !(CEL_START_MONTH[f] && viewMonth < CEL_START_MONTH[f]));
+    && !(CEL_START_MONTH[f] && viewMonth < CEL_START_MONTH[f].slice(0, 7)));
   if (picked.length === 0) {
     wrap.innerHTML = '<div class="cel-empty">비교할 셀럽PGM을 선택하세요 (여러 개 중복 선택 가능)</div>';
     return;
