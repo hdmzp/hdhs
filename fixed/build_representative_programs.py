@@ -61,12 +61,14 @@ SOURCE_FILES = [
     "GS_BJY.json",   # 백지연 (regs.py 완성되면 생성됨)
     "GS_SYJ.json",   # 소유진 (regs.py 완성되면 생성됨)
     "LT_CYR.json",
+    "LT_YNH.json",   # 더퍼스트 유난희 (셀럽PGM 편입 2026-10)
     "CJ_KJE.json",
     "CJ_CHJ.json",
     "CJ_KCO.json",
     "CJ_SIH.json",   # 소이현의 겟잇스타일
     "CJ_KSY.json",   # 김신영이 산다 (2026-08-18 론칭)
     "CJ_DGG.json",   # 동가게 (셀럽PGM 편입 2026-10)
+    "CJ_LMT.json",   # 림잇티드 (2026-10 신규)
 ]
 
 

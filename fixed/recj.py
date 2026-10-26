@@ -142,6 +142,10 @@ PROGRAMS = [
     # (9월 이전 회차는 안 쌓는다 -> since보다 이른 방송일 상품은 버린다).
     {"tab_name": "동가게", "program_title": "동가게", "pgm_cd": "100013", "output_file": "CJ_DGG.json",
      "keywords": ("동가게",), "fallback_schedule": "목 20:45 / 토 08:20", "since": "2026-10-01"},
+    # 림잇티드: 2026-10 신규PGM. 셀럽PGM 탭에는 2026-10부터 편입 (9월 이전 회차는
+    # 안 쌓는다). 편성 요일·시간은 아직 고정 문구가 없어 매번 API에서 읽는다.
+    {"tab_name": "림잇티드", "program_title": "림잇티드", "pgm_cd": "100082", "output_file": "CJ_LMT.json",
+     "keywords": ("림잇티드",), "since": "2026-10-01"},
 ]
 # ==============================================
 

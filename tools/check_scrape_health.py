@@ -115,6 +115,7 @@ SPECS = {
         (f"{REP}/GS_BJY.json", count_products, 0, True),
         (f"{REP}/GS_SYJ.json", count_products, 0, True),
         (f"{REP}/LT_CYR.json", count_products, 0, True),
+        (f"{REP}/LT_YNH.json", count_products, 0, True),
         (f"{REP}/CJ_KJE.json", count_products, 0, True),
         (f"{REP}/CJ_CHJ.json", count_products, 0, True),
         (f"{REP}/CJ_KCO.json", count_products, 0, True),
@@ -123,6 +124,9 @@ SPECS = {
         # pgmShop에 상품이 안 걸린다 -> 갱신 누락을 실패로 보지 않는다
         (f"{REP}/CJ_KSY.json", count_products, 0, False),
         (f"{REP}/CJ_DGG.json", count_products, 0, True),
+        # 림잇티드: 2026-10 신규PGM. 편성 주기가 아직 확인 안 돼 방송 예정이
+        # 없는 기간이 있을 수 있다 -> 김신영과 같이 갱신 누락을 실패로 보지 않는다
+        (f"{REP}/CJ_LMT.json", count_products, 0, False),
         (f"{REP}/merged.json", count_merged_programs, 8, True),
     ],
     "fixed": [
@@ -139,10 +143,10 @@ SPECS = {
 PRODUCER = {
     "HD_HJM": "fixed/rehd.py", "HD_OGS": "fixed/rehd.py", "HD_WYE": "fixed/rehd.py",
     "GS_BJY": "fixed/regs.py", "GS_SYJ": "fixed/regs.py",
-    "LT_CYR": "fixed/relt.py",
+    "LT_CYR": "fixed/relt.py", "LT_YNH": "fixed/relt.py",
     "CJ_KJE": "fixed/recj.py", "CJ_CHJ": "fixed/recj.py",
     "CJ_KCO": "fixed/recj.py", "CJ_SIH": "fixed/recj.py", "CJ_KSY": "fixed/recj.py",
-    "CJ_DGG": "fixed/recj.py",
+    "CJ_DGG": "fixed/recj.py", "CJ_LMT": "fixed/recj.py",
     "HD": "fixed/hd_fixed_programs.py", "GS": "fixed/gs_fixed_programs.py",
     "CJ": "fixed/cj_fixed_programs.py", "LT": "fixed/lt_fixed_programs.py",
 }

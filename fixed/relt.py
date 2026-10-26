@@ -43,7 +43,10 @@ from urllib.parse import urljoin
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from tools import scrape_guard
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from celeb_day_sweep import supplement_missing_slots, merge_continuous_slots
+from celeb_day_sweep import supplement_missing_slots, merge_continuous_slots, parse_label
+from datetime import date, datetime, timedelta, timezone
+
+KST = timezone(timedelta(hours=9))
 
 OUTPUT_DIR = os.path.join("homeshopping", "representative_programs")
 BASE_DOMAIN = "https://www.lotteimall.com"
@@ -64,6 +67,14 @@ PROGRAMS = [
         "tab_name": "최유라",
         "conts_no": "73",
         "output_file": "LT_CYR.json",
+    },
+    # 더퍼스트 유난희: 매주 목 09:25. 셀럽PGM 탭에는 2026-10부터 편입
+    # (since보다 이른 방송일 상품은 버린다 - recj.py PROGRAMS의 since와 같은 규칙).
+    {
+        "tab_name": "유난희",
+        "conts_no": "1149",
+        "output_file": "LT_YNH.json",
+        "since": "2026-10-01",
     },
     # TODO: 강주은, 이유리 conts_no 확인되면 여기에 추가
     # {"tab_name": "강주은", "conts_no": "???", "output_file": "LT_KJE.json"},
@@ -172,6 +183,19 @@ def crawl_lt_program(config: dict):
     # 08:20~09:20 / 09:20~10:20 / 10:20~10:35 = 이어지는 한 방송).
     # 이어지는 구간은 첫 구간 시각의 한 회차로 묶는다.
     merge_continuous_slots("LT", [program_title, tab_name], upcoming_products)
+
+    # 셀럽PGM 편입일(since) 이전 회차는 버린다. 라벨 날짜를 못 읽는 상품은
+    # 남겨두면 build_celeb_history가 알아서 건너뛴다.
+    since = config.get("since")
+    if since:
+        since_date = date.fromisoformat(since)
+        today = datetime.now(KST).date()
+        before = len(upcoming_products)
+        upcoming_products[:] = [
+            p for p in upcoming_products
+            if (parse_label(p.get("broadcast_date_label"), today)[0] or since_date) >= since_date]
+        if len(upcoming_products) != before:
+            print(f"    -> 편입일({since}) 이전 회차 상품 {before - len(upcoming_products)}개 제외")
 
     print(f"    -> 방송예정 상품 {len(upcoming_products)}개 수집됨")
     for p in upcoming_products:
