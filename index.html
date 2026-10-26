@@ -3528,8 +3528,13 @@
     display: flex; align-items: center; gap: 8px;
     cursor: pointer; user-select: none;
   }
-  .cel-news-title { font-weight: 800; color: #B4234A; letter-spacing: -0.2px; }
+  .cel-news-title { font-weight: 800; color: #B4234A; letter-spacing: -0.2px; white-space: nowrap; }
   .cel-news-cnt { color: var(--ink-soft); font-size: 11.5px; }
+  .cel-news-toggle { white-space: nowrap; }
+  @media (max-width: 720px) {
+    .cel-news-head { flex-wrap: wrap; }
+    .cel-news-cnt { order: 3; flex-basis: 100%; }
+  }
   .cel-news-toggle {
     margin-left: auto;
     font-size: 11px; font-weight: 700;
@@ -3539,10 +3544,19 @@
   }
   .cel-news-list { list-style: none; margin: 6px 0 2px; padding: 0; }
   .cel-news-list li { line-height: 1.8; color: var(--ink); }
-  .cel-news-list li::before { content: "· "; color: #B4234A; font-weight: 800; }
+  .cel-news-list > li + li { margin-top: 4px; }
+  .cel-news-list ul { list-style: none; margin: 0; padding: 0 0 0 12px; }
+  .cel-news-list ul li::before { content: "- "; color: var(--ink-soft); }
+  .cel-news-pname { font-weight: 900; }
+  .cel-news-pname.gs { color: #1AA663; }
+  .cel-news-pname.cj { color: #4B286D; }
+  .cel-news-pname.hd { color: #003C82; }
+  .cel-news-pname.lt { color: #DA291C; }
   .cel-news-detail { color: var(--ink-soft); }
   .cel-news-list li.ended { color: var(--ink-soft); }
-  .cel-news-list li.ended b { color: var(--ink-soft); }
+  /* 예정(미래) 회차는 붉은색 */
+  .cel-news-list li.up { color: #DC2626; }
+  .cel-news-list li.up .cel-news-detail { color: #DC2626; opacity: 0.85; }
   .cel-news-tag {
     font-size: 10.5px; font-weight: 700;
     color: var(--ink-soft); background: #fff;
@@ -7977,9 +7991,7 @@ function celNoticeRowHtml(r) {
 // 이미 끝난(시작한) 회차는 알리지 않는다. 휴방 기록은 계산에서 뺀다.
 const CEL_NEWS_LOOKBACK_DAYS = 56;       // 평소 = 직전 8주 최빈값
 const CEL_NEWS_LOOKBACK_MAX_DAYS = 84;   // 8주로 평소 요일을 못 정하면 12주까지 넓힌다
-let celNewsCollapsed = (() => {
-  try { return window.matchMedia('(max-width: 720px)').matches; } catch (e) { return false; }
-})();
+let celNewsCollapsed = true;  // 프로그램별로 길어져서 PC·모바일 모두 접힌 채로 시작
 
 // 오늘 기준 지난 2개월 ~ 다음 달 누적 파일 (8주 전 ~ 다음 주가 걸치는 범위)
 async function celLoadNewsMonths(base) {
@@ -8049,7 +8061,6 @@ function celBuildNews(files, ym) {
     const { title, list } = celNewsBroadcasts(file, ym);
     const co = file.split('_')[0];
     const name = title || file;
-    const who = `<b>${co} ${name}</b>${celNewsJosa(name)}`;
 
     // 조회 중인 달의 회차를 주(월~일) 단위로 본다. 평소 기준은 '그 주 시작 전 8주'
     // - 지난 회차가 자기 자신을 기준에 넣지 않게 주마다 따로 잡는다.
@@ -8086,10 +8097,10 @@ function celBuildNews(files, ym) {
       const usualPerDay = celNewsMode([...perDay.values()]).value || 1;
       const usualText = usualDays.map(wd => `${WD[wd]} ${celNewsHm(usualTime[wd])}`).join(' / ');
 
-      const push = (start, ended, text, detail) => items.push({
-        start, ended,
-        html: `${who} ${text}${ended ? '어요' : '요'} <span class="cel-news-detail">(${detail})</span>` });
-      const verb = (ended) => ended ? '방송됐' : '방송돼';
+      // text: 동사 앞까지("평소와 다른 시간에"). 끝난 회차는 '방송됐어요', 남은 회차는 '방송 예정이에요'.
+      // merge: 같은 프로그램에서 같은 종류·같은 평소·같은 상태(종료/예정)면 대상 회차를 ' & '로 잇는다.
+      const push = (start, ended, text, detail, merge) => items.push({
+        file, co, name, start, ended, text, detail, merge });
       let flagged = false;
 
       // 1) 하루 여러 번 (원데이 2회 등) - 그 날 회차는 이 한 줄로 묶는다
@@ -8100,8 +8111,8 @@ function celBuildNews(files, ym) {
         if (bs.length <= usualPerDay) continue;
         multiDays.add(date);
         const ended = bs.every(b => b.start <= now);
-        push(bs[0].start, ended, `${md(bs[0].start)}(${WD[bs[0].wd]}) 하루 ${bs.length}회 ${verb(ended)}`,
-             `${bs.map(b => celNewsHm(b.hm)).join(', ')} · 평소 ${usualText}`);
+        push(bs[0].start, ended, `${md(bs[0].start)}(${WD[bs[0].wd]}) 하루 ${bs.length}회`,
+             `${bs.map(b => celNewsHm(b.hm)).join(', ')} · 평소 ${usualText}`, null);
         flagged = true;
       }
 
@@ -8115,8 +8126,9 @@ function celBuildNews(files, ym) {
         const timeDiff = dayDiff ? b.hm !== overallTime : (usualTime[b.wd] && usualTime[b.wd] !== b.hm);
         if (!dayDiff && !timeDiff) continue;
         const what = dayDiff && timeDiff ? '요일·시간' : dayDiff ? '요일' : '시간';
-        push(b.start, ended, `평소와 다른 ${what}에 ${verb(ended)}`,
-             `평소 ${dayDiff ? usualText : `${WD[b.wd]} ${celNewsHm(usualTime[b.wd])}`} → ${when}`);
+        const usual = dayDiff ? usualText : `${WD[b.wd]} ${celNewsHm(usualTime[b.wd])}`;
+        push(b.start, ended, `평소와 다른 ${what}에`, `평소 ${usual} → ${when}`,
+             { key: `${what}|${usual}|${ended}`, usual, target: when });
         flagged = true;
       }
 
@@ -8125,28 +8137,51 @@ function celBuildNews(files, ym) {
       if (!flagged && weekAll.length > usualPerWeek) {
         const ended = weekAll.every(b => b.start <= now);
         const wkLabel = wk === thisWeek ? '이번주' : `${md(new Date(wk))} 주에`;
-        push(weekAll[0].start, ended, `${wkLabel} ${weekAll.length}회 ${verb(ended)}`,
-             weekAll.map(b => `${WD[b.wd]} ${md(b.start)} ${celNewsHm(b.hm)}`).join(', ') + ` · 평소 주 ${usualPerWeek}회`);
+        push(weekAll[0].start, ended, `${wkLabel} ${weekAll.length}회`,
+             weekAll.map(b => `${WD[b.wd]} ${md(b.start)} ${celNewsHm(b.hm)}`).join(', ') + ` · 평소 주 ${usualPerWeek}회`, null);
       }
     }
   }
   items.sort((a, b) => a.start - b.start);
-  return items;
+
+  // 프로그램별로 묶고, 같은 종류·같은 평소의 회차는 한 줄로 합친다
+  const progs = new Map();
+  for (const it of items) {
+    if (!progs.has(it.file)) progs.set(it.file, { file: it.file, co: it.co, name: it.name, start: it.start, lines: [] });
+    const lines = progs.get(it.file).lines;
+    const same = it.merge && lines.find(l => l.merge && l.merge.key === it.merge.key);
+    if (same) {
+      same.targets.push(it.merge.target);
+      same.detail = `평소 ${same.merge.usual} → ${same.targets.join(' & ')}`;
+    } else {
+      lines.push({ ...it, targets: it.merge ? [it.merge.target] : [] });
+    }
+  }
+  return [...progs.values()];
 }
 
 function celRenderNews(files, ym) {
-  const items = celBuildNews(files, ym);
+  const progs = celBuildNews(files, ym);
   const label = `${Number(ym.slice(5, 7))}월 방송 체크`;
-  const upcoming = items.filter(it => !it.ended).length;
-  const body = items.length
-    ? `<ul class="cel-news-list">${items.map(it =>
-        `<li class="${it.ended ? 'ended' : ''}">${it.html}${it.ended ? ' <span class="cel-news-tag">종료</span>' : ' <span class="cel-news-tag up">예정</span>'}</li>`).join('')}</ul>`
+  const lines = progs.flatMap(p => p.lines);
+  const upcoming = lines.filter(l => !l.ended).length;
+  const lineHtml = (l) =>
+    `${l.text} ${l.ended ? '방송됐어요' : '방송 예정이에요'} <span class="cel-news-detail">(${l.detail})</span>` +
+    (l.ended ? ' <span class="cel-news-tag">종료</span>' : ' <span class="cel-news-tag up">예정</span>');
+  const who = (p) => `<b class="cel-news-pname ${p.co.toLowerCase()}">${p.co} ${p.name}</b>`;
+  // 한 프로그램에 한 줄뿐이면 "CJ 최화정쇼가 …" 한 줄로, 여러 줄이면 프로그램명 아래에 나열
+  const body = progs.length
+    ? `<ul class="cel-news-list">${progs.map(p => p.lines.length === 1
+        ? `<li class="${p.lines[0].ended ? 'ended' : 'up'}">${who(p)}${celNewsJosa(p.name)} ${lineHtml(p.lines[0])}</li>`
+        : `<li class="cel-news-group">${who(p)}<ul>` +
+            p.lines.map(l => `<li class="${l.ended ? 'ended' : 'up'}">${lineHtml(l)}</li>`).join('') +
+          `</ul></li>`).join('')}</ul>`
     : `<div class="cel-news-empty">이 달은 평소와 다르게 편성된 방송이 없어요.</div>`;
   return (
     `<div class="cel-news${celNewsCollapsed ? ' collapsed' : ''}" id="celNews">` +
       `<div class="cel-news-head">` +
         `<span class="cel-news-title">[${label}]</span>` +
-        `<span class="cel-news-cnt">평소(직전 8주 최빈, 부족하면 12주)와 다른 방송 ${items.length}건 · 예정 ${upcoming}건</span>` +
+        `<span class="cel-news-cnt">평소(직전 8주 최빈, 부족하면 12주)와 다른 방송 · 프로그램 ${progs.length}개 · 예정 ${upcoming}건</span>` +
         `<button type="button" class="cel-news-toggle">${celNewsCollapsed ? '펼치기 ▼' : '접기 ▲'}</button>` +
       `</div>` +
       body +
