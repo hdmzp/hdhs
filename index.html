@@ -3514,7 +3514,7 @@
   .cel-notice.collapsed .cel-band-cnt { margin: 0; }
   .cel-notice.collapsed .cel-notice-toggle { margin: 0 0 0 auto; }
 
-  /* 이번 주 NEWS - 특이사항 위 얇은 줄. 평소(지난 8주 최빈값)와 다른 요일·시간·횟수로
+  /* 월 편성 변동 - 특이사항 위 얇은 줄. 평소(지난 8주 최빈값)와 다른 요일·시간·횟수로
      편성된 '예정' 회차만 알려준다. 모바일은 접힌 채로, PC는 펼친 채로 시작. */
   .cel-news {
     background: #FFF1F4;
@@ -7959,7 +7959,7 @@ function celNoticeRowHtml(r) {
     `</div>`;
 }
 
-// ---- 이번 주 NEWS: 평소와 다른 요일·시간·횟수의 '예정' 회차 ----
+// ---- 월 편성 변동: 평소와 다른 요일·시간·횟수의 '예정' 회차 (조회 중인 달 전체) ----
 // 평소 = 지난 8주(오늘 전 56일) 방송의 최빈값.
 //   요일: 최다 요일의 절반 이상(최소 2회) 나온 요일은 모두 '평소 요일'로 본다
 //         (동가게 목/토, 최유라쇼 목/토처럼 주 2회 정규 편성).
@@ -8029,14 +8029,13 @@ function celNewsMonday(d) {
   return x;
 }
 
-function celBuildNews(files) {
+function celBuildNews(files, ym) {
   const WD = ['일', '월', '화', '수', '목', '금', '토'];
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const since = new Date(today); since.setDate(since.getDate() - CEL_NEWS_LOOKBACK_DAYS);
-  const weekStart = celNewsMonday(today);
-  const weekEnd = new Date(weekStart); weekEnd.setDate(weekEnd.getDate() + 7);
-  const md = (b) => `${Number(b.date.slice(5, 7))}/${Number(b.date.slice(8, 10))}`;
+  const md = (d) => `${d.getMonth() + 1}/${d.getDate()}`;
+  const thisWeek = celNewsMonday(today).getTime();
   const items = [];
 
   for (const file of files) {
@@ -8045,6 +8044,7 @@ function celBuildNews(files) {
     if (past.length < 2) continue;  // 기준으로 삼을 기록이 부족한 신규 PGM은 판단 보류
     const co = file.split('_')[0];
     const name = title || file;
+    const who = `<b>${co} ${name}</b>${celNewsJosa(name)}`;
 
     // 평소 요일 (주 2회 정규 편성 포함)
     const wdMode = celNewsMode(past.map(b => b.wd));
@@ -8059,38 +8059,49 @@ function celBuildNews(files) {
     past.forEach(b => { const k = celNewsMonday(b.start).getTime(); perWeek.set(k, (perWeek.get(k) || 0) + 1); });
     const usualPerWeek = celNewsMode([...perWeek.values()]).value || 1;
 
-    const week = list.filter(b => b.start >= weekStart && b.start < weekEnd);
-    const upcoming = week.filter(b => b.start > now);
-    if (upcoming.length === 0) continue;
+    // 조회 중인 달의 아직 시작 안 한 회차를 주(월~일) 단위로 본다
+    const upcoming = list.filter(b => b.date.slice(0, 7) === ym && b.start > now);
+    const weeks = new Map();
+    upcoming.forEach(b => {
+      const k = celNewsMonday(b.start).getTime();
+      if (!weeks.has(k)) weeks.set(k, []);
+      weeks.get(k).push(b);
+    });
 
-    // 평소보다 많이 방송하는 주는 '이번주 N회' 한 줄로 알린다 (회차별 요일/시간 알림은 생략)
-    if (week.length > usualPerWeek) {
-      items.push({ start: upcoming[0].start, co, html: `<b>${co} ${name}</b>${celNewsJosa(name)} 이번주 ${week.length}회 방송돼요 ` +
-        `<span class="cel-news-detail">(` +
-        upcoming.map(b => `${WD[b.wd]} ${md(b)} ${celNewsHm(b.hm)}`).join(', ') + `)</span>` });
-      continue;
-    }
-    for (const b of upcoming) {
-      const when = `${md(b)} ${WD[b.wd]} ${celNewsHm(b.hm)}`;
-      if (!usualDays.includes(b.wd)) {
-        items.push({ start: b.start, co, html: `<b>${co} ${name}</b>${celNewsJosa(name)} 평소와 다른 요일에 방송돼요 ` +
-          `<span class="cel-news-detail">(평소 ${usualDays.map(wd => WD[wd]).join('/')} → ${when})</span>` });
-      } else if (usualTime[b.wd] && usualTime[b.wd] !== b.hm) {
-        items.push({ start: b.start, co, html: `<b>${co} ${name}</b>${celNewsJosa(name)} 평소와 다른 시간에 방송돼요 ` +
-          `<span class="cel-news-detail">(평소 ${WD[b.wd]} ${celNewsHm(usualTime[b.wd])} → ${when})</span>` });
+    for (const [wk, ups] of weeks) {
+      // 그 주 전체 횟수(이미 끝난 회차 포함)가 평소보다 많으면 한 줄로 알린다
+      // (회차별 요일/시간 알림은 생략)
+      const weekEnd = wk + 7 * 86400000;
+      const weekCnt = list.filter(b => b.start.getTime() >= wk && b.start.getTime() < weekEnd).length;
+      if (weekCnt > usualPerWeek) {
+        const wkLabel = wk === thisWeek ? '이번주' : `${md(new Date(wk))} 주에`;
+        items.push({ start: ups[0].start, html: `${who} ${wkLabel} ${weekCnt}회 방송돼요 ` +
+          `<span class="cel-news-detail">(` +
+          ups.map(b => `${WD[b.wd]} ${md(b.start)} ${celNewsHm(b.hm)}`).join(', ') + `)</span>` });
+        continue;
+      }
+      for (const b of ups) {
+        const when = `${md(b.start)} ${WD[b.wd]} ${celNewsHm(b.hm)}`;
+        if (!usualDays.includes(b.wd)) {
+          items.push({ start: b.start, html: `${who} 평소와 다른 요일에 방송돼요 ` +
+            `<span class="cel-news-detail">(평소 ${usualDays.map(wd => WD[wd]).join('/')} → ${when})</span>` });
+        } else if (usualTime[b.wd] && usualTime[b.wd] !== b.hm) {
+          items.push({ start: b.start, html: `${who} 평소와 다른 시간에 방송돼요 ` +
+            `<span class="cel-news-detail">(평소 ${WD[b.wd]} ${celNewsHm(usualTime[b.wd])} → ${when})</span>` });
+        }
       }
     }
   }
   items.sort((a, b) => a.start - b.start);
-  return { weekStart, items };
+  return items;
 }
 
-function celRenderNews(files) {
-  const { weekStart, items } = celBuildNews(files);
-  const label = `${weekStart.getMonth() + 1}/${weekStart.getDate()} 주차 NEWS`;
+function celRenderNews(files, ym) {
+  const items = celBuildNews(files, ym);
+  const label = `${Number(ym.slice(5, 7))}월 편성 변동`;
   const body = items.length
     ? `<ul class="cel-news-list">${items.map(it => `<li>${it.html}</li>`).join('')}</ul>`
-    : `<div class="cel-news-empty">이번 주 남은 방송 중 평소와 다르게 편성된 프로그램이 없어요.</div>`;
+    : `<div class="cel-news-empty">이 달 남은 방송 중 평소와 다르게 편성된 프로그램이 없어요.</div>`;
   return (
     `<div class="cel-news${celNewsCollapsed ? ' collapsed' : ''}" id="celNews">` +
       `<div class="cel-news-head">` +
@@ -8206,13 +8217,13 @@ function celRenderCompare() {
     return;
   }
 
-  const newsHtml = viewMonth >= celThisMonth() ? celRenderNews(selected) : '';
+  const newsHtml = viewMonth >= celThisMonth() ? celRenderNews(selected, viewMonth) : '';
   wrap.innerHTML = newsHtml + celRenderNotice(selected) + selected.map(celRenderBand).join('');
 }
 
 // 펼치기/접기 버튼: 재렌더링마다 버튼이 새로 생기므로 컨테이너에 위임으로 한 번만 건다
 document.getElementById('celGridWrap').addEventListener('click', (e) => {
-  // 이번 주 NEWS 접기/펼치기 (줄 머리 아무 데나 눌러도 된다)
+  // 편성 변동 접기/펼치기 (줄 머리 아무 데나 눌러도 된다)
   if (e.target.closest('.cel-news-head')) {
     celNewsCollapsed = !celNewsCollapsed;
     const news = document.getElementById('celNews');
