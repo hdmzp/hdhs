@@ -7790,7 +7790,7 @@ function celBandData(file) {
   return { meta, broadcasts, emptyMsg };
 }
 
-// ---- 셀럽출연여부확인 스티커 ----
+// ---- 셀럽출연 확인필요 스티커 ----
 // 하루 2회 방송하는 날, 본래 시각이 아닌 회차는 셀럽 없이 '프로그램 pick' 이름으로만
 // 진행되기도 한다 (2026-10-14 최화정쇼 08:15 세포랩 = '최화정쇼pick', 최화정 미출연).
 // 지금은 CJ 최화정쇼만 대상. 본래 시각 = 하루 1회 방송한 날들의 최빈 시작시각.
@@ -7812,7 +7812,7 @@ function celCelebCheckKeys(file) {
 }
 
 const CEL_CELEB_CHECK_BADGE =
-  `<span class="cel-verify-badge celeb" title="원데이 2회 중 본래 시각이 아닌 회차예요. 셀럽 없이 'pick' 이름으로만 진행됐을 수 있어요">셀럽출연여부확인</span>`;
+  `<span class="cel-verify-badge celeb" title="원데이 2회 중 본래 시각이 아닌 회차예요. 셀럽 없이 'pick' 이름으로만 진행됐을 수 있어요">셀럽출연 확인필요</span>`;
 
 function celRenderBand(file) {
   const { meta, broadcasts, emptyMsg } = celBandData(file);
