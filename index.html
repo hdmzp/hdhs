@@ -3357,6 +3357,8 @@
   }
   /* 방송 시각을 못 읽은 회차/상품 */
   .cel-verify-badge.time { background: #8B5CF6; }
+  /* 원데이 2회 중 본래 시각이 아닌 회차 - 셀럽 없이 'OO pick'으로만 진행됐을 수 있다 */
+  .cel-verify-badge.celeb { background: #DB2777; }
 
   /* 프로그램별 가로 밴드: 세로 스크롤만으로 전체 프로그램을 훑는다 */
   .cel-band {
@@ -7788,8 +7790,37 @@ function celBandData(file) {
   return { meta, broadcasts, emptyMsg };
 }
 
+// ---- 셀럽출연여부확인 스티커 ----
+// 하루 2회 방송하는 날, 본래 시각이 아닌 회차는 셀럽 없이 '프로그램 pick' 이름으로만
+// 진행되기도 한다 (2026-10-14 최화정쇼 08:15 세포랩 = '최화정쇼pick', 최화정 미출연).
+// 지금은 CJ 최화정쇼만 대상. 본래 시각 = 하루 1회 방송한 날들의 최빈 시작시각.
+const CEL_CELEB_CHECK_FILES = new Set(['CJ_CHJ.json']);
+
+function celCelebCheckKeys(file) {
+  const keys = new Set();
+  if (!CEL_CELEB_CHECK_FILES.has(file)) return keys;
+  const { list } = celNewsBroadcasts(file, celMonth || celThisMonth());
+  const byDay = new Map();
+  list.forEach(b => { if (!byDay.has(b.date)) byDay.set(b.date, []); byDay.get(b.date).push(b); });
+  const usual = celNewsMode([...byDay.values()].filter(bs => bs.length === 1).map(bs => bs[0].hm)).value;
+  if (!usual) return keys;
+  for (const [date, bs] of byDay) {
+    if (bs.length < 2 || !bs.some(b => b.hm === usual)) continue;  // 본래 시각 회차가 있는 원데이 2회만
+    bs.filter(b => b.hm !== usual).forEach(b => keys.add(`${date}#${b.hm}`));
+  }
+  return keys;
+}
+
+const CEL_CELEB_CHECK_BADGE =
+  `<span class="cel-verify-badge celeb" title="원데이 2회 중 본래 시각이 아닌 회차예요. 셀럽 없이 'pick' 이름으로만 진행됐을 수 있어요">셀럽출연여부확인</span>`;
+
 function celRenderBand(file) {
   const { meta, broadcasts, emptyMsg } = celBandData(file);
+  const celebCheck = celCelebCheckKeys(file);
+  const celebCheckOf = (b) => {
+    const m = String(b.label || '').match(/(\d{1,2}):(\d{2})/);
+    return m && celebCheck.has(`${b.date}#${m[1].padStart(2, '0')}:${m[2]}`);
+  };
 
   // 같은 주차끼리 묶음 (주차 배지 아래에 그 주의 방송 회차들, 최신 주가 앞)
   const weekMap = {};
@@ -7815,6 +7846,7 @@ function celRenderBand(file) {
             // 방송 시각을 못 읽어 날짜만 있는 회차 (build_celeb_history.fold_time_unknown)
             ((!b.offAir && !/\d{1,2}:\d{2}/.test(b.label || ''))
               ? `<span class="cel-verify-badge time" title="방송 날짜만 확인되고 시각은 모르는 회차예요">시간확인필요</span>` : '') +
+            (!b.offAir && celebCheckOf(b) ? CEL_CELEB_CHECK_BADGE : '') +
           `</div>` +
           (b.offAir ? `<div class="cel-off-air">휴방</div>` : celRenderProductList(b.products)) +
           `</div>`
@@ -8109,8 +8141,9 @@ function celBuildNews(files, ym) {
         if (bs.length <= usualPerDay) continue;
         multiDays.add(date);
         const ended = bs.every(b => b.start <= now);
+        const check = celCelebCheckKeys(file);
         push(bs[0].start, ended, dayOf(bs[0]), `하루 ${bs.length}회`,
-             `${bs.map(b => celNewsHm(b.hm)).join(', ')} · 평소 ${usualText}`, null);
+             `${bs.map(b => celNewsHm(b.hm) + (check.has(`${b.date}#${b.hm}`) ? ' ' + CEL_CELEB_CHECK_BADGE : '')).join(', ')} · 평소 ${usualText}`, null);
         flagged = true;
       }
 
