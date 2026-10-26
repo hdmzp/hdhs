@@ -196,6 +196,25 @@ def fetch_gs_product_details_fixed(prd_id):
     return "GS SHOP", "상품 상세 조회 실패", None
 
 
+def module_product_ids(module) -> list:
+    """방송 1타임 모듈 안의 상품 ID(prdid) 목록 (순서 유지, 중복 제거).
+
+    a.prd-link의 prdid만 보면 렌탈·상담 상품을 놓친다. 2026-09-10 지금 백지연은
+    20:45~21:50 바디프랜드 다빈치 렌탈 구간이 통째로 빠져 회차가 21:50 시작으로
+    기록됐다(라방바 편성표도 렌탈 방송을 안 줘서 GS_live로도 못 채움).
+    그래서 상품 카드의 data-prdcd와 모듈 안 모든 링크의 prdid를 같이 읽는다."""
+    ids = []
+    for el in module.select("[data-prdcd]"):
+        v = (el.get("data-prdcd") or "").strip()
+        if v.isdigit():
+            ids.append(v)
+    for a in module.select("a[href]"):
+        m = re.search(r'prdid=(\d+)', a.get("href", ""))
+        if m:
+            ids.append(m.group(1))
+    return list(dict.fromkeys(ids))
+
+
 def crawl_gs_program(config: dict):
     tab_name = config["tab_name"]
     url = config["url"]
@@ -252,16 +271,13 @@ def crawl_gs_program(config: dict):
             print(f"    -> [스킵] '{date_label}' 모듈에서 지난/놓친 방송 텍스트 감지 -> 건너뜀")
             continue
 
-        links = module.select("a.prd-link")
-        print(f"    -> [방송 타임 진입]: {date_label} (raw={broaddate_raw}) - 상품 {len(links)}개")
+        prd_ids = module_product_ids(module)
+        print(f"    -> [방송 타임 진입]: {date_label} (raw={broaddate_raw}) - 상품 {len(prd_ids)}개")
+        if not prd_ids:
+            print(f"    -> [경고] '{date_label}' 모듈에 날짜는 있는데 상품을 못 읽음 "
+                  f"(렌탈/상담 상품처럼 링크 형식이 다른 상품일 수 있음)")
 
-        for link in links:
-            href = link.get("href", "")
-            match = re.search(r'prdid=(\d+)', href)
-            if not match:
-                continue
-
-            prd_id = match.group(1)
+        for prd_id in prd_ids:
             if prd_id in seen_ids:
                 continue
 
