@@ -8041,6 +8041,7 @@ function celNewsBroadcasts(file, base) {
   let title = '';
   const seen = new Set();
   const recordDates = new Set();  // 기록이 있는 날 (휴방·시각 없는 회차 포함) - '상품 없음' 판정용
+  const offDates = new Set();     // 수집기가 편성표로 휴방을 확인해 기록한 날 (현재 HD만)
   for (const d of [-3, -2, -1, 0, 1]) {
     const hist = celHistoryCache[celShiftMonth(base, d)];
     const prog = hist && Array.isArray(hist.programs) && hist.programs.find(p => p.program_key === key);
@@ -8048,6 +8049,7 @@ function celNewsBroadcasts(file, base) {
     title = title || prog.program_title || prog.tab_name || '';
     for (const b of prog.broadcasts || []) {
       if (b.date) recordDates.add(b.date);
+      if (b.date && b.off_air) offDates.add(b.date);
       const m = String(b.label || '').match(/(\d{1,2}):(\d{2})/);
       if (!b.date || !m || b.off_air) continue;
       const hm = `${m[1].padStart(2, '0')}:${m[2]}`;
@@ -8060,7 +8062,7 @@ function celNewsBroadcasts(file, base) {
     }
   }
   out.sort((a, b) => a.start - b.start);
-  return { title, list: out, recordDates };
+  return { title, list: out, recordDates, offDates };
 }
 
 function celNewsMode(values) {
@@ -8075,6 +8077,13 @@ function celNewsMode(values) {
 function celNewsJosa(word) {
   const c = String(word).trim().slice(-1).charCodeAt(0);
   return (c >= 0xAC00 && c <= 0xD7A3 && (c - 0xAC00) % 28 !== 0) ? '이' : '가';
+}
+
+// 받침 있으면 '은', 없으면 '는' - 마지막 한글 글자 기준 ("9/26 토는", "(9/21 월, 9/28 월)은")
+function celNewsTopic(text) {
+  const hangul = String(text).match(/[가-힣](?=[^가-힣]*$)/);
+  const c = hangul ? hangul[0].charCodeAt(0) : 0;
+  return (c && (c - 0xAC00) % 28 !== 0) ? '은' : '는';
 }
 
 function celNewsHm(hm) {
@@ -8135,6 +8144,26 @@ function celBuildMissing(files, ym) {
       if (weekCnt >= usualPerWeek) continue;
       out.push({ start: new Date(d), past: d < today, file,
                  name: `${co} ${title || file}`, day: `${d.getMonth() + 1}/${d.getDate()} ${WD[d.getDay()]}` });
+    }
+  }
+  out.sort((a, b) => a.start - b.start);
+  return out;
+}
+
+// 휴방으로 확실히 기록된 날 (rehd.py가 편성표로 확인한 off_air 회차). 조회 중인 달 전체.
+function celBuildOffAir(files, ym) {
+  const WD = ['일', '월', '화', '수', '목', '금', '토'];
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const out = [];
+  for (const file of files) {
+    const { title, offDates } = celNewsBroadcasts(file, ym);
+    const co = file.split('_')[0];
+    for (const iso of offDates) {
+      if (iso.slice(0, 7) !== ym) continue;
+      const [y, m, d] = iso.split('-').map(Number);
+      const dt = new Date(y, m - 1, d);
+      out.push({ start: dt, past: dt < today, file, name: `${co} ${title || file}`, day: `${m}/${d} ${WD[dt.getDay()]}` });
     }
   }
   out.sort((a, b) => a.start - b.start);
@@ -8255,6 +8284,7 @@ function celBuildNews(files, ym) {
 function celRenderNews(files, ym) {
   const progs = celBuildNews(files, ym);
   const missing = celBuildMissing(files, ym);
+  const offAir = celBuildOffAir(files, ym);
   const label = `${Number(ym.slice(5, 7))}월 방송 체크`;
   const lines = progs.flatMap(p => p.lines);
   const upcoming = lines.filter(l => !l.ended).length;
@@ -8279,10 +8309,14 @@ function celRenderNews(files, ym) {
       ? `${g.name}(${g.days.join(', ')})` : `${g.name} ${g.days.join(', ')}`).join(', ');
   };
   const missPast = missing.filter(x => x.past), missNext = missing.filter(x => !x.past);
-  const missingHtml = (missPast.length || missNext.length)
+  const offPast = offAir.filter(x => x.past), offNext = offAir.filter(x => !x.past);
+  const missingHtml = (missPast.length || missNext.length || offAir.length)
     ? `<div class="cel-news-missing">` +
         (missPast.length
           ? `<div>📭 <span class="cel-news-miss-tag">지난 방송</span> <b>${missText(missPast)}</b> - 평소 방송일인데 상품 기록이 없어요. 휴방이었을 가능성이 높아요.</div>` : '') +
+        // 편성표로 휴방이 확인된 날은 '가능성'이 아니라 확정으로 쓴다
+        (offPast.length ? `<div>📭 <b>${missText(offPast)}</b>${celNewsTopic(missText(offPast))} 휴방이었어요.</div>` : '') +
+        (offNext.length ? `<div>📭 <b>${missText(offNext)}</b>${celNewsTopic(missText(offNext))} 휴방 예정이에요.</div>` : '') +
         (missNext.length
           ? `<div>📭 <span class="cel-news-miss-tag">남은 방송</span> <b>${missText(missNext)}</b> - 평소 방송일인데 상품이 없어요. 코드 등록 전이거나 휴방일 수 있어요 (오늘 +${CEL_NEWS_MISSING_AHEAD_DAYS}일 기준)</div>` : '') +
       `</div>`
