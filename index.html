@@ -8100,9 +8100,9 @@ function celNewsUsualDays(list, wk) {
 // 남은 날(오늘 ~ 오늘+CEL_NEWS_MISSING_AHEAD_DAYS일)만 본다 - 지난 날은 뺀다.
 // 그 뒤는 원래 코드가 안 올라올 때라 안 본다. 휴방으로 기록된 날도 뺀다.
 // 그 주 방송 횟수가 평소 주간 횟수보다 적을 때만 (다른 요일로 옮겨 방송했으면 빠진 게 아니다).
-// 요일이 매번 바뀌는 프로그램은 CEL_NEWS_MISSING_SKIP으로 뺀다.
+// 요일이 매번 바뀌거나 비정기인 프로그램은 CEL_NEWS_MISSING_SKIP으로 뺀다.
 const CEL_NEWS_MISSING_AHEAD_DAYS = 7;
-const CEL_NEWS_MISSING_SKIP = new Set(['CJ_SIH.json']);  // 겟잇스타일
+const CEL_NEWS_MISSING_SKIP = new Set(['CJ_SIH.json', 'CJ_KSY.json']);  // 겟잇스타일(요일 수시 변경), 김신영이 산다(비정기)
 function celBuildMissing(files, ym) {
   const WD = ['일', '월', '화', '수', '목', '금', '토'];
   const now = new Date();
