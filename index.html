@@ -3570,6 +3570,8 @@
   .cel-news-empty { color: var(--ink-soft); margin-top: 4px; }
   .cel-news-missing { margin-top: 6px; padding-top: 6px; border-top: 1px dashed #F6CBD6; color: var(--ink-soft); }
   .cel-news-missing b { color: var(--ink); }
+  .cel-news-missing > div + div { margin-top: 2px; }
+  .cel-news-miss-tag { font-size: 11px; font-weight: 800; color: #B4234A; }
   .cel-news.collapsed .cel-news-missing,
   .cel-news.collapsed .cel-news-list,
   .cel-news.collapsed .cel-news-empty { display: none; }
@@ -8096,9 +8098,10 @@ function celNewsUsualDays(list, wk) {
   return { past, usualDays };
 }
 
-// 평소 방송 요일인데 그날 기록(상품)이 아예 없는 날 - 코드 등록 전인지 휴방인지 알 수 없다.
-// 남은 날(오늘 ~ 오늘+CEL_NEWS_MISSING_AHEAD_DAYS일)만 본다 - 지난 날은 뺀다.
-// 그 뒤는 원래 코드가 안 올라올 때라 안 본다. 휴방으로 기록된 날도 뺀다.
+// 평소 방송 요일인데 그날 기록(상품)이 아예 없는 날.
+//   지난 날(이 달 1일 ~ 어제): 방송 시각이 지났는데 기록이 없으면 휴방이었을 가능성이 높다.
+//   남은 날(오늘 ~ 오늘+CEL_NEWS_MISSING_AHEAD_DAYS일): 코드 등록 전인지 휴방인지 아직 모른다.
+// 그 뒤는 원래 코드가 안 올라올 때라 안 본다. 첫 기록 전 날짜와 휴방으로 기록된 날도 뺀다.
 // 그 주 방송 횟수가 평소 주간 횟수보다 적을 때만 (다른 요일로 옮겨 방송했으면 빠진 게 아니다).
 // 요일이 매번 바뀌거나 비정기인 프로그램은 CEL_NEWS_MISSING_SKIP으로 뺀다.
 const CEL_NEWS_MISSING_AHEAD_DAYS = 7;
@@ -8108,7 +8111,7 @@ function celBuildMissing(files, ym) {
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const [y, m] = ym.split('-').map(Number);
-  const first = new Date(Math.max(new Date(y, m - 1, 1).getTime(), today.getTime()));
+  const first = new Date(y, m - 1, 1);
   const last = new Date(Math.min(new Date(y, m, 0).getTime(),
                                  today.getTime() + CEL_NEWS_MISSING_AHEAD_DAYS * 86400000));
   const out = [];
@@ -8130,7 +8133,8 @@ function celBuildMissing(files, ym) {
       const usualPerWeek = celNewsMode([...perWeek.values()]).value || 1;
       const weekCnt = list.filter(b => b.start.getTime() >= wk && b.start.getTime() < wk + 7 * 86400000).length;
       if (weekCnt >= usualPerWeek) continue;
-      out.push({ start: new Date(d), text: `${co} ${title || file} ${d.getMonth() + 1}/${d.getDate()} ${WD[d.getDay()]}` });
+      out.push({ start: new Date(d), past: d < today,
+                 text: `${co} ${title || file} ${d.getMonth() + 1}/${d.getDate()} ${WD[d.getDay()]}` });
     }
   }
   out.sort((a, b) => a.start - b.start);
@@ -8266,8 +8270,14 @@ function celRenderNews(files, ym) {
             p.lines.map(l => `<li class="${l.ended ? 'ended' : 'up'}">${lineHtml(l)}</li>`).join('') +
           `</ul></li>`).join('')}</ul>`
     : `<div class="cel-news-empty">이 달은 평소와 다르게 편성된 방송이 없어요.</div>`;
-  const missingHtml = missing.length
-    ? `<div class="cel-news-missing">📭 <b>${missing.map(x => x.text).join(', ')}</b> - 평소 방송일인데 상품이 없어요. 코드 등록 전이거나 휴방일 수 있어요 (오늘 +${CEL_NEWS_MISSING_AHEAD_DAYS}일 기준)</div>`
+  const missPast = missing.filter(x => x.past), missNext = missing.filter(x => !x.past);
+  const missingHtml = (missPast.length || missNext.length)
+    ? `<div class="cel-news-missing">` +
+        (missPast.length
+          ? `<div>📭 <span class="cel-news-miss-tag">지난 방송</span> <b>${missPast.map(x => x.text).join(', ')}</b> - 평소 방송일인데 상품 기록이 없어요. 휴방이었을 가능성이 높아요.</div>` : '') +
+        (missNext.length
+          ? `<div>📭 <span class="cel-news-miss-tag">남은 방송</span> <b>${missNext.map(x => x.text).join(', ')}</b> - 평소 방송일인데 상품이 없어요. 코드 등록 전이거나 휴방일 수 있어요 (오늘 +${CEL_NEWS_MISSING_AHEAD_DAYS}일 기준)</div>` : '') +
+      `</div>`
     : '';
   return (
     `<div class="cel-news${celNewsCollapsed ? ' collapsed' : ''}" id="celNews">` +
