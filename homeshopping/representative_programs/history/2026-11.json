@@ -1,6 +1,6 @@
 {
   "month": "2026-11",
-  "updated_at": "2026-10-26T14:55:49.175193+09:00",
+  "updated_at": "2026-10-27T02:14:41.453050+09:00",
   "programs": [
     {
       "program_key": "HD_HJM",
@@ -14,7 +14,7 @@
         {
           "date": "2026-11-02",
           "label": "11/02(월) 19:30 방송",
-          "collected_at": "2026-10-26T14:55:49.126739+09:00",
+          "collected_at": "2026-10-27T02:14:41.401713+09:00",
           "products": [
             {
               "broadcast_date_label": "11/02(월) 19:30 방송",
@@ -64,7 +64,7 @@
         {
           "date": "2026-11-03",
           "label": "11/03(화) 19:30 방송",
-          "collected_at": "2026-10-26T14:55:49.126739+09:00",
+          "collected_at": "2026-10-27T02:14:41.401713+09:00",
           "products": [
             {
               "broadcast_date_label": "11/03(화) 19:30 방송",
@@ -98,7 +98,7 @@
         {
           "date": "2026-11-06",
           "label": "11/06(금) 20:35 방송",
-          "collected_at": "2026-10-26T14:55:49.126739+09:00",
+          "collected_at": "2026-10-27T02:14:41.401713+09:00",
           "products": [
             {
               "prd_id": "1108238119",
@@ -108,6 +108,56 @@
               "name": "[GS단독] 가시제거연구소 고등어밥상 노르웨이 순살고등어 700g 3봉",
               "price": null,
               "link": "https://m.gsshop.com/prd/prd.gs?prdid=1108238119"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "program_key": "LT_YNH",
+      "company": "LT",
+      "tab_name": "유난희",
+      "program_title": "더퍼스트 유난희",
+      "schedule_raw": "매주 목요일 오전 09시25분",
+      "detail_link": "https://www.lotteimall.com/contstmpl/viewContsTmplDetail.lotte?conts_no=1149",
+      "program_image": "",
+      "broadcasts": [
+        {
+          "date": "2026-11-03",
+          "label": "11/03(화) 08:15 방송",
+          "collected_at": "2026-10-27T02:14:41.401713+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "11/03 화요일 08:15",
+              "brand": "릴리오",
+              "name": "[릴리오] by 오일릴리 26FW 모헤어 울 블렌디드 아가일 보머 니트자켓",
+              "price": 199000,
+              "image": "https://image2.lotteimall.com/goods/11/96/91/12919611_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12919611"
+            },
+            {
+              "broadcast_date_label": "11/03 화요일 08:15",
+              "brand": "릴리오",
+              "name": "[릴리오] by 오일릴리 26FW 캐시미어 울 헤어리 니트",
+              "price": 109000,
+              "image": "https://image2.lotteimall.com/goods/69/24/92/12922469_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12922469"
+            },
+            {
+              "broadcast_date_label": "11/03 화요일 08:15",
+              "brand": "릴리오",
+              "name": "[릴리오] by 오일릴리 26FW 에센셜 울 100 시퀸 터틀 니트",
+              "price": 89000,
+              "image": "https://image2.lotteimall.com/goods/25/48/91/12914825_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12914825"
+            },
+            {
+              "broadcast_date_label": "11/03 화요일 08:15",
+              "brand": "릴리오",
+              "name": "[릴리오] by 오일릴리 26FW 에센셜 시퀸 니트 트위드 자켓",
+              "price": 299000,
+              "image": "https://image2.lotteimall.com/goods/18/53/91/12915318_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12915318"
             }
           ]
         }
@@ -125,7 +175,7 @@
         {
           "date": "2026-11-16",
           "label": "11/16(월) 19:35 방송",
-          "collected_at": "2026-10-26T14:55:49.126739+09:00",
+          "collected_at": "2026-10-27T02:14:41.401713+09:00",
           "products": [
             {
               "broadcast_date_label": "11/16(월) 19:35",
@@ -140,7 +190,7 @@
         {
           "date": "2026-11-02",
           "label": "11/02(월) 19:35 방송",
-          "collected_at": "2026-10-26T14:55:49.126739+09:00",
+          "collected_at": "2026-10-27T02:14:41.401713+09:00",
           "products": [
             {
               "broadcast_date_label": "11/02(월) 19:35",
@@ -157,6 +207,33 @@
               "price": 40900,
               "image": "goods_images/20/141/2096018141L.jpg?timestamp=20261019150634",
               "link": "https://display.cjonstyle.com/p/item/2096018141?channelCode=30002002",
+              "verify": true
+            },
+            {
+              "broadcast_date_label": "11/02(월) 19:35",
+              "brand": "몽스",
+              "name": "프로폴리스 제로슈가 캔디 60g",
+              "price": 8980,
+              "image": "goods_images/20/358/2096017358L.jpg?timestamp=20261019150650",
+              "link": "https://display.cjonstyle.com/p/item/2096017358?channelCode=30002002",
+              "verify": true
+            },
+            {
+              "broadcast_date_label": "11/02(월) 19:35",
+              "brand": "몽스",
+              "name": "프로폴리스 캔디 소분용 틴케이스만",
+              "price": 2500,
+              "image": "goods_images/20/229/2096475229L.jpg?timestamp=20261022162816",
+              "link": "https://display.cjonstyle.com/p/item/2096475229?channelCode=30002002",
+              "verify": true
+            },
+            {
+              "broadcast_date_label": "11/02(월) 19:35",
+              "brand": "몽스",
+              "name": "아이스버그 캔디 소분용 틴케이스만",
+              "price": 2500,
+              "image": "goods_images/20/155/2096475155L.jpg?timestamp=20261022162845",
+              "link": "https://display.cjonstyle.com/p/item/2096475155?channelCode=30002002",
               "verify": true
             },
             {
@@ -189,37 +266,10 @@
             {
               "broadcast_date_label": "11/02(월) 19:35",
               "brand": "몽스",
-              "name": "프로폴리스 제로슈가 캔디 60g",
-              "price": 8980,
-              "image": "goods_images/20/358/2096017358L.jpg?timestamp=20261019150650",
-              "link": "https://display.cjonstyle.com/p/item/2096017358?channelCode=30002002",
-              "verify": true
-            },
-            {
-              "broadcast_date_label": "11/02(월) 19:35",
-              "brand": "몽스",
               "name": "아이스버그 제로슈가 캔디 60g",
               "price": 7980,
               "image": "goods_images/20/248/2096017248L.jpg?timestamp=20261019150658",
               "link": "https://display.cjonstyle.com/p/item/2096017248?channelCode=30002002",
-              "verify": true
-            },
-            {
-              "broadcast_date_label": "11/02(월) 19:35",
-              "brand": "몽스",
-              "name": "아이스버그 캔디 소분용 틴케이스만",
-              "price": 2500,
-              "image": "goods_images/20/155/2096475155L.jpg?timestamp=20261022162845",
-              "link": "https://display.cjonstyle.com/p/item/2096475155?channelCode=30002002",
-              "verify": true
-            },
-            {
-              "broadcast_date_label": "11/02(월) 19:35",
-              "brand": "몽스",
-              "name": "프로폴리스 캔디 소분용 틴케이스만",
-              "price": 2500,
-              "image": "goods_images/20/229/2096475229L.jpg?timestamp=20261022162816",
-              "link": "https://display.cjonstyle.com/p/item/2096475229?channelCode=30002002",
               "verify": true
             },
             {
@@ -256,33 +306,6 @@
               "price": 27400,
               "image": "goods_images/20/056/2051327056L.jpg?timestamp=20261022115203",
               "link": "https://display.cjonstyle.com/p/item/2051327056?channelCode=30002002",
-              "verify": true
-            },
-            {
-              "broadcast_date_label": "11/02(월) 19:35",
-              "brand": "몽스",
-              "name": "프로폴리스 캔디 280g 파우치형",
-              "price": 21500,
-              "image": "goods_images/67/063/67317063L.jpg?timestamp=20261022091222",
-              "link": "https://display.cjonstyle.com/p/item/67317063?channelCode=30002002",
-              "verify": true
-            },
-            {
-              "broadcast_date_label": "11/02(월) 19:35",
-              "brand": "몽스",
-              "name": "아이스버그 캔디 500g 파우치형",
-              "price": 14900,
-              "image": "goods_images/67/423/67317423L.jpg?timestamp=20261022090820",
-              "link": "https://display.cjonstyle.com/p/item/67317423?channelCode=30002002",
-              "verify": true
-            },
-            {
-              "broadcast_date_label": "11/02(월) 19:35",
-              "brand": "몽스",
-              "name": "아이스버그 캔디 100g 컵홀더 허브 목캔디",
-              "price": 11900,
-              "image": "goods_images/20/342/2051323342L.jpg?timestamp=20261022092055",
-              "link": "https://display.cjonstyle.com/p/item/2051323342?channelCode=30002002",
               "verify": true
             },
             {
@@ -329,6 +352,42 @@
               "image": "goods_images/20/916/2051327916L.jpg?timestamp=20261022092130",
               "link": "https://display.cjonstyle.com/p/item/2051327916?channelCode=30002002",
               "verify": true
+            },
+            {
+              "broadcast_date_label": "11/02(월) 19:35",
+              "brand": "몽스",
+              "name": "아이스버그 캔디 100g 컵홀더 허브 목캔디",
+              "price": 11900,
+              "image": "goods_images/20/342/2051323342L.jpg?timestamp=20261022092055",
+              "link": "https://display.cjonstyle.com/p/item/2051323342?channelCode=30002002",
+              "verify": true
+            },
+            {
+              "broadcast_date_label": "11/02(월) 19:35",
+              "brand": "몽스",
+              "name": "제로슈거 캔디(레몬/허브/프로폴리스) 3박스",
+              "price": 69800,
+              "image": "goods_images/20/773/2096554773L.jpg?timestamp=20261023095607",
+              "link": "https://display.cjonstyle.com/p/item/2096554773?channelCode=30002002",
+              "verify": true
+            },
+            {
+              "broadcast_date_label": "11/02(월) 19:35",
+              "brand": "몽스",
+              "name": "프로폴리스 캔디 280g 파우치형",
+              "price": 21500,
+              "image": "goods_images/67/063/67317063L.jpg?timestamp=20261022091222",
+              "link": "https://display.cjonstyle.com/p/item/67317063?channelCode=30002002",
+              "verify": true
+            },
+            {
+              "broadcast_date_label": "11/02(월) 19:35",
+              "brand": "몽스",
+              "name": "아이스버그 캔디 500g 파우치형",
+              "price": 14900,
+              "image": "goods_images/67/423/67317423L.jpg?timestamp=20261022090820",
+              "link": "https://display.cjonstyle.com/p/item/67317423?channelCode=30002002",
+              "verify": true
             }
           ]
         }
@@ -346,7 +405,7 @@
         {
           "date": "2026-11-03",
           "label": "11/03(화) 19:35 방송",
-          "collected_at": "2026-10-26T14:55:49.126739+09:00",
+          "collected_at": "2026-10-27T02:14:41.401713+09:00",
           "products": [
             {
               "broadcast_date_label": "11/03(화) 19:35",
@@ -379,6 +438,22 @@
               "price": 119000,
               "image": "https://image.cjonstyle.net/goods_images/20/020/2091471020L.jpg?timestamp=20260918165432",
               "link": "https://item.cjonstyle.com/item/2091471020?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/03(화) 19:35",
+              "brand": "이알하나",
+              "name": "[더김창옥라이브]갱년기엔 ERr731 15박스",
+              "price": 399000,
+              "image": "https://image.cjonstyle.net/goods_images/20/603/2096722603L.jpg?timestamp=20261026203317",
+              "link": "https://item.cjonstyle.com/item/2096722603?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/03(화) 19:35",
+              "brand": "이알하나",
+              "name": "갱년기엔 ERHana(ERr731) 20주분",
+              "price": 210000,
+              "image": "https://image.cjonstyle.net/goods_images/20/540/2051252540L.jpg?timestamp=20250212104345",
+              "link": "https://item.cjonstyle.com/item/2051252540?channelCode=30002002"
             }
           ]
         }
@@ -396,14 +471,14 @@
         {
           "date": "2026-11-21",
           "label": "11/21(토) 08:20 방송",
-          "collected_at": "2026-10-26T14:55:49.126739+09:00",
+          "collected_at": "2026-10-27T02:14:41.401713+09:00",
           "products": [
             {
               "broadcast_date_label": "11/21(토) 08:20",
               "brand": "본정심",
               "name": "[원물 55%] 진 흑염소진액 30포 한마리",
               "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/802/2090229802L.jpg?timestamp=20261026145512",
+              "image": "https://image.cjonstyle.net/goods_images/20/802/2090229802L.jpg?timestamp=20261027021322",
               "link": "https://display.cjonstyle.com/p/item/2090229802"
             }
           ]
@@ -411,14 +486,14 @@
         {
           "date": "2026-11-14",
           "label": "11/14(토) 08:20 방송",
-          "collected_at": "2026-10-26T14:55:49.126739+09:00",
+          "collected_at": "2026-10-27T02:14:41.401713+09:00",
           "products": [
             {
               "broadcast_date_label": "11/14(토) 08:20",
               "brand": "베라왕",
               "name": "[미리주문10%] 26FW FAUX밍크 후드 롱코트",
               "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/172/2095280172L.jpg?timestamp=20261026145512",
+              "image": "https://image.cjonstyle.net/goods_images/20/172/2095280172L.jpg?timestamp=20261027021322",
               "link": "https://display.cjonstyle.com/p/item/2095280172"
             }
           ]
@@ -426,14 +501,14 @@
         {
           "date": "2026-11-12",
           "label": "11/12(목) 20:45 방송",
-          "collected_at": "2026-10-26T14:55:49.126739+09:00",
+          "collected_at": "2026-10-27T02:14:41.401713+09:00",
           "products": [
             {
               "broadcast_date_label": "11/12(목) 20:45",
               "brand": "곡물도감",
-              "name": "[동가게] 서리태 가득 콩물두유 시그니쳐5박스+21곡 1박스",
+              "name": "서리태 가득 콩물두유 시그니쳐5박스+21곡 1박스",
               "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/979/2065432979L.jpg?timestamp=20261026145512",
+              "image": "https://image.cjonstyle.net/goods_images/20/979/2065432979L.jpg?timestamp=20261027021322",
               "link": "https://display.cjonstyle.com/p/item/2065432979"
             }
           ]
@@ -441,14 +516,14 @@
         {
           "date": "2026-11-07",
           "label": "11/07(토) 08:20 방송",
-          "collected_at": "2026-10-26T14:55:49.126739+09:00",
+          "collected_at": "2026-10-27T02:14:41.401713+09:00",
           "products": [
             {
               "broadcast_date_label": "11/07(토) 08:20",
               "brand": "클리판",
               "name": "스웨덴 프리미엄 뱀부코튼 타올세트 10종세트 노르딕믹스 K18",
               "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/620/2094028620L.jpg?timestamp=20261026145512",
+              "image": "https://image.cjonstyle.net/goods_images/20/620/2094028620L.jpg?timestamp=20261027021322",
               "link": "https://display.cjonstyle.com/p/item/2094028620"
             }
           ]
@@ -456,14 +531,14 @@
         {
           "date": "2026-11-05",
           "label": "11/05(목) 20:45 방송",
-          "collected_at": "2026-10-26T14:55:49.126739+09:00",
+          "collected_at": "2026-10-27T02:14:41.401713+09:00",
           "products": [
             {
               "broadcast_date_label": "11/05(목) 20:45",
               "brand": "옐로우에이유",
               "name": "[동가게PICK] 호주직수입 프로폴리스 스프레이 1500+ 5+3병 더",
               "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/665/2093831665L.jpg?timestamp=20261026145512",
+              "image": "https://image.cjonstyle.net/goods_images/20/665/2093831665L.jpg?timestamp=20261027021322",
               "link": "https://display.cjonstyle.com/p/item/2093831665"
             }
           ]
