@@ -3972,6 +3972,7 @@
       <button class="active" data-file="GS_SYJ.json">소유진쇼</button>
       <button class="active" data-file="CJ_SIH.json">소이현 겟잇스타일</button>
       <button class="active" data-file="CJ_DGG.json">동가게</button>
+      <button class="active" data-file="CJ_LMT.json">림잇티드</button>
       <button class="active" data-file="HD_WYE.json">왕영은 톡투게더</button>
     </div>
     <div class="cel-slicer cel-day-slicer" id="celDaySlicer">
@@ -6414,7 +6415,7 @@ const HS_PGM_BADGE_RULES = [
   ['HIT THE STYLE', '힛스'], ['힛더스', '힛스'], ['김지애', '김지애'], ['수정SHOP', '이수정'],
   ['L.SHOW', '엘쇼'], ['쇼미', '쇼미'], ['신상뷰티', '찬스'], ['지완스', '더지완스'],
   ['김창옥', '김창옥'], ['지금 여행', '지금여행'], ['김신영', '김신영'],
-  ['최은경', '최은경'],
+  ['최은경', '최은경'], ['림잇티드', '림잇티드'],
 ];
 
 function hsPgmBadgeLabel(pgm) {
@@ -7237,15 +7238,17 @@ document.getElementById('pmMonthPicker').addEventListener('change', (e) => {
 //   요일·시간대가 유동적 - 우선 론칭 시간대(화 21:45) 자리에 둔다.
 // ※ 최은경쇼는 2026-08 신규 편성 (HD, 수 19:30)
 // ※ 동가게(CJ, 목 20:45 / 토 08:20)는 2026-10부터 편입 - 토 08:20 기준으로 왕영은 바로 앞
+// ※ 림잇티드(CJ, 2026-10 신규)는 고정 편성 요일이 아직 확인 안 돼 맨 뒤에 둔다
 const CEL_FILES = [
   "HD_HJM.json", "CJ_KJE.json", "HD_OGS.json", "CJ_KCO.json", "CJ_KSY.json",
   "HD_CEK.json", "CJ_CHJ.json", "GS_BJY.json", "LT_CYR.json", "GS_SYJ.json",
-  "CJ_SIH.json", "CJ_DGG.json", "HD_WYE.json"
+  "CJ_SIH.json", "CJ_DGG.json", "HD_WYE.json", "CJ_LMT.json"
 ];
 // 중간에 편입된 프로그램: 이 달 이전을 조회하면 밴드 자체를 안 그린다
 // (편입 전 달은 수집하지 않으므로 빈 밴드만 남는다).
 const CEL_START_MONTH = {
   'CJ_DGG.json': '2026-10',
+  'CJ_LMT.json': '2026-10',
 };
 // 신규 론칭 프로그램 배지. 론칭일 전에는 '론칭예정', 론칭 후
 // CEL_NEW_BADGE_DAYS일 동안 'NEW'를 붙이고 그 뒤엔 저절로 사라진다
@@ -7263,6 +7266,11 @@ const CEL_LAUNCH_INFO = {
     title: '최은경쇼',
     date: '2026-08-20',
     note: '2026-08 신규 편성 · 매주 수요일 19:30',
+  },
+  'CJ_LMT.json': {
+    title: '림잇티드',
+    date: '2026-10-01',
+    note: '2026-10 신규 편성 · CJ온스타일',
   },
 };
 

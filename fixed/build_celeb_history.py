@@ -104,6 +104,7 @@ SOURCE_FILES = [
     "CJ_SIH.json",   # 소이현의 겟잇스타일
     "CJ_KSY.json",   # 김신영이 산다 (2026-08-18 론칭)
     "CJ_DGG.json",   # 동가게 (셀럽PGM 편입 2026-10)
+    "CJ_LMT.json",   # 림잇티드 (2026-10 신규)
 ]
 
 WEEKDAY_ABBR = ["월", "화", "수", "목", "금", "토", "일"]
