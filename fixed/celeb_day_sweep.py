@@ -452,3 +452,82 @@ def supplement_missing_slots(company: str, program_names, products: list,
             added += 1
 
     return added
+
+
+# ============ 데이터채널(TV+ 등) 재방송 회차 제외 ============
+# 셀럽PGM은 라이브(본방) 회차만 쌓는다. 각 사 데이터채널(CJ TV+, GS MY SHOP,
+# HD 플러스샵, LT OneTV - 편성은 {사}_data)에서 같은 상품을 다시 트는 재방송은
+# 넣지 않는다. 상세페이지/pgmShop 라인업에 재방송 회차가 같이 실려 올 수 있다
+# (2026-10-26 림잇티드: 10/22(목) 10:45 'T림잇티드 1부' = TV+ 재방송).
+#
+# 판정은 '확실한 증거'가 있을 때만 한다 - 잘못 지우면 본방 기록이 날아간다.
+#   1) 그 날 라이브 편성표에 같은 시각에 시작하는 방송이 없고
+#   2) 데이터채널 편성표의 같은 날·같은 시각 방송에 이 회차 상품
+#      (상품코드 또는 공백 뺀 상품명)이 있으면 재방송.
+# 편성표가 아직 없는 날(오늘+6일 이후)은 판단하지 않는다 - 가까워지면 다시 본다.
+# 모바일 라이브쇼처럼 라이브 편성표에 없는 회차라도 데이터채널에 같은 상품이
+# 없으면 그대로 둔다 (소이현의 겟잇스타일 19:00/20:00 라이브쇼).
+DATA_DIR_TEMPLATE = os.path.join("homeshopping", "{company}_data", "{ym}.json")
+_ITEM_CODE_RE = re.compile(r"(?:/item/|slitmCd=|prdid=|goods_no=)(\d+)")
+_MONTH_DAYS_CACHE = {}
+
+
+def _month_days(template: str, company: str, ym: str) -> dict:
+    path = template.format(company=company, ym=ym)
+    if path not in _MONTH_DAYS_CACHE:
+        days = {}
+        if os.path.exists(path):
+            try:
+                with open(path, "r", encoding="utf-8") as f:
+                    days = json.load(f).get("days", {}) or {}
+            except (OSError, ValueError) as e:
+                print(f"    -> [경고] 편성표({path}) 읽기 실패: {e}")
+        _MONTH_DAYS_CACHE[path] = days
+    return _MONTH_DAYS_CACHE[path]
+
+
+def _product_keys(product: dict) -> set:
+    keys = set()
+    m = _ITEM_CODE_RE.search(product.get("link") or "")
+    if m:
+        keys.add("code:" + m.group(1))
+    name = compact(product.get("name") or product.get("product") or "")
+    if name:
+        keys.add("name:" + name)
+    return keys
+
+
+def is_data_channel_slot(company: str, date_iso: str, start_hm: str, products) -> bool:
+    """이 회차(날짜+시작시각)가 데이터채널 재방송인지. 규칙은 위 주석 참고."""
+    if not (date_iso and start_hm and products):
+        return False
+    ym = date_iso[:7]
+    live_day = _month_days(LIVE_DIR_TEMPLATE, company, ym).get(date_iso) or []
+    if any(item.get("start") == start_hm for item in live_day):
+        return False
+    data_items = [item for item in _month_days(DATA_DIR_TEMPLATE, company, ym).get(date_iso) or []
+                  if item.get("start") == start_hm]
+    if not data_items:
+        return False
+    data_keys = set().union(*(_product_keys(item) for item in data_items))
+    return any(_product_keys(p) & data_keys for p in products)
+
+
+def drop_data_channel_slots(company: str, products: list) -> int:
+    """products에서 데이터채널 재방송 회차의 상품을 제자리에서 뺀다. 반환: 뺀 상품 수."""
+    today = datetime.now(KST).date()
+    by_slot = {}
+    for product in products:
+        d, hm = parse_label(product.get("broadcast_date_label"), today)
+        if d and hm:
+            by_slot.setdefault((d.isoformat(), hm), []).append(product)
+
+    drop_ids = set()
+    for (day, hm), slot_products in by_slot.items():
+        if is_data_channel_slot(company, day, hm, slot_products):
+            print(f"    -> [재방송 제외] {day} {hm} 데이터채널 재방송 회차 "
+                  f"- 상품 {len(slot_products)}개 뺌")
+            drop_ids.update(id(p) for p in slot_products)
+    if drop_ids:
+        products[:] = [p for p in products if id(p) not in drop_ids]
+    return len(drop_ids)

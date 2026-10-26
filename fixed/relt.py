@@ -43,7 +43,7 @@ from urllib.parse import urljoin
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from tools import scrape_guard
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from celeb_day_sweep import supplement_missing_slots, merge_continuous_slots, parse_label
+from celeb_day_sweep import supplement_missing_slots, merge_continuous_slots, parse_label, drop_data_channel_slots
 from datetime import date, datetime, timedelta, timezone
 
 KST = timezone(timedelta(hours=9))
@@ -184,6 +184,9 @@ def crawl_lt_program(config: dict):
     # 08:20~09:20 / 09:20~10:20 / 10:20~10:35 = 이어지는 한 방송).
     # 이어지는 구간은 첫 구간 시각의 한 회차로 묶는다.
     merge_continuous_slots("LT", [program_title, tab_name], upcoming_products)
+
+    # 데이터채널(OneTV) 재방송 회차는 셀럽PGM에 안 넣는다
+    drop_data_channel_slots("LT", upcoming_products)
 
     # 셀럽PGM 편입일(since) 이전 회차는 버린다. 라벨 날짜를 못 읽는 상품은
     # 남겨두면 build_celeb_history가 알아서 건너뛴다.
