@@ -3284,6 +3284,28 @@
   /* 요일 슬라이서: 프로그램 슬라이서와 같은 모양, 버튼만 조금 좁게 */
   .cel-day-slicer button { padding: 7px 12px; }
 
+  /* 요일 + 채널 슬라이서 한 줄 (모바일은 채널이 아래로 내려간다) */
+  .cel-filter-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .cel-channel-slicer button { padding: 7px 12px; }
+
+  /* PGM 슬라이서: PC(1280px 이상)에서는 16개가 한 줄에 들어오도록 셀을 작게.
+     그보다 좁은 화면은 가로 스크롤이 생기지 않게 그대로 줄바꿈한다. */
+  @media (min-width: 721px) {
+    #celProgramSlicer { gap: 2px; max-width: 100%; }
+    #celProgramSlicer button {
+      font-size: 11.5px;
+      padding: 6px 7px;
+      white-space: nowrap;
+      letter-spacing: -0.2px;
+    }
+  }
+
   .cel-slicer button:hover:not(.active) {
     background: #fff;
     color: var(--ink);
@@ -3673,6 +3695,7 @@
     .cel-month-nav button, .pm-month-nav button { font-size: 12px; padding: 5px 10px; }
     .cel-month-nav input[type="month"], .pm-month-nav input[type="month"] { font-size: 12.5px; padding: 5px 8px; }
     .cel-slicer button { font-size: 11.5px; padding: 6px 10px; }
+    .cel-filter-row { flex-direction: column; }
     .cel-band { flex-direction: column; }
     .cel-band-head {
       flex: none;
@@ -3976,15 +3999,24 @@
       <button class="active" data-file="CJ_LMT.json">림잇티드</button>
       <button class="active" data-file="HD_WYE.json">왕영은 톡투게더</button>
     </div>
-    <div class="cel-slicer cel-day-slicer" id="celDaySlicer">
-      <button class="active" data-day="전체">전체</button>
-      <button data-day="월">월</button>
-      <button data-day="화">화</button>
-      <button data-day="수">수</button>
-      <button data-day="목">목</button>
-      <button data-day="금">금</button>
-      <button data-day="토">토</button>
-      <button data-day="일">일</button>
+    <div class="cel-filter-row">
+      <div class="cel-slicer cel-day-slicer" id="celDaySlicer">
+        <button class="active" data-day="전체">전체</button>
+        <button data-day="월">월</button>
+        <button data-day="화">화</button>
+        <button data-day="수">수</button>
+        <button data-day="목">목</button>
+        <button data-day="금">금</button>
+        <button data-day="토">토</button>
+        <button data-day="일">일</button>
+      </div>
+      <div class="cel-slicer cel-channel-slicer" id="celChannelSlicer">
+        <button class="active" data-channel="전체">전체</button>
+        <button data-channel="HD">HD</button>
+        <button data-channel="GS">GS</button>
+        <button data-channel="CJ">CJ</button>
+        <button data-channel="LT">LT</button>
+      </div>
     </div>
   </div>
   <div class="cel-fail-notice" id="celFailNotice" style="display:none;"></div>
@@ -7317,6 +7349,7 @@ let celStatus = {};            // file -> {status, last_success, products, reaso
                                // (status.json - 수집실패 뱃지용)
 let celSelectedFiles = new Set(CEL_FILES); // 기본값: 전체 선택 상태로 시작
 let celSelectedDay = '전체';   // 요일 슬라이서 (전체/월~일 중 하나)
+let celSelectedChannel = '전체';   // 채널 슬라이서 (전체/HD/GS/CJ/LT 중 하나 - 파일명 앞자리)
 let celIsSample = false; // 실제 수집 데이터가 하나도 없어 예시 데이터로 미리보기 중인지
 
 // ---- 월별 조회 (history/{YYYY-MM}.json) ----
@@ -7988,11 +8021,13 @@ function celRenderCompare() {
     wrap.innerHTML = '<div class="cel-empty">비교할 셀럽PGM을 선택하세요 (여러 개 중복 선택 가능)</div>';
     return;
   }
-  const selected = celSelectedDay === '전체'
-    ? picked
-    : picked.filter(f => celProgramDays(f).has(celSelectedDay));
+  const selected = picked
+    .filter(f => celSelectedChannel === '전체' || f.startsWith(celSelectedChannel + '_'))
+    .filter(f => celSelectedDay === '전체' || celProgramDays(f).has(celSelectedDay));
   if (selected.length === 0) {
-    wrap.innerHTML = `<div class="cel-empty">${celSelectedDay}요일에 방송하는 셀럽PGM이 없어요</div>`;
+    const cond = [celSelectedChannel !== '전체' ? celSelectedChannel : '',
+                  celSelectedDay !== '전체' ? `${celSelectedDay}요일에 방송하는` : ''].filter(Boolean).join(' ');
+    wrap.innerHTML = `<div class="cel-empty">${cond} 셀럽PGM이 없어요</div>`;
     return;
   }
 
@@ -8362,6 +8397,19 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
       celDaySlicer.querySelectorAll('button').forEach(b => b.classList.toggle('active', b === btn));
       celRenderCompare();
       gaEvent('filter_click', { filter_group: 'celebrity_day', filter_value: celSelectedDay });
+    });
+  }
+
+  // 셀럽PGM 채널 슬라이서 (하나만 선택, 요일·프로그램 슬라이서와 함께 걸린다)
+  const celChannelSlicer = document.getElementById('celChannelSlicer');
+  if (celChannelSlicer) {
+    celChannelSlicer.addEventListener('click', (e) => {
+      const btn = e.target.closest('button');
+      if (!btn) return;
+      celSelectedChannel = btn.dataset.channel;
+      celChannelSlicer.querySelectorAll('button').forEach(b => b.classList.toggle('active', b === btn));
+      celRenderCompare();
+      gaEvent('filter_click', { filter_group: 'celebrity_channel', filter_value: celSelectedChannel });
     });
   }
 
