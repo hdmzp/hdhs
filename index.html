@@ -3514,7 +3514,7 @@
   .cel-notice.collapsed .cel-band-cnt { margin: 0; }
   .cel-notice.collapsed .cel-notice-toggle { margin: 0 0 0 auto; }
 
-  /* 월 방송 체크 - 특이사항 위 얇은 줄. 평소(지난 8주 최빈값)와 다른 요일·시간·횟수로
+  /* 월 방송 체크 - 특이사항 위 얇은 줄. 평소(직전 12주 최빈값)와 다른 요일·시간·횟수로
      편성된 '예정' 회차만 알려준다. 모바일은 접힌 채로, PC는 펼친 채로 시작. */
   .cel-news {
     background: #FFF1F4;
@@ -7984,19 +7984,18 @@ function celNoticeRowHtml(r) {
 }
 
 // ---- 월 방송 체크: 평소와 다른 요일·시간·횟수의 회차 (조회 중인 달 전체, 지난 회차는 '종료') ----
-// 평소 = 지난 8주(오늘 전 56일) 방송의 최빈값.
+// 평소 = 그 주 시작 전 12주 방송의 최빈값 (주마다 따로 잡는다).
 //   요일: 최다 요일의 절반 이상(최소 2회) 나온 요일은 모두 '평소 요일'로 본다
 //         (동가게 목/토, 최유라쇼 목/토처럼 주 2회 정규 편성).
 //   시간: 그 요일 방송의 최빈 시작시각 (요일별로 따로).
 //   횟수: 주(월~일)별 방송 횟수의 최빈값.
-// 이미 끝난(시작한) 회차는 알리지 않는다. 휴방 기록은 계산에서 뺀다.
-const CEL_NEWS_LOOKBACK_DAYS = 56;       // 평소 = 직전 8주 최빈값
-const CEL_NEWS_LOOKBACK_MAX_DAYS = 84;   // 8주로 평소 요일을 못 정하면 12주까지 넓힌다
+// 끝난 회차는 '종료', 남은 회차는 '예정'으로 표시한다. 휴방 기록은 계산에서 뺀다.
+const CEL_NEWS_LOOKBACK_DAYS = 84;  // 평소 = 직전 12주 최빈값
 let celNewsCollapsed = true;  // 프로그램별로 길어져서 PC·모바일 모두 접힌 채로 시작
 
-// 오늘 기준 지난 2개월 ~ 다음 달 누적 파일 (8주 전 ~ 다음 주가 걸치는 범위)
+// 조회 달 기준 3개월 전 ~ 다음 달 누적 파일 (첫 주의 12주 전 ~ 마지막 주가 걸치는 범위)
 async function celLoadNewsMonths(base) {
-  await Promise.all([-2, -1, 0, 1].map(d => celLoadHistory(celShiftMonth(base, d))));
+  await Promise.all([-3, -2, -1, 0, 1].map(d => celLoadHistory(celShiftMonth(base, d))));
 }
 
 function celNewsBroadcasts(file, base) {
@@ -8004,7 +8003,7 @@ function celNewsBroadcasts(file, base) {
   const out = [];
   let title = '';
   const seen = new Set();
-  for (const d of [-2, -1, 0, 1]) {
+  for (const d of [-3, -2, -1, 0, 1]) {
     const hist = celHistoryCache[celShiftMonth(base, d)];
     const prog = hist && Array.isArray(hist.programs) && hist.programs.find(p => p.program_key === key);
     if (!prog) continue;
@@ -8063,7 +8062,7 @@ function celBuildNews(files, ym) {
     const co = file.split('_')[0];
     const name = title || file;
 
-    // 조회 중인 달의 회차를 주(월~일) 단위로 본다. 평소 기준은 '그 주 시작 전 8주'
+    // 조회 중인 달의 회차를 주(월~일) 단위로 본다. 평소 기준은 '그 주 시작 전 12주'
     // - 지난 회차가 자기 자신을 기준에 넣지 않게 주마다 따로 잡는다.
     const weeks = new Map();
     list.filter(b => b.date.slice(0, 7) === ym).forEach(b => {
@@ -8073,17 +8072,13 @@ function celBuildNews(files, ym) {
     });
 
     for (const [wk, inMonth] of weeks) {
-      // 평소 요일 (주 2회 정규 편성 포함) - 직전 8주, 부족하면 12주
-      let past = [], usualDays = [];
-      for (const days of [CEL_NEWS_LOOKBACK_DAYS, CEL_NEWS_LOOKBACK_MAX_DAYS]) {
-        past = list.filter(b => b.start.getTime() >= wk - days * DAY && b.start.getTime() < wk);
-        const wdMode = celNewsMode(past.map(b => b.wd));
-        usualDays = [...wdMode.counts.entries()]
-          .filter(([, n]) => n >= Math.max(2, Math.ceil(wdMode.count / 2)))
-          .map(([wd]) => wd).sort((a, b) => ((a + 6) % 7) - ((b + 6) % 7));
-        if (usualDays.length) break;
-      }
-      if (usualDays.length === 0) continue;  // 12주로도 2회 이상 나온 요일이 없으면 판단 보류 (신규·중간 편입 직후)
+      // 평소 요일 (주 2회 정규 편성 포함) - 직전 12주
+      const past = list.filter(b => b.start.getTime() >= wk - CEL_NEWS_LOOKBACK_DAYS * DAY && b.start.getTime() < wk);
+      const wdMode = celNewsMode(past.map(b => b.wd));
+      const usualDays = [...wdMode.counts.entries()]
+        .filter(([, n]) => n >= Math.max(2, Math.ceil(wdMode.count / 2)))
+        .map(([wd]) => wd).sort((a, b) => ((a + 6) % 7) - ((b + 6) % 7));
+      if (usualDays.length === 0) continue;  // 2회 이상 나온 요일이 없으면 판단 보류 (신규·중간 편입 직후)
 
       // 요일별 시간 / 주간 횟수 / 하루 최대 횟수
       const usualTime = {};
@@ -8185,7 +8180,7 @@ function celRenderNews(files, ym) {
     `<div class="cel-news${celNewsCollapsed ? ' collapsed' : ''}" id="celNews">` +
       `<div class="cel-news-head">` +
         `<span class="cel-news-title">[${label}]</span>` +
-        `<span class="cel-news-cnt">평소(직전 8주 최빈, 부족하면 12주)와 다른 방송 · 프로그램 ${progs.length}개 · 예정 ${upcoming}건</span>` +
+        `<span class="cel-news-cnt">평소(직전 12주 최빈)와 다른 방송 · 프로그램 ${progs.length}개 · 예정 ${upcoming}건</span>` +
         `<button type="button" class="cel-news-toggle">${celNewsCollapsed ? '펼치기 ▼' : '접기 ▲'}</button>` +
       `</div>` +
       body +
