@@ -3514,7 +3514,7 @@
   .cel-notice.collapsed .cel-band-cnt { margin: 0; }
   .cel-notice.collapsed .cel-notice-toggle { margin: 0 0 0 auto; }
 
-  /* 월 편성 변동 - 특이사항 위 얇은 줄. 평소(지난 8주 최빈값)와 다른 요일·시간·횟수로
+  /* 월 방송 체크 - 특이사항 위 얇은 줄. 평소(지난 8주 최빈값)와 다른 요일·시간·횟수로
      편성된 '예정' 회차만 알려준다. 모바일은 접힌 채로, PC는 펼친 채로 시작. */
   .cel-news {
     background: #FFF1F4;
@@ -7959,7 +7959,7 @@ function celNoticeRowHtml(r) {
     `</div>`;
 }
 
-// ---- 월 편성 변동: 평소와 다른 요일·시간·횟수의 '예정' 회차 (조회 중인 달 전체) ----
+// ---- 월 방송 체크: 평소와 다른 요일·시간·횟수의 '예정' 회차 (조회 중인 달 전체) ----
 // 평소 = 지난 8주(오늘 전 56일) 방송의 최빈값.
 //   요일: 최다 요일의 절반 이상(최소 2회) 나온 요일은 모두 '평소 요일'로 본다
 //         (동가게 목/토, 최유라쇼 목/토처럼 주 2회 정규 편성).
@@ -8098,7 +8098,7 @@ function celBuildNews(files, ym) {
 
 function celRenderNews(files, ym) {
   const items = celBuildNews(files, ym);
-  const label = `${Number(ym.slice(5, 7))}월 편성 변동`;
+  const label = `${Number(ym.slice(5, 7))}월 방송 체크`;
   const body = items.length
     ? `<ul class="cel-news-list">${items.map(it => `<li>${it.html}</li>`).join('')}</ul>`
     : `<div class="cel-news-empty">이 달 남은 방송 중 평소와 다르게 편성된 프로그램이 없어요.</div>`;
@@ -8223,7 +8223,7 @@ function celRenderCompare() {
 
 // 펼치기/접기 버튼: 재렌더링마다 버튼이 새로 생기므로 컨테이너에 위임으로 한 번만 건다
 document.getElementById('celGridWrap').addEventListener('click', (e) => {
-  // 편성 변동 접기/펼치기 (줄 머리 아무 데나 눌러도 된다)
+  // 방송 체크 접기/펼치기 (줄 머리 아무 데나 눌러도 된다)
   if (e.target.closest('.cel-news-head')) {
     celNewsCollapsed = !celNewsCollapsed;
     const news = document.getElementById('celNews');
