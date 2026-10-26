@@ -45,7 +45,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from tools import scrape_guard
 from infer_brand import is_marketing_copy, pick_brand_from_prefix
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from celeb_day_sweep import supplement_missing_slots, merge_continuous_slots
+from celeb_day_sweep import supplement_missing_slots, merge_continuous_slots, drop_data_channel_slots
 from celeb_brand import resolve_gs_brand
 
 WEEKDAY_KR = ["월", "화", "수", "목", "금", "토", "일"]
@@ -303,6 +303,8 @@ def crawl_gs_program(config: dict):
     # 보여줄 수 있다. 편성표(GS_live)를 훑어 수집분에 없는 회차를 채운다.
     supplement_missing_slots("GS", [config["program_title"], tab_name], final_products)
     merge_continuous_slots("GS", [config["program_title"], tab_name], final_products)
+    # 데이터채널(GS MY SHOP) 재방송 회차는 셀럽PGM에 안 넣는다
+    drop_data_channel_slots("GS", final_products)
 
     return {
         "company": "GS",

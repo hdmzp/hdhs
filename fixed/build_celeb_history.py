@@ -83,7 +83,11 @@ reconcile 구간에도 아무 수집분이나 받지는 않는다. 방송이 끝
 import os
 import re
 import json
+import sys
 from datetime import datetime, date, timezone, timedelta
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from celeb_day_sweep import is_data_channel_slot  # noqa: E402
 
 KST = timezone(timedelta(hours=9))
 SRC_DIR = os.path.join("homeshopping", "representative_programs")
@@ -637,6 +641,22 @@ def merge_into_month(existing: dict, program_key: str, meta: dict,
         if kept_n != new_n:  # 같은 건수면 조용히 넘어간다 (매 실행 반복되는 정상 상황)
             print(f"[보존] {program_key} {date_iso}: 정정 창이 닫힌 확정 기록이라 "
                   f"기존 {kept_n}건 유지 (수집분 {new_n}건 무시)")
+
+    # 데이터채널(TV+ 등) 재방송 회차는 셀럽PGM에 안 남긴다. 수집기도 같은
+    # 판정으로 거르지만(celeb_day_sweep.drop_data_channel_slots), 편성표가 아직
+    # 없던 날(+6일 이후)에 먼저 쌓인 회차는 여기서만 지울 수 있다. 편성표로
+    # 재방송임이 확인된 경우만 지우므로 확정(final) 회차라도 뺀다.
+    company = prog.get("company") or meta.get("company") or ""
+    for key in list(by_date):
+        b = by_date[key]
+        hm = parse_hm(b.get("label"))
+        if b.get("off_air") or not hm:
+            continue
+        if is_data_channel_slot(company, b.get("date"), f"{hm[0]:02d}:{hm[1]:02d}",
+                                b.get("products") or []):
+            print(f"[제외] {program_key} {b.get('label')}: 데이터채널 재방송 회차 "
+                  f"(상품 {len(b.get('products') or [])}건)")
+            del by_date[key]
 
     # 최신 방송이 맨 위로 오도록 내림차순 정렬
     prog["broadcasts"] = [by_date[k] for k in sorted(by_date, reverse=True)]

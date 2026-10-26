@@ -99,7 +99,7 @@ from datetime import datetime, timezone, timedelta
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from tools import scrape_guard
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from celeb_day_sweep import (supplement_missing_slots, merge_continuous_slots,
+from celeb_day_sweep import (supplement_missing_slots, merge_continuous_slots, drop_data_channel_slots,
                              select_slots_by_starts, find_program_slots,
                              parse_label as parse_broadcast_label,
                              SWEEP_DAYS)
@@ -1012,6 +1012,8 @@ def crawl_hd_program(page, config: dict, list_map: dict):
     # 프로그램의 빠진 회차 채우기)을 한 번 더 돌린다.
     supplement_missing_slots("HD", program_names, deduped)
     merge_continuous_slots("HD", program_names, deduped)
+    # 데이터채널(플러스샵) 재방송 회차는 셀럽PGM에 안 넣는다
+    drop_data_channel_slots("HD", deduped)
 
     print(f"    -> 최종 상품 {len(deduped)}개 (병합/중복 제거 후)")
 
