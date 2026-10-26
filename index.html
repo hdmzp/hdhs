@@ -8133,8 +8133,8 @@ function celBuildMissing(files, ym) {
       const usualPerWeek = celNewsMode([...perWeek.values()]).value || 1;
       const weekCnt = list.filter(b => b.start.getTime() >= wk && b.start.getTime() < wk + 7 * 86400000).length;
       if (weekCnt >= usualPerWeek) continue;
-      out.push({ start: new Date(d), past: d < today,
-                 text: `${co} ${title || file} ${d.getMonth() + 1}/${d.getDate()} ${WD[d.getDay()]}` });
+      out.push({ start: new Date(d), past: d < today, file,
+                 name: `${co} ${title || file}`, day: `${d.getMonth() + 1}/${d.getDate()} ${WD[d.getDay()]}` });
     }
   }
   out.sort((a, b) => a.start - b.start);
@@ -8270,13 +8270,21 @@ function celRenderNews(files, ym) {
             p.lines.map(l => `<li class="${l.ended ? 'ended' : 'up'}">${lineHtml(l)}</li>`).join('') +
           `</ul></li>`).join('')}</ul>`
     : `<div class="cel-news-empty">이 달은 평소와 다르게 편성된 방송이 없어요.</div>`;
+  // 같은 프로그램은 한 번만 쓴다: 1회는 "CJ 최화정쇼 9/23 수", 2회부터는 괄호로
+  // "LT 최유라쇼(9/24 목, 9/26 토)". 순서는 첫 날짜 순.
+  const missText = (xs) => {
+    const by = new Map();
+    xs.forEach(x => { if (!by.has(x.file)) by.set(x.file, { name: x.name, days: [] }); by.get(x.file).days.push(x.day); });
+    return [...by.values()].map(g => g.days.length >= 2
+      ? `${g.name}(${g.days.join(', ')})` : `${g.name} ${g.days.join(', ')}`).join(', ');
+  };
   const missPast = missing.filter(x => x.past), missNext = missing.filter(x => !x.past);
   const missingHtml = (missPast.length || missNext.length)
     ? `<div class="cel-news-missing">` +
         (missPast.length
-          ? `<div>📭 <span class="cel-news-miss-tag">지난 방송</span> <b>${missPast.map(x => x.text).join(', ')}</b> - 평소 방송일인데 상품 기록이 없어요. 휴방이었을 가능성이 높아요.</div>` : '') +
+          ? `<div>📭 <span class="cel-news-miss-tag">지난 방송</span> <b>${missText(missPast)}</b> - 평소 방송일인데 상품 기록이 없어요. 휴방이었을 가능성이 높아요.</div>` : '') +
         (missNext.length
-          ? `<div>📭 <span class="cel-news-miss-tag">남은 방송</span> <b>${missNext.map(x => x.text).join(', ')}</b> - 평소 방송일인데 상품이 없어요. 코드 등록 전이거나 휴방일 수 있어요 (오늘 +${CEL_NEWS_MISSING_AHEAD_DAYS}일 기준)</div>` : '') +
+          ? `<div>📭 <span class="cel-news-miss-tag">남은 방송</span> <b>${missText(missNext)}</b> - 평소 방송일인데 상품이 없어요. 코드 등록 전이거나 휴방일 수 있어요 (오늘 +${CEL_NEWS_MISSING_AHEAD_DAYS}일 기준)</div>` : '') +
       `</div>`
     : '';
   return (
