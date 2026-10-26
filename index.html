@@ -8097,22 +8097,23 @@ function celNewsUsualDays(list, wk) {
 }
 
 // 평소 방송 요일인데 그날 기록(상품)이 아예 없는 날 - 코드 등록 전인지 휴방인지 알 수 없다.
-// 이번 달 1일 ~ 오늘+CEL_NEWS_MISSING_AHEAD_DAYS일만 본다 (그 뒤는 원래 코드가 안 올라올 때라).
-// 첫 기록 전 날짜(중간 편입)와 휴방으로 기록된 날은 뺀다. 오탐을 줄이려고:
-//   - 그 주 방송 횟수가 평소 주간 횟수보다 적을 때만 (다른 요일로 옮겨 방송했으면 빠진 게 아니다)
-//   - 평소 요일 수가 주간 횟수보다 많아 요일을 예측할 수 없는 프로그램은 뺀다 (겟잇스타일)
-//   - 직전 12주 중 방송한 주가 70% 미만인 비정기 프로그램은 뺀다 (김신영이 산다)
+// 남은 날(오늘 ~ 오늘+CEL_NEWS_MISSING_AHEAD_DAYS일)만 본다 - 지난 날은 뺀다.
+// 그 뒤는 원래 코드가 안 올라올 때라 안 본다. 휴방으로 기록된 날도 뺀다.
+// 그 주 방송 횟수가 평소 주간 횟수보다 적을 때만 (다른 요일로 옮겨 방송했으면 빠진 게 아니다).
+// 요일이 매번 바뀌는 프로그램은 CEL_NEWS_MISSING_SKIP으로 뺀다.
 const CEL_NEWS_MISSING_AHEAD_DAYS = 7;
+const CEL_NEWS_MISSING_SKIP = new Set(['CJ_SIH.json']);  // 겟잇스타일
 function celBuildMissing(files, ym) {
   const WD = ['일', '월', '화', '수', '목', '금', '토'];
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const [y, m] = ym.split('-').map(Number);
-  const first = new Date(y, m - 1, 1);
+  const first = new Date(Math.max(new Date(y, m - 1, 1).getTime(), today.getTime()));
   const last = new Date(Math.min(new Date(y, m, 0).getTime(),
                                  today.getTime() + CEL_NEWS_MISSING_AHEAD_DAYS * 86400000));
   const out = [];
   for (const file of files) {
+    if (CEL_NEWS_MISSING_SKIP.has(file)) continue;
     const { title, list, recordDates } = celNewsBroadcasts(file, ym);
     if (list.length === 0) continue;
     const firstRec = list[0].start;
@@ -8127,10 +8128,6 @@ function celBuildMissing(files, ym) {
       const perWeek = new Map();
       past.forEach(b => { const k = celNewsMonday(b.start).getTime(); perWeek.set(k, (perWeek.get(k) || 0) + 1); });
       const usualPerWeek = celNewsMode([...perWeek.values()]).value || 1;
-      if (usualDays.length > usualPerWeek) continue;
-      const firstWk = celNewsMonday(firstRec).getTime();
-      const spanWeeks = Math.round((wk - Math.max(firstWk, wk - CEL_NEWS_LOOKBACK_DAYS * 86400000)) / (7 * 86400000));
-      if (spanWeeks < 2 || perWeek.size / spanWeeks < 0.7) continue;
       const weekCnt = list.filter(b => b.start.getTime() >= wk && b.start.getTime() < wk + 7 * 86400000).length;
       if (weekCnt >= usualPerWeek) continue;
       out.push({ start: new Date(d), text: `${co} ${title || file} ${d.getMonth() + 1}/${d.getDate()} ${WD[d.getDay()]}` });
@@ -8270,7 +8267,7 @@ function celRenderNews(files, ym) {
           `</ul></li>`).join('')}</ul>`
     : `<div class="cel-news-empty">이 달은 평소와 다르게 편성된 방송이 없어요.</div>`;
   const missingHtml = missing.length
-    ? `<div class="cel-news-missing">📭 <b>${missing.map(x => x.text).join(', ')}</b> - 평소 방송일인데 상품이 없어요. 코드 등록 전이거나 휴방일 수 있어요.</div>`
+    ? `<div class="cel-news-missing">📭 <b>${missing.map(x => x.text).join(', ')}</b> - 평소 방송일인데 상품이 없어요. 코드 등록 전이거나 휴방일 수 있어요 (오늘 +${CEL_NEWS_MISSING_AHEAD_DAYS}일 기준)</div>`
     : '';
   return (
     `<div class="cel-news${celNewsCollapsed ? ' collapsed' : ''}" id="celNews">` +
