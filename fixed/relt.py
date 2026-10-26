@@ -70,6 +70,7 @@ PROGRAMS = [
     },
     # 더퍼스트 유난희: 매주 목 09:25. 셀럽PGM 탭에는 2026-10부터 편입
     # (since보다 이른 방송일 상품은 버린다 - recj.py PROGRAMS의 since와 같은 규칙).
+    # 편입~첫 수집 전 10월 회차는 tools/backfill_celeb_past.py로 소급했다.
     {
         "tab_name": "유난희",
         "conts_no": "1149",
