@@ -2,19 +2,74 @@
   "company": "NS",
   "broadcast": "live",
   "month": "2026-11",
-  "updated_at": "2026-10-27T14:36:03+09:00",
+  "updated_at": "2026-10-27T18:32:53+09:00",
   "days": {
     "2026-11-01": [
+      {
+        "start": "01:00",
+        "end": "02:00",
+        "brand": "",
+        "product": "N_히트상품앵콜방송 1부",
+        "price": 198000,
+        "link": "https://m.nsmall.com/goods/36240909",
+        "category": "일반식품",
+        "lavangba_category": "식품",
+        "hsshow_id": "b04e50248f8ef5a05ff7ef5f6069bf5b"
+      },
+      {
+        "start": "02:00",
+        "end": "03:00",
+        "brand": "",
+        "product": "N_히트상품앵콜방송 2부",
+        "price": 33900,
+        "link": "https://m.nsmall.com/goods/36207288",
+        "category": "일반식품",
+        "lavangba_category": "식품",
+        "hsshow_id": "81a3118fac6081fd6023ab2fc48dace3"
+      },
+      {
+        "start": "03:00",
+        "end": "04:00",
+        "brand": "",
+        "product": "N_히트상품앵콜방송 3부",
+        "price": 54900,
+        "link": "https://m.nsmall.com/goods/36277832",
+        "category": "일반식품",
+        "lavangba_category": "식품",
+        "hsshow_id": "b43e33cc2e19d153a3c0b48a8dc891d7"
+      },
+      {
+        "start": "04:00",
+        "end": "05:00",
+        "brand": "",
+        "product": "N_히트상품앵콜방송 4부",
+        "price": 29900,
+        "link": "https://m.nsmall.com/goods/36265607",
+        "category": "일반식품",
+        "lavangba_category": "식품",
+        "hsshow_id": "c39cc356675d3fbc7022e717be618408"
+      },
+      {
+        "start": "05:00",
+        "end": "05:40",
+        "brand": "해즈픽",
+        "product": "해즈픽칫솔",
+        "price": 99000,
+        "link": "https://m.nsmall.com/goods/36293295",
+        "category": "리빙/주방",
+        "lavangba_category": "생활/건강",
+        "hsshow_id": "83f3c68b11f4b0fbfdb0d10822ba8e8e"
+      },
       {
         "start": "05:40",
         "end": "06:40",
         "brand": "에버콜라겐",
-        "product": "에버콜라겐타임레티놀A",
+        "product": "에버콜라겐타임프라임",
         "price": 396000,
         "link": "https://m.nsmall.com/goods/36272927",
         "category": "건강식품",
         "lavangba_category": "식품",
-        "hsshow_id": "c3535b2623a63c6743f12c8fe14169cb"
+        "hsshow_id": "096a840bb60ae99aca4c101037dab8a8"
       },
       {
         "start": "07:50",
@@ -26,6 +81,17 @@
         "category": "건강식품",
         "lavangba_category": "식품",
         "hsshow_id": "3fbe81daae43d996c481038d0097cae9"
+      },
+      {
+        "start": "09:00",
+        "end": "10:00",
+        "brand": "매스티나",
+        "product": "매스티나앰플",
+        "price": 109000,
+        "link": "https://m.nsmall.com/goods/35896594",
+        "category": "미용",
+        "lavangba_category": "화장품/미용",
+        "hsshow_id": "5d668c4c9104265766c5237d694d3349"
       },
       {
         "start": "10:00",
@@ -92,6 +158,17 @@
         "category": "여행",
         "lavangba_category": "여가/생활편의",
         "hsshow_id": "19057c35d1f6ad301108565987cc0a19"
+      },
+      {
+        "start": "19:20",
+        "end": "20:30",
+        "brand": "에버홈",
+        "product": "에버홈에어프라이어",
+        "price": 399000,
+        "link": "https://m.nsmall.com/goods/36281264",
+        "category": "가전",
+        "lavangba_category": "디지털/가전",
+        "hsshow_id": "18cb989ca3848c53c1c861523955731c"
       }
     ]
   }
