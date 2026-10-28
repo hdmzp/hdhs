@@ -146,6 +146,10 @@ PROGRAMS = [
     # 론칭~첫 수집 전 회차는 tools/backfill_celeb_past.py로 소급했다.
     {"tab_name": "림잇티드", "program_title": "림잇티드", "pgm_cd": "100082", "output_file": "CJ_LMT.json",
      "keywords": ("림잇티드",), "since": "2026-10-03"},
+    # 바이림: 2026-10-28 모니터링 편입. 비정기 편성(10월은 10/23(금) 19:35 라이브 1회)이라
+    # schedule_raw는 매번 API에서 읽는다. 편입 전 10월 회차는 tools/backfill_celeb_past.py로 소급.
+    {"tab_name": "바이림", "program_title": "바이림", "pgm_cd": "100033", "output_file": "CJ_BYL.json",
+     "keywords": ("바이림",), "since": "2026-10-01"},
 ]
 # ==============================================
 
