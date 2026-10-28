@@ -17,6 +17,9 @@
                                프로그램명 표시가 없어 시각으로만 고르고, 대표상품
                                1개뿐이다. (2026-10-26 실측: API가 10/24만 주고
                                10/3·10/10·10/17은 pgmNm으로 안 잡혔다)
+    CJ_BYL  바이림          림잇티드와 같은 방식(라이브만). 비정기라 정규 시각이 없어
+                            CJ_live 폴백은 다른 출처로 확인한 회차(live_dates)만 쓴다
+                            (10/23(금) 19:35 - 라방바 '[바이림] 레쁠레뜨', CJ_live 같은 시각).
     LT_YNH  더퍼스트 유난희  로컬 편성표 homeshopping/LT_live (pgm 표시가 있다).
                             롯데는 한 방송을 상품 구간별로 쪼개 주므로 이어지는
                             구간은 첫 구간 시각의 한 회차로 묶는다.
@@ -59,6 +62,13 @@ TARGETS = {
                  "schedule_raw": "TV:토요일 10시20분, TV+:화요일 20시45분",
                  "detail_link": "https://display.cjonstyle.com/m/pgmShop/100082"},
     },
+    "CJ_BYL": {
+        "company": "CJ", "since": "2026-10-01", "names": ("바이림",),
+        # 정규 시각 대신 확인된 라이브 회차 (날짜, 시작시각) - CJ_live 폴백용
+        "live_dates": (("2026-10-23", "19:35"),),
+        "meta": {"tab_name": "바이림", "program_title": "바이림", "schedule_raw": "",
+                 "detail_link": "https://display.cjonstyle.com/m/pgmShop/100033"},
+    },
     "LT_YNH": {
         "company": "LT", "since": "2026-10-01", "names": ("더퍼스트 유난희", "유난희"),
         "meta": {"tab_name": "유난희", "program_title": "더퍼스트 유난희",
@@ -83,7 +93,7 @@ def date_range(start: date, end: date):
 
 # ---------------- CJ: 편성표 API ----------------
 
-def cj_products(names, start: date, end: date, live_slots=()) -> list:
+def cj_products(names, start: date, end: date, live_slots=(), live_dates=()) -> list:
     import requests
     import recj
 
@@ -126,7 +136,8 @@ def cj_products(names, start: date, end: date, live_slots=()) -> list:
         # API에서 못 찾은 날: 로컬 라이브 편성표에서 정규 편성 시각의 회차
         if found:
             continue
-        starts = [hm for wd, hm in live_slots if wd == d.weekday()]
+        starts = ([hm for wd, hm in live_slots if wd == d.weekday()]
+                  + [hm for iso, hm in live_dates if iso == d.isoformat()])
         if not starts:
             continue
         ym = d.strftime("%Y-%m")
@@ -243,7 +254,8 @@ def main():
         since = date.fromisoformat(cfg["since"])
         print(f"\n===== {key} {cfg['names'][0]} ({since} ~ {yesterday}) =====")
         if cfg["company"] == "CJ":
-            products = cj_products(cfg["names"], since, yesterday, cfg.get("live_slots", ()))
+            products = cj_products(cfg["names"], since, yesterday,
+                                   cfg.get("live_slots", ()), cfg.get("live_dates", ()))
         else:
             products = lt_products(cfg["names"], since, yesterday)
         broadcasts = to_broadcasts(products, today)

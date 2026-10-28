@@ -117,6 +117,8 @@ EXTRA_PROGRAMS = [
     {"pgm_cd": "100078", "title": "김신영이 산다", "fallback_schedule": "화 21:45"},
     # 2026-10 신규 PGM. 편성 문구는 pgmShop API 값을 그대로 쓴다.
     {"pgm_cd": "100082", "title": "림잇티드"},
+    # 2026-10-28 모니터링 편입. 편성 문구는 pgmShop API 값을 그대로 쓴다.
+    {"pgm_cd": "100033", "title": "바이림"},
 ]
 
 PGM_SHOP_INFO_URL = (
