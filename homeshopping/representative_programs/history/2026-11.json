@@ -1,6 +1,6 @@
 {
   "month": "2026-11",
-  "updated_at": "2026-10-29T11:25:09.542715+09:00",
+  "updated_at": "2026-10-29T15:55:03.149838+09:00",
   "programs": [
     {
       "program_key": "HD_HJM",
@@ -14,7 +14,7 @@
         {
           "date": "2026-11-02",
           "label": "11/02(월) 19:30 방송",
-          "collected_at": "2026-10-29T11:25:09.474051+09:00",
+          "collected_at": "2026-10-29T15:55:03.060247+09:00",
           "products": [
             {
               "broadcast_date_label": "11/02(월) 19:30 방송",
@@ -64,7 +64,7 @@
         {
           "date": "2026-11-03",
           "label": "11/03(화) 19:30 방송",
-          "collected_at": "2026-10-29T11:25:09.474051+09:00",
+          "collected_at": "2026-10-29T15:55:03.060247+09:00",
           "products": [
             {
               "broadcast_date_label": "11/03(화) 19:30 방송",
@@ -111,6 +111,56 @@
       ]
     },
     {
+      "program_key": "HD_CEK",
+      "company": "HD",
+      "tab_name": "최은경",
+      "program_title": "최은경쇼",
+      "schedule_raw": "매주 수요일 19시 30분",
+      "detail_link": "https://www.hmall.com/md/dpa/pgmComm?sectId=3142330",
+      "program_image": "",
+      "broadcasts": [
+        {
+          "date": "2026-11-04",
+          "label": "11/04(수) 19:30 방송",
+          "collected_at": "2026-10-29T15:55:03.060247+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "11/04(수) 19:30 방송",
+              "brand": "머티리얼랩",
+              "name": "[JAPAN FABRIC] 머티리얼랩 26FW 다이이치 DICROS® 다운 패딩",
+              "price": 299000,
+              "image": "https://image.hmall.com/2252532766_0.png",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252532766"
+            },
+            {
+              "broadcast_date_label": "11/04(수) 19:30 방송",
+              "brand": "머티리얼랩",
+              "name": "머티리얼랩 26FW 코듀로이 패딩 팬츠",
+              "price": 129000,
+              "image": "https://image.hmall.com/2255598239_0.png",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2255598239"
+            },
+            {
+              "broadcast_date_label": "11/04(수) 19:30 방송",
+              "brand": "머티리얼랩",
+              "name": "머티리얼랩 26FW 퓨어 캐시미어 100 헨리넥 니트",
+              "price": 199000,
+              "image": "https://image.hmall.com/2252505099_0.png",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252505099"
+            },
+            {
+              "broadcast_date_label": "11/04(수) 19:30 방송",
+              "brand": "머티리얼랩",
+              "name": "[Handmade/주문제작] 머티리얼랩 26FW 젬스톤 마그네틱 굿럭 목걸이",
+              "price": 189900,
+              "image": "https://image.hmall.com/2252831953_0.png",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252831953"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "program_key": "GS_BJY",
       "company": "GS",
       "tab_name": "백지연",
@@ -122,7 +172,7 @@
         {
           "date": "2026-11-05",
           "label": "11/05(목) 20:45 방송",
-          "collected_at": "2026-10-29T11:25:09.474051+09:00",
+          "collected_at": "2026-10-29T15:55:03.060247+09:00",
           "products": [
             {
               "prd_id": "1105179458",
@@ -158,7 +208,7 @@
         {
           "date": "2026-11-06",
           "label": "11/06(금) 20:35 방송",
-          "collected_at": "2026-10-29T11:25:09.474051+09:00",
+          "collected_at": "2026-10-29T15:55:03.060247+09:00",
           "products": [
             {
               "prd_id": "1108238119",
@@ -230,7 +280,7 @@
         {
           "date": "2026-11-07",
           "label": "11/07(토) 08:20 방송",
-          "collected_at": "2026-10-29T11:25:09.474051+09:00",
+          "collected_at": "2026-10-29T15:55:03.060247+09:00",
           "products": [
             {
               "broadcast_date_label": "11/07 토요일 08:20",
@@ -293,7 +343,7 @@
         {
           "date": "2026-11-05",
           "label": "11/05(목) 20:45 방송",
-          "collected_at": "2026-10-29T11:25:09.474051+09:00",
+          "collected_at": "2026-10-29T15:55:03.060247+09:00",
           "products": [
             {
               "broadcast_date_label": "11/05 목요일 20:45",
@@ -319,7 +369,7 @@
         {
           "date": "2026-11-03",
           "label": "11/03(화) 08:15 방송",
-          "collected_at": "2026-10-29T11:25:09.474051+09:00",
+          "collected_at": "2026-10-29T15:55:03.060247+09:00",
           "products": [
             {
               "broadcast_date_label": "11/03 화요일 08:15",
@@ -377,7 +427,7 @@
         {
           "date": "2026-11-16",
           "label": "11/16(월) 19:35 방송",
-          "collected_at": "2026-10-29T11:25:09.474051+09:00",
+          "collected_at": "2026-10-29T15:55:03.060247+09:00",
           "products": [
             {
               "broadcast_date_label": "11/16(월) 19:35",
@@ -392,7 +442,7 @@
         {
           "date": "2026-11-02",
           "label": "11/02(월) 19:35 방송",
-          "collected_at": "2026-10-29T11:25:09.474051+09:00",
+          "collected_at": "2026-10-29T15:55:03.060247+09:00",
           "products": [
             {
               "broadcast_date_label": "11/02(월) 19:35",
@@ -648,7 +698,7 @@
         {
           "date": "2026-11-04",
           "label": "11/04(수) 20:45 방송",
-          "collected_at": "2026-10-29T11:25:09.474051+09:00",
+          "collected_at": "2026-10-29T15:55:03.060247+09:00",
           "products": [
             {
               "broadcast_date_label": "11/04(수) 20:45",
@@ -710,20 +760,20 @@
             },
             {
               "broadcast_date_label": "11/04(수) 20:45",
-              "brand": "맛있는家",
-              "name": "[바로도착] 방배왕갈비탕 1kg 5팩",
-              "price": 64500,
-              "image": "goods_images/20/514/2088800514L.jpg?timestamp=20260722184648",
-              "link": "https://display.cjonstyle.com/p/item/2088800514?channelCode=30002002",
-              "verify": true
-            },
-            {
-              "broadcast_date_label": "11/04(수) 20:45",
               "brand": "호무로",
               "name": "알러젠PRO 모달 이불 풀세트_SS.",
               "price": 268000,
               "image": "goods_images/20/978/2093644978L.jpg?timestamp=20260917220746",
               "link": "https://display.cjonstyle.com/p/item/2093644978?channelCode=30002002",
+              "verify": true
+            },
+            {
+              "broadcast_date_label": "11/04(수) 20:45",
+              "brand": "맛있는家",
+              "name": "[바로도착] 방배왕갈비탕 1kg 5팩",
+              "price": 64500,
+              "image": "goods_images/20/514/2088800514L.jpg?timestamp=20260722184648",
+              "link": "https://display.cjonstyle.com/p/item/2088800514?channelCode=30002002",
               "verify": true
             },
             {
@@ -805,7 +855,7 @@
         {
           "date": "2026-11-03",
           "label": "11/03(화) 19:35 방송",
-          "collected_at": "2026-10-29T11:25:09.474051+09:00",
+          "collected_at": "2026-10-29T15:55:03.060247+09:00",
           "products": [
             {
               "broadcast_date_label": "11/03(화) 19:35",
@@ -871,14 +921,14 @@
         {
           "date": "2026-11-21",
           "label": "11/21(토) 08:20 방송",
-          "collected_at": "2026-10-29T11:25:09.474051+09:00",
+          "collected_at": "2026-10-29T15:55:03.060247+09:00",
           "products": [
             {
               "broadcast_date_label": "11/21(토) 08:20",
               "brand": "본정심",
               "name": "[원물 55%] 진 흑염소진액 30포 한마리",
               "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/802/2090229802L.jpg?timestamp=20261029112335",
+              "image": "https://image.cjonstyle.net/goods_images/20/802/2090229802L.jpg?timestamp=20261029155304",
               "link": "https://display.cjonstyle.com/p/item/2090229802"
             }
           ]
@@ -886,14 +936,14 @@
         {
           "date": "2026-11-14",
           "label": "11/14(토) 08:20 방송",
-          "collected_at": "2026-10-29T11:25:09.474051+09:00",
+          "collected_at": "2026-10-29T15:55:03.060247+09:00",
           "products": [
             {
               "broadcast_date_label": "11/14(토) 08:20",
               "brand": "베라왕",
               "name": "[미리주문10%] 26FW FAUX밍크 후드 롱코트",
               "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/172/2095280172L.jpg?timestamp=20261029112335",
+              "image": "https://image.cjonstyle.net/goods_images/20/172/2095280172L.jpg?timestamp=20261029155304",
               "link": "https://display.cjonstyle.com/p/item/2095280172"
             }
           ]
@@ -901,14 +951,14 @@
         {
           "date": "2026-11-12",
           "label": "11/12(목) 20:45 방송",
-          "collected_at": "2026-10-29T11:25:09.474051+09:00",
+          "collected_at": "2026-10-29T15:55:03.060247+09:00",
           "products": [
             {
               "broadcast_date_label": "11/12(목) 20:45",
               "brand": "곡물도감",
               "name": "서리태 가득 콩물두유 시그니쳐5박스+21곡 1박스",
               "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/979/2065432979L.jpg?timestamp=20261029112335",
+              "image": "https://image.cjonstyle.net/goods_images/20/979/2065432979L.jpg?timestamp=20261029155304",
               "link": "https://display.cjonstyle.com/p/item/2065432979"
             }
           ]
@@ -916,14 +966,14 @@
         {
           "date": "2026-11-07",
           "label": "11/07(토) 08:20 방송",
-          "collected_at": "2026-10-29T11:25:09.474051+09:00",
+          "collected_at": "2026-10-29T15:55:03.060247+09:00",
           "products": [
             {
               "broadcast_date_label": "11/07(토) 08:20",
               "brand": "클리판",
               "name": "스웨덴 프리미엄 뱀부코튼 타올세트 10종세트 노르딕믹스 K18",
               "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/620/2094028620L.jpg?timestamp=20261029112335",
+              "image": "https://image.cjonstyle.net/goods_images/20/620/2094028620L.jpg?timestamp=20261029155304",
               "link": "https://display.cjonstyle.com/p/item/2094028620"
             },
             {
@@ -995,14 +1045,14 @@
         {
           "date": "2026-11-05",
           "label": "11/05(목) 20:45 방송",
-          "collected_at": "2026-10-29T11:25:09.474051+09:00",
+          "collected_at": "2026-10-29T15:55:03.060247+09:00",
           "products": [
             {
               "broadcast_date_label": "11/05(목) 20:45",
               "brand": "옐로우에이유",
               "name": "[동가게PICK] 호주직수입 프로폴리스 스프레이 1500+ 5+3병 더",
               "price": 236200,
-              "image": "https://image.cjonstyle.net/goods_images/20/665/2093831665L.jpg?timestamp=20261029112335",
+              "image": "https://image.cjonstyle.net/goods_images/20/665/2093831665L.jpg?timestamp=20261029155304",
               "link": "https://display.cjonstyle.com/p/item/2093831665"
             },
             {
@@ -1138,14 +1188,14 @@
         {
           "date": "2026-11-11",
           "label": "11/11(수) 19:35 방송",
-          "collected_at": "2026-10-29T11:25:09.474051+09:00",
+          "collected_at": "2026-10-29T15:55:03.060247+09:00",
           "products": [
             {
               "broadcast_date_label": "11/11(수) 19:35",
               "brand": "락포트",
               "name": "[공식정품] NEW 트루플렉스 호주산 울 램스킨 로퍼",
               "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/193/2091040193L.jpg?timestamp=20261029112435",
+              "image": "https://image.cjonstyle.net/goods_images/20/193/2091040193L.jpg?timestamp=20261029155426",
               "link": "https://display.cjonstyle.com/p/item/2091040193"
             }
           ]
@@ -1153,14 +1203,14 @@
         {
           "date": "2026-11-06",
           "label": "11/06(금) 19:35 방송",
-          "collected_at": "2026-10-29T11:25:09.474051+09:00",
+          "collected_at": "2026-10-29T15:55:03.060247+09:00",
           "products": [
             {
               "broadcast_date_label": "11/06(금) 19:35",
               "brand": "보르고세시아",
               "name": "[100% ITALY MADE] 26FW 캐시미어100 하이넥 엘레나 코트",
               "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/808/2093199808L.jpg?timestamp=20261029112435",
+              "image": "https://image.cjonstyle.net/goods_images/20/808/2093199808L.jpg?timestamp=20261029155426",
               "link": "https://display.cjonstyle.com/p/item/2093199808"
             },
             {
