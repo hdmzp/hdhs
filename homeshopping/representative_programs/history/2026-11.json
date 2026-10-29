@@ -1,6 +1,6 @@
 {
   "month": "2026-11",
-  "updated_at": "2026-10-29T17:04:17.642176+09:00",
+  "updated_at": "2026-10-30T02:25:34.747063+09:00",
   "programs": [
     {
       "program_key": "HD_HJM",
@@ -14,7 +14,7 @@
         {
           "date": "2026-11-02",
           "label": "11/02(월) 19:30 방송",
-          "collected_at": "2026-10-29T17:04:17.591582+09:00",
+          "collected_at": "2026-10-30T02:25:34.660382+09:00",
           "products": [
             {
               "broadcast_date_label": "11/02(월) 19:30 방송",
@@ -64,7 +64,7 @@
         {
           "date": "2026-11-03",
           "label": "11/03(화) 19:30 방송",
-          "collected_at": "2026-10-29T17:04:17.591582+09:00",
+          "collected_at": "2026-10-30T02:25:34.660382+09:00",
           "products": [
             {
               "broadcast_date_label": "11/03(화) 19:30 방송",
@@ -122,7 +122,7 @@
         {
           "date": "2026-11-04",
           "label": "11/04(수) 19:30 방송",
-          "collected_at": "2026-10-29T17:04:17.591582+09:00",
+          "collected_at": "2026-10-30T02:25:34.660382+09:00",
           "products": [
             {
               "broadcast_date_label": "11/04(수) 19:30 방송",
@@ -170,9 +170,25 @@
       "program_image": "",
       "broadcasts": [
         {
+          "date": "2026-11-12",
+          "label": "11/12(목) 20:45 방송",
+          "collected_at": "2026-10-30T02:25:34.660382+09:00",
+          "products": [
+            {
+              "prd_id": "1138859975",
+              "broadcast_date_label": "11월 12일(목) 20:45 방송",
+              "broadcast_iso": "2026-11-12T20:45:00",
+              "brand": "글로벌나이프",
+              "name": "글로벌나이프 GSF-18 크랩/랍스터 나이프",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1138859975"
+            }
+          ]
+        },
+        {
           "date": "2026-11-05",
           "label": "11/05(목) 20:45 방송",
-          "collected_at": "2026-10-29T17:04:17.591582+09:00",
+          "collected_at": "2026-10-30T02:25:34.660382+09:00",
           "products": [
             {
               "prd_id": "1105179458",
@@ -208,7 +224,7 @@
         {
           "date": "2026-11-06",
           "label": "11/06(금) 20:35 방송",
-          "collected_at": "2026-10-29T17:04:17.591582+09:00",
+          "collected_at": "2026-10-30T02:25:34.660382+09:00",
           "products": [
             {
               "prd_id": "1108238119",
@@ -280,7 +296,7 @@
         {
           "date": "2026-11-07",
           "label": "11/07(토) 08:20 방송",
-          "collected_at": "2026-10-29T17:04:17.591582+09:00",
+          "collected_at": "2026-10-30T02:25:34.660382+09:00",
           "products": [
             {
               "broadcast_date_label": "11/07 토요일 08:20",
@@ -351,7 +367,7 @@
         {
           "date": "2026-11-05",
           "label": "11/05(목) 20:45 방송",
-          "collected_at": "2026-10-29T17:04:17.591582+09:00",
+          "collected_at": "2026-10-30T02:25:34.660382+09:00",
           "products": [
             {
               "broadcast_date_label": "11/05 목요일 20:45",
@@ -377,7 +393,7 @@
         {
           "date": "2026-11-03",
           "label": "11/03(화) 08:15 방송",
-          "collected_at": "2026-10-29T17:04:17.591582+09:00",
+          "collected_at": "2026-10-30T02:25:34.660382+09:00",
           "products": [
             {
               "broadcast_date_label": "11/03 화요일 08:15",
@@ -435,7 +451,7 @@
         {
           "date": "2026-11-16",
           "label": "11/16(월) 19:35 방송",
-          "collected_at": "2026-10-29T17:04:17.591582+09:00",
+          "collected_at": "2026-10-30T02:25:34.660382+09:00",
           "products": [
             {
               "broadcast_date_label": "11/16(월) 19:35",
@@ -450,7 +466,7 @@
         {
           "date": "2026-11-02",
           "label": "11/02(월) 19:35 방송",
-          "collected_at": "2026-10-29T17:04:17.591582+09:00",
+          "collected_at": "2026-10-30T02:25:34.660382+09:00",
           "products": [
             {
               "broadcast_date_label": "11/02(월) 19:35",
@@ -486,6 +502,14 @@
             },
             {
               "broadcast_date_label": "11/02(월) 19:35",
+              "brand": "피에브",
+              "name": "[굿라이프/더블] 프리미엄 고체 탈취제 총 20개",
+              "price": 258000,
+              "image": "https://image.cjonstyle.net/goods_images/20/230/2096854230L.jpg?timestamp=20261028124509",
+              "link": "https://item.cjonstyle.com/item/2096854230?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/02(월) 19:35",
               "brand": "에어룸",
               "name": "26FW 럭스 고밀도 라셀퍼 30mm 극세사 침구세트T_SK",
               "price": 159900,
@@ -507,15 +531,6 @@
               "price": 119900,
               "image": "https://image.cjonstyle.net/goods_images/20/707/2096487707L.jpg?timestamp=20261029110658",
               "link": "https://item.cjonstyle.com/item/2096487707?channelCode=30002002"
-            },
-            {
-              "broadcast_date_label": "11/02(월) 19:35",
-              "brand": "피에브",
-              "name": "[굿라이프/더블] 프리미엄 고체 탈취제 총 20개",
-              "price": 258000,
-              "image": "goods_images/20/230/2096854230L.jpg?timestamp=20261028124509",
-              "link": "https://display.cjonstyle.com/p/item/2096854230?channelCode=30002002",
-              "verify": true
             },
             {
               "broadcast_date_label": "11/02(월) 19:35",
@@ -740,7 +755,7 @@
         {
           "date": "2026-11-04",
           "label": "11/04(수) 20:45 방송",
-          "collected_at": "2026-10-29T17:04:17.591582+09:00",
+          "collected_at": "2026-10-30T02:25:34.660382+09:00",
           "products": [
             {
               "broadcast_date_label": "11/04(수) 20:45",
@@ -802,20 +817,20 @@
             },
             {
               "broadcast_date_label": "11/04(수) 20:45",
-              "brand": "호무로",
-              "name": "알러젠PRO 모달 이불 풀세트_SS.",
-              "price": 268000,
-              "image": "goods_images/20/978/2093644978L.jpg?timestamp=20260917220746",
-              "link": "https://display.cjonstyle.com/p/item/2093644978?channelCode=30002002",
-              "verify": true
-            },
-            {
-              "broadcast_date_label": "11/04(수) 20:45",
               "brand": "맛있는家",
               "name": "[바로도착] 방배왕갈비탕 1kg 5팩",
               "price": 64500,
               "image": "goods_images/20/514/2088800514L.jpg?timestamp=20260722184648",
               "link": "https://display.cjonstyle.com/p/item/2088800514?channelCode=30002002",
+              "verify": true
+            },
+            {
+              "broadcast_date_label": "11/04(수) 20:45",
+              "brand": "호무로",
+              "name": "알러젠PRO 모달 이불 풀세트_SS.",
+              "price": 268000,
+              "image": "goods_images/20/978/2093644978L.jpg?timestamp=20260917220746",
+              "link": "https://display.cjonstyle.com/p/item/2093644978?channelCode=30002002",
               "verify": true
             },
             {
@@ -897,7 +912,7 @@
         {
           "date": "2026-11-03",
           "label": "11/03(화) 19:35 방송",
-          "collected_at": "2026-10-29T17:04:17.591582+09:00",
+          "collected_at": "2026-10-30T02:25:34.660382+09:00",
           "products": [
             {
               "broadcast_date_label": "11/03(화) 19:35",
@@ -963,14 +978,14 @@
         {
           "date": "2026-11-21",
           "label": "11/21(토) 08:20 방송",
-          "collected_at": "2026-10-29T17:04:17.591582+09:00",
+          "collected_at": "2026-10-30T02:25:34.660382+09:00",
           "products": [
             {
               "broadcast_date_label": "11/21(토) 08:20",
               "brand": "본정심",
               "name": "[원물 55%] 진 흑염소진액 30포 한마리",
               "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/802/2090229802L.jpg?timestamp=20261029170207",
+              "image": "https://image.cjonstyle.net/goods_images/20/802/2090229802L.jpg?timestamp=20261030022300",
               "link": "https://display.cjonstyle.com/p/item/2090229802"
             }
           ]
@@ -978,14 +993,14 @@
         {
           "date": "2026-11-14",
           "label": "11/14(토) 08:20 방송",
-          "collected_at": "2026-10-29T17:04:17.591582+09:00",
+          "collected_at": "2026-10-30T02:25:34.660382+09:00",
           "products": [
             {
               "broadcast_date_label": "11/14(토) 08:20",
               "brand": "베라왕",
               "name": "[미리주문10%] 26FW FAUX밍크 후드 롱코트",
               "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/172/2095280172L.jpg?timestamp=20261029170207",
+              "image": "https://image.cjonstyle.net/goods_images/20/172/2095280172L.jpg?timestamp=20261030022300",
               "link": "https://display.cjonstyle.com/p/item/2095280172"
             }
           ]
@@ -993,14 +1008,14 @@
         {
           "date": "2026-11-12",
           "label": "11/12(목) 20:45 방송",
-          "collected_at": "2026-10-29T17:04:17.591582+09:00",
+          "collected_at": "2026-10-30T02:25:34.660382+09:00",
           "products": [
             {
               "broadcast_date_label": "11/12(목) 20:45",
               "brand": "곡물도감",
               "name": "서리태 가득 콩물두유 시그니쳐5박스+21곡 1박스",
               "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/979/2065432979L.jpg?timestamp=20261029170207",
+              "image": "https://image.cjonstyle.net/goods_images/20/979/2065432979L.jpg?timestamp=20261030022300",
               "link": "https://display.cjonstyle.com/p/item/2065432979"
             }
           ]
@@ -1008,14 +1023,14 @@
         {
           "date": "2026-11-07",
           "label": "11/07(토) 08:20 방송",
-          "collected_at": "2026-10-29T17:04:17.591582+09:00",
+          "collected_at": "2026-10-30T02:25:34.660382+09:00",
           "products": [
             {
               "broadcast_date_label": "11/07(토) 08:20",
               "brand": "클리판",
               "name": "스웨덴 프리미엄 뱀부코튼 타올세트 10종세트 노르딕믹스 K18",
               "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/620/2094028620L.jpg?timestamp=20261029170207",
+              "image": "https://image.cjonstyle.net/goods_images/20/620/2094028620L.jpg?timestamp=20261030022300",
               "link": "https://display.cjonstyle.com/p/item/2094028620"
             },
             {
@@ -1069,6 +1084,14 @@
             {
               "broadcast_date_label": "11/07(토) 08:20",
               "brand": "애드아보아",
+              "name": "26FW 알파카 블렌디드 하프코트",
+              "price": 219000,
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/521/2093848521L.jpg?timestamp=20261008204449",
+              "link": "https://item.cjonstyle.com/item/2093848521?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/07(토) 08:20",
+              "brand": "애드아보아",
               "name": "[미리주문10%] X요이츠 26FW 플리츠 퀼팅 V넥 원피스",
               "price": 107100,
               "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/738/2095667738L.jpg?timestamp=20261026155908",
@@ -1087,14 +1110,14 @@
         {
           "date": "2026-11-05",
           "label": "11/05(목) 20:45 방송",
-          "collected_at": "2026-10-29T17:04:17.591582+09:00",
+          "collected_at": "2026-10-30T02:25:34.660382+09:00",
           "products": [
             {
               "broadcast_date_label": "11/05(목) 20:45",
               "brand": "옐로우에이유",
               "name": "[동가게PICK] 호주직수입 프로폴리스 스프레이 1500+ 5+3병 더",
               "price": 236200,
-              "image": "https://image.cjonstyle.net/goods_images/20/665/2093831665L.jpg?timestamp=20261029170207",
+              "image": "https://image.cjonstyle.net/goods_images/20/665/2093831665L.jpg?timestamp=20261030022300",
               "link": "https://display.cjonstyle.com/p/item/2093831665"
             },
             {
@@ -1117,7 +1140,7 @@
               "broadcast_date_label": "11/05(목) 20:45",
               "brand": "오야니",
               "name": "[백화점가 129,000원] 26FW 양면 울실크 스카프",
-              "price": 79100,
+              "price": 99000,
               "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/890/2089336890L.jpg?timestamp=20260812142309",
               "link": "https://item.cjonstyle.com/item/2089336890?channelCode=30002002"
             },
@@ -1176,6 +1199,38 @@
               "price": 99900,
               "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/916/2094773916L.jpg?timestamp=20260929171558",
               "link": "https://item.cjonstyle.com/item/2094773916?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/05(목) 20:45",
+              "brand": "지스튜디오",
+              "name": "26FW 뉴 헝가리구스다운 스트레이트 팬츠",
+              "price": 129000,
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/894/2092080894L.jpg?timestamp=20260904164805",
+              "link": "https://item.cjonstyle.com/item/2092080894?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/05(목) 20:45",
+              "brand": "지스튜디오",
+              "name": "26FW 뉴 알파카 블렌디드 후드풀오버",
+              "price": 79900,
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/518/2092291518L.jpg?timestamp=20261007151455",
+              "link": "https://item.cjonstyle.com/item/2092291518?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/05(목) 20:45",
+              "brand": "지스튜디오",
+              "name": "26FW 하이넥 헝가리 구스 다운",
+              "price": 179000,
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/197/2090681197L.jpg?timestamp=20260904170159",
+              "link": "https://item.cjonstyle.com/item/2090681197?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/05(목) 20:45",
+              "brand": "지스튜디오",
+              "name": "26FW 울100 손뜨개 베스트",
+              "price": 139000,
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/485/2089944485L.jpg?timestamp=20260814163148",
+              "link": "https://item.cjonstyle.com/item/2089944485?channelCode=30002002"
             },
             {
               "broadcast_date_label": "11/05(목) 20:45",
@@ -1238,14 +1293,14 @@
         {
           "date": "2026-11-11",
           "label": "11/11(수) 19:35 방송",
-          "collected_at": "2026-10-29T17:04:17.591582+09:00",
+          "collected_at": "2026-10-30T02:25:34.660382+09:00",
           "products": [
             {
               "broadcast_date_label": "11/11(수) 19:35",
               "brand": "락포트",
               "name": "[공식정품] NEW 트루플렉스 호주산 울 램스킨 로퍼",
               "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/193/2091040193L.jpg?timestamp=20261029170313",
+              "image": "https://image.cjonstyle.net/goods_images/20/193/2091040193L.jpg?timestamp=20261030022420",
               "link": "https://display.cjonstyle.com/p/item/2091040193"
             }
           ]
@@ -1253,14 +1308,14 @@
         {
           "date": "2026-11-06",
           "label": "11/06(금) 19:35 방송",
-          "collected_at": "2026-10-29T17:04:17.591582+09:00",
+          "collected_at": "2026-10-30T02:25:34.660382+09:00",
           "products": [
             {
               "broadcast_date_label": "11/06(금) 19:35",
               "brand": "보르고세시아",
               "name": "[100% ITALY MADE] 26FW 캐시미어100 하이넥 엘레나 코트",
-              "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/808/2093199808L.jpg?timestamp=20261029170313",
+              "price": 1890000,
+              "image": "https://image.cjonstyle.net/goods_images/20/808/2093199808L.jpg?timestamp=20261030022420",
               "link": "https://display.cjonstyle.com/p/item/2093199808"
             },
             {
@@ -1282,14 +1337,6 @@
             {
               "broadcast_date_label": "11/06(금) 19:35",
               "brand": "허벌리스테",
-              "name": "[이스라엘 직수입] 헤어마스크 특대용량 4개+ 체험2매",
-              "price": 209000,
-              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/772/2096787772L.jpg?timestamp=20261027153055",
-              "link": "https://item.cjonstyle.com/item/2096787772?channelCode=30002002"
-            },
-            {
-              "broadcast_date_label": "11/06(금) 19:35",
-              "brand": "허벌리스테",
               "name": "허벌마스크 500ml 1개",
               "price": 76900,
               "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/205/2076274205L.jpg?timestamp=20251217110621",
@@ -1302,26 +1349,43 @@
               "price": 73900,
               "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/497/2076274497L.jpg?timestamp=20251217110922",
               "link": "https://item.cjonstyle.com/item/2076274497?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/06(금) 19:35",
+              "brand": "허벌리스테",
+              "name": "[이스라엘 직수입] 헤어마스크 특대용량 4개+ 체험2매",
+              "price": 209000,
+              "image": "goods_images/20/772/2096787772L.jpg?timestamp=20261027153055",
+              "link": "https://display.cjonstyle.com/p/item/2096787772?channelCode=30002002",
+              "verify": true
             }
           ]
         },
         {
           "date": "2026-11-04",
           "label": "11/04(수) 08:15 방송",
-          "collected_at": "2026-10-29T17:04:17.591582+09:00",
+          "collected_at": "2026-10-30T02:25:34.660382+09:00",
           "products": [
             {
               "broadcast_date_label": "11/04(수) 08:15",
-              "brand": "바니스뉴욕",
-              "name": "[미리주문10%]26FW 가브리엘 카멜100 시그니처 코트",
-              "price": 599000,
-              "image": "https://image.cjonstyle.net/goods_images/20/447/2093741447L.jpg?timestamp=20261029170313",
-              "link": "https://display.cjonstyle.com/p/item/2093741447"
+              "brand": "지스튜디오",
+              "name": "26FW 칼간 램 시어링 퍼 하프코트",
+              "price": 999000,
+              "image": "https://image.cjonstyle.net/goods_images/20/364/2090683364L.jpg?timestamp=20261030022420",
+              "link": "https://display.cjonstyle.com/p/item/2090683364"
             },
             {
               "broadcast_date_label": "11/04(수) 08:15",
               "brand": "바니스뉴욕",
-              "name": "[미리주문10%]26FW 루시 캐시미어울 블렌드 풀오버",
+              "name": "[론칭]26FW 가브리엘 카멜100 시그니처 코트",
+              "price": 539100,
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/447/2093741447L.jpg?timestamp=20261022135042",
+              "link": "https://item.cjonstyle.com/item/2093741447?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/04(수) 08:15",
+              "brand": "바니스뉴욕",
+              "name": "[론칭]26FW 루시 캐시미어울 블렌드 풀오버",
               "price": 89100,
               "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/651/2092149651L.jpg?timestamp=20261001150332",
               "link": "https://item.cjonstyle.com/item/2092149651?channelCode=30002002"
@@ -1381,6 +1445,102 @@
               "price": 79000,
               "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/032/2090932032L.jpg?timestamp=20261020152043",
               "link": "https://item.cjonstyle.com/item/2090932032?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/04(수) 08:15",
+              "brand": "지스튜디오",
+              "name": "26FW 뉴클래식 울실크 로장지스카프",
+              "price": 79000,
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/191/2089249191L.jpg?timestamp=20260811172441",
+              "link": "https://item.cjonstyle.com/item/2089249191?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/04(수) 08:15",
+              "brand": "지스튜디오",
+              "name": "26FW 이태리 직수입레더 투웨이 카바스백",
+              "price": 305150,
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/635/2091663635L.jpg?timestamp=20260911164723",
+              "link": "https://item.cjonstyle.com/item/2091663635?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/04(수) 08:15",
+              "brand": "지스튜디오",
+              "name": "26FW 이태리 밀레필리社 피셔케이블 집업",
+              "price": 135150,
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/867/2090684867L.jpg?timestamp=20260831121136",
+              "link": "https://item.cjonstyle.com/item/2090684867?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/04(수) 08:15",
+              "brand": "지스튜디오",
+              "name": "26FW 아뜰리에 벌룬 셔츠",
+              "price": 63920,
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/990/2088272990L.jpg?timestamp=20260818184258",
+              "link": "https://item.cjonstyle.com/item/2088272990?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/04(수) 08:15",
+              "brand": "지스튜디오",
+              "name": "26FW 캐시미어 블렌드 삭스 5종",
+              "price": 39900,
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/946/2092741946L.jpg?timestamp=20260909171245",
+              "link": "https://item.cjonstyle.com/item/2092741946?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/04(수) 08:15",
+              "brand": "지스튜디오",
+              "name": "26FW 타임리스 램스킨 셔링로퍼",
+              "price": 127200,
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/106/2090032106L.jpg?timestamp=20260819100151",
+              "link": "https://item.cjonstyle.com/item/2090032106?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/04(수) 08:15",
+              "brand": "지스튜디오",
+              "name": "26FW 뉴 솜므울 풀오버 3종",
+              "price": 69900,
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/647/2088090647L.jpg?timestamp=20260819113144",
+              "link": "https://item.cjonstyle.com/item/2088090647?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/04(수) 08:15",
+              "brand": "지스튜디오",
+              "name": "26FW 레이스 메종 뷔스티에",
+              "price": 79900,
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/116/2088273116L.jpg?timestamp=20260819095527",
+              "link": "https://item.cjonstyle.com/item/2088273116?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/04(수) 08:15",
+              "brand": "지스튜디오",
+              "name": "26FW 야크울 블렌디드 이중직 롱코트",
+              "price": 209300,
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/789/2090680789L.jpg?timestamp=20260831121553",
+              "link": "https://item.cjonstyle.com/item/2090680789?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/04(수) 08:15",
+              "brand": "지스튜디오",
+              "name": "26FW 캐시미어100 골지 니트",
+              "price": 111200,
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/816/2088725816L.jpg?timestamp=20260902122454",
+              "link": "https://item.cjonstyle.com/item/2088725816?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/04(수) 08:15",
+              "brand": "지스튜디오",
+              "name": "26FW 레이어드 모헤어원피스",
+              "price": 89100,
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/452/2088090452L.jpg?timestamp=20261014181109",
+              "link": "https://item.cjonstyle.com/item/2088090452?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/04(수) 08:15",
+              "brand": "지스튜디오",
+              "name": "[최초가 89,900원] 25FW 캐시미어 블렌드 플레어 기모코듀로이 팬츠",
+              "price": 62930,
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/356/2061782356L.jpg?timestamp=20250910094752",
+              "link": "https://item.cjonstyle.com/item/2061782356?channelCode=30002002"
             }
           ]
         }
