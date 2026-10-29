@@ -1,6 +1,6 @@
 {
   "month": "2026-11",
-  "updated_at": "2026-10-29T07:05:55.432531+09:00",
+  "updated_at": "2026-10-29T11:25:09.542715+09:00",
   "programs": [
     {
       "program_key": "HD_HJM",
@@ -14,7 +14,7 @@
         {
           "date": "2026-11-02",
           "label": "11/02(월) 19:30 방송",
-          "collected_at": "2026-10-29T07:05:55.345155+09:00",
+          "collected_at": "2026-10-29T11:25:09.474051+09:00",
           "products": [
             {
               "broadcast_date_label": "11/02(월) 19:30 방송",
@@ -64,7 +64,7 @@
         {
           "date": "2026-11-03",
           "label": "11/03(화) 19:30 방송",
-          "collected_at": "2026-10-29T07:05:55.345155+09:00",
+          "collected_at": "2026-10-29T11:25:09.474051+09:00",
           "products": [
             {
               "broadcast_date_label": "11/03(화) 19:30 방송",
@@ -111,6 +111,42 @@
       ]
     },
     {
+      "program_key": "GS_BJY",
+      "company": "GS",
+      "tab_name": "백지연",
+      "program_title": "지금 백지연",
+      "schedule_raw": "매주 목요일 저녁 8시 45분",
+      "detail_link": "https://m.gsshop.com/section/broad/specialPgm/13437?mseq=W00618-TV_PRO_BB-1",
+      "program_image": "",
+      "broadcasts": [
+        {
+          "date": "2026-11-05",
+          "label": "11/05(목) 20:45 방송",
+          "collected_at": "2026-10-29T11:25:09.474051+09:00",
+          "products": [
+            {
+              "prd_id": "1105179458",
+              "broadcast_date_label": "11월 5일(목) 20:45 방송",
+              "broadcast_iso": "2026-11-05T20:45:00",
+              "brand": "오리진에이",
+              "name": "오리진에이 프로폴리스 스프레이 선물세트 (총 6병) + 쇼핑백",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1105179458"
+            },
+            {
+              "prd_id": "1105549816",
+              "broadcast_date_label": "11월 5일(목) 20:45 방송",
+              "broadcast_iso": "2026-11-05T20:45:00",
+              "brand": "오리진에이",
+              "name": "오리진에이 프로폴리스 스프레이 4병",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1105549816"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "program_key": "GS_SYJ",
       "company": "GS",
       "tab_name": "소유진",
@@ -122,7 +158,7 @@
         {
           "date": "2026-11-06",
           "label": "11/06(금) 20:35 방송",
-          "collected_at": "2026-10-29T07:05:55.345155+09:00",
+          "collected_at": "2026-10-29T11:25:09.474051+09:00",
           "products": [
             {
               "prd_id": "1108238119",
@@ -194,7 +230,7 @@
         {
           "date": "2026-11-07",
           "label": "11/07(토) 08:20 방송",
-          "collected_at": "2026-10-29T07:05:55.345155+09:00",
+          "collected_at": "2026-10-29T11:25:09.474051+09:00",
           "products": [
             {
               "broadcast_date_label": "11/07 토요일 08:20",
@@ -239,7 +275,7 @@
             {
               "broadcast_date_label": "11/07 토요일 08:20",
               "brand": "애디슨로스",
-              "name": "[ 화이트 레귤러] 애디슨로스 그라인더 화이트 레귤러",
+              "name": "[화이트 레귤러] 애디슨로스 그라인더 화이트 레귤러",
               "price": 129000,
               "image": "https://image2.lotteimall.com/goods/75/88/92/12928875_1.jpg/dims/resizemc/640x360/optimize",
               "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12928875"
@@ -257,7 +293,7 @@
         {
           "date": "2026-11-05",
           "label": "11/05(목) 20:45 방송",
-          "collected_at": "2026-10-29T07:05:55.345155+09:00",
+          "collected_at": "2026-10-29T11:25:09.474051+09:00",
           "products": [
             {
               "broadcast_date_label": "11/05 목요일 20:45",
@@ -283,7 +319,7 @@
         {
           "date": "2026-11-03",
           "label": "11/03(화) 08:15 방송",
-          "collected_at": "2026-10-29T07:05:55.345155+09:00",
+          "collected_at": "2026-10-29T11:25:09.474051+09:00",
           "products": [
             {
               "broadcast_date_label": "11/03 화요일 08:15",
@@ -341,7 +377,7 @@
         {
           "date": "2026-11-16",
           "label": "11/16(월) 19:35 방송",
-          "collected_at": "2026-10-29T07:05:55.345155+09:00",
+          "collected_at": "2026-10-29T11:25:09.474051+09:00",
           "products": [
             {
               "broadcast_date_label": "11/16(월) 19:35",
@@ -356,7 +392,7 @@
         {
           "date": "2026-11-02",
           "label": "11/02(월) 19:35 방송",
-          "collected_at": "2026-10-29T07:05:55.345155+09:00",
+          "collected_at": "2026-10-29T11:25:09.474051+09:00",
           "products": [
             {
               "broadcast_date_label": "11/02(월) 19:35",
@@ -379,7 +415,7 @@
               "brand": "에어룸",
               "name": "26FW 럭스 고밀도 라셀퍼 30mm 극세사 침구세트T_SK",
               "price": 159900,
-              "image": "https://image.cjonstyle.net/goods_images/20/343/2096487343L.jpg?timestamp=20261028152542",
+              "image": "https://image.cjonstyle.net/goods_images/20/343/2096487343L.jpg?timestamp=20261029110735",
               "link": "https://item.cjonstyle.com/item/2096487343?channelCode=30002002"
             },
             {
@@ -387,7 +423,7 @@
               "brand": "에어룸",
               "name": "26FW 럭스 고밀도 라셀퍼 30mm 극세사 침구세트T_Q",
               "price": 139900,
-              "image": "https://image.cjonstyle.net/goods_images/20/592/2096487592L.jpg?timestamp=20261028152648",
+              "image": "https://image.cjonstyle.net/goods_images/20/592/2096487592L.jpg?timestamp=20261029110719",
               "link": "https://item.cjonstyle.com/item/2096487592?channelCode=30002002"
             },
             {
@@ -395,7 +431,7 @@
               "brand": "에어룸",
               "name": "26FW 럭스 고밀도 라셀퍼 30mm 극세사 침구세트T_SS",
               "price": 119900,
-              "image": "https://image.cjonstyle.net/goods_images/20/707/2096487707L.jpg?timestamp=20261027114332",
+              "image": "https://image.cjonstyle.net/goods_images/20/707/2096487707L.jpg?timestamp=20261029110658",
               "link": "https://item.cjonstyle.com/item/2096487707?channelCode=30002002"
             },
             {
@@ -403,7 +439,7 @@
               "brand": "에어룸",
               "name": "[굿라이프Pick]Q 럭스 라셀퍼 30mm 극세사 침구풀베딩(이불담요)",
               "price": 139900,
-              "image": "goods_images/20/333/2096013333L.jpg?timestamp=20261027155736",
+              "image": "goods_images/20/333/2096013333L.jpg?timestamp=20261029110812",
               "link": "https://display.cjonstyle.com/p/item/2096013333?channelCode=30002002",
               "verify": true
             },
@@ -612,7 +648,7 @@
         {
           "date": "2026-11-04",
           "label": "11/04(수) 20:45 방송",
-          "collected_at": "2026-10-29T07:05:55.345155+09:00",
+          "collected_at": "2026-10-29T11:25:09.474051+09:00",
           "products": [
             {
               "broadcast_date_label": "11/04(수) 20:45",
@@ -658,7 +694,7 @@
               "broadcast_date_label": "11/04(수) 20:45",
               "brand": "호무로",
               "name": "알러젠PRO 모달 이불 풀세트_SK.",
-              "price": 219000,
+              "price": 335000,
               "image": "goods_images/20/448/2093645448L.jpg?timestamp=20260917220950",
               "link": "https://display.cjonstyle.com/p/item/2093645448?channelCode=30002002",
               "verify": true
@@ -667,7 +703,7 @@
               "broadcast_date_label": "11/04(수) 20:45",
               "brand": "호무로",
               "name": "알러젠PRO 모달 이불 풀세트_Q.",
-              "price": 199000,
+              "price": 310000,
               "image": "goods_images/20/375/2093645375L.jpg?timestamp=20260917220850",
               "link": "https://display.cjonstyle.com/p/item/2093645375?channelCode=30002002",
               "verify": true
@@ -685,7 +721,7 @@
               "broadcast_date_label": "11/04(수) 20:45",
               "brand": "호무로",
               "name": "알러젠PRO 모달 이불 풀세트_SS.",
-              "price": 189000,
+              "price": 268000,
               "image": "goods_images/20/978/2093644978L.jpg?timestamp=20260917220746",
               "link": "https://display.cjonstyle.com/p/item/2093644978?channelCode=30002002",
               "verify": true
@@ -769,7 +805,7 @@
         {
           "date": "2026-11-03",
           "label": "11/03(화) 19:35 방송",
-          "collected_at": "2026-10-29T07:05:55.345155+09:00",
+          "collected_at": "2026-10-29T11:25:09.474051+09:00",
           "products": [
             {
               "broadcast_date_label": "11/03(화) 19:35",
@@ -835,14 +871,14 @@
         {
           "date": "2026-11-21",
           "label": "11/21(토) 08:20 방송",
-          "collected_at": "2026-10-29T07:05:55.345155+09:00",
+          "collected_at": "2026-10-29T11:25:09.474051+09:00",
           "products": [
             {
               "broadcast_date_label": "11/21(토) 08:20",
               "brand": "본정심",
               "name": "[원물 55%] 진 흑염소진액 30포 한마리",
               "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/802/2090229802L.jpg?timestamp=20261029070244",
+              "image": "https://image.cjonstyle.net/goods_images/20/802/2090229802L.jpg?timestamp=20261029112335",
               "link": "https://display.cjonstyle.com/p/item/2090229802"
             }
           ]
@@ -850,14 +886,14 @@
         {
           "date": "2026-11-14",
           "label": "11/14(토) 08:20 방송",
-          "collected_at": "2026-10-29T07:05:55.345155+09:00",
+          "collected_at": "2026-10-29T11:25:09.474051+09:00",
           "products": [
             {
               "broadcast_date_label": "11/14(토) 08:20",
               "brand": "베라왕",
               "name": "[미리주문10%] 26FW FAUX밍크 후드 롱코트",
               "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/172/2095280172L.jpg?timestamp=20261029070244",
+              "image": "https://image.cjonstyle.net/goods_images/20/172/2095280172L.jpg?timestamp=20261029112335",
               "link": "https://display.cjonstyle.com/p/item/2095280172"
             }
           ]
@@ -865,14 +901,14 @@
         {
           "date": "2026-11-12",
           "label": "11/12(목) 20:45 방송",
-          "collected_at": "2026-10-29T07:05:55.345155+09:00",
+          "collected_at": "2026-10-29T11:25:09.474051+09:00",
           "products": [
             {
               "broadcast_date_label": "11/12(목) 20:45",
               "brand": "곡물도감",
               "name": "서리태 가득 콩물두유 시그니쳐5박스+21곡 1박스",
               "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/979/2065432979L.jpg?timestamp=20261029070244",
+              "image": "https://image.cjonstyle.net/goods_images/20/979/2065432979L.jpg?timestamp=20261029112335",
               "link": "https://display.cjonstyle.com/p/item/2065432979"
             }
           ]
@@ -880,14 +916,14 @@
         {
           "date": "2026-11-07",
           "label": "11/07(토) 08:20 방송",
-          "collected_at": "2026-10-29T07:05:55.345155+09:00",
+          "collected_at": "2026-10-29T11:25:09.474051+09:00",
           "products": [
             {
               "broadcast_date_label": "11/07(토) 08:20",
               "brand": "클리판",
               "name": "스웨덴 프리미엄 뱀부코튼 타올세트 10종세트 노르딕믹스 K18",
               "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/620/2094028620L.jpg?timestamp=20261029070244",
+              "image": "https://image.cjonstyle.net/goods_images/20/620/2094028620L.jpg?timestamp=20261029112335",
               "link": "https://display.cjonstyle.com/p/item/2094028620"
             },
             {
@@ -959,14 +995,14 @@
         {
           "date": "2026-11-05",
           "label": "11/05(목) 20:45 방송",
-          "collected_at": "2026-10-29T07:05:55.345155+09:00",
+          "collected_at": "2026-10-29T11:25:09.474051+09:00",
           "products": [
             {
               "broadcast_date_label": "11/05(목) 20:45",
               "brand": "옐로우에이유",
               "name": "[동가게PICK] 호주직수입 프로폴리스 스프레이 1500+ 5+3병 더",
               "price": 236200,
-              "image": "https://image.cjonstyle.net/goods_images/20/665/2093831665L.jpg?timestamp=20261029070244",
+              "image": "https://image.cjonstyle.net/goods_images/20/665/2093831665L.jpg?timestamp=20261029112335",
               "link": "https://display.cjonstyle.com/p/item/2093831665"
             },
             {
@@ -1102,14 +1138,14 @@
         {
           "date": "2026-11-11",
           "label": "11/11(수) 19:35 방송",
-          "collected_at": "2026-10-29T07:05:55.345155+09:00",
+          "collected_at": "2026-10-29T11:25:09.474051+09:00",
           "products": [
             {
               "broadcast_date_label": "11/11(수) 19:35",
               "brand": "락포트",
               "name": "[공식정품] NEW 트루플렉스 호주산 울 램스킨 로퍼",
               "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/193/2091040193L.jpg?timestamp=20261029070327",
+              "image": "https://image.cjonstyle.net/goods_images/20/193/2091040193L.jpg?timestamp=20261029112435",
               "link": "https://display.cjonstyle.com/p/item/2091040193"
             }
           ]
@@ -1117,14 +1153,14 @@
         {
           "date": "2026-11-06",
           "label": "11/06(금) 19:35 방송",
-          "collected_at": "2026-10-29T07:05:55.345155+09:00",
+          "collected_at": "2026-10-29T11:25:09.474051+09:00",
           "products": [
             {
               "broadcast_date_label": "11/06(금) 19:35",
               "brand": "보르고세시아",
               "name": "[100% ITALY MADE] 26FW 캐시미어100 하이넥 엘레나 코트",
               "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/808/2093199808L.jpg?timestamp=20261029070327",
+              "image": "https://image.cjonstyle.net/goods_images/20/808/2093199808L.jpg?timestamp=20261029112435",
               "link": "https://display.cjonstyle.com/p/item/2093199808"
             },
             {

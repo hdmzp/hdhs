@@ -1,6 +1,6 @@
 {
   "month": "2026-10",
-  "updated_at": "2026-10-29T07:05:55.394033+09:00",
+  "updated_at": "2026-10-29T11:25:09.513372+09:00",
   "programs": [
     {
       "program_key": "HD_HJM",
@@ -447,7 +447,7 @@
         {
           "date": "2026-10-31",
           "label": "10/31(토) 08:20 방송",
-          "collected_at": "2026-10-29T07:05:55.345155+09:00",
+          "collected_at": "2026-10-29T11:25:09.474051+09:00",
           "products": [
             {
               "broadcast_date_label": "10/31(토) 08:20 방송",
@@ -1080,7 +1080,7 @@
         {
           "date": "2026-10-29",
           "label": "10/29(목) 20:45 방송",
-          "collected_at": "2026-10-29T07:05:55.345155+09:00",
+          "collected_at": "2026-10-29T11:25:09.474051+09:00",
           "products": [
             {
               "prd_id": "1138264807",
@@ -1828,8 +1828,17 @@
         {
           "date": "2026-10-30",
           "label": "10/30(금) 20:35 방송",
-          "collected_at": "2026-10-29T07:05:55.345155+09:00",
+          "collected_at": "2026-10-29T11:25:09.474051+09:00",
           "products": [
+            {
+              "prd_id": "1138447638",
+              "broadcast_date_label": "10월 30일(금) 20:35 방송",
+              "broadcast_iso": "2026-10-30T20:35:00",
+              "brand": "GS SHOP",
+              "name": "[소쇼 단독방송 단독조건] 클렌하임 바디탭 마사지기 + 전용매쉬망 총 2개",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1138447638"
+            },
             {
               "prd_id": "1139135795",
               "broadcast_date_label": "10월 30일(금) 20:35 방송",
@@ -2009,15 +2018,6 @@
               "name": "몬스터 초강력 스티커형 사각 양면테이프 클리어겔",
               "price": null,
               "link": "https://m.gsshop.com/prd/prd.gs?prdid=1138450107"
-            },
-            {
-              "prd_id": "1138447638",
-              "broadcast_date_label": "10월 30일(금) 20:35 방송",
-              "broadcast_iso": "2026-10-30T20:35:00",
-              "brand": "GS SHOP",
-              "name": "[소쇼 단독방송 단독조건] 클렌하임 바디탭 마사지기 + 전용매쉬망 총 2개",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1138447638"
             }
           ]
         },
@@ -2657,7 +2657,7 @@
         {
           "date": "2026-10-31",
           "label": "10/31(토) 08:20 방송",
-          "collected_at": "2026-10-29T07:05:55.345155+09:00",
+          "collected_at": "2026-10-29T11:25:09.474051+09:00",
           "products": [
             {
               "broadcast_date_label": "10/31 토요일 08:20",
@@ -2691,7 +2691,7 @@
         {
           "date": "2026-10-29",
           "label": "10/29(목) 20:45 방송",
-          "collected_at": "2026-10-29T07:05:55.345155+09:00",
+          "collected_at": "2026-10-29T11:25:09.474051+09:00",
           "products": [
             {
               "broadcast_date_label": "10/29 목요일 20:45",
@@ -7976,20 +7976,20 @@
         {
           "date": "2026-10-31",
           "label": "10/31(토) 08:20 방송",
-          "collected_at": "2026-10-29T07:05:55.345155+09:00",
+          "collected_at": "2026-10-29T11:25:09.474051+09:00",
           "products": [
             {
               "broadcast_date_label": "10/31(토) 08:20",
               "brand": "라클라우드",
-              "name": "[킹]엘루나 모션 매트리스 침대 패키지 퀸(K)",
+              "name": "[K/50만원세일] 엘루나 모션 매트리스 침대 패키지 킹",
               "price": 3390000,
-              "image": "https://image.cjonstyle.net/goods_images/20/606/2095279606L.jpg?timestamp=20261029070244",
+              "image": "https://image.cjonstyle.net/goods_images/20/606/2095279606L.jpg?timestamp=20261029112335",
               "link": "https://display.cjonstyle.com/p/item/2095279606"
             },
             {
               "broadcast_date_label": "10/31(토) 08:20",
               "brand": "라클라우드",
-              "name": "[퀸]엘루나 모션 매트리스 침대 패키지 퀸(Q)",
+              "name": "[Q/50만원세일]엘루나 모션 매트리스 침대 패키지 퀸",
               "price": 3290000,
               "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/187/2095279187L.jpg?timestamp=20261006155802",
               "link": "https://item.cjonstyle.com/item/2095279187?channelCode=30002002"
@@ -7997,7 +7997,7 @@
             {
               "broadcast_date_label": "10/31(토) 08:20",
               "brand": "라클라우드",
-              "name": "[슈퍼싱글]엘루나 모션 매트리스 침대 패키지 슈퍼싱글(SS)",
+              "name": "[SS/50만원세일]엘루나 모션 매트리스 침대 패키지 슈퍼싱글",
               "price": 2890000,
               "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/957/2095275957L.jpg?timestamp=20261006154945",
               "link": "https://item.cjonstyle.com/item/2095275957?channelCode=30002002"
@@ -8005,7 +8005,7 @@
             {
               "broadcast_date_label": "10/31(토) 08:20",
               "brand": "라클라우드",
-              "name": "[트윈]엘루나 모션 매트리스 침대 패키지 트윈(TW)",
+              "name": "[TW/50만원세일]엘루나 모션 매트리스 침대 패키지 트윈",
               "price": 4990000,
               "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/770/2095279770L.jpg?timestamp=20261006160926",
               "link": "https://item.cjonstyle.com/item/2095279770?channelCode=30002002"
@@ -8079,7 +8079,7 @@
         {
           "date": "2026-10-29",
           "label": "10/29(목) 20:45 방송",
-          "collected_at": "2026-10-29T07:05:55.345155+09:00",
+          "collected_at": "2026-10-29T11:25:09.474051+09:00",
           "products": [
             {
               "broadcast_date_label": "10/29(목) 20:45",
@@ -8160,6 +8160,14 @@
               "price": 79900,
               "image": "https://image.cjonstyle.net/goods_images/20/760/2092074760L.jpg?timestamp=20260918091400",
               "link": "https://item.cjonstyle.com/item/2092074760?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "10/29(목) 20:45",
+              "brand": "셀렙샵에디션",
+              "name": "[최초가129,000원]26FW 퓨어 캐시미어 100 브이넥 니트",
+              "price": 99000,
+              "image": "https://image.cjonstyle.net/goods_images/20/261/2089680261L.jpg?timestamp=20260819160128",
+              "link": "https://item.cjonstyle.com/item/2089680261?channelCode=30002002"
             },
             {
               "broadcast_date_label": "10/29(목) 20:45",
@@ -8978,7 +8986,7 @@
         {
           "date": "2026-10-31",
           "label": "10/31(토) 10:20 방송",
-          "collected_at": "2026-10-29T07:05:55.345155+09:00",
+          "collected_at": "2026-10-29T11:25:09.474051+09:00",
           "products": [
             {
               "broadcast_date_label": "10/31(토) 10:20",
@@ -9032,7 +9040,7 @@
               "broadcast_date_label": "10/31(토) 10:20",
               "brand": "르네디피",
               "name": "26FW 엑스트라 파인울 100 시어니트 1+1",
-              "price": 129900,
+              "price": 99900,
               "image": "https://image.cjonstyle.net/goods_images/20/422/2092468422L.jpg?timestamp=20260918123335",
               "link": "https://item.cjonstyle.com/item/2092468422?channelCode=30002002"
             },
@@ -9123,6 +9131,14 @@
               "price": 159000,
               "image": "https://image.cjonstyle.net/goods_images/20/301/2093112301L.jpg?timestamp=20260915091554",
               "link": "https://item.cjonstyle.com/item/2093112301?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "10/31(토) 10:20",
+              "brand": "베라왕",
+              "name": "26FW 캐시미어100 롤넥 풀오버",
+              "price": 119000,
+              "image": "https://image.cjonstyle.net/goods_images/20/761/2093118761L.jpg?timestamp=20260915115035",
+              "link": "https://item.cjonstyle.com/item/2093118761?channelCode=30002002"
             }
           ]
         },
@@ -9339,7 +9355,7 @@
         {
           "date": "2026-10-30",
           "label": "10/30(금) 19:35 방송",
-          "collected_at": "2026-10-29T07:05:55.345155+09:00",
+          "collected_at": "2026-10-29T11:25:09.474051+09:00",
           "products": [
             {
               "broadcast_date_label": "10/30(금) 19:35",
@@ -9352,7 +9368,7 @@
             {
               "broadcast_date_label": "10/30(금) 19:35",
               "brand": "보르고세시아",
-              "name": "[미리주문 10%] 26FW 알파카 블렌드 구스 하프코트",
+              "name": "[미리주문 10% 마지막날] 26FW 알파카 블렌드 구스 하프코트",
               "price": 179000,
               "image": "https://image.cjonstyle.net/goods_images/20/450/2091063450L.jpg?timestamp=20260930105548",
               "link": "https://item.cjonstyle.com/item/2091063450?channelCode=30002002"
@@ -9360,7 +9376,7 @@
             {
               "broadcast_date_label": "10/30(금) 19:35",
               "brand": "보르고세시아",
-              "name": "26FW 캐시울실크 브러시드 홀가먼트 하이넥 풀오버",
+              "name": "[미리주문 10% 마지막날] 26FW 캐시울실크 브러시드 홀가먼트 하이넥 풀오버",
               "price": 149000,
               "image": "https://image.cjonstyle.net/goods_images/20/896/2093451896L.jpg?timestamp=20261012155337",
               "link": "https://item.cjonstyle.com/item/2093451896?channelCode=30002002"
@@ -9368,7 +9384,7 @@
             {
               "broadcast_date_label": "10/30(금) 19:35",
               "brand": "보르고세시아",
-              "name": "[미리주문 10%] 26FW 카멜실크100 시그니처 원턱 팬츠",
+              "name": "[미리주문 10% 마지막날] 26FW 카멜실크100 시그니처 원턱 팬츠",
               "price": 159000,
               "image": "https://image.cjonstyle.net/goods_images/20/079/2093226079L.jpg?timestamp=20260921110228",
               "link": "https://item.cjonstyle.com/item/2093226079?channelCode=30002002"
