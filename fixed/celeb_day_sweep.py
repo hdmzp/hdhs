@@ -328,6 +328,17 @@ def slot_start(product: dict, label_hm: str) -> str:
     return m.group(1) if m else label_hm
 
 
+def covering_block(blocks, ends: dict, start: str):
+    """start가 어느 블록의 [첫 구간 시작, 마지막 구간 종료(+SEGMENT_GAP_MIN)] 안이면
+    그 블록의 시작시각, 아니면 None."""
+    minute = to_minutes(start)
+    for block in blocks:
+        last_end = ends.get(block[-1]) or block[-1]
+        if to_minutes(block[0]) <= minute <= to_minutes(last_end) + SEGMENT_GAP_MIN:
+            return block[0]
+    return None
+
+
 def merge_continuous_slots(company: str, program_names, products: list,
                            label_fn=None, days_ahead: int = SWEEP_DAYS) -> int:
     """이어지는 구간으로 쪼개져 들어온 회차를 한 방송으로 묶는다(제자리 수정).
@@ -361,6 +372,13 @@ def merge_continuous_slots(company: str, program_names, products: list,
         if blocks:
             start_to_block = {s: block[0] for block in blocks for s in block}
             ends = segment_ends(company, program_names, brod_date, days_ahead)
+            # 상품은 있는데 편성표엔 그 구간이 없는 경우(편성표에 구멍이 난 자리.
+            # 2026-10-31 최유라쇼 09:20 구간 - 편성표엔 08:20~09:20, 10:20~10:35뿐)
+            # 블록이 덮는 시간 안이면 그 블록에, 아니면 단독 회차로 둔다.
+            # 여기서 죽으면 relt.py가 통째로 멈춰 롯데 두 프로그램이 다 '수집실패'가 된다.
+            for start in starts:
+                if start not in start_to_block:
+                    start_to_block[start] = covering_block(blocks, ends, start) or start
             source = "편성표"
         else:
             start_to_block = {}

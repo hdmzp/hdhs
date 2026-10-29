@@ -290,6 +290,31 @@ def test_merge_across_empty_schedule_gap():
           ["08:20-09:20(60')", "09:40-10:10(30')", "10:10-10:35(25')"])
 
 
+def test_merge_slot_missing_from_schedule():
+    print("[7-4] 편성표에 없는 구간의 상품이 와도 죽지 않고 블록에 붙인다")
+    # 2026-10-29 relt.py가 KeyError '09:20'으로 죽어 유난희/최유라가 둘 다
+    # 수집실패로 떴다. 10/31 편성표엔 최유라쇼 08:20~09:20, 10:20~10:35만 있고
+    # 09:20~10:20이 비었는데, 롯데 API는 09:20 구간 상품을 줬다.
+    day = TODAY + timedelta(days=2)
+    days = {day.isoformat(): [
+        slot("07:20", "08:20", None, "닥터린", "멜라바인"),
+        slot("08:20", "09:20", "최유라쇼", "덴프스", "프로폴리스 스프레이"),
+        slot("10:20", "10:35", "최유라쇼", "숙이의 뿌리효소", "쌍화차"),
+        slot("10:35", "11:40", None, "비에날씬", "슬림플러스"),
+        slot("19:30", "20:30", None, "다른", "저녁 상품"),
+    ]}
+    products = [collected(sweep.label_lt(day, hm), f"{hm} 상품")
+                for hm in ("08:20", "09:20", "10:20", "21:00")]
+
+    changed = with_live_data("LT", days, lambda: sweep.merge_continuous_slots(
+        "LT", ["최유라쇼"], products))
+
+    check("블록 안 구간 2건 병합", changed, 2)
+    check("09:20 상품도 08:20 회차로",
+          [p["broadcast_date_label"] for p in products],
+          [sweep.label_lt(day, "08:20")] * 3 + [sweep.label_lt(day, "21:00")])
+
+
 def test_does_not_merge_gap_with_other_program():
     print("[7-3] 구멍 사이에 다른 방송이 끼어 있으면 안 묶는다")
     day = TODAY + timedelta(days=2)
@@ -370,6 +395,7 @@ def main():
     test_merge_continuous_segments()
     test_no_segment_time_for_single_slot()
     test_merge_across_empty_schedule_gap()
+    test_merge_slot_missing_from_schedule()
     test_does_not_merge_gap_with_other_program()
     test_does_not_merge_two_broadcasts()
     test_merge_fallback_without_schedule()
