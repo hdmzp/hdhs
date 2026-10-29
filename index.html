@@ -8024,7 +8024,10 @@ function celNoticeRowHtml(r) {
 }
 
 // ---- 월 방송 체크: 평소와 다른 요일·시간·횟수의 회차 (조회 중인 달 전체, 지난 회차는 '종료') ----
-// 평소 = 그 주 시작 전 12주 방송의 최빈값 (주마다 따로 잡는다).
+// 평소 요일·시간 우선순위: 프로그램 편성 표기(schedule_raw, "매주 목요일 오전 09시25분") > 최빈값.
+//   표기에 요일·시각이 있으면 그걸 고정값으로 쓴다. 최근 다른 요일로 자주 옮겨 방송해도
+//   (유난희 목 → 수) 평소 요일은 표기 요일 그대로다.
+//   표기가 없거나 '수시'면 그 주 시작 전 12주 방송의 최빈값 (주마다 따로 잡는다).
 //   요일: 최다 요일의 절반 이상(최소 2회) 나온 요일은 모두 '평소 요일'로 본다
 //         (동가게 목/토, 최유라쇼 목/토처럼 주 2회 정규 편성).
 //   시간: 그 요일 방송의 최빈 시작시각 (요일별로 따로).
@@ -8041,7 +8044,7 @@ async function celLoadNewsMonths(base) {
 function celNewsBroadcasts(file, base) {
   const key = file.replace(/\.json$/, '');
   const out = [];
-  let title = '';
+  let title = '', schedule = '';
   const seen = new Set();
   const recordDates = new Set();  // 기록이 있는 날 (휴방·시각 없는 회차 포함) - '상품 없음' 판정용
   const offDates = new Set();     // 수집기가 편성표로 휴방을 확인해 기록한 날 (현재 HD만)
@@ -8050,6 +8053,7 @@ function celNewsBroadcasts(file, base) {
     const prog = hist && Array.isArray(hist.programs) && hist.programs.find(p => p.program_key === key);
     if (!prog) continue;
     title = title || prog.program_title || prog.tab_name || '';
+    schedule = schedule || prog.schedule_raw || '';
     for (const b of prog.broadcasts || []) {
       if (b.date) recordDates.add(b.date);
       if (b.date && b.off_air) offDates.add(b.date);
@@ -8065,7 +8069,30 @@ function celNewsBroadcasts(file, base) {
     }
   }
   out.sort((a, b) => a.start - b.start);
-  return { title, list: out, recordDates, offDates };
+  return { title, list: out, recordDates, offDates, stated: celNewsStatedSlots(schedule) };
+}
+
+// 편성 표기에서 요일 -> 시작시각("09:25"). "매주 목 20시 45분/ 토 08시 20분", "목 20:45 / 토 08:20",
+// "매주 목요일 저녁 8시 45분" 등. '수시'(일정 수시 변경)면 고정값이 없다고 보고,
+// 'TV+' 구간은 수집 대상이 아니라서 뺀다 (림잇티드 "TV:토요일 10시20분, TV+:화요일 20시45분").
+function celNewsStatedSlots(raw) {
+  const slots = new Map();
+  if (!raw || /수시/.test(raw)) return slots;
+  for (const seg of String(raw).split(/[\/,]/)) {
+    if (/TV\+/i.test(seg)) continue;
+    const t = seg.match(/(오전|오후|저녁|밤)?\s*(\d{1,2})\s*(?::\s*(\d{2})|시\s*(?:(\d{1,2})\s*분)?)/);
+    if (!t) continue;
+    let h = Number(t[2]);
+    if (t[1] && t[1] !== '오전' && h < 12) h += 12;
+    const hm = `${String(h).padStart(2, '0')}:${String(Number(t[3] || t[4] || 0)).padStart(2, '0')}`;
+    const re = /(^|[^가-힣])([월화수목금토일])(?=요일|[\s\d:]|$)/g;
+    let m;
+    while ((m = re.exec(seg)) !== null) {
+      const wd = CEL_WEEKDAYS.indexOf(m[2]);
+      if (!slots.has(wd)) slots.set(wd, hm);
+    }
+  }
+  return slots;
 }
 
 function celNewsMode(values) {
@@ -8100,14 +8127,18 @@ function celNewsMonday(d) {
   return x;
 }
 
-// 그 주(wk = 월요일 0시 ms) 기준 평소 요일 - 직전 12주에 최다 요일의 절반 이상(최소 2회) 나온 요일
-function celNewsUsualDays(list, wk) {
+// 그 주(wk = 월요일 0시 ms) 기준 평소 요일
+//   편성 표기(stated)가 있으면 그 요일, 없으면 직전 12주에 최다 요일의 절반 이상(최소 2회) 나온 요일.
+//   modeDays: 표기와 상관없이 직전 12주 최빈 기준 요일 ("최근 자주 진행된 수요일" 안내용)
+function celNewsUsualDays(list, wk, stated) {
   const past = list.filter(b => b.start.getTime() >= wk - CEL_NEWS_LOOKBACK_DAYS * 86400000 && b.start.getTime() < wk);
   const wdMode = celNewsMode(past.map(b => b.wd));
-  const usualDays = [...wdMode.counts.entries()]
+  const byMon = (a, b) => ((a + 6) % 7) - ((b + 6) % 7);
+  const modeDays = [...wdMode.counts.entries()]
     .filter(([, n]) => n >= Math.max(2, Math.ceil(wdMode.count / 2)))
-    .map(([wd]) => wd).sort((a, b) => ((a + 6) % 7) - ((b + 6) % 7));
-  return { past, usualDays };
+    .map(([wd]) => wd).sort(byMon);
+  const usualDays = stated && stated.size ? [...stated.keys()].sort(byMon) : modeDays;
+  return { past, usualDays, modeDays };
 }
 
 // 평소 방송 요일인데 그날 기록(상품)이 아예 없는 날.
@@ -8129,7 +8160,7 @@ function celBuildMissing(files, ym) {
   const out = [];
   for (const file of files) {
     if (CEL_NEWS_MISSING_SKIP.has(file)) continue;
-    const { title, list, recordDates } = celNewsBroadcasts(file, ym);
+    const { title, list, recordDates, stated } = celNewsBroadcasts(file, ym);
     if (list.length === 0) continue;
     const firstRec = list[0].start;
     const co = file.split('_')[0];
@@ -8138,15 +8169,18 @@ function celBuildMissing(files, ym) {
       const iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
       if (recordDates.has(iso)) continue;
       const wk = celNewsMonday(d).getTime();
-      const { past, usualDays } = celNewsUsualDays(list, wk);
+      const { past, usualDays, modeDays } = celNewsUsualDays(list, wk, stated);
       if (!usualDays.includes(d.getDay())) continue;
       const perWeek = new Map();
       past.forEach(b => { const k = celNewsMonday(b.start).getTime(); perWeek.set(k, (perWeek.get(k) || 0) + 1); });
       const usualPerWeek = celNewsMode([...perWeek.values()]).value || 1;
       const weekCnt = list.filter(b => b.start.getTime() >= wk && b.start.getTime() < wk + 7 * 86400000).length;
       if (weekCnt >= usualPerWeek) continue;
+      // 최근 최빈 요일이 평소(표기) 요일과 다르면 그쪽으로 옮겨 방송했을 수 있다고 안내한다
+      const moved = modeDays.filter(wd => !usualDays.includes(wd));
       out.push({ start: new Date(d), past: d < today, file,
-                 name: `${co} ${title || file}`, day: `${d.getMonth() + 1}/${d.getDate()} ${WD[d.getDay()]}` });
+                 name: `${co} ${title || file}`, day: `${d.getMonth() + 1}/${d.getDate()} ${WD[d.getDay()]}`,
+                 usual: usualDays.map(wd => WD[wd]).join('/'), moved: moved.map(wd => `${WD[wd]}요일`).join('·') });
     }
   }
   out.sort((a, b) => a.start - b.start);
@@ -8182,7 +8216,7 @@ function celBuildNews(files, ym) {
   const items = [];
 
   for (const file of files) {
-    const { title, list } = celNewsBroadcasts(file, ym);
+    const { title, list, stated } = celNewsBroadcasts(file, ym);
     const co = file.split('_')[0];
     const name = title || file;
 
@@ -8196,17 +8230,15 @@ function celBuildNews(files, ym) {
     });
 
     for (const [wk, inMonth] of weeks) {
-      // 평소 요일 (주 2회 정규 편성 포함) - 직전 12주
-      const past = list.filter(b => b.start.getTime() >= wk - CEL_NEWS_LOOKBACK_DAYS * DAY && b.start.getTime() < wk);
-      const wdMode = celNewsMode(past.map(b => b.wd));
-      const usualDays = [...wdMode.counts.entries()]
-        .filter(([, n]) => n >= Math.max(2, Math.ceil(wdMode.count / 2)))
-        .map(([wd]) => wd).sort((a, b) => ((a + 6) % 7) - ((b + 6) % 7));
-      if (usualDays.length === 0) continue;  // 2회 이상 나온 요일이 없으면 판단 보류 (신규·중간 편입 직후)
+      // 평소 요일 (편성 표기 > 직전 12주 최빈, 주 2회 정규 편성 포함)
+      const { past, usualDays } = celNewsUsualDays(list, wk, stated);
+      if (usualDays.length === 0 || past.length === 0) continue;  // 기준이 없으면 판단 보류 (신규·중간 편입 직후)
 
-      // 요일별 시간 / 주간 횟수 / 하루 최대 횟수
+      // 요일별 시간 (표기 시각 > 최빈) / 주간 횟수 / 하루 최대 횟수
       const usualTime = {};
-      usualDays.forEach(wd => { usualTime[wd] = celNewsMode(past.filter(b => b.wd === wd).map(b => b.hm)).value; });
+      usualDays.forEach(wd => {
+        usualTime[wd] = stated.get(wd) || celNewsMode(past.filter(b => b.wd === wd).map(b => b.hm)).value;
+      });
       const perWeek = new Map(), perDay = new Map();
       past.forEach(b => {
         const k = celNewsMonday(b.start).getTime();
@@ -8240,7 +8272,7 @@ function celBuildNews(files, ym) {
       }
 
       // 2) 평소와 다른 요일 / 시간
-      const overallTime = celNewsMode(past.map(b => b.hm)).value;
+      const overallTime = stated.size ? usualTime[usualDays[0]] : celNewsMode(past.map(b => b.hm)).value;
       for (const b of inMonth) {
         if (multiDays.has(b.date)) continue;
         const ended = b.start <= now;
@@ -8311,24 +8343,33 @@ function celRenderNews(files, ym) {
     return [...by.values()].map(g => g.days.length >= 2
       ? `${g.name}(${g.days.join(', ')})` : `${g.name} ${g.days.join(', ')}`).join(', ');
   };
+  const missGroups = (xs) => {
+    const by = new Map();
+    xs.forEach(x => { const k = `${x.usual}|${x.moved}`; if (!by.has(k)) by.set(k, []); by.get(k).push(x); });
+    return [...by.values()];
+  };
   const missPast = missing.filter(x => x.past), missNext = missing.filter(x => !x.past);
   const offPast = offAir.filter(x => x.past), offNext = offAir.filter(x => !x.past);
   const missingHtml = (missPast.length || missNext.length || offAir.length)
     ? `<div class="cel-news-missing">` +
-        (missPast.length
-          ? `<div>📭 <span class="cel-news-miss-tag">지난 방송</span> <b>${missText(missPast)}</b> - 평소 방송일인데 상품 기록이 없어요. 휴방이었을 가능성이 높아요.</div>` : '') +
+        // 같은 안내(평소 요일·옮겨 갔을 요일)끼리 한 줄로 묶는다
+        missGroups(missPast).map(xs => {
+          const { usual, moved } = xs[0];
+          const why = moved ? `휴방이었거나, 최근 자주 진행된 ${moved}에 진행되었을 가능성이 높아요.` : '휴방이었을 가능성이 높아요.';
+          return `<div>📭 <span class="cel-news-miss-tag">지난 방송</span> <b>${missText(xs)}</b> - 평소 방송요일(${usual})인데 상품 기록이 없어요. ${why}</div>`;
+        }).join('') +
         // 편성표로 휴방이 확인된 날은 '가능성'이 아니라 확정으로 쓴다
         (offPast.length ? `<div>📭 <b>${missText(offPast)}</b>${celNewsTopic(missText(offPast))} 휴방이었어요.</div>` : '') +
         (offNext.length ? `<div>📭 <b>${missText(offNext)}</b>${celNewsTopic(missText(offNext))} 휴방 예정이에요.</div>` : '') +
         (missNext.length
-          ? `<div>📭 <span class="cel-news-miss-tag">남은 방송</span> <b>${missText(missNext)}</b> - 평소 방송일인데 상품이 없어요. 코드 등록 전이거나 휴방일 수 있어요 (오늘 +${CEL_NEWS_MISSING_AHEAD_DAYS}일 기준)</div>` : '') +
+          ? `<div>📭 <span class="cel-news-miss-tag">남은 방송</span> <b>${missText(missNext)}</b> - 평소 방송요일인데 상품이 없어요. 코드 등록 전이거나 휴방일 수 있어요 (오늘 +${CEL_NEWS_MISSING_AHEAD_DAYS}일 기준)</div>` : '') +
       `</div>`
     : '';
   return (
     `<div class="cel-news${celNewsCollapsed ? ' collapsed' : ''}" id="celNews">` +
       `<div class="cel-news-head">` +
         `<span class="cel-news-title">[${label}]</span>` +
-        `<span class="cel-news-cnt">평소(직전 12주 최빈)와 다른 방송 · 프로그램 ${progs.length}개 · 예정 ${upcoming}건</span>` +
+        `<span class="cel-news-cnt">평소(편성 표기, 없으면 직전 12주 최빈)와 다른 방송 · 프로그램 ${progs.length}개 · 예정 ${upcoming}건</span>` +
         `<button type="button" class="cel-news-toggle">${celNewsCollapsed ? '펼치기 ▼' : '접기 ▲'}</button>` +
       `</div>` +
       body + missingHtml +
