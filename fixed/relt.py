@@ -219,7 +219,14 @@ def main():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     for config in PROGRAMS:
-        result = crawl_lt_program(config)
+        # 프로그램 하나가 터져도 나머지 프로그램 수집은 계속돼야 한다 (recj.py와 같은
+        # 프로그램별 격리). 2026-10-29 최유라쇼 회차 병합 오류 하나로 relt.py가 통째로
+        # 죽어, 멀쩡한 유난희까지 수집 못 하고 '수집실패'로 떴다.
+        try:
+            result = crawl_lt_program(config)
+        except Exception as e:
+            print(f"[실패] [{config['tab_name']}] 수집 중 오류: {e!r}")
+            continue
         if not result:
             continue
 
