@@ -52,6 +52,7 @@ import glob
 from datetime import datetime, timezone, timedelta
 
 from tg import esc, chunk_lines, broadcast
+from competitor import competitor_lines
 
 KST = timezone(timedelta(hours=9))
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -257,6 +258,8 @@ def main():
         return
 
     lines = build_message(now, weather, rows, totals, n_companies)
+    # 맨 아래 경쟁사 맞편성·신규 브랜드 (notify/competitor.py)
+    lines += competitor_lines(now.date(), companies, {cat for _, cat in SECTIONS})
     chunks = chunk_lines(lines)
     print("방송 %d건 → 메시지 %d건" % (total, len(chunks)))
 

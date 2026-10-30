@@ -19,6 +19,7 @@
   미용 = 미용
 
 💗 게스트 강조는 패션·미용만. 규칙과 이름 목록은 notify/guests.py.
+맨 아래에 그 묶음 카테고리의 경쟁사 맞편성·신규 브랜드 (notify/competitor.py).
 매주 월요일에는 목록에 없는 '새 게스트 후보'(지난 7일 미용 상품명)를 따로 보낸다.
 
 == 환경변수 ==
@@ -38,6 +39,7 @@ from datetime import timedelta
 from tg import esc, chunk_lines, broadcast
 import send_daily_food as food
 from guests import GUESTS, EXCLUDE, TITLE_SUFFIXES, PROGRAM_HOSTS
+from competitor import competitor_lines
 
 ROOT = food.ROOT
 HISTORY_DIR = os.path.join(ROOT, "homeshopping", "representative_programs", "history")
@@ -218,7 +220,9 @@ def main():
         if sum(totals.values()) == 0:
             print("%s %s 방송 데이터가 없습니다. 생략." % (day_str, title))
             continue
-        messages.append((title, key, build_message(now, title, sections, rows, totals, n_companies)))
+        lines = build_message(now, title, sections, rows, totals, n_companies)
+        lines += competitor_lines(now.date(), companies, {c for _, c in cat_sections})
+        messages.append((title, key, lines))
 
     if now.weekday() == 0 or os.environ.get("GUEST_CANDIDATES") == "1":
         cands = guest_candidates(now, companies)

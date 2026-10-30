@@ -10,7 +10,7 @@ on:
   workflow_dispatch:  # 수동 실행 버튼 (테스트 발송용으로 하나만 골라 보낼 수 있다)
     inputs:
       only:
-        description: "보낼 메시지 (all / food / celeb / category / brand)"
+        description: "보낼 메시지 (all / food / ppl / celeb / category / brand)"
         required: false
         default: "all"
 permissions:
@@ -42,6 +42,16 @@ jobs:
           TIME_END: ${{ vars.TIME_END }}
           WEATHER_REGION: ${{ vars.WEATHER_REGION }}
         run: python notify/send_daily_food.py
+      # 오늘의 건강프로그램 PPL 예고 (식품 리스트를 받는 사람에게, 별도 메시지)
+      - name: 텔레그램 발송 — 건강프로그램 PPL 예고
+        if: always() && (github.event_name != 'workflow_dispatch' || inputs.only == 'all' || inputs.only == 'food' || inputs.only == 'ppl')
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          SUBS_URL: ${{ vars.SUBS_URL }}  # 봇 구독자 목록 (Cloudflare Worker, notify/subscribers.py)
+          SUBS_KEY: ${{ secrets.SUBS_KEY }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          COMPANIES: ${{ vars.COMPANIES }}
+        run: python notify/send_health_ppl.py
       # 어제의 셀럽PGM 운영상품 (식품 리스트와 별도 메시지)
       # 식품 발송이 실패해도 이건 따로 보낸다
       - name: 텔레그램 발송 — 어제 셀럽PGM 운영상품
