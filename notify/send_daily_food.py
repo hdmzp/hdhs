@@ -266,7 +266,7 @@ def main():
             print(c)
         return
 
-    broadcast(ROOT, chunks)
+    broadcast(ROOT, chunks, topic="food")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,44 @@
+name: 텔레그램 봇 신청 처리 (구독자 설정)
+on:
+  schedule:
+    # 1시간마다 봇에 쌓인 /start·버튼 입력을 처리해 notify/subscribers.enc 에 저장
+    # (서버가 없어서 답은 이 주기로 간다. 텔레그램은 안 읽은 입력을 24시간 보관)
+    - cron: "23 * * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: telegram-subscribers
+  cancel-in-progress: false
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v4
+      - name: Python 설치
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: 패키지 설치
+        run: pip install requests cryptography
+      - name: 봇 신청 처리
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python notify/bot.py
+      - name: 구독자 파일 커밋
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add notify/subscribers.enc 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "변경 없음"; exit 0
+          fi
+          git commit -m "chore: 텔레그램 구독자 설정 갱신"
+          for i in 1 2 3 4; do
+            git pull --rebase --autostash origin main && git push && exit 0
+            sleep $((i * 5))
+          done
+          exit 1

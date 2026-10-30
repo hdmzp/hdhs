@@ -3,6 +3,7 @@
 
 import os
 import sys
+import json
 import time
 import requests
 
@@ -59,7 +60,7 @@ def detect_chat_id():
     sys.exit(1)
 
 
-def load_chat_ids(root):
+def load_chat_ids(root, detect=True):
     """notify/recipients.txt + TELEGRAM_CHAT_ID 합집합. 없으면 자동 감지."""
     chat_ids = []
     rec_path = os.path.join(root, "notify", "recipients.txt")
@@ -74,34 +75,43 @@ def load_chat_ids(root):
         c = c.strip()
         if c and c not in chat_ids:
             chat_ids.append(c)
-    if not chat_ids:
+    if not chat_ids and detect:
         chat_ids = [detect_chat_id()]
     return chat_ids
 
 
-def send(chat_id, text):
-    resp = requests.post(
-        api("sendMessage"),
-        data={
-            "chat_id": chat_id,
-            "text": text,
-            "parse_mode": "HTML",
-            "disable_web_page_preview": True,
-        },
-        timeout=15,
-    )
+def send(chat_id, text, reply_markup=None):
+    data = {
+        "chat_id": chat_id,
+        "text": text,
+        "parse_mode": "HTML",
+        "disable_web_page_preview": True,
+    }
+    if reply_markup is not None:
+        data["reply_markup"] = json.dumps(reply_markup, ensure_ascii=False)
+    resp = requests.post(api("sendMessage"), data=data, timeout=15)
     if resp.status_code != 200:
         print("발송 실패:", resp.status_code, resp.text)
         return False
     return True
 
 
-def broadcast(root, chunks):
-    """모든 수신처에 청크들을 순서대로 발송. 실패 시 exit 1."""
+def broadcast(root, chunks, topic=None):
+    """수신처에 청크들을 순서대로 발송. 실패 시 exit 1.
+
+    topic 을 주면 봇에서 그 알림을 신청한 사람(notify/subscribers.py)에게만 보낸다.
+    기존 수신자(recipients.txt / TELEGRAM_CHAT_ID)는 봇 설정이 없으면 식품·셀럽PGM만 받는다."""
     if not BOT_TOKEN:
         print("TELEGRAM_BOT_TOKEN 환경변수가 필요합니다.")
         sys.exit(1)
-    chat_ids = load_chat_ids(root)
+    if topic:
+        import subscribers
+        chat_ids = subscribers.recipients_for(topic, load_chat_ids(root, detect=False))
+        if not chat_ids:
+            print("'%s' 알림 신청자가 없어 발송 생략" % topic)
+            return
+    else:
+        chat_ids = load_chat_ids(root)
     sent = 0
     for chat_id in chat_ids:
         for i, chunk in enumerate(chunks, 1):
