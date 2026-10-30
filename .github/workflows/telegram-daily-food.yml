@@ -27,11 +27,13 @@ jobs:
         with:
           python-version: "3.11"
       - name: 패키지 설치
-        run: pip install requests cryptography
+        run: pip install requests
       - name: 텔레그램 발송 — 식품방송 리스트
         if: github.event_name != 'workflow_dispatch' || inputs.only == 'all' || inputs.only == 'food'
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          SUBS_URL: ${{ vars.SUBS_URL }}  # 봇 구독자 목록 (Cloudflare Worker, notify/subscribers.py)
+          SUBS_KEY: ${{ secrets.SUBS_KEY }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           # 표시할 회사/시간대를 바꾸려면 저장소 Variables 에 등록
           # 예: COMPANIES=HD,GS,CJ,LT / TIME_START=06:00 / TIME_END=23:59
@@ -46,6 +48,8 @@ jobs:
         if: always() && (github.event_name != 'workflow_dispatch' || inputs.only == 'all' || inputs.only == 'celeb')
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          SUBS_URL: ${{ vars.SUBS_URL }}  # 봇 구독자 목록 (Cloudflare Worker, notify/subscribers.py)
+          SUBS_KEY: ${{ secrets.SUBS_KEY }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python notify/send_celeb_daily.py
       # 오늘의 패션·리빙·미용 방송 리스트 (게스트 💗)
@@ -54,6 +58,8 @@ jobs:
         if: always() && (github.event_name != 'workflow_dispatch' || inputs.only == 'all' || inputs.only == 'category')
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          SUBS_URL: ${{ vars.SUBS_URL }}  # 봇 구독자 목록 (Cloudflare Worker, notify/subscribers.py)
+          SUBS_KEY: ${{ secrets.SUBS_KEY }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           COMPANIES: ${{ vars.COMPANIES }}
           TIME_START: ${{ vars.TIME_START }}
@@ -66,6 +72,8 @@ jobs:
         if: always() && (github.event_name != 'workflow_dispatch' || inputs.only == 'all' || inputs.only == 'brand')
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          SUBS_URL: ${{ vars.SUBS_URL }}  # 봇 구독자 목록 (Cloudflare Worker, notify/subscribers.py)
+          SUBS_KEY: ${{ secrets.SUBS_KEY }}
           COMPANIES: ${{ vars.COMPANIES }}
           TIME_START: ${{ vars.TIME_START }}
           TIME_END: ${{ vars.TIME_END }}
