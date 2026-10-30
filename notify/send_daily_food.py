@@ -136,15 +136,18 @@ def merge_continuous(slots):
     return merged
 
 
-def load_broadcasts(day_str, month_str, companies):
+def load_broadcasts(day_str, month_str, companies, sections=SECTIONS, decorate=None):
     """rows: 필터(회사+시간대) 적용된 표시용 목록, totals: 전체 회사·전체 시간 방송 수.
 
     한 방송은 한 줄로 센다. 현대 편성은 한 방송의 구성상품을 전부 따로 담고
     (2026-10-27 18:30 에이스바이옴 = 상품코드 4개), 긴 방송은 시간 구간으로도
     쪼개 준다(merge_continuous). 상품 줄마다 찍으면 같은 방송이 여러 번 나오고
-    횟수도 부풀었다. 첫 상품을 대표로 쓰고 나머지는 '외 N개'로만 붙인다."""
+    횟수도 부풀었다. 첫 상품을 대표로 쓰고 나머지는 '외 N개'로만 붙인다.
+
+    sections/decorate 는 패션·리빙·미용 리스트(send_daily_category.py)가 같이 쓴다.
+    decorate(company, start, cat, items) -> 브랜드 앞에 붙일 글자 (예: '유난희💗')."""
     # cat -> company -> start -> {"end": ..., "items": [...]}
-    raw = {cat: {} for _, cat in SECTIONS}
+    raw = {cat: {} for _, cat in sections}
     for path in glob.glob(os.path.join(ROOT, "homeshopping", "*_live", month_str + ".json")):
         try:
             with open(path, encoding="utf-8") as f:
@@ -160,8 +163,8 @@ def load_broadcasts(day_str, month_str, companies):
             slot = raw[cat].setdefault(company, {}).setdefault(start, {"end": item.get("end", ""), "items": []})
             slot["items"].append(item)
 
-    rows = {cat: [] for _, cat in SECTIONS}
-    totals = {cat: 0 for _, cat in SECTIONS}
+    rows = {cat: [] for _, cat in sections}
+    totals = {cat: 0 for _, cat in sections}
     for cat, by_company in raw.items():
         for company, by_start in by_company.items():
             slots = merge_continuous([(st, v["end"], v["items"]) for st, v in sorted(by_start.items())])
@@ -183,8 +186,9 @@ def load_broadcasts(day_str, month_str, companies):
                 name = COMPANY_NAMES.get(company, company)
                 # '시간 [회사] 브랜드'(굵게) + 다음 줄 상품명(판매페이지 링크) — 두 줄이 한 묶음
                 head = "%s [%s]" % (start or "??:??", name)
-                if brand:
-                    head += " " + brand
+                mark = decorate(company, start, cat, items) if decorate else ""
+                if mark or brand:
+                    head += " " + mark + brand
                 link = (first.get("link") or "").strip()
                 if link:
                     body = '<a href="%s">%s</a>' % (esc(link), esc(product))

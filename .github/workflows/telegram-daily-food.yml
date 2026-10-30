@@ -10,7 +10,7 @@ on:
   workflow_dispatch:  # 수동 실행 버튼 (테스트 발송용으로 하나만 골라 보낼 수 있다)
     inputs:
       only:
-        description: "보낼 메시지 (all / food / celeb)"
+        description: "보낼 메시지 (all / food / celeb / category)"
         required: false
         default: "all"
 permissions:
@@ -48,5 +48,17 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python notify/send_celeb_daily.py
+      # 오늘의 패션·리빙·미용 방송 리스트 (게스트 💗) - 아직 매일 발송은 안 하고 수동 실행(only=category)만
+      # 매일 보내려면 if 를 always() && (github.event_name != 'workflow_dispatch' || ...) 로 바꾼다
+      - name: 텔레그램 발송 — 패션·리빙·미용 방송 리스트
+        if: always() && github.event_name == 'workflow_dispatch' && inputs.only == 'category'
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          COMPANIES: ${{ vars.COMPANIES }}
+          TIME_START: ${{ vars.TIME_START }}
+          TIME_END: ${{ vars.TIME_END }}
+          GUEST_CANDIDATES: "1"
+        run: python notify/send_daily_category.py
       # 셀럽PGM 상품리스트 발송은 2026-07 사용자 요청으로 제거
       # (다시 켜려면: python notify/send_celeb_pgm.py 스텝 복원 - 스크립트는 남겨둠)
