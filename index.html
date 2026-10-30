@@ -8586,6 +8586,16 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
   document.getElementById('tabBtnFeedback').addEventListener('click', () => switchTab('feedback'));
   document.getElementById('tabBtnSecurity').addEventListener('click', () => switchTab('security'));
 
+  // 주소 끝 #탭이름으로 바로가기 (예: https://hdmzp.github.io/hdhs/#celebrity - 텔레그램 알림 링크)
+  const TAB_HASHES = ['schedule', 'weather', 'homeshop', 'dramavariety', 'fixedpgm', 'celebrity',
+                      'promotion', 'ranking', 'industry', 'feedback'];
+  const openTabFromHash = () => {
+    const tab = decodeURIComponent(location.hash.replace(/^#/, '')).trim();
+    if (TAB_HASHES.includes(tab)) switchTab(tab);
+  };
+  openTabFromHash();
+  window.addEventListener('hashchange', openTabFromHash);
+
   const hsPicker = document.getElementById('hsDatePicker');
   hsPicker.value = hsCurrentDate;
   hsPicker.min = HS_MIN_DATE;

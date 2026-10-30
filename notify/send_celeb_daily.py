@@ -18,6 +18,8 @@ homeshopping/representative_programs/history/{YYYY-MM}.json (셀럽PGM 월 누�
    📌 특이사항
    · CJ 최화정쇼 10/14(수) 하루 2회 방송 (08:15, 20:45 · 평소 수 20:45)
 
+   🔗 셀럽PGM 모니터링 바로가기   (https://hdmzp.github.io/hdhs/#celebrity)
+
 == 규칙 ==
 - 회사 순서 HD → GS → CJ → LT, 회사 안에서는 방송 시각 순.
 - 상품은 브랜드당 1개. 브랜드가 불분명하면(빈 값·'GS SHOP' 같은 자리표시자)
@@ -51,6 +53,8 @@ DRY_RUN = os.environ.get("DRY_RUN", "") == "1"
 COMPANIES = [("HD", "🔵"), ("GS", "🟢"), ("CJ", "🟣"), ("LT", "🔴")]
 WEEKDAY_KO = ["월", "화", "수", "목", "금", "토", "일"]
 DEFAULT_PRIME = "20:45"
+# 메시지 맨 아래 바로가기 - 주소 끝 #celebrity로 셀럽PGM 탭이 바로 열린다 (index.html openTabFromHash)
+SITE_CELEB_URL = "https://hdmzp.github.io/hdhs/#celebrity"
 LOOKBACK_DAYS = 84  # 평소 = 직전 12주 (셀럽PGM 탭 CEL_NEWS_LOOKBACK_DAYS와 같음)
 # 요일이 매번 바뀌거나 비정기라 '평소 방송일인데 기록 없음'을 안 따지는 프로그램
 # (셀럽PGM 탭 CEL_NEWS_MISSING_SKIP과 같음)
@@ -327,6 +331,8 @@ def build_message(day, progs):
         lines.extend("· " + esc(n) for n in notes)
     else:
         lines.append("· 평소와 다른 편성이 없었어요")
+    lines.append("")
+    lines.append('🔗 <a href="%s">셀럽PGM 모니터링 바로가기</a>' % SITE_CELEB_URL)
     return lines
 
 

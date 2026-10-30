@@ -7,7 +7,12 @@ on:
     # 같은 시간대 다른 예약(고정PGM 수집 UTC 19:30)과도 겹치지 않는다.
     # 날씨는 전날 받은 예보(weather.yml, KST 05:30 갱신)에 오늘 날짜가 들어 있다.
     - cron: "5 19 * * *"
-  workflow_dispatch: {}  # 수동 실행 버튼
+  workflow_dispatch:  # 수동 실행 버튼 (테스트 발송용으로 하나만 골라 보낼 수 있다)
+    inputs:
+      only:
+        description: "보낼 메시지 (all / food / celeb)"
+        required: false
+        default: "all"
 permissions:
   contents: read
 jobs:
@@ -24,6 +29,7 @@ jobs:
       - name: 패키지 설치
         run: pip install requests
       - name: 텔레그램 발송 — 식품방송 리스트
+        if: github.event_name != 'workflow_dispatch' || inputs.only == 'all' || inputs.only == 'food'
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -37,7 +43,7 @@ jobs:
       # 어제의 셀럽PGM 운영상품 (식품 리스트와 별도 메시지)
       # 식품 발송이 실패해도 이건 따로 보낸다
       - name: 텔레그램 발송 — 어제 셀럽PGM 운영상품
-        if: always()
+        if: always() && (github.event_name != 'workflow_dispatch' || inputs.only == 'all' || inputs.only == 'celeb')
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
