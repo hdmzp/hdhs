@@ -48,6 +48,8 @@ hdhs/
 ├── notify/subscribers.py             # [알림] 봇 구독자 목록 (Worker /export) + 알림별 수신자
 ├── worker/telegram-bot.js            # [알림] 텔레그램 봇 (Cloudflare Worker, 즉시 응답 · /start 알림·카테고리 선택, /brand) - 설정은 worker/README.md
 ├── notify/send_brand_alerts.py       # [알림] /brand 등록 브랜드의 오늘 방송을 사람마다 발송
+├── notify/send_health_ppl.py         # [알림] 오늘 TV 건강프로그램 PPL 예고 (회차 단서 성분 + 같은 시간대 홈쇼핑 ⭐, 식품 구독자)
+├── notify/competitor.py              # [알림] 경쟁사 맞편성·신규 브랜드 (식품·카테고리 리스트 맨 아래)
 │
 ├── scraper/scrape_naver.py           # [드라마/예능] 시청률 편성 (Playwright)
 ├── scraper/naver_parser.py           # 위 스크립트의 파싱 로직 보조 모듈
