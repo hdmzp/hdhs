@@ -42,6 +42,7 @@ hdhs/
 ├── pricewatch_scraper.py             # [가격추적] 브랜드x회사별 판매가 수집 + 변경 감지
 ├── weather.py                        # [날씨] ASOS 과거 + 단기예보 + 공휴일 + 절기
 ├── notify/send_daily_food.py         # [알림] 텔레그램 아침 식품방송 리스트 발송 (notify/tg.py 공용)
+├── notify/send_celeb_daily.py        # [알림] 텔레그램 어제 셀럽PGM 운영상품 (브랜드당 1개, 특이사항 = 셀럽PGM 방송 체크 기준)
 │
 ├── scraper/scrape_naver.py           # [드라마/예능] 시청률 편성 (Playwright)
 ├── scraper/naver_parser.py           # 위 스크립트의 파싱 로직 보조 모듈
@@ -102,7 +103,7 @@ hdhs/
 | `promotion.yml` | 07:30, 12:50 (하루 2회) | 프로모션 카드할인 4사(HD/GS/CJ/LT) | 회사별 실패는 스크립트 내부에서 격리 |
 | `lavangba.yml` | 07:50 | 라방바 11개사 방송 데이터(v2) | `continue-on-error` |
 | `rep-pgm-scrape.yml` | 08:10, 20:00 (하루 2회) | 셀럽PGM 대표프로그램 메타 병합 | 회사별 `continue-on-error` + 건전성 검사(2-1) |
-| `telegram-daily-food.yml` | 04:05 (GitHub 지연 2~4시간 감안해 새벽 예약) | 텔레그램 아침 알림(식품방송 리스트) | - (데이터 커밋 없음, `contents: read`) |
+| `telegram-daily-food.yml` | 04:05 (GitHub 지연 2~4시간 감안해 새벽 예약) | 텔레그램 아침 알림(식품방송 리스트 + 어제 셀럽PGM 운영상품, 별도 메시지) | - (데이터 커밋 없음, `contents: read`) |
 | `pricewatch.yml` | 10:40, 16:40 (하루 2회) | 가격추적(다사 동일브랜드 판매가) | 수집 스텝 `continue-on-error` |
 | `pages-deploy.yml` | (push 또는 API 트리거 시) | GitHub Pages 배포 | 3회까지 자동 재시도 |
 
