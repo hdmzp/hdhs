@@ -92,8 +92,15 @@ def shift_month(d, delta):
 # 상품명에 붙는 홍보 문구 - 지운다
 PROMO_PATTERNS = [
     r"올해\s*(단\s*)?한\s*번!?", r"단\s*한\s*번!?", r"최초\s*공개!?", r"방송\s*최초!?",
-    r"\S*쇼\s*단독", r"\S*쇼\s*패키지", r"단독\s*구성", r"단독", r"NEW", r"●", r"★", r"☆",
+    r"\S*쇼\s*단독", r"\S*쇼\s*패키지", r"단독\s*구성", r"단독\s*조건", r"GS\s*단독", r"단독", r"NEW", r"●", r"★", r"☆",
+    r"론칭가\s*[\d,]*\s*원?", r"파격가", r"특가", r"[\d,]+\s*원", r"최신상", r"더블\s*구성", r"\d{2,4}\s*년형",
 ]
+# 수량·포장 단위 (중간에 끼어 있어도 지운다). '1인용', '4인조', '100%'는 상품 특징이라 남긴다.
+QTY_UNIT = r"(박스|팩|포|병|통|개입|개|매입|매|대|과|미|구|EA|ea|P|p|봉|캔|인분|kg|g|ml|mL|L)"
+# 모델명: 영문 대문자와 숫자가 섞인 4자 이상 토큰 (DQ205PSVA, BU3641KR, IMB-095, MCF-180R).
+# 시즌 표기(26FW, 25SS)와 숫자만 있는 토큰은 남긴다.
+MODEL_RE = re.compile(r"^(?=.*[A-Z])(?=.*\d)[A-Z\d][A-Z\d\-]{3,}[A-Za-z\d]?$")
+SEASON_RE = re.compile(r"^\d{2}(FW|SS|F/W|S/S)$")
 
 
 def clean_name(name):
@@ -102,9 +109,20 @@ def clean_name(name):
     for _ in range(3):
         n = re.sub(r"\[[^\[\]]*\]|\([^()]*\)|【[^】]*】", " ", n)
     n = n.replace("[", " ").replace("]", " ")
-    n = re.split(r"\s\+\s|\+|_", n)[0]
+    # 사이즈 코드 접두어('LK_코튼텐셀')는 떼고, 나머지 '_'는 띄어쓰기로
+    n = re.sub(r"(^|\s)[A-Z]{1,3}_", " ", n).replace("_", " ")
+    n = re.split(r"\s\+\s|\+|\s/\s", n)[0]
     for pat in PROMO_PATTERNS:
         n = re.sub(pat, " ", n)
+    # 맨 앞 연도('2026 신일 ...')
+    n = re.sub(r"^\s*20\d{2}\s+", " ", n)
+    # 중간에 낀 수량('12박스', '24매입', '1대', '5P', '6박스*14포')
+    n = re.sub(r"(?<![\w%])[\d,.]+\s*" + QTY_UNIT + r"([*x×]\s*[\d,.]+\s*" + QTY_UNIT + r"?)*(?![가-힣A-Za-z])", " ", n)
+    # 모델명 토큰
+    n = " ".join(t for t in n.split()
+                 if SEASON_RE.match(t) or not all(MODEL_RE.match(x) for x in t.strip(",").split(",") if x))
+    for _ in range(2):  # 붙어 있는 잔여물(' * 총')이 한 번에 다 안 지워져 두 번
+        n = re.sub(r"(^|\s)총(?=\s|$)|\s[*x×](?=\s|$)|\s단품$", " ", n)
     n = re.sub(r"\s+", " ", n).strip(" ,/·!")
     # 끝의 옵션 수량(6박스*14포, 120팩, 3종, 155ml 등)은 뗀다
     unit = r"(박스|팩|포|병|통|종|개|입|매|세트|SET|set|인분|봉|캔|kg|g|ml|mL|L|구|EA|ea|미)"
