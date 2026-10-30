@@ -21,7 +21,8 @@ homeshopping/
 }
 
 == 수집 정책 ==
-오늘 기준 -7일 ~ +10일을 매번 수집 (2026-10 Hmall 편성표 날짜 탭 개편: -7 ~ +10일 공개).
+라이브는 오늘 기준 -7일 ~ +10일 (2026-10 Hmall 편성표 날짜 탭 개편: -7 ~ +10일 공개),
+데이터방송은 -1일 ~ +5일을 매번 수집 (호출이 많으면 WAF가 403으로 막는다).
 과거(오늘 이전) 날짜가 이미 기록돼 있으면 다시 안 건드리고 보존, 오늘+미래만 갱신.
 오늘/미래 날짜도 "수집 실패"와 "정말 편성이 없음"을 구분해, 실패한 날은
 기존 데이터를 그대로 둔다 (아래 장애 이력 참고).
@@ -56,10 +57,14 @@ from tools import scrape_guard
 
 KST = timezone(timedelta(hours=9))
 OUTPUT_DIR = "homeshopping"
-REQUEST_DELAY = 0.4
+REQUEST_DELAY = 0.6  # 2026-10-30 범위를 늘리자 연속 호출에 403(WAF)이 걸려 0.4 -> 0.6
 # Hmall 편성표 날짜 탭이 -7 ~ +10일로 개편됐다 (2026-10). 이미 기록된 지난 날은
 # 다시 받지 않으므로(main의 is_past 분기) -7일은 비어 있는 날만 메운다.
-DAYS_RANGE = range(-7, 11)  # 7일 전 ~ +10일
+DAYS_RANGE = range(-7, 11)  # 라이브: 7일 전 ~ +10일
+# 데이터방송(TV+샵)은 예전 범위 그대로. 라이브와 같이 +10일까지 늘렸더니 연속
+# 호출이 많아져 2026-11-04 p5부터 tv-list가 전부 403(WAF 차단)으로 막혔다
+# (2026-10-30 수동 실행). 셀럽PGM 재방송 판정에도 +5일이면 충분하다.
+DATA_DAYS_RANGE = range(-1, 6)  # 데이터방송: 어제 ~ +5일
 
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36")
@@ -338,7 +343,7 @@ def main():
         os.makedirs(sub_dir, exist_ok=True)
         month_data = {}
 
-        for offset in DAYS_RANGE:
+        for offset in (DAYS_RANGE if broadcast == "live" else DATA_DAYS_RANGE):
             d = base + timedelta(days=offset)
             date_compact = d.strftime("%Y%m%d")
             date_dash = d.strftime("%Y-%m-%d")
