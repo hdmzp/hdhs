@@ -43,6 +43,8 @@ hdhs/
 ├── weather.py                        # [날씨] ASOS 과거 + 단기예보 + 공휴일 + 절기
 ├── notify/send_daily_food.py         # [알림] 텔레그램 아침 식품방송 리스트 발송 (notify/tg.py 공용)
 ├── notify/send_celeb_daily.py        # [알림] 텔레그램 어제 셀럽PGM 운영상품 (브랜드당 1개, 특이사항 = 셀럽PGM 방송 체크 기준)
+├── notify/send_daily_category.py     # [알림] 텔레그램 오늘 패션·리빙·미용 방송 리스트 (수동 발송, 게스트 💗는 패션·미용만)
+├── notify/guests.py                  # [알림] 💗 게스트 이름 목록·제외 목록·프로그램 진행자
 │
 ├── scraper/scrape_naver.py           # [드라마/예능] 시청률 편성 (Playwright)
 ├── scraper/naver_parser.py           # 위 스크립트의 파싱 로직 보조 모듈
