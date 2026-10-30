@@ -218,15 +218,16 @@ def main():
         if sum(totals.values()) == 0:
             print("%s %s 방송 데이터가 없습니다. 생략." % (day_str, title))
             continue
-        messages.append((title, build_message(now, title, sections, rows, totals, n_companies)))
+        messages.append((title, key, build_message(now, title, sections, rows, totals, n_companies)))
 
     if now.weekday() == 0 or os.environ.get("GUEST_CANDIDATES") == "1":
         cands = guest_candidates(now, companies)
         print("새 게스트 후보 %d명" % len(cands))
         if cands:
-            messages.append(("새 게스트 후보", candidate_message(cands)))
+            # 후보 확인은 관리자(recipients.txt / TELEGRAM_CHAT_ID)에게만
+            messages.append(("새 게스트 후보", None, candidate_message(cands)))
 
-    for title, lines in messages:
+    for title, topic, lines in messages:
         chunks = chunk_lines(lines)
         print("%s → 메시지 %d건" % (title, len(chunks)))
         if DRY_RUN:
@@ -234,7 +235,8 @@ def main():
                 print("\n----- %s [%d/%d] (%d자) -----" % (title, i, len(chunks), len(c)))
                 print(c)
             continue
-        broadcast(ROOT, chunks)
+        # 봇에서 이 카테고리를 신청한 사람에게만 (notify/subscribers.py)
+        broadcast(ROOT, chunks, topic=topic)
 
 
 if __name__ == "__main__":

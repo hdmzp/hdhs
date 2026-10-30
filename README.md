@@ -28,7 +28,8 @@ hdhs/
 │   ├── promotion.yml                   # 프로모션 카드할인 4사(HD/GS/CJ/LT)
 │   ├── pricewatch.yml                  # 가격추적 (다사 동일브랜드)
 │   ├── weather.yml                     # 날씨(ASOS 과거 + 단기예보) + 공휴일 + 절기
-│   ├── telegram-daily-food.yml         # 텔레그램 아침 알림(식품방송 리스트)
+│   ├── telegram-daily-food.yml         # 텔레그램 아침 알림(식품·셀럽PGM·카테고리·브랜드, 구독 설정별)
+│   ├── telegram-bot.yml                # 텔레그램 봇 신청 처리 (1시간마다, 구독자 파일 커밋)
 │   └── pages-deploy.yml                # 위 워크플로우들이 커밋 후 강제 트리거하는 배포 전용 워크플로우
 │
 ├── naver_schedule_scraper.py        # [편성표] 지상파·종편 8채널 + 케이블(tvN·ENA·MBC every1·SBS Plus) 수집
@@ -45,6 +46,9 @@ hdhs/
 ├── notify/send_celeb_daily.py        # [알림] 텔레그램 어제 셀럽PGM 운영상품 (브랜드당 1개, 특이사항 = 셀럽PGM 방송 체크 기준)
 ├── notify/send_daily_category.py     # [알림] 텔레그램 오늘 패션·리빙·미용 방송 리스트 (수동 발송, 리빙은 한 목록 시간순, 게스트 💗는 패션·미용만)
 ├── notify/guests.py                  # [알림] 💗 게스트 이름 목록·제외 목록·프로그램 진행자
+├── notify/bot.py                     # [알림] 텔레그램 봇 신청 처리 (/start 버튼으로 알림·카테고리 선택, /brand 브랜드 알림)
+├── notify/subscribers.py             # [알림] 구독자 저장소 (notify/subscribers.enc, 봇 토큰으로 암호화) + 알림별 수신자
+├── notify/send_brand_alerts.py       # [알림] /brand 등록 브랜드의 오늘 방송을 사람마다 발송
 │
 ├── scraper/scrape_naver.py           # [드라마/예능] 시청률 편성 (Playwright)
 ├── scraper/naver_parser.py           # 위 스크립트의 파싱 로직 보조 모듈
@@ -105,7 +109,8 @@ hdhs/
 | `promotion.yml` | 07:30, 12:50 (하루 2회) | 프로모션 카드할인 4사(HD/GS/CJ/LT) | 회사별 실패는 스크립트 내부에서 격리 |
 | `lavangba.yml` | 07:50 | 라방바 11개사 방송 데이터(v2) | `continue-on-error` |
 | `rep-pgm-scrape.yml` | 08:10, 20:00 (하루 2회) | 셀럽PGM 대표프로그램 메타 병합 | 회사별 `continue-on-error` + 건전성 검사(2-1) |
-| `telegram-daily-food.yml` | 04:05 (GitHub 지연 2~4시간 감안해 새벽 예약) | 텔레그램 아침 알림(식품방송 리스트 + 어제 셀럽PGM 운영상품, 별도 메시지) | - (데이터 커밋 없음, `contents: read`) |
+| `telegram-daily-food.yml` | 04:05 (GitHub 지연 2~4시간 감안해 새벽 예약) | 텔레그램 아침 알림(식품방송 리스트 + 어제 셀럽PGM 운영상품 + 패션·리빙·미용 리스트 + 브랜드 알림, 봇 구독 설정대로) | - (데이터 커밋 없음, `contents: read`) |
+| `telegram-bot.yml` | 매시 23분 | 텔레그램 봇 /start·버튼 입력 처리 → 구독자 설정 저장 | `notify/subscribers.enc` |
 | `pricewatch.yml` | 10:40, 16:40 (하루 2회) | 가격추적(다사 동일브랜드 판매가) | 수집 스텝 `continue-on-error` |
 | `pages-deploy.yml` | (push 또는 API 트리거 시) | GitHub Pages 배포 | 3회까지 자동 재시도 |
 

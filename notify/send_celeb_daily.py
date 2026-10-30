@@ -368,7 +368,7 @@ def main():
             print("\n----- [%d/%d] (%d자) -----" % (i, len(chunks), len(c)))
             print(c)
         return
-    broadcast(ROOT, chunks)
+    broadcast(ROOT, chunks, topic="celeb")
 
 
 if __name__ == "__main__":
