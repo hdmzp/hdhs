@@ -151,6 +151,12 @@ def fetch_hd_programs(include_popular: bool = False) -> list:
         title = pgm.get("spexSectNm", "")
         if not include_popular and title in EXCLUDE_TITLES:
             continue
+        # 방송 타이틀이 한글 없이 영문으로만 돼 있으면 그쪽을 쓴다. 2026-10-24부터
+        # 클럽 노블레스를 영문 'Club Noblesse'로 표기하기로 했는데, 목록 이름
+        # (spexSectNm)은 아직 한글 '클럽 노블레스'로 온다.
+        brod_titl = (pgm.get("brodTitl") or "").strip()
+        if brod_titl and re.search(r"[A-Za-z]", brod_titl) and not re.search(r"[가-힣]", brod_titl):
+            title = brod_titl
 
         schedule_raw = pgm.get("sectLbl", "") or ""
         schedule = parse_schedule_text(schedule_raw)
