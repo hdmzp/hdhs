@@ -21,7 +21,7 @@ homeshopping/
 }
 
 == 수집 정책 ==
-오늘 기준 -1일 ~ +5일(7일)을 매번 수집.
+오늘 기준 -7일 ~ +10일을 매번 수집 (2026-10 Hmall 편성표 날짜 탭 개편: -7 ~ +10일 공개).
 과거(오늘 이전) 날짜가 이미 기록돼 있으면 다시 안 건드리고 보존, 오늘+미래만 갱신.
 오늘/미래 날짜도 "수집 실패"와 "정말 편성이 없음"을 구분해, 실패한 날은
 기존 데이터를 그대로 둔다 (아래 장애 이력 참고).
@@ -57,7 +57,9 @@ from tools import scrape_guard
 KST = timezone(timedelta(hours=9))
 OUTPUT_DIR = "homeshopping"
 REQUEST_DELAY = 0.4
-DAYS_RANGE = range(-1, 6)  # 어제 ~ +5일
+# Hmall 편성표 날짜 탭이 -7 ~ +10일로 개편됐다 (2026-10). 이미 기록된 지난 날은
+# 다시 받지 않으므로(main의 is_past 분기) -7일은 비어 있는 날만 메운다.
+DAYS_RANGE = range(-7, 11)  # 7일 전 ~ +10일
 
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36")

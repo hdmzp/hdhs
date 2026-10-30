@@ -145,8 +145,9 @@ TV_LIST_API = (
 # 라인업이 꽂혀 있는 회차를 못 봤다. 실측: 2026-09-30 기준 최은경쇼 10/7(수)
 # 회차 - Hmall 편성표에서 날짜를 10/7로 넘기면 머티리얼랩 라인업(상품코드)이
 # 이미 다 들어 있었는데, HD_live가 10/5까지라 수집 대상에서 빠졌다.
-# Hmall 편성표 날짜 탭은 대략 +7일까지 열리므로 여유 있게 14일을 본다.
-TV_LIST_LOOKAHEAD_DAYS = 14
+# Hmall 편성표 날짜 탭은 2026-10 개편 후 +10일까지 열린다. 그 뒤 날짜는
+# tv-list가 403을 줘서(2026-10-30 실측: 11/9~11/13 전부 403) 10일까지만 본다.
+TV_LIST_LOOKAHEAD_DAYS = 10
 
 NAME_FIELD_CANDIDATES = ["slitmNm", "convertedSlitmNm", "goodsNm", "itemNm", "displayItemName", "name"]
 PRICE_FIELD_CANDIDATES = ["sellPrc", "salePrice", "price", "bbprc"]

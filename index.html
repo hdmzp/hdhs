@@ -5790,7 +5790,7 @@ function agHdCellBuild(dateStr, timeStr) {
   const slots = agHdSlots(dateStr, timeStr);
   if (slots === null) {
     return { lines: 0,
-             html: `<span class="ag-hd-none" title="HD 편성표는 +5일까지만 공개됩니다">편성 미공개</span>` };
+             html: `<span class="ag-hd-none" title="HD 편성표는 +10일까지만 공개됩니다">편성 미공개</span>` };
   }
   if (!slots.length) return { lines: 0, html: `<span class="ag-hd-none">-</span>` };
   const html = `<span class="ag-hd-list">` + slots.map(({ tag, cls, mark, p }) => {
