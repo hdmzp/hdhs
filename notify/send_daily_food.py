@@ -112,9 +112,14 @@ def clean_product(name):
 
 
 def load_broadcasts(day_str, month_str, companies):
-    """rows: 필터(회사+시간대) 적용된 표시용 목록, totals: 전체 회사·전체 시간 건수"""
-    rows = {cat: [] for _, cat in SECTIONS}
-    totals = {cat: 0 for _, cat in SECTIONS}
+    """rows: 필터(회사+시간대) 적용된 표시용 목록, totals: 전체 회사·전체 시간 방송 수.
+
+    한 방송(회사+시작시각)은 한 줄로 센다. 현대 편성은 한 방송의 구성상품을
+    전부 따로 담아서(2026-10-27 18:30 에이스바이옴 = 상품코드 4개) 상품 줄마다
+    찍으면 같은 방송이 여러 번 나오고 횟수도 부풀었다. 첫 상품을 대표로 쓰고
+    나머지는 '외 N개'로만 붙인다."""
+    groups = {cat: {} for _, cat in SECTIONS}      # cat -> (company, start) -> [item...]
+    totals = {cat: set() for _, cat in SECTIONS}
     for path in glob.glob(os.path.join(ROOT, "homeshopping", "*_live", month_str + ".json")):
         try:
             with open(path, encoding="utf-8") as f:
@@ -124,16 +129,25 @@ def load_broadcasts(day_str, month_str, companies):
         company = data.get("company", "")
         for item in data.get("days", {}).get(day_str, []):
             cat = item.get("category")
-            if cat not in rows:
-                continue
-            totals[cat] += 1
-            if companies and company not in companies:
+            if cat not in groups:
                 continue
             start = item.get("start", "")
+            totals[cat].add((company, start))
+            if companies and company not in companies:
+                continue
             if not (TIME_START <= start <= TIME_END):
                 continue
-            brand = (item.get("brand") or "").strip()
-            product = clean_product(item.get("product") or "")
+            groups[cat].setdefault((company, start), []).append(item)
+
+    rows = {cat: [] for _, cat in SECTIONS}
+    for cat, by_slot in groups.items():
+        for (company, start), items in by_slot.items():
+            first = items[0]
+            brand = (first.get("brand") or "").strip() or next(
+                ((i.get("brand") or "").strip() for i in items if (i.get("brand") or "").strip()), "")
+            product = clean_product(first.get("product") or "")
+            # 같은 방송의 나머지 구성상품 (상품명 기준 중복 제거)
+            others = {clean_product(i.get("product") or "") for i in items[1:]} - {product, ""}
             # 상품명이 브랜드로 시작하면 중복 표기 생략
             if brand and product.startswith(brand):
                 brand = ""
@@ -142,15 +156,16 @@ def load_broadcasts(day_str, month_str, companies):
             head = "%s [%s]" % (start or "??:??", name)
             if brand:
                 head += " " + brand
-            link = (item.get("link") or "").strip()
+            link = (first.get("link") or "").strip()
             if link:
                 body = '<a href="%s">%s</a>' % (esc(link), esc(product))
             else:
                 body = esc(product)
+            if others:
+                body += " 외 %d개" % len(others)
             rows[cat].append((start, "<b>%s</b>\n%s" % (esc(head), body)))
-    for cat in rows:
         rows[cat].sort(key=lambda r: r[0])
-    return rows, totals
+    return rows, {cat: len(keys) for cat, keys in totals.items()}
 
 
 def build_message(now, weather, rows, totals, n_companies):
