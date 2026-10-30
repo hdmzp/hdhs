@@ -15,7 +15,7 @@
 
 묶음 (2026-10 사용자 지정) - 묶음마다 메시지를 따로 보낸다
   패션 = 의류 · 언더웨어 · 잡화/주얼리
-  리빙 = 리빙/주방 · 가전 · 문화/스포츠
+  리빙 = 리빙/주방 · 가전 · 문화/스포츠 (나누지 않고 한 목록, 시간순)
   미용 = 미용
 
 💗 게스트 강조는 패션·미용만. 규칙과 이름 목록은 notify/guests.py.
@@ -43,10 +43,12 @@ ROOT = food.ROOT
 HISTORY_DIR = os.path.join(ROOT, "homeshopping", "representative_programs", "history")
 DRY_RUN = food.DRY_RUN
 
+# (키, 이름, [(소제목, [카테고리...])]) - 소제목 하나에 카테고리 여럿이면 합쳐서 시간순
+# 리빙은 리빙/주방·가전·문화/스포츠를 나누지 않고 한 목록으로 (2026-10 사용자 요청)
 GROUPS = [
-    ("fashion", "패션", [("👗 의류", "의류"), ("🩲 언더웨어", "언더웨어"), ("👜 잡화/주얼리", "잡화/주얼리")]),
-    ("living", "리빙", [("🍳 리빙/주방", "리빙/주방"), ("📺 가전", "가전"), ("⚽ 문화/스포츠", "문화/스포츠")]),
-    ("beauty", "미용", [("💄 미용", "미용")]),
+    ("fashion", "패션", [("👗 의류", ["의류"]), ("🩲 언더웨어", ["언더웨어"]), ("👜 잡화/주얼리", ["잡화/주얼리"])]),
+    ("living", "리빙", [("🏠 리빙", ["리빙/주방", "가전", "문화/스포츠"])]),
+    ("beauty", "미용", [("💄 미용", ["미용"])]),
 ]
 FASHION_CATS = {"의류", "언더웨어", "잡화/주얼리"}
 BEAUTY_CATS = {"미용"}
@@ -123,10 +125,11 @@ def make_decorate(celeb_slots):
 def build_message(now, title, sections, rows, totals, n_companies):
     lines = ["%02d/%02d(%s)" % (now.month, now.day, food.WEEKDAY_KO[now.weekday()]), "",
              "금일 %s 방송 리스트입니다" % title]
-    for header, cat in sections:
-        items = rows.get(cat, [])
+    for header, cats in sections:
+        items = sorted((r for c in cats for r in rows.get(c, [])), key=lambda r: r[0])
+        total = sum(totals.get(c, 0) for c in cats)
         lines += ["", "<b>%s</b>" % header,
-                  "총 %d회, (%d개사) %d회" % (totals.get(cat, 0), n_companies, len(items)), ""]
+                  "총 %d회, (%d개사) %d회" % (total, n_companies, len(items)), ""]
         for _, text in items:
             lines += [text, ""]
         lines.pop()
@@ -209,7 +212,8 @@ def main():
     for key, title, sections in GROUPS:
         if key not in wanted:
             continue
-        rows, totals = food.load_broadcasts(day_str, month_str, companies, sections, decorate)
+        cat_sections = [(c, c) for _, cats in sections for c in cats]
+        rows, totals = food.load_broadcasts(day_str, month_str, companies, cat_sections, decorate)
         if sum(totals.values()) == 0:
             print("%s %s 방송 데이터가 없습니다. 생략." % (day_str, title))
             continue
