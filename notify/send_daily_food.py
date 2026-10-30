@@ -111,15 +111,40 @@ def clean_product(name):
     return " ".join(name.split())
 
 
+def _slot_keys(items):
+    """같은 방송인지 볼 때 쓰는 상품 키 (상품코드 링크, 없으면 상품명)."""
+    return {(i.get("link") or "").split("&")[0] or clean_product(i.get("product") or "")
+            for i in items}
+
+
+def merge_continuous(slots):
+    """[(start, end, [items])] (한 회사, 시작시각 순) -> 이어지는 구간을 한 방송으로 합친다.
+
+    현대는 긴 방송을 시간 구간으로 쪼개 준다 (2026-10-30 에이스바이옴
+    19:30~20:40 / 20:40~21:40 = 같은 상품 4개). 앞 구간 종료 = 다음 구간 시작이고
+    브랜드가 같거나 상품이 겹치면 같은 방송으로 본다."""
+    merged = []
+    for start, end, items in slots:
+        if merged:
+            p_start, p_end, p_items = merged[-1]
+            p_brands = {(i.get("brand") or "").strip() for i in p_items} - {""}
+            brands = {(i.get("brand") or "").strip() for i in items} - {""}
+            if p_end and p_end == start and (p_brands & brands or _slot_keys(p_items) & _slot_keys(items)):
+                merged[-1] = (p_start, end, p_items + items)
+                continue
+        merged.append((start, end, items))
+    return merged
+
+
 def load_broadcasts(day_str, month_str, companies):
     """rows: 필터(회사+시간대) 적용된 표시용 목록, totals: 전체 회사·전체 시간 방송 수.
 
-    한 방송(회사+시작시각)은 한 줄로 센다. 현대 편성은 한 방송의 구성상품을
-    전부 따로 담아서(2026-10-27 18:30 에이스바이옴 = 상품코드 4개) 상품 줄마다
-    찍으면 같은 방송이 여러 번 나오고 횟수도 부풀었다. 첫 상품을 대표로 쓰고
-    나머지는 '외 N개'로만 붙인다."""
-    groups = {cat: {} for _, cat in SECTIONS}      # cat -> (company, start) -> [item...]
-    totals = {cat: set() for _, cat in SECTIONS}
+    한 방송은 한 줄로 센다. 현대 편성은 한 방송의 구성상품을 전부 따로 담고
+    (2026-10-27 18:30 에이스바이옴 = 상품코드 4개), 긴 방송은 시간 구간으로도
+    쪼개 준다(merge_continuous). 상품 줄마다 찍으면 같은 방송이 여러 번 나오고
+    횟수도 부풀었다. 첫 상품을 대표로 쓰고 나머지는 '외 N개'로만 붙인다."""
+    # cat -> company -> start -> {"end": ..., "items": [...]}
+    raw = {cat: {} for _, cat in SECTIONS}
     for path in glob.glob(os.path.join(ROOT, "homeshopping", "*_live", month_str + ".json")):
         try:
             with open(path, encoding="utf-8") as f:
@@ -129,43 +154,47 @@ def load_broadcasts(day_str, month_str, companies):
         company = data.get("company", "")
         for item in data.get("days", {}).get(day_str, []):
             cat = item.get("category")
-            if cat not in groups:
+            if cat not in raw:
                 continue
             start = item.get("start", "")
-            totals[cat].add((company, start))
-            if companies and company not in companies:
-                continue
-            if not (TIME_START <= start <= TIME_END):
-                continue
-            groups[cat].setdefault((company, start), []).append(item)
+            slot = raw[cat].setdefault(company, {}).setdefault(start, {"end": item.get("end", ""), "items": []})
+            slot["items"].append(item)
 
     rows = {cat: [] for _, cat in SECTIONS}
-    for cat, by_slot in groups.items():
-        for (company, start), items in by_slot.items():
-            first = items[0]
-            brand = (first.get("brand") or "").strip() or next(
-                ((i.get("brand") or "").strip() for i in items if (i.get("brand") or "").strip()), "")
-            product = clean_product(first.get("product") or "")
-            # 같은 방송의 나머지 구성상품 (상품명 기준 중복 제거)
-            others = {clean_product(i.get("product") or "") for i in items[1:]} - {product, ""}
-            # 상품명이 브랜드로 시작하면 중복 표기 생략
-            if brand and product.startswith(brand):
-                brand = ""
-            name = COMPANY_NAMES.get(company, company)
-            # '시간 [회사] 브랜드'(굵게) + 다음 줄 상품명(판매페이지 링크) — 두 줄이 한 묶음
-            head = "%s [%s]" % (start or "??:??", name)
-            if brand:
-                head += " " + brand
-            link = (first.get("link") or "").strip()
-            if link:
-                body = '<a href="%s">%s</a>' % (esc(link), esc(product))
-            else:
-                body = esc(product)
-            if others:
-                body += " 외 %d개" % len(others)
-            rows[cat].append((start, "<b>%s</b>\n%s" % (esc(head), body)))
+    totals = {cat: 0 for _, cat in SECTIONS}
+    for cat, by_company in raw.items():
+        for company, by_start in by_company.items():
+            slots = merge_continuous([(st, v["end"], v["items"]) for st, v in sorted(by_start.items())])
+            totals[cat] += len(slots)
+            if companies and company not in companies:
+                continue
+            for start, end, items in slots:
+                if not (TIME_START <= start <= TIME_END):
+                    continue
+                first = items[0]
+                brand = (first.get("brand") or "").strip() or next(
+                    ((i.get("brand") or "").strip() for i in items if (i.get("brand") or "").strip()), "")
+                product = clean_product(first.get("product") or "")
+                # 같은 방송의 나머지 구성상품 (상품명 기준 중복 제거)
+                others = {clean_product(i.get("product") or "") for i in items[1:]} - {product, ""}
+                # 상품명이 브랜드로 시작하면 중복 표기 생략
+                if brand and product.startswith(brand):
+                    brand = ""
+                name = COMPANY_NAMES.get(company, company)
+                # '시간 [회사] 브랜드'(굵게) + 다음 줄 상품명(판매페이지 링크) — 두 줄이 한 묶음
+                head = "%s [%s]" % (start or "??:??", name)
+                if brand:
+                    head += " " + brand
+                link = (first.get("link") or "").strip()
+                if link:
+                    body = '<a href="%s">%s</a>' % (esc(link), esc(product))
+                else:
+                    body = esc(product)
+                if others:
+                    body += " 외 %d개" % len(others)
+                rows[cat].append((start, "<b>%s</b>\n%s" % (esc(head), body)))
         rows[cat].sort(key=lambda r: r[0])
-    return rows, {cat: len(keys) for cat, keys in totals.items()}
+    return rows, totals
 
 
 def build_message(now, weather, rows, totals, n_companies):
