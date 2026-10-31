@@ -32,7 +32,7 @@
 | 스타일나우; 더 김동은 | 화 08:15 | 김동은 | 쇼호스트(패션) | [@dek1105](https://www.instagram.com/dek1105/) (사용자 제공) | ✅ |
 | 신상뷰티찬스 | 격주 토 11:50 | 이찬석 (프로그램 소개 "이찬석 PICK") | 쇼호스트/뷰티 | [@bty_chan](https://www.instagram.com/bty_chan/) (사용자 제공) | ✅ |
 | 더컬렉션 | 토 09:20 | 이진아 (쇼호스트 목록·Threads 소개에 'GS shop 더컬렉션', 2026-05 스타일링 클래스 진행) | 쇼호스트 | [@lee_jin_ah_showhost](https://www.instagram.com/lee_jin_ah_showhost/) | ✅ (사용자 확인) |
-| 쇼미더트렌드 | 토 21:35 | 현재 진행자 확인 불가 (2014년 동지현 진행 → 이후 이적) | - | - | - |
+| 쇼미더트렌드 | 토 21:35 | 한혜연 | 셀럽(스타일리스트) | [@hhy6588](https://www.instagram.com/hhy6588/) (사용자 제공) | ✅ |
 
 ## CJ온스타일 (CJ)
 
@@ -93,6 +93,7 @@
 | 이승연 | CJ T이승연쇼 | https://www.instagram.com/leesyaram/ | ✅ (사용자 제공) |
 | 최욱남 | HD Club Noblesse | https://www.instagram.com/felicity_choi/ | ✅ (사용자 제공) |
 | 이선진 | LT LOOK AT ME | https://www.instagram.com/leesunjin_model/ | ✅ (사용자 제공) |
+| 한혜연 | GS 쇼미더트렌드 | https://www.instagram.com/hhy6588/ | ✅ (사용자 제공) |
 | 황정민 | HD 황정민쇼 | https://www.instagram.com/hwangjeongmin0115/ | ✅ (사용자 확인) |
 | 김신영 | CJ 김신영이 산다 | https://www.instagram.com/ksy83s/ | ✅ (사용자 확인) |
 | 동지현 | CJ 동가게 | https://www.instagram.com/dong.jihyun/ | ✅ (사용자 제공) |
@@ -108,5 +109,5 @@
 
 - 인스타그램 못 찾음 (2차 재검색 후): 왕영은, 최화정(개인 계정), 김민성, 전진오
   - 왕영은 @yeongeunwang·@yeongeun.wang, 최화정 개인 후보 @hwajeongchoi는 팔로워 수백~천 명대이고 소개에 본인 근거가 없어 제외
-- 진행자 자체를 못 찾음: GS 쇼미더트렌드, LT 언니 어디꺼예요?
+- 진행자 자체를 못 찾음: LT 언니 어디꺼예요?
 - 정확히 확인하려면 각 사 프로그램 페이지(`merged.json`의 `detail_link`)나 홈쇼핑 공식 인스타그램의 태그를 보면 된다.
