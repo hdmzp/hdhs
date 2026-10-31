@@ -1,5 +1,5 @@
 {
-  "_comment": "고정PGM 진행자·인스타그램 (손으로 관리). company+title은 homeshopping/fixed_programs/merged.json 슬롯과 같아야 매칭된다. verified=false는 추정 계정이라 화면에 표시하지 않는다. 근거는 fixed/fixed_pgm_hosts.md.",
+  "_comment": "고정PGM 진행자·인스타그램 (손으로 관리). company+title은 homeshopping/fixed_programs/merged.json 슬롯과 같아야 매칭된다. verified=false인 계정은 화면에 표시하지 않는다. 근거는 fixed/fixed_pgm_hosts.md.",
   "updated": "2026-10-31",
   "programs": [
     {
@@ -51,7 +51,7 @@
         {
           "name": "황정민",
           "instagram": "hwangjeongmin0115",
-          "verified": false
+          "verified": true
         }
       ]
     },
@@ -106,7 +106,7 @@
         {
           "name": "이진아",
           "instagram": "lee_jin_ah_showhost",
-          "verified": false
+          "verified": true
         }
       ]
     },
@@ -139,7 +139,7 @@
         {
           "name": "이진아",
           "instagram": "lee_jin_ah_showhost",
-          "verified": false
+          "verified": true
         }
       ]
     },
@@ -176,7 +176,7 @@
         {
           "name": "김신영",
           "instagram": "ksy83s",
-          "verified": false
+          "verified": true
         }
       ]
     },
@@ -198,7 +198,7 @@
         {
           "name": "동지현",
           "instagram": "dongjihyun",
-          "verified": false
+          "verified": true
         }
       ]
     },
@@ -220,7 +220,7 @@
         {
           "name": "박지완",
           "instagram": "gwanspick",
-          "verified": false
+          "verified": true
         }
       ]
     },
@@ -304,7 +304,7 @@
         {
           "name": "최유라",
           "instagram": "eularachoi_official",
-          "verified": false
+          "verified": true
         }
       ],
       "program_instagram": "choiyura_show"
@@ -316,7 +316,7 @@
         {
           "name": "이유리",
           "instagram": "leeyuri007",
-          "verified": false
+          "verified": true
         }
       ]
     },
@@ -349,7 +349,7 @@
         {
           "name": "김지애",
           "instagram": "jiae0514",
-          "verified": false
+          "verified": true
         }
       ]
     },
@@ -365,7 +365,7 @@
         {
           "name": "김우리",
           "instagram": "kwrhome",
-          "verified": false,
+          "verified": true,
           "note": "스타일리스트"
         }
       ]
