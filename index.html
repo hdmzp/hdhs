@@ -2816,7 +2816,6 @@
   .fp-ig:hover { transform: scale(1.1); }
   .fp-ig svg { width: 16px; height: 16px; }
   /* 채널(프로그램) 공식 계정: 개인 계정(그라데이션)과 구분되게 남색 단색 */
-  table.fp-sns-table .fp-sns-ch { width: 84px; text-align: center; }
   .fp-ig.fp-ig-ch { background: #1f2a44; }
   .fp-day-btn:hover:not(.active) { background: #fff; color: var(--ink); }
 
@@ -3027,7 +3026,6 @@
     table.fp-sns-table { font-size: 13px; }
     table.fp-sns-table td { padding: 9px 6px; }
     table.fp-sns-table td.fp-sns-co { width: 48px; }
-    table.fp-sns-table .fp-sns-ch { width: 52px; font-size: 10.5px; }
     .fp-scroll { padding: 0 8px 40px; }
     table.fp-table thead th.fp-time-col { width: 40px; font-size: 9.5px; white-space: nowrap; }
     td.fp-time-cell { width: 40px; }
@@ -7240,7 +7238,7 @@ function fpBuildSnsHtml(slots, hosts) {
       ? `<a href="${fpEscapeHtml(link)}" target="_blank" rel="noopener">${fpEscapeHtml(p.title)}</a>`
       : fpEscapeHtml(p.title);
     const official = p.program_instagram
-      ? `<a class="fp-ig fp-ig-ch" href="https://www.instagram.com/${encodeURIComponent(p.program_instagram)}/" target="_blank" rel="noopener noreferrer" title="${fpEscapeHtml(p.title)} 채널 공식 인스타그램 (@${fpEscapeHtml(p.program_instagram)})" aria-label="${fpEscapeHtml(p.title)} 채널 인스타그램">${FP_IG_SVG}</a>`
+      ? `<span class="fp-sns-host fp-sns-chan"><span class="fp-sns-role">채널</span><a class="fp-ig fp-ig-ch" href="https://www.instagram.com/${encodeURIComponent(p.program_instagram)}/" target="_blank" rel="noopener noreferrer" title="${fpEscapeHtml(p.title)} 채널 공식 인스타그램 (@${fpEscapeHtml(p.program_instagram)})" aria-label="${fpEscapeHtml(p.title)} 채널 인스타그램">${FP_IG_SVG}</a></span>`
       : '';
     const sched = ss.map(s => fpFormatSchedule(s)).join(' · ');
     const hostHtml = (p.hosts || []).length
@@ -7253,11 +7251,10 @@ function fpBuildSnsHtml(slots, hosts) {
     return `<tr>` +
       `<td class="fp-sns-co"><span class="fp-co-badge-inline ${co}">${fpEscapeHtml(p.company)}</span></td>` +
       `<td class="fp-sns-pgm">${titleHtml}<div class="fp-sns-sched">${sched}</div></td>` +
-      `<td class="fp-sns-hosts">${hostHtml}</td>` +
-      `<td class="fp-sns-ch">${official}</td>` +
+      `<td class="fp-sns-hosts">${hostHtml}${official}</td>` +
     `</tr>`;
   }).join('');
-  return `<table class="fp-sns-table"><thead><tr><th>홈사</th><th>프로그램명</th><th>셀럽 · 쇼호스트</th><th class="fp-sns-ch">채널 인스타</th></tr></thead><tbody>${body}</tbody></table>`;
+  return `<table class="fp-sns-table"><thead><tr><th>홈사</th><th>프로그램명</th><th>셀럽 · 쇼호스트 · 채널</th></tr></thead><tbody>${body}</tbody></table>`;
 }
 
 async function fpRenderSns() {
