@@ -41,7 +41,7 @@
 | 최화정쇼 | 수 20:45 | 최화정 | 셀럽(방송인) | [@choihwajeong_show](https://www.instagram.com/choihwajeong_show/) (사용자 제공, 아이디상 프로그램 계정) / 개인 계정 미확인 | ✅ |
 | 소이현의 겟잇스타일 | 격주 금 21:45 | 소이현 | 셀럽(배우) | [@ssoyang84](https://www.instagram.com/ssoyang84/) | ✅ |
 | 김신영이 산다 | 화 21:45 | 김신영 | 셀럽(코미디언) | [@ksy83s](https://www.instagram.com/ksy83s/) | 🟡 |
-| T이승연쇼 1부 | 토 20:45 | 이승연 | 셀럽(배우) | 미확인 (동명 일반인 계정만) | ❌ |
+| T이승연쇼 1부 | 토 20:45 | 이승연 | 셀럽(배우) | [@leesyaram](https://www.instagram.com/leesyaram/) (사용자 제공) | ✅ |
 | 동가게 | 목 20:45 / 토 08:20 | 동지현 | 쇼호스트 | [@dongjihyun](https://www.instagram.com/dongjihyun/) (위키백과 외부링크 기준) | 🟡 |
 | 조윤주가 사는 세상 | 토 20:30 | 조윤주 | 쇼호스트 | [@joutique_beauty](https://www.instagram.com/joutique_beauty/) ("쇼호스트 조윤주" — 위키백과상 현직 '주티크아카데미' 강사·프리랜서 쇼호스트와 일치) | ✅ |
 | T더 지완스 1부 | 일 17:45 | 박지완 | 쇼호스트 | [@gwanspick](https://www.instagram.com/gwanspick/) (소개에 CJ온스타일+ 언급) | 🟡 |
@@ -90,6 +90,7 @@
 | 최화정쇼(프로그램) | CJ 최화정쇼 | https://www.instagram.com/choihwajeong_show/ | ✅ (사용자 제공) |
 | 이찬석 | GS 신상뷰티찬스 | https://www.instagram.com/bty_chan/ | ✅ (사용자 제공) |
 | 이은영 | LT 영스타일 | https://www.instagram.com/eunyoungstyle/ | ✅ (사용자 제공) |
+| 이승연 | CJ T이승연쇼 | https://www.instagram.com/leesyaram/ | ✅ (사용자 제공) |
 | 황정민 | HD 황정민쇼 | https://www.instagram.com/hwangjeongmin0115/ | 🟡 |
 | 김신영 | CJ 김신영이 산다 | https://www.instagram.com/ksy83s/ | 🟡 |
 | 동지현 | CJ 동가게 | https://www.instagram.com/dongjihyun/ | 🟡 |
@@ -102,7 +103,7 @@
 
 ## 미확인 (추가 확인 필요)
 
-- 인스타그램 못 찾음 (2차 재검색 후): 왕영은, 최화정(개인 계정), 이승연, 이선진, 김민성, 전진오
+- 인스타그램 못 찾음 (2차 재검색 후): 왕영은, 최화정(개인 계정), 이선진, 김민성, 전진오
   - 왕영은 @yeongeunwang·@yeongeun.wang, 최화정 개인 후보 @hwajeongchoi는 팔로워 수백~천 명대이고 소개에 본인 근거가 없어 제외
 - 진행자 자체를 못 찾음: HD Club Noblesse, GS 쇼미더트렌드, LT 언니 어디꺼예요?
 - 정확히 확인하려면 각 사 프로그램 페이지(`merged.json`의 `detail_link`)나 홈쇼핑 공식 인스타그램의 태그를 보면 된다.
