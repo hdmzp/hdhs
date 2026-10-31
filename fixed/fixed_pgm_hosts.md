@@ -20,7 +20,7 @@
 | 오감쇼 | 화 19:30 | 오윤아 | 셀럽(배우) | [@ya9579](https://www.instagram.com/ya9579/) | ✅ |
 | 서아랑의 쇼핑라이브 (아쇼라) | 수 08:15 | 서아랑 (+AI 아바타 '랑이') | 쇼호스트 | [@seoahrang](https://www.instagram.com/seoahrang/) (사용자 제공) | ✅ |
 | THE 김동은 | 금 08:15 | 김동은 | 쇼호스트(패션) | [@dek1105](https://www.instagram.com/dek1105/) (사용자 제공) | ✅ |
-| Club Noblesse | 목 20:45 / 토 11:20 | 고정 진행자 확인 불가 (명품 전문 편성) | - | - | - |
+| Club Noblesse | 목 20:45 / 토 11:20 | 최욱남 | 쇼호스트 | [@felicity_choi](https://www.instagram.com/felicity_choi/) (사용자 제공) | ✅ |
 
 ## GS샵 (GS)
 
@@ -91,6 +91,7 @@
 | 이찬석 | GS 신상뷰티찬스 | https://www.instagram.com/bty_chan/ | ✅ (사용자 제공) |
 | 이은영 | LT 영스타일 | https://www.instagram.com/eunyoungstyle/ | ✅ (사용자 제공) |
 | 이승연 | CJ T이승연쇼 | https://www.instagram.com/leesyaram/ | ✅ (사용자 제공) |
+| 최욱남 | HD Club Noblesse | https://www.instagram.com/felicity_choi/ | ✅ (사용자 제공) |
 | 황정민 | HD 황정민쇼 | https://www.instagram.com/hwangjeongmin0115/ | 🟡 |
 | 김신영 | CJ 김신영이 산다 | https://www.instagram.com/ksy83s/ | 🟡 |
 | 동지현 | CJ 동가게 | https://www.instagram.com/dongjihyun/ | 🟡 |
@@ -105,5 +106,5 @@
 
 - 인스타그램 못 찾음 (2차 재검색 후): 왕영은, 최화정(개인 계정), 이선진, 김민성, 전진오
   - 왕영은 @yeongeunwang·@yeongeun.wang, 최화정 개인 후보 @hwajeongchoi는 팔로워 수백~천 명대이고 소개에 본인 근거가 없어 제외
-- 진행자 자체를 못 찾음: HD Club Noblesse, GS 쇼미더트렌드, LT 언니 어디꺼예요?
+- 진행자 자체를 못 찾음: GS 쇼미더트렌드, LT 언니 어디꺼예요?
 - 정확히 확인하려면 각 사 프로그램 페이지(`merged.json`의 `detail_link`)나 홈쇼핑 공식 인스타그램의 태그를 보면 된다.
