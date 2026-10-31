@@ -60,7 +60,7 @@
 | 요즘 쇼핑 유리네 | 일 08:50 / 수 19:35 | 이유리 | 셀럽(배우) | [@leeyuri007](https://www.instagram.com/leeyuri007/) (팬계정들이 태그하는 계정으로 추정) | ✅ (사용자 확인) |
 | 최희의 희트템 | 목 18:35 | 최희 | 셀럽(전 아나운서) | [@choiheeann](https://www.instagram.com/choiheeann/) | ✅ |
 | 더퍼스트 유난희 | 목 09:25 | 유난희 | 쇼호스트 | [@yoonanhee_](https://www.instagram.com/yoonanhee_/) (소개에 '더퍼스트유난희') | ✅ |
-| 김지애의 쇼핑리스트 | 일 15:00 | 김지애 | 쇼호스트 | [@jiae0514](https://www.instagram.com/jiae0514/) (쇼호스트 목록 블로그 기준, 프로필 미확인) | ✅ (사용자 확인) |
+| 김지애의 쇼핑리스트 | 일 15:00 | 김지애 | 쇼호스트 | [@jiae0514](https://www.instagram.com/jiae0514/) / 채널 [@jiaelist](https://www.instagram.com/jiaelist/) (사용자 제공) | ✅ (사용자 확인) |
 | L.SHOW | 토 22:30 | 이수정 쇼호스트 + 김우리 스타일리스트 (2019 론칭 기사) | 쇼호스트 | 이수정 [@tv_crystal](https://www.instagram.com/tv_crystal/) ("쇼호스트 이수정") ✅ / 김우리 [@kwrhome](https://www.instagram.com/kwrhome/) (팔로워 약 20만, 스타일리스트 명시 없음) ✅ (사용자 확인) | ✅ |
 | 영스타일 | 수 21:45 / 금 08:15 | 이은영 쇼호스트 (+2019 론칭 시 신기주 편집장) | 쇼호스트 | [@eunyoungstyle](https://www.instagram.com/eunyoungstyle/) (사용자 제공) | ✅ |
 | LOOK AT ME | 목 07:15 | 이선진 (슈퍼모델·패션학과 교수, 2024-02 론칭) | 셀럽(모델) | 미확인 | ❌ |
@@ -100,6 +100,7 @@
 | 최유라(개인) | LT 최유라쇼 | https://www.instagram.com/eularachoi_official/ | ✅ (사용자 확인) |
 | 이진아 | GS 이진아 셀렉션·더컬렉션 | https://www.instagram.com/lee_jin_ah_showhost/ | ✅ (사용자 확인) |
 | 김지애 | LT 김지애의 쇼핑리스트 | https://www.instagram.com/jiae0514/ | ✅ (사용자 확인) |
+| 김지애의 쇼핑리스트(채널) | LT 김지애의 쇼핑리스트 | https://www.instagram.com/jiaelist/ | ✅ (사용자 제공) |
 | 김우리 | LT L.SHOW | https://www.instagram.com/kwrhome/ | ✅ (사용자 확인) |
 
 ## 미확인 (추가 확인 필요)
