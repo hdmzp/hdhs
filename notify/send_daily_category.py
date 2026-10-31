@@ -221,7 +221,8 @@ def main():
             print("%s %s 방송 데이터가 없습니다. 생략." % (day_str, title))
             continue
         lines = build_message(now, title, sections, rows, totals, n_companies)
-        lines += competitor_lines(now.date(), companies, {c for _, c in cat_sections})
+        # 패션은 맞편성 없이 신규 브랜드만 (2026-10 사용자 요청)
+        lines += competitor_lines(now.date(), companies, {c for _, c in cat_sections}, multi_on=(key != "fashion"))
         messages.append((title, key, lines))
 
     if now.weekday() == 0 or os.environ.get("GUEST_CANDIDATES") == "1":

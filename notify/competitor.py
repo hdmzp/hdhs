@@ -49,9 +49,9 @@ def brand_of(item):
     if brand.upper().replace(" ", "") in {b.replace(" ", "") for b in PLACEHOLDER_BRANDS}:
         words = re.sub(r"\[[^\]]*\]|\([^)]*\)|[★☆■●◆▶♥]", " ", item.get("product") or "").split()
         brand = words[0] if words else ""
-        # '26FW', '1+1' 같은 건 브랜드가 아니다
-        if not re.search(r"[A-Za-z가-힣]{2,}", brand) or re.match(r"^\d", brand):
-            return ""
+    # '26FW', '1+1', '3+3박스' 같은 건 브랜드가 아니다
+    if not re.search(r"[A-Za-z가-힣]{2,}", brand) or re.match(r"^\d", brand):
+        return ""
     return brand
 
 
@@ -90,27 +90,63 @@ def _seen_before(companies, day):
 
 _seen_cache = {}
 
+ITEM_MAX = 16
 
-def competitor_lines(day, companies, cats):
-    """리스트 맨 아래에 붙일 줄들. 둘 다 없으면 []."""
+
+def item_name(product, brand):
+    """맞편성에 붙이는 품목 이름 - 분간만 되게 상품명 앞 두 단어 (브랜드 단어는 뺀다).
+    '여에스더 코큐텐 컴플렉스 속편한위케어' (에스더포뮬러) -> '코큐텐 컴플렉스'"""
+    text = re.sub(r"\[[^\]]*\]|\([^)]*\)|[□■◆◇●○★☆▶♥※·,]", " ", product or "")
+    b = brand_key(brand)
+    words = []
+    for w in text.split():
+        k = brand_key(w)
+        if not k or k in b or (len(b) >= 3 and b[:3] in k):
+            continue
+        if re.match(r"^\d+(개|박스|병|팩|포|통|정|입|세트|주|개월|g|kg|ml|EA)?$", w, re.I):
+            continue
+        words.append(w)
+        if len(words) == 2:
+            break
+    name = " ".join(words)
+    return name if len(name) <= ITEM_MAX else name[:ITEM_MAX - 1] + "…"
+
+
+def competitor_lines(day, companies, cats, multi_on=True, item_detail=False):
+    """리스트 맨 아래에 붙일 줄들. 둘 다 없으면 [].
+
+    multi_on=False 면 맞편성은 빼고 신규 브랜드만 (패션 리스트, 2026-10 사용자 요청).
+    item_detail=True 면 맞편성에 회사별 품목 이름도 붙인다 (식품: 'HD 06:15 관절엔 콘드로이친')."""
     companies = [c for c in ("HD", "GS", "CJ", "LT") if not companies or c in companies]
     by_brand = {}
     today = []
     for co in companies:
         for start, brand, product in _broadcasts(co, day, cats):
             entry = by_brand.setdefault(brand_key(brand), {"name": brand, "slots": {}})
-            entry["slots"].setdefault(co, []).append(start)
+            entry["slots"].setdefault(co, []).append((start, item_name(product, brand)))
             today.append((start, co, brand, product))
 
     lines = []
-    multi = [e for e in by_brand.values() if len(e["slots"]) >= 2]
+    multi = [e for e in by_brand.values() if len(e["slots"]) >= 2] if multi_on else []
     multi.sort(key=lambda e: (-len(e["slots"]), min(min(v) for v in e["slots"].values())))
     if multi:
         lines += ["", "<b>🔁 맞편성</b> (같은 날 2개사 이상)"]
         for e in multi:
-            parts = ["%s %s" % (COMPANY_NAMES.get(co, co), ", ".join(sorted(set(e["slots"][co]))))
-                     for co in companies if co in e["slots"]]
-            lines.append("%s · %s" % (esc(e["name"]), esc(" / ".join(parts))))
+            parts = []
+            for co in companies:
+                if co not in e["slots"]:
+                    continue
+                slots = sorted(set(e["slots"][co]))
+                if item_detail:
+                    text = ", ".join(("%s %s" % (st, it)).strip() for st, it in slots)
+                else:
+                    text = ", ".join(sorted({st for st, _ in slots}))
+                parts.append("%s %s" % (COMPANY_NAMES.get(co, co), text))
+            if item_detail:
+                lines.append("<b>%s</b>" % esc(e["name"]))
+                lines += ["  " + esc(p) for p in parts]
+            else:
+                lines.append("%s · %s" % (esc(e["name"]), esc(" / ".join(parts))))
 
     key = (tuple(companies), day.strftime("%Y-%m-%d"))
     if key not in _seen_cache:
