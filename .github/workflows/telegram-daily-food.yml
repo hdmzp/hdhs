@@ -43,8 +43,9 @@ jobs:
           WEATHER_REGION: ${{ vars.WEATHER_REGION }}
         run: python notify/send_daily_food.py
       # 오늘의 건강프로그램 PPL 예고 (식품 리스트를 받는 사람에게, 별도 메시지)
+      # 2026-10-31 사용자 요청으로 매일 예약 발송에서 뺐다 - 수동 실행(only=ppl)일 때만 보낸다
       - name: 텔레그램 발송 — 건강프로그램 PPL 예고
-        if: always() && (github.event_name != 'workflow_dispatch' || inputs.only == 'all' || inputs.only == 'food' || inputs.only == 'ppl')
+        if: always() && github.event_name == 'workflow_dispatch' && inputs.only == 'ppl'
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           SUBS_URL: ${{ vars.SUBS_URL }}  # 봇 구독자 목록 (Cloudflare Worker, notify/subscribers.py)
