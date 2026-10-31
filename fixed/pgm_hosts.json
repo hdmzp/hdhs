@@ -1,0 +1,393 @@
+{
+  "_comment": "고정PGM 진행자·인스타그램 (손으로 관리). company+title은 homeshopping/fixed_programs/merged.json 슬롯과 같아야 매칭된다. verified=false는 추정 계정이라 화면에 표시하지 않는다. 근거는 fixed/fixed_pgm_hosts.md.",
+  "updated": "2026-10-31",
+  "programs": [
+    {
+      "company": "HD",
+      "title": "왕영은의 톡투게더",
+      "hosts": [
+        {
+          "name": "왕영은"
+        }
+      ]
+    },
+    {
+      "company": "HD",
+      "title": "최은경쇼",
+      "hosts": [
+        {
+          "name": "최은경",
+          "instagram": "eunkyong__choi",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "company": "HD",
+      "title": "Club Noblesse",
+      "hosts": []
+    },
+    {
+      "company": "HD",
+      "title": "서아랑의 쇼핑라이브",
+      "hosts": [
+        {
+          "name": "서아랑",
+          "instagram": "seoahrang",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "company": "HD",
+      "title": "황정민쇼",
+      "hosts": [
+        {
+          "name": "황정민",
+          "instagram": "hwangjeongmin0115",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "company": "HD",
+      "title": "오감쇼",
+      "hosts": [
+        {
+          "name": "오윤아",
+          "instagram": "ya9579",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "company": "HD",
+      "title": "THE 김동은",
+      "hosts": [
+        {
+          "name": "김동은",
+          "instagram": "dek1105",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "company": "GS",
+      "title": "지금 백지연",
+      "hosts": [
+        {
+          "name": "백지연",
+          "instagram": "jiyeonbaik",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "company": "GS",
+      "title": "소유진쇼",
+      "hosts": [
+        {
+          "name": "소유진",
+          "instagram": "yujin_so",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "company": "GS",
+      "title": "이진아 셀렉션",
+      "hosts": [
+        {
+          "name": "이진아",
+          "instagram": "lee_jin_ah_showhost",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "company": "GS",
+      "title": "스타일나우; 더 김동은",
+      "hosts": [
+        {
+          "name": "김동은",
+          "instagram": "dek1105",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "company": "GS",
+      "title": "신상뷰티찬스",
+      "hosts": [
+        {
+          "name": "이찬석",
+          "instagram": "bty_chan",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "company": "GS",
+      "title": "더컬렉션",
+      "hosts": [
+        {
+          "name": "이진아",
+          "instagram": "lee_jin_ah_showhost",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "company": "GS",
+      "title": "쇼미더트렌드",
+      "hosts": []
+    },
+    {
+      "company": "CJ",
+      "title": "최화정쇼",
+      "hosts": [
+        {
+          "name": "최화정"
+        }
+      ],
+      "program_instagram": "choihwajeong_show"
+    },
+    {
+      "company": "CJ",
+      "title": "소이현의 겟잇스타일",
+      "hosts": [
+        {
+          "name": "소이현",
+          "instagram": "ssoyang84",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "company": "CJ",
+      "title": "김신영이 산다",
+      "hosts": [
+        {
+          "name": "김신영",
+          "instagram": "ksy83s",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "company": "CJ",
+      "title": "T이승연쇼 1부",
+      "hosts": [
+        {
+          "name": "이승연",
+          "instagram": "leesyaram",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "company": "CJ",
+      "title": "동가게",
+      "hosts": [
+        {
+          "name": "동지현",
+          "instagram": "dongjihyun",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "company": "CJ",
+      "title": "조윤주가 사는 세상",
+      "hosts": [
+        {
+          "name": "조윤주",
+          "instagram": "joutique_beauty",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "company": "CJ",
+      "title": "T더 지완스 1부",
+      "hosts": [
+        {
+          "name": "박지완",
+          "instagram": "gwanspick",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "company": "CJ",
+      "title": "아쇼라",
+      "hosts": [
+        {
+          "name": "서아랑",
+          "instagram": "seoahrang",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "company": "CJ",
+      "title": "바이림",
+      "hosts": [
+        {
+          "name": "임세영",
+          "instagram": "seyoung.lim",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "company": "CJ",
+      "title": "림잇티드",
+      "hosts": [
+        {
+          "name": "임세영",
+          "instagram": "seyoung.lim",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "company": "CJ",
+      "title": "HIT THE STYLE",
+      "hosts": [
+        {
+          "name": "임세영",
+          "instagram": "seyoung.lim",
+          "verified": true
+        },
+        {
+          "name": "김민성"
+        },
+        {
+          "name": "전진오",
+          "note": "스타일리스트"
+        }
+      ]
+    },
+    {
+      "company": "CJ",
+      "title": "스튜디오B",
+      "hosts": [
+        {
+          "name": "김봉희",
+          "instagram": "bong__show",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "company": "CJ",
+      "title": "굿 라이프",
+      "hosts": [
+        {
+          "name": "강주은",
+          "instagram": "junekang70",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "company": "LT",
+      "title": "최유라쇼",
+      "hosts": [
+        {
+          "name": "최유라",
+          "instagram": "eularachoi_official",
+          "verified": false
+        }
+      ],
+      "program_instagram": "choiyura_show"
+    },
+    {
+      "company": "LT",
+      "title": "요즘 쇼핑 유리네",
+      "hosts": [
+        {
+          "name": "이유리",
+          "instagram": "leeyuri007",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "company": "LT",
+      "title": "최희의 희트템",
+      "hosts": [
+        {
+          "name": "최희",
+          "instagram": "choiheeann",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "company": "LT",
+      "title": "더퍼스트 유난희",
+      "hosts": [
+        {
+          "name": "유난희",
+          "instagram": "yoonanhee_",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "company": "LT",
+      "title": "김지애의 쇼핑리스트",
+      "hosts": [
+        {
+          "name": "김지애",
+          "instagram": "jiae0514",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "company": "LT",
+      "title": "L.SHOW",
+      "hosts": [
+        {
+          "name": "이수정",
+          "instagram": "tv_crystal",
+          "verified": true
+        },
+        {
+          "name": "김우리",
+          "instagram": "kwrhome",
+          "verified": false,
+          "note": "스타일리스트"
+        }
+      ]
+    },
+    {
+      "company": "LT",
+      "title": "영스타일",
+      "hosts": [
+        {
+          "name": "이은영",
+          "instagram": "eunyoungstyle",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "company": "LT",
+      "title": "LOOK AT ME",
+      "hosts": [
+        {
+          "name": "이선진"
+        }
+      ]
+    },
+    {
+      "company": "LT",
+      "title": "언니 어디꺼예요?",
+      "hosts": []
+    }
+  ]
+}

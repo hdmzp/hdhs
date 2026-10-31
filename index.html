@@ -2777,7 +2777,51 @@
     cursor: pointer;
     transition: background 0.15s, color 0.15s;
   }
-  .fp-day-btn.active { background: var(--brand-blue); color: #fff; }
+  .fp-day-btn.active, .fp-co-btn.active { background: var(--brand-blue); color: #fff; }
+  .fp-co-btn {
+    font-family: 'Pretendard', -apple-system, sans-serif;
+    font-size: 13px; font-weight: 600;
+    background: none; border: none; border-radius: 6px;
+    padding: 7px 18px; color: var(--ink-soft); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .fp-co-btn:hover:not(.active) { background: #fff; color: var(--ink); }
+  .fp-controls { flex-wrap: wrap; align-items: center; gap: 10px; }
+
+  /* SNS 바로가기 표 */
+  table.fp-sns-table {
+    width: 100%; max-width: 760px; margin: 8px auto 0;
+    border-collapse: collapse; font-size: 13.5px;
+  }
+  table.fp-sns-table th {
+    font-size: 11.5px; font-weight: 600; color: var(--ink-faint);
+    text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--rule);
+    position: sticky; top: 0; background: var(--paper); z-index: 2;
+  }
+  table.fp-sns-table td { padding: 10px; border-bottom: 1px solid var(--rule); vertical-align: middle; }
+  table.fp-sns-table td.fp-sns-co { width: 64px; }
+  .fp-sns-co .fp-co-badge-inline { font-size: 11px; padding: 3px 8px; }
+  .fp-sns-pgm a { color: var(--ink); font-weight: 700; text-decoration: none; }
+  .fp-sns-pgm a:hover { text-decoration: underline; }
+  .fp-sns-sched { font-size: 11px; color: var(--ink-faint); margin-top: 2px; }
+  .fp-sns-host { display: inline-flex; align-items: center; gap: 6px; margin: 2px 14px 2px 0; white-space: nowrap; }
+  .fp-sns-host .fp-sns-role { font-size: 10.5px; color: var(--ink-faint); }
+  .fp-sns-none { color: var(--ink-faint); }
+  .fp-ig {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 26px; height: 26px; border-radius: 8px; flex: none;
+    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+    color: #fff; text-decoration: none; transition: transform .12s;
+  }
+  .fp-ig:hover { transform: scale(1.1); }
+  .fp-ig svg { width: 16px; height: 16px; }
+  .fp-ig-official {
+    display: inline-flex; align-items: center; gap: 4px; margin-left: 6px;
+    font-size: 10.5px; font-weight: 600; color: #d6249f; text-decoration: none;
+    vertical-align: middle;
+  }
+  .fp-ig-official .fp-ig { width: 18px; height: 18px; border-radius: 5px; }
+  .fp-ig-official .fp-ig svg { width: 12px; height: 12px; }
   .fp-day-btn:hover:not(.active) { background: #fff; color: var(--ink); }
 
   .fp-updated {
@@ -2981,7 +3025,12 @@
   @media (max-width: 700px) {
     .fp-controls { padding: 10px 8px 0; }
     .fp-day-tabs { width: 100%; justify-content: space-between; }
-    .fp-day-btn { padding: 7px 8px; font-size: 12px; flex: 1; }
+    .fp-day-btn, .fp-co-btn { padding: 7px 8px; font-size: 12px; flex: 1; }
+    .fp-view-toggle { width: 100%; }
+    .fp-view-toggle button { flex: 1; }
+    table.fp-sns-table { font-size: 13px; }
+    table.fp-sns-table td { padding: 9px 6px; }
+    table.fp-sns-table td.fp-sns-co { width: 48px; }
     .fp-scroll { padding: 0 8px 40px; }
     table.fp-table thead th.fp-time-col { width: 40px; font-size: 9.5px; white-space: nowrap; }
     td.fp-time-cell { width: 40px; }
@@ -4018,6 +4067,17 @@
 <div id="tabFixedPgm" class="tab-panel">
 
 <div class="fp-controls">
+  <div class="sch-view-toggle fp-view-toggle" id="fpViewToggle">
+    <button type="button" data-view="schedule">시간표보기</button>
+    <button type="button" data-view="sns">SNS 바로가기</button>
+  </div>
+  <div class="fp-day-tabs fp-co-tabs" id="fpCoTabs" style="display:none">
+    <button class="fp-co-btn" data-co="전체">전체</button>
+    <button class="fp-co-btn" data-co="HD">현대</button>
+    <button class="fp-co-btn" data-co="GS">GS</button>
+    <button class="fp-co-btn" data-co="CJ">CJ</button>
+    <button class="fp-co-btn" data-co="LT">롯데</button>
+  </div>
   <div class="fp-day-tabs" id="fpDayTabs">
     <button class="fp-day-btn" data-day="전체">전체</button>
     <button class="fp-day-btn" data-day="월">월</button>
@@ -4033,6 +4093,7 @@
 <div class="fp-updated" id="fpUpdated"></div>
 
 <div class="fp-scroll" id="fpGridWrap"></div>
+<div class="fp-scroll" id="fpSnsWrap" style="display:none"></div>
 
 </div>
 
@@ -6900,6 +6961,7 @@ function switchTab(tab) {
   if (tab === 'fixedpgm' && !_fixedPgmTabLoaded) {
     _fixedPgmTabLoaded = true;
     fpRefresh();
+    fpApplyView();
   }
   if (tab === 'celebrity' && !_celebrityTabLoaded) {
     _celebrityTabLoaded = true;
@@ -7130,6 +7192,116 @@ document.querySelectorAll('.fp-day-btn').forEach(btn => {
     gaEvent('filter_click', { filter_group: 'fixedpgm_day', filter_value: fpCurrentDay });
   });
 });
+
+// ---- 고정PGM 보기 전환: 시간표보기(기본) / SNS 바로가기 ----
+// 진행자·인스타그램은 손으로 관리하는 fixed/pgm_hosts.json에서 읽는다
+// (merged.json은 매일 스크래퍼가 덮어쓰므로 거기 넣으면 지워진다).
+// verified=false(추정) 계정은 표시하지 않는다.
+let fpView = 'schedule';
+try { if (localStorage.getItem('fpView') === 'sns') fpView = 'sns'; } catch (e) { }
+let fpSnsCo = '전체';
+let fpHosts = null;
+const FP_CO_ORDER = { HD: 0, GS: 1, CJ: 2, LT: 3 };
+const FP_DAY_ORDER = { 월: 0, 화: 1, 수: 2, 목: 3, 금: 4, 토: 5, 일: 6 };
+const FP_IG_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>';
+
+function fpIgLink(handle, label) {
+  const h = encodeURIComponent(handle);
+  return `<a class="fp-ig" href="https://www.instagram.com/${h}/" target="_blank" rel="noopener noreferrer" title="${fpEscapeHtml(label)} 인스타그램 (@${fpEscapeHtml(handle)})" aria-label="${fpEscapeHtml(label)} 인스타그램">${FP_IG_SVG}</a>`;
+}
+
+function fpBuildSnsHtml(slots, hosts) {
+  if (!hosts || !Array.isArray(hosts.programs)) {
+    return '<div class="fp-empty-note">진행자 정보를 불러오지 못했습니다.</div>';
+  }
+  // 편성(슬롯)을 프로그램 단위로 묶어 첫 방송 요일·시각 순으로 정렬
+  const slotMap = {};
+  (slots || []).forEach(s => {
+    const k = s.company + '|' + s.title;
+    (slotMap[k] = slotMap[k] || []).push(s);
+  });
+  const rows = hosts.programs
+    .filter(p => fpSnsCo === '전체' || p.company === fpSnsCo)
+    .map(p => {
+      const ss = (slotMap[p.company + '|' + p.title] || [])
+        .slice().sort((a, b) => (FP_DAY_ORDER[a.day] - FP_DAY_ORDER[b.day]) || a.time.localeCompare(b.time));
+      return { p, ss };
+    })
+    .sort((a, b) => {
+      const co = FP_CO_ORDER[a.p.company] - FP_CO_ORDER[b.p.company];
+      if (co) return co;
+      const sa = a.ss[0], sb = b.ss[0];
+      if (!sa || !sb) return sa ? -1 : sb ? 1 : 0;
+      return (FP_DAY_ORDER[sa.day] - FP_DAY_ORDER[sb.day]) || sa.time.localeCompare(sb.time);
+    });
+  if (rows.length === 0) return '<div class="fp-empty-note">표시할 프로그램이 없습니다.</div>';
+
+  const body = rows.map(({ p, ss }) => {
+    const co = p.company.toLowerCase();
+    const link = ss[0] && ss[0].detail_link;
+    const titleHtml = link
+      ? `<a href="${fpEscapeHtml(link)}" target="_blank" rel="noopener">${fpEscapeHtml(p.title)}</a>`
+      : fpEscapeHtml(p.title);
+    const official = p.program_instagram
+      ? `<a class="fp-ig-official" href="https://www.instagram.com/${encodeURIComponent(p.program_instagram)}/" target="_blank" rel="noopener noreferrer" title="프로그램 공식 인스타그램 (@${fpEscapeHtml(p.program_instagram)})"><span class="fp-ig">${FP_IG_SVG}</span>공식</a>`
+      : '';
+    const sched = ss.map(s => fpFormatSchedule(s)).join(' · ');
+    const hostHtml = (p.hosts || []).length
+      ? p.hosts.map(h =>
+          `<span class="fp-sns-host">${fpEscapeHtml(h.name)}` +
+          (h.note ? ` <span class="fp-sns-role">${fpEscapeHtml(h.note)}</span>` : '') +
+          (h.instagram && h.verified ? fpIgLink(h.instagram, h.name) : '') +
+          `</span>`).join('')
+      : '<span class="fp-sns-none">-</span>';
+    return `<tr>` +
+      `<td class="fp-sns-co"><span class="fp-co-badge-inline ${co}">${fpEscapeHtml(p.company)}</span></td>` +
+      `<td class="fp-sns-pgm">${titleHtml}${official}<div class="fp-sns-sched">${sched}</div></td>` +
+      `<td class="fp-sns-hosts">${hostHtml}</td>` +
+    `</tr>`;
+  }).join('');
+  return `<table class="fp-sns-table"><thead><tr><th>홈사</th><th>프로그램명</th><th>셀럽 · 쇼호스트</th></tr></thead><tbody>${body}</tbody></table>`;
+}
+
+async function fpRenderSns() {
+  const wrap = document.getElementById('fpSnsWrap');
+  if (!wrap) return;
+  if (!fpHosts) {
+    wrap.innerHTML = '<div class="fp-empty-note">불러오는 중...</div>';
+    fpHosts = await fetchJsonSafe('./fixed/pgm_hosts.json');
+  }
+  const data = await fpLoadData();
+  wrap.innerHTML = fpBuildSnsHtml(data && data.slots, fpHosts);
+}
+
+function fpApplyView() {
+  const sns = fpView === 'sns';
+  document.querySelectorAll('#fpViewToggle button').forEach(b => b.classList.toggle('active', b.dataset.view === fpView));
+  document.getElementById('fpDayTabs').style.display = sns ? 'none' : '';
+  document.getElementById('fpCoTabs').style.display = sns ? '' : 'none';
+  document.getElementById('fpGridWrap').style.display = sns ? 'none' : '';
+  document.getElementById('fpSnsWrap').style.display = sns ? '' : 'none';
+  if (sns && _fixedPgmTabLoaded) fpRenderSns();
+}
+
+document.querySelectorAll('#fpViewToggle button').forEach(b => b.addEventListener('click', () => {
+  if (fpView === b.dataset.view) return;
+  fpView = b.dataset.view;
+  try { localStorage.setItem('fpView', fpView); } catch (e) { }
+  fpApplyView();
+  gaEvent('filter_click', { filter_group: 'fixedpgm_view', filter_value: fpView });
+}));
+
+document.querySelectorAll('.fp-co-btn').forEach(btn => {
+  if (btn.dataset.co === fpSnsCo) btn.classList.add('active');
+  btn.addEventListener('click', () => {
+    fpSnsCo = btn.dataset.co;
+    document.querySelectorAll('.fp-co-btn').forEach(b => b.classList.toggle('active', b === btn));
+    fpRenderSns();
+    gaEvent('filter_click', { filter_group: 'fixedpgm_sns_co', filter_value: fpSnsCo });
+  });
+});
+
+fpApplyView();
 
 // ============ 프로모션 탭 (카드할인) ============
 // homeshopping/promotions/card_discounts.json 을 읽어 "날짜 × 4사" 표로 렌더링.
