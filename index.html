@@ -3025,7 +3025,11 @@
     .fp-view-toggle button { flex: 1; }
     table.fp-sns-table { font-size: 13px; }
     table.fp-sns-table td { padding: 9px 6px; }
-    table.fp-sns-table td.fp-sns-co { width: 48px; }
+    table.fp-sns-table { table-layout: fixed; }
+    table.fp-sns-table th:first-child, table.fp-sns-table td.fp-sns-co { width: 48px; }
+    /* 프로그램 / 셀럽 칸을 반반으로, 셀럽 칸은 가운데 정렬해 왼쪽 쏠림 방지 */
+    table.fp-sns-table th:nth-child(3), table.fp-sns-table td.fp-sns-hosts { text-align: center; }
+    .fp-sns-host { margin: 2px 4px; }
     .fp-scroll { padding: 0 8px 40px; }
     table.fp-table thead th.fp-time-col { width: 40px; font-size: 9.5px; white-space: nowrap; }
     td.fp-time-cell { width: 40px; }

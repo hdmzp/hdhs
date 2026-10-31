@@ -42,7 +42,7 @@
 | 소이현의 겟잇스타일 | 격주 금 21:45 | 소이현 | 셀럽(배우) | [@ssoyang84](https://www.instagram.com/ssoyang84/) | ✅ |
 | 김신영이 산다 | 화 21:45 | 김신영 | 셀럽(코미디언) | [@ksy83s](https://www.instagram.com/ksy83s/) | ✅ (사용자 확인) |
 | T이승연쇼 1부 | 토 20:45 | 이승연 | 셀럽(배우) | [@leesyaram](https://www.instagram.com/leesyaram/) (사용자 제공) | ✅ |
-| 동가게 | 목 20:45 / 토 08:20 | 동지현 | 쇼호스트 | [@dongjihyun](https://www.instagram.com/dongjihyun/) (위키백과 외부링크 기준) | ✅ (사용자 확인) |
+| 동가게 | 목 20:45 / 토 08:20 | 동지현 | 쇼호스트 | [@dong.jihyun](https://www.instagram.com/dong.jihyun/) (사용자 제공 — 위키백과의 @dongjihyun은 오류) | ✅ |
 | 조윤주가 사는 세상 | 토 20:30 | 조윤주 | 쇼호스트 | [@joutique_beauty](https://www.instagram.com/joutique_beauty/) ("쇼호스트 조윤주" — 위키백과상 현직 '주티크아카데미' 강사·프리랜서 쇼호스트와 일치) | ✅ |
 | T더 지완스 1부 | 일 17:45 | 박지완 | 쇼호스트 | [@gwanspick](https://www.instagram.com/gwanspick/) (소개에 CJ온스타일+ 언급) | ✅ (사용자 확인) |
 | 아쇼라 | 목 08:15 | 서아랑 (HD '서아랑의 쇼핑라이브'와 같은 약칭 — 프로그램 페이지 확인 필요) | 쇼호스트 | [@seoahrang](https://www.instagram.com/seoahrang/) (사용자 제공) | ✅ |
@@ -94,7 +94,7 @@
 | 최욱남 | HD Club Noblesse | https://www.instagram.com/felicity_choi/ | ✅ (사용자 제공) |
 | 황정민 | HD 황정민쇼 | https://www.instagram.com/hwangjeongmin0115/ | ✅ (사용자 확인) |
 | 김신영 | CJ 김신영이 산다 | https://www.instagram.com/ksy83s/ | ✅ (사용자 확인) |
-| 동지현 | CJ 동가게 | https://www.instagram.com/dongjihyun/ | ✅ (사용자 확인) |
+| 동지현 | CJ 동가게 | https://www.instagram.com/dong.jihyun/ | ✅ (사용자 제공) |
 | 박지완 | CJ T더 지완스 | https://www.instagram.com/gwanspick/ | ✅ (사용자 확인) |
 | 이유리 | LT 요즘 쇼핑 유리네 | https://www.instagram.com/leeyuri007/ | ✅ (사용자 확인) |
 | 최유라(개인) | LT 최유라쇼 | https://www.instagram.com/eularachoi_official/ | ✅ (사용자 확인) |
