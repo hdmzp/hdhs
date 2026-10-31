@@ -1,6 +1,6 @@
 {
   "month": "2026-10",
-  "updated_at": "2026-10-31T11:20:20.080578+09:00",
+  "updated_at": "2026-10-31T15:51:42.419635+09:00",
   "programs": [
     {
       "program_key": "HD_HJM",
@@ -447,7 +447,7 @@
         {
           "date": "2026-10-31",
           "label": "10/31(토) 08:20 방송",
-          "collected_at": "2026-10-31T11:20:20.050104+09:00",
+          "collected_at": "2026-10-31T15:51:42.369133+09:00",
           "products": [
             {
               "broadcast_date_label": "10/31(토) 08:20 방송",
@@ -472,6 +472,14 @@
               "price": 499000,
               "image": "https://image.hmall.com/2255955592_0.jpg",
               "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2255955592&preview=true"
+            },
+            {
+              "broadcast_date_label": "10/31(토) 08:20 방송",
+              "brand": "군산명가",
+              "name": "국내산 반건조 참돔 x 11미",
+              "price": 49900,
+              "image": "https://image.hmall.com/2253132202_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2253132202&preview=true"
             },
             {
               "broadcast_date_label": "10/31(토) 방송상품",
@@ -499,7 +507,7 @@
               "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2155394329&preview=true"
             }
           ],
-          "reconciled_at": "2026-10-31T11:20:20.050104+09:00",
+          "reconciled_at": "2026-10-31T15:51:42.369133+09:00",
           "revisions": [
             {
               "at": "2026-10-31T11:20:20.050104+09:00",
@@ -507,6 +515,17 @@
                 "사토노유키 프리미엄 실큰 두부 19팩 5팩 2026 마지막 방송"
               ],
               "missing_after_start": [
+                "사토노유키 프리미엄 실큰 두부 19팩 5팩",
+                "호주산 루피니빈 더블구성"
+              ]
+            },
+            {
+              "at": "2026-10-31T15:51:42.369133+09:00",
+              "added": [
+                "국내산 반건조 참돔 x 11미"
+              ],
+              "missing_after_start": [
+                "[베네팜]호주산 루피니빈 싱글구성(300g x 10팩)",
                 "사토노유키 프리미엄 실큰 두부 19팩 5팩",
                 "호주산 루피니빈 더블구성"
               ]
