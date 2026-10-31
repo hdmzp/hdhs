@@ -258,8 +258,8 @@ def main():
         return
 
     lines = build_message(now, weather, rows, totals, n_companies)
-    # 맨 아래 경쟁사 맞편성·신규 브랜드 (notify/competitor.py)
-    lines += competitor_lines(now.date(), companies, {cat for _, cat in SECTIONS})
+    # 맨 아래 경쟁사 맞편성(품목 이름까지)·신규 브랜드 (notify/competitor.py)
+    lines += competitor_lines(now.date(), companies, {cat for _, cat in SECTIONS}, item_detail=True)
     chunks = chunk_lines(lines)
     print("방송 %d건 → 메시지 %d건" % (total, len(chunks)))
 
