@@ -28,10 +28,10 @@
 |---|---|---|---|---|---|
 | 지금 백지연 | 목 20:45 | 백지연 | 셀럽(앵커) | [@jiyeonbaik](https://www.instagram.com/jiyeonbaik/) | ✅ |
 | 소유진쇼 | 금 20:35 | 소유진 | 셀럽(배우) | [@yujin_so](https://www.instagram.com/yujin_so/) | ✅ |
-| 이진아 셀렉션 | 월 08:15 | 이진아 | 쇼호스트 | 미확인 | ❌ |
+| 이진아 셀렉션 | 월 08:15 | 이진아 | 쇼호스트 | [@lee_jin_ah_showhost](https://www.instagram.com/lee_jin_ah_showhost/) (같은 아이디의 Threads 소개에 'GS샵 더퀸·더컬렉션') | 🟡 |
 | 스타일나우; 더 김동은 | 화 08:15 | 김동은 | 쇼호스트(패션) | 미확인 | ❌ |
 | 신상뷰티찬스 | 격주 토 11:50 | 이찬석 (프로그램 소개 "이찬석 PICK") | 쇼호스트/뷰티 | 미확인 | ❌ |
-| 더컬렉션 | 토 09:20 | 고정 진행자 확인 불가 (2026-05 '더 컬렉션' 스타일링 클래스에 이진아 쇼호스트 참여) | - | - | - |
+| 더컬렉션 | 토 09:20 | 이진아 (쇼호스트 목록·Threads 소개에 'GS shop 더컬렉션', 2026-05 스타일링 클래스 진행) | 쇼호스트 | [@lee_jin_ah_showhost](https://www.instagram.com/lee_jin_ah_showhost/) | 🟡 |
 | 쇼미더트렌드 | 토 21:35 | 현재 진행자 확인 불가 (2014년 동지현 진행 → 이후 이적) | - | - | - |
 
 ## CJ온스타일 (CJ)
@@ -43,14 +43,14 @@
 | 김신영이 산다 | 화 21:45 | 김신영 | 셀럽(코미디언) | [@ksy83s](https://www.instagram.com/ksy83s/) | 🟡 |
 | T이승연쇼 1부 | 토 20:45 | 이승연 | 셀럽(배우) | 미확인 (동명 일반인 계정만) | ❌ |
 | 동가게 | 목 20:45 / 토 08:20 | 동지현 | 쇼호스트 | [@dongjihyun](https://www.instagram.com/dongjihyun/) (위키백과 외부링크 기준) | 🟡 |
-| 조윤주가 사는 세상 | 토 20:30 | 조윤주 | 쇼호스트 | [@joutique_beauty](https://www.instagram.com/joutique_beauty/) ("쇼호스트 조윤주", 팔로워 소수) | 🟡 |
+| 조윤주가 사는 세상 | 토 20:30 | 조윤주 | 쇼호스트 | [@joutique_beauty](https://www.instagram.com/joutique_beauty/) ("쇼호스트 조윤주" — 위키백과상 현직 '주티크아카데미' 강사·프리랜서 쇼호스트와 일치) | ✅ |
 | T더 지완스 1부 | 일 17:45 | 박지완 | 쇼호스트 | [@gwanspick](https://www.instagram.com/gwanspick/) (소개에 CJ온스타일+ 언급) | 🟡 |
 | 아쇼라 | 목 08:15 | 서아랑 (HD '서아랑의 쇼핑라이브'와 같은 약칭 — 프로그램 페이지 확인 필요) | 쇼호스트 | 미확인 | ❌ |
-| 바이림 | 금 19:35 | 임세영 ('림' = 임세영, 2026-04 방송 임세영·이나래 진행 보도) | 쇼호스트 | 미확인 | ❌ |
-| 림잇티드 | 화 20:45(TV+) / 토 10:20 | 임세영 (프로그램명 기준 추정) | 쇼호스트 | 미확인 | ❌ |
-| HIT THE STYLE | 토 22:30 | 임세영·김민성 쇼호스트 + 전진오 스타일리스트 (론칭 6주년 기사 기준, 현재 변동 가능) | 쇼호스트 | 미확인 | ❌ |
-| 스튜디오B | 월 09:20 | 김봉희 (공식 SNS 게시물 기준, 시점 불명) | 쇼호스트 | 미확인 | ❌ |
-| 굿 라이프 | 격주 월 19:35 | 강주은 ('강주은의 굿라이프', 2017년 자료 — 현재 진행 여부 확인 필요) | 셀럽(방송인) | 미확인 | ❌ |
+| 바이림 | 금 19:35 | 임세영 ('림' = 임세영, 2026-04 방송 임세영·이나래 진행 보도) | 쇼호스트 | [@seyoung.lim](https://www.instagram.com/seyoung.lim/) ("쇼쇼언니 임세영", 호스트 소개) | ✅ |
+| 림잇티드 | 화 20:45(TV+) / 토 10:20 | 임세영 (프로그램명 기준 추정) | 쇼호스트 | [@seyoung.lim](https://www.instagram.com/seyoung.lim/) | ✅ |
+| HIT THE STYLE | 토 22:30 | 임세영·김민성 쇼호스트 + 전진오 스타일리스트 (론칭 6주년 기사 기준, 현재 변동 가능) | 쇼호스트 | 임세영 [@seyoung.lim](https://www.instagram.com/seyoung.lim/) / 김민성·전진오 미확인 | ✅/❌ |
+| 스튜디오B | 월 09:20 | 김봉희 (공식 SNS 게시물 기준, 시점 불명) | 쇼호스트 | [@bong__show](https://www.instagram.com/bong__show/) (CJ온스타일 퍼플닷 공식 프로필에 기재) | ✅ |
+| 굿 라이프 | 격주 월 19:35 | 강주은 ('강주은의 굿라이프', 2017년 자료 — 현재 진행 여부 확인 필요) | 셀럽(방송인) | [@junekang70](https://www.instagram.com/junekang70/) (소개에 남편 최민수 계정 링크) | ✅ |
 
 ## 롯데홈쇼핑 (LT)
 
@@ -60,8 +60,8 @@
 | 요즘 쇼핑 유리네 | 일 08:50 / 수 19:35 | 이유리 | 셀럽(배우) | [@leeyuri007](https://www.instagram.com/leeyuri007/) (팬계정들이 태그하는 계정으로 추정) | 🟡 |
 | 최희의 희트템 | 목 18:35 | 최희 | 셀럽(전 아나운서) | [@choiheeann](https://www.instagram.com/choiheeann/) | ✅ |
 | 더퍼스트 유난희 | 목 09:25 | 유난희 | 쇼호스트 | [@yoonanhee_](https://www.instagram.com/yoonanhee_/) (소개에 '더퍼스트유난희') | ✅ |
-| 김지애의 쇼핑리스트 | 일 15:00 | 김지애 | 쇼호스트 | 미확인 | ❌ |
-| L.SHOW | 토 22:30 | 이수정 쇼호스트 + 김우리 스타일리스트 (2019 론칭 기사) | 쇼호스트 | 이수정 [@tv_crystal](https://www.instagram.com/tv_crystal/) ("쇼호스트 이수정") / 김우리 미확인 | ✅/❌ |
+| 김지애의 쇼핑리스트 | 일 15:00 | 김지애 | 쇼호스트 | [@jiae0514](https://www.instagram.com/jiae0514/) (쇼호스트 목록 블로그 기준, 프로필 미확인) | 🟡 |
+| L.SHOW | 토 22:30 | 이수정 쇼호스트 + 김우리 스타일리스트 (2019 론칭 기사) | 쇼호스트 | 이수정 [@tv_crystal](https://www.instagram.com/tv_crystal/) ("쇼호스트 이수정") ✅ / 김우리 [@kwrhome](https://www.instagram.com/kwrhome/) (팔로워 약 20만, 스타일리스트 명시 없음) 🟡 | ✅/🟡 |
 | 영스타일 | 수 21:45 / 금 08:15 | 이은영 쇼호스트 (+2019 론칭 시 신기주 편집장) | 쇼호스트 | 미확인 | ❌ |
 | LOOK AT ME | 목 07:15 | 이선진 (슈퍼모델·패션학과 교수, 2024-02 론칭) | 셀럽(모델) | 미확인 | ❌ |
 | 언니 어디꺼예요? | 목 09:00 | 진행자 확인 불가 | - | - | - |
@@ -81,16 +81,25 @@
 | 유난희 | LT 더퍼스트 유난희 | https://www.instagram.com/yoonanhee_/ | ✅ |
 | 최유라쇼(공식) | LT 최유라쇼 | https://www.instagram.com/choiyura_show/ | ✅ |
 | 이수정 | LT L.SHOW | https://www.instagram.com/tv_crystal/ | ✅ |
+| 조윤주 | CJ 조윤주가 사는 세상 | https://www.instagram.com/joutique_beauty/ | ✅ |
+| 임세영 | CJ 바이림·림잇티드·HIT THE STYLE | https://www.instagram.com/seyoung.lim/ | ✅ |
+| 김봉희 | CJ 스튜디오B | https://www.instagram.com/bong__show/ | ✅ |
+| 강주은 | CJ 굿 라이프 | https://www.instagram.com/junekang70/ | ✅ |
 | 황정민 | HD 황정민쇼 | https://www.instagram.com/hwangjeongmin0115/ | 🟡 |
 | 김신영 | CJ 김신영이 산다 | https://www.instagram.com/ksy83s/ | 🟡 |
 | 동지현 | CJ 동가게 | https://www.instagram.com/dongjihyun/ | 🟡 |
-| 조윤주 | CJ 조윤주가 사는 세상 | https://www.instagram.com/joutique_beauty/ | 🟡 |
 | 박지완 | CJ T더 지완스 | https://www.instagram.com/gwanspick/ | 🟡 |
 | 이유리 | LT 요즘 쇼핑 유리네 | https://www.instagram.com/leeyuri007/ | 🟡 |
 | 최유라(개인) | LT 최유라쇼 | https://www.instagram.com/eularachoi_official/ | 🟡 |
+| 이진아 | GS 이진아 셀렉션·더컬렉션 | https://www.instagram.com/lee_jin_ah_showhost/ | 🟡 |
+| 김지애 | LT 김지애의 쇼핑리스트 | https://www.instagram.com/jiae0514/ | 🟡 |
+| 김우리 | LT L.SHOW | https://www.instagram.com/kwrhome/ | 🟡 |
 
 ## 미확인 (추가 확인 필요)
 
-- 인스타그램 못 찾음: 왕영은, 최화정, 이승연, 서아랑, 김동은, 이진아, 이찬석, 임세영, 김봉희, 강주은, 김지애, 이은영, 이선진, 김우리
-- 진행자 자체를 못 찾음: HD Club Noblesse, GS 더컬렉션·쇼미더트렌드, LT 언니 어디꺼예요?
+- 인스타그램 못 찾음 (2차 재검색 후): 왕영은, 최화정, 이승연, 서아랑, 김동은, 이찬석, 이은영, 이선진, 김민성, 전진오
+  - 왕영은 @yeongeunwang·@yeongeun.wang, 최화정 @hwajeongchoi 후보는 팔로워 수백~천 명대이고 소개에 본인 근거가 없어 제외
+  - 서아랑은 나무위키에 인스타 링크가 있다고 나오지만 아이디는 확인 못 함
+  - 이은영은 기사에 '인스타그램에서 확인 가능'이라고만 나오고 아이디는 없음
+- 진행자 자체를 못 찾음: HD Club Noblesse, GS 쇼미더트렌드, LT 언니 어디꺼예요?
 - 정확히 확인하려면 각 사 프로그램 페이지(`merged.json`의 `detail_link`)나 홈쇼핑 공식 인스타그램의 태그를 보면 된다.
