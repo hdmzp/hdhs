@@ -62,7 +62,7 @@
 | 더퍼스트 유난희 | 목 09:25 | 유난희 | 쇼호스트 | [@yoonanhee_](https://www.instagram.com/yoonanhee_/) (소개에 '더퍼스트유난희') | ✅ |
 | 김지애의 쇼핑리스트 | 일 15:00 | 김지애 | 쇼호스트 | [@jiae0514](https://www.instagram.com/jiae0514/) (쇼호스트 목록 블로그 기준, 프로필 미확인) | 🟡 |
 | L.SHOW | 토 22:30 | 이수정 쇼호스트 + 김우리 스타일리스트 (2019 론칭 기사) | 쇼호스트 | 이수정 [@tv_crystal](https://www.instagram.com/tv_crystal/) ("쇼호스트 이수정") ✅ / 김우리 [@kwrhome](https://www.instagram.com/kwrhome/) (팔로워 약 20만, 스타일리스트 명시 없음) 🟡 | ✅/🟡 |
-| 영스타일 | 수 21:45 / 금 08:15 | 이은영 쇼호스트 (+2019 론칭 시 신기주 편집장) | 쇼호스트 | 미확인 | ❌ |
+| 영스타일 | 수 21:45 / 금 08:15 | 이은영 쇼호스트 (+2019 론칭 시 신기주 편집장) | 쇼호스트 | [@eunyoungstyle](https://www.instagram.com/eunyoungstyle/) (사용자 제공) | ✅ |
 | LOOK AT ME | 목 07:15 | 이선진 (슈퍼모델·패션학과 교수, 2024-02 론칭) | 셀럽(모델) | 미확인 | ❌ |
 | 언니 어디꺼예요? | 목 09:00 | 진행자 확인 불가 | - | - | - |
 
@@ -89,6 +89,7 @@
 | 서아랑 | HD 서아랑의 쇼핑라이브 · CJ 아쇼라 | https://www.instagram.com/seoahrang/ | ✅ (사용자 제공) |
 | 최화정쇼(프로그램) | CJ 최화정쇼 | https://www.instagram.com/choihwajeong_show/ | ✅ (사용자 제공) |
 | 이찬석 | GS 신상뷰티찬스 | https://www.instagram.com/bty_chan/ | ✅ (사용자 제공) |
+| 이은영 | LT 영스타일 | https://www.instagram.com/eunyoungstyle/ | ✅ (사용자 제공) |
 | 황정민 | HD 황정민쇼 | https://www.instagram.com/hwangjeongmin0115/ | 🟡 |
 | 김신영 | CJ 김신영이 산다 | https://www.instagram.com/ksy83s/ | 🟡 |
 | 동지현 | CJ 동가게 | https://www.instagram.com/dongjihyun/ | 🟡 |
@@ -101,8 +102,7 @@
 
 ## 미확인 (추가 확인 필요)
 
-- 인스타그램 못 찾음 (2차 재검색 후): 왕영은, 최화정(개인 계정), 이승연, 이은영, 이선진, 김민성, 전진오
+- 인스타그램 못 찾음 (2차 재검색 후): 왕영은, 최화정(개인 계정), 이승연, 이선진, 김민성, 전진오
   - 왕영은 @yeongeunwang·@yeongeun.wang, 최화정 개인 후보 @hwajeongchoi는 팔로워 수백~천 명대이고 소개에 본인 근거가 없어 제외
-  - 이은영은 기사에 '인스타그램에서 확인 가능'이라고만 나오고 아이디는 없음
 - 진행자 자체를 못 찾음: HD Club Noblesse, GS 쇼미더트렌드, LT 언니 어디꺼예요?
 - 정확히 확인하려면 각 사 프로그램 페이지(`merged.json`의 `detail_link`)나 홈쇼핑 공식 인스타그램의 태그를 보면 된다.
