@@ -37,6 +37,7 @@ homeshopping/
 
 import os
 import re
+import sys
 import json
 import time
 import requests
@@ -110,9 +111,49 @@ def add_categories(programs):
     return programs
 
 
+class LotteFetchError(Exception):
+    """편성 API 호출 자체가 실패(404/차단/JSON 아님 등)한 경우.
+    '진짜 편성 0건'과 구분해야 기존 데이터를 빈 리스트로 덮어쓰지 않는다."""
+
+
+API_URL = "https://www.lotteimall.com/main/{endpoint}.lotte?bdDate={date_compact}&date={date_dash}"
+# 2026-11-02 KST 01시~08시경 롯데 쪽 일시 장애로 이 주소가 404를 냈다가 복구됐다.
+# 일시 장애는 몇 번 재시도로 넘기고, 끝내 실패하면 LotteFetchError로 알린다.
+RETRY_DELAYS = (2, 5, 10)
+
+
+def _request_prods(endpoint, date_compact, date_dash):
+    """body.prod 리스트를 반환. 재시도 후에도 실패하면 LotteFetchError."""
+    url = API_URL.format(endpoint=endpoint, date_compact=date_compact, date_dash=date_dash)
+    headers = {"User-Agent": UA, "Referer": "https://www.lotteimall.com/main/viewMain.lotte"}
+    last_err = None
+    for i, delay in enumerate((0,) + RETRY_DELAYS):
+        if delay:
+            time.sleep(delay)
+        try:
+            r = requests.get(url, headers=headers, timeout=12)
+            r.raise_for_status()
+            try:
+                data = r.json()
+            except ValueError:
+                raise LotteFetchError(f"JSON 아님 (HTTP {r.status_code}, {len(r.text)}b)")
+            body = data.get("body") if isinstance(data, dict) else None
+            if not isinstance(body, dict) or "prod" not in body:
+                # 구조가 바뀐 경우는 재시도해도 소용없으니 바로 실패
+                raise LotteFetchError(f"응답 구조 변경: keys={list(data)[:10] if isinstance(data, dict) else type(data)}")
+            return body.get("prod") or []
+        except LotteFetchError:
+            raise
+        except Exception as e:
+            last_err = e
+            print(f"    [LT] 요청 실패 ({i + 1}/{len(RETRY_DELAYS) + 1}): {e}")
+    raise LotteFetchError(str(last_err))
+
+
 def fetch_lotte(date_compact, date_dash, endpoint):
     """
     endpoint: 'scheduleLive'(라이브TV) | 'scheduleOne'(원TV/데이터방송)
+    API 호출 자체가 실패하면 LotteFetchError를 던진다 (빈 리스트와 구분).
 
     주의: 롯데 API는 bdDate로 요청해도 응답에 전날 밤 ~ 당일 새벽 방송까지
     함께 내려준다 (예: bdDate=20260627 요청 시 06-26 22:40 방송도 포함되고,
@@ -122,13 +163,9 @@ def fetch_lotte(date_compact, date_dash, endpoint):
     항목만 추려서 반환한다. stime만 보고 날짜를 추정하면 전날/다음날
     방송이 같은 날짜로 잘못 합쳐져 중복이 발생한다.
     """
-    headers = {"User-Agent": UA, "Referer": "https://www.lotteimall.com/main/viewMain.lotte"}
-    url = f"https://www.lotteimall.com/main/{endpoint}.lotte?bdDate={date_compact}&date={date_dash}"
+    prods = _request_prods(endpoint, date_compact, date_dash)
     programs = []
     try:
-        r = requests.get(url, headers=headers, timeout=12)
-        r.raise_for_status()
-        prods = r.json().get("body", {}).get("prod", []) or []
         for p in prods:
             sdate = (p.get("sdate") or "")[:10]
             actual_date = sdate or date_dash  # sdate 없으면 방어적으로 요청일 간주
@@ -201,7 +238,8 @@ def fetch_lotte(date_compact, date_dash, endpoint):
                         rel_entry["pgm"] = pgm
                     programs.append(rel_entry)
     except Exception as e:
-        print(f"    [LT] 오류: {e}")
+        # 개별 항목 파싱 문제는 수집된 만큼은 살린다
+        print(f"    [LT] 항목 파싱 오류: {e}")
 
     # 같은 응답 안에서도 항목이 중복으로 잡힐 가능성에 대한 방어적 dedup
     seen = set()
@@ -236,6 +274,7 @@ def load_month(sub_dir, ym):
 def main():
     base = today_kst()
     today_str = base.strftime("%Y-%m-%d")
+    failures = 0
 
     for broadcast, endpoint in BROADCASTS:
         sub_dir = os.path.join(OUTPUT_DIR, f"LT_{broadcast}")
@@ -257,7 +296,15 @@ def main():
                 continue
 
             print(f"[LT_{broadcast}] {date_dash} 수집 중...")
-            programs = fetch_lotte(date_compact, date_dash, endpoint)
+            try:
+                programs = fetch_lotte(date_compact, date_dash, endpoint)
+            except LotteFetchError as e:
+                failures += 1
+                kept = len(days.get(date_dash) or [])
+                print(f"    [LT] 수집 실패: {e}")
+                print(f"  -> 기존값 유지 ({kept}개)")
+                time.sleep(REQUEST_DELAY)
+                continue
             programs = add_categories(programs)
 
             if is_past and not programs:
@@ -282,6 +329,11 @@ def main():
                 }, f, ensure_ascii=False, indent=2)
             print(f"  저장: {out_path} ({len(sorted_days)}일)")
 
+    if failures:
+        # 워크플로우의 '스크래퍼 실패 시 잡 실패 처리' 스텝이 잡도록 비정상 종료.
+        # (데이터는 위에서 이미 저장 — 기존값 보존 상태)
+        print(f"\n[LT] {failures}건 수집 실패 — 엔드포인트 변경 여부 확인 필요")
+        sys.exit(1)
     print("\n완료.")
 
 
