@@ -1,7 +1,7 @@
 {
   "weekStart": "2026-10-26",
   "weekEnd": "2026-11-01",
-  "collectedAt": "2026-11-02T05:57:19.987719+09:00",
+  "collectedAt": "2026-11-02T08:31:07.212458+09:00",
   "programs": [
     {
       "id": "drama_욕망의 덫_KBS2_오후 07:50",
@@ -894,12 +894,17 @@
         "일"
       ],
       "time": "오후 08:00",
-      "rating": 14.7,
-      "ratingDate": "10.31",
+      "rating": 16.1,
+      "ratingDate": "11.01",
       "ratingByDay": {
         "토": {
           "rating": 14.7,
           "ratingDate": "10.31"
+        },
+        "일": {
+          "rating": 16.1,
+          "ratingDate": "11.01",
+          "source": "nielsen"
         }
       },
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=41313358&qvt=0&query=%EC%82%AC%EB%9E%91%EC%9D%B4%20%EC%98%A8%EB%8B%A4"
@@ -914,12 +919,17 @@
         "일"
       ],
       "time": "오후 09:10",
-      "rating": 7.2,
-      "ratingDate": "10.31",
+      "rating": 9.8,
+      "ratingDate": "11.01",
       "ratingByDay": {
         "토": {
           "rating": 7.2,
           "ratingDate": "10.31"
+        },
+        "일": {
+          "rating": 9.8,
+          "ratingDate": "11.01",
+          "source": "nielsen"
         }
       },
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40393728&qvt=0&query=100%EC%9D%BC%EC%9D%98%20%EA%B1%B0%EC%A7%93%EB%A7%90"
@@ -1729,9 +1739,15 @@
         "일"
       ],
       "time": "오후 10:30",
-      "rating": 2.2,
-      "ratingDate": "10.31",
-      "ratingByDay": {},
+      "rating": 2.6,
+      "ratingDate": "11.01",
+      "ratingByDay": {
+        "일": {
+          "rating": 2.6,
+          "ratingDate": "11.01",
+          "source": "nielsen"
+        }
+      },
       "link": "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&mra=QkRS^bjkw^VmJEX0NQYw==^TEdOX0tJVA==&pkid=57&os=40968024&qvt=0&query=%ED%8C%8C%EC%9D%B4%EB%84%90%20%ED%85%8C%EC%9D%B4%EB%B8%94"
     },
     {
