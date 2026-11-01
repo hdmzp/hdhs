@@ -116,101 +116,38 @@ class LotteFetchError(Exception):
     '진짜 편성 0건'과 구분해야 기존 데이터를 빈 리스트로 덮어쓰지 않는다."""
 
 
-# 편성 API 후보 URL. 첫 번째가 2026-11-01까지 쓰던 주소.
-# 2026-11-01 KST 밤부터 www.../main/scheduleLive.lotte 가 404를 내기 시작해
-# 모바일 도메인 → 메인 페이지에서 경로 자동탐지 순으로 폴백한다.
-ENDPOINT_TEMPLATES = [
-    "https://www.lotteimall.com/main/{endpoint}.lotte?bdDate={date_compact}&date={date_dash}",
-    "https://m.lotteimall.com/main/{endpoint}.lotte?bdDate={date_compact}&date={date_dash}",
-]
-DISCOVERY_PAGES = [
-    "https://www.lotteimall.com/main/viewMain.lotte",
-    "https://m.lotteimall.com/main/viewMain.lotte",
-]
-_working_template = {}   # endpoint -> 성공한 URL 템플릿 (실행 중 캐시)
-_discovered = None       # 자동탐지 결과 캐시
-
-
-def _headers(url):
-    host = url.split("/")[2]
-    return {"User-Agent": UA, "Referer": f"https://{host}/main/viewMain.lotte",
-            "Accept": "application/json, text/javascript, */*; q=0.01",
-            "X-Requested-With": "XMLHttpRequest"}
-
-
-def _discover_templates(endpoint):
-    """메인 페이지(및 거기서 불러오는 JS)에서 {endpoint}*.lotte 경로를 찾아
-    URL 템플릿으로 돌려준다. 롯데가 경로만 옮긴 경우 자동으로 따라가기 위함."""
-    global _discovered
-    if _discovered is None:
-        _discovered = []
-        pat = re.compile(r"""["'(]((?:https?://[a-z.]*lotteimall\.com)?/[\w./-]*schedule(?:Live|One)\w*\.lotte)""")
-        js_pat = re.compile(r"""<script[^>]+src=["']([^"']+\.js[^"']*)["']""")
-        for page in DISCOVERY_PAGES:
-            base = "/".join(page.split("/")[:3])
-            try:
-                r = requests.get(page, headers={"User-Agent": UA}, timeout=12)
-                texts = [r.text]
-                for js in js_pat.findall(r.text)[:40]:
-                    js_url = js if js.startswith("http") else (
-                        "https:" + js if js.startswith("//") else base + "/" + js.lstrip("/"))
-                    if "lotte" not in js_url:
-                        continue
-                    try:
-                        texts.append(requests.get(js_url, headers={"User-Agent": UA}, timeout=12).text)
-                    except Exception:
-                        pass
-                for t in texts:
-                    for path in pat.findall(t):
-                        full = path if path.startswith("http") else base + path
-                        if full not in _discovered:
-                            _discovered.append(full)
-            except Exception as e:
-                print(f"    [LT] 경로 탐지 실패 ({page}): {e}")
-        if _discovered:
-            print(f"    [LT] 자동탐지된 편성 경로: {_discovered}")
-    want = "Live" if endpoint == "scheduleLive" else "One"
-    return [u + "?bdDate={date_compact}&date={date_dash}"
-            for u in _discovered if f"schedule{want}" in u]
+API_URL = "https://www.lotteimall.com/main/{endpoint}.lotte?bdDate={date_compact}&date={date_dash}"
+# 2026-11-02 KST 01시~08시경 롯데 쪽 일시 장애로 이 주소가 404를 냈다가 복구됐다.
+# 일시 장애는 몇 번 재시도로 넘기고, 끝내 실패하면 LotteFetchError로 알린다.
+RETRY_DELAYS = (2, 5, 10)
 
 
 def _request_prods(endpoint, date_compact, date_dash):
-    """후보 URL을 차례로 시도해 body.prod 리스트를 반환. 전부 실패하면 LotteFetchError."""
-    cached = _working_template.get(endpoint)
-    candidates = ([cached] if cached else []) + [t for t in ENDPOINT_TEMPLATES if t != cached]
-    errors = []
-    tried = set()
-
-    def attempt(tmpl):
-        url = tmpl.format(endpoint=endpoint, date_compact=date_compact, date_dash=date_dash)
-        r = requests.get(url, headers=_headers(url), timeout=12)
-        r.raise_for_status()
+    """body.prod 리스트를 반환. 재시도 후에도 실패하면 LotteFetchError."""
+    url = API_URL.format(endpoint=endpoint, date_compact=date_compact, date_dash=date_dash)
+    headers = {"User-Agent": UA, "Referer": "https://www.lotteimall.com/main/viewMain.lotte"}
+    last_err = None
+    for i, delay in enumerate((0,) + RETRY_DELAYS):
+        if delay:
+            time.sleep(delay)
         try:
-            data = r.json()
-        except ValueError:
-            raise LotteFetchError(f"JSON 아님 (HTTP {r.status_code}, {len(r.text)}b): {url}")
-        body = data.get("body") if isinstance(data, dict) else None
-        if not isinstance(body, dict) or "prod" not in body:
-            raise LotteFetchError(f"응답 구조 변경 (keys={list(data)[:10] if isinstance(data, dict) else type(data)}): {url}")
-        return body.get("prod") or []
-
-    for phase in (candidates, None):
-        if phase is None:
-            phase = _discover_templates(endpoint)
-        for tmpl in phase:
-            if tmpl in tried:
-                continue
-            tried.add(tmpl)
+            r = requests.get(url, headers=headers, timeout=12)
+            r.raise_for_status()
             try:
-                prods = attempt(tmpl)
-                if _working_template.get(endpoint) != tmpl:
-                    if tmpl != ENDPOINT_TEMPLATES[0]:
-                        print(f"    [LT] 대체 경로 사용: {tmpl}")
-                    _working_template[endpoint] = tmpl
-                return prods
-            except Exception as e:
-                errors.append(str(e))
-    raise LotteFetchError(" | ".join(errors) or "시도할 경로 없음")
+                data = r.json()
+            except ValueError:
+                raise LotteFetchError(f"JSON 아님 (HTTP {r.status_code}, {len(r.text)}b)")
+            body = data.get("body") if isinstance(data, dict) else None
+            if not isinstance(body, dict) or "prod" not in body:
+                # 구조가 바뀐 경우는 재시도해도 소용없으니 바로 실패
+                raise LotteFetchError(f"응답 구조 변경: keys={list(data)[:10] if isinstance(data, dict) else type(data)}")
+            return body.get("prod") or []
+        except LotteFetchError:
+            raise
+        except Exception as e:
+            last_err = e
+            print(f"    [LT] 요청 실패 ({i + 1}/{len(RETRY_DELAYS) + 1}): {e}")
+    raise LotteFetchError(str(last_err))
 
 
 def fetch_lotte(date_compact, date_dash, endpoint):
