@@ -1,0 +1,12 @@
+name: LT probe (temp)
+on:
+  push:
+    branches: [ccr-a7fa47f3-a2d6t2]
+    paths: [.github/workflows/lt-probe.yml, tools/lt_probe.py]
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install requests
+      - run: python tools/lt_probe.py
