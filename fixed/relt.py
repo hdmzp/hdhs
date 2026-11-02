@@ -57,7 +57,10 @@ UA = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
     "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 )
-REQUEST_TIMEOUT_SEC = 10
+# 상세 API(getContsTmplBBHomeTab.lotte)는 응답이 무거워 롯데 서버가 느릴 때
+# 10초를 넘긴다 (2026-11-02 장애 복구 직후 최유라쇼만 4회 연속 ReadTimeout →
+# 수집실패, 같은 실행에서 유난희는 정상). 여유 있게 30초.
+REQUEST_TIMEOUT_SEC = 30
 REQUEST_DELAY_SEC = 0.3
 
 # ============ 여기에 프로그램 추가 ============
