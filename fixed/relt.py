@@ -61,6 +61,9 @@ UA = (
 # 10초를 넘긴다 (2026-11-02 장애 복구 직후 최유라쇼만 4회 연속 ReadTimeout →
 # 수집실패, 같은 실행에서 유난희는 정상). 여유 있게 30초.
 REQUEST_TIMEOUT_SEC = 30
+# 장애 복구 직후 contstmpl API가 HTML 에러페이지를 연달아 내준다(2026-11-02
+# 유난희 3회 실패 후 4회째 성공, 최유라쇼는 4회 모두 실패). 기본 3회 → 6회.
+FETCH_RETRIES = 6
 REQUEST_DELAY_SEC = 0.3
 
 # ============ 여기에 프로그램 추가 ============
@@ -109,7 +112,8 @@ def parse_price(text) -> int:
 def fetch_json(session: requests.Session, url: str):
     """JSON 응답이면 dict를, 에러페이지(HTML) 등 JSON이 아니면 None을 반환.
     (일시적 장애는 scrape_guard가 지수 백오프로 재시도한다)"""
-    return scrape_guard.fetch_json(url, session=session, timeout=REQUEST_TIMEOUT_SEC)
+    return scrape_guard.fetch_json(url, session=session, timeout=REQUEST_TIMEOUT_SEC,
+                                   retries=FETCH_RETRIES)
 
 
 def extract_upcoming_products(section_data: dict) -> list:
