@@ -162,7 +162,16 @@ def crawl_lt_program(config: dict):
     program_title = (conts_info.get("contsMainTit") or "").strip()
     schedule_raw = (conts_info.get("contsBdctTime") or "").strip()
     detail_link = DETAIL_PAGE_URL.format(conts_no=conts_no)
+    # 프로그램 대표이미지 = 상세페이지 메인 배너(imgUrl, 1200x430).
+    # 이게 없으면 화면이 최신 방송 첫 상품 이미지로 폴백해서, 셀럽PGM 카드
+    # 썸네일이 매주 상품 사진(캐리어, 불고기 등)으로 바뀌어 보였다.
+    program_image = (conts_info.get("imgUrl") or "").strip()
+    if program_image.startswith("//"):
+        program_image = "https:" + program_image
+    elif program_image.startswith("/"):
+        program_image = urljoin(BASE_DOMAIN, program_image)
     print(f"    -> 프로그램명: {program_title} / 편성: {schedule_raw}")
+    print(f"    -> 프로그램 이미지: {program_image or '(못 찾음)'}")
 
     rel_link = conts_info.get("linkUrl")
     if not rel_link:
@@ -218,6 +227,7 @@ def crawl_lt_program(config: dict):
         "program_title": program_title,
         "schedule_raw": schedule_raw,
         "detail_link": detail_link,
+        "program_image": program_image,
         "products": upcoming_products,
     }
 
