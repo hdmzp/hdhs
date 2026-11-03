@@ -3405,6 +3405,7 @@
   }
   /* 방송 시각을 못 읽은 회차/상품 */
   .cel-verify-badge.time { background: #8B5CF6; }
+  .cel-search-tag { margin-left: 4px; font-size: 0.85em; opacity: 0.7; }
   /* 원데이 2회 중 본래 시각이 아닌 회차 - 셀럽 없이 'OO pick'으로만 진행됐을 수 있다 */
   .cel-verify-badge.celeb { background: #DB2777; }
 
@@ -7754,8 +7755,39 @@ const CEL_BRAND_PLACEHOLDER = /^(gs\s*shop|gs샵)$/i;
 // 한 브랜드가 상품코드 여러 개로 노출되는 그룹은 목록이 하염없이 길어진다.
 // 5개까지만 보여주고 나머지는 펼치기/접기로 숨긴다.
 const CEL_ROWS_COLLAPSED = 5;
-function celRenderProductList(products) {
-  const rows = (products || []).map(celRenderProductRow);
+// 홈사별 상품검색 URL (2026-11-03 GitHub Actions에서 실제 응답으로 확인).
+// 방송한정코드 상품은 방송이 끝나면 상품페이지가 '매진된 상품입니다'로 막혀서,
+// 종료된 회차 상품은 상품페이지 대신 그 홈사 검색결과로 보낸다.
+// (매진 여부를 상품마다 조회하면 수집 부하가 커서, 방송 종료 여부만으로 판단한다)
+const CEL_IS_MOBILE = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent || '');
+const CEL_SEARCH_URL = {
+  HD: q => `https://www.hmall.com/md/dpl/search?searchTerm=${q}`,
+  GS: q => `https://m.gsshop.com/search/searchSect.gs?tq=${q}`,
+  CJ: q => `https://display.cjonstyle.com/m/search/searchAllList?k=${q}`,
+  // 롯데는 모바일 접속 시 www → m 으로 넘기면서 검색어를 잃으므로 기기별로 나눈다
+  LT: q => `https://${CEL_IS_MOBILE ? 'm' : 'www'}.lotteimall.com/search/searchMain.lotte?headerQuery=${q}`,
+};
+
+// 검색어: 브랜드 우선, 브랜드가 없으면 상품명. 상품명은 [안내문]/(구성)/특수기호를
+// 걷어내고 앞 4단어만 쓴다 (전체 상품명으로 검색하면 결과가 0건인 경우가 많다).
+function celSearchKeyword(brand, name) {
+  if (brand) return brand;
+  const cleaned = String(name || '')
+    .replace(/\[[^\]]*\]|\([^)]*\)|\{[^}]*\}/g, ' ')
+    .replace(/[^\p{L}\p{N}\s.+&-]/gu, ' ')
+    .trim().split(/\s+/).filter(Boolean).slice(0, 4).join(' ');
+  return cleaned || String(name || '').trim();
+}
+
+function celSearchUrl(company, brand, name) {
+  const fn = CEL_SEARCH_URL[String(company || '').toUpperCase()];
+  const kw = celSearchKeyword(brand, name);
+  return (fn && kw) ? fn(encodeURIComponent(kw)) : '';
+}
+
+// opts: { company, aired } - aired(종료된 회차)면 상품 링크 대신 홈사 검색으로 연결
+function celRenderProductList(products, opts) {
+  const rows = (products || []).map(p => celRenderProductRow(p, opts));
   if (rows.length <= CEL_ROWS_COLLAPSED) return rows.join('');
   const hiddenCnt = rows.length - CEL_ROWS_COLLAPSED;
   return rows.slice(0, CEL_ROWS_COLLAPSED).join('') +
@@ -7763,10 +7795,16 @@ function celRenderProductList(products) {
     `<button type="button" class="cel-more-btn" data-more="${hiddenCnt}">+ ${hiddenCnt}개 펼치기</button>`;
 }
 
-function celRenderProductRow(p) {
+function celRenderProductRow(p, opts) {
   const priceText = p.price ? Number(p.price).toLocaleString() + '원' : '';
   // 자리표시자 브랜드('GS SHOP' = 브랜드 추론 못 한 GS 상품)는 태그로도 안 보여준다
   const brandShown = (p.brand && !CEL_BRAND_PLACEHOLDER.test(String(p.brand).trim())) ? p.brand : '';
+  // 종료된 회차: 방송한정코드가 매진 처리돼 상품페이지가 막히므로 홈사 검색결과로
+  const searchUrl = (opts && opts.aired) ? celSearchUrl(opts.company, brandShown, p.name) : '';
+  const href = searchUrl || p.link || '#';
+  const searchTag = searchUrl
+    ? `<span class="cel-search-tag" title="방송이 끝난 상품은 매진으로 막혀서 ${opts.company} 검색결과로 연결돼요">🔍</span>`
+    : '';
   const brandTag = brandShown ? `<span class="cel-prod-brand">${brandShown}</span>` : '';
   // 롯데처럼 한 방송이 구간별로 쪼개져 편성되는 경우, 묶인 회차 안에서
   // 이 상품이 나온 구간을 표시한다 ("08:20-09:20(60')").
@@ -7780,8 +7818,8 @@ function celRenderProductRow(p) {
       ? `<span class="cel-verify-badge time" title="방송 날짜만 확인되고 시각은 몰라 이 회차에 넣은 상품이에요">시간확인필요</span>`
       : '');
   return (
-    `<a class="cel-prod-row" href="${p.link || '#'}" target="_blank" rel="noopener noreferrer">` +
-      `<div class="cel-prod-name">${timeTag}${brandTag}${p.name || ''}${verifyTag}</div>` +
+    `<a class="cel-prod-row" href="${href}" target="_blank" rel="noopener noreferrer">` +
+      `<div class="cel-prod-name">${timeTag}${brandTag}${p.name || ''}${verifyTag}${searchTag}</div>` +
       (priceText ? `<div class="cel-prod-price">${priceText}</div>` : '') +
     `</a>`
   );
@@ -8027,7 +8065,8 @@ function celRenderBand(file) {
               ? `<span class="cel-verify-badge time" title="방송 날짜만 확인되고 시각은 모르는 회차예요">시간확인필요</span>` : '') +
             (!b.offAir && celebCheckOf(b) ? CEL_CELEB_CHECK_BADGE : '') +
           `</div>` +
-          (b.offAir ? `<div class="cel-off-air">휴방</div>` : celRenderProductList(b.products)) +
+          (b.offAir ? `<div class="cel-off-air">휴방</div>`
+            : celRenderProductList(b.products, { company: meta.company, aired: !celBroadcastIsUpcoming(b) })) +
           `</div>`
         ).join('');
         return `<div class="cel-week">` +
