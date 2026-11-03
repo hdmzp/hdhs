@@ -7703,6 +7703,10 @@ async function celInitLoad() {
   const statusData = await fetchJsonSafe('./homeshopping/representative_programs/status.json');
   celStatus = (statusData && statusData.programs) || {};
 
+  // 상품 링크 열림 점검 결과 (없으면 전부 상품 링크 그대로)
+  const linkData = await fetchJsonSafe('./homeshopping/representative_programs/link_status.json');
+  celLinkStatus = (linkData && linkData.items) || {};
+
   // 특이사항(겹치는 품목) 셀의 품목 키워드 사전
   if (celItemKeywords === null) {
     const kw = await fetchJsonSafe('./fixed/celeb_item_keywords.json');
@@ -7756,9 +7760,9 @@ const CEL_BRAND_PLACEHOLDER = /^(gs\s*shop|gs샵)$/i;
 // 5개까지만 보여주고 나머지는 펼치기/접기로 숨긴다.
 const CEL_ROWS_COLLAPSED = 5;
 // 홈사별 상품검색 URL (2026-11-03 GitHub Actions에서 실제 응답으로 확인).
-// 방송한정코드 상품은 방송이 끝나면 상품페이지가 '매진된 상품입니다'로 막혀서,
-// 종료된 회차 상품은 상품페이지 대신 그 홈사 검색결과로 보낸다.
-// (매진 여부를 상품마다 조회하면 수집 부하가 커서, 방송 종료 여부만으로 판단한다)
+// 방송한정코드 상품은 상품페이지가 '매진된 상품입니다'로 막힌다. 수집 단계
+// (fixed/celeb_link_check.py)가 실제로 열어보고 막힌 상품을 link_status.json에
+// 's: "x"'로 남기면, 그 상품만 상품페이지 대신 홈사 검색결과로 보낸다.
 const CEL_IS_MOBILE = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent || '');
 const CEL_SEARCH_URL = {
   HD: q => `https://www.hmall.com/md/dpl/search?searchTerm=${q}`,
@@ -7779,13 +7783,23 @@ function celSearchKeyword(brand, name) {
   return cleaned || String(name || '').trim();
 }
 
+// 셀럽PGM 상품 링크 점검 결과 ('CO|상품코드' -> {s: 'x'|'ok'|'?'})
+let celLinkStatus = null;
+const CEL_PID_RE = { HD: /slitmCd=(\d+)/, GS: /prdid=(\d+)/, CJ: /\/item\/(\d+)/, LT: /goods_no=(\d+)/ };
+
+function celLinkClosed(company, link) {
+  const co = String(company || '').toUpperCase();
+  const m = (CEL_PID_RE[co] && String(link || '').match(CEL_PID_RE[co])) || null;
+  return !!(m && celLinkStatus && (celLinkStatus[`${co}|${m[1]}`] || {}).s === 'x');
+}
+
 function celSearchUrl(company, brand, name) {
   const fn = CEL_SEARCH_URL[String(company || '').toUpperCase()];
   const kw = celSearchKeyword(brand, name);
   return (fn && kw) ? fn(encodeURIComponent(kw)) : '';
 }
 
-// opts: { company, aired } - aired(종료된 회차)면 상품 링크 대신 홈사 검색으로 연결
+// opts: { company } - 상품페이지가 막힌 상품(link_status 'x')은 홈사 검색으로 연결
 function celRenderProductList(products, opts) {
   const rows = (products || []).map(p => celRenderProductRow(p, opts));
   if (rows.length <= CEL_ROWS_COLLAPSED) return rows.join('');
@@ -7799,11 +7813,12 @@ function celRenderProductRow(p, opts) {
   const priceText = p.price ? Number(p.price).toLocaleString() + '원' : '';
   // 자리표시자 브랜드('GS SHOP' = 브랜드 추론 못 한 GS 상품)는 태그로도 안 보여준다
   const brandShown = (p.brand && !CEL_BRAND_PLACEHOLDER.test(String(p.brand).trim())) ? p.brand : '';
-  // 종료된 회차: 방송한정코드가 매진 처리돼 상품페이지가 막히므로 홈사 검색결과로
-  const searchUrl = (opts && opts.aired) ? celSearchUrl(opts.company, brandShown, p.name) : '';
+  // 상품페이지가 막힌 상품(방송한정코드 매진 등)은 홈사 검색결과로
+  const searchUrl = (opts && celLinkClosed(opts.company, p.link))
+    ? celSearchUrl(opts.company, brandShown, p.name) : '';
   const href = searchUrl || p.link || '#';
   const searchTag = searchUrl
-    ? `<span class="cel-search-tag" title="방송이 끝난 상품은 매진으로 막혀서 ${opts.company} 검색결과로 연결돼요">🔍</span>`
+    ? `<span class="cel-search-tag" title="상품페이지가 매진·판매종료로 막혀 있어 ${opts.company} 검색결과로 연결돼요">🔍</span>`
     : '';
   const brandTag = brandShown ? `<span class="cel-prod-brand">${brandShown}</span>` : '';
   // 롯데처럼 한 방송이 구간별로 쪼개져 편성되는 경우, 묶인 회차 안에서
@@ -8066,7 +8081,7 @@ function celRenderBand(file) {
             (!b.offAir && celebCheckOf(b) ? CEL_CELEB_CHECK_BADGE : '') +
           `</div>` +
           (b.offAir ? `<div class="cel-off-air">휴방</div>`
-            : celRenderProductList(b.products, { company: meta.company, aired: !celBroadcastIsUpcoming(b) })) +
+            : celRenderProductList(b.products, { company: meta.company })) +
           `</div>`
         ).join('');
         return `<div class="cel-week">` +
