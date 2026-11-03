@@ -6,13 +6,17 @@
 안내로 막힌다. 화면(index.html 셀럽PGM 탭)은 이 파일의 결과를 보고 막힌 상품만
 홈사 검색결과(브랜드, 없으면 상품명)로 연결한다.
 
-== 판정 (pricewatch_scraper의 회사별 상품페이지 수집기 재사용) ==
-- 수집기가 상품정보를 읽음 → soldout이면 "x"(안 열림), 아니면 "ok"
-- 수집기가 상품정보를 못 읽음 → 같은 페이지를 다시 받아 매진/판매중단 안내문이
-  있으면 "x". 안내문도 없으면(예: CJ 트래픽 대기 페이지) 판단 보류 → 기록만 하고
-  화면은 상품 링크 유지
-  (2026-11-03 실측: LT는 82KB짜리 "판매하지 않는 상품" 안내 페이지, CJ는
-   '매진'/'죄송' 문구가 든 페이지가 이 경우였다)
+== 판정 (상품페이지 1회 요청) ==
+- 페이지에 '막힘 안내문'이 정확히 있으면 "x"(안 열림)
+  예) CJ "죄송합니다. 현재 매진된 상품입니다.", LT "판매하지 않는 상품" 안내 페이지
+- 상품 단위 매진 플래그("soldOutYn":"Y")가 있으면 "x"
+- 그 밖에 정상 응답이면 "ok", 요청 실패/비정상 응답이면 "?"(판단 보류)
+화면은 "x"만 홈사 검색결과로 연결하고 나머지는 상품 링크를 유지한다.
+
+주의: '매진' 같은 단어 하나로 판정하면 안 된다. 2026-11-03 첫 실행에서
+"방송 4분만에 전체매진 된 전설의 캔디"(CJ 상세 홍보문구)가 걸려 멀쩡한 상품
+3개를 막힘으로 잘못 기록했다. 옵션 하나만 품절이어도 뜨는 '일시품절'도 제외
+(그 페이지는 열린다).
 
 == 부하 제한 ==
 - 대상: 셀럽PGM 월별 누적(이번 달 + 지난 달) 상품
@@ -35,7 +39,7 @@ from datetime import datetime, timedelta, timezone
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
-import pricewatch_scraper as pw  # noqa: E402
+import pricewatch_scraper as pw  # noqa: E402  (UA·타임아웃 공유)
 
 KST = timezone(timedelta(hours=9))
 DIR = os.path.join(ROOT, "homeshopping", "representative_programs")
@@ -60,7 +64,12 @@ RAW_URL = {
     "CJ": "https://item.cjonstyle.com/nfront/item/{pid}",
     "LT": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no={pid}",
 }
-CLOSED_MARKERS = ("매진", "죄송합니다", "판매하지 않", "판매종료", "판매가 종료", "판매중지")
+# 상품페이지가 막혔을 때 나오는 안내문 (구체적인 문장만 - 단어 하나는 오탐)
+CLOSED_PHRASES = ("매진된 상품", "판매하지 않는 상품", "판매하지 않는상품", "판매가 종료된",
+                  "판매 종료된 상품", "판매종료된 상품", "판매가 중지된", "판매중지된 상품")
+SOLDOUT_FLAG_RE = re.compile(r'"(?:soldOutYn|sldoutYn|soldoutYn)"\s*:\s*"Y"')
+# 판정 기준이 바뀌면 올린다 → 이전 기준으로 기록된 "x"는 버리고 다시 본다
+CRITERIA_VERSION = 2
 
 
 def now_kst():
@@ -116,28 +125,37 @@ def needs_check(entry, bdate, today, now):
     return now - last >= (NEAR_RECHECK if near else FAR_RECHECK)
 
 
+def judge(text):
+    """페이지 본문으로 'x'/'ok' 판정 (요청과 분리해 테스트 가능하게)."""
+    if any(p in text for p in CLOSED_PHRASES) or SOLDOUT_FLAG_RE.search(text):
+        return "x"
+    return "ok"
+
+
 def check(co, pid):
     """'x'(안 열림) / 'ok' / '?'(판단 보류) 반환."""
     try:
-        res = pw.FETCHERS[co](pid)
-    except Exception:
-        res = None
-    if isinstance(res, dict):
-        return "x" if res.get("soldout") else "ok"
-    try:
         headers = {"User-Agent": pw.GS_MOBILE_UA if co == "GS" else pw.UA}
+        if co == "CJ":
+            headers["Referer"] = "https://display.cjonstyle.com/p/item/"
         r = requests.get(RAW_URL[co].format(pid=pid), headers=headers, timeout=pw.TIMEOUT)
-        if r.status_code == 200 and any(m in r.text for m in CLOSED_MARKERS):
-            return "x"
     except Exception:
-        pass
-    return "?"
+        return "?"
+    if r.status_code != 200 or len(r.text) < 2000:
+        return "?"
+    return judge(r.text)
 
 
 def main():
     now = now_kst()
     today = now.date()
-    prev = load_json(OUT_PATH, {}).get("items", {}) or {}
+    prev_doc = load_json(OUT_PATH, {})
+    prev = prev_doc.get("items", {}) or {}
+    if prev_doc.get("v") != CRITERIA_VERSION:
+        dropped = [k for k, v in prev.items() if v.get("s") == "x"]
+        prev = {k: v for k, v in prev.items() if v.get("s") != "x"}
+        if dropped:
+            print(f"[링크점검] 판정 기준 변경(v{CRITERIA_VERSION}) - 이전 '안 열림' {len(dropped)}건 재점검")
     products = collect_products(today)
 
     todo = []
@@ -173,7 +191,7 @@ def main():
 
     os.makedirs(DIR, exist_ok=True)
     with open(OUT_PATH, "w", encoding="utf-8") as f:
-        json.dump({"checked_at": now.isoformat(timespec="seconds"),
+        json.dump({"v": CRITERIA_VERSION, "checked_at": now.isoformat(timespec="seconds"),
                    "items": dict(sorted(items.items()))}, f, ensure_ascii=False, indent=1)
     total_x = sum(1 for v in items.values() if v.get("s") == "x")
     print(f"[링크점검] 이번 점검 {sum(counts.values())}건: 안 열림 {counts['x']} / 정상 {counts['ok']} "
