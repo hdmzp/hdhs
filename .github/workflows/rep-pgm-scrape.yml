@@ -76,6 +76,13 @@ jobs:
       - name: Build monthly celeb history
         run: python fixed/build_celeb_history.py
 
+      # 셀럽PGM 상품페이지가 실제로 열리는지 점검 (방송한정코드 매진 등).
+      # 막힌 상품은 화면에서 홈사 검색결과로 연결된다. 실행당 최대 120건으로
+      # 제한하고, 실패해도 수집 결과에는 영향이 없도록 격리한다.
+      - name: 셀럽PGM 상품 링크 점검
+        continue-on-error: true
+        run: python fixed/celeb_link_check.py
+
       # 산출물 검사: 이번 실행에서 갱신 안 된 파일 / 빈 파일 / 급감을 잡는다.
       # continue-on-error를 두는 이유 - 일부 회사만 실패했어도 성공한 회사의
       # 데이터는 커밋해서 살려야 하기 때문. 대신 잡 마지막에서 실패 처리한다.
