@@ -37,7 +37,8 @@ homeshopping/representative_programs/history/{YYYY-MM}.json (셀럽PGM 월 누�
   회사 순서 → 방송 시각 순, 브랜드는 중복 없이 최대 TODAY_BRAND_MAX개 (넘으면 '외 N개').
   상품이 아직 안 올라온 회차는 데이터에 없어서 빠진다.
 - 어제 셀럽PGM 방송이 하나도 없으면(주로 일요일) 회사별 '어제 20:45에는 ...' 채움 줄을
-  보내지 않는다. 특이사항·오늘의 셀럽PGM이 있으면 그것만, 둘 다 없으면 발송 자체를 생략.
+  보내지 않고 '어제는 셀럽PGM이 없었어요' 한 줄 + 특이사항·오늘의 셀럽PGM만 보낸다.
+  특이사항·오늘의 셀럽PGM이 둘 다 없으면 발송 자체를 생략.
 
 == 환경변수 ==
   TELEGRAM_BOT_TOKEN  (필수) BotFather 에서 발급받은 봇 토큰
@@ -339,9 +340,9 @@ def build_message(day, progs):
         # 어제 셀럽PGM이 없던 날(주로 일요일): 편성표 채움 줄은 안 보낸다
         if not notes and not has_today:
             return None
-        lines = []
+        lines = ["📺 어제(%02d/%02d %s)는 셀럽PGM이 없었어요" % (day.month, day.day, WEEKDAY_KO[day.weekday()]), ""]
         if notes:
-            lines += [header, "", "📌 <b>특이사항</b>"] + ["· " + esc(n) for n in notes] + [""]
+            lines += ["📌 <b>특이사항</b>"] + ["· " + esc(n) for n in notes] + [""]
         if has_today:
             lines += today_lines + [""]
         return lines + [link_line]
