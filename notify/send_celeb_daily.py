@@ -491,6 +491,16 @@ def run_time(company, day, hm):
     return span_text(hm, end)
 
 
+def part_brands_html(products):
+    """[1부] 줄의 브랜드들 - 브랜드마다 그 브랜드 첫 상품 링크를 건다"""
+    first_link = {}
+    for p in products:
+        b = clean_name((p.get("brand") or "").strip())
+        b = "확인필요" if b in PLACEHOLDER_BRANDS else b
+        first_link.setdefault(b, (p.get("link") or "").strip())
+    return ", ".join(link_html(b, first_link.get(b, "")) for b in today_brands(products))
+
+
 def build_report(progs, day):
     """어제 셀럽PGM 회차별 실적 보고 틀. 방송이 없으면 []"""
     day_iso = day.isoformat()
@@ -530,7 +540,7 @@ def build_report(progs, day):
             for text, link in pick_products(b["products"])[0]:
                 seg = seg_by_link.get(link)
                 lines.append("")
-                lines.append("ㆍ%s" % esc(text))
+                lines.append("ㆍ%s" % link_html(text, link))  # 복사하면 글자만 남는다
                 lines.append("   %s" % (span_text(seg[0], seg[1], sep="") if seg else REPORT_BLANK_TIME))
                 lines.append("   %s" % REPORT_BLANK_SALES)
         else:
@@ -541,7 +551,7 @@ def build_report(progs, day):
                 lines.append("  ※ %s 고정 편성, 그 외 추가 방송 수시 운영" % usual_text)
             for i, b in enumerate(bs, 1):
                 lines.append("")
-                lines.append("[%d부] %s" % (i, esc(", ".join(today_brands(b["products"])))))
+                lines.append("[%d부] %s" % (i, part_brands_html(b["products"])))
                 lines.append("ㆍ운영시간 : %s" % run_time(co, day, b["hm"]))
                 lines.append("ㆍ%s" % REPORT_BLANK_SALES)
     return lines
