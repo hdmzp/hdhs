@@ -40,6 +40,12 @@ homeshopping/representative_programs/history/{YYYY-MM}.json (셀럽PGM 월 누�
 - 어제 셀럽PGM 방송이 하나도 없으면(주로 일요일) 회사별 '어제 20:45에는 ...' 채움 줄을
   보내지 않고 '어제는 셀럽PGM이 없었어요' 한 줄 + 특이사항·오늘의 셀럽PGM만 보낸다.
   특이사항·오늘의 셀럽PGM이 둘 다 없으면 발송 자체를 생략.
+- 보고 양식(별도 메시지): '📃복사해서 보고에 활용하세요' + 어제 회차별 실적 보고 틀.
+  운영시간은 회사 편성표(homeshopping/{회사}_live)의 회차 끝 시각으로 채우고,
+  순주문·달성률·상품별 시간은 알 수 없어 '0.0억, %' / '00:00 ~ 00:00, 0분' 빈칸으로 둔다.
+  (상품별 시간은 편성표·라방바 모두 회차 단위로만 와서 정확히 알 수 없다 - 2026-11 확인.
+   단 롯데는 상품마다 실제 편성 구간 segment_time이 있어 상품별·전체 시간을 그걸로 채운다)
+  같은 프로그램이 하루 2회 이상이면 [1부]/[2부]로 나누고 회차별 순주문만 쓴다.
 
 == 환경변수 ==
   TELEGRAM_BOT_TOKEN  (필수) BotFather 에서 발급받은 봇 토큰
@@ -212,6 +218,7 @@ def load_programs(day):
             prog = progs.setdefault(key, {"company": p.get("company", ""),
                                           "title": p.get("program_title") or p.get("tab_name") or key,
                                           "tab": p.get("tab_name") or p.get("program_title") or key,
+                                          "page": p.get("detail_link") or "",
                                           "broadcasts": {}})
             for b in p.get("broadcasts") or []:
                 m = re.search(r"(\d{1,2}):(\d{2})", b.get("label") or "")
@@ -436,6 +443,110 @@ def build_today(progs, today):
     return lines, bool(rows)
 
 
+# ---------------- 보고 양식 (별도 메시지) ----------------
+
+REPORT_BLANK_SALES = "순주문 0.0억, %"
+REPORT_BLANK_TIME = "(00:00 ~ 00:00, 0분)"
+
+
+def block_end(company, day, hm):
+    """그 회사 편성표(TV → 데이터방송 순)에서 hm에 시작한 회차의 끝 시각 (없으면 '').
+    시작 시각이 정확히 같은 회차만 본다 - 'hm에 방송 중이던 회차'로 넓히면
+    TV+ 방송(예: 겟잇스타일 19:00)이 TV의 다른 상품 회차 끝 시각을 잘못 집는다."""
+    for kind in ("live", "data"):
+        data = load_json(os.path.join(ROOT, "homeshopping", "%s_%s" % (company, kind),
+                                      day.strftime("%Y-%m") + ".json")) or {}
+        ends = [it["end"] for it in data.get("days", {}).get(day.isoformat(), [])
+                if it.get("start") == hm and it.get("end")]
+        if ends:
+            return max(ends)
+    return ""
+
+
+SEG_RE = re.compile(r"(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})")
+
+
+def seg_of(product):
+    """롯데 상품의 구간 시각 segment_time("20:45-21:45(60')") -> ('20:45', '21:45') 또는 None"""
+    m = SEG_RE.search(product.get("segment_time") or "")
+    if not m:
+        return None
+    return "%02d:%s" % (int(m.group(1)), m.group(2)), "%02d:%s" % (int(m.group(3)), m.group(4))
+
+
+def span_text(start, end, sep="~"):
+    mins = (int(end[:2]) * 60 + int(end[3:])) - (int(start[:2]) * 60 + int(start[3:]))
+    if mins <= 0:
+        mins += 24 * 60
+    return "%s%s%s (%d분)" % (start, sep, end, mins) if sep == "~" else "(%s ~ %s, %d분)" % (start, end, mins)
+
+
+def run_time(company, day, hm):
+    """'19:35~21:45 (130분)'. 끝 시각을 모르면 '19:35~'"""
+    end = block_end(company, day, hm) if hm else ""
+    if not hm:
+        return "시각 미상"
+    if not end:
+        return "%s~" % hm
+    return span_text(hm, end)
+
+
+def build_report(progs, day):
+    """어제 셀럽PGM 회차별 실적 보고 틀. 방송이 없으면 []"""
+    day_iso = day.isoformat()
+    order = {co: i for i, (co, _) in enumerate(COMPANIES)}
+    week_start = datetime.combine(day - timedelta(days=day.weekday()), datetime.min.time())
+    groups = []
+    for prog in progs.values():
+        bs = sorted([b for b in prog["broadcasts"]
+                     if b["date"] == day_iso and not b["off_air"] and b["products"]],
+                    key=lambda b: b["hm"])
+        if bs:
+            groups.append((order.get(prog["company"], 9), bs[0]["hm"], prog, bs))
+    if not groups:
+        return []
+    groups.sort(key=lambda g: (g[0], g[1]))
+    md = "%d/%d" % (day.month, day.day)
+    lines = ["📃 <b>복사해서 보고에 활용하세요</b>"]
+    for _, _, prog, bs in groups:
+        co, title = prog["company"], prog["title"]
+        lines.append("")
+        if prog["page"]:
+            lines.append('🔔 <a href="%s">%s 페이지 바로가기</a>' % (esc(prog["page"]), esc(prog["tab"])))
+        if len(bs) == 1:
+            b = bs[0]
+            lines.append("■ %s %s %s 실적 보고" % (md, esc(co), esc(title)))
+            lines.append("")
+            # 롯데는 상품마다 실제 편성 구간(segment_time)이 있어 그걸로 채운다
+            seg_by_link = {(x.get("link") or "").strip(): seg_of(x) for x in b["products"]}
+            segs = [v for v in seg_by_link.values() if v]
+            if segs and b["hm"]:
+                end = max(segs, key=lambda v: (v[1] < b["hm"], v[1]))[1]  # 자정 넘김 고려
+                total = span_text(b["hm"], end)
+            else:
+                total = run_time(co, day, b["hm"])
+            lines.append("ㆍ운영시간 : %s" % total)
+            lines.append("ㆍ합계 : %s" % REPORT_BLANK_SALES)
+            for text, link in pick_products(b["products"])[0]:
+                seg = seg_by_link.get(link)
+                lines.append("")
+                lines.append("ㆍ%s" % esc(text))
+                lines.append("   %s" % (span_text(seg[0], seg[1], sep="") if seg else REPORT_BLANK_TIME))
+                lines.append("   %s" % REPORT_BLANK_SALES)
+        else:
+            lines.append("■ %s %s %s %s" % (md, esc(co), esc(title), "/".join("%d부" % (i + 1) for i in range(len(bs)))))
+            u = usual_of(prog["broadcasts"], week_start)
+            if u["days"]:
+                usual_text = " / ".join("%s %s" % (WEEKDAY_KO[wd], u["times"][wd]) for wd in u["days"])
+                lines.append("  ※ %s 고정 편성, 그 외 추가 방송 수시 운영" % usual_text)
+            for i, b in enumerate(bs, 1):
+                lines.append("")
+                lines.append("[%d부] %s" % (i, esc(", ".join(today_brands(b["products"])))))
+                lines.append("ㆍ운영시간 : %s" % run_time(co, day, b["hm"]))
+                lines.append("ㆍ%s" % REPORT_BLANK_SALES)
+    return lines
+
+
 def main():
     day = target_day()
     progs = load_programs(day)
@@ -447,6 +558,9 @@ def main():
         print("%s 셀럽PGM 방송·특이사항·오늘 예정 모두 없음 - 발송 생략" % day)
         return
     chunks = chunk_lines(lines)
+    report = build_report(progs, day)
+    if report:
+        chunks += chunk_lines(report)  # 보고 양식은 따로 복사하기 쉽게 별도 메시지
     print("%s 셀럽PGM 운영상품 → 메시지 %d건" % (day, len(chunks)))
     if DRY_RUN:
         for i, c in enumerate(chunks, 1):
