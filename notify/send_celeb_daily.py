@@ -18,6 +18,10 @@ homeshopping/representative_programs/history/{YYYY-MM}.json (셀럽PGM 월 누�
    📌 특이사항
    · CJ 최화정쇼 10/14(수) 하루 2회 방송 (08:15, 20:45 · 평소 수 20:45)
 
+   🔔 10/30(금) 오늘의 셀럽PGM
+   [GS 소유진] 브랜드1, 브랜드2, 브랜드3
+   [CJ 바이림] 브랜드1, 브랜드2
+
    🔗 셀럽PGM 모니터링 바로가기   (https://hdmzp.github.io/hdhs/#celebrity)
 
 == 규칙 ==
@@ -29,6 +33,9 @@ homeshopping/representative_programs/history/{YYYY-MM}.json (셀럽PGM 월 누�
   그 회사 편성표(homeshopping/{회사}_live)에서 방송된 상품을 한 줄로 쓴다.
 - 특이사항: 셀럽PGM 탭 '방송 체크'와 같은 기준 (그 주 시작 전 12주 최빈값)으로
   어제 회차의 다른 요일·시간 / 하루 N회 / 휴방 / 평소 방송일인데 기록 없음.
+- 오늘의 셀럽PGM: 발송일(방송일 다음 날)에 잡힌 셀럽PGM 회차를 [회사 탭이름] 브랜드 나열로.
+  회사 순서 → 방송 시각 순, 브랜드는 중복 없이 최대 TODAY_BRAND_MAX개 (넘으면 '외 N개').
+  상품이 아직 안 올라온 회차는 데이터에 없어서 빠진다.
 
 == 환경변수 ==
   TELEGRAM_BOT_TOKEN  (필수) BotFather 에서 발급받은 봇 토큰
@@ -53,6 +60,7 @@ DRY_RUN = os.environ.get("DRY_RUN", "") == "1"
 COMPANIES = [("HD", "🔵"), ("GS", "🟢"), ("CJ", "🟣"), ("LT", "🔴")]
 WEEKDAY_KO = ["월", "화", "수", "목", "금", "토", "일"]
 DEFAULT_PRIME = "20:45"
+TODAY_BRAND_MAX = 5  # 오늘의 셀럽PGM 한 줄에 쓰는 브랜드 수
 # 메시지 맨 아래 바로가기 - 주소 끝 #celebrity로 셀럽PGM 탭이 바로 열린다 (index.html openTabFromHash)
 SITE_CELEB_URL = "https://hdmzp.github.io/hdhs/#celebrity"
 LOOKBACK_DAYS = 84  # 평소 = 직전 12주 (셀럽PGM 탭 CEL_NEWS_LOOKBACK_DAYS와 같음)
@@ -191,12 +199,13 @@ def pick_products(products):
 def load_programs(day):
     """program_key -> {company, title, broadcasts:[{date, hm, start(datetime), off_air, products}]}"""
     progs = {}
-    for delta in (-3, -2, -1, 0):
+    for delta in (-3, -2, -1, 0, 1):  # +1: 오늘의 셀럽PGM이 다음 달 1일일 때
         hist = load_json(os.path.join(HISTORY_DIR, shift_month(day, delta) + ".json")) or {}
         for p in hist.get("programs") or []:
             key = p.get("program_key")
             prog = progs.setdefault(key, {"company": p.get("company", ""),
                                           "title": p.get("program_title") or p.get("tab_name") or key,
+                                          "tab": p.get("tab_name") or p.get("program_title") or key,
                                           "broadcasts": {}})
             for b in p.get("broadcasts") or []:
                 m = re.search(r"(\d{1,2}):(\d{2})", b.get("label") or "")
@@ -350,7 +359,42 @@ def build_message(day, progs):
     else:
         lines.append("· 평소와 다른 편성이 없었어요")
     lines.append("")
+    lines.extend(build_today(progs, day + timedelta(days=1)))
+    lines.append("")
     lines.append('🔗 <a href="%s">셀럽PGM 모니터링 바로가기</a>' % SITE_CELEB_URL)
+    return lines
+
+
+def today_brands(products):
+    """상품 목록 -> 중복 없는 브랜드 이름들 (순서 유지)"""
+    seen = []
+    for p in products:
+        b = brand_of(p)
+        if b and b not in seen:
+            seen.append(b)
+    return seen
+
+
+def build_today(progs, today):
+    """🔔 MM/DD(요일) 오늘의 셀럽PGM - [회사 탭이름] 브랜드1, 브랜드2 ..."""
+    today_iso = today.isoformat()
+    order = {co: i for i, (co, _) in enumerate(COMPANIES)}
+    rows = []  # (회사순, 시각, 회사, 탭, 브랜드들)
+    for prog in progs.values():
+        for b in prog["broadcasts"]:
+            if b["date"] == today_iso and not b["off_air"]:
+                brands = today_brands(b["products"])
+                if brands:
+                    rows.append((order.get(prog["company"], 9), b["hm"], prog["company"], prog["tab"], brands))
+    rows.sort(key=lambda r: (r[0], r[1]))
+    lines = ["🔔 <b>%02d/%02d(%s) 오늘의 셀럽PGM</b>" % (today.month, today.day, WEEKDAY_KO[today.weekday()])]
+    if not rows:
+        lines.append("· 오늘 예정된 셀럽PGM 상품 정보가 아직 없어요")
+    for _, _, co, tab, brands in rows:
+        text = ", ".join(brands[:TODAY_BRAND_MAX])
+        if len(brands) > TODAY_BRAND_MAX:
+            text += " 외 %d개" % (len(brands) - TODAY_BRAND_MAX)
+        lines.append("[%s %s] %s" % (esc(co), esc(tab), esc(text)))
     return lines
 
 
