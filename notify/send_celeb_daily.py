@@ -40,7 +40,7 @@ homeshopping/representative_programs/history/{YYYY-MM}.json (셀럽PGM 월 누�
 - 어제 셀럽PGM 방송이 하나도 없으면(주로 일요일) 회사별 '어제 20:45에는 ...' 채움 줄을
   보내지 않고 '어제는 셀럽PGM이 없었어요' 한 줄 + 특이사항·오늘의 셀럽PGM만 보낸다.
   특이사항·오늘의 셀럽PGM이 둘 다 없으면 발송 자체를 생략.
-- 보고 양식(별도 메시지): '📃복사해서 보고에 활용하세요' + 어제 회차별 실적 보고 틀.
+- 보고 양식(별도 메시지): '📃복사해서 보고에 활용하세요' + 어제 회차별 실적 보고 틀 (HD 제외).
   운영시간은 회사 편성표(homeshopping/{회사}_live)의 회차 끝 시각으로 채우고,
   순주문·달성률·상품별 시간은 알 수 없어 '0.0억, %' / '00:00 ~ 00:00, 0분' 빈칸으로 둔다.
   (상품별 시간은 편성표·라방바 모두 회차 단위로만 와서 정확히 알 수 없다 - 2026-11 확인.
@@ -446,6 +446,7 @@ def build_today(progs, today):
 # ---------------- 보고 양식 (별도 메시지) ----------------
 
 REPORT_BLANK_SALES = "순주문 0.0억, %"
+REPORT_SKIP_COMPANIES = {"HD"}  # 보고 양식에서 빼는 회사 (2026-11-04 사용자 요청)
 REPORT_BLANK_TIME = "(00:00 ~ 00:00, 0분)"
 
 
@@ -508,6 +509,8 @@ def build_report(progs, day):
     week_start = datetime.combine(day - timedelta(days=day.weekday()), datetime.min.time())
     groups = []
     for prog in progs.values():
+        if prog["company"] in REPORT_SKIP_COMPANIES:
+            continue
         bs = sorted([b for b in prog["broadcasts"]
                      if b["date"] == day_iso and not b["off_air"] and b["products"]],
                     key=lambda b: b["hm"])
