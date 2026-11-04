@@ -383,12 +383,19 @@ def build_message(day, progs):
 
 
 def today_brands(products):
-    """상품 목록 -> 중복 없는 브랜드 이름들 (순서 유지)"""
+    """상품 목록 -> 중복 없는 브랜드 이름들 (순서 유지).
+    브랜드 칸이 비었거나 자리표시자면 상품명에서 짐작하지 않고 '확인필요'로 쓴다
+    (상품명 첫 단어를 쓰면 '프리미엄'처럼 브랜드가 아닌 말이 섞인다)."""
     seen = []
     for p in products:
-        b = brand_of(p)
+        b = clean_name((p.get("brand") or "").strip())
+        if b in PLACEHOLDER_BRANDS:
+            b = "확인필요"
         if b and b not in seen:
             seen.append(b)
+    if "확인필요" in seen:  # 확인필요는 맨 뒤로
+        seen.remove("확인필요")
+        seen.append("확인필요")
     return seen
 
 
