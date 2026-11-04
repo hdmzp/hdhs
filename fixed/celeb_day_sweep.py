@@ -531,6 +531,40 @@ def is_data_channel_slot(company: str, date_iso: str, start_hm: str, products) -
     return any(_product_keys(p) & data_keys for p in products)
 
 
+def is_off_schedule_slot(company: str, date_iso: str, start_hm: str) -> bool:
+    """이 회차가 TV(_live)·데이터방송(_data) 편성표 어디에도 없는지 = 모바일 라이브.
+    CJ 겟잇스타일은 pgmShop '라이브쇼 방송상품 모음' 구좌로 앱 모바일 라이브(19:00·20:00 등)가
+    섞여 들어온다 (2026-11 확인: 8~10월 13회, 11/05 19:00 상품 98개). 셀럽PGM은 TV 방송만 본다.
+    그날 TV 편성표가 아직 없으면(수집 범위 밖) 판단하지 않는다."""
+    if not (date_iso and start_hm):
+        return False
+    ym = date_iso[:7]
+    live_day = _month_days(LIVE_DIR_TEMPLATE, company, ym).get(date_iso) or []
+    if not live_day:
+        return False
+    data_day = _month_days(DATA_DIR_TEMPLATE, company, ym).get(date_iso) or []
+    return not any(item.get("start") == start_hm for item in live_day + data_day)
+
+
+def drop_off_schedule_slots(company: str, products: list) -> int:
+    """products에서 편성표에 없는 회차(모바일 라이브)의 상품을 제자리에서 뺀다. 반환: 뺀 상품 수."""
+    today = datetime.now(KST).date()
+    drop_ids = set()
+    by_slot = {}
+    for product in products:
+        d, hm = parse_label(product.get("broadcast_date_label"), today)
+        if d and hm:
+            by_slot.setdefault((d.isoformat(), hm), []).append(product)
+    for (day, hm), slot_products in by_slot.items():
+        if is_off_schedule_slot(company, day, hm):
+            print(f"    -> [모바일 라이브 제외] {day} {hm} 편성표에 없는 회차 "
+                  f"- 상품 {len(slot_products)}개 뺌")
+            drop_ids.update(id(p) for p in slot_products)
+    if drop_ids:
+        products[:] = [p for p in products if id(p) not in drop_ids]
+    return len(drop_ids)
+
+
 def drop_data_channel_slots(company: str, products: list) -> int:
     """products에서 데이터채널 재방송 회차의 상품을 제자리에서 뺀다. 반환: 뺀 상품 수."""
     today = datetime.now(KST).date()

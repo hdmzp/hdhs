@@ -50,7 +50,7 @@ from datetime import datetime, date, timedelta, timezone
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from tools import scrape_guard
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from celeb_day_sweep import supplement_missing_slots, merge_continuous_slots, label_cj, drop_data_channel_slots
+from celeb_day_sweep import supplement_missing_slots, merge_continuous_slots, label_cj, drop_data_channel_slots, drop_off_schedule_slots
 
 KST = timezone(timedelta(hours=9))
 OUTPUT_DIR = os.path.join("homeshopping", "representative_programs")
@@ -756,6 +756,8 @@ def crawl_cj_program(session: requests.Session, config: dict):
 
     # 데이터채널(TV+) 재방송 회차는 셀럽PGM에 안 넣는다
     drop_data_channel_slots("CJ", products)
+    # 편성표(TV·TV+) 어디에도 없는 회차 = 앱 모바일 라이브 (겟잇스타일) -> 셀럽PGM에서 뺀다
+    drop_off_schedule_slots("CJ", products)
 
     # 셀럽PGM 편입일(since) 이전 회차는 버린다. 라벨 날짜를 못 읽는 상품은
     # 남겨두면 build_celeb_history가 알아서 건너뛴다.
