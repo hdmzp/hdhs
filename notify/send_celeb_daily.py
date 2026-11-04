@@ -36,6 +36,8 @@ homeshopping/representative_programs/history/{YYYY-MM}.json (셀럽PGM 월 누�
 - 오늘의 셀럽PGM: 발송일(방송일 다음 날)에 잡힌 셀럽PGM 회차를 [회사 탭이름] 브랜드 나열로.
   회사 순서 → 방송 시각 순, 브랜드는 중복 없이 최대 TODAY_BRAND_MAX개 (넘으면 '외 N개').
   상품이 아직 안 올라온 회차는 데이터에 없어서 빠진다.
+- 어제 셀럽PGM 방송이 하나도 없으면(주로 일요일) 회사별 '어제 20:45에는 ...' 채움 줄을
+  보내지 않는다. 특이사항·오늘의 셀럽PGM이 있으면 그것만, 둘 다 없으면 발송 자체를 생략.
 
 == 환경변수 ==
   TELEGRAM_BOT_TOKEN  (필수) BotFather 에서 발급받은 봇 토큰
@@ -328,7 +330,23 @@ def build_message(day, progs):
             if b["date"] == day_iso and not b["off_air"] and b["products"]:
                 aired.append((prog["company"], b["hm"], prog["title"], b["products"]))
 
-    lines = ["📺 <b>%02d/%02d(%s) 셀럽PGM 운영상품</b>" % (day.month, day.day, WEEKDAY_KO[day.weekday()])]
+    header = "📺 <b>%02d/%02d(%s) 셀럽PGM 운영상품</b>" % (day.month, day.day, WEEKDAY_KO[day.weekday()])
+    notes = build_notes(progs, day)
+    today_lines, has_today = build_today(progs, day + timedelta(days=1))
+    link_line = '🔗 <a href="%s">셀럽PGM 모니터링 바로가기</a>' % SITE_CELEB_URL
+
+    if not aired:
+        # 어제 셀럽PGM이 없던 날(주로 일요일): 편성표 채움 줄은 안 보낸다
+        if not notes and not has_today:
+            return None
+        lines = []
+        if notes:
+            lines += [header, "", "📌 <b>특이사항</b>"] + ["· " + esc(n) for n in notes] + [""]
+        if has_today:
+            lines += today_lines + [""]
+        return lines + [link_line]
+
+    lines = [header]
     prime = Counter(hm for _, hm, _, _ in aired if hm).most_common(1)
     prime = prime[0][0] if prime else DEFAULT_PRIME
 
@@ -351,7 +369,6 @@ def build_message(day, progs):
             for text, link in picked:
                 lines.append("· " + link_html(text, link))
 
-    notes = build_notes(progs, day)
     lines.append("")
     lines.append("📌 <b>특이사항</b>")
     if notes:
@@ -359,9 +376,9 @@ def build_message(day, progs):
     else:
         lines.append("· 평소와 다른 편성이 없었어요")
     lines.append("")
-    lines.extend(build_today(progs, day + timedelta(days=1)))
+    lines.extend(today_lines)
     lines.append("")
-    lines.append('🔗 <a href="%s">셀럽PGM 모니터링 바로가기</a>' % SITE_CELEB_URL)
+    lines.append(link_line)
     return lines
 
 
@@ -376,7 +393,7 @@ def today_brands(products):
 
 
 def build_today(progs, today):
-    """🔔 MM/DD(요일) 오늘의 셀럽PGM - [회사 탭이름] 브랜드1, 브랜드2 ..."""
+    """🔔 MM/DD(요일) 오늘의 셀럽PGM - [회사 탭이름] 브랜드1, 브랜드2 ... -> (줄들, 회차 있음)"""
     today_iso = today.isoformat()
     order = {co: i for i, (co, _) in enumerate(COMPANIES)}
     rows = []  # (회사순, 시각, 회사, 탭, 브랜드들)
@@ -395,7 +412,7 @@ def build_today(progs, today):
         if len(brands) > TODAY_BRAND_MAX:
             text += " 외 %d개" % (len(brands) - TODAY_BRAND_MAX)
         lines.append("[%s %s] %s" % (esc(co), esc(tab), esc(text)))
-    return lines
+    return lines, bool(rows)
 
 
 def main():
@@ -405,6 +422,9 @@ def main():
         print("셀럽PGM 누적 데이터가 없습니다. 발송 생략.")
         return
     lines = build_message(day, progs)
+    if not lines:
+        print("%s 셀럽PGM 방송·특이사항·오늘 예정 모두 없음 - 발송 생략" % day)
+        return
     chunks = chunk_lines(lines)
     print("%s 셀럽PGM 운영상품 → 메시지 %d건" % (day, len(chunks)))
     if DRY_RUN:
