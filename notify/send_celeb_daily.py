@@ -33,7 +33,7 @@ homeshopping/representative_programs/history/{YYYY-MM}.json (셀럽PGM 월 누�
   그 회사 편성표(homeshopping/{회사}_live)에서 방송된 상품을 한 줄로 쓴다.
 - 특이사항: 셀럽PGM 탭 '방송 체크'와 같은 기준 (그 주 시작 전 12주 최빈값)으로
   어제 회차의 다른 요일·시간 / 하루 N회 / 휴방 / 평소 방송일인데 기록 없음.
-  비정기 프로그램(MISSING_SKIP)은 '기록 없음' 대신 '이번 주 쉬어요 (다음 방송 MM/DD 요일 HH:MM)'.
+  비정기 프로그램 중 REST_NOTICE(김신영이 산다)는 '기록 없음' 대신 '이번 주 쉬어요 (다음 방송 MM/DD 요일 HH:MM)'.
 - 오늘의 셀럽PGM: 발송일(방송일 다음 날)에 잡힌 셀럽PGM 회차를 [회사 탭이름] 브랜드 나열로.
   회사 순서 → 방송 시각 순, 브랜드는 중복 없이 최대 TODAY_BRAND_MAX개 (넘으면 '외 N개').
   상품이 아직 안 올라온 회차는 데이터에 없어서 빠진다.
@@ -71,6 +71,8 @@ LOOKBACK_DAYS = 84  # 평소 = 직전 12주 (셀럽PGM 탭 CEL_NEWS_LOOKBACK_DAY
 # 요일이 매번 바뀌거나 비정기라 '평소 방송일인데 기록 없음'을 안 따지는 프로그램
 # (셀럽PGM 탭 CEL_NEWS_MISSING_SKIP과 같음)
 MISSING_SKIP = {"CJ_SIH", "CJ_KSY"}
+# 그중 쉬는 주에 '이번 주 쉬어요 (다음 방송 …)'를 따로 알리는 프로그램 (겟잇스타일은 요일이 수시로 바뀌어 제외)
+REST_NOTICE = {"CJ_KSY"}
 # 브랜드 칸에 들어오는 자리표시자 - 브랜드로 안 본다
 PLACEHOLDER_BRANDS = {"", "GS SHOP", "1등급"}
 
@@ -303,7 +305,7 @@ def build_notes(progs, day):
             week_cnt = sum(1 for b in prog["broadcasts"]
                            if not b["off_air"] and week_start <= b["start"] < week_end)
             if first and first.date() < day and week_cnt < u["per_week"]:
-                if key in MISSING_SKIP:
+                if key in REST_NOTICE:
                     # 비정기 프로그램은 '기록 없음(휴방 가능성)' 대신 쉬는 주 + 다음 방송 안내
                     day_end = datetime.combine(day + timedelta(days=1), datetime.min.time())
                     nxt = next((b for b in prog["broadcasts"]
@@ -312,7 +314,7 @@ def build_notes(progs, day):
                                                     WEEKDAY_KO[nxt["wd"]], nxt["hm"] or "시각 미정")
                             if nxt else "다음 방송 미정")
                     notes.append("%s%s 이번 주 쉬어요 (%s)" % (who, josa(title, "은", "는"), when))
-                else:
+                elif key not in MISSING_SKIP:
                     notes.append("%s 평소 방송일인데 상품 기록이 없어요 (휴방 가능성)" % who)
     return notes
 
