@@ -168,6 +168,20 @@ def to_https(url: str) -> str:
     return url
 
 
+# pgmShop API/DOM이 주는 itemLink(item.cjonstyle.com/item/{코드})는 Nuxt baseURL(/nfront)이
+# 빠진 주소라, 모바일 브라우저에서 열면 페이지 대신 HTML 소스가 글자로 그대로 보인다.
+# -> 다른 CJ 링크와 같은 display.cjonstyle.com/p/item/{코드} 형태로 바꾼다.
+_CJ_BARE_ITEM_RE = re.compile(r"^(?:https?:)?//item\.cjonstyle\.com/item/(\d+)")
+
+
+def normalize_cj_link(url: str) -> str:
+    url = to_https(url or "")
+    m = _CJ_BARE_ITEM_RE.match(url)
+    if not m:
+        return url
+    return "https://display.cjonstyle.com/p/item/" + m.group(1) + url[m.end():]
+
+
 # ============ 편성표(tvSchedule) 라인업 보강 ============
 # MSRT06(방송 라인업) 모듈이 방송 타임당 대표상품 1개만 주는 프로그램이 있다
 # (강주은 굿라이프에서 확인 - 실제 페이지엔 라이프밀/다이슨 등 여러 개).
@@ -603,7 +617,7 @@ def crawl_cj_program(session: requests.Session, config: dict):
             "name": base.get("displayItemName") or base.get("itemNm"),
             "price": base.get("salePrice"),
             "image": to_https(img_list[0]) if img_list else "",
-            "link": base.get("itemLink"),
+            "link": normalize_cj_link(base.get("itemLink")),
         })
         return True
 

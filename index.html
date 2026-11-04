@@ -4452,6 +4452,11 @@ document.addEventListener('click', function (e) {
   const link = e.target.closest('a[target="_blank"]');
   if (!link || !link.href) return;
 
+  // CJ item.cjonstyle.com/item/{코드}(/nfront 빠진 주소)는 모바일에서 HTML 소스가 그대로 보인다
+  // -> 이미 저장된 과거 데이터도 클릭 시점에 display.cjonstyle.com/p/item/{코드}로 고쳐서 연다
+  const cjBare = link.href.match(/^https?:\/\/item\.cjonstyle\.com\/item\/(\d+)(.*)$/);
+  if (cjBare) link.href = 'https://display.cjonstyle.com/p/item/' + cjBare[1] + cjBare[2];
+
   let area = 'unknown';
   if (link.closest('#tabRanking')) area = 'ranking';
   else if (link.closest('#tabFixedPgm')) area = 'fixedpgm';
