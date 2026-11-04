@@ -486,8 +486,8 @@ def run_time(company, day, hm):
     end = block_end(company, day, hm) if hm else ""
     if not hm:
         return "시각 미상"
-    if not end:
-        return "%s~" % hm
+    if not end:  # 편성표에 없는 회차 (겟잇스타일 모바일 라이브 등)
+        return "%s~ (끝 시각 확인필요)" % hm
     return span_text(hm, end)
 
 
