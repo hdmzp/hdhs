@@ -2817,12 +2817,6 @@
   .fp-ig svg { width: 16px; height: 16px; }
   /* 채널(프로그램) 공식 계정: 개인 계정(그라데이션)과 구분되게 남색 단색 */
   .fp-ig.fp-ig-ch { background: #1f2a44; }
-  /* 주간 점검(fixed/ig_status.json)에서 사용자 없음/접속 실패로 나온 계정 */
-  .fp-ig-warn {
-    display: inline-flex; align-items: center; gap: 3px; flex: none;
-    font-size: 10.5px; font-weight: 700; color: #b42318; background: #fef3f2;
-    border: 1px solid #fecdca; border-radius: 6px; padding: 1px 6px; cursor: help;
-  }
   .fp-day-btn:hover:not(.active) { background: #fff; color: var(--ink); }
 
   .fp-updated {
@@ -7212,24 +7206,13 @@ let fpView = 'schedule';
 try { if (localStorage.getItem('fpView') === 'sns') fpView = 'sns'; } catch (e) { }
 let fpSnsCo = '전체';
 let fpHosts = null;
-let fpIgStatus = null;  // fixed/ig_status.json (매주 화요일 새벽 점검 결과)
 const FP_CO_ORDER = { HD: 0, GS: 1, CJ: 2, LT: 3 };
 const FP_DAY_ORDER = { 월: 0, 화: 1, 수: 2, 목: 3, 금: 4, 토: 5, 일: 6 };
 const FP_IG_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>';
 
 function fpIgLink(handle, label) {
   const h = encodeURIComponent(handle);
-  return `<a class="fp-ig" href="https://www.instagram.com/${h}/" target="_blank" rel="noopener noreferrer" title="${fpEscapeHtml(label)} 인스타그램 (@${fpEscapeHtml(handle)})" aria-label="${fpEscapeHtml(label)} 인스타그램">${FP_IG_SVG}</a>` + fpIgWarn(handle);
-}
-
-// 주간 점검에서 "missing"(사용자 없음) / "error"(접속 실패)인 계정에 경고 배지
-function fpIgWarn(handle) {
-  const st = fpIgStatus && fpIgStatus.handles && fpIgStatus.handles[handle];
-  if (!st || st.s === 'ok') return '';
-  const msg = st.s === 'missing' ? '사용자 없음' : '접속 안 됨';
-  const since = (st.since || st.t || '').slice(0, 10);
-  const tip = `@${handle}: 주간 점검에서 '${msg}'으로 확인됨` + (since ? ` (${since}부터)` : '') + '. 계정 변경 여부를 확인해 주세요.';
-  return `<span class="fp-ig-warn" title="${fpEscapeHtml(tip)}" aria-label="${fpEscapeHtml(tip)}">⚠ ${msg}</span>`;
+  return `<a class="fp-ig" href="https://www.instagram.com/${h}/" target="_blank" rel="noopener noreferrer" title="${fpEscapeHtml(label)} 인스타그램 (@${fpEscapeHtml(handle)})" aria-label="${fpEscapeHtml(label)} 인스타그램">${FP_IG_SVG}</a>`;
 }
 
 function fpBuildSnsHtml(slots, hosts) {
@@ -7265,7 +7248,7 @@ function fpBuildSnsHtml(slots, hosts) {
       ? `<a href="${fpEscapeHtml(link)}" target="_blank" rel="noopener">${fpEscapeHtml(p.title)}</a>`
       : fpEscapeHtml(p.title);
     const official = p.program_instagram
-      ? `<span class="fp-sns-host fp-sns-chan"><span class="fp-sns-role">채널</span><a class="fp-ig fp-ig-ch" href="https://www.instagram.com/${encodeURIComponent(p.program_instagram)}/" target="_blank" rel="noopener noreferrer" title="${fpEscapeHtml(p.title)} 채널 공식 인스타그램 (@${fpEscapeHtml(p.program_instagram)})" aria-label="${fpEscapeHtml(p.title)} 채널 인스타그램">${FP_IG_SVG}</a>${fpIgWarn(p.program_instagram)}</span>`
+      ? `<span class="fp-sns-host fp-sns-chan"><span class="fp-sns-role">채널</span><a class="fp-ig fp-ig-ch" href="https://www.instagram.com/${encodeURIComponent(p.program_instagram)}/" target="_blank" rel="noopener noreferrer" title="${fpEscapeHtml(p.title)} 채널 공식 인스타그램 (@${fpEscapeHtml(p.program_instagram)})" aria-label="${fpEscapeHtml(p.title)} 채널 인스타그램">${FP_IG_SVG}</a></span>`
       : '';
     const sched = ss.map(s => fpFormatSchedule(s)).join(' · ');
     const hostHtml = (p.hosts || []).length
@@ -7289,10 +7272,7 @@ async function fpRenderSns() {
   if (!wrap) return;
   if (!fpHosts) {
     wrap.innerHTML = '<div class="fp-empty-note">불러오는 중...</div>';
-    [fpHosts, fpIgStatus] = await Promise.all([
-      fetchJsonSafe('./fixed/pgm_hosts.json'),
-      fetchJsonSafe('./fixed/ig_status.json'),
-    ]);
+    fpHosts = await fetchJsonSafe('./fixed/pgm_hosts.json');
   }
   const data = await fpLoadData();
   wrap.innerHTML = fpBuildSnsHtml(data && data.slots, fpHosts);
