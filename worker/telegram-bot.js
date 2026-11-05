@@ -32,6 +32,19 @@ async function webhookSecret(env) {
   return [...new Uint8Array(hash)].map((b) => b.toString(16).padStart(2, "0")).join("").slice(0, 48);
 }
 
+const APPLY_REPLY = "✅ 알림 신청이 접수됐어요.\n관리자가 확인하고 받을 알림을 설정해 드릴게요.";
+
+function applyNotice(chatId, name, who, text) {
+  const lines = ["🆕 알림 신청", "이름: " + esc(who), `ID: <code>${chatId}</code>`];
+  if (text) lines.push("보낸 말: " + esc(text.slice(0, 300)));
+  lines.push(
+    "",
+    "notify/recipients.txt 에 한 줄 추가 (받을 알림만 남기기):",
+    `<code>${chatId} food celeb fashion living beauty #${esc(name.replace(/#/g, ""))}</code>`,
+  );
+  return lines.join("\n");
+}
+
 async function onMessage(env, msg) {
   if (msg.chat?.type !== "private") return;
   const chatId = String(msg.chat.id);
@@ -39,22 +52,22 @@ async function onMessage(env, msg) {
   const name = [from.first_name, from.last_name].filter(Boolean).join(" ") || chatId;
   const who = name + (from.username ? ` (@${from.username})` : "");
   const text = (msg.text || "").trim();
+  const cmd = text.split(/\s/)[0].split("@")[0].toLowerCase();
+  const said = cmd === "/start" || cmd === "/test" ? "" : text;
 
   if (admins(env).includes(chatId)) {
-    await send(env, chatId, "👋 관리자 계정이에요. 누가 알림을 신청하면 여기로 알려드려요.");
+    if (cmd === "/test") {
+      // 관리자가 신청 흐름을 혼자 확인 - 신청자 답장과 관리자 알림을 둘 다 관리자에게
+      await send(env, chatId, "🧪 테스트 ① 신청자가 받는 답장\n\n" + APPLY_REPLY);
+      await send(env, chatId, "🧪 테스트 ② 관리자가 받는 알림\n\n" + applyNotice(chatId, name, who, said));
+    } else {
+      await send(env, chatId, "👋 관리자 계정이에요. 누가 알림을 신청하면 여기로 알려드려요.\n/test 를 보내면 신청자 화면을 미리 볼 수 있어요.");
+    }
     return;
   }
 
-  await send(env, chatId, "✅ 알림 신청이 접수됐어요.\n관리자가 확인하고 받을 알림을 설정해 드릴게요.");
-
-  const lines = ["🆕 알림 신청", "이름: " + esc(who), `ID: <code>${chatId}</code>`];
-  if (text && text.split("@")[0].toLowerCase() !== "/start") lines.push("보낸 말: " + esc(text.slice(0, 300)));
-  lines.push(
-    "",
-    "notify/recipients.txt 에 한 줄 추가 (받을 알림만 남기기):",
-    `<code>${chatId} food celeb fashion living beauty #${esc(name.replace(/#/g, ""))}</code>`,
-  );
-  for (const a of admins(env)) await send(env, a, lines.join("\n"));
+  await send(env, chatId, APPLY_REPLY);
+  for (const a of admins(env)) await send(env, a, applyNotice(chatId, name, who, said));
 }
 
 export default {
