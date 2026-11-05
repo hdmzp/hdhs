@@ -23,7 +23,7 @@
 매주 월요일에는 목록에 없는 '새 게스트 후보'(지난 7일 미용 상품명)를 따로 보낸다.
 
 == 환경변수 ==
-  TELEGRAM_BOT_TOKEN  (필수) / TELEGRAM_CHAT_ID (선택) - send_daily_food.py 와 같음
+  TELEGRAM_BOT_TOKEN  (필수) - send_daily_food.py 와 같음
   LIST_GROUPS         (선택) 보낼 묶음, 쉼표 구분 fashion,living,beauty (기본: 전부)
   COMPANIES / TIME_START / TIME_END / TARGET_DATE / DRY_RUN - send_daily_food.py 와 같음
   GUEST_CANDIDATES    (선택) "1"이면 요일과 상관없이 새 게스트 후보도 보낸다
@@ -229,7 +229,7 @@ def main():
         cands = guest_candidates(now, companies)
         print("새 게스트 후보 %d명" % len(cands))
         if cands:
-            # 후보 확인은 관리자(recipients.txt 의 admin)에게만
+            # 후보 확인은 관리자(wrangler.jsonc 의 ADMIN_ID)에게만
             messages.append(("새 게스트 후보", None, candidate_message(cands)))
 
     for title, topic, lines in messages:
@@ -240,7 +240,7 @@ def main():
                 print("\n----- %s [%d/%d] (%d자) -----" % (title, i, len(chunks), len(c)))
                 print(c)
             continue
-        # recipients.txt 에서 이 카테고리를 받기로 한 사람에게만 (notify/subscribers.py)
+        # 봇에서 이 카테고리를 골라 승인된 사람에게만 (notify/subscribers.py)
         broadcast(ROOT, chunks, topic=topic)
 
 

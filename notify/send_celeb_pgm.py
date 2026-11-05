@@ -21,7 +21,6 @@ homeshopping/representative_programs/{회사}_{셀럽}.json 을 읽어
 
 == 환경변수 ==
   TELEGRAM_BOT_TOKEN  (필수) BotFather 에서 발급받은 봇 토큰
-  TELEGRAM_CHAT_ID    (선택) 수신처 (notify/recipients.txt 와 합집합)
   DRY_RUN             (선택) "1"이면 발송하지 않고 메시지만 출력
 """
 
