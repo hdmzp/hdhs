@@ -26,7 +26,10 @@
 
 ## 코드를 고쳤을 때
 
-`telegram-bot.js` 를 다시 붙여넣고 *Deploy*. (`/setup` 은 다시 안 열어도 된다)
+Worker 가 GitHub 저장소와 연결돼 있으면 main 에 push 될 때마다 자동으로 다시 배포된다.
+무엇을 배포할지는 저장소 맨 위 `wrangler.jsonc` 가 정한다 (이 파일이 없으면 저장소 전체가
+웹사이트로 배포돼 봇 코드가 덮어써진다). 대시보드에서 직접 붙여넣은 코드는 다음 push 때 덮어써진다.
+연결 안 된 Worker 라면 `telegram-bot.js` 를 다시 붙여넣고 *Deploy*. (`/setup` 은 다시 안 열어도 된다)
 
 ## 비용
 

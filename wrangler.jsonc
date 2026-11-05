@@ -1,0 +1,14 @@
+// Cloudflare Worker 설정 - 텔레그램 알림 신청 봇 (worker/telegram-bot.js, 설명은 worker/README.md)
+// Cloudflare 의 hdhs-bot 이 이 저장소와 연결돼 있어서 main 에 push 될 때마다 자동으로 다시 배포된다.
+// 이 파일이 없으면 저장소 전체가 웹사이트로 배포돼 봇 코드가 덮어써진다.
+// BOT_TOKEN 은 Cloudflare 대시보드의 Secret 에 넣는다 (여기 적지 않는다).
+{
+  "name": "hdhs-bot",
+  "main": "worker/telegram-bot.js",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": true,
+  "keep_vars": true,
+  "vars": {
+    "ADMIN_ID": "8921978250"
+  }
+}
