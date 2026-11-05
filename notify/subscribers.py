@@ -2,7 +2,7 @@
 """
 텔레그램 수신자별 알림 설정 (notify/recipients.txt)
 
-봇에 /start(아무 메시지)를 보내면 notify/bot_requests.py 가 신청 접수 답장을 보내고
+봇에 /start(아무 메시지)를 보내면 worker/telegram-bot.js (Cloudflare) 가 바로 접수 답장을 보내고
 관리자에게 이름·ID 를 알려준다. 관리자가 그 ID 를 recipients.txt 에 받을 알림과 함께 적는다.
 
 recipients.txt 한 줄 = 한 사람:
