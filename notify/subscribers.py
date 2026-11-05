@@ -41,7 +41,7 @@ def load():
     except Exception as e:
         sys.exit("봇에서 받는 사람 목록을 못 받았습니다 (%s): %s" % (url, e))
     _CACHE = {"users": data.get("users") or {}, "admins": [str(a) for a in data.get("admins") or []],
-              "guests": data.get("guests") or {}}
+              "guests": data.get("guests") or {}, "report": data.get("report")}
     print("받는 사람 %d명 (봇 승인)" % len(_CACHE["users"]))
     return _CACHE
 
@@ -56,22 +56,15 @@ def admins():
 
 
 def report_recipients():
-    """셀럽PGM 보고 양식 받는 사람 - 봇 신청과 상관없이 정해진 사람만.
+    """셀럽PGM 보고 양식 받는 사람 - 봇 신청과 상관없이 직접 지정한 사람만.
 
-    비공개 저장소 hdmzp/hdhs_private 의 telegram/보고수신자.txt (한 줄에 ID, # 뒤는 메모).
-    워크플로가 그 파일을 받아 와 REPORT_RECIPIENTS_FILE 로 알려준다.
-    파일을 못 받으면(토큰 없음 등) 관리자에게만 보낸다."""
-    path = os.environ.get("REPORT_RECIPIENTS_FILE") or ""
-    if path and os.path.exists(path):
-        ids = []
-        with open(path, encoding="utf-8") as f:
-            for raw in f:
-                cid = raw.split("#")[0].strip()
-                if cid and cid not in ids:
-                    ids.append(cid)
+    비공개 저장소 hdmzp/hdhs_private 의 telegram/보고수신자.txt 를 그 저장소 Actions 가 봇에 올려 두고,
+    여기서는 /export 의 report 로 받는다. 한 번도 안 올렸거나 비어 있으면 관리자에게만."""
+    ids = [str(x) for x in (load().get("report") or [])]
+    if ids:
         print("보고 양식 받는 사람 %d명 (보고수신자.txt)" % len(ids))
         return ids
-    print("※ 보고수신자.txt 를 못 받아 관리자에게만 보냅니다")
+    print("※ 보고수신자 목록이 없어 관리자에게만 보냅니다")
     return admins()
 
 
