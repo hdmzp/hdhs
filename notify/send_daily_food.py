@@ -33,10 +33,7 @@ COMPANIES + 시간대(TIME_START~TIME_END) 필터를 적용한 것이다.
                       관리자로 추가해야 함)
 
 == 수신자 관리 ==
-수신자 목록은 notify/recipients.txt (한 줄에 하나, # 주석 가능)로 관리한다.
-TELEGRAM_CHAT_ID 환경변수와 합쳐서 발송하며, 둘 다 비어 있으면
-봇이 최근에 받은 메시지의 발신자를 자동 감지한다 (최초 1회는 봇에게
-아무 메시지나 먼저 보내둬야 함).
+수신자와 사람별 알림은 notify/recipients.txt 에 적는다 (notify/subscribers.py 참고).
   COMPANIES           (선택) 목록에 표시할 회사 코드, 쉼표 구분 (기본: HD,GS,CJ,LT)
                       전체 표시: "ALL"
   TIME_START          (선택) 목록 시작 시각 (기본: 06:00)

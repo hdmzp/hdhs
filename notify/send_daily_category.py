@@ -229,7 +229,7 @@ def main():
         cands = guest_candidates(now, companies)
         print("새 게스트 후보 %d명" % len(cands))
         if cands:
-            # 후보 확인은 관리자(recipients.txt / TELEGRAM_CHAT_ID)에게만
+            # 후보 확인은 관리자(recipients.txt 의 admin)에게만
             messages.append(("새 게스트 후보", None, candidate_message(cands)))
 
     for title, topic, lines in messages:
@@ -240,7 +240,7 @@ def main():
                 print("\n----- %s [%d/%d] (%d자) -----" % (title, i, len(chunks), len(c)))
                 print(c)
             continue
-        # 봇에서 이 카테고리를 신청한 사람에게만 (notify/subscribers.py)
+        # recipients.txt 에서 이 카테고리를 받기로 한 사람에게만 (notify/subscribers.py)
         broadcast(ROOT, chunks, topic=topic)
 
 

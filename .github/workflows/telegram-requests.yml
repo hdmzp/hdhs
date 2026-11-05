@@ -1,0 +1,28 @@
+name: 텔레그램 알림 신청 접수
+# 봇에 /start 를 보낸 사람에게 "접수됐어요" 답장, 관리자에게 이름·ID 를 알려준다 (notify/bot_requests.py)
+# 받을 알림은 관리자가 notify/recipients.txt 에 ID 별로 적는다.
+on:
+  schedule:
+    # 20분마다. GitHub 예약 실행은 자주 밀려서 답장이 더 늦게 갈 수 있다.
+    - cron: "7,27,47 * * * *"
+  workflow_dispatch:  # 바로 확인하고 싶을 때 수동 실행
+permissions:
+  contents: read
+concurrency:
+  group: telegram-requests
+  cancel-in-progress: false
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install requests
+      - name: 신청 확인·답장
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python notify/bot_requests.py

@@ -45,9 +45,9 @@ hdhs/
 ├── notify/send_celeb_daily.py        # [알림] 텔레그램 어제 셀럽PGM 운영상품 (브랜드당 1개, 특이사항 = 셀럽PGM 방송 체크 기준)
 ├── notify/send_daily_category.py     # [알림] 텔레그램 오늘 패션·리빙·미용 방송 리스트 (수동 발송, 리빙은 한 목록 시간순, 게스트 💗는 패션·미용만)
 ├── notify/guests.py                  # [알림] 💗 게스트 이름 목록·제외 목록·프로그램 진행자
-├── notify/subscribers.py             # [알림] 봇 구독자 목록 (Worker /export) + 알림별 수신자
-├── worker/telegram-bot.js            # [알림] 텔레그램 봇 (Cloudflare Worker, 즉시 응답 · /start 알림·카테고리 선택, /brand) - 설정은 worker/README.md
-├── notify/send_brand_alerts.py       # [알림] /brand 등록 브랜드의 오늘 방송을 사람마다 발송
+├── notify/subscribers.py             # [알림] recipients.txt 읽기 - 사람(ID)별로 받을 알림
+├── notify/bot_requests.py            # [알림] 봇 /start 신청 접수 → 신청자에게 답장 + 관리자에게 이름·ID (20분마다)
+├── notify/send_brand_alerts.py       # [알림] recipients.txt 의 brand:브랜드명 오늘 방송을 사람마다 발송
 ├── notify/send_health_ppl.py         # [알림] 오늘 TV 건강프로그램 PPL 예고 (회차 단서 성분 + 같은 시간대 홈쇼핑 ⭐, 수동 실행 only=ppl 때만)
 ├── notify/competitor.py              # [알림] 경쟁사 맞편성·신규 브랜드 (식품·카테고리 리스트 맨 아래)
 │

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-텔레그램 봇에서 /brand 로 등록한 브랜드의 오늘 방송을 사람마다 따로 알려준다.
+notify/recipients.txt 에 brand:브랜드명 으로 적은 브랜드의 오늘 방송을 사람마다 따로 알려준다.
 
    🔔 10/31(토) 브랜드 방송 알림
 
@@ -79,7 +79,7 @@ def main():
     env = (os.environ.get("COMPANIES") or food.DEFAULT_COMPANIES).strip()
     companies = None if env.upper() == "ALL" else {c.strip() for c in env.split(",") if c.strip()}
 
-    users = {cid: u for cid, u in subs.load().get("users", {}).items() if u.get("brands")}
+    users = {cid: u for cid, u in subs.load(ROOT).items() if u["brands"]}
     if not users:
         print("브랜드 알림 신청자가 없어 발송 생략")
         return
