@@ -3275,6 +3275,15 @@
   .tg-open-btn img { display: block; width: 20px; height: 20px; }
   .tg-open-btn:hover { border-color: #229ED9; color: #229ED9; background: #EAF6FC; }
   .tg-open-btn + .info-tip-wrap { margin-left: 6px; }
+  /* 탭 메뉴가 제목 아래로 내려가는 너비(모바일 등)에서는 알림신청·화면 설명 버튼을 제목 줄 오른쪽 위로 */
+  @media (max-width: 960px) {
+    .masthead { position: relative; }
+    .masthead .tg-open-btn,
+    .masthead .info-tip-wrap { position: absolute; top: 12px; margin: 0; }
+    .masthead .info-tip-wrap { right: var(--mh-pad, 24px); }
+    .masthead .tg-open-btn { right: calc(var(--mh-pad, 24px) + 34px); }
+    .masthead .tg-open-btn:has(+ .info-tip-wrap.no-tip) { right: var(--mh-pad, 24px); }
+  }
   .tg-modal {
     position: fixed;
     inset: 0;
