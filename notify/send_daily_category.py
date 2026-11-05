@@ -145,9 +145,8 @@ def make_decorate(celeb_slots):
     return decorate
 
 
-def build_message(now, title, sections, rows, totals, n_companies):
-    lines = ["%02d/%02d(%s)" % (now.month, now.day, food.WEEKDAY_KO[now.weekday()]), "",
-             "금일 %s 방송 리스트입니다" % title]
+def build_message(now, title, sections, rows, totals, n_companies, weather=None):
+    lines = food.header_lines(now, weather) + ["", "금일 %s 방송 리스트입니다" % title]
     for header, cats in sections:
         items = sorted((r for c in cats for r in rows.get(c, [])), key=lambda r: r[0])
         total = sum(totals.get(c, 0) for c in cats)
@@ -256,6 +255,7 @@ def main():
 
     wanted = {g.strip() for g in (os.environ.get("LIST_GROUPS") or "fashion,living,beauty").split(",") if g.strip()}
     apply_bot_guests()
+    weather = food.load_weather(day_str)  # 식품 리스트와 같은 날씨 한 줄
     decorate = make_decorate(load_celeb_slots(day_str))
 
     messages = []
@@ -267,7 +267,7 @@ def main():
         if sum(totals.values()) == 0:
             print("%s %s 방송 데이터가 없습니다. 생략." % (day_str, title))
             continue
-        lines = build_message(now, title, sections, rows, totals, n_companies)
+        lines = build_message(now, title, sections, rows, totals, n_companies, weather)
         # 패션은 맞편성 없이 신규 브랜드만 (2026-10 사용자 요청)
         lines += competitor_lines(now.date(), companies, {c for _, c in cat_sections}, multi_on=(key != "fashion"))
         messages.append((title, key, lines))

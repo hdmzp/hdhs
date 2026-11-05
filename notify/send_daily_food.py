@@ -196,9 +196,9 @@ def load_broadcasts(day_str, month_str, companies, sections=SECTIONS, decorate=N
     return rows, totals
 
 
-def build_message(now, weather, rows, totals, n_companies):
-    lines = []
-    lines.append("%02d/%02d(%s)" % (now.month, now.day, WEEKDAY_KO[now.weekday()]))
+def header_lines(now, weather):
+    """맨 위 날짜(굵게) + 날씨 한 줄 - 식품·패션·리빙·미용 리스트가 같이 쓴다."""
+    lines = ["<b>%02d/%02d(%s)</b>" % (now.month, now.day, WEEKDAY_KO[now.weekday()])]
     if weather:
         parts = []
         if weather.get("minTa") is not None:
@@ -209,6 +209,11 @@ def build_message(now, weather, rows, totals, n_companies):
             parts.append("비 %d%%" % round(weather["pop_max"]))
         if parts:
             lines.append("☀️ 날씨: " + ", ".join(parts))
+    return lines
+
+
+def build_message(now, weather, rows, totals, n_companies):
+    lines = header_lines(now, weather)
     lines.append("")
     lines.append("금일 식품 방송 리스트입니다")
     for header, cat in SECTIONS:
