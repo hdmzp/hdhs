@@ -32,8 +32,6 @@ jobs:
         if: github.event_name != 'workflow_dispatch' || inputs.only == 'all' || inputs.only == 'food'
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          SUBS_URL: ${{ vars.SUBS_URL }}  # 봇 구독자 목록 (Cloudflare Worker, notify/subscribers.py)
-          SUBS_KEY: ${{ secrets.SUBS_KEY }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           # 표시할 회사/시간대를 바꾸려면 저장소 Variables 에 등록
           # 예: COMPANIES=HD,GS,CJ,LT / TIME_START=06:00 / TIME_END=23:59
@@ -48,8 +46,6 @@ jobs:
         if: always() && github.event_name == 'workflow_dispatch' && inputs.only == 'ppl'
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          SUBS_URL: ${{ vars.SUBS_URL }}  # 봇 구독자 목록 (Cloudflare Worker, notify/subscribers.py)
-          SUBS_KEY: ${{ secrets.SUBS_KEY }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           COMPANIES: ${{ vars.COMPANIES }}
         run: python notify/send_health_ppl.py
@@ -59,18 +55,14 @@ jobs:
         if: always() && (github.event_name != 'workflow_dispatch' || inputs.only == 'all' || inputs.only == 'celeb')
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          SUBS_URL: ${{ vars.SUBS_URL }}  # 봇 구독자 목록 (Cloudflare Worker, notify/subscribers.py)
-          SUBS_KEY: ${{ secrets.SUBS_KEY }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python notify/send_celeb_daily.py
       # 오늘의 패션·리빙·미용 방송 리스트 (게스트 💗)
-      # 봇에서 그 카테고리를 신청한 사람에게만 간다 (notify/subscribers.py)
+      # recipients.txt 에서 그 카테고리를 받기로 한 사람에게만 간다 (notify/subscribers.py)
       - name: 텔레그램 발송 — 패션·리빙·미용 방송 리스트
         if: always() && (github.event_name != 'workflow_dispatch' || inputs.only == 'all' || inputs.only == 'category')
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          SUBS_URL: ${{ vars.SUBS_URL }}  # 봇 구독자 목록 (Cloudflare Worker, notify/subscribers.py)
-          SUBS_KEY: ${{ secrets.SUBS_KEY }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           COMPANIES: ${{ vars.COMPANIES }}
           TIME_START: ${{ vars.TIME_START }}
@@ -78,13 +70,12 @@ jobs:
           # 새 게스트 후보: 월요일 자동 + 수동 실행 때마다 (관리자에게만)
           GUEST_CANDIDATES: ${{ github.event_name == 'workflow_dispatch' && '1' || '' }}
         run: python notify/send_daily_category.py
-      # 봇에서 /brand 로 등록한 브랜드의 오늘 방송 (사람마다 따로)
+      # recipients.txt 에 brand:브랜드명 으로 적은 브랜드의 오늘 방송 (사람마다 따로)
       - name: 텔레그램 발송 — 브랜드 방송 알림
         if: always() && (github.event_name != 'workflow_dispatch' || inputs.only == 'all' || inputs.only == 'brand')
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          SUBS_URL: ${{ vars.SUBS_URL }}  # 봇 구독자 목록 (Cloudflare Worker, notify/subscribers.py)
-          SUBS_KEY: ${{ secrets.SUBS_KEY }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           COMPANIES: ${{ vars.COMPANIES }}
           TIME_START: ${{ vars.TIME_START }}
           TIME_END: ${{ vars.TIME_END }}

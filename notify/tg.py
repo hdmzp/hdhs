@@ -11,7 +11,6 @@ import requests
 TEXT_LIMIT = 4000
 
 BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
-CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "")
 
 
 def esc(s):
@@ -43,43 +42,6 @@ def api(method):
     return "https://api.telegram.org/bot%s/%s" % (BOT_TOKEN, method)
 
 
-def detect_chat_id():
-    """봇이 최근 받은 메시지에서 채팅 ID를 찾는다."""
-    resp = requests.get(api("getUpdates"), timeout=15)
-    if resp.status_code == 200:
-        for update in reversed(resp.json().get("result", [])):
-            msg = update.get("message") or update.get("edited_message") or {}
-            chat = msg.get("chat", {})
-            if chat.get("id"):
-                print("채팅 ID 자동 감지: %s (%s)" % (chat["id"], chat.get("first_name", "")))
-                return str(chat["id"])
-    print(
-        "채팅 ID를 찾지 못했습니다. 텔레그램에서 봇에게 아무 메시지나 먼저 보낸 뒤\n"
-        "다시 실행하거나, TELEGRAM_CHAT_ID 또는 notify/recipients.txt 를 설정해 주세요."
-    )
-    sys.exit(1)
-
-
-def load_chat_ids(root, detect=True):
-    """notify/recipients.txt + TELEGRAM_CHAT_ID 합집합. 없으면 자동 감지."""
-    chat_ids = []
-    rec_path = os.path.join(root, "notify", "recipients.txt")
-    if os.path.exists(rec_path):
-        with open(rec_path, encoding="utf-8") as f:
-            for raw in f:
-                # '#' 뒤는 주석 — 줄 끝 주석("12345 #이름")도 허용
-                entry = raw.split("#")[0].strip()
-                if entry and entry not in chat_ids:
-                    chat_ids.append(entry)
-    for c in CHAT_ID.split(","):
-        c = c.strip()
-        if c and c not in chat_ids:
-            chat_ids.append(c)
-    if not chat_ids and detect:
-        chat_ids = [detect_chat_id()]
-    return chat_ids
-
-
 def send(chat_id, text, reply_markup=None):
     data = {
         "chat_id": chat_id,
@@ -99,19 +61,16 @@ def send(chat_id, text, reply_markup=None):
 def broadcast(root, chunks, topic=None):
     """수신처에 청크들을 순서대로 발송. 실패 시 exit 1.
 
-    topic 을 주면 봇에서 그 알림을 신청한 사람(notify/subscribers.py)에게만 보낸다.
-    기존 수신자(recipients.txt / TELEGRAM_CHAT_ID)는 봇 설정이 없으면 식품·셀럽PGM만 받는다."""
+    topic 을 주면 recipients.txt 에서 그 알림을 받기로 한 사람에게만 보낸다 (notify/subscribers.py).
+    topic 이 없으면 관리자에게만 보낸다."""
     if not BOT_TOKEN:
         print("TELEGRAM_BOT_TOKEN 환경변수가 필요합니다.")
         sys.exit(1)
-    if topic:
-        import subscribers
-        chat_ids = subscribers.recipients_for(topic, load_chat_ids(root, detect=False))
-        if not chat_ids:
-            print("'%s' 알림 신청자가 없어 발송 생략" % topic)
-            return
-    else:
-        chat_ids = load_chat_ids(root)
+    import subscribers
+    chat_ids = subscribers.recipients_for(topic, root) if topic else subscribers.admins(root)
+    if not chat_ids:
+        print("'%s' 알림 받는 사람이 없어 발송 생략" % (topic or "관리자"))
+        return
     sent = 0
     for chat_id in chat_ids:
         for i, chunk in enumerate(chunks, 1):
