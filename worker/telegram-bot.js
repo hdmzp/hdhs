@@ -273,6 +273,24 @@ async function onCallback(env, cq) {
   }
 }
 
+// 텔레그램 연결 (webhook 주소 + 받을 신호 종류 + 명령어 메뉴).
+// 받을 신호가 바뀌면 HOOK_VERSION 을 올린다 - 다음 메시지 때 자동으로 다시 연결된다 (/setup 안 열어도 됨).
+const HOOK_VERSION = "2"; // 2: 버튼(callback_query) 추가
+async function connect(env, origin) {
+  const r = await tg(env, "setWebhook", {
+    url: `${origin}/webhook`,
+    secret_token: await webhookSecret(env),
+    allowed_updates: ["message", "callback_query"],
+  });
+  await tg(env, "setMyCommands", { commands: [
+    { command: "start", description: "알림 신청·변경" },
+    { command: "status", description: "내 알림 보기" },
+    { command: "stop", description: "알림 그만 받기" },
+  ] });
+  if (r.ok && env.SUBS) await env.SUBS.put("cfg:hook", HOOK_VERSION);
+  return r;
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -285,6 +303,7 @@ export default {
       }
       try {
         const update = await request.json();
+        if (update.message && (await env.SUBS.get("cfg:hook")) !== HOOK_VERSION) await connect(env, url.origin);
         if (update.message) await onMessage(env, update.message);
         else if (update.callback_query) await onCallback(env, update.callback_query);
       } catch (e) {
@@ -309,16 +328,7 @@ export default {
       if (!env.BOT_TOKEN) return text("❌ BOT_TOKEN 설정이 없어요. Settings → Variables and Secrets 를 확인하세요.");
       if (!admins(env).length) return text("❌ ADMIN_ID 설정이 없어요. wrangler.jsonc 를 확인하세요.");
       if (!env.SUBS) return text("❌ KV 저장공간(SUBS)이 연결되지 않았어요. wrangler.jsonc 를 확인하세요.");
-      const r = await tg(env, "setWebhook", {
-        url: `${url.origin}/webhook`,
-        secret_token: await webhookSecret(env),
-        allowed_updates: ["message", "callback_query"],
-      });
-      await tg(env, "setMyCommands", { commands: [
-        { command: "start", description: "알림 신청·변경" },
-        { command: "status", description: "내 알림 보기" },
-        { command: "stop", description: "알림 그만 받기" },
-      ] });
+      const r = await connect(env, url.origin);
       const result = await r.json();
       return text(result.ok ? "✅ 연결 완료! 이제 봇에서 START 를 눌러보세요."
                             : "❌ 연결 실패: " + JSON.stringify(result) + "\n(BOT_TOKEN 이 맞는지 확인하세요)");
