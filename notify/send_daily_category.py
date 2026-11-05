@@ -36,7 +36,9 @@ import glob
 from collections import Counter, defaultdict
 from datetime import timedelta
 
+import tg
 from tg import esc, chunk_lines, broadcast
+import subscribers
 import send_daily_food as food
 from guests import GUESTS, EXCLUDE, TITLE_SUFFIXES, PROGRAM_HOSTS
 from competitor import competitor_lines
@@ -59,8 +61,26 @@ HEART = "💗"
 
 _TITLES = "|".join(TITLE_SUFFIXES)
 # 이름 앞이 한글이면 다른 단어의 일부 ('신현영' 속 '현영'), 뒤에 직함이 붙으면 모델·전문가
-GUEST_RES = [(n, re.compile(r"(?<![가-힣])%s(?!\s?(?:%s))" % (re.escape(n), _TITLES)))
-             for n in GUESTS if n not in EXCLUDE]
+GUEST_RES = []
+
+
+def build_guest_res():
+    global GUEST_RES
+    GUEST_RES = [(n, re.compile(r"(?<![가-힣])%s(?!\s?(?:%s))" % (re.escape(n), _TITLES)))
+                 for n in GUESTS if n not in EXCLUDE]
+
+
+def apply_bot_guests():
+    """관리자가 봇에서 버튼으로 정한 게스트를 guests.py 목록에 더한다 (넣어 → GUESTS, 빼 → EXCLUDE)."""
+    g = subscribers.guest_decisions()
+    GUESTS.extend(n for n in g["add"] if n not in GUESTS)
+    EXCLUDE.extend(n for n in g["skip"] if n not in EXCLUDE)
+    if g["add"] or g["skip"]:
+        print("봇에서 정한 게스트: 넣어 %d명, 빼 %d명" % (len(g["add"]), len(g["skip"])))
+    build_guest_res()
+
+
+build_guest_res()
 
 
 def host_of(company, title):
@@ -190,10 +210,36 @@ def guest_candidates(today, companies):
 
 def candidate_message(cands):
     lines = ["🔎 새 게스트 후보 (지난 7일 미용 상품명)",
-             "목록에 없어 💗를 안 붙인 이름이에요. 게스트면 '넣어', 아니면 '빼'라고 알려주세요.", ""]
+             "목록에 없어 💗를 안 붙인 이름이에요. 아래 버튼으로 정해 주세요 (관리자만).",
+             "💗 넣어 = 다음 리스트부터 💗, 🚫 빼 = 게스트 아님 (다시 안 물어봐요)", ""]
     for name, n, ex in cands:
         lines.append("<b>%s</b> %d회 · %s" % (esc(name), n, esc(ex[:60])))
     return lines
+
+
+def candidate_buttons(cands):
+    """이름마다 [💗 이름 넣어] [🚫 빼] - 처리는 worker/telegram-bot.js 의 onGuest."""
+    rows = []
+    for name, _, _ in cands[:30]:
+        if len(("g:a:" + name).encode()) > 64:  # 텔레그램 버튼 데이터 한도
+            continue
+        rows.append([{"text": "💗 %s 넣어" % name, "callback_data": "g:a:" + name},
+                     {"text": "🚫 빼", "callback_data": "g:s:" + name}])
+    return {"inline_keyboard": rows}
+
+
+def send_candidates(cands):
+    """후보는 관리자에게만, 버튼 달아서. 길면 마지막 조각에 버튼."""
+    chunks = chunk_lines(candidate_message(cands))
+    print("새 게스트 후보 → 메시지 %d건" % len(chunks))
+    if DRY_RUN:
+        for c in chunks:
+            print("\n----- 새 게스트 후보 -----\n" + c)
+        print(candidate_buttons(cands))
+        return
+    for chat_id in subscribers.admins():
+        for i, c in enumerate(chunks):
+            tg.send(chat_id, c, candidate_buttons(cands) if i == len(chunks) - 1 else None)
 
 
 def main():
@@ -209,6 +255,7 @@ def main():
         n_companies = len(companies)
 
     wanted = {g.strip() for g in (os.environ.get("LIST_GROUPS") or "fashion,living,beauty").split(",") if g.strip()}
+    apply_bot_guests()
     decorate = make_decorate(load_celeb_slots(day_str))
 
     messages = []
@@ -225,12 +272,10 @@ def main():
         lines += competitor_lines(now.date(), companies, {c for _, c in cat_sections}, multi_on=(key != "fashion"))
         messages.append((title, key, lines))
 
+    cands = []
     if now.weekday() == 0 or os.environ.get("GUEST_CANDIDATES") == "1":
         cands = guest_candidates(now, companies)
         print("새 게스트 후보 %d명" % len(cands))
-        if cands:
-            # 후보 확인은 관리자(wrangler.jsonc 의 ADMIN_ID)에게만
-            messages.append(("새 게스트 후보", None, candidate_message(cands)))
 
     for title, topic, lines in messages:
         chunks = chunk_lines(lines)
@@ -242,6 +287,9 @@ def main():
             continue
         # 봇에서 이 카테고리를 골라 승인된 사람에게만 (notify/subscribers.py)
         broadcast(ROOT, chunks, topic=topic)
+    if cands:
+        # 후보 확인은 관리자(wrangler.jsonc 의 ADMIN_ID)에게만, 버튼으로
+        send_candidates(cands)
 
 
 if __name__ == "__main__":

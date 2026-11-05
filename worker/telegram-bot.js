@@ -223,11 +223,52 @@ async function onMessage(env, msg) {
   }
 }
 
+// 새 게스트 후보 버튼 (아침 발송이 관리자에게 보내는 메시지) - 관리자만 누를 수 있다.
+// 정한 것은 KV "g:이름" = add | skip 에 저장되고, 다음 리스트부터 💗 (넣어) / 후보 제외 (빼) 로 반영된다.
+async function onGuest(env, cq, chatId, data) {
+  const msg = cq.message;
+  if (!admins(env).includes(chatId)) {
+    await tg(env, "answerCallbackQuery", { callback_query_id: cq.id, text: "관리자만 정할 수 있어요." });
+    return;
+  }
+  const add = data.startsWith("g:a:");
+  const name = data.slice(4);
+  await env.SUBS.put("g:" + name, add ? "add" : "skip");
+  await tg(env, "answerCallbackQuery", {
+    callback_query_id: cq.id, text: add ? `💗 ${name} - 게스트로 넣었어요` : `🚫 ${name} - 뺐어요`,
+  });
+  // 누른 이름의 버튼에 ✅ 표시 (다시 눌러 바꿀 수 있게 버튼은 그대로 둔다)
+  const rows = (msg.reply_markup?.inline_keyboard || []).map((row) => {
+    if (!row.some((b) => b.callback_data?.slice(4) === name)) return row;
+    return row.map((b) => {
+      const isAdd = b.callback_data.startsWith("g:a:");
+      const picked = isAdd === add;
+      return { ...b, text: (picked ? "✅ " : "") + (isAdd ? `💗 ${name} 넣어` : "🚫 빼") };
+    });
+  });
+  await tg(env, "editMessageReplyMarkup", { chat_id: msg.chat.id, message_id: msg.message_id, reply_markup: { inline_keyboard: rows } });
+}
+
+async function guestDecisions(env) {
+  const out = { add: [], skip: [] };
+  let cursor;
+  do {
+    const page = await env.SUBS.list({ prefix: "g:", cursor });
+    for (const k of page.keys) {
+      const v = await env.SUBS.get(k.name);
+      if (v === "add" || v === "skip") out[v].push(k.name.slice(2));
+    }
+    cursor = page.list_complete ? undefined : page.cursor;
+  } while (cursor);
+  return out;
+}
+
 async function onCallback(env, cq) {
-  await tg(env, "answerCallbackQuery", { callback_query_id: cq.id });
   const msg = cq.message;
   if (!msg) return;
   const chatId = String(msg.chat.id);
+  if ((cq.data || "").startsWith("g:")) return onGuest(env, cq, chatId, cq.data);
+  await tg(env, "answerCallbackQuery", { callback_query_id: cq.id });
   const [kind, mode, arg] = (cq.data || "").split(":");
   if (mode !== "u" && mode !== "t") return;
 
@@ -312,7 +353,7 @@ export default {
     }
 
     if (url.pathname === "/export") {
-      // 승인된 사람과 관리자: {users: {ID: {name, username, topics, since}}, admins: [ID]}
+      // 승인된 사람·관리자·게스트 결정: {users: {ID: {name, username, topics, since}}, admins: [ID], guests: {add, skip}}
       if (!env.BOT_TOKEN || request.headers.get("Authorization") !== "Bearer " + (await exportKey(env))) {
         return text("forbidden", 403);
       }
@@ -320,7 +361,7 @@ export default {
       for (const [id, u] of await listUsers(env)) {
         if (u.status === "approved") users[id] = { name: u.name, username: u.username, topics: u.topics, since: u.since };
       }
-      return new Response(JSON.stringify({ users, admins: admins(env) }), { headers: { "content-type": "application/json; charset=utf-8" } });
+      return new Response(JSON.stringify({ users, admins: admins(env), guests: await guestDecisions(env) }), { headers: { "content-type": "application/json; charset=utf-8" } });
     }
 
     if (url.pathname === "/setup") {
