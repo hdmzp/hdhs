@@ -1,15 +1,14 @@
 name: Scrape Celebrity PGM Products
 
 on:
-  schedule:
-    # 평소 수집은 Cloudflare 봇(worker/telegram-bot.js onCron)이 KST 05:30 에 요청하고, 실패하면 06:15 에 한 번 더.
-    # GitHub 예약은 몇 시간씩 밀려서 예비로만: KST 11:00 = UTC 02:00 (봇 요청과 겹치지 않는 낮 시간)
-    - cron: '0 2 * * *'
+  # 예약 실행 없음: Cloudflare 봇(worker/telegram-bot.js onCron)이 KST 05:30 에 요청하고, 실패하면 06:15 에 한 번 더.
+  # 낮·저녁 갱신은 같은 스크립트를 도는 rep-pgm-scrape.yml(KST 08:10/10:00/20:00/22:00 예약)이 맡는다.
   workflow_dispatch: # 필요할 때 깃허브에서 수동으로도 가동할 수 있는 버튼을 활성화합니다.
 
-# 봇 요청과 예비 예약이 겹쳐도 하나씩 차례로 (동시에 커밋하면 push 가 충돌한다)
+# rep-pgm-scrape.yml 과 같은 파일(homeshopping/representative_programs/)을 쓰므로 같은 그룹으로 묶어 하나씩 차례로.
+# 동시에 돌면 같은 JSON 을 서로 고쳐 push(rebase)가 충돌한다.
 concurrency:
-  group: scrape-celebpgm
+  group: representative-programs
   cancel-in-progress: false
 
 permissions:
