@@ -49,7 +49,6 @@ homeshopping/representative_programs/history/{YYYY-MM}.json (셀럽PGM 월 누�
 
 == 환경변수 ==
   TELEGRAM_BOT_TOKEN  (필수) BotFather 에서 발급받은 봇 토큰
-  TELEGRAM_CHAT_ID    (선택) 수신처 (notify/recipients.txt 와 합집합)
   TARGET_DATE         (선택) YYYY-MM-DD, 이 날짜의 방송을 보낸다 (기본: 어제 KST)
   DRY_RUN             (선택) "1"이면 발송하지 않고 메시지만 출력
 """

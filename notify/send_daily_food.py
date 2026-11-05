@@ -26,14 +26,11 @@
 COMPANIES + 시간대(TIME_START~TIME_END) 필터를 적용한 것이다.
 텔레그램 메시지는 1건당 4,096자 제한이라 보통 1건에 다 들어간다.
 
+== 수신자 ==
+받는 사람은 텔레그램 봇에서 신청·승인한 사람이다 (notify/subscribers.py, worker/telegram-bot.js).
+
 == 환경변수 ==
   TELEGRAM_BOT_TOKEN  (필수) BotFather 에서 발급받은 봇 토큰
-  TELEGRAM_CHAT_ID    (선택) 수신처. 쉼표로 여러 곳 지정 가능
-                      예: "123456789" / "123,456" / "@channelname" (채널은 봇을
-                      관리자로 추가해야 함)
-
-== 수신자 관리 ==
-수신자와 사람별 알림은 notify/recipients.txt 에 적는다 (notify/subscribers.py 참고).
   COMPANIES           (선택) 목록에 표시할 회사 코드, 쉼표 구분 (기본: HD,GS,CJ,LT)
                       전체 표시: "ALL"
   TIME_START          (선택) 목록 시작 시각 (기본: 06:00)

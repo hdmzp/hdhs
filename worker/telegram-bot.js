@@ -210,7 +210,6 @@ async function onMessage(env, msg) {
       lines.push("", `⏳ 승인 대기 ${wait.length}건`);
       for (const [id, u] of wait) lines.push(`• ${who(u, id)} <code>${id}</code> → ${names(u.picks)}`);
     }
-    lines.push("", "※ notify/recipients.txt 에 적힌 사람은 따로 받아요");
     await send(env, chatId, lines.join("\n").slice(0, 4000));
   } else if (cmd === "/status") {
     const u = await getUser(env, "u", chatId);
@@ -313,7 +312,7 @@ export default {
     }
 
     if (url.pathname === "/export") {
-      // 승인된 사람만: {users: {ID: {name, username, topics, since}}}
+      // 승인된 사람과 관리자: {users: {ID: {name, username, topics, since}}, admins: [ID]}
       if (!env.BOT_TOKEN || request.headers.get("Authorization") !== "Bearer " + (await exportKey(env))) {
         return text("forbidden", 403);
       }
@@ -321,7 +320,7 @@ export default {
       for (const [id, u] of await listUsers(env)) {
         if (u.status === "approved") users[id] = { name: u.name, username: u.username, topics: u.topics, since: u.since };
       }
-      return new Response(JSON.stringify({ users }), { headers: { "content-type": "application/json; charset=utf-8" } });
+      return new Response(JSON.stringify({ users, admins: admins(env) }), { headers: { "content-type": "application/json; charset=utf-8" } });
     }
 
     if (url.pathname === "/setup") {

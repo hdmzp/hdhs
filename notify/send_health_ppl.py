@@ -193,7 +193,7 @@ def main():
         for c in chunks:
             print("\n-----\n" + c)
         return
-    # 식품 리스트를 받는 사람에게 (recipients.txt 의 food)
+    # 식품 리스트를 받는 사람에게 (봇에서 식품을 고른 사람)
     broadcast(ROOT, chunks, topic="food")
 
 
