@@ -332,7 +332,79 @@ async function connect(env, origin) {
   return r;
 }
 
+// ---------------- 아침 발송 시계 (Cloudflare Cron) ----------------
+// GitHub 예약 실행은 3~6시간씩 늦게 돌아서, 정확한 시간은 여기서 잡고 GitHub 에 "지금 실행"을 요청한다.
+// 시간표 (wrangler.jsonc 의 triggers.crons, UTC):
+//   20:30 UTC = KST 05:30  셀럽PGM 수집
+//   21:15 UTC = KST 06:15  수집이 실패했거나 안 돌았으면 한 번 더 (성공했으면 건너뜀)
+//   22:00 UTC = KST 07:00  아침 알림 발송
+// 필요: Cloudflare Secret GITHUB_TOKEN (hdhs 저장소 Actions 읽기·쓰기 권한 토큰)
+const GH_REPO = "hdmzp/hdhs";
+
+async function gh(env, path, init = {}) {
+  return fetch(`https://api.github.com/repos/${GH_REPO}${path}`, {
+    ...init,
+    headers: {
+      Authorization: `Bearer ${env.GITHUB_TOKEN}`,
+      Accept: "application/vnd.github+json",
+      "X-GitHub-Api-Version": "2022-11-28",
+      "User-Agent": "hdhs-bot",
+      ...(init.body ? { "content-type": "application/json" } : {}),
+    },
+  });
+}
+
+async function dispatch(env, workflow, inputs) {
+  const r = await gh(env, `/actions/workflows/${workflow}/dispatches`, {
+    method: "POST", body: JSON.stringify({ ref: "main", ...(inputs ? { inputs } : {}) }),
+  });
+  if (r.status !== 204) throw new Error(`${workflow} 실행 요청 실패: HTTP ${r.status} ${(await r.text()).slice(0, 200)}`);
+}
+
+// 오늘 05:25(KST) 이후에 시작한 셀럽PGM 수집 중 가장 최근 것의 상태: success | failure | running | none
+async function celebScrapeState(env) {
+  const r = await gh(env, "/actions/workflows/scrape-celebpgm.yml/runs?per_page=10");
+  if (!r.ok) throw new Error(`수집 기록 조회 실패: HTTP ${r.status}`);
+  const since = new Date();
+  since.setUTCHours(20, 25, 0, 0);
+  if (since > new Date()) since.setUTCDate(since.getUTCDate() - 1);
+  const runs = ((await r.json()).workflow_runs || []).filter((x) => new Date(x.created_at) >= since);
+  if (!runs.length) return "none";
+  const last = runs[0];
+  if (last.status !== "completed") return "running";
+  return last.conclusion === "success" ? "success" : "failure";
+}
+
+const kstToday = () => new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10);
+
+async function onCron(env, cron) {
+  const tell = async (text) => { for (const a of admins(env)) await send(env, a, text); };
+  if (!env.GITHUB_TOKEN) {
+    await tell("⚠️ 아침 발송 시계: Cloudflare 에 GITHUB_TOKEN 이 없어 실행을 못 했어요. (GitHub 예비 예약으로 늦게라도 나가요)");
+    return;
+  }
+  try {
+    if (cron === "30 20 * * *") {
+      await dispatch(env, "scrape-celebpgm.yml");
+    } else if (cron === "15 21 * * *") {
+      const state = await celebScrapeState(env);
+      if (state === "failure" || state === "none") {
+        await dispatch(env, "scrape-celebpgm.yml");
+        await tell(`🔁 셀럽PGM 수집이 ${state === "none" ? "안 돌아서" : "실패해서"} 한 번 더 돌려요.`);
+      }
+    } else if (cron === "0 22 * * *") {
+      await dispatch(env, "telegram-daily-food.yml", { only: "all", admin_only: "false", scheduled: "true" });
+    }
+  } catch (e) {
+    await tell("⚠️ 아침 발송 시계 오류 (" + cron + "): " + esc(String(e && e.message || e)));
+  }
+}
+
 export default {
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(onCron(env, event.cron));
+  },
+
   async fetch(request, env) {
     const url = new URL(request.url);
     const text = (s, status = 200) =>
@@ -366,6 +438,17 @@ export default {
       const report = JSON.parse((await env.SUBS.get("cfg:report")) || "null");
       return new Response(JSON.stringify({ users, admins: admins(env), guests: await guestDecisions(env), report }),
                           { headers: { "content-type": "application/json; charset=utf-8" } });
+    }
+
+    if (url.pathname === "/sent") {
+      // 아침 알림을 오늘 보냈는지 - 보낸 뒤 POST 로 표시, GitHub 예비 예약은 GET 으로 보고 이미 보냈으면 건너뛴다.
+      if (!env.BOT_TOKEN || request.headers.get("Authorization") !== "Bearer " + (await exportKey(env))) {
+        return text("forbidden", 403);
+      }
+      const day = kstToday();
+      if (request.method === "POST") await env.SUBS.put("sent:" + day, new Date().toISOString(), { expirationTtl: 7 * 86400 });
+      const at = await env.SUBS.get("sent:" + day);
+      return new Response(JSON.stringify({ date: day, sent: !!at, at }), { headers: { "content-type": "application/json; charset=utf-8" } });
     }
 
     if (url.pathname === "/report" && request.method === "POST") {

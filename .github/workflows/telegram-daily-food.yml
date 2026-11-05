@@ -1,12 +1,10 @@
 name: 텔레그램 아침 알림 (식품방송 + 어제 셀럽PGM)
 on:
   schedule:
-    # 매일 KST 04:05 = UTC 19:05(전날)
-    # GitHub cron은 실제로 2~4시간씩 밀린다 (2026-10: 08:30 예약이 10:20~12:40에 도착).
-    # 8시 전에 받도록 새벽으로 당긴다. 정각은 예약이 가장 몰려서 5분 비켰고,
-    # 같은 시간대 다른 예약(고정PGM 수집 UTC 19:30)과도 겹치지 않는다.
-    # 날씨는 전날 받은 예보(weather.yml, KST 05:30 갱신)에 오늘 날짜가 들어 있다.
-    - cron: "5 19 * * *"
+    # 평소 발송은 Cloudflare 봇(worker/telegram-bot.js onCron)이 매일 KST 07:00 에 workflow_dispatch 로 요청한다.
+    # GitHub 예약은 3~6시간씩 밀려서(2026-11: 04:05 예약이 07:25~10:30 도착) 시계로 못 쓰고, 예비로만 둔다.
+    # 예비: KST 08:00 = UTC 23:00(전날). 07:00 발송이 이미 나갔으면 check 단계에서 건너뛴다.
+    - cron: "0 23 * * *"
   workflow_dispatch:  # 수동 실행 버튼 (테스트 발송용으로 하나만 골라 보낼 수 있다)
     inputs:
       only:
@@ -17,10 +15,33 @@ on:
         description: "관리자에게만 보내기 (테스트용 - 끄면 실제 받는 사람 모두에게)"
         type: boolean
         default: true
+      scheduled:
+        description: "정기 발송 (Cloudflare 봇이 07:00 에 요청할 때만 켜짐 - 손으로 실행할 땐 끈 채로)"
+        type: boolean
+        default: false
 permissions:
   contents: read
 jobs:
+  # 예비 예약 실행은 오늘 이미 보냈으면 건너뛴다 (봇의 /sent 로 확인)
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    outputs:
+      skip: ${{ steps.sent.outputs.skip }}
+    steps:
+      - id: sent
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        run: |
+          if [ "${{ github.event_name }}" != "schedule" ]; then echo "skip=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          key=$(printf 'export:%s' "$TELEGRAM_BOT_TOKEN" | sha256sum | cut -d' ' -f1)
+          res=$(curl -fsS -m 20 -A hdhs-actions -H "Authorization: Bearer $key" https://hdhs-bot.mj2040354.workers.dev/sent || echo '{}')
+          echo "$res"
+          if echo "$res" | grep -q '"sent":true'; then echo "오늘 이미 보냄 - 건너뜀"; echo "skip=true" >> "$GITHUB_OUTPUT"
+          else echo "skip=false" >> "$GITHUB_OUTPUT"; fi
   send:
+    needs: check
+    if: needs.check.outputs.skip != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -71,8 +92,16 @@ jobs:
           COMPANIES: ${{ vars.COMPANIES }}
           TIME_START: ${{ vars.TIME_START }}
           TIME_END: ${{ vars.TIME_END }}
-          # 새 게스트 후보: 월요일 자동 + 수동 실행 때마다 (관리자에게만)
-          GUEST_CANDIDATES: ${{ github.event_name == 'workflow_dispatch' && '1' || '' }}
+          # 새 게스트 후보: 월요일 자동 + 손으로 실행할 때마다 (관리자에게만)
+          GUEST_CANDIDATES: ${{ github.event_name == 'workflow_dispatch' && !inputs.scheduled && '1' || '' }}
         run: python notify/send_daily_category.py
+      # 오늘 보냈다고 봇에 표시 (예비 예약이 같은 알림을 또 보내지 않게). 정기 발송일 때만.
+      - name: 오늘 발송 표시
+        if: always() && (github.event_name == 'schedule' || inputs.scheduled)
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        run: |
+          key=$(printf 'export:%s' "$TELEGRAM_BOT_TOKEN" | sha256sum | cut -d' ' -f1)
+          curl -fsS -m 20 -X POST -A hdhs-actions -H "Authorization: Bearer $key" https://hdhs-bot.mj2040354.workers.dev/sent || echo "표시 실패 (예비 예약이 한 번 더 보낼 수 있음)"
       # 셀럽PGM 상품리스트 발송은 2026-07 사용자 요청으로 제거
       # (다시 켜려면: python notify/send_celeb_pgm.py 스텝 복원 - 스크립트는 남겨둠)

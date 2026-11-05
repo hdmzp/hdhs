@@ -41,3 +41,25 @@ Worker 가 GitHub 저장소와 연결돼 있으면 main 에 push 될 때마다 �
 ## 비용
 
 Workers 무료 플랜은 하루 10만 번 요청까지 무료. 신청 봇은 하루 몇 번 쓰는 수준이라 돈 나갈 일 없다.
+
+## 아침 발송 시계 (Cloudflare Cron)
+
+GitHub 예약 실행은 3~6시간씩 늦게 돌아서, 아침 발송 시간은 봇이 잡는다 (`wrangler.jsonc` 의 `triggers.crons`).
+
+| KST | 봇이 하는 일 |
+|---|---|
+| 05:30 | 셀럽PGM 수집(`scrape-celebpgm.yml`) 실행 요청 |
+| 06:15 | 그 수집이 실패했거나 안 돌았으면 한 번 더 (성공했으면 건너뜀) |
+| 07:00 | 아침 알림(`telegram-daily-food.yml`) 실행 요청 |
+
+- 문제가 생기면 관리자에게 텔레그램으로 알린다.
+- 예비: GitHub 예약도 남아 있다 (알림 KST 08:00, 수집 11:00). 07:00 알림이 나갔으면 08:00 예비는 봇의 `/sent` 를 보고 건너뛴다.
+
+### 처음 한 번: GITHUB_TOKEN 넣기
+
+1. GitHub 오른쪽 위 프로필 → *Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token*
+2. 이름 `hdhs-bot`, 만료는 원하는 기간 (만료되면 다시 만들어 넣어야 한다)
+3. *Repository access*: Only select repositories → `hdmzp/hdhs`
+4. *Permissions → Repository permissions → Actions*: **Read and write**
+5. *Generate token* → 나온 값 복사
+6. Cloudflare → `hdhs-bot` → *Settings → Variables and Secrets → Add* → 이름 `GITHUB_TOKEN`, 종류 *Secret*, 값 붙여넣기 → *Deploy*
