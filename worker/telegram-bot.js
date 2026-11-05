@@ -1,7 +1,8 @@
 // 텔레그램 알림 신청 봇 (Cloudflare Worker, 무료) - START 를 누르면 바로 답한다.
 //
 // 흐름
-//   1) 신청자: START → 받을 알림을 버튼으로 고르고 [신청하기]
+//   1) 신청자: START → [셀럽PGM] [카테고리 편성] [둘 다] 중 하나
+//      셀럽PGM 은 누르면 바로 신청, 카테고리는 다음 화면에서 패션/미용/식품/리빙 을 골라 [신청하기]
 //   2) 관리자: "🆕 알림 신청" + [승인] [거절] 버튼
 //   3) 승인되면 신청자에게 "내일 아침부터 보내드려요" - 아침 발송(GitHub Actions)이 /export 로 목록을 받아 간다
 //   이미 받는 사람이 START 로 알림을 바꾸면 다시 승인을 받는다 (승인 전까지는 예전 알림을 계속 받음).
@@ -15,14 +16,15 @@
 // 배포 후 https://<worker 주소>/setup 을 한 번 열면 텔레그램과 연결된다.
 // 알림 이름(키)은 notify/subscribers.py 의 TOPICS 와 같아야 한다.
 
-const TOPICS = [
-  ["food", "식품 (일반식품·건강식품)"],
-  ["celeb", "셀럽PGM (어제 운영상품)"],
+// 카테고리 편성 (세부 화면에서 고르는 것) - 버튼 순서
+const CATS = [
   ["fashion", "패션 (의류·언더웨어·잡화/주얼리)"],
-  ["living", "리빙 (리빙/주방·가전)"],
   ["beauty", "미용"],
+  ["food", "식품 (일반식품·건강식품)"],
+  ["living", "리빙 (리빙/주방·가전)"],
 ];
-const TOPIC_SHORT = { food: "식품", celeb: "셀럽PGM", fashion: "패션", living: "리빙", beauty: "미용" };
+const TOPIC_SHORT = { celeb: "셀럽PGM", fashion: "패션", beauty: "미용", food: "식품", living: "리빙" };
+const ORDER = ["celeb", ...CATS.map(([k]) => k)];
 
 async function tg(env, method, body) {
   const r = await fetch(`https://api.telegram.org/bot${env.BOT_TOKEN}/${method}`, {
@@ -48,7 +50,7 @@ const edit = (env, msg, text, markup) =>
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 const admins = (env) => String(env.ADMIN_ID || "").split(",").map((s) => s.trim()).filter(Boolean);
 const today = () => new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10);
-const names = (topics) => (topics || []).map((t) => TOPIC_SHORT[t]).filter(Boolean).join(", ") || "없음";
+const names = (topics) => ORDER.filter((t) => (topics || []).includes(t)).map((t) => TOPIC_SHORT[t]).join(", ") || "없음";
 
 async function sha(text) {
   const hash = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
@@ -69,13 +71,23 @@ function who(u, id) {
   return esc(u.name || id) + (u.username ? ` (@${esc(u.username)})` : "");
 }
 
-function pickerKeyboard(mode, picks) {
+// 첫 화면: 셀럽PGM / 카테고리 편성 / 둘 다
+const PICK_TEXT = "📮 어떤 알림을 받고 싶으세요?";
+const menuKeyboard = (mode) => ({ inline_keyboard: [
+  [{ text: "⭐ 셀럽PGM", callback_data: `m:${mode}:celeb` }],
+  [{ text: "📂 카테고리 편성", callback_data: `m:${mode}:cat` }],
+  [{ text: "⭐📂 둘 다", callback_data: `m:${mode}:both` }],
+] });
+
+// 둘째 화면: 카테고리 고르기
+const CAT_TEXT = (withCeleb) =>
+  `📂 받을 카테고리를 골라주세요${withCeleb ? " (셀럽PGM 포함)" : ""}\n누를 때마다 켜고 꺼요, 여러 개 가능`;
+function catKeyboard(mode, picks) {
   const set = new Set(picks || []);
-  const rows = TOPICS.map(([k, n]) => [{ text: (set.has(k) ? "✅ " : "⬜ ") + n, callback_data: `p:${mode}:${k}` }]);
-  rows.push([{ text: "📮 신청하기", callback_data: `p:${mode}:ok` }]);
+  const rows = CATS.map(([k, n]) => [{ text: (set.has(k) ? "✅ " : "⬜ ") + n, callback_data: `p:${mode}:${k}` }]);
+  rows.push([{ text: "◀ 뒤로", callback_data: `m:${mode}:back` }, { text: "📮 신청하기", callback_data: `p:${mode}:ok` }]);
   return { inline_keyboard: rows };
 }
-const PICK_TEXT = "📮 받을 알림을 골라주세요\n(누를 때마다 켜고 꺼요, 여러 개 가능)";
 
 async function startPicker(env, mode, chatId, from) {
   const old = await getUser(env, mode, chatId);
@@ -89,7 +101,7 @@ async function startPicker(env, mode, chatId, from) {
   await putUser(env, mode, chatId, u);
   const head = mode === "t" ? "🧪 테스트 - 신청자가 보는 화면\n\n" : "";
   const now = old?.status === "approved" ? `지금 받는 알림: ${names(old.topics)}\n\n` : "";
-  await send(env, chatId, head + now + PICK_TEXT, pickerKeyboard(mode, u.picks));
+  await send(env, chatId, head + now + PICK_TEXT, menuKeyboard(mode));
 }
 
 async function submit(env, mode, chatId, msg, u) {
@@ -220,20 +232,41 @@ async function onCallback(env, cq) {
   const [kind, mode, arg] = (cq.data || "").split(":");
   if (mode !== "u" && mode !== "t") return;
 
-  if (kind === "p") {
+  if (kind === "m" || kind === "p") {
     const u = await getUser(env, mode, chatId);
     if (!u) {
       await send(env, chatId, "다시 /start 를 눌러주세요.");
       return;
     }
-    if (arg === "ok") return submit(env, mode, chatId, msg, u);
-    if (!TOPIC_SHORT[arg]) return;
+    const cats = (u.picks || []).filter((k) => k !== "celeb");
+    if (kind === "m") {
+      if (arg === "back") {
+        await edit(env, msg, PICK_TEXT, menuKeyboard(mode));
+      } else if (arg === "celeb") {
+        u.picks = ["celeb"]; // 셀럽PGM 만 - 누르면 바로 신청
+        return submit(env, mode, chatId, msg, u);
+      } else if (arg === "cat" || arg === "both") {
+        u.picks = (arg === "both" ? ["celeb"] : []).concat(cats);
+        await putUser(env, mode, chatId, u);
+        await edit(env, msg, CAT_TEXT(arg === "both"), catKeyboard(mode, cats));
+      }
+      return;
+    }
+    if (arg === "ok") {
+      if (!cats.length) {
+        await send(env, chatId, "카테고리를 하나 이상 골라주세요.");
+        return;
+      }
+      return submit(env, mode, chatId, msg, u);
+    }
+    if (!CATS.some(([k]) => k === arg)) return;
     const set = new Set(u.picks || []);
     set.has(arg) ? set.delete(arg) : set.add(arg);
-    u.picks = TOPICS.map(([k]) => k).filter((k) => set.has(k));
+    u.picks = ORDER.filter((k) => set.has(k));
     await putUser(env, mode, chatId, u);
     await tg(env, "editMessageReplyMarkup", {
-      chat_id: chatId, message_id: msg.message_id, reply_markup: pickerKeyboard(mode, u.picks),
+      chat_id: chatId, message_id: msg.message_id,
+      reply_markup: catKeyboard(mode, u.picks.filter((k) => k !== "celeb")),
     });
   } else if ((kind === "a" || kind === "r") && admins(env).includes(chatId) && arg) {
     await decide(env, cq, kind === "a", mode, arg);
