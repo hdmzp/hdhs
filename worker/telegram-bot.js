@@ -122,7 +122,8 @@ async function submit(env, mode, chatId, msg, u) {
   if (!change) u.status = "pending";
   u.requested = today();
   await putUser(env, mode, chatId, u);
-  await edit(env, msg, `✅ ${change ? "변경" : "신청"}이 접수됐어요: ${names(u.picks)}\n관리자가 승인하면 알려드릴게요.`
+  await edit(env, msg, `✅ 관리자가 확인 후 승인 예정이에요. 승인 후 다음날부터 오전 중에 알림을 보내드릴게요.\n`
+    + `🔔 ${change ? "바꿀" : "받는"} 알림: ${names(u.picks)}`
     + (change ? `\n(승인 전까지는 지금 알림(${names(u.topics)})을 계속 받아요)` : ""));
 
   const lines = [
@@ -154,7 +155,7 @@ async function decide(env, cq, approve, mode, id) {
     delete u.picks;
     await putUser(env, mode, id, u);
     await send(env, id, (mode === "t" ? "🧪 테스트 - 승인되면 신청자가 받는 메시지\n\n" : "")
-      + `🎉 알림 신청이 승인됐어요!\n내일 아침부터 보내드려요: ${names(u.topics)}\n\n바꾸려면 /start, 그만 받으려면 /stop`);
+      + `🎉 알림 신청이 승인됐어요! 내일부터 오전 중에 알림을 보내드릴게요.\n🔔 받는 알림: ${names(u.topics)}\n\n바꾸려면 /start, 그만 받으려면 /stop`);
     await edit(env, msg, esc(base) + `\n\n👉 ✅ ${esc(by)} 승인 (${today()})`);
   } else {
     if (u.status === "approved") {
