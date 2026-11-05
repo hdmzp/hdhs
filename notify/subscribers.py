@@ -40,7 +40,8 @@ def load():
         data = r.json()
     except Exception as e:
         sys.exit("봇에서 받는 사람 목록을 못 받았습니다 (%s): %s" % (url, e))
-    _CACHE = {"users": data.get("users") or {}, "admins": [str(a) for a in data.get("admins") or []]}
+    _CACHE = {"users": data.get("users") or {}, "admins": [str(a) for a in data.get("admins") or []],
+              "guests": data.get("guests") or {}}
     print("받는 사람 %d명 (봇 승인)" % len(_CACHE["users"]))
     return _CACHE
 
@@ -52,3 +53,15 @@ def recipients_for(topic):
 
 def admins():
     return load()["admins"]
+
+
+def guest_decisions():
+    """관리자가 봇에서 버튼으로 정한 게스트 {"add": [이름], "skip": [이름]}. 못 받으면 빈 값 (리스트는 그대로 보낸다)."""
+    if not os.environ.get("TELEGRAM_BOT_TOKEN"):
+        return {"add": [], "skip": []}
+    try:
+        g = load()["guests"]
+    except SystemExit as e:
+        print("※ 게스트 결정을 못 받음:", e)
+        return {"add": [], "skip": []}
+    return {"add": list(g.get("add") or []), "skip": list(g.get("skip") or [])}
