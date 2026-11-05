@@ -2,9 +2,15 @@ name: Scrape Celebrity PGM Products
 
 on:
   schedule:
-    # UTC 기준 18:00는 한국 시간(KST)으로 다음날 새벽 03:00입니다.
-    - cron: '0 18 * * *'
+    # 평소 수집은 Cloudflare 봇(worker/telegram-bot.js onCron)이 KST 05:30 에 요청하고, 실패하면 06:15 에 한 번 더.
+    # GitHub 예약은 몇 시간씩 밀려서 예비로만: KST 11:00 = UTC 02:00 (봇 요청과 겹치지 않는 낮 시간)
+    - cron: '0 2 * * *'
   workflow_dispatch: # 필요할 때 깃허브에서 수동으로도 가동할 수 있는 버튼을 활성화합니다.
+
+# 봇 요청과 예비 예약이 겹쳐도 하나씩 차례로 (동시에 커밋하면 push 가 충돌한다)
+concurrency:
+  group: scrape-celebpgm
+  cancel-in-progress: false
 
 permissions:
   contents: write
