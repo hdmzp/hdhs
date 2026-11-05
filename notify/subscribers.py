@@ -55,6 +55,26 @@ def admins():
     return load()["admins"]
 
 
+def report_recipients():
+    """셀럽PGM 보고 양식 받는 사람 - 봇 신청과 상관없이 정해진 사람만.
+
+    비공개 저장소 hdmzp/hdhs_private 의 telegram/보고수신자.txt (한 줄에 ID, # 뒤는 메모).
+    워크플로가 그 파일을 받아 와 REPORT_RECIPIENTS_FILE 로 알려준다.
+    파일을 못 받으면(토큰 없음 등) 관리자에게만 보낸다."""
+    path = os.environ.get("REPORT_RECIPIENTS_FILE") or ""
+    if path and os.path.exists(path):
+        ids = []
+        with open(path, encoding="utf-8") as f:
+            for raw in f:
+                cid = raw.split("#")[0].strip()
+                if cid and cid not in ids:
+                    ids.append(cid)
+        print("보고 양식 받는 사람 %d명 (보고수신자.txt)" % len(ids))
+        return ids
+    print("※ 보고수신자.txt 를 못 받아 관리자에게만 보냅니다")
+    return admins()
+
+
 def guest_decisions():
     """관리자가 봇에서 버튼으로 정한 게스트 {"add": [이름], "skip": [이름]}. 못 받으면 빈 값 (리스트는 그대로 보낸다)."""
     if not os.environ.get("TELEGRAM_BOT_TOKEN"):
