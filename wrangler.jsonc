@@ -10,5 +10,9 @@
   "keep_vars": true,
   "vars": {
     "ADMIN_ID": "8921978250"
-  }
+  },
+  // 신청·승인 상태 저장공간. id 를 비워 두면 첫 배포 때 Cloudflare 가 알아서 만든다.
+  "kv_namespaces": [
+    { "binding": "SUBS" }
+  ]
 }

@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
 """
-텔레그램 수신자별 알림 설정 (notify/recipients.txt)
+텔레그램 수신자별 알림 설정
 
-봇에 /start(아무 메시지)를 보내면 worker/telegram-bot.js (Cloudflare) 가 바로 접수 답장을 보내고
-관리자에게 이름·ID 를 알려준다. 관리자가 그 ID 를 recipients.txt 에 받을 알림과 함께 적는다.
+두 곳을 합친다.
+  1) 봇 신청 (worker/telegram-bot.js, Cloudflare) - 신청자가 버튼으로 고르고 관리자가 승인한 사람.
+     Worker 의 /export 로 받아 온다. 열쇠는 봇 토큰에서 만들어서 따로 넣을 설정이 없다.
+     주소를 바꾸려면 GitHub Variables 에 SUBS_URL.
+  2) notify/recipients.txt - 관리자가 직접 적는 사람 (아래 형식)
+같은 ID 가 둘 다 있으면 봇에서 고른 알림을 쓴다 (recipients.txt 의 admin·brand 는 유지).
 
 recipients.txt 한 줄 = 한 사람:
   8921978250  food celeb admin  #홍길동
@@ -22,6 +26,9 @@ GitHub Secrets 의 TELEGRAM_CHAT_ID 에 적힌 ID 도 food + celeb 을 받는다
 """
 
 import os
+import hashlib
+
+DEFAULT_SUBS_URL = "https://hdhs-bot.mj2040354.workers.dev"
 
 TOPICS = {
     "food": "식품", "celeb": "셀럽PGM", "fashion": "패션",
@@ -36,8 +43,51 @@ DEFAULT_TOPICS = {"food", "celeb"}
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
+_CACHE = {}
+
+
 def load(root=ROOT):
-    """{채팅ID: {"name", "topics": set, "brands": [..]}} - 파일에 적힌 순서대로."""
+    """{채팅ID: {"name", "topics": set, "brands": [..]}} - 한 번 읽으면 같은 실행 안에서는 다시 안 읽는다."""
+    if root not in _CACHE:
+        users = load_file(root)
+        merge_bot(users)
+        _CACHE[root] = users
+    return _CACHE[root]
+
+
+def fetch_bot():
+    """봇에서 승인된 사람 {ID: {"name", "topics": [..]}}. 못 받으면 None."""
+    token = os.environ.get("TELEGRAM_BOT_TOKEN") or ""
+    url = (os.environ.get("SUBS_URL") or DEFAULT_SUBS_URL).rstrip("/")
+    if not token or not url:
+        return None
+    import requests
+    key = hashlib.sha256(("export:" + token).encode()).hexdigest()
+    try:
+        r = requests.get(url + "/export", headers={"Authorization": "Bearer " + key}, timeout=20)
+        r.raise_for_status()
+        return r.json().get("users") or {}
+    except Exception as e:  # 봇이 죽어 있어도 recipients.txt 사람에게는 보낸다
+        print("※ 봇 신청자 목록을 못 받았습니다 (recipients.txt 만 발송): %s" % e)
+        return None
+
+
+def merge_bot(users):
+    bot = fetch_bot()
+    if bot is None:
+        return
+    print("봇 신청자 %d명" % len(bot))
+    for cid, b in bot.items():
+        topics = {t for t in (b.get("topics") or []) if t in TOPICS and t != "admin"}
+        u = users.get(cid)
+        if u:
+            u["topics"] = topics | ({"admin"} & u["topics"])
+        else:
+            users[cid] = {"name": b.get("name") or "", "topics": topics, "brands": []}
+
+
+def load_file(root=ROOT):
+    """recipients.txt + TELEGRAM_CHAT_ID - 파일에 적힌 순서대로."""
     users = {}
     path = os.path.join(root, "notify", "recipients.txt")
     if os.path.exists(path):
