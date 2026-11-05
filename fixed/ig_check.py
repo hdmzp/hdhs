@@ -32,6 +32,7 @@ import re
 import sys
 import json
 import time
+import threading
 from datetime import datetime, timedelta, timezone
 
 import requests
@@ -49,6 +50,10 @@ DELAY_SEC = 4                    # 계정 사이 간격 (차단 방지)
 # 처음부터 이만큼 연속으로 접속 실패하면 러너가 막힌 것으로 보고 중단한다.
 # (2026-11-05 첫 실행이 계정마다 응답 지연으로 15분 제한을 넘겼다)
 EARLY_ABORT = 5
+# requests의 timeout은 '응답 없는 시간' 기준이라, 서버가 조금씩 흘려보내면
+# 끝없이 걸릴 수 있다. 계정 하나당·전체 실행에 별도 상한을 둔다.
+HANDLE_LIMIT_SEC = 45
+RUN_LIMIT_SEC = 12 * 60
 
 NOT_FOUND_MARKERS = (
     "Sorry, this page isn't available",
@@ -134,6 +139,14 @@ def check_handle(session, handle):
     return (s or "error"), code
 
 
+def check_with_limit(session, handle):
+    box = {}
+    t = threading.Thread(target=lambda: box.update(r=check_handle(session, handle)), daemon=True)
+    t.start()
+    t.join(HANDLE_LIMIT_SEC)
+    return box.get("r", ("error", None))
+
+
 def main():
     with open(HOSTS_PATH, encoding="utf-8") as f:
         handles = collect_handles(json.load(f))
@@ -152,10 +165,17 @@ def main():
 
     now = datetime.now(KST).isoformat(timespec="seconds")
     results = {}
+    started = time.monotonic()
     for i, h in enumerate(handles):
+        if time.monotonic() - started > RUN_LIMIT_SEC:
+            print(f"실행 시간 상한 초과 - 남은 {len(handles) - i}개는 이전 결과 유지")
+            for rest in handles[i:]:
+                if rest in prev_handles:
+                    results[rest] = prev_handles[rest]
+            break
         if i:
             time.sleep(DELAY_SEC)
-        s, code = check_handle(session, h)
+        s, code = check_with_limit(session, h)
         entry = {"s": s, "t": now, "code": code}
         if s != "ok":
             old = prev_handles.get(h, {})
