@@ -353,7 +353,8 @@ export default {
     }
 
     if (url.pathname === "/export") {
-      // 승인된 사람·관리자·게스트 결정: {users: {ID: {name, username, topics, since}}, admins: [ID], guests: {add, skip}}
+      // 승인된 사람·관리자·게스트 결정·보고 양식 받는 사람:
+      // {users: {ID: {name, username, topics, since}}, admins: [ID], guests: {add, skip}, report: [ID] | null}
       if (!env.BOT_TOKEN || request.headers.get("Authorization") !== "Bearer " + (await exportKey(env))) {
         return text("forbidden", 403);
       }
@@ -361,7 +362,21 @@ export default {
       for (const [id, u] of await listUsers(env)) {
         if (u.status === "approved") users[id] = { name: u.name, username: u.username, topics: u.topics, since: u.since };
       }
-      return new Response(JSON.stringify({ users, admins: admins(env), guests: await guestDecisions(env) }), { headers: { "content-type": "application/json; charset=utf-8" } });
+      const report = JSON.parse((await env.SUBS.get("cfg:report")) || "null");
+      return new Response(JSON.stringify({ users, admins: admins(env), guests: await guestDecisions(env), report }),
+                          { headers: { "content-type": "application/json; charset=utf-8" } });
+    }
+
+    if (url.pathname === "/report" && request.method === "POST") {
+      // 셀럽PGM 보고 양식 받는 사람 - hdhs_private 의 telegram/보고수신자.txt 를 그 저장소 Actions 가 올린다.
+      // 열쇠는 /export 와 같다 (봇 토큰에서 만든 값). 본문: {"ids": ["123", ...]}
+      if (!env.BOT_TOKEN || request.headers.get("Authorization") !== "Bearer " + (await exportKey(env))) {
+        return text("forbidden", 403);
+      }
+      const body = await request.json().catch(() => ({}));
+      const ids = [...new Set((body.ids || []).map((x) => String(x).trim()).filter((x) => /^-?\d+$|^@\w+$/.test(x)))];
+      await env.SUBS.put("cfg:report", JSON.stringify(ids));
+      return new Response(JSON.stringify({ ok: true, report: ids }), { headers: { "content-type": "application/json; charset=utf-8" } });
     }
 
     if (url.pathname === "/setup") {
