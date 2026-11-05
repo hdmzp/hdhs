@@ -3252,29 +3252,23 @@
     margin-bottom: 20px;
   }
 
-  /* 셀럽PGM 텔레그램 알림 신청 버튼 + QR 팝업 */
-  .cel-top-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
+  /* 텔레그램 알림 신청 (오른쪽 위 작은 버튼, 화면 설명 버튼 옆) + QR 팝업 */
   .tg-open-btn {
-    font-family: 'Pretendard', -apple-system, sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    color: #fff;
-    background: #229ED9;
+    margin-left: auto;
+    align-self: center;
+    display: block;
+    width: 28px;
+    height: 28px;
+    padding: 0;
     border: 0;
-    border-radius: 8px;
-    padding: 7px 12px;
+    border-radius: 50%;
+    background: none;
     cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
+    transition: transform 0.15s, box-shadow 0.15s;
   }
-  .tg-open-btn:hover { background: #1B8BC2; }
+  .tg-open-btn img { display: block; width: 28px; height: 28px; }
+  .tg-open-btn:hover { transform: scale(1.08); box-shadow: 0 2px 8px rgba(34,158,217,0.35); }
+  .tg-open-btn + .info-tip-wrap { margin-left: 6px; }
   .tg-modal {
     position: fixed;
     inset: 0;
@@ -3299,8 +3293,9 @@
   }
   .tg-modal-box h3 { margin: 0 0 4px; font-size: 17px; color: var(--ink); }
   .tg-modal-sub { margin: 0 0 14px; font-size: 13px; color: var(--ink-soft); line-height: 1.5; }
-  .tg-modal-qr { display: block; border-radius: 12px; overflow: hidden; }
+  .tg-modal-qr { display: block; width: 220px; max-width: 100%; margin: 0 auto; padding: 10px; border: 1px solid var(--rule); border-radius: 12px; background: #fff; }
   .tg-modal-qr img { display: block; width: 100%; height: auto; }
+  .tg-modal-id { margin: 8px 0 0; font-size: 13px; font-weight: 700; color: #229ED9; }
   .tg-modal-close {
     position: absolute;
     top: 8px;
@@ -3934,6 +3929,9 @@
     <button id="tabBtnFeedback">의견</button>
     <button id="tabBtnSecurity" aria-label="라방바" title="라방바"><svg class="lv-logo" viewBox="0 0 100 100" width="18" height="18" aria-hidden="true" focusable="false"><rect x="18" y="4" width="24" height="60" rx="12" fill="#151515"/><circle cx="56" cy="60" r="36" fill="#151515"/><path d="M48 47 L73 60 L48 73 Z" fill="#F2C230" stroke="#F2C230" stroke-width="9" stroke-linejoin="round" transform="rotate(12 58 60)"/></svg></button>
   </div>
+  <button type="button" class="tg-open-btn" id="tgOpenBtn" aria-haspopup="dialog" aria-label="텔레그램 알림 신청" title="텔레그램 알림 신청">
+    <img src="icons/telegram.png" alt="" width="28" height="28">
+  </button>
   <div class="info-tip-wrap" id="infoTipWrap">
     <button type="button" class="info-tip-btn" id="infoTipBtn" aria-label="화면 설명 보기">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -4179,13 +4177,10 @@
 
 <div id="tabCelebrity" class="tab-panel">
   <div class="cel-controls">
-    <div class="cel-top-row">
-      <div class="cel-month-nav">
-        <button id="celMonthPrev" type="button" aria-label="이전 달">◀</button>
-        <input type="month" id="celMonthPicker">
-        <button id="celMonthNext" type="button" aria-label="다음 달">▶</button>
-      </div>
-      <button type="button" class="tg-open-btn" id="tgOpenBtn" aria-haspopup="dialog">✈️ 텔레그램 알림 신청하기</button>
+    <div class="cel-month-nav">
+      <button id="celMonthPrev" type="button" aria-label="이전 달">◀</button>
+      <input type="month" id="celMonthPicker">
+      <button id="celMonthNext" type="button" aria-label="다음 달">▶</button>
     </div>
     <div class="cel-slicer" id="celProgramSlicer">
       <button class="active" data-file="all">전체선택</button>
@@ -4237,10 +4232,11 @@
   <div class="tg-modal-box">
     <button type="button" class="tg-modal-close" data-tg-close aria-label="닫기">✕</button>
     <h3 id="tgModalTitle">텔레그램 알림 신청</h3>
-    <p class="tg-modal-sub">휴대폰은 QR을 찍고, PC는 QR이나 아래 버튼을 누르세요.<br>봇에서 START → 받을 알림을 고르면 돼요.</p>
+    <p class="tg-modal-sub">휴대폰 카메라로 QR을 찍거나,<br>모바일·PC에서는 QR이나 아래 버튼을 눌러 주세요.<br>봇에서 START → 받을 알림을 고르면 돼요.</p>
     <a class="tg-modal-qr" href="https://t.me/HDMZP_BOT?start=site" target="_blank" rel="noopener" title="텔레그램에서 열기">
-      <img src="icons/telegram_qr.jpg" alt="@HDMZP_BOT 텔레그램 QR 코드" width="520" height="743" loading="lazy">
+      <img src="icons/telegram_qr.jpg" alt="@HDMZP_BOT 텔레그램 QR 코드" width="480" height="480" loading="lazy">
     </a>
+    <p class="tg-modal-id">@HDMZP_BOT</p>
     <div class="tg-modal-actions">
       <a href="https://t.me/HDMZP_BOT?start=site" target="_blank" rel="noopener">텔레그램 열기</a>
       <button type="button" data-tg-close>닫기</button>
