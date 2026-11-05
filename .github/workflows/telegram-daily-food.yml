@@ -55,11 +55,23 @@ jobs:
         run: python notify/send_health_ppl.py
       # 어제의 셀럽PGM 운영상품 (식품 리스트와 별도 메시지)
       # 식품 발송이 실패해도 이건 따로 보낸다
+      # 셀럽PGM 보고 양식 받는 사람 = 비공개 저장소 telegram/보고수신자.txt
+      # 읽으려면 Secrets 에 PRIVATE_REPO_TOKEN (hdhs_private 읽기 권한 토큰). 없으면 관리자에게만 간다.
+      - name: 보고 양식 받는 사람 목록 (비공개 저장소)
+        if: always() && (github.event_name != 'workflow_dispatch' || inputs.only == 'all' || inputs.only == 'celeb')
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          repository: hdmzp/hdhs_private
+          token: ${{ secrets.PRIVATE_REPO_TOKEN }}
+          path: _private
+          sparse-checkout: telegram
       - name: 텔레그램 발송 — 어제 셀럽PGM 운영상품
         if: always() && (github.event_name != 'workflow_dispatch' || inputs.only == 'all' || inputs.only == 'celeb')
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           ADMIN_ONLY: ${{ github.event_name == 'workflow_dispatch' && inputs.admin_only && '1' || '' }}  # 수동 테스트는 관리자에게만
+          REPORT_RECIPIENTS_FILE: _private/telegram/보고수신자.txt
         run: python notify/send_celeb_daily.py
       # 오늘의 패션·리빙·미용 방송 리스트 (게스트 💗)
       # 봇에서 그 카테고리를 골라 승인된 사람에게만 간다 (notify/subscribers.py)

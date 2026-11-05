@@ -41,6 +41,8 @@ homeshopping/representative_programs/history/{YYYY-MM}.json (셀럽PGM 월 누�
   보내지 않고 '어제는 셀럽PGM이 없었어요' 한 줄 + 특이사항·오늘의 셀럽PGM만 보낸다.
   특이사항·오늘의 셀럽PGM이 둘 다 없으면 발송 자체를 생략.
 - 보고 양식(별도 메시지): '📃복사해서 보고에 활용하세요' + 어제 회차별 실적 보고 틀 (HD 제외).
+  셀럽PGM 신청자가 아니라 비공개 저장소의 telegram/보고수신자.txt 에 적힌 사람에게만 간다
+  (못 받으면 관리자에게만).
   운영시간은 회사 편성표(homeshopping/{회사}_live)의 회차 끝 시각으로 채우고,
   순주문·달성률·상품별 시간은 알 수 없어 '0.0억, %' / '00:00 ~ 00:00, 0분' 빈칸으로 둔다.
   (상품별 시간은 편성표·라방바 모두 회차 단위로만 와서 정확히 알 수 없다 - 2026-11 확인.
@@ -59,7 +61,8 @@ import json
 from collections import Counter
 from datetime import datetime, date, timedelta, timezone
 
-from tg import esc, chunk_lines, broadcast
+from tg import esc, chunk_lines, broadcast, send_all
+import subscribers
 
 KST = timezone(timedelta(hours=9))
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -570,16 +573,19 @@ def main():
         print("%s 셀럽PGM 방송·특이사항·오늘 예정 모두 없음 - 발송 생략" % day)
         return
     chunks = chunk_lines(lines)
-    report = build_report(progs, day)
-    if report:
-        chunks += chunk_lines(report)  # 보고 양식은 따로 복사하기 쉽게 별도 메시지
-    print("%s 셀럽PGM 운영상품 → 메시지 %d건" % (day, len(chunks)))
+    # 보고 양식은 따로 복사하기 쉽게 별도 메시지, 셀럽PGM 신청자가 아니라 보고수신자에게만 (2026-11 사용자 요청)
+    report = chunk_lines(build_report(progs, day) or [])
+    print("%s 셀럽PGM 운영상품 → 메시지 %d건, 보고 양식 %d건" % (day, len(chunks), len(report)))
     if DRY_RUN:
-        for i, c in enumerate(chunks, 1):
-            print("\n----- [%d/%d] (%d자) -----" % (i, len(chunks), len(c)))
+        for i, c in enumerate(chunks + report, 1):
+            print("\n----- [%d/%d] (%d자) -----" % (i, len(chunks) + len(report), len(c)))
             print(c)
         return
     broadcast(ROOT, chunks, topic="celeb")
+    if report:
+        ids = subscribers.admins() if os.environ.get("ADMIN_ONLY") == "1" else subscribers.report_recipients()
+        if ids:
+            send_all(report, ids)
 
 
 if __name__ == "__main__":

@@ -75,6 +75,11 @@ def broadcast(root, chunks, topic=None):
     if not chat_ids:
         print("'%s' 알림 받는 사람이 없어 발송 생략" % (topic or "관리자"))
         return
+    send_all(chunks, chat_ids)
+
+
+def send_all(chunks, chat_ids):
+    """정해진 채팅 ID 들에 청크를 순서대로. 하나라도 실패하면 exit 1."""
     sent = 0
     for chat_id in chat_ids:
         for i, chunk in enumerate(chunks, 1):
