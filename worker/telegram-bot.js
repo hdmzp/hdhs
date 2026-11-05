@@ -201,6 +201,23 @@ async function onMessage(env, msg) {
   } else if (cmd === "/test" && isAdmin) {
     await env.SUBS.delete(key("t", chatId));
     await startPicker(env, "t", chatId, from);
+  } else if (cmd === "/check" && isAdmin) {
+    // 아침 발송 시계 점검: GITHUB_TOKEN 으로 ① 읽기(수집 기록 조회) ② 쓰기(관리자에게만 셀럽PGM 테스트 발송 요청)
+    if (!env.GITHUB_TOKEN) {
+      await send(env, chatId, "❌ Cloudflare 에 GITHUB_TOKEN 이 없어요. Settings → Variables and Secrets 를 확인하세요.");
+      return;
+    }
+    try {
+      const state = await celebScrapeState(env);
+      await dispatch(env, "telegram-daily-food.yml", { only: "celeb", admin_only: "true", scheduled: "false" });
+      await send(env, chatId, "✅ GitHub 토큰 정상이에요.\n① 기록 읽기 OK (오늘 셀럽PGM 수집: " + esc(state) + ")\n② 실행 요청 OK - 1~2분 안에 셀럽PGM 테스트 메시지가 관리자에게만 와요.\n\n내일부터 05:30 수집 · 07:00 발송이 자동으로 돌아요.");
+    } catch (e) {
+      const msg = String(e && e.message || e);
+      const hint = /HTTP 401/.test(msg) ? "토큰 값이 틀렸거나 만료됐어요."
+        : /HTTP 403|HTTP 404/.test(msg) ? "토큰 권한을 확인하세요: Repository access 에 hdhs, Actions 는 Read and write."
+        : "";
+      await send(env, chatId, "❌ GitHub 토큰 확인 실패\n" + esc(msg) + (hint ? "\n→ " + hint : ""));
+    }
   } else if (cmd === "/list" && isAdmin) {
     const users = await listUsers(env);
     const ok = users.filter(([, u]) => u.status === "approved");
