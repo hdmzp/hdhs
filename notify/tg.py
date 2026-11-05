@@ -62,12 +62,16 @@ def broadcast(root, chunks, topic=None):
     """수신처에 청크들을 순서대로 발송. 실패 시 exit 1.
 
     topic 을 주면 봇에서 그 알림을 골라 승인된 사람에게만 보낸다 (notify/subscribers.py).
-    topic 이 없으면 관리자에게만 보낸다."""
+    topic 이 없거나 ADMIN_ONLY=1 (수동 테스트) 이면 관리자에게만 보낸다."""
     if not BOT_TOKEN:
         print("TELEGRAM_BOT_TOKEN 환경변수가 필요합니다.")
         sys.exit(1)
     import subscribers
-    chat_ids = subscribers.recipients_for(topic) if topic else subscribers.admins()
+    if os.environ.get("ADMIN_ONLY") == "1":
+        print("※ 테스트 발송 - 관리자에게만 (%s)" % (topic or "관리용"))
+        chat_ids = subscribers.admins()
+    else:
+        chat_ids = subscribers.recipients_for(topic) if topic else subscribers.admins()
     if not chat_ids:
         print("'%s' 알림 받는 사람이 없어 발송 생략" % (topic or "관리자"))
         return
