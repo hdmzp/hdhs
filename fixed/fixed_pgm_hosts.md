@@ -56,7 +56,7 @@
 
 | 프로그램 | 편성 | 메인 셀럽 / 쇼호스트 | 구분 | 인스타그램 | 신뢰도 |
 |---|---|---|---|---|---|
-| 최유라쇼 | 목 20:45 / 토 08:20 | 최유라 | 셀럽(방송인) | 프로그램 공식 [@choiyura_show](https://www.instagram.com/choiyura_show/) / 개인 [@eularachoi_official](https://www.instagram.com/eularachoi_official/) ✅ (사용자 확인) | ✅ |
+| 최유라쇼 | 목 20:45 / 토 08:20 | 최유라 | 셀럽(방송인) | 채널 [@choiyura_show](https://www.instagram.com/choiyura_show/)만 표시 (개인 계정은 2026-11-05 사용자 요청으로 제외) | ✅ |
 | 요즘 쇼핑 유리네 | 일 08:50 / 수 19:35 | 이유리 | 셀럽(배우) | [@leeyuri007](https://www.instagram.com/leeyuri007/) (팬계정들이 태그하는 계정으로 추정) | ✅ (사용자 확인) |
 | 최희의 희트템 | 목 18:35 | 최희 | 셀럽(전 아나운서) | [@choiheeann](https://www.instagram.com/choiheeann/) | ✅ |
 | 더퍼스트 유난희 | 목 09:25 | 유난희 | 쇼호스트 | [@yoonanhee_](https://www.instagram.com/yoonanhee_/) (소개에 '더퍼스트유난희') | ✅ |
@@ -99,7 +99,6 @@
 | 동지현 | CJ 동가게 | https://www.instagram.com/dong.jihyun/ | ✅ (사용자 제공) |
 | 박지완 | CJ T더 지완스 | https://www.instagram.com/gwanspick/ | ✅ (사용자 확인) |
 | 이유리 | LT 요즘 쇼핑 유리네 | https://www.instagram.com/leeyuri007/ | ✅ (사용자 확인) |
-| 최유라(개인) | LT 최유라쇼 | https://www.instagram.com/eularachoi_official/ | ✅ (사용자 확인) |
 | 이진아 | GS 이진아 셀렉션·더컬렉션 | https://www.instagram.com/lee_jin_ah_showhost/ | ✅ (사용자 확인) |
 | 김지애 | LT 김지애의 쇼핑리스트 | https://www.instagram.com/jiae0514/ | ✅ (사용자 확인) |
 | 김지애의 쇼핑리스트(채널) | LT 김지애의 쇼핑리스트 | https://www.instagram.com/jiaelist/ | ✅ (사용자 제공) |

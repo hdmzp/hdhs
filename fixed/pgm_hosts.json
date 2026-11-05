@@ -1,6 +1,6 @@
 {
   "_comment": "고정PGM 진행자·인스타그램 (손으로 관리). company+title은 homeshopping/fixed_programs/merged.json 슬롯과 같아야 매칭된다. verified=false인 계정은 화면에 표시하지 않는다. 근거는 fixed/fixed_pgm_hosts.md.",
-  "updated": "2026-10-31",
+  "updated": "2026-11-05",
   "programs": [
     {
       "company": "HD",
@@ -308,9 +308,7 @@
       "title": "최유라쇼",
       "hosts": [
         {
-          "name": "최유라",
-          "instagram": "eularachoi_official",
-          "verified": true
+          "name": "최유라"
         }
       ],
       "program_instagram": "choiyura_show"
