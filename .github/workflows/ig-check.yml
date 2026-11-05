@@ -13,7 +13,7 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     steps:
       - name: 체크아웃
         uses: actions/checkout@v4
@@ -31,7 +31,7 @@ jobs:
       - name: 인스타 계정 점검
         id: check
         continue-on-error: true
-        run: python fixed/ig_check.py
+        run: python -u fixed/ig_check.py
 
       - name: 변경사항 커밋
         id: commit
