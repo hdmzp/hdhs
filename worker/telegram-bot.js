@@ -355,6 +355,8 @@ async function connect(env, origin) {
 //   20:30 UTC = KST 05:30  셀럽PGM 수집
 //   21:15 UTC = KST 06:15  수집이 실패했거나 안 돌았으면 한 번 더 (성공했으면 건너뜀)
 //   22:00 UTC = KST 07:00  아침 알림 발송
+//   UTC 23:10 / 01:10 / 11:10 / 13:10 = KST 08:10 / 10:10 / 20:10 / 22:10  rep-pgm-scrape (대표프로그램 수집)
+//   (무료 플랜은 Cron 이 계정당 5개까지라 rep-pgm 네 번은 한 줄로 묶었다)
 // 필요: Cloudflare Secret GITHUB_TOKEN (hdhs 저장소 Actions 읽기·쓰기 권한 토큰)
 const GH_REPO = "hdmzp/hdhs";
 
@@ -411,6 +413,9 @@ async function onCron(env, cron) {
       }
     } else if (cron === "0 22 * * *") {
       await dispatch(env, "telegram-daily-food.yml", { only: "all", admin_only: "false", scheduled: "true" });
+    } else if (cron === "10 1,11,13,23 * * *") {
+      // 고정PGM·셀럽 대표프로그램 수집 KST 08:10 / 10:10 / 20:10 / 22:10 (GitHub 예약은 7시간씩 밀려서 옮겼다)
+      await dispatch(env, "rep-pgm-scrape.yml");
     }
   } catch (e) {
     await tell("⚠️ 아침 발송 시계 오류 (" + cron + "): " + esc(String(e && e.message || e)));
