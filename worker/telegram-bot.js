@@ -95,7 +95,7 @@ async function startPicker(env, mode, chatId, from) {
     ...(old || {}),
     name: [from.first_name, from.last_name].filter(Boolean).join(" "),
     username: from.username || "",
-    picks: (old && (old.picks || old.topics)) || [],
+    picks: [], // 고르는 화면은 항상 전체 해제 상태에서 시작 (2026-11 사용자 요청)
   };
   if (!old || old.status === "picking") u.status = "picking";
   await putUser(env, mode, chatId, u);
@@ -304,9 +304,9 @@ async function onCallback(env, cq) {
         u.picks = ["celeb"]; // 셀럽PGM 만 - 누르면 바로 신청
         return submit(env, mode, chatId, msg, u);
       } else if (arg === "cat" || arg === "both") {
-        u.picks = (arg === "both" ? ["celeb"] : []).concat(cats);
+        u.picks = arg === "both" ? ["celeb"] : []; // 카테고리는 전체 해제 상태에서 시작
         await putUser(env, mode, chatId, u);
-        await edit(env, msg, CAT_TEXT(arg === "both"), catKeyboard(mode, cats));
+        await edit(env, msg, CAT_TEXT(arg === "both"), catKeyboard(mode, []));
       }
       return;
     }
