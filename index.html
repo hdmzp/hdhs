@@ -3252,6 +3252,86 @@
     margin-bottom: 20px;
   }
 
+  /* 셀럽PGM 텔레그램 알림 신청 버튼 + QR 팝업 */
+  .cel-top-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .tg-open-btn {
+    font-family: 'Pretendard', -apple-system, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    background: #229ED9;
+    border: 0;
+    border-radius: 8px;
+    padding: 7px 12px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .tg-open-btn:hover { background: #1B8BC2; }
+  .tg-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    background: rgba(17, 24, 39, 0.55);
+  }
+  .tg-modal.open { display: flex; }
+  .tg-modal-box {
+    position: relative;
+    width: min(340px, 100%);
+    max-height: calc(100vh - 32px);
+    overflow-y: auto;
+    background: var(--paper);
+    border-radius: 16px;
+    padding: 22px 20px 18px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+    text-align: center;
+  }
+  .tg-modal-box h3 { margin: 0 0 4px; font-size: 17px; color: var(--ink); }
+  .tg-modal-sub { margin: 0 0 14px; font-size: 13px; color: var(--ink-soft); line-height: 1.5; }
+  .tg-modal-qr { display: block; border-radius: 12px; overflow: hidden; }
+  .tg-modal-qr img { display: block; width: 100%; height: auto; }
+  .tg-modal-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 34px;
+    height: 34px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--paper-dim);
+    color: var(--ink-soft);
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .tg-modal-close:hover { background: var(--paper-dim2); color: var(--ink); }
+  .tg-modal-actions { display: flex; gap: 8px; margin-top: 14px; }
+  .tg-modal-actions a,
+  .tg-modal-actions button {
+    flex: 1;
+    font-family: 'Pretendard', -apple-system, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 10px;
+    padding: 11px 0;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .tg-modal-actions a { background: #229ED9; color: #fff; border: 0; }
+  .tg-modal-actions a:hover { background: #1B8BC2; }
+  .tg-modal-actions button { background: var(--paper-dim); color: var(--ink-soft); border: 1px solid var(--rule); }
+
   /* 월별 조회 내비게이션 (PGM 슬라이서 위) */
   .cel-month-nav,
   .pm-month-nav {
@@ -4099,10 +4179,13 @@
 
 <div id="tabCelebrity" class="tab-panel">
   <div class="cel-controls">
-    <div class="cel-month-nav">
-      <button id="celMonthPrev" type="button" aria-label="이전 달">◀</button>
-      <input type="month" id="celMonthPicker">
-      <button id="celMonthNext" type="button" aria-label="다음 달">▶</button>
+    <div class="cel-top-row">
+      <div class="cel-month-nav">
+        <button id="celMonthPrev" type="button" aria-label="이전 달">◀</button>
+        <input type="month" id="celMonthPicker">
+        <button id="celMonthNext" type="button" aria-label="다음 달">▶</button>
+      </div>
+      <button type="button" class="tg-open-btn" id="tgOpenBtn" aria-haspopup="dialog">✈️ 텔레그램 알림 신청하기</button>
     </div>
     <div class="cel-slicer" id="celProgramSlicer">
       <button class="active" data-file="all">전체선택</button>
@@ -4148,6 +4231,40 @@
   <div class="cel-updated" id="celUpdated"></div>
   <div id="celGridWrap"></div>
 </div>
+
+<!-- 텔레그램 알림 신청 팝업 (셀럽PGM 탭 버튼) - 봇: worker/telegram-bot.js -->
+<div class="tg-modal" id="tgModal" role="dialog" aria-modal="true" aria-labelledby="tgModalTitle">
+  <div class="tg-modal-box">
+    <button type="button" class="tg-modal-close" data-tg-close aria-label="닫기">✕</button>
+    <h3 id="tgModalTitle">텔레그램 알림 신청</h3>
+    <p class="tg-modal-sub">휴대폰은 QR을 찍고, PC는 QR이나 아래 버튼을 누르세요.<br>봇에서 START → 받을 알림을 고르면 돼요.</p>
+    <a class="tg-modal-qr" href="https://t.me/HDMZP_BOT?start=site" target="_blank" rel="noopener" title="텔레그램에서 열기">
+      <img src="icons/telegram_qr.jpg" alt="@HDMZP_BOT 텔레그램 QR 코드" width="520" height="743" loading="lazy">
+    </a>
+    <div class="tg-modal-actions">
+      <a href="https://t.me/HDMZP_BOT?start=site" target="_blank" rel="noopener">텔레그램 열기</a>
+      <button type="button" data-tg-close>닫기</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var modal = document.getElementById('tgModal');
+  var openBtn = document.getElementById('tgOpenBtn');
+  if (!modal || !openBtn) return;
+  function close() { modal.classList.remove('open'); openBtn.focus(); }
+  openBtn.addEventListener('click', function () {
+    modal.classList.add('open');
+    modal.querySelector('.tg-modal-close').focus();
+  });
+  modal.addEventListener('click', function (e) {
+    if (e.target === modal || e.target.closest('[data-tg-close]')) close();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && modal.classList.contains('open')) close();
+  });
+})();
+</script>
 
 <div id="tabPromotion" class="tab-panel">
 
