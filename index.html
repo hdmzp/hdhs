@@ -3305,9 +3305,14 @@
     padding: 22px 20px 18px;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
     text-align: center;
+    word-break: keep-all;
   }
   .tg-modal-box h3 { margin: 0 0 4px; font-size: 17px; color: var(--ink); }
-  .tg-modal-sub { margin: 0 0 14px; font-size: 13px; color: var(--ink-soft); line-height: 1.5; }
+  .tg-modal-sub { margin: 0 0 10px; font-size: 13.5px; font-weight: 700; color: var(--ink); line-height: 1.5; }
+  .tg-modal-list { list-style: none; margin: 0 0 14px; padding: 10px 12px; background: var(--paper-dim); border-radius: 10px; text-align: left; }
+  .tg-modal-list li { font-size: 12.5px; color: var(--ink-soft); line-height: 1.7; }
+  .tg-modal-list b { color: var(--ink); }
+  .tg-modal-how { margin: 10px 0 0; font-size: 12.5px; color: var(--ink-soft); line-height: 1.5; }
   .tg-modal-qr { display: block; width: 220px; max-width: 100%; margin: 0 auto; padding: 10px; border: 1px solid var(--rule); border-radius: 12px; background: #fff; }
   .tg-modal-qr img { display: block; width: 100%; height: auto; }
   .tg-modal-id { margin: 8px 0 0; font-size: 13px; font-weight: 700; color: #229ED9; }
@@ -4247,11 +4252,16 @@
   <div class="tg-modal-box">
     <button type="button" class="tg-modal-close" data-tg-close aria-label="닫기">✕</button>
     <h3 id="tgModalTitle">알림신청</h3>
-    <p class="tg-modal-sub">휴대폰 카메라로 QR을 찍거나,<br>모바일·PC에서는 QR이나 아래 버튼을 눌러 주세요.<br>봇에서 START → 받을 알림을 고르면 돼요.</p>
+    <p class="tg-modal-sub">📬 매일 오전, 텔레그램으로<br>편성 알림을 보내드려요</p>
+    <ul class="tg-modal-list">
+      <li>⭐ <b>셀럽PGM</b>: 어제 운영상품</li>
+      <li>📂 <b>카테고리별 오늘 편성</b>: <span style="white-space:nowrap">패션 · 미용 · 식품 · 리빙</span></li>
+    </ul>
     <a class="tg-modal-qr" href="https://t.me/HDMZP_BOT?start=site" target="_blank" rel="noopener" title="텔레그램에서 열기">
       <img src="icons/telegram_qr.jpg" alt="@HDMZP_BOT 텔레그램 QR 코드" width="480" height="480" loading="lazy">
     </a>
     <p class="tg-modal-id">@HDMZP_BOT</p>
+    <p class="tg-modal-how">QR을 찍거나 눌러서 봇에서 START →<br>받을 알림만 골라 주세요.</p>
     <div class="tg-modal-actions">
       <a href="https://t.me/HDMZP_BOT?start=site" target="_blank" rel="noopener">텔레그램 열기</a>
       <button type="button" data-tg-close>닫기</button>
