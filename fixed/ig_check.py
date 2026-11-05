@@ -44,8 +44,11 @@ KST = timezone(timedelta(hours=9))
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36")
 IG_APP_ID = "936619743392459"   # instagram.com 웹이 쓰는 공개 앱 ID
-TIMEOUT = 15
+TIMEOUT = 10
 DELAY_SEC = 4                    # 계정 사이 간격 (차단 방지)
+# 처음부터 이만큼 연속으로 접속 실패하면 러너가 막힌 것으로 보고 중단한다.
+# (2026-11-05 첫 실행이 계정마다 응답 지연으로 15분 제한을 넘겼다)
+EARLY_ABORT = 5
 
 NOT_FOUND_MARKERS = (
     "Sorry, this page isn't available",
@@ -122,7 +125,7 @@ def check_html(session, handle):
 def check_handle(session, handle):
     s, code = check_api(session, handle)
     if s is None and code == 429:
-        time.sleep(30)
+        time.sleep(15)
         s, code = check_api(session, handle)
     if s is None:
         s2, code2 = check_html(session, handle)
@@ -158,7 +161,10 @@ def main():
             old = prev_handles.get(h, {})
             entry["since"] = old.get("since") if old.get("s", "ok") != "ok" and old.get("since") else now
         results[h] = entry
-        print(f"[{s:7}] @{h} (HTTP {code})")
+        print(f"[{s:7}] @{h} (HTTP {code})", flush=True)
+        if i + 1 == EARLY_ABORT and all(r["s"] == "error" for r in results.values()):
+            print(f"처음 {EARLY_ABORT}개 계정이 모두 접속 실패 - 중단합니다.")
+            break
 
     blocked = bool(results) and all(r["s"] == "error" for r in results.values())
     if blocked:
