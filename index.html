@@ -3256,18 +3256,24 @@
   .tg-open-btn {
     margin-left: auto;
     align-self: center;
-    display: block;
-    width: 28px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
     height: 28px;
-    padding: 0;
-    border: 0;
-    border-radius: 50%;
-    background: none;
+    padding: 0 10px 0 4px;
+    border: 1px solid var(--rule);
+    border-radius: 14px;
+    background: linear-gradient(180deg, #fff, var(--paper-dim));
+    color: var(--ink-soft);
+    font-family: 'Pretendard', -apple-system, sans-serif;
+    font-size: 12.5px;
+    font-weight: 700;
+    white-space: nowrap;
     cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.15s;
+    transition: all 0.15s;
   }
-  .tg-open-btn img { display: block; width: 28px; height: 28px; }
-  .tg-open-btn:hover { transform: scale(1.08); box-shadow: 0 2px 8px rgba(34,158,217,0.35); }
+  .tg-open-btn img { display: block; width: 20px; height: 20px; }
+  .tg-open-btn:hover { border-color: #229ED9; color: #229ED9; background: #EAF6FC; }
   .tg-open-btn + .info-tip-wrap { margin-left: 6px; }
   .tg-modal {
     position: fixed;
@@ -3929,8 +3935,8 @@
     <button id="tabBtnFeedback">의견</button>
     <button id="tabBtnSecurity" aria-label="라방바" title="라방바"><svg class="lv-logo" viewBox="0 0 100 100" width="18" height="18" aria-hidden="true" focusable="false"><rect x="18" y="4" width="24" height="60" rx="12" fill="#151515"/><circle cx="56" cy="60" r="36" fill="#151515"/><path d="M48 47 L73 60 L48 73 Z" fill="#F2C230" stroke="#F2C230" stroke-width="9" stroke-linejoin="round" transform="rotate(12 58 60)"/></svg></button>
   </div>
-  <button type="button" class="tg-open-btn" id="tgOpenBtn" aria-haspopup="dialog" aria-label="텔레그램 알림 신청" title="텔레그램 알림 신청">
-    <img src="icons/telegram.png" alt="" width="28" height="28">
+  <button type="button" class="tg-open-btn" id="tgOpenBtn" aria-haspopup="dialog" title="텔레그램 알림신청">
+    <img src="icons/telegram.png" alt="" width="20" height="20"><span>알림신청</span>
   </button>
   <div class="info-tip-wrap" id="infoTipWrap">
     <button type="button" class="info-tip-btn" id="infoTipBtn" aria-label="화면 설명 보기">
@@ -4231,7 +4237,7 @@
 <div class="tg-modal" id="tgModal" role="dialog" aria-modal="true" aria-labelledby="tgModalTitle">
   <div class="tg-modal-box">
     <button type="button" class="tg-modal-close" data-tg-close aria-label="닫기">✕</button>
-    <h3 id="tgModalTitle">텔레그램 알림 신청</h3>
+    <h3 id="tgModalTitle">알림신청</h3>
     <p class="tg-modal-sub">휴대폰 카메라로 QR을 찍거나,<br>모바일·PC에서는 QR이나 아래 버튼을 눌러 주세요.<br>봇에서 START → 받을 알림을 고르면 돼요.</p>
     <a class="tg-modal-qr" href="https://t.me/HDMZP_BOT?start=site" target="_blank" rel="noopener" title="텔레그램에서 열기">
       <img src="icons/telegram_qr.jpg" alt="@HDMZP_BOT 텔레그램 QR 코드" width="480" height="480" loading="lazy">
