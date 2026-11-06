@@ -43,7 +43,8 @@ jobs:
     needs: check
     if: needs.check.outputs.skip != 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    # 받는 사람이 늘어도 끝까지 보내도록 넉넉히 (한 명당 메시지 6~7건 x 0.3초 쉼 -> 30분이면 수백 명)
+    timeout-minutes: 30
     steps:
       - name: 저장소 체크아웃
         uses: actions/checkout@v4
