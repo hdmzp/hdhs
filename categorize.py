@@ -10,6 +10,7 @@
 == 분류 순서 (우선순위) ==
 0) 브랜드 강제 매핑 (BRAND_FORCE_MAP): 브랜드명이 정확히 일치하면 카테고리 확정
    (포함 방식이 아닌 완전일치 - "삼성금거래소"는 "삼성"과 다름)
+   - 브랜드+품목 조합 매핑 (BRAND_ITEM_SPLIT): 생로랑 미용품목 -> 미용, 그 외 -> 잡화/주얼리
 1) 키워드 규칙: 상품명에 명확한 단어가 있으면 확정
    - 동시출현 규칙(COMBO_RULES): 신호 단어가 여럿 함께 나오면 확정 (예: PDRN+세럼+글로우 -> 미용)
    - 사은품 제외: '+' 기준 첫 덩어리(본품)만 검사
@@ -80,6 +81,27 @@ BRAND_FORCE_MAP = {
     
     # 필요시 추가: "LG디스플레이": "가전", ...
 }
+
+# 브랜드 + 품목 조합 강제 매핑
+# 명품 브랜드는 가방·지갑(잡화)과 향수·화장품(미용)을 같이 팔아서 브랜드 하나로
+# 확정할 수 없고, 학습데이터에 없는 품목은 모델이 엉뚱하게 분류한다.
+#   (2026-11-06 현대 22시 생로랑 '퀼팅 튜브백' -> 일반식품,
+#    입생로랑 '리브르 오 드 빠르펭'(향수) -> 잡화/주얼리)
+# 브랜드명에 키워드가 포함되면 적용: 미용 품목이면 미용, 그 외는 기본 카테고리.
+# 각 항목: (브랜드 키워드, 미용 품목 패턴, 그 외 기본 카테고리)
+_BEAUTY_ITEM_RE = re.compile(
+    # 가방 이름과 겹치는 단어(램스킨, 크림 컬러, 베이스볼 등)는 넣지 않는다.
+    r"향수|퍼퓸|빠르펭|빠퓸|오드|오 드|EDP|EDT|코롱|미스트|"
+    r"립스틱|립밤|립글로|루쥬|루즈|틴트|쿠션|파운데이션|팩트|파우더|"
+    r"아이섀도|섀도우|마스카라|아이라이너|블러셔|프라이머|컨실러|"
+    r"세럼|앰플|에센스|토너|스킨케어|로션|아이크림|수분크림|핸드크림|"
+    r"클렌징|선크림|화장품|메이크업|뷰티|샤워젤",
+    re.IGNORECASE,
+)
+BRAND_ITEM_SPLIT = [
+    (("생로랑", "입생로랑", "YSL", "SAINTLAURENT", "SAINT LAURENT"), _BEAUTY_ITEM_RE, "잡화/주얼리"),
+]
+
 
 # 명확한 키워드 규칙: (정규식 패턴, 확정 카테고리)
 # 위에서부터 순서대로 검사하며 먼저 매칭되는 것을 채택
@@ -236,6 +258,25 @@ def _no_brand_product_force(product: str) -> str:
     return ""
 
 
+def _brand_item_split(brand: str, product: str) -> str:
+    """BRAND_ITEM_SPLIT 검사. 브랜드(또는 상품명 앞 [브랜드])가 해당되면 품목에 따라 확정."""
+    brand_text = (brand or "").upper()
+    product_text = product or ""
+    for keywords, beauty_re, default_cat in BRAND_ITEM_SPLIT:
+        kws = [k.upper() for k in keywords]
+        hit = any(k in brand_text for k in kws)
+        if not hit and not brand_text:
+            # 브랜드 칸이 비어 있으면 상품명에서 브랜드 키워드 확인 (예: "[입생로랑] ...")
+            hit = any(k in product_text.upper() for k in kws)
+        if not hit:
+            continue
+        item = str(product_text).split("+")[0]
+        for k in keywords:
+            item = re.sub(re.escape(k), " ", item, flags=re.IGNORECASE)
+        return "미용" if beauty_re.search(item) else default_cat
+    return ""
+
+
 def _brand_force(brand: str) -> str:
     """BRAND_FORCE_MAP 완전일치 검사. 매칭되면 확정 카테고리, 아니면 빈 문자열."""
     return BRAND_FORCE_MAP.get(brand, "")
@@ -269,6 +310,11 @@ def classify(brand: str, product: str) -> str:
         forced = _brand_force(brand)
         if forced:
             return forced
+
+    # 0-1) 브랜드 + 품목 조합 강제 매핑 (생로랑: 미용품목 -> 미용, 그 외 -> 잡화/주얼리)
+    split = _brand_item_split(brand, product)
+    if split:
+        return split
 
     # 1) 키워드 규칙 (본품만 검사)
     rule_hit = _rule_match(_main_item_text(brand, product))
@@ -314,6 +360,12 @@ def classify_batch(items: list) -> list:
             if forced:
                 results[i] = forced
                 continue
+
+        # 0-1) 브랜드 + 품목 조합 강제 매핑
+        split = _brand_item_split(brand, product)
+        if split:
+            results[i] = split
+            continue
 
         # 1) 키워드 규칙
         rule_hit = _rule_match(_main_item_text(brand, product))
