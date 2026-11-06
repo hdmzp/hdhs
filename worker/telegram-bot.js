@@ -62,7 +62,10 @@ const webhookSecret = async (env) => (await sha("wh:" + env.BOT_TOKEN)).slice(0,
 const exportKey = (env) => sha("export:" + env.BOT_TOKEN);
 
 // 사용자 기록. mode "u" = 실제, "t" = 관리자 /test (발송 목록에 안 들어감)
-// {name, username, status: picking|pending|approved, topics(승인된 것), picks(고르는 중), since}
+// {name, username, status: picking|pending|approved, topics(승인된 것), picks(화면에서 고르는 중),
+//  req([신청하기]로 보낸 것 - 승인 대기), since, opened(마지막으로 고르기 화면을 연 날)}
+// 고르는 중(picks)과 신청한 것(req)을 나눠서, 신청 뒤 START 를 다시 눌러도 대기 중인 신청이 지워지지 않는다.
+const reqOf = (u) => u.req || (u.status === "pending" ? u.picks : null); // 예전 기록(req 없음)도 읽는다
 const key = (mode, id) => (mode === "t" ? "t:" : "u:") + id;
 const getUser = async (env, mode, id) => JSON.parse((await env.SUBS.get(key(mode, id))) || "null");
 const putUser = (env, mode, id, u) => env.SUBS.put(key(mode, id), JSON.stringify(u));
@@ -96,11 +99,15 @@ async function startPicker(env, mode, chatId, from) {
     name: [from.first_name, from.last_name].filter(Boolean).join(" "),
     username: from.username || "",
     picks: [], // 고르는 화면은 항상 전체 해제 상태에서 시작 (2026-11 사용자 요청)
+    opened: today(),
   };
+  if (old && !old.req && reqOf(old)) u.req = reqOf(old); // 예전 형식의 대기 신청 보존
   if (!old || old.status === "picking") u.status = "picking";
   await putUser(env, mode, chatId, u);
   const head = mode === "t" ? "🧪 테스트 - 신청자가 보는 화면\n\n" : "";
-  const now = old?.status === "approved" ? `지금 받는 알림: ${names(old.topics)}\n\n` : "";
+  const now = (old?.status === "approved" ? `지금 받는 알림: ${names(old.topics)}\n` : "")
+    + (u.req ? `⏳ 승인 대기 중: ${names(u.req)} (새로 고르면 그 내용으로 다시 신청돼요)\n` : "")
+    + (old?.status === "approved" || u.req ? "\n" : "");
   await send(env, chatId, head + now + PICK_TEXT, menuKeyboard(mode));
 }
 
@@ -114,12 +121,14 @@ async function submit(env, mode, chatId, msg, u) {
     // 관리자 본인은 승인 없이 바로
     Object.assign(u, { status: "approved", topics: u.picks, since: u.since || today() });
     delete u.picks;
+    delete u.req;
     await putUser(env, mode, chatId, u);
     await edit(env, msg, `✅ 바로 적용했어요 (관리자)\n받는 알림: ${names(u.topics)}`);
     return;
   }
   const change = u.status === "approved";
   if (!change) u.status = "pending";
+  u.req = u.picks;
   u.requested = today();
   await putUser(env, mode, chatId, u);
   await edit(env, msg, `✅ 관리자가 확인 후 승인 예정이에요. 승인 후 다음날부터 오전 중에 알림을 보내드릴게요.\n`
@@ -145,14 +154,16 @@ async function decide(env, cq, approve, mode, id) {
   const msg = cq.message;
   const u = await getUser(env, mode, id);
   const base = (msg.text || "").split("\n").filter((l) => !l.startsWith("👉")).join("\n");
-  if (!u || !u.picks?.length) {
+  const want = u && reqOf(u);
+  if (!want?.length) {
     await edit(env, msg, esc(base) + "\n\n👉 이미 처리했거나 취소된 신청이에요.");
     return;
   }
   const by = cq.from?.first_name || "관리자";
   if (approve) {
-    Object.assign(u, { status: "approved", topics: u.picks, since: u.since || today() });
+    Object.assign(u, { status: "approved", topics: want, since: u.since || today() });
     delete u.picks;
+    delete u.req;
     await putUser(env, mode, id, u);
     await send(env, id, (mode === "t" ? "🧪 테스트 - 승인되면 신청자가 받는 메시지\n\n" : "")
       + `🎉 알림 신청이 승인됐어요! 내일부터 오전 중에 알림을 보내드릴게요.\n🔔 받는 알림: ${names(u.topics)}\n\n바꾸려면 /start, 그만 받으려면 /stop`);
@@ -160,6 +171,7 @@ async function decide(env, cq, approve, mode, id) {
   } else {
     if (u.status === "approved") {
       delete u.picks; // 변경만 거절 - 예전 알림은 유지
+      delete u.req;
       await putUser(env, mode, id, u);
     } else {
       await env.SUBS.delete(key(mode, id));
@@ -221,19 +233,26 @@ async function onMessage(env, msg) {
   } else if (cmd === "/list" && isAdmin) {
     const users = await listUsers(env);
     const ok = users.filter(([, u]) => u.status === "approved");
-    const wait = users.filter(([, u]) => u.picks?.length && u.status !== "picking");
+    const wait = users.filter(([, u]) => reqOf(u)?.length);
+    const draft = users.filter(([, u]) => u.status === "picking" && !reqOf(u)?.length);
     const lines = [`👥 받는 사람 ${ok.length}명`];
     for (const [id, u] of ok) lines.push(`• ${who(u, id)} <code>${id}</code>\n  ${names(u.topics)}`);
     if (wait.length) {
       lines.push("", `⏳ 승인 대기 ${wait.length}건`);
-      for (const [id, u] of wait) lines.push(`• ${who(u, id)} <code>${id}</code> → ${names(u.picks)}`);
+      for (const [id, u] of wait) lines.push(`• ${who(u, id)} <code>${id}</code> → ${names(reqOf(u))}`);
+    }
+    if (draft.length) {
+      // START 는 눌렀지만 [📮 신청하기]까지 안 눌러서 승인 요청이 안 간 사람
+      lines.push("", `✏️ 신청 화면만 열고 [신청하기]를 안 누른 사람 ${draft.length}명`);
+      for (const [id, u] of draft) lines.push(`• ${who(u, id)} <code>${id}</code>${u.opened ? " · " + u.opened : ""}`);
     }
     await send(env, chatId, lines.join("\n").slice(0, 4000));
   } else if (cmd === "/status") {
     const u = await getUser(env, "u", chatId);
     const text = !u ? "아직 신청 전이에요. /start 를 눌러주세요."
-      : u.status === "approved" ? `받는 알림: ${names(u.topics)}` + (u.picks?.length ? `\n변경 승인 대기: ${names(u.picks)}` : "")
-      : u.status === "pending" ? `승인 대기 중: ${names(u.picks)}` : "알림을 고르는 중이에요. /start";
+      : u.status === "approved" ? `받는 알림: ${names(u.topics)}` + (reqOf(u)?.length ? `\n변경 승인 대기: ${names(reqOf(u))}` : "")
+      : reqOf(u)?.length ? `승인 대기 중: ${names(reqOf(u))}`
+      : "아직 신청 전이에요. /start 에서 알림을 고르고 [📮 신청하기]를 눌러 주세요.";
     await send(env, chatId, text);
   } else {
     // /start 나 아무 말 → 고르기 화면
