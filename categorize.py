@@ -82,7 +82,9 @@ BRAND_FORCE_MAP = {
     "립밤":"의류",     # 의류 브랜드 Lipbbam (립밤 화장품 아님)
     "Lipbbam":"의류",
     "듀얼소닉":"미용",  # 헤어드라이어지만 브랜드 기준 미용 (사람 지정 - 고데기·드라이기=가전 규칙의 예외)
-    "레쁠레뜨":"미용",  # 프랑스 화장품 (유기농 오트크림 - 모델이 일반식품으로 오분류)
+    "레쁠레뜨":"미용",
+    "렌가드":"리빙/주방",     # 주방 후드 필터 (2026-11-07 사람 지정)
+    "애디슨로스":"리빙/주방", # 그라인더 (2026-11-07 사람 지정)  # 프랑스 화장품 (유기농 오트크림 - 모델이 일반식품으로 오분류)
     
     # 필요시 추가: "LG디스플레이": "가전", ...
 }
@@ -135,7 +137,7 @@ KEYWORD_RULES = [
 #     (예: '냉장고 + 선크림 증정' 은 미용이 아니다) -> _beauty_main_text 참고
 BEAUTY_KEYWORD_RE = re.compile(
     r"틴트|립타투|립스틱|립밤|립글로|립스테인|마스카라|아이라이너|아이섀도|파운데이션|컨실러|"
-    r"선크림|선스틱|선쿠션|선세럼|선블록|쿠션팩트|커버쿠션|"
+    r"선크림|선스틱|선쿠션|선세럼|선블록|쿠션팩트|커버\s?쿠션|리프팅\s?쿠션|"
     r"세럼|앰플|에센스|토너|아이크림|수분크림|링클크림|리프팅크림|주름크림|"
     r"링클\s?패치|주름\S{0,4}패치|마스크팩|시트마스크|워시오프|클레이팩|필링젤|필링패드|"
     r"클렌징|클렌저|스킨케어|향수|퍼퓸|오드퍼퓸|오드뚜왈렛|오드투왈렛|"
@@ -197,7 +199,7 @@ def _beauty_match(product: str) -> str:
 #   '타프 헤어 무선 고데기 단백질 샴푸' -> 가전 / '꾸띄르헤어 컬러체인지 샴푸 헤어고데기' -> 미용
 HAIR_TOOL_RE = re.compile(
     r"고데기|매직기|드라이기|드라이어기|헤어\s?드라이어|바디\s?드라이어|드라이어(?!볼|시트)|"
-    r"에어랩|헤어\s?스타일러|볼륨\s?롤러기"
+    r"에어랩|에어스무스|에어스트레이트|스타일링\s?브러시|헤어\s?스타일러|볼륨\s?롤러기"
 )
 _BEAUTY_BASIC_RE = re.compile(r"스킨기초|기초세트|스킨케어|샴푸|염색|트리트먼트")
 
@@ -211,6 +213,39 @@ def _hair_tool_match(product: str) -> str:
     if firsts and min(firsts) < tool.start():
         return ""
     return "가전"
+
+
+# 패션 잡화 확정 키워드 (2026-11-07 사람 지정). 의류·잡화를 같이 파는 브랜드(프리마클라쎄 등)는
+# 브랜드 이력으로 못 정하고 모델도 헷갈려 미분류·오분류가 났다 (백팩 -> 의류, 미니백 -> 미분류).
+#   - 본품 텍스트(_beauty_main_text)만 본다 (가방·스카프 사은품 제외)
+#   - 가방·스카프는 단어 앞에 한글이 붙어 있으면 인정하지 않는다 ('하스카프베리'의 '스카프', '실버트래블백')
+#   - 의류 단어(자켓·블라우스 등)가 같이 있으면 정하지 않고 모델에 맡긴다
+#     ('스카프 블라우스', '스카프 A라인자켓'). 의류 쪽 확정 규칙은 두지 않는다 -
+#     명품 코트·자켓은 '수입명품=잡화/주얼리' 관례가 있어 의류로 바꾸면 기존 분류가 뒤집힌다.
+FASHION_GOODS_RE = re.compile(
+    r"(?<![가-힣])(?:"
+    r"미니백|백팩|숄더백|토트백|크로스백|스트링백|드로우스트링백|카메라백|트래블백|클러치|버킷백|호보백|"
+    r"메신저백|슬링백|힙색|웨이스트백|패딩백|카드지갑|반지갑|장지갑|지갑|"
+    r"스카프|머플러|뮬(?![가-힣])|선글라스|로퍼)"   # 로퍼: '프로퍼마켓', 뮬: '뮬리아인'
+    # 신발은 '썸머운동화', '샌들운동화'처럼 붙여 쓰는 경우가 많아 앞 글자 제한 없이 인정
+    r"|스니커즈|운동화|러닝화|워킹화|트레킹화|샌들|부츠(?!컷)|펌프스|슬립온"
+)
+FASHION_CLOTHES_RE = re.compile(
+    r"자켓|재킷|코트|점퍼|패딩(?!백)|블루종|가디건|니트(?!백)|풀오버|스웨터|블라우스|셔츠|원피스|"
+    r"팬츠|슬랙스|청바지|스커트|셋업|탑|티셔츠|베스트|조끼|레깅스|바지|드레스|상의|하의|넥(?!리스)|"
+    r"수트|정장|후드|맨투맨|트렌치"
+)
+# 신발·가방 단어가 들어가도 잡화가 아닌 것 (세탁·관리용품, 신발 부속, 침구)
+FASHION_EXCLUDE_RE = re.compile(r"세탁망|크리너|클리너|세정|인솔|깔창|침구|건조기|정리함|수납")
+
+
+def _fashion_match(product: str) -> str:
+    main = _beauty_main_text(product)
+    if not FASHION_GOODS_RE.search(main):
+        return ""
+    if FASHION_CLOTHES_RE.search(main) or FASHION_EXCLUDE_RE.search(main):
+        return ""
+    return "잡화/주얼리"
 
 
 # 모델 확신도가 이보다 낮으면 '미분류'로 둔다 (화면의 '미분류' 슬라이서로 사람이 점검).
@@ -348,6 +383,9 @@ def _rule_match(text: str, product: str = None) -> str:
         beauty = _beauty_match(product)
         if beauty:
             return beauty
+        fashion = _fashion_match(product)
+        if fashion:
+            return fashion
     return _combo_match(text)
 
 
@@ -457,6 +495,9 @@ def classify_explain(brand: str, product: str):
     if brand:
         forced = _brand_force(brand)
         if forced:
+            # 의류 브랜드(FILA 등)라도 본품이 신발·가방 등 패션 잡화면 잡화/주얼리 (2026-11-07 사람 지정)
+            if forced == "의류" and _fashion_match(product):
+                return "잡화/주얼리", "fashion"
             return forced, "brand_force"
 
     # 0-1) 브랜드 + 품목 조합 강제 매핑 (생로랑: 미용품목 -> 미용, 그 외 -> 잡화/주얼리)
@@ -475,6 +516,9 @@ def classify_explain(brand: str, product: str):
     beauty = _beauty_match(product)
     if beauty:
         return beauty, "beauty"
+    fashion = _fashion_match(product)
+    if fashion:
+        return fashion, "fashion"
     combo = _combo_match(text)
     if combo:
         return combo, "combo"
@@ -512,11 +556,11 @@ def classify_batch(items: list) -> list:
             results[i] = ""
             continue
 
-        # 0) 브랜드 완전일치 강제 매핑
+        # 0) 브랜드 완전일치 강제 매핑 (의류 브랜드의 패션 잡화는 잡화/주얼리)
         if brand:
             forced = _brand_force(brand)
             if forced:
-                results[i] = forced
+                results[i] = "잡화/주얼리" if forced == "의류" and _fashion_match(product) else forced
                 continue
 
         # 0-1) 브랜드 + 품목 조합 강제 매핑

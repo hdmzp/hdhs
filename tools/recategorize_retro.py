@@ -63,7 +63,7 @@ FASHION = {"의류", "잡화/주얼리", "언더웨어"}
 PERSON_ITEM_RE = re.compile(r"발\s?패치|풋\s?패드|발\s?패드")
 
 # 라방바 근거 없이도 브랜드 강제 규칙을 소급해도 되는 브랜드 (2026-11-07 사람 지정분)
-RETRO_TRUST_BRANDS = {"레쁠레뜨", "립밤", "Lipbbam", "듀얼소닉"}
+RETRO_TRUST_BRANDS = {"레쁠레뜨", "립밤", "Lipbbam", "듀얼소닉", "렌가드", "애디슨로스"}
 
 
 def load_lavangba():
@@ -112,6 +112,15 @@ def decide(brand, product, old, lv):
     if not new or new == old or new == UNCLASSIFIED:
         return None, "same/unclassified"
     compat = LAVANGBA_COMPAT.get(lv_cat)
+    # 미분류는 규칙·모델이 바뀌면 다시 판정한다 (새 결과가 미분류가 아니면 채택)
+    # 단, 모델 재판정은 받지 않는다 - 편성 상품명은 화면용으로 정제돼 있어 모델 입력으로 부정확하고,
+    # 미분류는 사람이 점검하는 목록이다. 규칙(브랜드 강제·키워드 등)으로 정해질 때만 채택.
+    if old == UNCLASSIFIED:
+        return (new, f"reeval_{src}") if src != "model" else (None, "unclassified-model")
+    # 패션 잡화 키워드(백팩·로퍼·스카프 등)는 의류로 들어간 것만 바로잡는다
+    # (편성 상품명은 사은품 구분이 지워져 있어, 미용 등 다른 분류에서 끌어오지 않는다)
+    if src == "fashion" and old == "의류":
+        return new, "fashion"
     # 사람이 직접 지정한 품목·브랜드 규칙은 라방바 분류보다 우선한다
     if new == "리빙/주방" and PERSON_ITEM_RE.search(text):
         return new, "person_item"
