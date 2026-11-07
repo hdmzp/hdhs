@@ -112,8 +112,11 @@ def decide(brand, product, old, lv):
     if not new or new == old or new == UNCLASSIFIED:
         return None, "same/unclassified"
     compat = LAVANGBA_COMPAT.get(lv_cat)
-    if src == "keyword" and PERSON_ITEM_RE.search(text):
+    # 사람이 직접 지정한 품목·브랜드 규칙은 라방바 분류보다 우선한다
+    if new == "리빙/주방" and PERSON_ITEM_RE.search(text):
         return new, "person_item"
+    if src == "brand_force" and brand in RETRO_TRUST_BRANDS:
+        return new, "person_brand"
     if src in ("brand_force", "brand_split"):
         if old in FASHION and new in FASHION:
             return None, "fashion-internal"   # 예: FILA=의류 규칙이 FILA 운동화까지 의류로
