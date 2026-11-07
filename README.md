@@ -25,6 +25,7 @@ hdhs/
 │   ├── rep-pgm-scrape.yml              # 셀럽PGM 대표프로그램 메타(merge)
 │   ├── scrape-ranking.yml              # 홈쇼핑 랭킹(18개 카테고리)
 │   ├── lavangba.yml                    # 라방바 11개사 방송 데이터(v2, 로그인 불필요)
+│   ├── category-correct.yml            # 카테고리 자동 정정 (라방바 분류·원문 근거, 매일 새벽)
 │   ├── promotion.yml                   # 프로모션 카드할인 4사(HD/GS/CJ/LT)
 │   ├── pricewatch.yml                  # 가격추적 (다사 동일브랜드)
 │   ├── weather.yml                     # 날씨(ASOS 과거 + 단기예보) + 공휴일 + 절기
@@ -108,6 +109,7 @@ hdhs/
 | `scrape-ranking.yml` | 07:00 | 홈쇼핑 랭킹 18개 카테고리 | - |
 | `promotion.yml` | 07:30, 12:50 (하루 2회) | 프로모션 카드할인 4사(HD/GS/CJ/LT) | 회사별 실패는 스크립트 내부에서 격리 |
 | `lavangba.yml` | 07:50 | 라방바 11개사 방송 데이터(v2) | `continue-on-error` |
+| `category-correct.yml` | 04:47 | 최근 10일 편성의 틀린 분류를 라방바 근거로 정정 (`tools/recategorize_retro.py`) | - |
 | `rep-pgm-scrape.yml` | 08:10, 20:00 (하루 2회) | 셀럽PGM 대표프로그램 메타 병합 | 회사별 `continue-on-error` + 건전성 검사(2-1) |
 | `telegram-daily-food.yml` | 04:05 (GitHub 지연 2~4시간 감안해 새벽 예약) | 텔레그램 아침 알림(식품방송 리스트 + 어제 셀럽PGM 운영상품 + 패션·리빙·미용 리스트 + 브랜드 알림, 봇 구독 설정대로) | - (데이터 커밋 없음, `contents: read`) |
 | `pricewatch.yml` | 10:40, 16:40 (하루 2회) | 가격추적(다사 동일브랜드 판매가) | 수집 스텝 `continue-on-error` |
@@ -363,10 +365,13 @@ Actions → "라방바 방송 수집 (11개사)" → Run workflow 에서 `start_
   └→ ③ 브랜드가 학습데이터에서 단일 카테고리로만 운영됐으면 그 카테고리로 확정
   └→ ④ 브랜드 비어있으면 infer_brand.py로 상품명에서 추론해 보강
   └→ ⑤ 그래도 안 잡히면 TF-IDF+로지스틱회귀 모델(category_model.pkl) 예측
+       (확신도 30% 미만이면 '미분류' → 홈쇼핑 편성 탭 '미분류' 슬라이서로 사람이 점검)
   └→ 세분류를 그룹으로 통합 (가전=대형가전+소형가전+다이슨+로보락, 리빙/주방=주방용품+인테리어/침구+생활용품 등 GROUP_MAP 기준)
 ```
 
 - **모델**: `train_model.py`로 `training_data.xlsx`(브랜드명/판매상품명/상품중분류명) 학습. char n-gram(2~5) TF-IDF + LogisticRegression, 검증 정확도 약 95%
+- **미용 확정 키워드(`BEAUTY_KEYWORD_RE`)**: 틴트·립타투·선크림·세럼 등 단어 하나로 확실한 미용 품목은 브랜드 이력보다 먼저 미용 확정. 괄호 속·`+` 뒤·'증정/사은품/체험분' 부분은 사은품으로 보고 검사에서 제외 (본품이 미용이 아닌데 사은품 때문에 미용이 되는 것 방지)
+- **증강 학습(`training_augment.py`)**: 사람이 지정한 미용 품목명 69종 × 미용 단일 브랜드를 '브랜드 + 품목명' 문장으로 만들어 학습에만 추가 (판촉 문구·용량 표현은 다른 카테고리를 미용으로 끌어당겨서 넣지 않음)
 - **학습데이터 갱신**: `update_training_data.py`로 새로 라벨링한 데이터를 기존 `training_data.xlsx`에 병합
 - **브랜드 추론(`infer_brand.py`)**: GS·CJ·기타 7개사처럼 브랜드 필드가 비는 경우, 학습데이터의 브랜드 사전과 상품명을 매칭(긴 토큰 우선, 대괄호 안 텍스트도 보조 검사)해 추론. 화면 표시용 브랜드는 `resolve_display_brand()`로 정제(괄호 부기 제거 등)
 - **상품명 정제(`clean_product.py`)**: 분류는 항상 원본 텍스트로 하고, 화면 표시 직전에만 마케팅 문구·가격강조·사은품 안내·용량 표기 등을 제거해 깔끔하게 보여줌

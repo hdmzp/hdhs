@@ -14,11 +14,12 @@
 1) 키워드 규칙: 상품명에 명확한 단어가 있으면 확정
    - 동시출현 규칙(COMBO_RULES): 신호 단어가 여럿 함께 나오면 확정 (예: PDRN+세럼+글로우 -> 미용)
    - 사은품 제외: '+' 기준 첫 덩어리(본품)만 검사
+   - 미용 확정 키워드(BEAUTY_KEYWORD_RE): 괄호·'+'·'증정' 등 사은품 부분을 걷어낸 본품만 검사
 2) 브랜드명이 학습데이터에서 단일 카테고리로만 운영된 브랜드면 바로 확정
 3) 브랜드가 비어있으면 상품명에서 브랜드 추론해서 보강 (infer_brand)
    - 추론된 브랜드도 BRAND_FORCE_MAP 검사
    - 추론까지 실패하면 상품명 강제 매핑(NO_BRAND_PRODUCT_FORCE) 검사
-4) 모델 분류
+4) 모델 분류 - 확신도가 LOW_CONFIDENCE_THRESHOLD 미만이면 '미분류' (화면 슬라이서로 사람이 점검)
 
 == 카테고리 그룹 ==
 가전       = 대형가전 + 소형가전 + 다이슨 + 로보락
@@ -78,6 +79,10 @@ BRAND_FORCE_MAP = {
     "BNS":"리빙/주방",
     "노랑풍선":"여행",
     "주영엔에스":"건강식품",
+    "립밤":"의류",     # 의류 브랜드 Lipbbam (립밤 화장품 아님)
+    "Lipbbam":"의류",
+    "듀얼소닉":"미용",  # 헤어드라이어지만 브랜드 기준 미용 (사람 지정 - 고데기·드라이기=가전 규칙의 예외)
+    "레쁠레뜨":"미용",  # 프랑스 화장품 (유기농 오트크림 - 모델이 일반식품으로 오분류)
     
     # 필요시 추가: "LG디스플레이": "가전", ...
 }
@@ -114,7 +119,106 @@ KEYWORD_RULES = [
     (re.compile(r"24K|18K|목걸이|귀걸이"), "잡화/주얼리"),
     (re.compile(r"스킨기초|기초|스킨케어|기초세트|조윤주|헤어그릭스|샴푸"), "미용"),
     (re.compile(r"가발"), "리빙/주방"),
+    # 발패치·풋패드·발패드는 브랜드 상관없이 리빙/주방 (2026-11-07 사람 지정)
+    (re.compile(r"발\s?패치|풋\s?패드|발\s?패드"), "리빙/주방"),
 ]
+
+# 미용 확정 키워드 (2026-11-07 기준 수립)
+# 모델은 처음 보는 미용 단어를 만나면 확신이 없어 일반식품으로 보내는 경향이 있다
+# (일반식품 클래스의 기본 점수가 가장 높음). 단어 하나로 미용이 확실한 것만 넣는다.
+#   - 혼자서는 애매한 단어는 넣지 않음: 크림(아이스크림·생크림), 팩(식품 팩 단위),
+#     패치·풋패드(생활용품), 오일, 향, 쿠션(쿠션 운동화), 링클(링클프리 셔츠),
+#     스킨(램스킨), 팩트(임팩트), 로션·스크럽·픽서 -> 이런 건 모델 증강학습(training_augment.py)으로만 보강
+#   - 브랜드 이력(학습데이터 단일카테고리 브랜드)보다 먼저 적용된다
+#     (예: 김소형(건강식품 브랜드) '비단쌀 안색 선크림' -> 미용)
+#   - **본품에만** 적용: 사은품·증정품 부분을 걷어낸 텍스트로 검사한다
+#     (예: '냉장고 + 선크림 증정' 은 미용이 아니다) -> _beauty_main_text 참고
+BEAUTY_KEYWORD_RE = re.compile(
+    r"틴트|립타투|립스틱|립밤|립글로|립스테인|마스카라|아이라이너|아이섀도|파운데이션|컨실러|"
+    r"선크림|선스틱|선쿠션|선세럼|선블록|쿠션팩트|커버쿠션|"
+    r"세럼|앰플|에센스|토너|아이크림|수분크림|링클크림|리프팅크림|주름크림|"
+    r"링클\s?패치|주름\S{0,4}패치|마스크팩|시트마스크|워시오프|클레이팩|필링젤|필링패드|"
+    r"클렌징|클렌저|스킨케어|향수|퍼퓸|오드퍼퓸|오드뚜왈렛|오드투왈렛|"
+    r"염색제|염색약|염색고|새치커버|샴푸|트리트먼트|"
+    # 2026-11-07 사람 지정 품목 중 단어 하나로 확실한 것 (training_augment.py 목록과 같은 출처)
+    r"립오일|비비크림|톤업크림|루스파우더|피니싱파우더|메이크업픽서|아이섀도우|아이브로우|속눈썹영양제|"
+    r"에멀전|영양크림|재생크림|보습크림|탄력크림|슬리핑팩|토너패드|시트팩|콜라겐팩|모델링팩|선젤|"
+    r"퍼퓸미스트|바디미스트|바디워시|바디로션|바디크림|바디오일|핸드크림|헤어팩|헤어에센스|헤어오일|"
+    r"하이드로겔\s?패치|새치\s?커버|오트크림|율무팩|수분젤",
+    re.IGNORECASE,
+)
+# 본품이 미용 단어를 가져도 미용이 아닌 경우 (먹는 제형, 생활용품 향 제품)
+# 원칙(2026-11-07 사람 지정): 식품 단어(콜라겐·홍삼·유기농·N주분 등)와 확실한 미용 품목이
+# 같이 있으면 미용. 그래서 여기엔 '먹는 제형'을 직접 말하는 표현만 둔다.
+#   예) '에버콜라겐 동결건조 콜라겐 앰플 (20주분)' -> 미용 / '먹는 콜라겐 앰플' -> 미용 아님
+BEAUTY_EXCLUDE_RE = re.compile(
+    r"먹는|마시는|젤리|분말|드링크|타블렛|정제|캡슐(?!크림)|"
+    r"섬유유연제|유연제|디퓨저|방향제|세제|탈취|"
+    r"Lipbbam|LIPBBAM"               # 의류 브랜드 '립밤'
+)
+# 사은품·증정 표시. 이 단어가 나오면 그 앞 한 단어부터 끝까지를 사은품으로 보고 버린다.
+_GIFT_MARKER_RE = re.compile(r"(\S+\s*)?(사은품|사은|증정|체험분|선물|덤으로|덤|무료\s*체험|한\s*개\s*더|1개\s*더)")
+_GIFT_BRACKET_RE = re.compile(
+    r"[\(\[\{（【][^\)\]\}）】]*[\)\]\}）】]"   # 괄호 문구
+    r"|[★☆●○◎♥♡][^★☆●○◎♥♡]*[★☆●○◎♥♡]"           # ★전고객 드라이기★ 같은 별표 문구
+    r"|전\s?고객\s*\S+"                             # '전고객 청소기' (전 고객 증정품)
+)
+
+
+def _beauty_main_text(product: str) -> str:
+    """
+    미용 키워드 검사용 본품 텍스트.
+    - 괄호/대괄호 안은 버린다 (사은품·구성·프로모션 문구가 주로 들어감)
+    - '+', '＋', ',' 로 나눈 첫 덩어리만 본품으로 본다
+    - 첫 덩어리 안에 '증정/사은품/체험분' 등이 있으면 그 앞 단어부터 버린다
+    """
+    text = _GIFT_BRACKET_RE.sub(" ", str(product or ""))
+    # 맨 앞 '+'(재방송 표시 등)로 빈 덩어리가 나오면 건너뛰고 첫 실제 덩어리를 쓴다
+    first = next((seg for seg in re.split(r"[+＋,]", text) if seg.strip()), "")
+    m = _GIFT_MARKER_RE.search(first)
+    if m:
+        # '증정' 앞이 비면(사은품 문구가 맨 앞) 그 뒤를 본품으로 본다
+        first = first[:m.start()] if first[:m.start()].strip() else first[m.end():]
+    return first.strip()
+
+
+def _beauty_match(product: str) -> str:
+    main = _beauty_main_text(product)
+    # 제외어는 전체 상품명에서 본다 (괄호 속 브랜드 표기 등도 걸리게)
+    if main and BEAUTY_KEYWORD_RE.search(main) and not BEAUTY_EXCLUDE_RE.search(str(product or "")):
+        return "미용"
+    return ""
+
+
+# 헤어 기기(고데기·드라이기)는 가전 (2026-11-07 사람 지정).
+# 학습데이터엔 글램팜 등 고데기 브랜드가 '미용'으로 들어가 있어 모델/브랜드 이력만으론 미용으로 간다.
+# 본품만 본다(_beauty_main_text). 샴푸·염색제 사은품으로 고데기를 주는 경우가 많아서,
+# 본품 텍스트에 미용 단어가 헤어기기 단어보다 **먼저** 나오면 미용 쪽이 본품으로 본다.
+#   '타프 헤어 무선 고데기 단백질 샴푸' -> 가전 / '꾸띄르헤어 컬러체인지 샴푸 헤어고데기' -> 미용
+HAIR_TOOL_RE = re.compile(
+    r"고데기|매직기|드라이기|드라이어기|헤어\s?드라이어|바디\s?드라이어|드라이어(?!볼|시트)|"
+    r"에어랩|헤어\s?스타일러|볼륨\s?롤러기"
+)
+_BEAUTY_BASIC_RE = re.compile(r"스킨기초|기초세트|스킨케어|샴푸|염색|트리트먼트")
+
+
+def _hair_tool_match(product: str) -> str:
+    main = _beauty_main_text(product)
+    tool = HAIR_TOOL_RE.search(main)
+    if not tool:
+        return ""
+    firsts = [m.start() for m in (BEAUTY_KEYWORD_RE.search(main), _BEAUTY_BASIC_RE.search(main)) if m]
+    if firsts and min(firsts) < tool.start():
+        return ""
+    return "가전"
+
+
+# 모델 확신도가 이보다 낮으면 '미분류'로 둔다 (화면의 '미분류' 슬라이서로 사람이 점검).
+# 낮은 확신일 때 모델은 일반식품으로 몰아넣는 경향이 있다 (여행·미용 상품도 일반식품으로 감).
+# 0.3~0.4 구간은 표본 확인 결과 대부분 맞게 분류돼 0.3으로 둠.
+UNCLASSIFIED = "미분류"
+LOW_CONFIDENCE_THRESHOLD = 0.3
+
 
 # 동시출현(co-occurrence) 규칙: 신호 단어가 min_hits개 이상 '함께' 나오면 확정.
 # 단어 하나로는 애매하지만 여럿이 같이 나오면 확실한 경우에 쓴다.
@@ -176,6 +280,10 @@ def _load_brand_group_map():
 
 def _brand_direct_category(brand: str) -> str:
     """학습데이터 상 단일 카테고리 브랜드면 그 카테고리, 아니면 빈 문자열."""
+    # 숫자뿐인 브랜드('2026' 등 상품명 앞 연도가 브랜드로 잘못 들어간 것)는 브랜드로 안 본다
+    # (학습데이터의 '2026' 브랜드 이력 때문에 '2026 햇 고춧가루'가 미용으로 가던 문제)
+    if re.fullmatch(r"\s*\d+\s*", str(brand or "")):
+        return ""
     mapping = _load_brand_group_map()
     group = mapping.get(brand)
     if group is None:
@@ -195,23 +303,51 @@ def _to_group(raw_category: str) -> str:
     return GROUP_MAP.get(raw_category, raw_category)
 
 
+def _split_plus_outside_brackets(text: str) -> list:
+    """괄호 밖의 '+'에서만 나눈다. 맨 앞 '+'(재방송 표시 등)로 생긴 빈 덩어리는 버린다."""
+    parts, buf, depth = [], [], 0
+    for ch in text:
+        if ch in "([{（【":
+            depth += 1
+        elif ch in ")]}）】" and depth:
+            depth -= 1
+        if ch == "+" and depth == 0:
+            parts.append("".join(buf))
+            buf = []
+            continue
+        buf.append(ch)
+    parts.append("".join(buf))
+    nonempty = [p for p in parts if p.strip()]
+    return nonempty or [""]
+
+
 def _main_item_text(brand: str, product: str) -> str:
     """
     키워드 규칙 검사용 본품 텍스트만 추출.
     - '+' 기준 첫 덩어리만 (사은품/구성품에 다른 카테고리 키워드가 섞여 오발동 방지)
     - 브랜드 부기 제거: "노랑풍선(TV)" 같은 표기가 TV 키워드에 걸리는 것 방지
     """
-    main_part = str(product or "").split("+")[0].strip()
+    # 괄호 안의 '+'는 구분자가 아니다 ("[3+3박스+세럼 1박스] 대원제약 ..." 이 "[3"만 남던 문제)
+    main_part = _split_plus_outside_brackets(str(product or ""))[0].strip()
     if brand and main_part.startswith(brand):
         main_part = main_part[len(brand):].strip()
     core_brand = extract_core_brand(brand) if brand else ""
     return f"{core_brand} {main_part}".strip()
 
 
-def _rule_match(text: str) -> str:
+def _rule_match(text: str, product: str = None) -> str:
+    # 헤어 기기는 KEYWORD_RULES의 미용(샴푸 등)보다 먼저 본다 (본품이 고데기면 가전)
+    if product is not None:
+        hair = _hair_tool_match(product)
+        if hair:
+            return hair
     for pattern, category in KEYWORD_RULES:
         if pattern.search(text):
             return category
+    if product is not None:
+        beauty = _beauty_match(product)
+        if beauty:
+            return beauty
     return _combo_match(text)
 
 
@@ -232,6 +368,8 @@ def _predict_with_model(brand: str, product: str) -> str:
     text = f"{brand or ''} {product or ''}".strip()
     proba = model.predict_proba([text])[0]
     idx = proba.argmax()
+    if proba[idx] < LOW_CONFIDENCE_THRESHOLD:
+        return UNCLASSIFIED
     return _to_group(model.classes_[idx])
 
 
@@ -302,30 +440,50 @@ def resolve_display_brand_batch(items: list) -> list:
 
 
 def classify(brand: str, product: str) -> str:
+    return classify_explain(brand, product)[0]
+
+
+def classify_explain(brand: str, product: str):
+    """
+    (카테고리, 근거) 반환. 근거는 어느 단계에서 정해졌는지:
+      brand_force / brand_split / hair_tool / keyword / beauty / combo /
+      brand_direct / no_brand_force / model / ""
+    소급 재분류(tools/recategorize_retro.py)가 근거별로 바꿀지 말지를 다르게 판단한다.
+    """
     if not brand and not product:
-        return ""
+        return "", ""
 
     # 0) 브랜드 완전일치 강제 매핑
     if brand:
         forced = _brand_force(brand)
         if forced:
-            return forced
+            return forced, "brand_force"
 
     # 0-1) 브랜드 + 품목 조합 강제 매핑 (생로랑: 미용품목 -> 미용, 그 외 -> 잡화/주얼리)
     split = _brand_item_split(brand, product)
     if split:
-        return split
+        return split, "brand_split"
 
     # 1) 키워드 규칙 (본품만 검사)
-    rule_hit = _rule_match(_main_item_text(brand, product))
-    if rule_hit:
-        return rule_hit
+    hair = _hair_tool_match(product)
+    if hair:
+        return hair, "hair_tool"
+    text = _main_item_text(brand, product)
+    for pattern, category in KEYWORD_RULES:
+        if pattern.search(text):
+            return category, "keyword"
+    beauty = _beauty_match(product)
+    if beauty:
+        return beauty, "beauty"
+    combo = _combo_match(text)
+    if combo:
+        return combo, "combo"
 
     # 2) 학습데이터 단일 카테고리 브랜드 직접 확정
     if brand:
         direct = _brand_direct_category(brand)
         if direct:
-            return direct
+            return direct, "brand_direct"
 
     # 3) 브랜드 비어있으면 상품명에서 추론해서 보강
     effective_brand = brand
@@ -334,14 +492,14 @@ def classify(brand: str, product: str) -> str:
         if effective_brand:
             forced = _brand_force(effective_brand)
             if forced:
-                return forced
+                return forced, "brand_force"
         else:
             forced = _no_brand_product_force(product)
             if forced:
-                return forced
+                return forced, "no_brand_force"
 
     # 4) 모델 분류
-    return _predict_with_model(effective_brand, product)
+    return _predict_with_model(effective_brand, product), "model"
 
 
 def classify_batch(items: list) -> list:
@@ -368,7 +526,7 @@ def classify_batch(items: list) -> list:
             continue
 
         # 1) 키워드 규칙
-        rule_hit = _rule_match(_main_item_text(brand, product))
+        rule_hit = _rule_match(_main_item_text(brand, product), product)
         if rule_hit:
             results[i] = rule_hit
             continue
@@ -402,7 +560,10 @@ def classify_batch(items: list) -> list:
         proba_matrix = model.predict_proba(model_texts)
         for j, proba in enumerate(proba_matrix):
             idx = proba.argmax()
-            results[model_indices[j]] = _to_group(model.classes_[idx])
+            if proba[idx] < LOW_CONFIDENCE_THRESHOLD:
+                results[model_indices[j]] = UNCLASSIFIED
+            else:
+                results[model_indices[j]] = _to_group(model.classes_[idx])
 
     return results
 

@@ -1,0 +1,81 @@
+name: 카테고리 자동 정정 (라방바 근거)
+
+# 매일 새벽, 최근 10일치 편성의 '틀린 분류'를 라방바 분류값·원문 상품명을 근거로 정정한다.
+# (tools/recategorize_retro.py - 미분류로는 바꾸지 않고, 근거가 있을 때만 바꾼다)
+#
+# 시각: KST 04:47 = UTC 19:47 (전날)
+#   - 라방바 데이터는 방송 다음날 07:50 수집(lavangba.yml)이라, 새벽에 돌면
+#     전날 아침까지 쌓인 라방바 데이터로 그 이전 방송들을 정정한다.
+#   - 홈쇼핑 편성 재수집(homeshopping.yml 05:50, 범위 오늘-1일~)보다 먼저 끝나고,
+#     재수집 범위(어제~) 밖의 날짜는 다시 덮어써지지 않는다.
+#   - 정각/30분을 피해 크론 지연을 줄인다.
+
+on:
+  schedule:
+    - cron: "47 19 * * *"
+  workflow_dispatch:
+    inputs:
+      days:
+        description: "최근 며칠치를 정정할지 (기본 10)"
+        required: false
+        default: "10"
+
+permissions:
+  contents: write
+  actions: write   # pages-deploy 워크플로우를 API로 dispatch하려면 필요
+
+concurrency:
+  group: category-correct
+  cancel-in-progress: false
+
+jobs:
+  correct:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Python 설치
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 패키지 설치
+        run: pip install scikit-learn joblib pandas openpyxl requests
+
+      - name: 정정 실행
+        env:
+          DAYS: ${{ github.event.inputs.days }}
+        run: |
+          days="${DAYS:-10}"
+          case "$days" in
+            ''|*[!0-9]*) echo "days는 숫자여야 합니다: $days"; exit 1 ;;
+          esac
+          python tools/recategorize_retro.py --apply --days "$days" --list
+
+      - name: 결과 커밋 & 푸시
+        id: commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A -- homeshopping lavangba/data
+          if git diff --staged --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "chore: 카테고리 자동 정정 (라방바 근거) $(date -u -d '+9 hours' +%Y-%m-%d)"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+          git pull --rebase --autostash origin main
+          git push
+
+      - name: Pages 재배포 트리거
+        # github-actions[bot] push는 다른 워크플로우를 트리거하지 않으므로 직접 큐에 넣는다.
+        if: steps.commit.outputs.changed == 'true'
+        run: |
+          curl -L -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/pages-deploy.yml/dispatches" \
+            -d '{"ref":"main"}'
