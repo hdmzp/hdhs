@@ -399,6 +399,22 @@ def is_marketing_copy(text: str) -> bool:
     return False
 
 
+# 학습데이터 브랜드 사전에 없어 추론이 안 되는 브랜드 (사람 지정). 상품명에 이 표기가 있으면 그 브랜드.
+#   키: 상품명에 나오는 표기(공백 무시), 값: 화면에 쓸 브랜드명
+MANUAL_BRANDS = {
+    "애디슨로스": "애디슨로스",   # 그라인더 (롯데 '[그린미니] 애디슨로스 그라인더 ...') 2026-11-07
+    "에디슨로스": "애디슨로스",
+}
+
+
+def manual_brand(product_name: str) -> str:
+    text = str(product_name or "").replace(" ", "")
+    for key, brand in MANUAL_BRANDS.items():
+        if key in text:
+            return brand
+    return ""
+
+
 def pick_brand_from_prefix(product_name: str) -> str:
     """상품명 앞의 대괄호/소괄호 접두어들을 앞에서부터 훑어 브랜드를 고른다.
 
@@ -415,8 +431,16 @@ def pick_brand_from_prefix(product_name: str) -> str:
             break
         candidate = (m.group(1) or m.group(2) or "").strip()
         rest = rest[m.end():]
+        # 접두어가 상품명 본문에 다시 나오면 옵션(색상·용량) 표시다
+        # "[그린미니] 애디슨로스 그라인더 그린미니 패키지" -> '그린미니'는 브랜드 아님
+        if candidate and candidate.replace(" ", "") in rest.replace(" ", ""):
+            continue
         if candidate and not is_marketing_copy(candidate):
             return candidate
+
+    manual = manual_brand(product_name)
+    if manual:
+        return manual
 
     inferred = infer_brand(product_name)
     return _extract_core(inferred) if inferred else ""
