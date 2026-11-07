@@ -6663,6 +6663,9 @@ const HS_CATEGORY_COLORS = {
   '미용': '#C9ADA7', '건강식품': '#84A98C', '일반식품': '#A3B18A',
   '가전': '#457B9D', '리빙/주방': '#BC6C25', '여행': '#4895EF',
   '보험': '#6C757D', '일반렌탈': '#8D99AE', '문화/스포츠': '#F3722C',
+  // 분류 모델 확신도가 낮아(30% 미만) 자동 분류를 보류한 상품 - 사람이 종종 점검한다
+  // (categorize.py LOW_CONFIDENCE_THRESHOLD)
+  '미분류': '#B0B0B0',
 };
 function hsCategoryColor(category) {
   return HS_CATEGORY_COLORS[category] || '#9C9486';
@@ -7780,7 +7783,7 @@ async function celSetMonth(ym) {
 // _originFile을 CEL_FILES 값과 맞춰서 슬라이서/비교 로직이 그대로 동작하게 한다.
 function celBuildSampleData() {
   const defs = [
-    ["CJ_KJE.json", "CJ", "강주은 굿라이프", "매주 월요일 19시35분",
+    ["CJ_KJE.json", "CJ", "강주은 굿라이프", "격주 월요일 19시35분",
       "https://display.cjonstyle.com/m/pgmShop/100009", [
       ["7/6(월) 19:35", "삼성전자", "비스포크 냉장고", 2390000],
     ]],
@@ -7994,7 +7997,7 @@ function normalizeScheduleRaw(raw) {
   if (!raw) return '';
   const DAY_MAP = { '월': '월요일', '화': '화요일', '수': '수요일', '목': '목요일', '금': '금요일', '토': '토요일', '일': '일요일' };
 
-  const segments = raw.replace(/매주/g, '').split(/[\/,·]/).map(s => s.trim()).filter(Boolean);
+  const segments = raw.replace(/매주|격주|매월/g, '').split(/[\/,·]/).map(s => s.trim()).filter(Boolean);
   const parts = [];
 
   for (const seg of segments) {
@@ -8029,7 +8032,12 @@ function normalizeScheduleRaw(raw) {
   }
 
   if (parts.length === 0) return raw;
-  return `매주 ${parts.join(' · ')}`;
+  // '격주'·'매월'처럼 주기 자체가 다른 표현은 원문에 있으면 지우지 않고 그대로 쓴다.
+  // (2026-11 강주은 굿라이프 소개가 '격주 월요일 19시35분'으로 바뀌었는데
+  //  화면에는 '매주'로 덮어써져 보였다.)
+  const freqMatch = raw.match(/격주|매월|월\s*\d+회/);
+  const freq = freqMatch ? freqMatch[0] : '매주';
+  return `${freq} ${parts.join(' · ')}`;
 }
 
 // 고정PGM 수집분의 프로그램 썸네일을 제목 매칭으로 재활용한다 (별도 수집 없음)
@@ -8518,6 +8526,9 @@ function celNewsUsualDays(list, wk, stated) {
 // 요일이 매번 바뀌거나 비정기인 프로그램은 CEL_NEWS_MISSING_SKIP으로 뺀다.
 const CEL_NEWS_MISSING_AHEAD_DAYS = 7;
 const CEL_NEWS_MISSING_SKIP = new Set(['CJ_SIH.json', 'CJ_KSY.json']);  // 겟잇스타일(요일 수시 변경), 김신영이 산다(비정기)
+// ※ 강주은 굿라이프(CJ_KJE)는 2026-11부터 '격주 월 19:35'지만 여기 넣지 않는다 -
+//   쉬는 주(월요일)도 휴방 목록에 계속 띄워 달라는 요청. 평소 주간 횟수는 방송한 주만
+//   세므로(1회) 쉬는 주는 0회 < 1회로 잡혀 그대로 목록에 나온다.
 function celBuildMissing(files, ym) {
   const WD = ['일', '월', '화', '수', '목', '금', '토'];
   const now = new Date();
@@ -10257,7 +10268,8 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
   const IN_FIXED_CO = { HD: '현대홈쇼핑', GS: 'GS홈쇼핑', CJ: 'CJ온스타일', LT: '롯데홈쇼핑' };
   const IN_CROSS_MAX_TITLES = 4; // 지상파·종편 크로스레퍼런스에서 채널당 나열할 최대 프로그램 수
 
-  const IN_CATS = Object.keys(HS_CATEGORY_COLORS).concat(['기타']);
+  // '미분류'는 점검용 슬라이서라 여기선 '기타'로 묶는다
+  const IN_CATS = Object.keys(HS_CATEGORY_COLORS).filter(c => c !== '미분류').concat(['기타']);
 
   let inStart = null, inEnd = null;   // 'YYYY-MM-DD'
   let inActive = new Set(IN_CHANNELS.map(c => c.label));
@@ -10279,7 +10291,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
   const inDiffDays = (a, b) => Math.round((inDate(b) - inDate(a)) / 86400000);
   const inWeekday = s => (inDate(s).getDay() + 6) % 7; // 월=0 ... 일=6
   // 카테고리 정규화: 분류모델 12종 외 값(구버전 소수)과 빈 값은 '기타'로 묶음
-  const inCatOf = e => HS_CATEGORY_COLORS[e.category] ? e.category : '기타';
+  const inCatOf = e => (HS_CATEGORY_COLORS[e.category] && e.category !== '미분류') ? e.category : '기타';
 
   function inSetRange(s, e) {
     if (s > e) { const t = s; s = e; e = t; }

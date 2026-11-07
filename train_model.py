@@ -10,6 +10,8 @@ training_data.xlsx (또는 인자로 경로 지정)
 필수 컬럼: 브랜드명, 판매상품명, 상품중분류명
 (상품대분류명 컬럼이 있어도 사용하지 않음 - 현재 데이터엔 비어있음)
 
+training_augment.py의 증강 문장(미용 품목명 등)을 학습에만 추가로 붙인다.
+
 == 출력 ==
 category_model.pkl - categorize.py가 이 파일을 로드해 분류에 사용
 
@@ -32,6 +34,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report
+
+from training_augment import build_augment_rows
 
 # 건수가 너무 적어 학습/평가가 불안정한 노이즈성 클래스 (필요시 조정)
 MIN_CLASS_COUNT = 10
@@ -83,14 +87,21 @@ def train(xlsx_path: str, output_path: str = "category_model.pkl"):
         )),
     ])
 
-    pipeline.fit(X_train, y_train)
+    # 증강 데이터(training_augment.py)는 학습에만 붙이고 검증셋엔 넣지 않는다
+    # (정확도는 실제 데이터로만 측정)
+    aug = build_augment_rows(df)
+    X_aug = aug["브랜드명"].astype(str) + " " + aug["판매상품명"].astype(str)
+    y_aug = aug["상품중분류명"]
+    print(f"증강 데이터: {len(aug)}건 (학습에만 사용)")
+
+    pipeline.fit(pd.concat([X_train, X_aug]), pd.concat([y_train, y_aug]))
     y_pred = pipeline.predict(X_test)
     acc = accuracy_score(y_test, y_pred)
     print(f"\n검증 정확도: {acc:.4f}\n")
     print(classification_report(y_test, y_pred))
 
     # 전체 데이터로 최종 재학습 (배포용 - 평가에 썼던 15%도 학습에 포함시켜 최대 활용)
-    pipeline.fit(X, y)
+    pipeline.fit(pd.concat([X, X_aug]), pd.concat([y, y_aug]))
     joblib.dump(pipeline, output_path)
     print(f"\n모델 저장 완료: {output_path}")
 
