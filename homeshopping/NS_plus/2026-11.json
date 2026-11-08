@@ -2,7 +2,7 @@
   "company": "NS",
   "broadcast": "plus",
   "month": "2026-11",
-  "updated_at": "2026-11-07T23:48:31+09:00",
+  "updated_at": "2026-11-08T09:39:46+09:00",
   "days": {
     "2026-11-01": [
       {
@@ -1990,7 +1990,7 @@
     "2026-11-08": [
       {
         "start": "00:42",
-        "end": "01:42",
+        "end": "01:44",
         "brand": "잭니클라우스",
         "product": "잭니클라우스1",
         "price": 89000,
@@ -2001,7 +2001,7 @@
       },
       {
         "start": "01:42",
-        "end": "02:00",
+        "end": "02:01",
         "brand": "",
         "product": "브이존양말1",
         "price": 29900,
@@ -2012,7 +2012,7 @@
       },
       {
         "start": "02:00",
-        "end": "02:40",
+        "end": "02:42",
         "brand": "",
         "product": "브이존양말2",
         "price": 29900,
@@ -2023,7 +2023,7 @@
       },
       {
         "start": "02:40",
-        "end": "03:40",
+        "end": "03:42",
         "brand": "",
         "product": "TBJ1",
         "price": 39900,
@@ -2034,7 +2034,7 @@
       },
       {
         "start": "03:40",
-        "end": "04:40",
+        "end": "04:42",
         "brand": "애비뉴투지",
         "product": "애비뉴투지1",
         "price": 49800,
@@ -2045,7 +2045,7 @@
       },
       {
         "start": "04:41",
-        "end": "05:41",
+        "end": "05:27",
         "brand": "",
         "product": "르까프의류1",
         "price": 69000,
@@ -2056,7 +2056,7 @@
       },
       {
         "start": "05:41",
-        "end": "06:41",
+        "end": "06:42",
         "brand": "아보크",
         "product": "아보크의류1",
         "price": 59900,
@@ -2067,7 +2067,7 @@
       },
       {
         "start": "06:41",
-        "end": "07:41",
+        "end": "07:42",
         "brand": "",
         "product": "오쿠지압온1",
         "price": 188000,
@@ -2078,7 +2078,7 @@
       },
       {
         "start": "07:41",
-        "end": "08:41",
+        "end": "08:42",
         "brand": "",
         "product": "밀레슈즈1",
         "price": 79000,
@@ -2886,6 +2886,85 @@
         "category": "일반식품",
         "lavangba_category": "식품",
         "hsshow_id": "c849408e621dc5d942307cc55288318c"
+      }
+    ],
+    "2026-11-13": [
+      {
+        "start": "00:40",
+        "end": "01:40",
+        "brand": "",
+        "product": "감자옹심이1",
+        "price": 29900,
+        "link": "https://m.nsmall.com/goods/36281679",
+        "category": "일반식품",
+        "lavangba_category": "식품",
+        "hsshow_id": "35977229649fa9ae53f4e4aa2aad5a14"
+      },
+      {
+        "start": "01:40",
+        "end": "02:00",
+        "brand": "",
+        "product": "육개장1",
+        "price": 39900,
+        "link": "https://m.nsmall.com/goods/36270794",
+        "category": "미분류",
+        "lavangba_category": "식품",
+        "hsshow_id": "e70d38f81d62fa0908c62057a25ce822"
+      },
+      {
+        "start": "02:00",
+        "end": "02:40",
+        "brand": "",
+        "product": "육개장2",
+        "price": 39900,
+        "link": "https://m.nsmall.com/goods/36270794",
+        "category": "미분류",
+        "lavangba_category": "식품",
+        "hsshow_id": "b5fbfd11c43ae9cbdb67af02b6b8c478"
+      },
+      {
+        "start": "03:40",
+        "end": "04:40",
+        "brand": "",
+        "product": "TBJ1",
+        "price": 39900,
+        "link": "https://m.nsmall.com/goods/36305021",
+        "category": "미분류",
+        "lavangba_category": "패션의류",
+        "hsshow_id": "7c468b5f9c6e64c170bd1909a9e82ec5"
+      },
+      {
+        "start": "04:40",
+        "end": "05:40",
+        "brand": "",
+        "product": "족욕기1",
+        "price": 139000,
+        "link": "https://m.nsmall.com/goods/36299395",
+        "category": "미분류",
+        "lavangba_category": "생활/건강",
+        "hsshow_id": "c94e498d29bee0dd431b44da42585418"
+      },
+      {
+        "start": "12:40",
+        "end": "13:40",
+        "brand": "",
+        "product": "탈모샴푸1",
+        "price": 63900,
+        "link": "https://m.nsmall.com/goods/36165246",
+        "category": "미용",
+        "lavangba_category": "화장품/미용",
+        "hsshow_id": "7a408033e0adb0e493c0319ba2fb9818"
+      },
+      {
+        "start": "17:40",
+        "end": "18:40",
+        "brand": "",
+        "product": "알배기꽃게장1",
+        "price": 59900,
+        "link": "https://m.nsmall.com/goods/36286217",
+        "category": "일반식품",
+        "lavangba_category": "식품",
+        "hsshow_id": "7832cb7e541ca5e77cd5279f5543abc5"
       }
     ]
   }
