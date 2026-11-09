@@ -2,7 +2,7 @@
   "company": "NS",
   "broadcast": "plus",
   "month": "2026-11",
-  "updated_at": "2026-11-10T00:08:26+09:00",
+  "updated_at": "2026-11-10T03:17:27+09:00",
   "days": {
     "2026-11-01": [
       {
@@ -2555,7 +2555,7 @@
     "2026-11-10": [
       {
         "start": "00:42",
-        "end": "01:42",
+        "end": "01:43",
         "brand": "빈블랑",
         "product": "빈블랑행거1",
         "price": 139000,
@@ -2566,7 +2566,7 @@
       },
       {
         "start": "01:42",
-        "end": "02:00",
+        "end": "02:01",
         "brand": "",
         "product": "벌교꼬막1",
         "price": 39900,
@@ -2577,7 +2577,7 @@
       },
       {
         "start": "02:00",
-        "end": "02:40",
+        "end": "02:41",
         "brand": "",
         "product": "벌교꼬막2",
         "price": 39900,
@@ -2588,7 +2588,7 @@
       },
       {
         "start": "02:40",
-        "end": "03:00",
+        "end": "03:02",
         "brand": "코지마",
         "product": "코지마1",
         "price": 3080000,
@@ -3407,6 +3407,85 @@
         "category": "일반식품",
         "lavangba_category": "식품",
         "hsshow_id": "f6128c01d60a888468d3861da2f1e37a"
+      }
+    ],
+    "2026-11-15": [
+      {
+        "start": "01:40",
+        "end": "02:00",
+        "brand": "",
+        "product": "안동간고등어 1",
+        "price": 29900,
+        "link": "https://m.nsmall.com/goods/36269388",
+        "category": "일반식품",
+        "lavangba_category": "식품",
+        "hsshow_id": "79db74220976890cee47db64add709c4"
+      },
+      {
+        "start": "02:00",
+        "end": "02:40",
+        "brand": "",
+        "product": "안동간고등어 2",
+        "price": 29900,
+        "link": "https://m.nsmall.com/goods/36269388",
+        "category": "일반식품",
+        "lavangba_category": "식품",
+        "hsshow_id": "d67d1cdb2881b51fea1a0428a8392d6a"
+      },
+      {
+        "start": "03:40",
+        "end": "04:40",
+        "brand": "아보크",
+        "product": "아보크의류1",
+        "price": 59900,
+        "link": "https://m.nsmall.com/goods/36281651",
+        "category": "의류",
+        "lavangba_category": "패션의류",
+        "hsshow_id": "35a7466c06ca3ff05e83a3c128c55305"
+      },
+      {
+        "start": "04:40",
+        "end": "05:40",
+        "brand": "",
+        "product": "엘르백팩1",
+        "price": 55000,
+        "link": "https://m.nsmall.com/goods/36243100",
+        "category": "잡화/주얼리",
+        "lavangba_category": "패션잡화",
+        "hsshow_id": "196af01c8cf09792b449bbe14197a553"
+      },
+      {
+        "start": "10:40",
+        "end": "11:40",
+        "brand": "",
+        "product": "마데카크림1",
+        "price": 89000,
+        "link": "https://m.nsmall.com/goods/35887457",
+        "category": "미용",
+        "lavangba_category": "화장품/미용",
+        "hsshow_id": "b6b23e3101c57a0dc3420d3876188459"
+      },
+      {
+        "start": "14:40",
+        "end": "15:40",
+        "brand": "",
+        "product": "더창볼륨핏인모가발1",
+        "price": 79000,
+        "link": "https://m.nsmall.com/goods/36273135",
+        "category": "리빙/주방",
+        "lavangba_category": "화장품/미용",
+        "hsshow_id": "7078792a49a7e31b5a8155a9a74512be"
+      },
+      {
+        "start": "21:40",
+        "end": "22:40",
+        "brand": "",
+        "product": "CK의류1",
+        "price": 129000,
+        "link": "https://m.nsmall.com/goods/36248242",
+        "category": "미분류",
+        "lavangba_category": "패션의류",
+        "hsshow_id": "d35b6b38f943b284588f10fb54420093"
       }
     ]
   }
