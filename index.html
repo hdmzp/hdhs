@@ -4275,11 +4275,17 @@
   var openBtn = document.getElementById('tgOpenBtn');
   if (!modal || !openBtn) return;
   function close() { modal.classList.remove('open'); openBtn.focus(); }
+  // 알림신청 모달 열기/텔레그램 링크 클릭을 GA4 telegram_lead 이벤트로 남긴다.
+  function tgTrack(step) {
+    if (typeof window.gaEvent === 'function') window.gaEvent('telegram_lead', { step: step });
+  }
   openBtn.addEventListener('click', function () {
+    tgTrack('open');
     modal.classList.add('open');
     modal.querySelector('.tg-modal-close').focus();
   });
   modal.addEventListener('click', function (e) {
+    if (e.target.closest('a[href*="t.me"]')) tgTrack('click_link');
     if (e.target === modal || e.target.closest('[data-tg-close]')) close();
   });
   document.addEventListener('keydown', function (e) {
@@ -4584,6 +4590,57 @@ function gaEvent(name, params) {
   }
 }
 
+// 검색어 추적(site_search): debounce 입력과 [조회] 버튼이 같은 검색어를 두 번 보내지 않도록
+// 탭별로 직전에 보낸 검색어를 기억한다. 빈 문자열(검색어 지움)은 보내지 않는다.
+const _lastSearchTerm = {};
+function gaSearch(tab, rawValue) {
+  const term = String(rawValue == null ? '' : rawValue).trim().slice(0, 100);
+  if (!term) { _lastSearchTerm[tab] = ''; return; }
+  if (_lastSearchTerm[tab] === term) return;
+  _lastSearchTerm[tab] = term;
+  gaEvent('site_search', { search_term: term, search_tab: tab });
+}
+
+// 아웃링크가 어느 방송사 몰로 빠져나갔는지 한눈에 집계할 수 있도록 호스트를 방송사 단위로 묶는다
+// (예: with.gsshop.com -> gsshop/GS샵, m.nsmall.com -> nsmall/NS홈쇼핑). 모르는 곳은 channel_domain을 비운다.
+const MALL_HOSTS = [
+  ['hmall.com', 'hmall', '현대홈쇼핑'],
+  ['cjonstyle.com', 'cjonstyle', 'CJ온스타일'],
+  ['gsshop.com', 'gsshop', 'GS샵'],
+  ['lotteimall.com', 'lotteimall', '롯데홈쇼핑'],
+  ['nsmall.com', 'nsmall', 'NS홈쇼핑'],
+  ['kshop.co.kr', 'kshop', 'K쇼핑'],
+  ['shinsegaetvshopping.com', 'shinsegaetvshopping', '신세계TV쇼핑'],
+  ['skstoa.com', 'skstoa', 'SK스토아'],
+  ['hnsmall.com', 'hnsmall', '홈앤쇼핑'],
+  ['shoppingntmall.com', 'shoppingntmall', '쇼핑엔티'],
+  ['w-shopping.co.kr', 'wshopping', 'W쇼핑'],
+  ['gongyoungshop.kr', 'gongyoungshop', '공영쇼핑'],
+  ['immall.co.kr', 'immall', '아이몰'],
+  ['publichs.com', 'publichs', '공영홈쇼핑'],
+  ['hsmoa.com', 'hsmoa', '홈쇼핑모아'],
+  ['hsmoa-ad.web.app', 'hsmoa', '홈쇼핑모아'],
+  ['t.me', 'telegram', '텔레그램'],
+  ['bit.ly', 'shortlink', '단축링크'],
+  ['buly.kr', 'shortlink', '단축링크'],
+  ['m.sports.naver.com', 'naver_sports', '네이버 스포츠'],
+  ['search.naver.com', 'naver_search', '네이버 검색'],
+  ['naver.com', 'naver', '네이버'],
+  ['instagram.com', 'instagram', '인스타그램'],
+  ['youtube.com', 'youtube', '유튜브'],
+];
+function mallChannelOf(url) {
+  let host = '';
+  try { host = new URL(url, location.href).hostname.toLowerCase(); } catch (e) { /* 잘못된 주소는 빈 값 */ }
+  host = host.replace(/^www\./, '');
+  for (const [domain, key, name] of MALL_HOSTS) {
+    if (host === domain || host.endsWith('.' + domain)) {
+      return { channel_domain: key, channel_name: name, link_host: host };
+    }
+  }
+  return { channel_domain: '', channel_name: '', link_host: host };
+}
+
 // 외부 링크(바로가기, 상품, 프로그램 등) 클릭을 한 곳에서 위임 처리.
 // 클릭된 <a target="_blank">를 감지해 어떤 영역(랭킹/고정PGM/셀럽PGM/홈쇼핑/드라마예능)에서
 // 어떤 링크를 눌렀는지 GA4로 전송한다.
@@ -4607,10 +4664,16 @@ document.addEventListener('click', function (e) {
   const nameEl = link.querySelector('.rk-name, .fp-title, .cel-prod-name, .hs-title, .dv-title, .dv-below-name');
   if (nameEl) label = nameEl.textContent.trim().slice(0, 80);
 
+  // 어떤 방송사 몰로 나갔는지(channel_domain·channel_name)와 실제 호스트(link_host)를 함께 남긴다.
+  const ch = mallChannelOf(link.href);
+
   gaEvent('outbound_click', {
     area: area,
     link_label: label,
-    link_url: link.href
+    link_url: link.href,
+    channel_domain: ch.channel_domain,
+    channel_name: ch.channel_name,
+    link_host: ch.link_host
   });
 }, true);
 
@@ -8924,16 +8987,19 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
   document.getElementById('prevDay').addEventListener('click', () => {
     if (picker.value <= SCHEDULE_MIN_DATE) return;
     picker.value = shiftDate(picker.value, -1);
+    gaEvent('date_navigation', { action: 'prev', source_tab: 'schedule', target_date: picker.value });
     refresh(picker.value);
   });
   document.getElementById('nextDay').addEventListener('click', () => {
     picker.value = shiftDate(picker.value, 1);
+    gaEvent('date_navigation', { action: 'next', source_tab: 'schedule', target_date: picker.value });
     refresh(picker.value);
   });
 
   document.getElementById('gotoToday').addEventListener('click', () => {
     const today = toLocalDateStr(new Date());
     picker.value = today;
+    gaEvent('date_navigation', { action: 'today', source_tab: 'schedule', target_date: today });
     refresh(today);
   });
 
@@ -8983,11 +9049,13 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     if (hsCurrentDate <= HS_MIN_DATE) return;
     hsCurrentDate = shiftDate(hsCurrentDate, -1);
     hsPicker.value = hsCurrentDate;
+    gaEvent('date_navigation', { action: 'prev', source_tab: 'homeshop', target_date: hsCurrentDate });
     hsRefresh(hsCurrentDate);
   });
   document.getElementById('hsNextDay').addEventListener('click', () => {
     hsCurrentDate = shiftDate(hsCurrentDate, 1);
     hsPicker.value = hsCurrentDate;
+    gaEvent('date_navigation', { action: 'next', source_tab: 'homeshop', target_date: hsCurrentDate });
     hsRefresh(hsCurrentDate);
   });
   hsPicker.addEventListener('change', () => {
@@ -9182,10 +9250,14 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
       // 여기서 안 끊으면 상품 페이지와 경기 페이지가 같이 열린다.
       const hd = e.target.closest('a.ag-hd');
       if (hd) {
+        const hdCh = mallChannelOf(hd.href);
         gaEvent('outbound_click', {
           area: 'asiangames_hd_live',
           link_label: hd.dataset.label || '',
-          link_url: hd.href
+          link_url: hd.href,
+          channel_domain: hdCh.channel_domain,
+          channel_name: hdCh.channel_name,
+          link_host: hdCh.link_host
         });
         return;
       }
@@ -9194,10 +9266,14 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
       const url = isSearch ? tr.dataset.search : tr.dataset.url;
       if (!url) return;
       window.open(url, '_blank', 'noopener');
+      const gameCh = mallChannelOf(url);
       gaEvent('outbound_click', {
         area: isSearch ? 'asiangames_rating_search' : 'asiangames_game',
         link_label: (tr.querySelector('.ag-disc') || {}).textContent || '',
-        link_url: url
+        link_url: url,
+        channel_domain: gameCh.channel_domain,
+        channel_name: gameCh.channel_name,
+        link_host: gameCh.link_host
       });
     });
   }
@@ -9926,6 +10002,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
       if (e.target.value) { lvSetRange(lvStart, hyphenToD8(e.target.value)); syncPickers(); }
     });
     $('lvQueryBtn').addEventListener('click', async () => {
+      gaSearch('security', $('lvSearchInput').value);   // debounce 전에 눌러도 검색어가 남도록
       const btn = $('lvQueryBtn');
       btn.disabled = true;
       btn.textContent = '조회 중...';
@@ -9941,6 +10018,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
       clearTimeout(lvSearchTimer);
       lvSearchTimer = setTimeout(() => {
         lvSearch = e.target.value.trim().toLowerCase();
+        gaSearch('security', e.target.value);   // 입력이 250ms 멈추면 실제 검색어를 전송
         lvRender();
       }, 250);
     });
@@ -11153,11 +11231,15 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     $('inStartPicker').addEventListener('change', e => { if (e.target.value) inSetRange(e.target.value, inEnd); });
     $('inEndPicker').addEventListener('change', e => { if (e.target.value) inSetRange(inStart, e.target.value); });
     $('inQueryBtn').addEventListener('click', inQuery);
-    $('inTrkBtn').addEventListener('click', inAnalyzePpl);
+    $('inTrkBtn').addEventListener('click', () => {
+      gaSearch('industry', $('inTrkSearch').value);   // debounce 전에 눌러도 검색어가 남도록
+      inAnalyzePpl();
+    });
     let inTrkSearchTimer = null;
     $('inTrkSearch').addEventListener('input', e => {
       clearTimeout(inTrkSearchTimer);
       inTrkSearchTimer = setTimeout(() => {
+        gaSearch('industry', e.target.value);
         inTrkQuery = inTrkNorm(e.target.value);
         if (inTrkResult) inRenderPpl();
       }, 200);
