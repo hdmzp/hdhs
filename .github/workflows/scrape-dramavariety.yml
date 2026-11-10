@@ -7,6 +7,7 @@ on:
     - cron: "30 23 * * *"
     - cron: "10 3 * * *"
     - cron: "0 12 * * *"
+  # 매주 월요일 KST 08:45 실행은 Cloudflare 봇(worker/telegram-bot.js onCron)이 정시에 요청한다 (GitHub 예약은 몇 시간씩 밀림)
   workflow_dispatch: {}  # 수동 실행 버튼
 
 permissions:
