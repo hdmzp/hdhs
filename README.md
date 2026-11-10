@@ -27,7 +27,7 @@ hdhs/
 │   ├── lavangba.yml                    # 라방바 11개사 방송 데이터(v2, 로그인 불필요)
 │   ├── category-correct.yml            # 카테고리 자동 정정 (라방바 분류·원문 근거, 매일 새벽)
 │   ├── promotion.yml                   # 프로모션 카드할인 4사(HD/GS/CJ/LT)
-│   ├── pricewatch.yml                  # 가격추적 (다사 동일브랜드)
+│   ├── pricewatch.yml                  # 가격추적 (다사 동일브랜드) - 2026-11 중단, 예약 없음
 │   ├── weather.yml                     # 날씨(ASOS 과거 + 단기예보) + 공휴일 + 절기
 │   ├── telegram-daily-food.yml         # 텔레그램 아침 알림(식품·셀럽PGM·카테고리·브랜드, 구독 설정별)
 │   └── pages-deploy.yml                # 위 워크플로우들이 커밋 후 강제 트리거하는 배포 전용 워크플로우
@@ -39,8 +39,8 @@ hdhs/
 ├── etc_scraper.py                    # [홈쇼핑] 기타 7개사(공영/홈앤/K쇼핑/신세계/NS/쇼핑엔티/SK스토아, 라방바 경유)
 ├── promotion_scraper.py              # [프로모션] 4사(HD/GS/CJ/LT) 카드할인 일정
 ├── lavangba_scraper_v2.py            # [라방바] 11개사 방송 데이터 수집 v2 (로그인 불필요, 매출 제외)
-├── pricewatch_tracker.py             # [가격추적] 3사 이상 편성 브랜드 자동 선정(추적 대상 갱신)
-├── pricewatch_scraper.py             # [가격추적] 브랜드x회사별 판매가 수집 + 변경 감지
+├── pricewatch_tracker.py             # [가격추적·중단] 3사 이상 편성 브랜드 자동 선정(추적 대상 갱신)
+├── pricewatch_scraper.py             # [가격추적·중단] 브랜드x회사별 판매가 수집 + 변경 감지
 ├── weather.py                        # [날씨] ASOS 과거 + 단기예보 + 공휴일 + 절기
 ├── notify/send_daily_food.py         # [알림] 텔레그램 아침 식품방송 리스트 발송 (notify/tg.py 공용)
 ├── notify/send_celeb_daily.py        # [알림] 텔레그램 어제 셀럽PGM 운영상품 (브랜드당 1개, 특이사항 = 셀럽PGM 방송 체크 기준)
@@ -112,7 +112,7 @@ hdhs/
 | `category-correct.yml` | 04:47 | 최근 10일 편성의 틀린 분류를 라방바 근거로 정정 (`tools/recategorize_retro.py`) | - |
 | `rep-pgm-scrape.yml` | 08:10, 20:00 (하루 2회) | 셀럽PGM 대표프로그램 메타 병합 | 회사별 `continue-on-error` + 건전성 검사(2-1) |
 | `telegram-daily-food.yml` | 04:05 (GitHub 지연 2~4시간 감안해 새벽 예약) | 텔레그램 아침 알림(식품방송 리스트 + 어제 셀럽PGM 운영상품 + 패션·리빙·미용 리스트 + 브랜드 알림, 봇 구독 설정대로) | - (데이터 커밋 없음, `contents: read`) |
-| `pricewatch.yml` | 10:40, 16:40 (하루 2회) | 가격추적(다사 동일브랜드 판매가) | 수집 스텝 `continue-on-error` |
+| `pricewatch.yml` | 중단 (수동 실행만) | 가격추적(다사 동일브랜드 판매가) - 2026-11 중단 | 수집 스텝 `continue-on-error` |
 | `pages-deploy.yml` | (push 또는 API 트리거 시) | GitHub Pages 배포 | 3회까지 자동 재시도 |
 
 하루 여러 번 도는 워크플로우는 각각 이유가 붙어 있다.
@@ -332,7 +332,7 @@ Actions → "라방바 방송 수집 (11개사)" → Run workflow 에서 `start_
 - 파싱 실패 시 `homeshopping/promotions/_debug_{사}.html` 스냅샷 저장 (PROMO_DEBUG=true면 성공해도 저장 - workflow_dispatch 입력으로 켤 수 있음)
 - 회사 확장: 스크래퍼의 `COMPANIES` 리스트 + 프론트 `PM_COMPANIES`에 추가. NS(카드혜택 캘린더 table)가 다음 후보, KT는 이미지 배너뿐이라 보류
 
-### 💰 가격추적 — `pricewatch_tracker.py` + `pricewatch_scraper.py`
+### 💰 가격추적 — `pricewatch_tracker.py` + `pricewatch_scraper.py` (2026-11 중단: 예약 실행·사이트 하위탭 제거, 스크립트·지난 데이터는 보관)
 - 4사 편성 데이터(최근 60일)에서 **3사 이상에 편성된 브랜드**를 자동 선정하고, 브랜드×회사별 최근 상품(최대 3개)의 상품페이지 판매가를 하루 2회(KST 10:40/16:40, `pricewatch.yml`) 수집
 - 편성표에는 안 보이는 "방송 후 상시가 인하"와 구성(상품명) 변경을 잡는 것이 목적
 - `pricewatch/tracked.json`(추적 대상) / `current.json`(최신 스냅샷) / `history/{YYYY-MM}.json`(변경 이벤트만 append — obs/price_drop/price_raise/name_change/sold_out/restock/new_product)
