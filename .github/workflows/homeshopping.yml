@@ -45,6 +45,9 @@ jobs:
       - name: 홈쇼핑 스크래퍼 실행 - CJ온스타일(CJ)
         id: cj
         continue-on-error: true
+        env:
+          # 라방바 보충(tools/lavangba_gapfill.py)이 Worker 중계를 쓸 때의 열쇠 재료
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         run: python cj_scraper.py
 
       - name: 홈쇼핑 스크래퍼 실행 - GS(라방바 경유)

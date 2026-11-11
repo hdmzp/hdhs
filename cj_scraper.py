@@ -48,6 +48,7 @@ import requests
 from datetime import datetime, timedelta, timezone
 from categorize import classify_batch, resolve_display_brand_batch
 from clean_product import clean_product_name
+from tools.lavangba_gapfill import fill_gaps  # 자사 API가 빼고 주는 방송(여행 등)을 라방바로 보충
 
 # 설정값
 KST = timezone(timedelta(hours=9))
@@ -240,6 +241,8 @@ def fetch_cj(date_compact, broad_param):
     return programs
 
 BROADCASTS = [("live", "live"), ("data", "plus")]
+# 라방바 채널 ID - CJ tvSchedule API가 빼고 주는 방송(일요일 저녁 여행상품 등)을 채우는 데 쓴다
+LAVANGBA_PLATFORM = {"live": "hs_cjonstyle", "data": "hs_cjonstyleplus"}
 
 def load_month(sub_dir, ym):
     path = os.path.join(sub_dir, f"{ym}.json")
@@ -273,6 +276,8 @@ def main():
 
             print(f"[CJ_{broadcast}] {date_dash} 수집 중...")
             programs = fetch_cj(date_compact, broad_param)
+            if programs:
+                fill_gaps(programs, d, LAVANGBA_PLATFORM[broadcast], f"CJ_{broadcast}")
             programs = add_categories(programs)
 
             if is_past and not programs:
