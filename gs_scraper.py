@@ -1,11 +1,20 @@
 # -*- coding: utf-8 -*-
 """
-GS홈쇼핑 편성표 수집기 (라방바 데이터랩 API 경유)
+GS홈쇼핑 편성표 수집기
 
-GS 자체 서버(gsshop.com)는 클라우드/데이터센터 IP를 차단하여
-GitHub Actions에서 직접 수집이 불가능하다.
-대신 데이터 어그리게이터인 '라방바(ecomm-data.com)'의 공개 API를 사용한다.
-이 API는 클라우드 IP 차단이 없어 GitHub Actions에서 정상 동작한다.
+== 수집 순서 (2026-11-11 변경) ==
+1순위: GS 공식 모바일 편성표 (m.gsshop.com/main/broadSchedule?broadDate=YYYYMMDD)
+  - 라이브(GS SHOP)/데이터(GS MY SHOP)가 한 페이지에 다 나오고, 브랜드/상품명/
+    가격/링크가 따로 있다.
+  - 라방바는 렌탈·상담 방송(정수기 상담예약 등)을 빼고 줘서 화면에 'Hit & Best'
+    빈칸이 생겼는데, 공식 편성표에는 이 방송까지 다 있다.
+  - 예전엔 GS가 클라우드 IP를 막아 Actions에서 못 받았지만 2026-11 현재 열려 있다.
+  - 라방바에서는 hsshow_id(매출 수집 매칭 키)와 라방바 분류만 시작시각으로 맞춰 붙인다.
+2순위: 공식 편성표를 못 받으면(차단/오류/구조 변경) 아래 라방바 방식으로 대체한다.
+
+== (2순위) 라방바 데이터랩 API ==
+라방바(ecomm-data.com)의 공개 API. 2026-11-11부터 라방바가 Actions IP에 405를
+주므로 tools/lavangba_relay.py가 Cloudflare Worker로 중계한다.
 
 == 2단계 수집 (link/price 보강) ==
 1단계 list_hs 응답에는 "가격"과 "상품 링크"가 없지만, hsshow_id가 포함돼
@@ -62,6 +71,7 @@ import json
 import time
 import sys
 import requests
+from bs4 import BeautifulSoup
 from datetime import datetime, timedelta, timezone
 from categorize import classify_batch, resolve_display_brand_batch
 from clean_product import clean_product_name
@@ -251,7 +261,135 @@ def fetch_gs_detail(hsshow_id: str) -> tuple:
         return "", 0
 
 
-def fetch_gs(date_obj: datetime, broadcast: str) -> list:
+GS_SCHEDULE_URL = "https://m.gsshop.com/main/broadSchedule"
+# 공식 편성표 data-broadcast 값 -> 저장 채널 (SHOPPY 모바일 라이브는 수집하지 않음)
+GS_BROADCAST_TYPE = {"LIVE": "live", "DATA": "data"}
+GS_OFFICIAL_ATTEMPTS = 4  # 오류 페이지(200 + 1KB)를 받았을 때 다시 받는 횟수
+
+
+def _hhmm(raw: str) -> str:
+    """'20261111123500' -> '12:35'"""
+    return f"{raw[8:10]}:{raw[10:12]}" if raw and len(raw) >= 12 else ""
+
+
+def fetch_gs_official(date_obj: datetime):
+    """GS 공식 모바일 편성표(m.gsshop.com/main/broadSchedule?broadDate=YYYYMMDD)에서
+    1일치 편성을 받는다. 라방바는 렌탈·상담 방송(정수기 상담예약 등)을 빼고 주기 때문에
+    화면에 'Hit & Best' 빈칸이 생겼다 - 공식 편성표는 이 방송까지 다 나온다.
+
+    반환: {"live": [...], "data": [...]} / 실패(HTTP 오류·차단·구조 변경)면 None.
+    한 방송(타임)에 상품이 여러 개면 첫 상품(주상품)의 브랜드/상품명/가격/링크를 쓴다."""
+    date_str = date_obj.strftime("%Y%m%d")
+    headers = {"User-Agent": GS_MOBILE_UA, "Referer": "https://m.gsshop.com/index.gs"}
+    soup = None
+    for attempt in range(1, GS_OFFICIAL_ATTEMPTS + 1):
+        try:
+            r = scrape_guard.get(GS_SCHEDULE_URL, params={"mseq": "W00323", "broadDate": date_str},
+                                 headers=headers, timeout=15, label=f"GS 공식편성표 {date_str}")
+        except scrape_guard.FetchError as e:
+            print(f"    [GS_공식] {e}")
+            return None
+        soup = BeautifulSoup(r.text, "html.parser")
+        # 요청한 날짜 페이지가 맞는지 확인. GS가 가끔 200으로 1KB짜리 오류 페이지(세션 만료
+        # 안내)를 주는데, 그때는 날짜 달력이 없다 -> 잠깐 쉬고 다시 받는다.
+        on = soup.select_one("a.day-item.on[data-brddate]")
+        if on and on.get("data-brddate") == date_str:
+            break
+        print(f"    [GS_공식] {date_str} 페이지가 아님 (선택된 날짜: {on and on.get('data-brddate')}, "
+              f"{len(r.text)}바이트) - 시도 {attempt}/{GS_OFFICIAL_ATTEMPTS}")
+        soup = None
+        time.sleep(2 * attempt)
+    if soup is None:
+        return None
+
+    result = {"live": [], "data": []}
+    seen = set()
+    for group in soup.select("div.prd-group.typeB[data-broadcast]"):
+        broadcast = GS_BROADCAST_TYPE.get(group.get("data-broadcast", ""))
+        if not broadcast:
+            continue
+        slot = group.select_one("[data-broadstartdate]")
+        if not slot:
+            continue
+        start_raw = slot.get("data-broadstartdate", "")
+        end_raw = slot.get("data-broadenddate", "")
+        if not start_raw.startswith(date_str):
+            continue  # 전날 밤에 시작한 방송 등 다른 날짜 편성
+        start, end = _hhmm(start_raw), _hhmm(end_raw)
+        if not start or not end or (broadcast, start) in seen:
+            continue
+        seen.add((broadcast, start))
+
+        item = group.select_one("article.prd-item")
+        brand = product = ""
+        price = 0
+        link = ""
+        if item:
+            b = item.select_one(".brand-name")
+            n = item.select_one(".prd-name")
+            brand = b.get_text(" ", strip=True) if b else ""
+            product = n.get_text(" ", strip=True) if n else ""
+            pr = item.select_one(".set-price strong")
+            if pr:
+                digits = re.sub(r"[^0-9]", "", pr.get_text())
+                price = int(digits) if digits else 0
+            prdcd = (item.get("data-prdcd") or "").strip()
+            if prdcd.isdigit():
+                link = f"https://www.gsshop.com/prd/prd.gs?prdid={prdcd}"
+            else:
+                a = item.select_one("a.prd-link[href]")
+                link = a["href"] if a else ""
+        if not product:
+            continue
+
+        result[broadcast].append({
+            "start": start,
+            "end": end,
+            "brand": brand,
+            "product": product,
+            "price": price,
+            "link": link,
+            "category": "",            # add_categories에서 채움 (자체 모델)
+            "lavangba_category": "",   # attach_lavangba_meta에서 채움
+            "hsshow_id": "",           # attach_lavangba_meta에서 채움 (매출 수집 매칭 키)
+        })
+
+    for progs in result.values():
+        progs.sort(key=lambda x: x["start"])
+    if not result["live"] and not result["data"]:
+        print(f"    [GS_공식] {date_str} 편성 0건 (페이지 구조 변경 가능성)")
+        return None
+    return result
+
+
+def _to_min(hhmm: str) -> int:
+    return int(hhmm[:2]) * 60 + int(hhmm[3:5])
+
+
+def attach_lavangba_meta(programs: list, lav_programs: list):
+    """공식 편성표 항목에 같은 방송의 라방바 hsshow_id / lavangba_category를 붙인다.
+    hsshow_id는 lavangba_scraper_v2.py(매출 수집)가 편성 항목과 방송을 1:1로 맞추는 키라
+    공식 편성표로 바꿔도 유지해야 한다. 시작 시각이 가장 가까운(10분 이내) 라방바 방송과
+    짝짓고, 한 라방바 방송은 한 항목에만 붙인다. 짝이 없으면(렌탈 등 라방바에 없는 방송) 빈 값.
+    반환: 짝지어진 라방바 방송의 인덱스 집합."""
+    used = set()
+    for p in programs:
+        best, best_diff = None, PGM_MATCH_TOLERANCE_MIN + 1
+        for i, lp in enumerate(lav_programs):
+            if i in used or len(lp.get("start") or "") != 5:
+                continue
+            diff = abs(_to_min(p["start"]) - _to_min(lp["start"]))
+            if diff < best_diff:
+                best, best_diff = i, diff
+        if best is not None:
+            used.add(best)
+            lp = lav_programs[best]
+            p["hsshow_id"] = lp.get("hsshow_id", "")
+            p["lavangba_category"] = lp.get("lavangba_category", "")
+    return used
+
+
+def fetch_gs(date_obj: datetime, broadcast: str, with_detail: bool = True) -> list:
     """라방바 API를 통해 GS 편성표 1일치 수집. broadcast: 'live' | 'data'
     1단계로 list_hs에서 목록을 받고, 각 항목의 hsshow_id로 2단계 상세
     페이지를 호출해 link/price를 보강한다."""
@@ -300,7 +438,8 @@ def fetch_gs(date_obj: datetime, broadcast: str) -> list:
         programs.sort(key=lambda x: x["start"])
 
         # 2단계: 방송별 상세 페이지에서 link/price 보강
-        for p in programs:
+        # (GS 공식 편성표를 쓰는 경우엔 link/price가 이미 있으므로 생략)
+        for p in programs if with_detail else []:
             hsshow_id = p["hsshow_id"]
             if not hsshow_id:
                 continue
@@ -330,6 +469,7 @@ def main():
     base = today_kst()
     today_str = base.strftime("%Y-%m-%d")
     failures = []  # 수집 실패한 (채널 날짜) - 끝에서 종료코드로 알린다
+    official_cache = {}  # {날짜: fetch_gs_official 결과} - live/data 두 채널이 같이 쓴다
 
     print("[GS_pgm] 고정PGM 방송 예정일시 수집 중...")
     pgm_map = fetch_gs_pgm_broadcasts()
@@ -354,7 +494,29 @@ def main():
                 continue
 
             print(f"[GS_{broadcast}] {date_dash} 수집 중...")
-            programs = fetch_gs(d, broadcast)
+            # 1순위: GS 공식 편성표 (라이브/마이샵 두 채널이 한 페이지라 날짜별로 한 번만 받는다)
+            if date_dash not in official_cache:
+                official_cache[date_dash] = fetch_gs_official(d)
+            official = (official_cache[date_dash] or {}).get(broadcast)
+            if official:
+                programs = [dict(p) for p in official]
+                # 라방바는 hsshow_id(매출 매칭 키)/라방바 분류만 가져온다 (상세 페이지 호출 생략)
+                lav = fetch_gs(d, broadcast, with_detail=False) or []
+                used = attach_lavangba_meta(programs, lav)
+                # 반대로 공식 편성표에 아직 안 올라온 방송(주로 며칠 뒤 편성)이 라방바엔 있는
+                # 경우가 있다 -> 그 방송만 라방바 상세페이지로 link/price를 채워 합친다.
+                extra = [lp for i, lp in enumerate(lav) if i not in used]
+                for lp in extra:
+                    if lp.get("hsshow_id"):
+                        lp["link"], lp["price"] = fetch_gs_detail(lp["hsshow_id"])
+                        time.sleep(DETAIL_REQUEST_DELAY)
+                programs = sorted(programs + extra, key=lambda x: x["start"])
+                print(f"  [공식편성표] {len(official)}개 (라방바 매칭 {len(used)}/{len(lav)}, "
+                      f"라방바에만 있는 방송 {len(extra)}개 추가)")
+            else:
+                # 2순위: 공식 편성표를 못 받으면 예전처럼 라방바 편성 + 상세페이지 link/price
+                print("  [공식편성표 실패] 라방바 편성으로 대체")
+                programs = fetch_gs(d, broadcast)
             if programs is None:
                 # 수집 실패(HTTP 오류 등): 기존 편성을 빈 값으로 덮어쓰지 않는다.
                 failures.append(f"GS_{broadcast} {date_dash}")
