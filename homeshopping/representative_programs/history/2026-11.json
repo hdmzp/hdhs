@@ -1,6 +1,6 @@
 {
   "month": "2026-11",
-  "updated_at": "2026-11-11T08:16:56.403377+09:00",
+  "updated_at": "2026-11-11T10:15:25.460105+09:00",
   "programs": [
     {
       "program_key": "HD_HJM",
@@ -14,7 +14,7 @@
         {
           "date": "2026-11-16",
           "label": "11/16(월) 19:30 방송",
-          "collected_at": "2026-11-11T08:16:56.371746+09:00",
+          "collected_at": "2026-11-11T10:15:25.437266+09:00",
           "products": [
             {
               "broadcast_date_label": "11/16(월) 19:30 방송",
@@ -31,6 +31,14 @@
               "price": 258000,
               "image": "https://image.hmall.com/2255347627_0.jpg",
               "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2255347627"
+            },
+            {
+              "broadcast_date_label": "11/16(월) 19:30 방송",
+              "brand": "제주가마당",
+              "name": "[제주家마당] 제주뿔소라찜살 100g x 6팩",
+              "price": 59900,
+              "image": "https://image.hmall.com/2250252941_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2250252941"
             }
           ]
         },
@@ -350,9 +358,24 @@
       "program_image": "",
       "broadcasts": [
         {
+          "date": "2026-11-21",
+          "label": "11/21(토) 08:20 방송",
+          "collected_at": "2026-11-11T10:15:25.437266+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "11/21(토) 08:20 방송",
+              "brand": "맥꾸룸",
+              "name": "맥꾸룸 전통 청국장 왕톡 특별 패키지",
+              "price": 69900,
+              "image": "https://image.hmall.com/2221322511_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2221322511"
+            }
+          ]
+        },
+        {
           "date": "2026-11-14",
           "label": "11/14(토) 08:20 방송",
-          "collected_at": "2026-11-11T08:16:56.371746+09:00",
+          "collected_at": "2026-11-11T10:15:25.437266+09:00",
           "products": [
             {
               "broadcast_date_label": "11/14(토) 08:20 방송",
@@ -433,7 +456,7 @@
         {
           "date": "2026-11-18",
           "label": "11/18(수) 19:30 방송",
-          "collected_at": "2026-11-11T08:16:56.371746+09:00",
+          "collected_at": "2026-11-11T10:15:25.437266+09:00",
           "products": [
             {
               "broadcast_date_label": "11/18(수) 19:30 방송",
@@ -472,7 +495,7 @@
         {
           "date": "2026-11-11",
           "label": "11/11(수) 19:30 방송",
-          "collected_at": "2026-11-11T08:16:56.371746+09:00",
+          "collected_at": "2026-11-11T10:15:25.437266+09:00",
           "products": [
             {
               "broadcast_date_label": "11/11(수) 19:30 방송",
@@ -753,7 +776,7 @@
         {
           "date": "2026-11-12",
           "label": "11/12(목) 20:45 방송",
-          "collected_at": "2026-11-11T08:16:56.371746+09:00",
+          "collected_at": "2026-11-11T10:15:25.437266+09:00",
           "products": [
             {
               "prd_id": "1138750837",
@@ -904,7 +927,7 @@
         {
           "date": "2026-11-20",
           "label": "11/20(금) 20:35 방송",
-          "collected_at": "2026-11-11T08:16:56.371746+09:00",
+          "collected_at": "2026-11-11T10:15:25.437266+09:00",
           "products": [
             {
               "prd_id": "1137130470",
@@ -1091,7 +1114,7 @@
         {
           "date": "2026-11-13",
           "label": "11/13(금) 20:35 방송",
-          "collected_at": "2026-11-11T08:16:56.371746+09:00",
+          "collected_at": "2026-11-11T10:15:25.437266+09:00",
           "products": [
             {
               "prd_id": "1139609311",
@@ -1377,7 +1400,7 @@
         {
           "date": "2026-11-21",
           "label": "11/21(토) 08:20 방송",
-          "collected_at": "2026-11-11T08:16:56.371746+09:00",
+          "collected_at": "2026-11-11T10:15:25.437266+09:00",
           "products": [
             {
               "broadcast_date_label": "11/21 토요일 08:20",
@@ -1420,7 +1443,7 @@
         {
           "date": "2026-11-19",
           "label": "11/19(목) 20:45 방송",
-          "collected_at": "2026-11-11T08:16:56.371746+09:00",
+          "collected_at": "2026-11-11T10:15:25.437266+09:00",
           "products": [
             {
               "broadcast_date_label": "11/19 목요일 20:45",
@@ -1443,7 +1466,7 @@
         {
           "date": "2026-11-14",
           "label": "11/14(토) 08:20 방송",
-          "collected_at": "2026-11-11T08:16:56.371746+09:00",
+          "collected_at": "2026-11-11T10:15:25.437266+09:00",
           "products": [
             {
               "broadcast_date_label": "11/14 토요일 08:20",
@@ -1482,7 +1505,7 @@
         {
           "date": "2026-11-12",
           "label": "11/12(목) 20:45 방송",
-          "collected_at": "2026-11-11T08:16:56.371746+09:00",
+          "collected_at": "2026-11-11T10:15:25.437266+09:00",
           "products": [
             {
               "broadcast_date_label": "11/12 목요일 20:45",
@@ -1647,7 +1670,7 @@
         {
           "date": "2026-11-12",
           "label": "11/12(목) 09:25 방송",
-          "collected_at": "2026-11-11T08:16:56.371746+09:00",
+          "collected_at": "2026-11-11T10:15:25.437266+09:00",
           "products": [
             {
               "broadcast_date_label": "11/12 목요일 09:25",
@@ -1862,7 +1885,7 @@
         {
           "date": "2026-11-16",
           "label": "11/16(월) 19:35 방송",
-          "collected_at": "2026-11-11T08:16:56.371746+09:00",
+          "collected_at": "2026-11-11T10:15:25.437266+09:00",
           "products": [
             {
               "broadcast_date_label": "11/16(월) 19:35",
@@ -2202,7 +2225,7 @@
         {
           "date": "2026-11-18",
           "label": "11/18(수) 19:35 방송",
-          "collected_at": "2026-11-11T08:16:56.371746+09:00",
+          "collected_at": "2026-11-11T10:15:25.437266+09:00",
           "products": [
             {
               "broadcast_date_label": "11/18(수) 19:35",
@@ -2225,7 +2248,7 @@
         {
           "date": "2026-11-11",
           "label": "11/11(수) 20:45 방송",
-          "collected_at": "2026-11-11T08:16:56.371746+09:00",
+          "collected_at": "2026-11-11T10:15:25.437266+09:00",
           "products": [
             {
               "broadcast_date_label": "11/11(수) 20:45",
@@ -3494,7 +3517,7 @@
         {
           "date": "2026-11-17",
           "label": "11/17(화) 18:30 방송",
-          "collected_at": "2026-11-11T08:16:56.371746+09:00",
+          "collected_at": "2026-11-11T10:15:25.437266+09:00",
           "products": [
             {
               "broadcast_date_label": "11/17(화) 18:30",
@@ -3568,7 +3591,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "[정상가 205,000원]  스테인리스 스틸 믹싱볼+펀칭볼 6P 세트",
+              "name": "[정상가 205,000원]스테인리스 스틸 믹싱볼+펀칭볼 6P 세트",
               "price": 205000,
               "image": "goods_images/20/496/2091180496L.jpg?timestamp=20260907110029",
               "link": "https://display.cjonstyle.com/p/item/2091180496?channelCode=30002002",
@@ -3577,7 +3600,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "[정상가 75,000원]  스테인리스 스틸 믹싱볼 3P 세트",
+              "name": "[정상가 75,000원]스테인리스 스틸 믹싱볼 3P 세트",
               "price": 75000,
               "image": "goods_images/20/501/2091180501L.jpg?timestamp=20260907105937",
               "link": "https://display.cjonstyle.com/p/item/2091180501?channelCode=30002002",
@@ -3604,7 +3627,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "[정상가 15,000원] 멜로우 주방가위 스틸화이트",
+              "name": "[정상가 15,000원]멜로우 주방가위 스틸화이트",
               "price": 15000,
               "image": "goods_images/20/440/2096398440L.jpg?timestamp=20261106102631",
               "link": "https://display.cjonstyle.com/p/item/2096398440?channelCode=30002002",
@@ -3613,7 +3636,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "[정상가 168,000원] 엠버 316Ti 통5중 웍 24cm 샴페인골드",
+              "name": "[정상가 168,000원]엠버 316Ti 통5중 웍 24cm 샴페인골드",
               "price": 168000,
               "image": "goods_images/20/575/2096398575L.jpg?timestamp=20261021145355",
               "link": "https://display.cjonstyle.com/p/item/2096398575?channelCode=30002002",
@@ -3622,7 +3645,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "[정상가 158,000원] 엠버 316Ti 통5중 프라이팬 24cm 샴페인골드",
+              "name": "[정상가 158,000원]엠버 316Ti 통5중 프라이팬 24cm 샴페인골드",
               "price": 158000,
               "image": "goods_images/20/578/2096398578L.jpg?timestamp=20261021145359",
               "link": "https://display.cjonstyle.com/p/item/2096398578?channelCode=30002002",
@@ -3631,7 +3654,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "[정상가 178,000원] 엠버 316Ti 통5중 소스팬 16cm 샴페인골드",
+              "name": "[정상가 178,000원]엠버 316Ti 통5중 소스팬 16cm 샴페인골드",
               "price": 178000,
               "image": "goods_images/20/579/2096398579L.jpg?timestamp=20261021145403",
               "link": "https://display.cjonstyle.com/p/item/2096398579?channelCode=30002002",
@@ -3640,7 +3663,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "[정상가 258,000원] 엠버 316Ti 통5중 양수전골냄비 24cm 샴페인골드",
+              "name": "[정상가 258,000원]엠버 316Ti 통5중 양수전골냄비 24cm 샴페인골드",
               "price": 258000,
               "image": "goods_images/20/083/2096399083L.jpg?timestamp=20261021150006",
               "link": "https://display.cjonstyle.com/p/item/2096399083?channelCode=30002002",
@@ -3649,7 +3672,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "[정상가 298,000원] 엠버 316Ti 통5중 양수냄비 24cm 샴페인골드",
+              "name": "[정상가 298,000원]엠버 316Ti 통5중 양수냄비 24cm 샴페인골드",
               "price": 298000,
               "image": "goods_images/20/086/2096399086L.jpg?timestamp=20261021150011",
               "link": "https://display.cjonstyle.com/p/item/2096399086?channelCode=30002002",
@@ -3658,7 +3681,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "[정상가 248,000원] 엠버 316Ti 통5중 양수냄비 20cm 샴페인골드",
+              "name": "[정상가 248,000원]엠버 316Ti 통5중 양수냄비 20cm 샴페인골드",
               "price": 248000,
               "image": "goods_images/20/092/2096399092L.jpg?timestamp=20261021150015",
               "link": "https://display.cjonstyle.com/p/item/2096399092?channelCode=30002002",
@@ -3667,7 +3690,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "[정상가 198,000원] 엠버 316Ti 통5중 양수냄비 16cm 샴페인골드",
+              "name": "[정상가 198,000원]엠버 316Ti 통5중 양수냄비 16cm 샴페인골드",
               "price": 198000,
               "image": "goods_images/20/096/2096399096L.jpg?timestamp=20261021150019",
               "link": "https://display.cjonstyle.com/p/item/2096399096?channelCode=30002002",
@@ -4072,7 +4095,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "데일리쿡 실리콘 조리도구 5종 마카롱세트",
+              "name": "[정상가 39,000원]데일리쿡 실리콘 조리도구 5종 마카롱세트",
               "price": 39000,
               "image": "goods_images/20/786/2096399786L.jpg?timestamp=20261021152009",
               "link": "https://display.cjonstyle.com/p/item/2096399786?channelCode=30002002",
@@ -4081,7 +4104,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "데일리쿡 실리콘 조리도구 5종 오트밀세트",
+              "name": "[정상가 39,000원]데일리쿡 실리콘 조리도구 5종 오트밀세트",
               "price": 39000,
               "image": "goods_images/20/779/2096399779L.jpg?timestamp=20261021152006",
               "link": "https://display.cjonstyle.com/p/item/2096399779?channelCode=30002002",
@@ -4090,7 +4113,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "찹찹 TPU도마 오트밀",
+              "name": "[정상가 18,000원]찹찹 TPU도마 오트밀",
               "price": 18000,
               "image": "goods_images/20/725/2096399725L.jpg?timestamp=20261021151905",
               "link": "https://display.cjonstyle.com/p/item/2096399725?channelCode=30002002",
@@ -4099,7 +4122,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "찹찹 TPU도마 머스터드",
+              "name": "[정상가 18,000원]찹찹 TPU도마 머스터드",
               "price": 18000,
               "image": "goods_images/20/708/2096399708L.jpg?timestamp=20261021151857",
               "link": "https://display.cjonstyle.com/p/item/2096399708?channelCode=30002002",
@@ -4108,7 +4131,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "찹찹 TPU도마 애플민트",
+              "name": "[정상가 18,000원]찹찹 TPU도마 애플민트",
               "price": 18000,
               "image": "goods_images/20/699/2096399699L.jpg?timestamp=20261021151854",
               "link": "https://display.cjonstyle.com/p/item/2096399699?channelCode=30002002",
@@ -4117,7 +4140,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "찹찹 TPU도마 코튼블루",
+              "name": "[정상가 18,000원]찹찹 TPU도마 코튼블루",
               "price": 18000,
               "image": "goods_images/20/684/2096399684L.jpg?timestamp=20261021151847",
               "link": "https://display.cjonstyle.com/p/item/2096399684?channelCode=30002002",
@@ -4126,7 +4149,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "챱챱 TPU도마 거치대 화이트",
+              "name": "[정상가 22,000원]챱챱 TPU도마 거치대 화이트",
               "price": 22000,
               "image": "goods_images/20/088/2096398088L.jpg?timestamp=20261021144057",
               "link": "https://display.cjonstyle.com/p/item/2096398088?channelCode=30002002",
@@ -4144,7 +4167,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "[정상가 79,000원] 라이트 우드 압축도마 L",
+              "name": "[정상가 79,000원]라이트 우드 압축도마 L",
               "price": 79000,
               "image": "goods_images/20/666/2096399666L.jpg?timestamp=20261021151839",
               "link": "https://display.cjonstyle.com/p/item/2096399666?channelCode=30002002",
@@ -4153,7 +4176,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "[정상가 58,000원] 라이트 우드 압축도마 M",
+              "name": "[정상가 58,000원]라이트 우드 압축도마 M",
               "price": 58000,
               "image": "goods_images/20/656/2096399656L.jpg?timestamp=20261021151835",
               "link": "https://display.cjonstyle.com/p/item/2096399656?channelCode=30002002",
@@ -4162,7 +4185,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "[정상가 82,000원] 논슬립 우드 압축도마 L",
+              "name": "[정상가 82,000원]논슬립 우드 압축도마 L",
               "price": 82000,
               "image": "goods_images/20/638/2096399638L.jpg?timestamp=20261021151827",
               "link": "https://display.cjonstyle.com/p/item/2096399638?channelCode=30002002",
@@ -4171,7 +4194,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "[정상가 60,000원] 논슬립 우드 압축도마 M",
+              "name": "[정상가 60,000원]논슬립 우드 압축도마 M",
               "price": 60000,
               "image": "goods_images/20/632/2096399632L.jpg?timestamp=20261021151823",
               "link": "https://display.cjonstyle.com/p/item/2096399632?channelCode=30002002",
@@ -4180,7 +4203,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "[정상가 48,000원] 논슬립 우드 압축도마 S",
+              "name": "[정상가 48,000원]논슬립 우드 압축도마 S",
               "price": 48000,
               "image": "goods_images/20/622/2096399622L.jpg?timestamp=20261021151818",
               "link": "https://display.cjonstyle.com/p/item/2096399622?channelCode=30002002",
@@ -4189,7 +4212,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "[정상가 92,000원] 논슬립 반달 우드 압축도마 L",
+              "name": "[정상가 92,000원]논슬립 반달 우드 압축도마 L",
               "price": 92000,
               "image": "goods_images/20/614/2096399614L.jpg?timestamp=20261021151814",
               "link": "https://display.cjonstyle.com/p/item/2096399614?channelCode=30002002",
@@ -4198,7 +4221,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "[정상가 72,000원] 논슬립 반달 우드 압축도마 M",
+              "name": "[정상가 72,000원]논슬립 반달 우드 압축도마 M",
               "price": 72000,
               "image": "goods_images/20/608/2096399608L.jpg?timestamp=20261021151810",
               "link": "https://display.cjonstyle.com/p/item/2096399608?channelCode=30002002",
@@ -4207,7 +4230,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "[정상가 60,000원] 논슬립 반달 우드 압축도마 S",
+              "name": "[정상가 60,000원]논슬립 반달 우드 압축도마 S",
               "price": 60000,
               "image": "goods_images/20/603/2096399603L.jpg?timestamp=20261021151807",
               "link": "https://display.cjonstyle.com/p/item/2096399603?channelCode=30002002",
@@ -4216,7 +4239,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "[정상가 48,000원] 논슬립 우드 압축 빵도마",
+              "name": "[정상가 48,000원]논슬립 우드 압축 빵도마",
               "price": 48000,
               "image": "goods_images/20/595/2096399595L.jpg?timestamp=20261021151802",
               "link": "https://display.cjonstyle.com/p/item/2096399595?channelCode=30002002",
@@ -4225,7 +4248,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "스테인리스 스틸 야채탈수기 6L",
+              "name": "[정상가 79,000원]스테인리스 스틸 야채탈수기 6L",
               "price": 79000,
               "image": "goods_images/20/078/2096400078L.jpg?timestamp=20261021152309",
               "link": "https://display.cjonstyle.com/p/item/2096400078?channelCode=30002002",
@@ -4234,7 +4257,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "[정상가 30,000원] 만능 야채다지기 400ml",
+              "name": "[정상가 30,000원]만능 야채다지기 400ml",
               "price": 30000,
               "image": "goods_images/20/067/2096400067L.jpg?timestamp=20261021152305",
               "link": "https://display.cjonstyle.com/p/item/2096400067?channelCode=30002002",
@@ -4243,7 +4266,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "[정상가 40,000원] 만능 야채다지기 900ml",
+              "name": "[정상가 40,000원]만능 야채다지기 900ml",
               "price": 40000,
               "image": "goods_images/20/057/2096400057L.jpg?timestamp=20261021152301",
               "link": "https://display.cjonstyle.com/p/item/2096400057?channelCode=30002002",
@@ -4252,7 +4275,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "플로우 원터치 텀블러 350ml 코코넛밀크",
+              "name": "[정상가 38,000원]플로우 원터치 텀블러 350ml 코코넛밀크",
               "price": 38000,
               "image": "goods_images/20/553/2096399553L.jpg?timestamp=20261021151631",
               "link": "https://display.cjonstyle.com/p/item/2096399553?channelCode=30002002",
@@ -4261,7 +4284,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "플로우 원터치 텀블러 350ml 베리핑크",
+              "name": "[정상가 38,000원]플로우 원터치 텀블러 350ml 베리핑크",
               "price": 38000,
               "image": "goods_images/20/551/2096399551L.jpg?timestamp=20261021151627",
               "link": "https://display.cjonstyle.com/p/item/2096399551?channelCode=30002002",
@@ -4270,7 +4293,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "플로우 원터치 텀블러 350ml 버터옐로우",
+              "name": "[정상가 38,000원]플로우 원터치 텀블러 350ml 버터옐로우",
               "price": 38000,
               "image": "goods_images/20/548/2096399548L.jpg?timestamp=20261021151623",
               "link": "https://display.cjonstyle.com/p/item/2096399548?channelCode=30002002",
@@ -4279,7 +4302,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "플로우 원터치 텀블러 350ml 스윗라벤더",
+              "name": "[정상가 38,000원]플로우 원터치 텀블러 350ml 스윗라벤더",
               "price": 38000,
               "image": "goods_images/20/547/2096399547L.jpg?timestamp=20261021151619",
               "link": "https://display.cjonstyle.com/p/item/2096399547?channelCode=30002002",
@@ -4288,7 +4311,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "플로우 원터치 텀블러 350ml 애플민트",
+              "name": "[정상가 38,000원]플로우 원터치 텀블러 350ml 애플민트",
               "price": 38000,
               "image": "goods_images/20/545/2096399545L.jpg?timestamp=20261021151616",
               "link": "https://display.cjonstyle.com/p/item/2096399545?channelCode=30002002",
@@ -4297,7 +4320,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "플로우 원터치 텀블러 350ml 코튼블루",
+              "name": "[정상가 38,000원]플로우 원터치 텀블러 350ml 코튼블루",
               "price": 38000,
               "image": "goods_images/20/543/2096399543L.jpg?timestamp=20261021151612",
               "link": "https://display.cjonstyle.com/p/item/2096399543?channelCode=30002002",
@@ -4306,7 +4329,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "브리드 머그 텀블러 매트실버 360ml",
+              "name": "[정상가 34,000원]브리드 머그 텀블러 매트실버 360ml",
               "price": 34000,
               "image": "goods_images/20/541/2096399541L.jpg?timestamp=20261021151608",
               "link": "https://display.cjonstyle.com/p/item/2096399541?channelCode=30002002",
@@ -4315,7 +4338,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "브리드 머그 텀블러 스틸화이트 360ml",
+              "name": "[정상가 34,000원]브리드 머그 텀블러 스틸화이트 360ml",
               "price": 34000,
               "image": "goods_images/20/537/2096399537L.jpg?timestamp=20261021151604",
               "link": "https://display.cjonstyle.com/p/item/2096399537?channelCode=30002002",
@@ -4324,7 +4347,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "브리드 머그 텀블러 티타늄실버 360ml",
+              "name": "[정상가 34,000원]브리드 머그 텀블러 티타늄실버 360ml",
               "price": 34000,
               "image": "goods_images/20/536/2096399536L.jpg?timestamp=20261021151601",
               "link": "https://display.cjonstyle.com/p/item/2096399536?channelCode=30002002",
@@ -4333,7 +4356,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "브리드 머그 텀블러 매트실버 600ml",
+              "name": "[정상가 38,000원]브리드 머그 텀블러 매트실버 600ml",
               "price": 38000,
               "image": "goods_images/20/533/2096399533L.jpg?timestamp=20261021151557",
               "link": "https://display.cjonstyle.com/p/item/2096399533?channelCode=30002002",
@@ -4342,7 +4365,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "브리드 머그 텀블러 스틸화이트 600ml",
+              "name": "[정상가 38,000원]브리드 머그 텀블러 스틸화이트 600ml",
               "price": 38000,
               "image": "goods_images/20/531/2096399531L.jpg?timestamp=20261021151552",
               "link": "https://display.cjonstyle.com/p/item/2096399531?channelCode=30002002",
@@ -4351,7 +4374,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "스테인리스 스틸 믹싱볼 24cm",
+              "name": "[정상가 37,000원]스테인리스 스틸 믹싱볼 24cm",
               "price": 37000,
               "image": "goods_images/20/420/2096399420L.jpg?timestamp=20261021151249",
               "link": "https://display.cjonstyle.com/p/item/2096399420?channelCode=30002002",
@@ -4360,7 +4383,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "스테인리스 스틸 펀칭볼 24cm",
+              "name": "[정상가 60,000원]스테인리스 스틸 펀칭볼 24cm",
               "price": 60000,
               "image": "goods_images/20/418/2096399418L.jpg?timestamp=20261021151245",
               "link": "https://display.cjonstyle.com/p/item/2096399418?channelCode=30002002",
@@ -4378,7 +4401,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "원터치 트라이탄 밀폐용기 스틸화이트 1.4L",
+              "name": "[정상가 26,000원]원터치 트라이탄 밀폐용기 스틸화이트 1.4L",
               "price": 26000,
               "image": "goods_images/20/375/2096399375L.jpg?timestamp=20261021150954",
               "link": "https://display.cjonstyle.com/p/item/2096399375?channelCode=30002002",
@@ -4387,7 +4410,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "원터치 트라이탄 밀폐용기 스틸화이트 1.6L",
+              "name": "[정상가 25,000원]원터치 트라이탄 밀폐용기 스틸화이트 1.6L",
               "price": 25000,
               "image": "goods_images/20/370/2096399370L.jpg?timestamp=20261021150950",
               "link": "https://display.cjonstyle.com/p/item/2096399370?channelCode=30002002",
@@ -4396,7 +4419,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "원터치 트라이탄 밀폐용기 스틸화이트 2.2L",
+              "name": "[정상가 33,000원]원터치 트라이탄 밀폐용기 스틸화이트 2.2L",
               "price": 33000,
               "image": "goods_images/20/366/2096399366L.jpg?timestamp=20261021150946",
               "link": "https://display.cjonstyle.com/p/item/2096399366?channelCode=30002002",
@@ -4405,7 +4428,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "원터치 트라이탄 밀폐용기 스틸화이트 2.4L",
+              "name": "[정상가 32,000원]원터치 트라이탄 밀폐용기 스틸화이트 2.4L",
               "price": 32000,
               "image": "goods_images/20/360/2096399360L.jpg?timestamp=20261021150942",
               "link": "https://display.cjonstyle.com/p/item/2096399360?channelCode=30002002",
@@ -4414,7 +4437,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "[정상가 42,000원] 클리어 스테인리스 스틸 밀폐용기 직사각 오트밀 1.5L",
+              "name": "[정상가 42,000원]클리어 스테인리스 스틸 밀폐용기 직사각 오트밀 1.5L",
               "price": 42000,
               "image": "goods_images/20/338/2096399338L.jpg?timestamp=20261021150844",
               "link": "https://display.cjonstyle.com/p/item/2096399338?channelCode=30002002",
@@ -4423,7 +4446,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "[정상가 27,000원] 클리어 스테인리스 스틸 밀폐용기 직사각 오트밀 480ml",
+              "name": "[정상가 27,000원]클리어 스테인리스 스틸 밀폐용기 직사각 오트밀 480ml",
               "price": 27000,
               "image": "goods_images/20/337/2096399337L.jpg?timestamp=20261021150840",
               "link": "https://display.cjonstyle.com/p/item/2096399337?channelCode=30002002",
@@ -4432,7 +4455,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "[정상가 29,000원] 클리어 스테인리스 스틸 밀폐용기 직사각 오트밀 600ml",
+              "name": "[정상가 29,000원]클리어 스테인리스 스틸 밀폐용기 직사각 오트밀 600ml",
               "price": 29000,
               "image": "goods_images/20/335/2096399335L.jpg?timestamp=20261021150836",
               "link": "https://display.cjonstyle.com/p/item/2096399335?channelCode=30002002",
@@ -4441,7 +4464,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "[정상가 33,000원] 클리어 스테인리스 스틸 밀폐용기 직사각 오트밀 800ml",
+              "name": "[정상가 33,000원]클리어 스테인리스 스틸 밀폐용기 직사각 오트밀 800ml",
               "price": 33000,
               "image": "goods_images/20/197/2096399197L.jpg?timestamp=20261021150417",
               "link": "https://display.cjonstyle.com/p/item/2096399197?channelCode=30002002",
@@ -4450,7 +4473,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "[정상가 36,000원] 클리어 스테인리스 스틸 밀폐용기 직사각 오트밀 1.15L",
+              "name": "[정상가 36,000원]클리어 스테인리스 스틸 밀폐용기 직사각 오트밀 1.15L",
               "price": 36000,
               "image": "goods_images/20/195/2096399195L.jpg?timestamp=20261021150413",
               "link": "https://display.cjonstyle.com/p/item/2096399195?channelCode=30002002",
@@ -4468,7 +4491,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "[정상가 25,000원]  우드핸들 실리콘 타공뒤집개",
+              "name": "[정상가 25,000원]우드핸들 실리콘 타공뒤집개",
               "price": 25000,
               "image": "goods_images/20/995/2091180995L.jpg?timestamp=20260907105832",
               "link": "https://display.cjonstyle.com/p/item/2091180995?channelCode=30002002",
@@ -4477,7 +4500,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "[정상가 25,000원]  우드핸들 실리콘 뒤집개",
+              "name": "[정상가 25,000원]우드핸들 실리콘 뒤집개",
               "price": 25000,
               "image": "goods_images/20/998/2091180998L.jpg?timestamp=20260907105809",
               "link": "https://display.cjonstyle.com/p/item/2091180998?channelCode=30002002",
@@ -4486,7 +4509,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "[정상가 25,000원]  우드핸들 실리콘 멀티스푼",
+              "name": "[정상가 25,000원]우드핸들 실리콘 멀티스푼",
               "price": 25000,
               "image": "goods_images/20/004/2091181004L.jpg?timestamp=20260907111040",
               "link": "https://display.cjonstyle.com/p/item/2091181004?channelCode=30002002",
@@ -4495,7 +4518,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "[정상가 25,000원]  우드핸들 실리콘 서빙스푼",
+              "name": "[정상가 25,000원]우드핸들 실리콘 서빙스푼",
               "price": 25000,
               "image": "goods_images/20/008/2091181008L.jpg?timestamp=20260907111030",
               "link": "https://display.cjonstyle.com/p/item/2091181008?channelCode=30002002",
@@ -4504,7 +4527,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "[정상가 15,000원] 마스터 주방가위 스틸화이트",
+              "name": "[정상가 15,000원]마스터 주방가위 스틸화이트",
               "price": 15000,
               "image": "goods_images/20/233/2091181233L.jpg?timestamp=20260907110234",
               "link": "https://display.cjonstyle.com/p/item/2091181233?channelCode=30002002",
@@ -4864,7 +4887,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "스테인리스 스틸 수세미 거치대 (S)",
+              "name": "[정상가 35900원]스테인리스 스틸 수세미 거치대 (S)",
               "price": 35900,
               "image": "goods_images/20/089/2096398089L.jpg?timestamp=20261021144101",
               "link": "https://display.cjonstyle.com/p/item/2096398089?channelCode=30002002",
@@ -4873,7 +4896,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "스테인리스 스틸 수세미 거치대 (L)",
+              "name": "[정상가 41500원]스테인리스 스틸 수세미 거치대 (L)",
               "price": 41500,
               "image": "goods_images/20/093/2096398093L.jpg?timestamp=20261021144104",
               "link": "https://display.cjonstyle.com/p/item/2096398093?channelCode=30002002",
@@ -4882,7 +4905,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "스테인리스 스틸 가로형 수저통",
+              "name": "[정상가 31500원]스테인리스 스틸 가로형 수저통",
               "price": 31500,
               "image": "goods_images/20/104/2096398104L.jpg?timestamp=20261021144112",
               "link": "https://display.cjonstyle.com/p/item/2096398104?channelCode=30002002",
@@ -4909,7 +4932,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "스테인리스 스틸 슬라이드 식기건조대",
+              "name": "[정상가 97500원]스테인리스 스틸 슬라이드 식기건조대",
               "price": 97500,
               "image": "goods_images/20/120/2096398120L.jpg?timestamp=20261021144124",
               "link": "https://display.cjonstyle.com/p/item/2096398120?channelCode=30002002",
@@ -4918,7 +4941,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "멜로우 주방가위 버터옐로우",
+              "name": "[정상가 15,000원]멜로우 주방가위 버터옐로우",
               "price": 15000,
               "image": "goods_images/20/425/2096398425L.jpg?timestamp=20261021145032",
               "link": "https://display.cjonstyle.com/p/item/2096398425?channelCode=30002002",
@@ -4927,7 +4950,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "멜로우 주방가위 아이스블루",
+              "name": "[정상가 15,000원]멜로우 주방가위 아이스블루",
               "price": 15000,
               "image": "goods_images/20/427/2096398427L.jpg?timestamp=20261021145036",
               "link": "https://display.cjonstyle.com/p/item/2096398427?channelCode=30002002",
@@ -4936,7 +4959,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "멜로우 주방가위 애플민트",
+              "name": "[정상가 15,000원]멜로우 주방가위 애플민트",
               "price": 15000,
               "image": "goods_images/20/431/2096398431L.jpg?timestamp=20261021145041",
               "link": "https://display.cjonstyle.com/p/item/2096398431?channelCode=30002002",
@@ -4945,7 +4968,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "멜로우 주방가위 베리핑크",
+              "name": "[정상가 15,000원]멜로우 주방가위 베리핑크",
               "price": 15000,
               "image": "goods_images/20/436/2096398436L.jpg?timestamp=20261021145045",
               "link": "https://display.cjonstyle.com/p/item/2096398436?channelCode=30002002",
@@ -4954,7 +4977,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "[정상가 168,000원] 그리드 316Ti 통5중 프라이팬 28cm",
+              "name": "[정상가 168,000원]그리드 316Ti 통5중 프라이팬 28cm",
               "price": 168000,
               "image": "goods_images/20/591/2096398591L.jpg?timestamp=20261021145412",
               "link": "https://display.cjonstyle.com/p/item/2096398591?channelCode=30002002",
@@ -4963,7 +4986,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "[정상가 148,000원] 그리드 316Ti 통5중 소스팬 16cm",
+              "name": "[정상가 148,000원]그리드 316Ti 통5중 소스팬 16cm",
               "price": 148000,
               "image": "goods_images/20/606/2096398606L.jpg?timestamp=20261021145420",
               "link": "https://display.cjonstyle.com/p/item/2096398606?channelCode=30002002",
@@ -4972,7 +4995,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "스테인리스 스틸 접이식 냄비받침",
+              "name": "[정상가 97500원]스테인리스 스틸 접이식 냄비받침",
               "price": 97500,
               "image": "goods_images/20/999/2096398999L.jpg?timestamp=20261021145750",
               "link": "https://display.cjonstyle.com/p/item/2096398999?channelCode=30002002",
@@ -4981,7 +5004,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "에피큐어 316Ti 통5중 양수냄비 20cm",
+              "name": "[정상가 198,000원]에피큐어 316Ti 통5중 양수냄비 20cm",
               "price": 198000,
               "image": "goods_images/20/099/2096399099L.jpg?timestamp=20261021150022",
               "link": "https://display.cjonstyle.com/p/item/2096399099?channelCode=30002002",
@@ -4990,7 +5013,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "에피큐어 316Ti 통5중 양수전골냄비 24cm",
+              "name": "[정상가 218,000원]에피큐어 316Ti 통5중 양수전골냄비 24cm",
               "price": 218000,
               "image": "goods_images/20/105/2096399105L.jpg?timestamp=20261021150031",
               "link": "https://display.cjonstyle.com/p/item/2096399105?channelCode=30002002",
@@ -4999,7 +5022,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "에피큐어 316Ti 통5중 양수냄비 24cm",
+              "name": "[정상가 258,000원]에피큐어 316Ti 통5중 양수냄비 24cm",
               "price": 258000,
               "image": "goods_images/20/107/2096399107L.jpg?timestamp=20261021150035",
               "link": "https://display.cjonstyle.com/p/item/2096399107?channelCode=30002002",
@@ -5008,7 +5031,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "그리드 316Ti 통5중 양수전골냄비 24cm",
+              "name": "[정상가 218,000원]그리드 316Ti 통5중 양수전골냄비 24cm",
               "price": 218000,
               "image": "goods_images/20/113/2096399113L.jpg?timestamp=20261021150043",
               "link": "https://display.cjonstyle.com/p/item/2096399113?channelCode=30002002",
@@ -5017,7 +5040,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "그리드 316Ti 통5중 양수냄비 24cm",
+              "name": "[정상가 258,000원]그리드 316Ti 통5중 양수냄비 24cm",
               "price": 258000,
               "image": "goods_images/20/115/2096399115L.jpg?timestamp=20261021150047",
               "link": "https://display.cjonstyle.com/p/item/2096399115?channelCode=30002002",
@@ -5026,7 +5049,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "그리드 316Ti 통5중 양수냄비 20cm",
+              "name": "[정상가 198,000원]그리드 316Ti 통5중 양수냄비 20cm",
               "price": 198000,
               "image": "goods_images/20/117/2096399117L.jpg?timestamp=20261021150051",
               "link": "https://display.cjonstyle.com/p/item/2096399117?channelCode=30002002",
@@ -5035,7 +5058,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "[정상가 60,000원] 클리어 스테인리스 스틸 밀폐용기 직사각 오트밀 3.5L",
+              "name": "[정상가 60,000원]클리어 스테인리스 스틸 밀폐용기 직사각 오트밀 3.5L",
               "price": 60000,
               "image": "goods_images/20/146/2096399146L.jpg?timestamp=20261021150157",
               "link": "https://display.cjonstyle.com/p/item/2096399146?channelCode=30002002",
@@ -5044,7 +5067,7 @@
             {
               "broadcast_date_label": "11/17(화) 18:30",
               "brand": "스틸웍스",
-              "name": "[정상가 45,000원] 클리어 스테인리스 스틸 밀폐용기 직사각 오트밀 2L",
+              "name": "[정상가 45,000원]클리어 스테인리스 스틸 밀폐용기 직사각 오트밀 2L",
               "price": 45000,
               "image": "goods_images/20/150/2096399150L.jpg?timestamp=20261021150201",
               "link": "https://display.cjonstyle.com/p/item/2096399150?channelCode=30002002",
@@ -5066,14 +5089,14 @@
         {
           "date": "2026-11-28",
           "label": "11/28(토) 08:20 방송",
-          "collected_at": "2026-11-11T08:16:56.371746+09:00",
+          "collected_at": "2026-11-11T10:15:25.437266+09:00",
           "products": [
             {
               "broadcast_date_label": "11/28(토) 08:20",
               "brand": "",
               "name": "[체코기] 퓨어 기버터 180g",
               "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/743/2097209743L.jpg?timestamp=20261111081517",
+              "image": "https://image.cjonstyle.net/goods_images/20/743/2097209743L.jpg?timestamp=20261111101325",
               "link": "https://display.cjonstyle.com/p/item/2097209743"
             }
           ]
@@ -5081,14 +5104,14 @@
         {
           "date": "2026-11-21",
           "label": "11/21(토) 08:20 방송",
-          "collected_at": "2026-11-11T08:16:56.371746+09:00",
+          "collected_at": "2026-11-11T10:15:25.437266+09:00",
           "products": [
             {
               "broadcast_date_label": "11/21(토) 08:20",
               "brand": "본정심",
               "name": "[동가게PICK/국내최대함량] 진 흑염소진액 4박스",
               "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/885/2096784885L.jpg?timestamp=20261111081517",
+              "image": "https://image.cjonstyle.net/goods_images/20/885/2096784885L.jpg?timestamp=20261111101325",
               "link": "https://display.cjonstyle.com/p/item/2096784885"
             },
             {
@@ -5152,14 +5175,14 @@
         {
           "date": "2026-11-19",
           "label": "11/19(목) 20:45 방송",
-          "collected_at": "2026-11-11T08:16:56.371746+09:00",
+          "collected_at": "2026-11-11T10:15:25.437266+09:00",
           "products": [
             {
               "broadcast_date_label": "11/19(목) 20:45",
               "brand": "로보",
               "name": "26FW 유로피안 엠보 램스킨 후드 점퍼",
               "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/028/2092215028L.jpg?timestamp=20261111081517",
+              "image": "https://image.cjonstyle.net/goods_images/20/028/2092215028L.jpg?timestamp=20261111101325",
               "link": "https://display.cjonstyle.com/p/item/2092215028"
             },
             {
@@ -5185,14 +5208,6 @@
               "price": 970100,
               "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/295/2093452295L.jpg?timestamp=20260930123306",
               "link": "https://display.cjonstyle.com/p/item/2093452295?channelCode=30002002"
-            },
-            {
-              "broadcast_date_label": "11/19(목) 20:45",
-              "brand": "지스튜디오",
-              "name": "26FW 메리노울100 리버시블 컬리 무스탕",
-              "price": 149000,
-              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/815/2089337815L.jpg?timestamp=20260904160536",
-              "link": "https://display.cjonstyle.com/p/item/2089337815?channelCode=30002002"
             },
             {
               "broadcast_date_label": "11/19(목) 20:45",
@@ -5223,14 +5238,14 @@
         {
           "date": "2026-11-14",
           "label": "11/14(토) 08:20 방송",
-          "collected_at": "2026-11-11T08:16:56.371746+09:00",
+          "collected_at": "2026-11-11T10:15:25.437266+09:00",
           "products": [
             {
               "broadcast_date_label": "11/14(토) 08:20",
               "brand": "베라왕",
               "name": "[미리주문10%] 26FW FAUX밍크 후드 롱코트",
               "price": 129000,
-              "image": "https://image.cjonstyle.net/goods_images/20/172/2095280172L.jpg?timestamp=20261111081517",
+              "image": "https://image.cjonstyle.net/goods_images/20/172/2095280172L.jpg?timestamp=20261111101325",
               "link": "https://display.cjonstyle.com/p/item/2095280172"
             },
             {
@@ -5281,7 +5296,7 @@
         {
           "date": "2026-11-12",
           "label": "11/12(목) 20:45 방송",
-          "collected_at": "2026-11-11T08:16:56.371746+09:00",
+          "collected_at": "2026-11-11T10:15:25.437266+09:00",
           "products": [
             {
               "broadcast_date_label": "11/12(목) 20:45",
@@ -5780,7 +5795,7 @@
         {
           "date": "2026-11-14",
           "label": "11/14(토) 10:20 방송",
-          "collected_at": "2026-11-11T08:16:56.371746+09:00",
+          "collected_at": "2026-11-11T10:15:25.437266+09:00",
           "products": [
             {
               "broadcast_date_label": "11/14(토) 10:20",
@@ -6077,14 +6092,14 @@
         {
           "date": "2026-11-13",
           "label": "11/13(금) 19:35 방송",
-          "collected_at": "2026-11-11T08:16:56.371746+09:00",
+          "collected_at": "2026-11-11T10:15:25.437266+09:00",
           "products": [
             {
               "broadcast_date_label": "11/13(금) 19:35",
               "brand": "더엣지",
               "name": "[미리주문10%] 26FW 플러피 퍼넬넥 롱자켓",
               "price": 99900,
-              "image": "https://image.cjonstyle.net/goods_images/20/945/2094484945L.jpg?timestamp=20261111081608",
+              "image": "https://image.cjonstyle.net/goods_images/20/945/2094484945L.jpg?timestamp=20261111101435",
               "link": "https://display.cjonstyle.com/p/item/2094484945"
             },
             {
@@ -6186,8 +6201,8 @@
             {
               "broadcast_date_label": "11/13(금) 19:35",
               "brand": "더엣지",
-              "name": "[미리주문10%]26FW 폭스울블렌드 바부슈카",
-              "price": 62910,
+              "name": "26F/W 폭스울블렌드 바부슈카",
+              "price": 69900,
               "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/175/2092139175L.jpg?timestamp=20261006130204",
               "link": "https://display.cjonstyle.com/p/item/2092139175?channelCode=30002002"
             },
@@ -6204,7 +6219,7 @@
         {
           "date": "2026-11-11",
           "label": "11/11(수) 19:35 방송",
-          "collected_at": "2026-11-11T08:16:56.371746+09:00",
+          "collected_at": "2026-11-11T10:15:25.437266+09:00",
           "products": [
             {
               "broadcast_date_label": "11/11(수) 19:35",
