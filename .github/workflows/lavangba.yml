@@ -59,6 +59,8 @@ jobs:
           # 수동 실행 입력값은 셸에 직접 끼워넣지 않고 환경변수로 받아서 검증한다.
           START_DATE: ${{ github.event.inputs.start_date }}
           END_DATE: ${{ github.event.inputs.end_date }}
+          # 라방바가 Actions IP를 막아 Worker 중계(tools/lavangba_relay.py)를 쓸 때의 열쇠 재료
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         run: |
           args=""
           for d in "$START_DATE" "$END_DATE"; do

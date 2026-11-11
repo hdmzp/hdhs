@@ -52,6 +52,7 @@ from datetime import datetime, timedelta, timezone
 from difflib import SequenceMatcher
 
 import requests
+from tools.lavangba_relay import session as lavangba  # 라방바: 직접 -> 막히면 Worker 중계
 
 # 콘솔/리다이렉트 인코딩이 cp949일 때 상품명의 특수문자(∙ 등)로 print가 죽는 것 방지
 for _stream in (sys.stdout, sys.stderr):
@@ -125,7 +126,7 @@ def _request_with_retry(method, url, **kwargs):
     last_err = None
     for attempt in range(1, HTTP_RETRIES + 1):
         try:
-            res = requests.request(method, url, **kwargs)
+            res = lavangba.request(method, url, **kwargs)  # 라방바 외 URL은 그대로 직접 요청
             if res.status_code >= 500:
                 raise RuntimeError(f"HTTP {res.status_code}")
             res.raise_for_status()

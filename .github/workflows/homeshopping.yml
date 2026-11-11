@@ -50,6 +50,9 @@ jobs:
       - name: 홈쇼핑 스크래퍼 실행 - GS(라방바 경유)
         id: gs
         continue-on-error: true
+        env:
+          # 라방바가 Actions IP를 막아 Worker 중계(tools/lavangba_relay.py)를 쓸 때의 열쇠 재료
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         run: python gs_scraper.py
 
       - name: 결과 커밋 & 푸시
