@@ -6867,20 +6867,20 @@ function hsRenderProgGroup(progs, nowMin, badgedSet) {
          `</div>`;
 }
 
-// 연속된 같은 방송(시작·종료 동일, 고정PGM 아님) 상품들을 묶어서 렌더.
-// 고정PGM(pgm 있는 줄)은 기존처럼 묶지 않고 그대로 나열한다.
+// 연속된 같은 방송(시작·종료 동일) 상품들을 묶어서 렌더.
+// 고정PGM은 같은 프로그램(pgm 동일)끼리만 묶는다 - 뱃지는 방송당 첫 줄에만 붙는다(badgedSet).
+// (2026-11-11 GS·CJ가 방송상품을 전부 넣게 되면서 최화정쇼 32개·김신영 168개 같은
+//  고정PGM 방송이 칸을 길게 늘리지 않도록 고정PGM도 접는다)
 function hsRenderProgsWithCollapse(progs, nowMin, badgedSet) {
   let html = '';
   let i = 0;
   while (i < progs.length) {
     const base = progs[i];
     const group = [base];
-    if (!base.pgm) {
-      while (i + group.length < progs.length) {
-        const nxt = progs[i + group.length];
-        if (nxt.pgm || nxt.start !== base.start || nxt.end !== base.end) break;
-        group.push(nxt);
-      }
+    while (i + group.length < progs.length) {
+      const nxt = progs[i + group.length];
+      if ((nxt.pgm || '') !== (base.pgm || '') || nxt.start !== base.start || nxt.end !== base.end) break;
+      group.push(nxt);
     }
     html += hsRenderProgGroup(group, nowMin, badgedSet);
     i += group.length;

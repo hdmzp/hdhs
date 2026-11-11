@@ -278,7 +278,8 @@ def fetch_gs_official(date_obj: datetime):
     화면에 'Hit & Best' 빈칸이 생겼다 - 공식 편성표는 이 방송까지 다 나온다.
 
     반환: {"live": [...], "data": [...]} / 실패(HTTP 오류·차단·구조 변경)면 None.
-    한 방송(타임)에 상품이 여러 개면 첫 상품(주상품)의 브랜드/상품명/가격/링크를 쓴다."""
+    한 방송(타임)에 상품이 여러 개면 전부 같은 시작·종료시각의 항목으로 넣는다
+    (2026-11-11 변경 - 예전엔 첫 상품만 써서 130분 모르간 방송에 상품 1개만 보였다)."""
     date_str = date_obj.strftime("%Y%m%d")
     headers = {"User-Agent": GS_MOBILE_UA, "Referer": "https://m.gsshop.com/index.gs"}
     soup = None
@@ -323,15 +324,17 @@ def fetch_gs_official(date_obj: datetime):
             continue
         seen.add((broadcast, start))
 
-        item = group.select_one("article.prd-item")
-        brand = product = ""
-        price = 0
-        link = ""
-        if item:
+        # 한 방송(타임)의 방송상품 전부 (주상품 + 부상품). 같은 상품명은 한 번만.
+        names_seen = set()
+        for item in group.select("article.prd-item"):
             b = item.select_one(".brand-name")
             n = item.select_one(".prd-name")
             brand = b.get_text(" ", strip=True) if b else ""
             product = n.get_text(" ", strip=True) if n else ""
+            if not product or (brand, product) in names_seen:
+                continue
+            names_seen.add((brand, product))
+            price = 0
             pr = item.select_one(".set-price strong")
             if pr:
                 digits = re.sub(r"[^0-9]", "", pr.get_text())
@@ -342,20 +345,17 @@ def fetch_gs_official(date_obj: datetime):
             else:
                 a = item.select_one("a.prd-link[href]")
                 link = a["href"] if a else ""
-        if not product:
-            continue
-
-        result[broadcast].append({
-            "start": start,
-            "end": end,
-            "brand": brand,
-            "product": product,
-            "price": price,
-            "link": link,
-            "category": "",            # add_categories에서 채움 (자체 모델)
-            "lavangba_category": "",   # attach_lavangba_meta에서 채움
-            "hsshow_id": "",           # attach_lavangba_meta에서 채움 (매출 수집 매칭 키)
-        })
+            result[broadcast].append({
+                "start": start,
+                "end": end,
+                "brand": brand,
+                "product": product,
+                "price": price,
+                "link": link,
+                "category": "",            # add_categories에서 채움 (자체 모델)
+                "lavangba_category": "",   # attach_lavangba_meta에서 채움
+                "hsshow_id": "",           # attach_lavangba_meta에서 채움 (매출 수집 매칭 키)
+            })
 
     for progs in result.values():
         progs.sort(key=lambda x: x["start"])
@@ -372,23 +372,27 @@ def _to_min(hhmm: str) -> int:
 def attach_lavangba_meta(programs: list, lav_programs: list):
     """공식 편성표 항목에 같은 방송의 라방바 hsshow_id / lavangba_category를 붙인다.
     hsshow_id는 lavangba_scraper_v2.py(매출 수집)가 편성 항목과 방송을 1:1로 맞추는 키라
-    공식 편성표로 바꿔도 유지해야 한다. 시작 시각이 가장 가까운(10분 이내) 라방바 방송과
-    짝짓고, 한 라방바 방송은 한 항목에만 붙인다. 짝이 없으면(렌탈 등 라방바에 없는 방송) 빈 값.
+    공식 편성표로 바꿔도 유지해야 한다. 방송(시작시각) 단위로 시작 시각이 가장 가까운(10분 이내)
+    라방바 방송과 짝짓고, 그 방송의 상품 전부에 같은 값을 붙인다. 한 라방바 방송은 한 방송에만.
+    짝이 없으면(렌탈 등 라방바에 없는 방송) 빈 값.
     반환: 짝지어진 라방바 방송의 인덱스 집합."""
     used = set()
-    for p in programs:
+    for start in sorted({p["start"] for p in programs}):
         best, best_diff = None, PGM_MATCH_TOLERANCE_MIN + 1
         for i, lp in enumerate(lav_programs):
             if i in used or len(lp.get("start") or "") != 5:
                 continue
-            diff = abs(_to_min(p["start"]) - _to_min(lp["start"]))
+            diff = abs(_to_min(start) - _to_min(lp["start"]))
             if diff < best_diff:
                 best, best_diff = i, diff
-        if best is not None:
-            used.add(best)
-            lp = lav_programs[best]
-            p["hsshow_id"] = lp.get("hsshow_id", "")
-            p["lavangba_category"] = lp.get("lavangba_category", "")
+        if best is None:
+            continue
+        used.add(best)
+        lp = lav_programs[best]
+        for p in programs:
+            if p["start"] == start:
+                p["hsshow_id"] = lp.get("hsshow_id", "")
+                p["lavangba_category"] = lp.get("lavangba_category", "")
     return used
 
 
@@ -514,7 +518,7 @@ def main():
                         lp["link"], lp["price"] = fetch_gs_detail(lp["hsshow_id"])
                         time.sleep(DETAIL_REQUEST_DELAY)
                 programs = sorted(programs + extra, key=lambda x: x["start"])
-                print(f"  [공식편성표] {len(official)}개 (라방바 매칭 {len(used)}/{len(lav)}, "
+                print(f"  [공식편성표] 방송 {len({p['start'] for p in official})}개·상품 {len(official)}개 (라방바 매칭 {len(used)}/{len(lav)}, "
                       f"라방바에만 있는 방송 {len(extra)}개 추가)")
             else:
                 # 2순위: 공식 편성표를 못 받으면 예전처럼 라방바 편성 + 상세페이지 link/price
