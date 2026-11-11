@@ -173,11 +173,14 @@ def item_to_program(item, start_str, end_str, brand="", pgm=""):
 
 
 def fetch_cj(date_compact, broad_param):
+    """CJ tvSchedule 1일치. 방송(program)마다 itemList의 방송상품을 전부 편성 항목으로 넣는다
+    (2026-11-11 변경: 예전엔 대표상품 1개 + 고정PGM만 '새 브랜드' 첫 상품을 추가해서,
+     같은 브랜드 상품만 있는 바이림(락포트 3종) 같은 방송이 1개로 보였다).
+    같은 방송 안에서 상품명이 같은 항목은 한 번만 넣는다. 화면은 같은 시간대 상품을 접어서 보여준다."""
     headers = {"User-Agent": UA, "Referer": "https://display.cjonstyle.com/p/tv/tvSchedule"}
     url = (f"https://display.cjonstyle.com/c/rest/tv/tvSchedule"
            f"?bdDt={date_compact}&isMobile=false&broadType={broad_param}&isEmployee=false")
     programs = []
-    expansions = []  # (대표 편성 dict, 나머지 itemList) - 고정PGM 브랜드별 확장 후보
     try:
         r = requests.get(url, headers=headers, timeout=12)
         r.raise_for_status()
@@ -190,55 +193,39 @@ def fetch_cj(date_compact, broad_param):
             start_str = datetime.fromtimestamp(start_ms / 1000, tz=KST).strftime("%H:%M")
             end_str = datetime.fromtimestamp(end_ms / 1000, tz=KST).strftime("%H:%M")
 
-            items = pg.get("itemList", []) or []
-            first = items[0] if items else {}
-
             # CJ는 모든 편성에 pgmNm이 있으므로(건강식품 1부 등) 네임드 쇼
             # 키워드에 걸리는 고정PGM만 pgm 필드를 남긴다 (프론트 뱃지용)
             pgm_nm = (pg.get("pgmNm") or "").strip()
-            is_fixed_pgm = any(k in pgm_nm for k in CJ_PGM_KEYWORDS)
+            pgm = pgm_nm if any(k in pgm_nm for k in CJ_PGM_KEYWORDS) else ""
 
-            prog = item_to_program(first, start_str, end_str,
-                                   pgm=pgm_nm if is_fixed_pgm else "")
-            programs.append(prog)
-
-            # 고정PGM이면 itemList의 나머지 방송상품을 확장 후보로 보관
-            # (브랜드는 응답에 없어서 아래에서 repBrandTag로 일괄 조회 후 그룹핑)
-            if len(items) > 1 and is_fixed_pgm:
-                expansions.append((prog, items[1:]))
+            items = pg.get("itemList", []) or [{}]
+            seen_names = set()
+            for item in items:
+                name = (item.get("itemNm") or "").strip()
+                if name and name in seen_names:
+                    continue
+                seen_names.add(name)
+                programs.append(item_to_program(item, start_str, end_str, pgm=pgm))
     except Exception as e:
         print(f"    [CJ] 오류: {e}")
 
-    # itemCd 기준 대표 브랜드 일괄 조회 (대표상품 + 고정PGM 확장 후보 전체)
+    # 브랜드명이 비어 있는 상품만 대표 브랜드 조회 (실행 동안 itemCd별 캐시)
     if programs:
-        all_cds = [p["_item_cd"] for p in programs]
-        all_cds += [it.get("itemCd", "") for _, subs in expansions for it in subs]
-        brand_map = fetch_repbrand_batch(all_cds)
+        need = [p["_item_cd"] for p in programs if not p["brand"] and p["_item_cd"] not in _REPBRAND_CACHE]
+        _REPBRAND_CACHE.update({cd: "" for cd in need})
+        _REPBRAND_CACHE.update(fetch_repbrand_batch(need))
         for p in programs:
             if not p["brand"]:
-                p["brand"] = brand_map.get(p["_item_cd"], "")
-
-        # 고정PGM 확장: 같은 방송의 나머지 상품 중 "새 브랜드"의 첫 상품만 추가
-        # (브랜드 조회가 안 된 상품은 어느 브랜드인지 알 수 없어 제외)
-        for base, subs in expansions:
-            slot_brands = {base["brand"]} if base["brand"] else set()
-            added = 0
-            for it in subs:
-                brand = brand_map.get(it.get("itemCd", ""), "")
-                if not brand or brand in slot_brands:
-                    continue
-                slot_brands.add(brand)
-                programs.append(item_to_program(it, base["start"], base["end"],
-                                                brand=brand, pgm=base.get("pgm", "")))
-                added += 1
-            if added:
-                print(f"    [CJ] 고정PGM 확장: {base['start']} 방송 +{added}개 브랜드")
+                p["brand"] = _REPBRAND_CACHE.get(p["_item_cd"], "")
 
     for p in programs:
         p.pop("_item_cd", None)
 
     programs.sort(key=lambda x: x["start"])
     return programs
+
+
+_REPBRAND_CACHE = {}  # itemCd -> 대표 브랜드 (같은 상품이 여러 날·여러 방송에 나와도 한 번만 조회)
 
 BROADCASTS = [("live", "live"), ("data", "plus")]
 # 라방바 채널 ID - CJ tvSchedule API가 빼고 주는 방송(일요일 저녁 여행상품 등)을 채우는 데 쓴다
