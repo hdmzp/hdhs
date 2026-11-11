@@ -292,8 +292,11 @@ def fetch_gs_official(date_obj: datetime):
         soup = BeautifulSoup(r.text, "html.parser")
         # 요청한 날짜 페이지가 맞는지 확인. GS가 가끔 200으로 1KB짜리 오류 페이지(세션 만료
         # 안내)를 주는데, 그때는 날짜 달력이 없다 -> 잠깐 쉬고 다시 받는다.
+        # 달력은 5일 전까지만 보여주지만 그보다 앞 날짜도 broadDate로 조회된다(달력 선택 표시만
+        # 없음) -> 페이지 안 방송 시작일이 요청 날짜면 맞는 페이지로 본다.
         on = soup.select_one("a.day-item.on[data-brddate]")
-        if on and on.get("data-brddate") == date_str:
+        if (on and on.get("data-brddate") == date_str) or \
+                soup.select_one(f'[data-broadstartdate^="{date_str}"]'):
             break
         print(f"    [GS_공식] {date_str} 페이지가 아님 (선택된 날짜: {on and on.get('data-brddate')}, "
               f"{len(r.text)}바이트) - 시도 {attempt}/{GS_OFFICIAL_ATTEMPTS}")
