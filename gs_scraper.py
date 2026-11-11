@@ -66,6 +66,7 @@ from datetime import datetime, timedelta, timezone
 from categorize import classify_batch, resolve_display_brand_batch
 from clean_product import clean_product_name
 from tools import scrape_guard
+from tools.lavangba_relay import session as lavangba  # 직접 -> 막히면 Worker 중계
 
 # 라방바 list_hs 재시도 대상. 2026-11-11 새벽부터 GitHub Actions에서 POST
 # list_hs가 HTTP 405를 돌려줘(같은 요청이 다른 환경에선 200) 편성이 0건으로
@@ -221,7 +222,7 @@ def fetch_gs_detail(hsshow_id: str) -> tuple:
     headers = {"User-Agent": UA, "Referer": "https://live.ecomm-data.com/schedule/hs"}
     url = DETAIL_URL_TMPL.format(hsshow_id=hsshow_id)
     try:
-        r = requests.get(url, headers=headers, timeout=12)
+        r = lavangba.get(url, headers=headers, timeout=12)
         if r.status_code != 200:
             return "", 0
 
@@ -272,7 +273,7 @@ def fetch_gs(date_obj: datetime, broadcast: str) -> list:
         r = scrape_guard.request(
             "POST", LAVANGBA_URL, json=payload, headers=headers, timeout=15,
             retries=LIST_RETRIES, retry_status=LIST_RETRY_STATUS,
-            expect_json=True, label=f"GS_{broadcast} list_hs",
+            session=lavangba, expect_json=True, label=f"GS_{broadcast} list_hs",
         )
 
         data = r.json()

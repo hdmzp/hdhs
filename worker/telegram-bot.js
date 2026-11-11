@@ -508,6 +508,35 @@ export default {
       return new Response(JSON.stringify({ ok: true, report: ids }), { headers: { "content-type": "application/json; charset=utf-8" } });
     }
 
+    if (url.pathname.startsWith("/lavangba/")) {
+      // 라방바(live.ecomm-data.com) 중계 - 2026-11-11부터 라방바가 GitHub Actions IP에 405를 줘서
+      // 수집기(tools/lavangba_relay.py)가 막히면 여기로 보낸다. 열쇠는 /export 와 같다.
+      // 열린 프록시가 되지 않게 편성 목록(list_hs)과 방송 상세(report/hsshow/{id}) 두 경로만 허용한다.
+      if (!env.BOT_TOKEN || request.headers.get("Authorization") !== "Bearer " + (await exportKey(env))) {
+        return text("forbidden", 403);
+      }
+      const path = url.pathname.slice("/lavangba".length);
+      const allowed =
+        (request.method === "POST" && path === "/api/schedule/list_hs") ||
+        (request.method === "GET" && /^\/report\/hsshow\/[0-9A-Za-z_-]{1,64}$/.test(path));
+      if (!allowed) return text("not allowed", 404);
+      const upstream = await fetch("https://live.ecomm-data.com" + path + url.search, {
+        method: request.method,
+        headers: {
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+          "Content-Type": "application/json",
+          "Origin": "https://live.ecomm-data.com",
+          "Referer": "https://live.ecomm-data.com/schedule/hs",
+          "Accept-Language": "ko-KR,ko;q=0.9",
+        },
+        body: request.method === "POST" ? await request.text() : undefined,
+      });
+      return new Response(upstream.body, {
+        status: upstream.status,
+        headers: { "content-type": upstream.headers.get("content-type") || "application/octet-stream" },
+      });
+    }
+
     if (url.pathname === "/setup") {
       if (!env.BOT_TOKEN) return text("❌ BOT_TOKEN 설정이 없어요. Settings → Variables and Secrets 를 확인하세요.");
       if (!admins(env).length) return text("❌ ADMIN_ID 설정이 없어요. wrangler.jsonc 를 확인하세요.");
