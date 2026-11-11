@@ -45,6 +45,7 @@ import os
 import json
 import time
 import requests
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
 from categorize import classify_batch, resolve_display_brand_batch
 from clean_product import clean_product_name
@@ -53,7 +54,8 @@ from tools.lavangba_gapfill import fill_gaps  # 자사 API가 빼고 주는 방�
 # 설정값
 KST = timezone(timedelta(hours=9))
 OUTPUT_DIR = "homeshopping"
-REQUEST_DELAY = 0.8 
+REQUEST_DELAY = 0.8
+REPBRAND_WORKERS = 6  # repBrandTag 동시 조회 수 
 DAYS_RANGE = range(-1, 6)
 
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -109,18 +111,26 @@ def fetch_repbrand_batch(item_cds):
     중복 itemCd는 한 번만 조회(같은 상품이 같은 날 여러 회 편성되는 경우 대비).
     """
     headers = {"User-Agent": UA, "Referer": "https://item.cjonstyle.com/nfront/item/"}
-    brand_map = {}
-    for item_cd in dict.fromkeys(c for c in item_cds if c):  # 중복 제거, 순서 유지
+
+    def one(item_cd):
         url = f"https://display-frontapi.cjonstyle.com/itemDetails/{item_cd}/repBrandTag"
         try:
             r = requests.get(url, headers=headers, timeout=8)
             r.raise_for_status()
             result = r.json().get("result")
-            if result and result.get("repBrandNm"):
-                brand_map[item_cd] = result["repBrandNm"]
+            return item_cd, (result or {}).get("repBrandNm") or ""
         except Exception as e:
             print(f"    [CJ] repBrandTag 오류 (itemCd={item_cd}): {e}")
-        time.sleep(0.3)  # tvSchedule(REQUEST_DELAY=0.8)보다 짧게 - 가벼운 단건 조회라 부담 적음
+            return item_cd, ""
+
+    # 2026-11-11 방송상품 전부를 넣으면서 조회 건수가 몇 배로 늘어(하루 100~300개)
+    # 순차 조회(0.3초 간격)로는 CJ 단계가 10분을 넘겨 동시 6건으로 나눠 조회한다.
+    cds = list(dict.fromkeys(c for c in item_cds if c))  # 중복 제거, 순서 유지
+    brand_map = {}
+    with ThreadPoolExecutor(max_workers=REPBRAND_WORKERS) as pool:
+        for item_cd, brand in pool.map(one, cds):
+            if brand:
+                brand_map[item_cd] = brand
     return brand_map
 
 # 고정PGM(셀럽/네임드 쇼) 판별 키워드. CJ는 모든 편성에 pgmNm이 있어서
