@@ -64,12 +64,15 @@ def _sleep_for(attempt: int, resp) -> float:
 
 def request(method: str, url: str, *, session=None, retries: int = DEFAULT_RETRIES,
             timeout: float = DEFAULT_TIMEOUT, expect_json: bool = False,
-            label: str = "", **kwargs) -> requests.Response:
+            label: str = "", retry_status=None, **kwargs) -> requests.Response:
     """재시도를 붙인 requests 호출. 최종 실패하면 FetchError를 던진다.
 
     label: 로그에 찍을 호출 이름 (없으면 URL 앞부분). 어느 요청이 흔들리는지
            워크플로우 로그에서 바로 보이게 하기 위한 것.
+    retry_status: 재시도할 상태코드 집합 (기본 RETRY_STATUS). 서버/WAF가
+           일시 장애를 4xx(예: 라방바의 405)로 돌려주는 경우 호출부에서 넓힌다.
     """
+    retry_codes = RETRY_STATUS if retry_status is None else frozenset(retry_status)
     caller = session or requests
     tag = label or url.split("?")[0][-60:]
     last_error = ""
@@ -79,7 +82,7 @@ def request(method: str, url: str, *, session=None, retries: int = DEFAULT_RETRI
         try:
             resp = caller.request(method, url, timeout=timeout, **kwargs)
 
-            if resp.status_code in RETRY_STATUS:
+            if resp.status_code in retry_codes:
                 last_error = f"HTTP {resp.status_code}"
             else:
                 resp.raise_for_status()

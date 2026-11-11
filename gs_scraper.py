@@ -60,10 +60,18 @@ import os
 import re
 import json
 import time
+import sys
 import requests
 from datetime import datetime, timedelta, timezone
 from categorize import classify_batch, resolve_display_brand_batch
 from clean_product import clean_product_name
+from tools import scrape_guard
+
+# 라방바 list_hs 재시도 대상. 2026-11-11 새벽부터 GitHub Actions에서 POST
+# list_hs가 HTTP 405를 돌려줘(같은 요청이 다른 환경에선 200) 편성이 0건으로
+# 저장되는 사고가 있었다. 405/403은 라방바 쪽 일시 장애/차단으로 보고 재시도한다.
+LIST_RETRY_STATUS = scrape_guard.RETRY_STATUS | {403, 405}
+LIST_RETRIES = 4  # 최초 1회 + 4회 재시도 (1s->2s->4s->8s 백오프)
 
 KST = timezone(timedelta(hours=9))
 OUTPUT_DIR = "homeshopping"
@@ -147,6 +155,15 @@ def annotate_fixed_pgm(programs: list, date_dash: str, pgm_map: dict):
             if abs(start_min - slot_min) <= PGM_MATCH_TOLERANCE_MIN:
                 p["pgm"] = title
                 break
+
+
+def carry_over_pgm(programs: list, old_programs: list):
+    """기존 저장분에서 같은 시작시각 항목의 pgm 뱃지를 새 편성에 옮긴다.
+    (specialPgm 페이지를 못 받은 실행에서 뱃지가 통째로 사라지는 것 방지)"""
+    old_pgm = {p.get("start"): p["pgm"] for p in old_programs if p.get("pgm")}
+    for p in programs:
+        if not p.get("pgm") and p.get("start") in old_pgm:
+            p["pgm"] = old_pgm[p["start"]]
 
 
 def today_kst():
@@ -252,10 +269,11 @@ def fetch_gs(date_obj: datetime, broadcast: str) -> list:
     }
 
     try:
-        r = requests.post(LAVANGBA_URL, json=payload, headers=headers, timeout=15)
-        if r.status_code != 200:
-            print(f"    [GS_{broadcast}] HTTP {r.status_code} 오류")
-            return []
+        r = scrape_guard.request(
+            "POST", LAVANGBA_URL, json=payload, headers=headers, timeout=15,
+            retries=LIST_RETRIES, retry_status=LIST_RETRY_STATUS,
+            expect_json=True, label=f"GS_{broadcast} list_hs",
+        )
 
         data = r.json()
         programs = []
@@ -294,7 +312,7 @@ def fetch_gs(date_obj: datetime, broadcast: str) -> list:
 
     except Exception as e:
         print(f"    [GS_{broadcast}] 오류: {e}")
-        return []
+        return None  # 실패 = '이번엔 못 가져옴' (빈 편성 []과 구분)
 
 
 def load_month(sub_dir, ym):
@@ -310,6 +328,7 @@ def load_month(sub_dir, ym):
 def main():
     base = today_kst()
     today_str = base.strftime("%Y-%m-%d")
+    failures = []  # 수집 실패한 (채널 날짜) - 끝에서 종료코드로 알린다
 
     print("[GS_pgm] 고정PGM 방송 예정일시 수집 중...")
     pgm_map = fetch_gs_pgm_broadcasts()
@@ -335,13 +354,24 @@ def main():
 
             print(f"[GS_{broadcast}] {date_dash} 수집 중...")
             programs = fetch_gs(d, broadcast)
+            if programs is None:
+                # 수집 실패(HTTP 오류 등): 기존 편성을 빈 값으로 덮어쓰지 않는다.
+                failures.append(f"GS_{broadcast} {date_dash}")
+                print(f"  -> 수집 실패, 기존값 유지 ({len(days.get(date_dash) or [])}개)")
+                time.sleep(REQUEST_DELAY)
+                continue
             # 고정PGM 뱃지: 공식 방송 예정일시와 일치하는 라이브 편성에 pgm 부여
             if broadcast == "live":
-                annotate_fixed_pgm(programs, date_dash, pgm_map)
+                if pgm_map.get(date_dash):
+                    annotate_fixed_pgm(programs, date_dash, pgm_map)
+                else:
+                    # GS 공식 페이지 수집 실패/미제공 시 기존 뱃지를 같은 시작시각에 이어 붙인다
+                    carry_over_pgm(programs, days.get(date_dash) or [])
             programs = add_categories(programs)
 
-            if is_past and not programs:
-                print(f"  -> 0개 (과거, 기존값 유지)")
+            if not programs and days.get(date_dash):
+                # 이미 편성이 있던 날이 갑자기 0건이면 일시 오류로 보고 기존값 유지
+                print(f"  -> 0개 (기존 {len(days[date_dash])}개 유지)")
                 time.sleep(REQUEST_DELAY)
                 continue
 
@@ -362,6 +392,11 @@ def main():
                 }, f, ensure_ascii=False, indent=2)
             print(f"  저장: {out_path} ({len(sorted_days)}일)")
 
+    if failures:
+        # 저장은 끝낸 뒤(살릴 데이터는 살린 뒤) 실패를 종료코드로 드러낸다 -
+        # 워크플로우의 '스크래퍼 실패 시 잡 실패 처리' 스텝이 빨간불로 만든다.
+        print(f"\n수집 실패 {len(failures)}건: " + ", ".join(failures))
+        sys.exit(1)
     print("\n완료.")
 
 
