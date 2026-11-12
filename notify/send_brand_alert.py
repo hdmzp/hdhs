@@ -11,7 +11,7 @@
    비에날씬 프로 다이어트 유산균 플러스 60포 외 1개
 
    📅 다음 방송 (7일 안)
-   [CJ] 11/15(일) 22:40 비에날씬 프로 ...      <- 등록 브랜드 전체, 방송마다 한 줄 (2026-11 사용자 지정 양식)
+   [CJ] 11/15(일) 11:15 세포랩 · 시그니처 에센스 ...   <- 등록 브랜드 전체, 방송마다 한 줄 (2026-11 사용자 지정 양식)
 
   - 등록은 봇 '🔔 브랜드 알림' (worker/telegram-bot.js) - /export 의 users[ID].brands
       {"t": "b", "v": 브랜드명}  편성 브랜드명이 같으면 (notify/brand_alias.json 의 다른 이름도 같은 브랜드로)
@@ -164,9 +164,16 @@ def build_for(entries, today, slots, alias, now, weather):
         if d <= today:
             continue
         for co, start, items in slots[d]:
-            if any(m(it) for _, m in matchers for it in items):
-                upcoming.append("[%s] %s %s %s" % (food.COMPANY_NAMES.get(co, co), short_day(d), start,
-                                                   esc(food.clean_product(items[0].get("product") or ""))))
+            hit = next((e for e, m in matchers if any(m(it) for it in items)), None)
+            if not hit:
+                continue
+            # '[회사] 11/15(일) 22:40 브랜드 · 상품명' - 편성 브랜드명, 비어 있으면 등록한 이름.
+            # 상품명이 브랜드로 시작하면 브랜드는 생략 (2026-11 사용자 요청: 어느 브랜드인지 보이게)
+            product = food.clean_product(items[0].get("product") or "")
+            brand = next(((i.get("brand") or "").strip() for i in items if (i.get("brand") or "").strip()), "") \
+                or (hit["v"] if hit.get("t") != "k" else "")
+            name = product if not brand or norm(product).startswith(norm(brand)) else "%s · %s" % (brand, product)
+            upcoming.append("[%s] %s %s %s" % (food.COMPANY_NAMES.get(co, co), short_day(d), start, esc(name)))
     if upcoming:
         more = len(upcoming) - UPCOMING_MAX
         lines += ["", "<b>📅 다음 방송 (%d일 안)</b>" % UPCOMING_DAYS] + upcoming[:UPCOMING_MAX]
