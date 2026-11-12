@@ -27,7 +27,6 @@ hdhs/
 │   ├── lavangba.yml                    # 라방바 11개사 방송 데이터(v2, 로그인 불필요)
 │   ├── category-correct.yml            # 카테고리 자동 정정 (라방바 분류·원문 근거, 매일 새벽)
 │   ├── promotion.yml                   # 프로모션 카드할인 4사(HD/GS/CJ/LT)
-│   ├── pricewatch.yml                  # 가격추적 (다사 동일브랜드)
 │   ├── weather.yml                     # 날씨(ASOS 과거 + 단기예보) + 공휴일 + 절기
 │   ├── telegram-daily-food.yml         # 텔레그램 아침 알림(식품·셀럽PGM·카테고리·브랜드, 구독 설정별)
 │   └── pages-deploy.yml                # 위 워크플로우들이 커밋 후 강제 트리거하는 배포 전용 워크플로우
@@ -39,8 +38,6 @@ hdhs/
 ├── etc_scraper.py                    # [홈쇼핑] 기타 7개사(공영/홈앤/K쇼핑/신세계/NS/쇼핑엔티/SK스토아, 라방바 경유)
 ├── promotion_scraper.py              # [프로모션] 4사(HD/GS/CJ/LT) 카드할인 일정
 ├── lavangba_scraper_v2.py            # [라방바] 11개사 방송 데이터 수집 v2 (로그인 불필요, 매출 제외)
-├── pricewatch_tracker.py             # [가격추적] 3사 이상 편성 브랜드 자동 선정(추적 대상 갱신)
-├── pricewatch_scraper.py             # [가격추적] 브랜드x회사별 판매가 수집 + 변경 감지
 ├── weather.py                        # [날씨] ASOS 과거 + 단기예보 + 공휴일 + 절기
 ├── notify/send_daily_food.py         # [알림] 텔레그램 아침 식품방송 리스트 발송 (notify/tg.py 공용)
 ├── notify/send_celeb_daily.py        # [알림] 텔레그램 어제 셀럽PGM 운영상품 (브랜드당 1개, 특이사항 = 셀럽PGM 방송 체크 기준)
@@ -112,18 +109,16 @@ hdhs/
 | `category-correct.yml` | 04:47 | 최근 10일 편성의 틀린 분류를 라방바 근거로 정정 (`tools/recategorize_retro.py`) | - |
 | `rep-pgm-scrape.yml` | 08:10, 20:00 (하루 2회) | 셀럽PGM 대표프로그램 메타 병합 | 회사별 `continue-on-error` + 건전성 검사(2-1) |
 | `telegram-daily-food.yml` | 04:05 (GitHub 지연 2~4시간 감안해 새벽 예약) | 텔레그램 아침 알림(식품방송 리스트 + 어제 셀럽PGM 운영상품 + 패션·리빙·미용 리스트 + 브랜드 알림, 봇 구독 설정대로) | - (데이터 커밋 없음, `contents: read`) |
-| `pricewatch.yml` | 10:40, 16:40 (하루 2회) | 가격추적(다사 동일브랜드 판매가) | 수집 스텝 `continue-on-error` |
 | `pages-deploy.yml` | (push 또는 API 트리거 시) | GitHub Pages 배포 | 3회까지 자동 재시도 |
 
 하루 여러 번 도는 워크플로우는 각각 이유가 붙어 있다.
 - `homeshopping.yml`(5회): 홈쇼핑사가 당일 편성을 수시로 바꿔서(방송 추가/교체) 새벽 1회로는 놓친다
 - `schedule.yml`·`scrape-dramavariety.yml`: 지상파 당일 편성 변경 반영용으로 저녁(21:00)에 한 번 더
 - `rep-pgm-scrape.yml`(20:00): 홈쇼핑사가 "다음 방송" 라인업을 낮 동안 채워넣기 때문. 편성 수집(`hd_scraper`, 18:30) 뒤라 보충분까지 최신으로 받는다
-- `pricewatch.yml`: 커밋 경합을 피하려고 다른 워크플로우 크론과 겹치지 않는 10:40/16:40 구간에 단독으로 둠
 
 공통 사항:
 - 실행 주체는 모두 `github-actions[bot]`, 데이터 변경이 있을 때만 커밋(`git diff --staged/cached --quiet ||`)해서 빈 커밋 방지
-- **push 충돌 방지**: `scrape-dramavariety`, `scrape-fixed-pgm`, `scrape-ranking`, `rep-pgm-scrape`, `scrape-celebpgm`, `promotion`, `etc-scrape` 7개는 `git pull --rebase` 후 재시도를 최대 5회까지 반복하는 루프를 둠(`rep-pgm-scrape`·`scrape-celebpgm`은 재시도 소진 시 원격 재동기화 후 마지막 1회까지). 반면 `schedule`, `homeshopping`, `weather`, `lavangba`, `pricewatch` 5개는 아직 단순 `git pull --rebase --autostash && git push` 1회뿐이라 동시 충돌 시 실패할 수 있음 — 통일 필요
+- **push 충돌 방지**: `scrape-dramavariety`, `scrape-fixed-pgm`, `scrape-ranking`, `rep-pgm-scrape`, `scrape-celebpgm`, `promotion`, `etc-scrape` 7개는 `git pull --rebase` 후 재시도를 최대 5회까지 반복하는 루프를 둠(`rep-pgm-scrape`·`scrape-celebpgm`은 재시도 소진 시 원격 재동기화 후 마지막 1회까지). 반면 `schedule`, `homeshopping`, `weather`, `lavangba` 4개는 아직 단순 `git pull --rebase --autostash && git push` 1회뿐이라 동시 충돌 시 실패할 수 있음 — 통일 필요
 - **Pages 배포 트리거 문제**: `github-actions[bot]` 계정의 push는 GitHub 정책상 다른 워크플로우를 재귀 트리거하지 않아, `pages-deploy.yml`이 데이터 갱신 커밋에 자동 반응하지 않는다. 그래서 각 스크래퍼 워크플로우가 커밋 후 `workflow_dispatch`를 API로 직접 호출해 배포를 강제로 큐에 넣는다. 데이터를 커밋하는 워크플로우 12개 모두에 이 스텝이 들어가 있다(마지막까지 빠져 있던 `scrape-celebpgm.yml`도 2026-08-20 사고 — 최은경쇼 첫 수집분이 push까지 되고도 배포가 안 돼 화면에 안 보였다 — 이후 추가됨). 데이터를 커밋하지 않는 `telegram-daily-food.yml`에는 필요 없다
 - `pages-deploy.yml`은 GitHub Pages 배포가 일시적으로 실패(`Deployment failed, try again later.`)하는 경우를 대비해 최대 3회 자동 재시도
 
@@ -332,13 +327,6 @@ Actions → "라방바 방송 수집 (11개사)" → Run workflow 에서 `start_
 - 파싱 실패 시 `homeshopping/promotions/_debug_{사}.html` 스냅샷 저장 (PROMO_DEBUG=true면 성공해도 저장 - workflow_dispatch 입력으로 켤 수 있음)
 - 회사 확장: 스크래퍼의 `COMPANIES` 리스트 + 프론트 `PM_COMPANIES`에 추가. NS(카드혜택 캘린더 table)가 다음 후보, KT는 이미지 배너뿐이라 보류
 
-### 💰 가격추적 — `pricewatch_tracker.py` + `pricewatch_scraper.py`
-- 4사 편성 데이터(최근 60일)에서 **3사 이상에 편성된 브랜드**를 자동 선정하고, 브랜드×회사별 최근 상품(최대 3개)의 상품페이지 판매가를 하루 2회(KST 10:40/16:40, `pricewatch.yml`) 수집
-- 편성표에는 안 보이는 "방송 후 상시가 인하"와 구성(상품명) 변경을 잡는 것이 목적
-- `pricewatch/tracked.json`(추적 대상) / `current.json`(최신 스냅샷) / `history/{YYYY-MM}.json`(변경 이벤트만 append — obs/price_drop/price_raise/name_change/sold_out/restock/new_product)
-- 수집 폴백 체인: HD·CJ는 상세 API → HTML, LT는 HTML(www→m), GS는 `m.gsshop.com`(클라우드 IP 차단 시 최근 방송가 폴백, `src:"schedule"`로 구분). 같은 `src`끼리만 가격을 비교해 방송가↔상시가 혼동 오탐 방지, 1% 미만이면서 1,000원 미만 변동은 노이즈로 무시
-- 프론트는 🔒보안 탭 로그인 후 "💰 가격추적" 서브탭 (브랜드×4사 표, 카테고리/4사공통 필터, 행 클릭 시 상품·이력)
-
 ### 🌤 날씨 — `weather.py`
 - 서울 기준(위경도 격자 60,127 / 관측소ID 108)
 - 과거(ASOS): 확정된 지난 달까지는 `weather/asos/{YYYY-MM}.json`에 한 번만 저장하고 재수집 안 함. 진행 중인 현재 달은 매일 1일~어제까지 통째로 재수집
@@ -459,4 +447,4 @@ Actions → "라방바 방송 수집 (11개사)" → Run workflow 에서 `start_
 - 두 파서 버전이 모두 실패하면 `data/_debug_fail_{채널명}.html`로 저장되고 그날 데이터에서 누락(구조 변경 감지용) — 셀럽PGM 쪽에도 `_debug_pgm_comm_*.json` 형태의 동일한 실패 스냅샷이 남음
 - GS와 기타 7개사(총 8개사)가 모두 라방바(`live.ecomm-data.com`) 하나에 의존해서, 그 사이트 구조가 바뀌면 한 번에 다수 채널이 영향받는 단일 장애점
 - 홈쇼핑/고정PGM 스크래퍼 대부분이 `continue-on-error`(또는 `|| echo`)라서 특정 사가 그날 실패해도 워크플로우 전체는 성공으로 표시됨. 셀럽PGM·고정PGM 3개 워크플로우는 [2-1 수집 안전장치](#2-1-수집-안전장치-조용한-실패-방지)로 해결됨(검사 실패 시 잡 실패). **아직 미적용**: `homeshopping.yml`, `etc-scrape.yml`, `promotion.yml`, `scrape-ranking.yml` — 같은 방식으로 `SPECS`에 산출물을 추가하면 확장 가능
-- 워크플로우별 push 재시도 로직이 통일돼 있지 않음(`schedule`/`homeshopping`/`weather`/`lavangba`/`pricewatch`는 1회, 나머지 7개는 5회 재시도) — 통일 필요
+- 워크플로우별 push 재시도 로직이 통일돼 있지 않음(`schedule`/`homeshopping`/`weather`/`lavangba`는 1회, 나머지 7개는 5회 재시도) — 통일 필요

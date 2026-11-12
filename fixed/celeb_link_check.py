@@ -39,9 +39,14 @@ from datetime import datetime, timedelta, timezone
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
-import pricewatch_scraper as pw  # noqa: E402  (UA·타임아웃 공유)
 
 KST = timezone(timedelta(hours=9))
+
+TIMEOUT = 10
+UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+      "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36")
+GS_MOBILE_UA = ("Mozilla/5.0 (Linux; Android 13; SM-S918N) AppleWebKit/537.36 "
+                "(KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36")
 DIR = os.path.join(ROOT, "homeshopping", "representative_programs")
 OUT_PATH = os.path.join(DIR, "link_status.json")
 
@@ -135,10 +140,10 @@ def judge(text):
 def check(co, pid):
     """'x'(안 열림) / 'ok' / '?'(판단 보류) 반환."""
     try:
-        headers = {"User-Agent": pw.GS_MOBILE_UA if co == "GS" else pw.UA}
+        headers = {"User-Agent": GS_MOBILE_UA if co == "GS" else UA}
         if co == "CJ":
             headers["Referer"] = "https://display.cjonstyle.com/p/item/"
-        r = requests.get(RAW_URL[co].format(pid=pid), headers=headers, timeout=pw.TIMEOUT)
+        r = requests.get(RAW_URL[co].format(pid=pid), headers=headers, timeout=TIMEOUT)
     except Exception:
         return "?"
     if r.status_code != 200 or len(r.text) < 2000:
