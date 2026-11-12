@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-텔레그램 아침 '🔔 관심 브랜드' 알림 - 사람마다 봇에서 등록한 브랜드가 오늘 4사 편성에 있으면 보낸다.
+텔레그램 아침 '🔔 관심 브랜드' 알림 - 사람마다 봇에서 등록한 브랜드가 오늘 전체 홈쇼핑(11개 채널) 편성에 있으면 보낸다.
 
    11/12(목)
 
@@ -14,13 +14,16 @@
 
   - 등록은 봇 '🔔 브랜드 알림' (worker/telegram-bot.js) - /export 의 users[ID].brands
       {"t": "b", "v": 브랜드명}  편성 브랜드명이 같으면 (notify/brand_alias.json 의 다른 이름도 같은 브랜드로)
+                                 브랜드 칸이 빈 방송은 상품명에 그 이름(3글자 이상)이 들어 있으면
+                                 (4사 외 채널은 브랜드 칸이 24~56%만 채워져 있다 - 2026-11 기준)
       {"t": "k", "v": 단어}      브랜드명이나 상품명에 그 단어가 들어가면
     비교는 소문자·글자/숫자만 (띄어쓰기·기호 무시) - 봇의 normB 와 같다.
   - 사람마다 코드가 따로 있는 게 아니라 등록 목록(데이터)만 다르다. 편성은 한 번만 읽는다.
   - 오늘 방송이 하나도 없으면 그 사람에게는 안 보낸다 (매일 같은 '다음 방송'만 오지 않게).
 
 == 환경변수 ==
-  TELEGRAM_BOT_TOKEN (필수) / COMPANIES (기본 HD,GS,CJ,LT) / TARGET_DATE / DRY_RUN / ADMIN_ONLY
+  TELEGRAM_BOT_TOKEN (필수) / TARGET_DATE / DRY_RUN / ADMIN_ONLY
+  BRAND_COMPANIES (선택) 볼 채널, 쉼표 구분 (기본 ALL = 전체 홈쇼핑). 식품·카테고리 알림의 COMPANIES 와 따로 둔다.
   ADMIN_ONLY=1 이면 관리자 본인 것만 보낸다 (관리자가 등록한 브랜드 기준).
 """
 
@@ -99,7 +102,15 @@ def make_matcher(entry, alias):
     if entry.get("t") == "k":
         return lambda it: v in norm(it.get("brand")) + "|" + norm(it.get("product"))
     names = alias.get(v, {v})
-    return lambda it: norm(it.get("brand")) in names
+    long_names = [n for n in names if len(n) >= 3]
+
+    def match(it):
+        b = norm(it.get("brand"))
+        if b:
+            return b in names
+        p = norm(it.get("product"))
+        return any(n in p for n in long_names)
+    return match
 
 
 def label(entry):
@@ -165,7 +176,7 @@ def build_for(entries, today, slots, alias, now, weather):
 def main():
     now = food.target_date()
     today = now.strftime("%Y-%m-%d")
-    companies_env = (os.environ.get("COMPANIES") or food.DEFAULT_COMPANIES).strip()
+    companies_env = (os.environ.get("BRAND_COMPANIES") or "ALL").strip()
     companies = None if companies_env.upper() == "ALL" else {c.strip() for c in companies_env.split(",") if c.strip()}
 
     users = subscribers.load()["users"]

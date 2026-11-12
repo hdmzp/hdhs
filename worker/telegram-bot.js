@@ -187,7 +187,7 @@ async function decide(env, cq, approve, mode, id) {
 }
 
 // ---------------- 🔔 브랜드 알림 ----------------
-// 사용자가 짧게 입력 → 실제 편성에 나온 브랜드 후보를 버튼으로 → 눌러서 등록 (여러 개, 다시 누르면 취소).
+// 전체 홈쇼핑 11개 채널 대상. 사용자가 짧게 입력 → 실제 편성에 나온 브랜드 후보를 버튼으로 → 눌러서 등록 (여러 개, 다시 누르면 취소).
 // 같은 상품이 회사마다 다른 브랜드명으로 찍히기도 해서 (HD 에이스바이옴 = GS·CJ·LT 비에날씬) 여러 개 고를 수 있게 했다.
 // 후보는 homeshopping/brand_index.json (tools/build_brand_index.py, 편성 수집 때마다 갱신)에서 찾는다.
 // 저장: u.brands = [{t: "b", v: 브랜드명} | {t: "k", v: 단어}]  - k 는 '그 단어가 들어간 방송 모두'
@@ -244,7 +244,11 @@ function searchBrands(index, term, limit = 5) {
 const brandLabel = (e) => (e.t === "k" ? `'${e.v}' 들어간 방송` : e.v);
 const brandNames = (list) => (list || []).map(brandLabel).join(", ");
 const sameBrand = (a, b) => a.t === b.t && normB(a.v) === normB(b.v);
-const COS_KO = { HD: "HD", GS: "GS", CJ: "CJ", LT: "LT" };
+const COS_KO = { HD: "HD", GS: "GS", CJ: "CJ", LT: "LT", NS: "NS", HNS: "홈앤", PUBLIC: "공영", KTALPHA: "KT알파",
+  SHINSEGAE: "신세계", SHOPPINGNT: "쇼핑엔티", SKSTOA: "SK스토아" };
+// 후보 버튼에 채널 이름 - 많으면 앞 3개 + '등 N개 채널'
+const cosText = (cos) => (cos.length > 4 ? cos.slice(0, 3).map((c) => COS_KO[c] || c).join("·") + ` 등 ${cos.length}개 채널`
+  : cos.map((c) => COS_KO[c] || c).join("·"));
 
 const BRAND_GUIDE = "🔔 <b>알림 받을 브랜드를 짧게 보내주세요.</b>\n"
   + "브랜드명, 상품명 어느 쪽이든 괜찮아요.\n"
@@ -255,7 +259,7 @@ const BRAND_GUIDE = "🔔 <b>알림 받을 브랜드를 짧게 보내주세요.<
 function brandListText(u) {
   const list = u.brands || [];
   const lines = ["🔔 <b>브랜드 알림</b>",
-    "등록한 브랜드가 그날 4사(HD·GS·CJ·LT) 편성에 있으면 아침에 알려드려요.", ""];
+    "등록한 브랜드가 그날 전체 홈쇼핑(11개 채널) 편성에 있으면 아침에 알려드려요.", ""];
   if (!list.length) lines.push("아직 등록한 브랜드가 없어요.");
   else list.forEach((e, i) => lines.push(`${i + 1}. ${esc(brandLabel(e))}`));
   lines.push("", `(최대 ${BRAND_MAX}개 · 🗑 를 누르면 지워요)`);
@@ -322,15 +326,15 @@ async function onBrandInput(env, mode, chatId, u, text) {
     }
     const found = searchBrands(index, term);
     const rows = found.map((r) => {
-      const label = `${r.name} · ${r.n ? r.cos.map((c) => COS_KO[c] || c).join("·") + " " + r.n + "회" : "편성 없음"}${r.cat ? " · " + r.cat : ""}`;
+      const label = `${r.name} · ${r.n ? cosText(r.cos) + " · " + r.n + "회" : "편성 없음"}${r.cat ? " · " + r.cat : ""}`;
       return [{ i: addCand({ t: "b", v: r.name }, label), label }];
     });
     const kw = term.replace(/\s+/g, " ").slice(0, 20);
     rows.push([{ i: addCand({ t: "k", v: kw }, `🔎 '${kw}' 들어간 방송 모두`), label: `🔎 '${kw}' 들어간 방송 모두` }]);
     const long = term.length > 15 ? "💡 조금 더 짧게 보내주시면 더 잘 찾아요.\n\n" : "";
     const head = found.length
-      ? `${long}🔎 <b>'${esc(term)}'</b> 찾은 브랜드 (최근 4개월 4사 편성)\n눌러서 등록해요. 여러 개 골라도 되고, 다시 누르면 취소돼요.`
-      : `${long}🔎 <b>'${esc(term)}'</b> - 최근 4개월 4사 편성에 이 이름이 들어간 브랜드·상품이 없어요.\n그래도 등록하면 앞으로 나올 때 알려드려요.`;
+      ? `${long}🔎 <b>'${esc(term)}'</b> 찾은 브랜드 (최근 4개월 전체 홈쇼핑 편성)\n눌러서 등록해요. 여러 개 골라도 되고, 다시 누르면 취소돼요.`
+      : `${long}🔎 <b>'${esc(term)}'</b> - 최근 4개월 전체 홈쇼핑 편성에 이 이름이 들어간 브랜드·상품이 없어요.\n그래도 등록하면 앞으로 나올 때 알려드려요.`;
     if (!found.length) await env.SUBS.put("miss:" + term.slice(0, 40), today(), { expirationTtl: 90 * 86400 });
     msgs.push([head, rows]);
   }
