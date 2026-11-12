@@ -8,7 +8,7 @@ on:
   workflow_dispatch:  # 수동 실행 버튼 (테스트 발송용으로 하나만 골라 보낼 수 있다)
     inputs:
       only:
-        description: "보낼 메시지 (all / food / ppl / celeb / category)"
+        description: "보낼 메시지 (all / food / ppl / celeb / category / brand)"
         required: false
         default: "all"
       admin_only:
@@ -96,6 +96,16 @@ jobs:
           # 새 게스트 후보: 월요일 자동 + 손으로 실행할 때마다 (관리자에게만)
           GUEST_CANDIDATES: ${{ github.event_name == 'workflow_dispatch' && !inputs.scheduled && '1' || '' }}
         run: python notify/send_daily_category.py
+      # 🔔 관심 브랜드 - 봇에서 브랜드를 등록한 사람마다, 오늘 전체 홈쇼핑(11개 채널) 편성에 있을 때만 (notify/send_brand_alert.py)
+      - name: 텔레그램 발송 — 관심 브랜드
+        if: always() && (github.event_name != 'workflow_dispatch' || inputs.only == 'all' || inputs.only == 'brand')
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          ADMIN_ONLY: ${{ github.event_name == 'workflow_dispatch' && inputs.admin_only && '1' || '' }}  # 수동 테스트는 관리자 본인 것만
+          BRAND_COMPANIES: ${{ vars.BRAND_COMPANIES }}  # 비우면 전체 채널
+          TIME_START: ${{ vars.TIME_START }}
+          TIME_END: ${{ vars.TIME_END }}
+        run: python notify/send_brand_alert.py
       # 오늘 보냈다고 봇에 표시 (예비 예약이 같은 알림을 또 보내지 않게). 정기 발송일 때만.
       - name: 오늘 발송 표시
         if: always() && (github.event_name == 'schedule' || inputs.scheduled)
