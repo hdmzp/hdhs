@@ -58,6 +58,11 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         run: python gs_scraper.py
 
+      # 텔레그램 봇 '🔔 브랜드 알림' 검색용 브랜드 색인 (tools/build_brand_index.py, 1초 미만 · 300KB 남짓)
+      - name: 브랜드 색인 갱신
+        continue-on-error: true
+        run: python tools/build_brand_index.py
+
       - name: 결과 커밋 & 푸시
         id: commit
         run: |
@@ -72,6 +77,7 @@ jobs:
                    homeshopping/CJ_live homeshopping/CJ_data \
                    homeshopping/GS_live homeshopping/GS_data
           git add -A -- \
+                  homeshopping/brand_index.json \
                   homeshopping/HD_live homeshopping/HD_data \
                   homeshopping/LT_live homeshopping/LT_data \
                   homeshopping/CJ_live homeshopping/CJ_data \

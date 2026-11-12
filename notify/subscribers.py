@@ -7,7 +7,7 @@
 열쇠는 봇 토큰(TELEGRAM_BOT_TOKEN)에서 만들어서 따로 넣을 설정이 없다.
 Worker 주소를 바꾸려면 GitHub Variables 에 SUBS_URL.
 
-알림 이름: celeb 셀럽PGM / fashion 패션 / beauty 미용 / food 식품 / living 리빙
+알림 이름: celeb 셀럽PGM / fashion 패션 / beauty 미용 / food 식품 / living 리빙 / brand 브랜드 (등록 목록은 users[ID]["brands"], 발송은 send_brand_alert.py)
 관리용 메시지(게스트 후보 등)는 관리자(wrangler.jsonc 의 ADMIN_ID)에게 간다.
 """
 
