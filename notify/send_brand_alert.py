@@ -4,13 +4,14 @@
 
    11/12(목)
 
-   🔔 오늘 관심 브랜드 방송
+   🔔 오늘 관심 브랜드 방송 (3회)
+   [비에날씬/ 에이스바이옴/ 세포랩]
 
-   10:40 [GS] 세포랩
-   세포랩 바이옴 앰플 ...
+   07:15 [GS] 비에날씬
+   비에날씬 프로 다이어트 유산균 플러스 60포 외 1개
 
    📅 다음 방송 (7일 안)
-   비에날씬 · 11/14(토) 08:20 [CJ]
+   [CJ] 11/15(일) 11:15 세포랩 · 시그니처 에센스 ...   <- 등록 브랜드 전체, 방송마다 한 줄 (2026-11 사용자 지정 양식)
 
   - 등록은 봇 '🔔 브랜드 알림' (worker/telegram-bot.js) - /export 의 users[ID].brands
       {"t": "b", "v": 브랜드명}  편성 브랜드명이 같으면 (notify/brand_alias.json 의 다른 이름도 같은 브랜드로)
@@ -42,6 +43,7 @@ import send_daily_food as food
 ROOT = food.ROOT
 DRY_RUN = food.DRY_RUN
 UPCOMING_DAYS = 7
+UPCOMING_MAX = 20  # 다음 방송 줄 수 한도 (넘으면 '외 N회')
 ALIAS_PATH = os.path.join(ROOT, "notify", "brand_alias.json")
 
 
@@ -150,25 +152,33 @@ def build_for(entries, today, slots, alias, now, weather):
             todays.append(slot_lines(co, start, items))
     if not todays:
         return None
-    lines = food.header_lines(now, weather) + ["", "<b>🔔 오늘 관심 브랜드 방송</b> (%d회)" % len(todays), ""]
+    lines = food.header_lines(now, weather) + [
+        "", "<b>🔔 오늘 관심 브랜드 방송</b> (%d회)" % len(todays),
+        "[%s]" % esc("/ ".join(label(e) for e, _ in matchers)), ""]
     for t in todays:
         lines += [t, ""]
     lines.pop()
-    # 오늘 방송이 없는 브랜드는 다음 방송 한 줄
+    # 다음 방송: 등록 브랜드 전체, 내일부터 7일, 방송마다 한 줄 '[회사] 11/15(일) 22:40 상품명'
     upcoming = []
-    for e, m in matchers:
-        if any(m(it) for _, _, its in slots[today] for it in its):
+    for d in sorted(slots):
+        if d <= today:
             continue
-        for d in sorted(slots):
-            if d <= today:
+        for co, start, items in slots[d]:
+            hit = next((e for e, m in matchers if any(m(it) for it in items)), None)
+            if not hit:
                 continue
-            hit = next(((co, st) for co, st, its in slots[d] if any(m(it) for it in its)), None)
-            if hit:
-                upcoming.append("%s · %s %s [%s]" % (esc(label(e)), short_day(d), hit[1],
-                                                      food.COMPANY_NAMES.get(hit[0], hit[0])))
-                break
+            # '[회사] 11/15(일) 22:40 브랜드 · 상품명' - 편성 브랜드명, 비어 있으면 등록한 이름.
+            # 상품명이 브랜드로 시작하면 브랜드는 생략 (2026-11 사용자 요청: 어느 브랜드인지 보이게)
+            product = food.clean_product(items[0].get("product") or "")
+            brand = next(((i.get("brand") or "").strip() for i in items if (i.get("brand") or "").strip()), "") \
+                or (hit["v"] if hit.get("t") != "k" else "")
+            name = product if not brand or norm(product).startswith(norm(brand)) else "%s · %s" % (brand, product)
+            upcoming.append("[%s] %s %s %s" % (food.COMPANY_NAMES.get(co, co), short_day(d), start, esc(name)))
     if upcoming:
-        lines += ["", "<b>📅 다음 방송 (%d일 안)</b>" % UPCOMING_DAYS] + upcoming
+        more = len(upcoming) - UPCOMING_MAX
+        lines += ["", "<b>📅 다음 방송 (%d일 안)</b>" % UPCOMING_DAYS] + upcoming[:UPCOMING_MAX]
+        if more > 0:
+            lines.append("외 %d회" % more)
     lines += ["", "브랜드 바꾸기: /brand"]
     return lines
 
