@@ -186,26 +186,37 @@ SK_URL = "https://www.skstoa.com/broadcast/scdGoodsList"
 SK_LINK = "https://www.skstoa.com/display/goods/{code}"
 
 
+SK_GA_INPUT = re.compile(r'<input type="hidden" class="ga-prd-data"((?:\s+p-[a-z]+="[^"]*")+)')
+
+
 def fetch_skstoa(date_obj, _session, label):
+    """시간대(<section>)마다 화면엔 대표상품 1개(<article>)만 그리지만, 같은 section 안의
+    GA 태깅용 <input class="ga-prd-data" p-list="TV편성_방송상품>상품" ...> 에 그 시간대에
+    같이 방송하는 상품이 전부 들어 있다 (p-id/p-name/p-price/p-brand). 라방바가 주던 2번째
+    상품(보험·렌탈 등)이 여기 있어서 이걸 쓴다. 'TV편성_추천방송상품'은 함께 보면 좋은 상품이라 제외.
+    맨 앞 section 은 전날 23시대(예: 23:31~00:31)가 와서 날짜가 맞지 않으므로 시작시각이
+    다음 section 보다 늦으면 버린다."""
     r = scrape_guard.request("GET", SK_URL, params={"date": date_obj.strftime("%Y%m%d")},
                              headers={**BASE_HEADERS, "X-Requested-With": "XMLHttpRequest",
                                       "Referer": "https://www.skstoa.com/tv_schedule"},
                              timeout=20, label=label)
+    sections = []
+    for sec in r.text.split("<section")[1:]:
+        sec = sec.split("</section>")[0]
+        tm = re.search(r'class="timebox">\s*(\d\d:\d\d)\s*~\s*(\d\d:\d\d)', sec)
+        if tm:
+            sections.append((tm.group(1), tm.group(2), sec))
+    while len(sections) >= 2 and sections[0][0] > sections[1][0]:
+        sections.pop(0)  # 전날 밤 시간대
+
     rows = []
-    for art in r.text.split("<article")[1:]:
-        art = art.split("</article>")[0].split('<div class="tv_wrap"')[0]  # 영상/추천상품 영역 제외
-        tm = re.search(r'class="timebox">\s*(\d\d:\d\d)\s*~\s*(\d\d:\d\d)', art)
-        if not tm:
-            continue
-        for tr in re.findall(r"<tr>(.*?)</tr>", art, re.S):
-            code = re.search(r"goGoodsDetail\('(\d+)", tr)
-            if not code:
+    for start, end, sec in sections:
+        for m in SK_GA_INPUT.finditer(sec):
+            a = dict(re.findall(r'(p-[a-z]+)="([^"]*)"', m.group(1)))
+            if not a.get("p-id") or not (a.get("p-list") or "").startswith("TV편성_방송상품"):
                 continue
-            name = re.search(r'alt="([^"]*)"', tr) or re.search(r'class="name">([^<]*)', tr)
-            brand = re.search(r'class="brand">([^<]*)', tr)
-            price = re.search(r'class="price"><span>([\d,]+)', tr)
-            rows.append(_row(tm.group(1), tm.group(2), name.group(1) if name else "", _price(price and price.group(1)),
-                             SK_LINK.format(code=code.group(1)), brand=htmlmod.unescape(brand.group(1)) if brand else ""))
+            rows.append(_row(start, end, a.get("p-name", ""), _price(a.get("p-price", "").split(".")[0]),
+                             SK_LINK.format(code=a["p-id"]), brand=htmlmod.unescape(a.get("p-brand", ""))))
     return rows
 
 
