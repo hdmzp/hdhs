@@ -1,7 +1,18 @@
 # -*- coding: utf-8 -*-
 """
-기타 홈쇼핑 7개사 편성표 수집기 (라방바 데이터랩 API 경유)
+기타 홈쇼핑 7개사 편성표 수집기
 
+== 출처 순서 (2026-11-13 변경) ==
+1순위: 각 사 공식 편성표 (tools/official_schedule.py) - 홈앤/쇼핑엔티/NS(본채널·샵플러스)/SK스토아.
+       2026-11-11부터 라방바가 GitHub Actions IP를, 11-12에는 Worker 중계까지 405로 막아서
+       4사(HD/LT/CJ/GS)처럼 공식 편성표로 옮겼다. 전환 전 엿새 비교에서 방송 시작시각
+       92~99%, 상품코드 80~98% 일치 (official_schedule.py 머리말).
+2순위: 라방바 데이터랩 API (아래 설명) - 공영/K쇼핑/신세계는 공식 사이트가 해외 IP를
+       막아 아직 이 경로만 있다. 공식이 실패한 날도 여기로 넘어온다. 라방바가 직접·중계
+       모두 막혀 있으면(tools/lavangba_relay.py) 그 실행에선 더 부르지 않고 기존값을 유지한다.
+어느 경로든 실패하면 그날 기존 편성을 덮어쓰지 않는다 (빈 값으로 지워지는 일 없음).
+
+== (2순위) 라방바 데이터랩 API ==
 gs_scraper.py와 동일한 방식으로 라방바(ecomm-data.com)의 공개 API를
 사용한다. GS 전용 스크립트와 분리한 이유는, 이 7개사는 대부분 GS처럼
 "라이브/마이샵" 같은 서브 채널 구분이 없고 회사당 platform_id가 1개씩만
@@ -100,6 +111,9 @@ from categorize import classify_batch, resolve_display_brand_batch
 from clean_product import clean_product_name
 from tools import scrape_guard
 from tools.lavangba_relay import session as lavangba  # 직접 -> 막히면 Worker 중계
+# 1순위 출처: 각 사 공식 편성표 (2026-11-13, 라방바 차단 대응. 상세는 tools/official_schedule.py 머리말).
+# 여기 없는 회사(공영/K쇼핑/신세계)와 공식이 실패한 날은 아래 라방바 경로로 받는다.
+from tools.official_schedule import OFFICIAL_FETCHERS
 
 # 라방바 list_hs 재시도 대상. 2026-11-11 새벽부터 GitHub Actions에서 POST
 # list_hs가 HTTP 405를 돌려줘(같은 요청이 다른 환경에선 200) 편성이 0건으로
@@ -311,6 +325,7 @@ def main():
             sub_dir = os.path.join(OUTPUT_DIR, log_label)
             os.makedirs(sub_dir, exist_ok=True)
             month_data = {}
+            official_session = requests.Session()  # 공식 편성표용 (쇼핑엔티는 세션쿠키+CSRF 토큰이 필요)
 
             for offset in DAYS_RANGE:
                 d = base + timedelta(days=offset)
@@ -326,7 +341,18 @@ def main():
                     continue
 
                 print(f"[{log_label}] {date_dash} 수집 중...")
-                programs = fetch_company(d, platform_id, log_label)
+                programs = None
+                official = OFFICIAL_FETCHERS.get(log_label)
+                if official:
+                    try:
+                        programs = official(d, official_session, f"{log_label} {date_dash}")
+                        print(f"  [공식편성표] 상품 {len(programs)}개·방송 {len({p['start'] for p in programs})}개")
+                        if not programs and date_dash > today_str:
+                            programs = None  # 미래 날짜 빈 응답 = 아직 편성 미공개 (쇼핑엔티는 +4일까지만 줌)
+                    except Exception as e:
+                        print(f"  [공식편성표 실패] {e} -> 라방바로 대체")
+                if programs is None and (not official or not lavangba.blocked):
+                    programs = fetch_company(d, platform_id, log_label)
                 if programs is None:
                     # 수집 실패(HTTP 오류 등): 기존 편성을 빈 값으로 덮어쓰지 않는다.
                     failures.append(f"{log_label} {date_dash}")
