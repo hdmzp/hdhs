@@ -1,0 +1,74 @@
+name: 기타사 공식 편성표 수집 (검증용)
+
+# 라방바 차단(2026-11-11~) 대응. 기타 홈쇼핑사 편성을 각 사 공식 편성표에서 받아
+# homeshopping/_official/{채널}/ 에만 저장하고, 기존 라방바 기록(homeshopping/{채널}/)과
+# 날짜별 일치율을 homeshopping/_official/COMPARE.md 로 남긴다. 기존 데이터는 건드리지 않는다.
+# 일치가 확인되면 etc_scraper.py 의 출처를 회사별로 바꾼다 (etc_official_scraper.py 참고).
+
+on:
+  schedule:
+    # KST 07:00 / 13:30 / 19:30 (etc-scrape 크론과 겹치지 않게)
+    - cron: "0 22 * * *"
+    - cron: "30 4 * * *"
+    - cron: "30 10 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: etc-official
+  cancel-in-progress: false
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Python 설치
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 패키지 설치
+        run: pip install requests beautifulsoup4 scikit-learn joblib pandas openpyxl
+
+      - name: 접속 확인 - 공영/K쇼핑/신세계 (Actions 에서 열리는지만 본다)
+        continue-on-error: true
+        run: |
+          for u in https://www.gongyoung.com/ https://www.kshop.co.kr/ https://www.shinsegaetvshopping.com/ https://www.hnsmall.com/display/tvschedule https://www.skstoa.com/tv_schedule https://www.shoppingntmall.com/broadcast/tvBroadcastMain https://mapi.nsmall.com/md/api/v1/media/serverTime; do
+            printf "%-50s " "$u"
+            curl -sS -o /dev/null -m 20 -w "%{http_code}\n" -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0 Safari/537.36" "$u" || echo "연결 실패"
+          done
+
+      - name: 공식 편성표 수집 (홈앤/쇼핑엔티/NS/SK스토아)
+        continue-on-error: true
+        run: python etc_official_scraper.py
+
+      - name: 라방바 기록과 비교
+        continue-on-error: true
+        run: python tools/compare_official.py
+
+      - name: 결과 커밋 & 푸시
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          mkdir -p homeshopping/_official
+          git add -A -- homeshopping/_official
+          if git diff --staged --quiet; then
+            echo "변경 없음"
+            exit 0
+          fi
+          git commit -m "chore: 기타사 공식 편성표 검증 수집 $(date -u -d '+9 hours' +%Y-%m-%d)"
+          git pull --rebase --autostash origin main
+          for i in 1 2 3 4 5; do
+            if git push; then exit 0; fi
+            echo "push 실패, rebase 후 재시도 ($i/5)"
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || git rebase --abort || true
+            sleep $((RANDOM % 5 + 1))
+          done
+          echo "push 최종 실패"
+          exit 1
