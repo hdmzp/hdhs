@@ -37,25 +37,39 @@ def _relay_key() -> str:
     return hashlib.sha256(("export:" + token).encode()).hexdigest() if token else ""
 
 
+class LavangbaBlocked(requests.HTTPError):
+    """라방바가 직접 요청도, Worker 중계도 막은 상태. 이번 실행에선 라방바를 더 부르지 않는다.
+    requests.HTTPError 를 상속해서 scrape_guard.request 가 재시도 없이 바로 FetchError 로 바꾼다
+    (2026-11-12부터 중계까지 405 - 날짜·채널마다 5회씩 재시도하느라 실행당 수십 분을 버렸다)."""
+
+
 class LavangbaSession:
     def __init__(self):
         self.use_relay = False
+        self.blocked = False
 
     def request(self, method, url, **kwargs):
+        if not url.startswith(LAVANGBA_BASE):
+            return requests.request(method, url, **kwargs)
+        if self.blocked:
+            raise LavangbaBlocked("라방바 차단 상태(직접·중계 모두 405) - 이번 실행에서는 라방바 호출을 생략")
+
         key = _relay_key()
         if not self.use_relay:
             resp = requests.request(method, url, **kwargs)
-            if resp.status_code not in BLOCKED_STATUS or not key or not url.startswith(LAVANGBA_BASE):
+            if resp.status_code not in BLOCKED_STATUS or not key:
                 return resp
             print(f"    [lavangba] 직접 요청 HTTP {resp.status_code} -> Worker 중계로 전환")
             self.use_relay = True
 
-        if not url.startswith(LAVANGBA_BASE):
-            return requests.request(method, url, **kwargs)
         headers = dict(kwargs.pop("headers", None) or {})
         headers["Authorization"] = "Bearer " + key
-        return requests.request(method, RELAY_BASE + url[len(LAVANGBA_BASE):],
-                                headers=headers, **kwargs)
+        resp = requests.request(method, RELAY_BASE + url[len(LAVANGBA_BASE):], headers=headers, **kwargs)
+        if resp.status_code in BLOCKED_STATUS:
+            self.blocked = True
+            print(f"    [lavangba] Worker 중계도 HTTP {resp.status_code} -> 이번 실행에서는 라방바 호출 생략")
+            raise LavangbaBlocked(f"라방바 중계 HTTP {resp.status_code}", response=resp)
+        return resp
 
     def get(self, url, **kwargs):
         return self.request("GET", url, **kwargs)
