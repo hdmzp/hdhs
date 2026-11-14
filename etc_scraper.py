@@ -314,7 +314,31 @@ def load_month(sub_dir, ym):
     return {}
 
 
-def main():
+# 자동 수집(Actions)에서 빼는 채널. 공식 사이트가 해외 IP·봇을 막고 라방바도 Actions/Worker IP를
+# 막아 Actions 에선 매번 실패만 쌓인다. Claude 클라우드 예약 작업이 3일마다
+#   python etc_scraper.py --only KTALPHA_live --past 3 --future 3
+# 으로 따로 채운다 (화면에 '수기' 배지, index.html HS_COMPANIES_ETC 참고).
+MANUAL_CHANNELS = {"KTALPHA_live"}
+
+
+def parse_args(argv):
+    """--only A,B : 이 채널만 (MANUAL_CHANNELS 도 포함 가능)
+    --past N --future M : 오늘-N ~ 오늘+M 일. 지정하면 지난 날짜도 이미 기록돼 있어도 다시 받는다
+                          (새로 받은 게 비어 있지 않을 때만 교체 - 기존 데이터는 사라지지 않는다)."""
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--only", default="")
+    ap.add_argument("--past", type=int, default=None)
+    ap.add_argument("--future", type=int, default=None)
+    a = ap.parse_args(argv)
+    only = {x.strip() for x in a.only.split(",") if x.strip()}
+    if a.past is None and a.future is None:
+        return only, list(DAYS_RANGE), False
+    return only, list(range(-(a.past or 0), (a.future or 0) + 1)), True
+
+
+def main(argv=None):
+    only, day_offsets, refresh_past = parse_args(sys.argv[1:] if argv is None else argv)
     base = today_kst()
     today_str = base.strftime("%Y-%m-%d")
     failures = []  # 수집 실패한 (채널 날짜) - 끝에서 종료코드로 알린다
@@ -322,12 +346,18 @@ def main():
     for company, broadcasts in PLATFORM_ID.items():
         for broadcast, platform_id in broadcasts.items():
             log_label = f"{company}_{broadcast}"
+            if only and log_label not in only:
+                continue
+            if not only and log_label in MANUAL_CHANNELS:
+                print(f"[{log_label}] 수기 채널 - 자동 수집에서 제외 (Claude 예약 작업이 3일마다 갱신)")
+                continue
             sub_dir = os.path.join(OUTPUT_DIR, log_label)
             os.makedirs(sub_dir, exist_ok=True)
             month_data = {}
+            changed_months = set()  # 실제로 바뀐 달만 다시 쓴다 (변화 없으면 커밋도 안 생기게)
             official_session = requests.Session()  # 공식 편성표용 (쇼핑엔티는 세션쿠키+CSRF 토큰이 필요)
 
-            for offset in DAYS_RANGE:
+            for offset in day_offsets:
                 d = base + timedelta(days=offset)
                 date_dash = d.strftime("%Y-%m-%d")
                 ym = d.strftime("%Y-%m")
@@ -336,7 +366,7 @@ def main():
                 days = month_data[ym]
 
                 is_past = date_dash < today_str
-                if is_past and days.get(date_dash):
+                if is_past and days.get(date_dash) and not refresh_past:
                     print(f"[{log_label}] {date_dash}: 이미 기록됨, 건너뜀")
                     continue
 
@@ -374,12 +404,16 @@ def main():
                     time.sleep(REQUEST_DELAY)
                     continue
 
+                if days.get(date_dash) != programs:
+                    changed_months.add(ym)
+                    print(f"  -> {len(programs)}개 편성 (변경)")
+                else:
+                    print(f"  -> {len(programs)}개 편성 (변경 없음)")
                 days[date_dash] = programs
-                print(f"  -> {len(programs)}개 편성")
                 time.sleep(REQUEST_DELAY)
 
             for ym, days in month_data.items():
-                if not days:
+                if not days or ym not in changed_months:
                     continue
                 out_path = os.path.join(sub_dir, f"{ym}.json")
                 sorted_days = {k: days[k] for k in sorted(days)}
