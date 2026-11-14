@@ -21,8 +21,11 @@ GitHub Actions IP를, 11-12에는 Cloudflare Worker 중계까지 405로 막았�
   SK스토아  SKSTOA_live     GET www.skstoa.com/broadcast/scdGoodsList?date=YYYYMMDD (HTML 조각)
                             화면엔 시간대당 대표상품 1개만 그리지만 GA 태깅 input(ga-prd-data,
                             p-list="TV편성_방송상품")에 같이 방송하는 상품이 전부 있어 그걸 쓴다.
-  미지원: 공영(gongyoung)·K쇼핑(kshop)·신세계 - 해외 IP를 막아 개발환경에서 열리지 않았다.
-          etc-scrape.yml 의 접속 확인 스텝으로 Actions 에서 열리는지 본다. 열리면 여기에 추가.
+  공영      PUBLIC_live     POST m.gongyoungshop.kr/tvshopping/selectScheduleSub.do  brcStdDate=YYYYMMDD (JSON)
+                            회사 사이트 gongyoung.com 은 해외 IP 차단이지만 쇼핑몰 도메인은 열려 있다.
+                            11/12 라방바 기록 26건과 시간·상품코드 100% 일치 (2026-11-14 확인).
+  미지원: K쇼핑(kshop)·신세계 - 해외 IP를 막아 Actions 에서도 열리지 않는다 (K쇼핑 403, 신세계 417).
+          etc-scrape.yml 의 접속 확인 스텝으로 계속 본다. 다른 도메인이 열리면 여기에 추가.
 
 == 반환 형식 == etc_scraper.py 의 편성 행과 같다 (category 는 비워서 돌려주고 호출부가 채운다).
   {"start","end","brand","product","price","link","category":"","lavangba_category":"","hsshow_id":""}
@@ -210,8 +213,35 @@ def fetch_skstoa(date_obj, _session, label):
     return _dedupe_sort(rows)
 
 
+# ============================== 공영쇼핑 ==============================
+
+GY_LIST_URL = "https://m.gongyoungshop.kr/tvshopping/selectScheduleSub.do"
+GY_LINK = "https://www.gongyoungshop.kr/goods/selectGoodsDetail.do?prdId={code}"  # 라방바 기록과 같은 형식
+
+
+def fetch_public(date_obj, _session, label):
+    """회사 소개 사이트(gongyoung.com)는 해외 IP를 막지만 쇼핑몰(gongyoungshop.kr)은 열려 있다.
+    모바일 편성표 페이지가 날짜 탭을 누를 때 부르는 POST 를 그대로 쓴다. Accept 에 json 이
+    없으면 같은 내용을 XML 로 준다. prdList[] 한 항목 = 방송 상품 1개 (같은 방송은 brcBgnDtm 이 같음)."""
+    r = scrape_guard.request(
+        "POST", GY_LIST_URL, data={"brcStdDate": date_obj.strftime("%Y%m%d")},
+        headers={**BASE_HEADERS, "Accept": "application/json, text/javascript, */*; q=0.01",
+                 "X-Requested-With": "XMLHttpRequest",
+                 "Referer": "https://m.gongyoungshop.kr/tvshopping/tvSchedule.do"},
+        timeout=20, expect_json=True, label=label)
+    rows = []
+    for it in r.json().get("prdList") or []:
+        s, e = it.get("brcBgnDtm") or "", it.get("brcEndDtm") or ""
+        if len(s) < 12 or len(e) < 12 or not it.get("prdId"):
+            continue
+        rows.append(_row(f"{s[8:10]}:{s[10:12]}", f"{e[8:10]}:{e[10:12]}", it.get("prdNm") or "",
+                         int(it.get("prdPrc") or 0), GY_LINK.format(code=it["prdId"])))
+    return _dedupe_sort(rows)
+
+
 # {etc_scraper 의 log_label(저장 폴더명): fetch(date_obj, session, label) -> rows}
 OFFICIAL_FETCHERS = {
+    "PUBLIC_live":     fetch_public,
     "HNS_live":        fetch_hns,
     "SHOPPINGNT_live": fetch_shoppingnt,
     "NS_live":         fetch_ns_live,
