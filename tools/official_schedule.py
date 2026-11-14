@@ -92,10 +92,20 @@ def fetch_hns(date_obj, _session, label):
     if "scheduleWrap" not in h:
         raise scrape_guard.FetchError(f"{label}: 편성표 조각이 아님 (len={len(h)})")
     rows = []
+    prev_end = None  # 바로 앞 방송의 끝시각 - 방송중 항목의 시작시각을 채우는 데 쓴다
     for item in re.split(r'<li class="item[^"]*">', h)[1:]:
         tm = re.search(r"<b>(\d\d:\d\d)</b>\s*~\s*(\d\d:\d\d)</span>", item)
-        if not tm:
-            continue
+        if tm:
+            start, end = tm.group(1), tm.group(2)
+        else:
+            # 방송중(<li class="item active">)은 시간 표기가 '지금방송중'으로 바뀌어 시각이 없다.
+            # 끝시각은 onAir-time-box 의 bdEtimeSecond="YYYY-MM-DD HH:MM:SS" 에 있고,
+            # 시작시각은 바로 앞 방송의 끝시각과 같다 (편성이 빈틈없이 이어짐).
+            em = re.search(r'bdEtimeSecond="[^"]*?(\d\d:\d\d):\d\d"', item)
+            if not em or not prev_end:
+                continue
+            start, end = prev_end, em.group(1)
+        prev_end = end
         main, _, sub = item.partition("함께 방송하는 상품")
         for part in [main] + re.findall(r"<li[^>]*>(.*?)</li>", sub, re.S):
             code = re.search(r"goGoods\('(\d+)'", part)
@@ -103,7 +113,7 @@ def fetch_hns(date_obj, _session, label):
             price = re.search(r"<strong>([\d,]+)</strong>", part)
             if not code or not title:
                 continue
-            rows.append(_row(tm.group(1), tm.group(2), title.group(1), _price(price and price.group(1)),
+            rows.append(_row(start, end, title.group(1), _price(price and price.group(1)),
                              HNS_LINK.format(code=code.group(1))))
     return _dedupe_sort(rows)
 
