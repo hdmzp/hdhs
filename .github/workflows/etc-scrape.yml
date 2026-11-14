@@ -33,17 +33,17 @@ jobs:
       - name: 패키지 설치
         run: pip install requests beautifulsoup4 scikit-learn joblib pandas openpyxl
 
-      - name: 접속 확인 - K쇼핑/신세계 공식 사이트 (Actions 에서 열리는지만 본다)
+      - name: 접속 확인 - K쇼핑/신세계 공식 사이트 www/m (Actions 에서 열리는지만 본다)
         # 둘은 해외 IP를 막는다 (2026-11-13 Actions: K쇼핑 403, 신세계 417). 여기서 200이 나오면
-        # tools/official_schedule.py 에 공식 편성표 수집을 추가할 수 있다.
+        # tools/official_schedule.py 에 공식 편성표 수집을 추가할 수 있다. 신세계는 m. 도메인 JSON 을 이미 시도한다.
         continue-on-error: true
         run: |
-          for u in https://www.kshop.co.kr/ https://www.shinsegaetvshopping.com/; do
+          for u in https://www.kshop.co.kr/ https://m.kshop.co.kr/ https://www.shinsegaetvshopping.com/ https://m.shinsegaetvshopping.com/; do
             printf "%-45s " "$u"
             curl -sS -o /dev/null -m 20 -w "%{http_code}\n" -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0 Safari/537.36" "$u" || echo "연결 실패"
           done
 
-      - name: 홈쇼핑 스크래퍼 실행 - 기타7개사(공영/홈앤/NS/쇼핑엔티/SK스토아 공식 편성표, K쇼핑/신세계 라방바)
+      - name: 홈쇼핑 스크래퍼 실행 - 기타7개사(공영/홈앤/NS/쇼핑엔티/SK스토아/신세계 공식 편성표, K쇼핑 라방바)
         continue-on-error: true
         env:
           # 라방바가 Actions IP를 막아 Worker 중계(tools/lavangba_relay.py)를 쓸 때의 열쇠 재료

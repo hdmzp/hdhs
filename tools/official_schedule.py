@@ -24,8 +24,10 @@ GitHub Actions IP를, 11-12에는 Cloudflare Worker 중계까지 405로 막았�
   공영      PUBLIC_live     POST m.gongyoungshop.kr/tvshopping/selectScheduleSub.do  brcStdDate=YYYYMMDD (JSON)
                             회사 사이트 gongyoung.com 은 해외 IP 차단이지만 쇼핑몰 도메인은 열려 있다.
                             11/12 라방바 기록 26건과 시간·상품코드 100% 일치 (2026-11-14 확인).
-  미지원: K쇼핑(kshop)·신세계 - 해외 IP를 막아 Actions 에서도 열리지 않는다 (K쇼핑 403, 신세계 417).
-          etc-scrape.yml 의 접속 확인 스텝으로 계속 본다. 다른 도메인이 열리면 여기에 추가.
+  신세계    SHINSEGAE_live  GET m.shinsegaetvshopping.com/broadcast/tvschedule-ajax?fromDate=YYYY/MM/DD (JSON)
+                            www 도메인은 해외 IP에 417. m. 도메인이 Actions 에서 열리는지는 실행 로그로 확인
+                            (막히면 FetchError -> 라방바 -> 그것도 막히면 기존 값 유지).
+  미지원: K쇼핑(kshop) - m./www. 모두 해외 IP 차단 + Akamai 봇 차단 (2026-11-14 확인).
 
 == 반환 형식 == etc_scraper.py 의 편성 행과 같다 (category 는 비워서 돌려주고 호출부가 채운다).
   {"start","end","brand","product","price","link","category":"","lavangba_category":"","hsshow_id":""}
@@ -239,6 +241,34 @@ def fetch_public(date_obj, _session, label):
     return _dedupe_sort(rows)
 
 
+SSG_LIST_URL = "https://m.shinsegaetvshopping.com/broadcast/tvschedule-ajax"
+SSG_LINK = "https://www.shinsegaetvshopping.com/display/detail/{code}"
+
+
+def fetch_shinsegae(date_obj, _session, label):
+    """www.shinsegaetvshopping.com 은 해외 IP에 417 을 주지만 모바일 편성표가 부르는
+    m. 도메인의 JSON 은 별개라 따로 시도한다 (막히면 FetchError -> 호출부가 기존 값 유지).
+    scheduleList[] = 방송 1개, 그 안 broadcastGoodsList[] = 함께 방송하는 상품.
+    그날 00시대 첫 방송부터 23시대 마지막 방송(다음날 0시대 종료)까지 온다."""
+    r = scrape_guard.request(
+        "GET", SSG_LIST_URL, params={"fromDate": date_obj.strftime("%Y/%m/%d")},
+        headers={**BASE_HEADERS, "Accept": "application/json, text/javascript, */*; q=0.01",
+                 "X-Requested-With": "XMLHttpRequest",
+                 "Referer": "https://m.shinsegaetvshopping.com/cp/broadcast/tvschedule?viewType&scheduleType=tv"},
+        timeout=20, expect_json=True, label=label)
+    rows = []
+    for slot in r.json().get("scheduleList") or []:
+        for it in slot.get("broadcastGoodsList") or []:
+            s = it.get("bdBtime") or slot.get("bdBtime") or ""
+            e = it.get("bdEtime") or slot.get("bdEtime") or ""
+            if len(s) != 5 or len(e) != 5 or not it.get("goodsCode"):
+                continue
+            rows.append(_row(s, e, it.get("goodsName") or it.get("mobileGoodsName") or "",
+                             int(it.get("salePrice") or 0), SSG_LINK.format(code=it["goodsCode"]),
+                             it.get("brandName") or ""))
+    return _dedupe_sort(rows)
+
+
 # {etc_scraper 의 log_label(저장 폴더명): fetch(date_obj, session, label) -> rows}
 OFFICIAL_FETCHERS = {
     "PUBLIC_live":     fetch_public,
@@ -247,4 +277,5 @@ OFFICIAL_FETCHERS = {
     "NS_live":         fetch_ns_live,
     "NS_plus":         fetch_ns_plus,
     "SKSTOA_live":     fetch_skstoa,
+    "SHINSEGAE_live":  fetch_shinsegae,
 }
