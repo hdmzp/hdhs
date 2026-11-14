@@ -2466,6 +2466,20 @@
   table.hs-table thead th.ltplus .hs-co-tag { background: var(--ltplus); }
   table.hs-table thead th.shoppingnt .hs-co-tag { background: var(--shoppingnt); }
   table.hs-table thead th.skstoa .hs-co-tag { background: var(--skstoa); }
+  /* K쇼핑 '수기' 배지 + 툴팁 (마우스오버 / 모바일은 탭해서 focus) */
+  table.hs-table thead th .hs-manual-badge {
+    position: relative; display: inline-block; margin-left: 4px; vertical-align: middle;
+    font-size: 10px; font-weight: 700; line-height: 1; padding: 3px 6px; border-radius: 10px;
+    color: var(--ktalpha); background: #fff; border: 1px solid var(--ktalpha); cursor: help;
+  }
+  table.hs-table thead th .hs-manual-badge:hover::after,
+  table.hs-table thead th .hs-manual-badge:focus::after {
+    content: attr(data-tip); position: absolute; top: calc(100% + 6px); right: 0; z-index: 50;
+    width: 220px; white-space: normal; text-align: left; font-size: 11.5px; font-weight: 500;
+    line-height: 1.5; padding: 8px 10px; border-radius: 8px; color: #fff; background: #222;
+    box-shadow: 0 4px 12px rgba(0,0,0,.18);
+  }
+  table.hs-table thead th .hs-manual-badge:focus { outline: none; }
 
   table.hs-table td {
     border: 1px solid var(--rule);
@@ -6565,13 +6579,20 @@ const HS_COMPANIES_MAIN = [
 const HS_COMPANIES_ETC = [
   { code: 'PUBLIC',     name: '공영',     cls: 'public',     bc: 'live' },
   { code: 'HNS',        name: '홈앤',     cls: 'hns',         bc: 'live' },
-  { code: 'KTALPHA',    name: 'KT',       cls: 'ktalpha',     bc: 'live' },
   { code: 'SHINSEGAE',  name: 'SSG',      cls: 'shinsegae',   bc: 'live' },
   { code: 'NS',         name: 'NS',       cls: 'ns',          bc: 'live' },
   { code: 'NS',         name: 'NS+',      cls: 'nsplus',      bc: 'plus' },
   { code: 'SHOPPINGNT', name: 'NT',       cls: 'shoppingnt',  bc: 'live' },
   { code: 'SKSTOA',     name: 'SK',       cls: 'skstoa',      bc: 'live' },
+  // K쇼핑은 공식 사이트가 해외/봇 접근을 막아 자동 수집이 안 된다 -> 맨 오른쪽 + '수기' 배지 (월 1~2회 수동 갱신)
+  { code: 'KTALPHA',    name: 'KT',       cls: 'ktalpha',     bc: 'live', manualTip: 'K쇼핑은 공식 사이트가 자동 수집을 막고 있어 실시간 반영이 어려워요. 방송이 끝난 뒤 월 1~2회 모아서 업데이트해요.' },
 ];
+// 회사 헤더 태그. manualTip 이 있는 채널은 '수기' 배지 + 마우스오버/탭 툴팁을 붙인다.
+function hsCoHeader(c) {
+  const tag = `<span class="hs-co-tag">${c.name}</span>`;
+  if (!c.manualTip) return tag;
+  return tag + `<span class="hs-manual-badge" tabindex="0" aria-label="${c.manualTip}" data-tip="${c.manualTip}">수기</span>`;
+}
 
 // 전체(16): 본채널 4 + 데이터방송(플러스) 4 + 기타 8 = 16개 채널을 한 표에 모두 표시.
 // 각 항목에 bc를 못박아 두어 hsCurrentBc('all')와 무관하게 올바른 데이터를 읽는다.
@@ -6954,7 +6975,7 @@ function hsRenderGridView(datasets, nowMin) {
   let html = `<div class="hs-scroll"><table class="${tableCls}"><thead><tr>`;
   html += '<th class="hs-time-col">시간</th>';
   companies.forEach(c => {
-    html += `<th class="${c.cls}"><span class="hs-co-tag">${c.name}</span></th>`;
+    html += `<th class="${c.cls}">${hsCoHeader(c)}</th>`;
   });
   html += '</tr></thead><tbody>';
 
@@ -7007,7 +7028,7 @@ function hsRenderListView(datasets, nowMin) {
   let html = `<div class="hs-scroll"><table class="${tableCls}"><thead><tr>`;
   html += '<th class="hs-time-col"></th>';
   companies.forEach(c => {
-    html += `<th class="${c.cls}"><span class="hs-co-tag">${c.name}</span></th>`;
+    html += `<th class="${c.cls}">${hsCoHeader(c)}</th>`;
   });
   html += '</tr></thead><tbody><tr>';
   html += '<td class="hs-time-cell"></td>';
@@ -9983,12 +10004,12 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     { dir: 'LT_data',        label: 'LT+', color: '#DA291C', main: true },
     { dir: 'PUBLIC_live',    label: '공영', color: '#0E7C7B' },
     { dir: 'HNS_live',       label: '홈앤', color: '#E8590C' },
-    { dir: 'KTALPHA_live',   label: 'KT',  color: '#5C3D99' },
     { dir: 'SHINSEGAE_live', label: 'SSG', color: '#C8102E' },
     { dir: 'NS_live',        label: 'NS',  color: '#1F6FEB' },
     { dir: 'NS_plus',        label: 'NS+', color: '#6CA0F2' },
     { dir: 'SHOPPINGNT_live', label: 'NT', color: '#B8860B' },
     { dir: 'SKSTOA_live',    label: 'SK',  color: '#2E8B57' },
+    { dir: 'KTALPHA_live',   label: 'KT',  color: '#5C3D99' }, // 수기 갱신 채널이라 맨 끝
   ];
   const IN_GROUP_BREAKS = [4, 8];
   // 소괄호 안 채널별 횟수를 개별 표기하는 8개사 (나머지는 '기타'로 합산)
