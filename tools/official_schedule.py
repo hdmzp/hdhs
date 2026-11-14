@@ -143,9 +143,21 @@ def fetch_shoppingnt(date_obj, session, label):
         headers={**BASE_HEADERS, "X-CSRF-TOKEN": token, "X-Requested-With": "XMLHttpRequest", "Referer": NT_MAIN_URL},
         timeout=20, label=label)
     rows = []
+    blocks = []
     for blk in re.split(r'<div class="tit-time">', r.text)[1:]:
         tm = re.search(r"(\d\d:\d\d)\s*~\s*(\d\d:\d\d)", blk)
-        if not tm:
+        blocks.append([tm.group(1) if tm else None, tm.group(2) if tm else None, blk])
+    # 방송중(<li class="onair">)은 시간 표기 없이 남은 초(timerInit)만 있다.
+    # 시작은 바로 앞 방송의 끝, 끝은 바로 다음 방송의 시작과 같다 (편성이 빈틈없이 이어짐).
+    for i, b in enumerate(blocks):
+        if b[0] is not None:
+            continue
+        prev_end = next((x[1] for x in reversed(blocks[:i]) if x[1]), None)
+        next_start = next((x[0] for x in blocks[i + 1:] if x[0]), None)
+        if prev_end and next_start:
+            b[0], b[1] = prev_end, next_start
+    for start, end, blk in blocks:
+        if not start:
             continue
         for g in re.findall(r'<div class="goods">(.*?)<div class="btn-area', blk, re.S):
             code = re.search(r"/display/goods/(\d+)", g)
@@ -153,7 +165,7 @@ def fetch_shoppingnt(date_obj, session, label):
             price = re.search(r'class="price">.*?<em[^>]*>([\d,]+)', g, re.S)
             if not code or not name:
                 continue
-            rows.append(_row(tm.group(1), tm.group(2), name.group(1), _price(price and price.group(1)),
+            rows.append(_row(start, end, name.group(1), _price(price and price.group(1)),
                              NT_LINK.format(code=code.group(1))))
     return _dedupe_sort(rows)
 
@@ -208,7 +220,7 @@ def fetch_skstoa(date_obj, _session, label):
     sections = []
     for sec in r.text.split("<section")[1:]:
         sec = sec.split("</section>")[0]
-        tm = re.search(r'class="timebox">\s*(\d\d:\d\d)\s*~\s*(\d\d:\d\d)', sec)
+        tm = re.search(r'class="timebox[^"]*">\s*(\d\d:\d\d)\s*~\s*(\d\d:\d\d)', sec)
         if tm:
             sections.append((tm.group(1), tm.group(2), sec))
     while len(sections) >= 2 and sections[0][0] > sections[1][0]:
