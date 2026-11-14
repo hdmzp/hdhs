@@ -3,11 +3,11 @@
 기타 홈쇼핑 7개사 편성표 수집기
 
 == 출처 순서 (2026-11-13 변경) ==
-1순위: 각 사 공식 편성표 (tools/official_schedule.py) - 홈앤/쇼핑엔티/NS(본채널·샵플러스)/SK스토아.
+1순위: 각 사 공식 편성표 (tools/official_schedule.py) - 공영/홈앤/쇼핑엔티/NS(본채널·샵플러스)/SK스토아.
        2026-11-11부터 라방바가 GitHub Actions IP를, 11-12에는 Worker 중계까지 405로 막아서
        4사(HD/LT/CJ/GS)처럼 공식 편성표로 옮겼다. 전환 전 엿새 비교에서 방송 시작시각
        92~99%, 상품코드 80~98% 일치 (official_schedule.py 머리말).
-2순위: 라방바 데이터랩 API (아래 설명) - 공영/K쇼핑/신세계는 공식 사이트가 해외 IP를
+2순위: 라방바 데이터랩 API (아래 설명) - K쇼핑/신세계는 공식 사이트가 해외 IP를
        막아 아직 이 경로만 있다. 공식이 실패한 날도 여기로 넘어온다. 라방바가 직접·중계
        모두 막혀 있으면(tools/lavangba_relay.py) 그 실행에선 더 부르지 않고 기존값을 유지한다.
 어느 경로든 실패하면 그날 기존 편성을 덮어쓰지 않는다 (빈 값으로 지워지는 일 없음).
@@ -112,7 +112,7 @@ from clean_product import clean_product_name
 from tools import scrape_guard
 from tools.lavangba_relay import session as lavangba  # 직접 -> 막히면 Worker 중계
 # 1순위 출처: 각 사 공식 편성표 (2026-11-13, 라방바 차단 대응. 상세는 tools/official_schedule.py 머리말).
-# 여기 없는 회사(공영/K쇼핑/신세계)와 공식이 실패한 날은 아래 라방바 경로로 받는다.
+# 여기 없는 회사(K쇼핑/신세계)와 공식이 실패한 날은 아래 라방바 경로로 받는다.
 from tools.official_schedule import OFFICIAL_FETCHERS
 
 # 라방바 list_hs 재시도 대상. 2026-11-11 새벽부터 GitHub Actions에서 POST
@@ -343,16 +343,23 @@ def main():
                 print(f"[{log_label}] {date_dash} 수집 중...")
                 programs = None
                 official = OFFICIAL_FETCHERS.get(log_label)
+                unpublished = False  # 공식 편성표가 정상 응답했지만 미래 날짜라 아직 비어 있음
                 if official:
                     try:
                         programs = official(d, official_session, f"{log_label} {date_dash}")
                         print(f"  [공식편성표] 상품 {len(programs)}개·방송 {len({p['start'] for p in programs})}개")
                         if not programs and date_dash > today_str:
                             programs = None  # 미래 날짜 빈 응답 = 아직 편성 미공개 (쇼핑엔티는 +4일까지만 줌)
+                            unpublished = True
                     except Exception as e:
                         print(f"  [공식편성표 실패] {e} -> 라방바로 대체")
                 if programs is None and (not official or not lavangba.blocked):
                     programs = fetch_company(d, platform_id, log_label)
+                if programs is None and unpublished:
+                    # 실패가 아니다 - 실패로 세면 매 실행이 빨간불이 된다. 다음 실행에서 다시 받는다.
+                    print(f"  -> 아직 편성 미공개, 건너뜀 (기존 {len(days.get(date_dash) or [])}개 유지)")
+                    time.sleep(REQUEST_DELAY)
+                    continue
                 if programs is None:
                     # 수집 실패(HTTP 오류 등): 기존 편성을 빈 값으로 덮어쓰지 않는다.
                     failures.append(f"{log_label} {date_dash}")
