@@ -6584,8 +6584,8 @@ const HS_COMPANIES_ETC = [
   { code: 'NS',         name: 'NS+',      cls: 'nsplus',      bc: 'plus' },
   { code: 'SHOPPINGNT', name: 'NT',       cls: 'shoppingnt',  bc: 'live' },
   { code: 'SKSTOA',     name: 'SK',       cls: 'skstoa',      bc: 'live' },
-  // K쇼핑은 공식 사이트가 해외/봇 접근을 막아 자동 수집이 안 된다 -> 맨 오른쪽 + '수기' 배지 (월 1~2회 수동 갱신)
-  { code: 'KTALPHA',    name: 'KT',       cls: 'ktalpha',     bc: 'live', manualTip: 'K쇼핑은 공식 사이트가 자동 수집을 막고 있어 실시간 반영이 어려워요. 방송이 끝난 뒤 월 1~2회 모아서 업데이트해요.' },
+  // K쇼핑은 공식 사이트가 해외/봇 접근을 막아 자동 수집이 안 된다 -> 맨 오른쪽 + '수기' 배지 (주 1회 갱신)
+  { code: 'KTALPHA',    name: 'KT',       cls: 'ktalpha',     bc: 'live', manualTip: 'K쇼핑은 공식 사이트가 자동 수집을 막고 있어 실시간 반영이 어려워요. 업데이트 주기가 다른 채널보다 느려요.' },
 ];
 // 회사 헤더 태그. manualTip 이 있는 채널은 '수기' 배지 + 마우스오버/탭 툴팁을 붙인다.
 function hsCoHeader(c) {
