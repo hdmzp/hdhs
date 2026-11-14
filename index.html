@@ -3914,7 +3914,8 @@
     <button id="tabBtnRanking">랭킹</button>
     <button id="tabBtnPromotion">카드할인</button>
     <button id="tabBtnFeedback">의견</button>
-    <button id="tabBtnSecurity" aria-label="라방바" title="라방바"><svg class="lv-logo" viewBox="0 0 100 100" width="18" height="18" aria-hidden="true" focusable="false"><rect x="18" y="4" width="24" height="60" rx="12" fill="#151515"/><circle cx="56" cy="60" r="36" fill="#151515"/><path d="M48 47 L73 60 L48 73 Z" fill="#F2C230" stroke="#F2C230" stroke-width="9" stroke-linejoin="round" transform="rotate(12 58 60)"/></svg></button>
+    <!-- 라방바 탭: 2026-11 라방바 수집 중단으로 숨김. switchTab 이 버튼/패널 id 를 참조하므로 요소는 남겨 둔다 -->
+    <button id="tabBtnSecurity" aria-label="라방바" title="라방바" style="display:none"><svg class="lv-logo" viewBox="0 0 100 100" width="18" height="18" aria-hidden="true" focusable="false"><rect x="18" y="4" width="24" height="60" rx="12" fill="#151515"/><circle cx="56" cy="60" r="36" fill="#151515"/><path d="M48 47 L73 60 L48 73 Z" fill="#F2C230" stroke="#F2C230" stroke-width="9" stroke-linejoin="round" transform="rotate(12 58 60)"/></svg></button>
   </div>
   <button type="button" class="tg-open-btn" id="tgOpenBtn" aria-haspopup="dialog" title="텔레그램 알림신청">
     <img src="icons/telegram.png" alt="" width="20" height="20"><span>알림신청</span>
@@ -4414,7 +4415,7 @@ const TAB_TIPS = {
   homeshop: {
     title: '홈쇼핑 탭은?',
     items: [
-      '출처: (HD·CJ·LT) 공식 사이트, (그 외) 라방바',
+      '출처: 공식 사이트',
       '방송 편성이 제공되지 않는 경우 <b>Hit&amp;Best</b>로 표시돼요',
       '상품명을 수집해 <b>브랜드명</b>을 추정해요',
       '브랜드 추정이 어려운 경우 브랜드명이 비어있어요',
