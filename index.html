@@ -6947,7 +6947,8 @@ function hsBuildTimelineWithGaps(programs) {
   const timeline = [];
   let cursor = null;
   for (const item of items) {
-    if (cursor !== null && item.s > cursor) {
+    // 종료 30분 / 시작 31분처럼 1분 이하로 벌어진 틈은 방송 사이 표기 오차라 Hit&Best 로 보이지 않게 건너뛴다
+    if (cursor !== null && item.s - cursor > 1) {
       timeline.push({ isGap: true, s: cursor, e: item.s });
     }
     timeline.push({ isGap: false, s: item.s, e: item.e, p: item.p });
