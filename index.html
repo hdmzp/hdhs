@@ -1129,6 +1129,28 @@
   .in-insight li { margin-bottom: 7px; }
   .in-insight .in-muted { color: var(--ink-soft); }
   .in-insight .in-pgm { color: var(--brand-blue); font-weight: 600; }
+  .in-brands { margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--rule); font-size: 12.5px; }
+  .in-brands ol { margin: 6px 0 0; padding-left: 22px; }
+  .in-brands li { margin-bottom: 3px; }
+  .in-brands details summary { cursor: pointer; color: var(--brand-blue); font-size: 12px; margin-top: 4px; }
+  .in-brands .in-brand-note { font-size: 11.5px; margin: 4px 0 0; }
+  .in-cell.thin { opacity: .45; font-weight: 500; }
+  .in-sl-row { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+  .in-sl-label { flex: 0 0 58px; font-size: 11.5px; font-weight: 700; color: var(--ink-soft); padding-top: 9px; }
+  .in-sl-row .lv-slicer { flex: 1 1 auto; }
+  .in-sl-row .lv-slicer button:disabled { opacity: .35; cursor: not-allowed; }
+  #inNumSlicer button.active { background: #DC2626; color: #fff; }
+  #inCatSlicer button.active { background: #A9C6F2; color: #173E7C; }
+  .in-mode { display: inline-flex; gap: 2px; background: var(--paper-dim, #F5F6F8); border: 1px solid var(--rule); border-radius: 9px; padding: 3px; margin-bottom: 10px; }
+  .in-mode button { font-family: inherit; font-size: 12px; font-weight: 700; background: none; border: none; border-radius: 6px; padding: 6px 12px; color: var(--ink-soft); cursor: pointer; }
+  .in-mode button.active { background: #fff; color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,.12); }
+  .in-formula { font-size: 12.5px; color: var(--ink); background: #FEF2F2; border-left: 3px solid #DC2626; border-radius: 4px; padding: 7px 10px; margin: 6px 0 8px; line-height: 1.55; }
+  .in-formula .in-muted { color: var(--ink-soft); }
+  .in-ratio-tbl { border-collapse: collapse; margin: 4px 0 10px; font-size: 12.5px; width: 100%; }
+  .in-ratio-tbl td { padding: 4px 6px; border-bottom: 1px solid var(--rule); }
+  .in-ratio-tbl td:last-child { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .in-ratio-tbl tr.on td { font-weight: 700; color: #B91C1C; }
+  @media (max-width: 600px) { .in-sl-row { flex-direction: column; gap: 2px; } .in-sl-label { padding-top: 0; } }
   .in-cat-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 4px; vertical-align: 0; }
   .in-cross { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--rule); font-size: 12.5px; color: var(--ink-soft); }
   .in-cross b { color: var(--ink); font-size: 13px; }
@@ -4348,8 +4370,12 @@
         <button type="button" class="in-heat-toggle" id="inHeatToggle">접기 ▲</button>
       </div>
       <div class="in-heat-content">
-        <div class="lv-slicer" id="inChannelSlicer" style="margin-bottom:8px;"></div>
-        <div class="lv-slicer" id="inCatSlicer" style="margin-bottom:12px;"></div>
+        <div class="in-mode" id="inModeToggle"></div>
+        <div class="in-sl-row"><span class="in-sl-label">분자 회사</span><div class="lv-slicer" id="inNumSlicer"></div></div>
+        <div class="in-sl-row"><span class="in-sl-label">분모 회사</span><div class="lv-slicer" id="inChannelSlicer"></div></div>
+        <div class="in-sl-row" id="inDenScopeRow"><span class="in-sl-label">분모 범위</span><div class="in-mode in-scope" id="inDenScope"></div></div>
+        <div class="in-sl-row"><span class="in-sl-label">카테고리</span><div class="lv-slicer" id="inCatSlicer"></div></div>
+        <p class="in-formula" id="inFormula"></p>
         <p class="lv-summary" id="inSummary"></p>
         <div class="in-body">
           <div class="in-heat-scroll"><div id="inHeatmap"></div></div>
@@ -4370,7 +4396,7 @@
       <div class="lv-slicer" id="inTrkSlicer" style="margin:4px 0 8px;"></div>
       <div id="inTrkBody"><p class="in-muted" style="font-size:12.5px;">조회 기간의 건강 프로그램 본방 회차마다, 회차 내용 단서와 같은 시간에 시작한 홈쇼핑 건강식품을 보여줍니다. [조회]를 눌러 주세요.</p></div>
     </div>
-    <p class="lv-table-note">집계 기준: 방송 시작시각의 시간대 (09:20 시작도 09:45 시작도 09시대) · 카테고리는 자체 분류모델 기준 · 데이터: 2026-06-22부터 (기타 채널은 06-26부터) · 히트맵 셀을 클릭하면 상세 인사이트 표시</p>
+    <p class="lv-table-note">집계 기준: 프로그램 구간 안의 브랜드마다 1회 (같은 브랜드 상품코드 여러 개 = 1회, 카테고리는 그 브랜드 상품 중 최다) · 한 구간 브랜드 4개 이상(편집숍형)은 1회 · 방송 시작시각의 시간대 (09:20 시작도 09:45 시작도 09시대) · 카테고리는 자체 분류모델 기준 · 데이터: 2026-06-22부터 (기타 채널은 06-26부터) · 히트맵 셀을 클릭하면 상세 인사이트 표시</p>
   </div>
 </div>
 
@@ -10027,8 +10053,17 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
   const IN_CATS = Object.keys(HS_CATEGORY_COLORS).filter(c => c !== '미분류').concat(['기타']);
 
   let inStart = null, inEnd = null;   // 'YYYY-MM-DD'
-  let inActive = new Set(IN_CHANNELS.map(c => c.label));
-  let inCatSel = new Set(IN_CATS);     // 다중선택, 풀세트 = 전체
+  let inActive = new Set(IN_CHANNELS.map(c => c.label));  // 분모 회사
+  let inNumSel = new Set(IN_CHANNELS.map(c => c.label));  // 분자 회사 (실제 계산은 분모 회사와의 교집합)
+  let inCatSel = new Set(['건강식품']); // 다중선택, 풀세트 = 전체
+  // 'cat' 카테고리 비중: 분모 회사의 전체 방송 중 [분자 회사 × 선택 카테고리]
+  // 'co'  회사 점유율:  분모 회사의 [선택 카테고리] 방송 중 [분자 회사]
+  // 'cnt' 편성 횟수:    [분자 회사 × 선택 카테고리] 방송 횟수
+  let inMode = 'cat';
+  let inDenScope = 'all';              // 비율일 때 분모 범위: 'all' 전체 방송 / 'cat' 선택 카테고리 방송
+  const IN_MIN_DEN = 4;
+  const IN_MAX_BRANDS_PER_PGM = 3;     // 한 구간 브랜드가 이보다 많으면 편집숍형 1회로 센다                // 분모가 이보다 적은 셀은 흐리게 (표본이 작아 % 가 쉽게 튐)
+  let inPgmRows = [];                  // 히트맵용 프로그램(편성 구간) 단위 행: { d, w, h, cat, label, main, st, en, items }
   let inSel = null;                    // 선택 { h, w } (셀 모드) 또는 { h, w:null } (행 모드)
   let inSelToken = 0;                  // 선택이 바뀔 때마다 증가 - 늦게 도착한 지상파 fetch 응답 무시용
   let inRows = [];                     // 조회 기간 평탄화 편성(브랜드 단위 중복제거): { d, w, h, cat, label, main, items }
@@ -10086,6 +10121,32 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     return d + '|' + label + '|' + String(e.start || '') + '|' + name.replace(/\s+/g, ' ');
   };
 
+  // 상품 링크에서 상품코드 추출 (CJ: /p/item/2081410996)
+  const inItemCode = link => { const m = String(link || '').match(/item\/(\d+)/); return m ? m[1] : ''; };
+  // 브랜드 정규화 키: 공백·대소문자 차이를 같은 브랜드로 본다. 비어 있으면 '' (브랜드 미기재)
+  const inBrandKey = b => String(b || '').trim().replace(/\s+/g, '').toLowerCase();
+  let inVerifySkipped = 0;
+  const inVerifyCache = {};
+  // 셀럽PGM 이력(월별)에서 verify=true 상품을 '날짜|상품코드' 집합으로
+  async function inLoadVerify(months) {
+    const set = new Set();
+    await Promise.all([...months].map(async ym => {
+      if (!(ym in inVerifyCache)) {
+        try {
+          const r = await fetch('./homeshopping/representative_programs/history/' + ym + '.json?t=' + Date.now());
+          inVerifyCache[ym] = r.ok ? await r.json() : null;
+        } catch (e) { inVerifyCache[ym] = null; }
+      }
+      ((inVerifyCache[ym] || {}).programs || []).forEach(p => (p.broadcasts || []).forEach(b =>
+        (b.products || []).forEach(pr => {
+          if (!pr.verify) return;
+          const code = inItemCode(pr.link);
+          if (code && b.date) set.add(b.date + '|' + code);
+        })));
+    }));
+    return set;
+  }
+
   async function inLoadRange() {
     const months = new Set();
     for (let d = inStart; d <= inEnd; d = inAddDays(d, 1)) months.add(d.slice(0, 7));
@@ -10093,9 +10154,14 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     IN_CHANNELS.forEach(c => months.forEach(ym => jobs.push(
       inLoadMonth(c.dir, ym).then(data => ({ ch: c, data: data }))
     )));
-    const loaded = await Promise.all(jobs);
+    const [loaded, verify] = await Promise.all([Promise.all(jobs), inLoadVerify(months)]);
+    let skipped = 0;
 
     const byKey = new Map(); // 중복 제거 키 -> 행 (묶인 상품들의 카테고리 분포를 함께 들고 있는다)
+    // 히트맵은 '프로그램 횟수'로 센다: 날짜+채널+시작~종료 구간 = 1회 (홈쇼핑 탭의 구간 구분과 같은 기준).
+    // 브랜드 단위로 세면 한 구간에 상품·브랜드를 여러 개 싣는 채널(HD·SK 등)만 부풀어
+    // GS·NS처럼 구간당 1행인 채널과 비율 비교가 왜곡된다.
+    const byPgm = new Map();
     loaded.forEach(({ ch, data }) => {
       const days = (data || {}).days || {};
       for (const d in days) {
@@ -10104,6 +10170,11 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
         days[d].forEach(e => {
           const h = parseInt(String(e.start || '').slice(0, 2), 10);
           if (isNaN(h) || (h >= 2 && h < 5)) return; // 02~04시 생략
+          // 셀럽PGM '확인필요' 상품(프로그램 페이지엔 없고 CJ 편성표에만 있음 = 상시주문코드 의심)은 제외
+          if (verify.size && ch.dir.startsWith('CJ_')) {
+            const code = inItemCode(e.link);
+            if (code && verify.has(d + '|' + code)) { skipped++; return; }
+          }
           const key = inDedupKey(d, ch.label, e);
           const cat = inCatOf(e);
           let r = byKey.get(key);
@@ -10114,9 +10185,46 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
           }
           r.items++;
           r.cats[cat] = (r.cats[cat] || 0) + 1;
+
+          const st = String(e.start || ''), en = String(e.end || '');
+          const pk = d + '|' + ch.label + '|' + st + '|' + en;
+          let p = byPgm.get(pk);
+          if (!p) {
+            p = { d: d, w: w, h: h, cat: cat, label: ch.label, main: !!ch.main, st: st, en: en, items: 0, cats: {}, brands: {} };
+            byPgm.set(pk, p);
+          }
+          p.items++;
+          p.cats[cat] = (p.cats[cat] || 0) + 1;
+          // 브랜드: 같은 구간의 같은 브랜드(상품코드 여러 개)는 1회로. 브랜드별 카테고리는 그 브랜드 상품의 최빈값
+          const bk = inBrandKey(e.brand);
+          const bb = p.brands[bk] || (p.brands[bk] = { name: String(e.brand || '').trim(), cats: {} });
+          bb.cats[cat] = (bb.cats[cat] || 0) + 1;
         });
       }
     });
+
+    // 집계 단위(1회):
+    //   - 같은 구간의 같은 브랜드는 상품코드가 여러 개여도 1회, 카테고리는 그 브랜드 상품 중 최다
+    //     예) 아이그너 의류 13개 + 잡화 2개 = 의류 1회
+    //   - 한 구간에 브랜드가 IN_MAX_BRANDS_PER_PGM(3)개 이하면 브랜드마다 1회
+    //     예) 10:25~12:35 뼈엔MBP + 관절엔 콘드로이친 = 건강식품 2회
+    //   - 4개 이상이면 편집숍형 방송 1개로 보고 1회 (예: 금 22:40 구찌·버버리 등 25개 = 1회)
+    //   - 브랜드 미기재 상품은 구간 안에서 하나의 브랜드처럼 묶는다
+    const topCat = cats => Object.entries(cats).sort((a, b) => b[1] - a[1])[0][0];
+    const units = [];
+    byPgm.forEach(p => {
+      const brands = Object.entries(p.brands).map(([k, v]) => ({ key: k, name: v.name, cat: topCat(v.cats) }));
+      const base = { d: p.d, w: p.w, h: p.h, label: p.label, main: p.main, st: p.st, en: p.en };
+      if (brands.length <= IN_MAX_BRANDS_PER_PGM) {
+        // 브랜드마다 1회 (HD처럼 연달아 붙은 방송 2~3개가 한 구간으로 들어오는 경우)
+        brands.forEach(b => units.push(Object.assign({ cat: b.cat, brands: [b] }, base)));
+      } else {
+        // 편집숍형(한 방송에서 여러 브랜드 판매) = 1회, 카테고리는 구간 상품 중 최다
+        units.push(Object.assign({ cat: topCat(p.cats), brands: brands, multi: true }, base));
+      }
+    });
+    inPgmRows = units;
+    inVerifySkipped = skipped;
 
     // 한 브랜드 방송에 카테고리가 섞여 있으면(분류모델 편차) 상품 수가 가장 많은 카테고리를 대표로 쓴다
     const rows = [...byKey.values()];
@@ -10175,24 +10283,36 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     return next;
   }
 
-  function inRenderChannelSlicer() {
-    const wrap = $('inChannelSlicer');
+  // 회사 슬라이서 (분모/분자 공용). 분자 슬라이서에서는 분모에 없는 회사를 비활성화한다(분자 ⊂ 분모).
+  function inRenderCoSlicer(wrapId, getSet, setSet, gaGroup, isNum) {
+    const wrap = $(wrapId);
     const labels = IN_CHANNELS.map(c => c.label);
-    const allActive = inActive.size === labels.length;
+    const set = getSet();
+    const allActive = labels.every(l => set.has(l));
     let html = '<button data-ch="__all__"' + (allActive ? ' class="active"' : '') + '>전체선택</button>';
     IN_CHANNELS.forEach((c, i) => {
       if (IN_GROUP_BREAKS.includes(i)) html += '<span class="lv-slicer-sep"></span>';
-      html += '<button data-ch="' + c.label + '"' + (inActive.has(c.label) ? ' class="active"' : '') + '>' + c.label + '</button>';
+      const off = isNum && !inActive.has(c.label);
+      html += '<button data-ch="' + c.label + '"' + (set.has(c.label) && !off ? ' class="active"' : '')
+        + (off ? ' disabled title="분모 회사에 없는 회사는 분자로 고를 수 없어요"' : '') + '>' + c.label + '</button>';
     });
     wrap.innerHTML = html;
     wrap.querySelectorAll('button').forEach(btn => {
       btn.addEventListener('click', () => {
         const ch = btn.dataset.ch;
-        inActive = ch === '__all__' ? inToggleAllClick(inActive, labels) : inToggleOneClick(inActive, labels, ch);
-        inRenderChannelSlicer();
+        setSet(ch === '__all__' ? inToggleAllClick(getSet(), labels) : inToggleOneClick(getSet(), labels, ch));
+        if (typeof gaEvent === 'function') gaEvent('filter_click', { filter_group: gaGroup, filter_value: ch });
+        inRenderSlicers();
         inRender();
       });
     });
+  }
+
+  function inRenderChannelSlicer() {
+    inRenderCoSlicer('inChannelSlicer', () => inActive, s => { inActive = s; }, 'industry_den_company', false);
+  }
+  function inRenderNumSlicer() {
+    inRenderCoSlicer('inNumSlicer', () => inNumSel, s => { inNumSel = s; }, 'industry_num_company', true);
   }
 
   function inRenderCatSlicer() {
@@ -10215,13 +10335,63 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     });
   }
 
-  // 현재 필터(채널+카테고리 선택)를 모두 반영한 행 (히트맵·요약에 쓰는 기준)
-  function inFiltered() {
-    return inRows.filter(r => inActive.has(r.label) && inCatSel.has(r.cat));
+  // 보기: [비율 | 편성 횟수]. 비율은 '분모 범위'에 따라
+  //   전체 방송      -> inMode 'cat' (카테고리 비중: 분자 회사가 분모 회사 전체 방송에서 그 카테고리로 차지하는 몫)
+  //   선택 카테고리  -> inMode 'co'  (회사 점유율: 그 카테고리 방송 안에서 분자 회사 몫)
+  const IN_VIEWS = [{ key: 'ratio', label: '비율' }, { key: 'cnt', label: '편성 횟수' }];
+  const IN_SCOPES = [{ key: 'all', label: '전체 방송' }, { key: 'cat', label: '선택 카테고리 방송만' }];
+  function inSyncMode(view) {
+    inMode = view === 'cnt' ? 'cnt' : (inDenScope === 'cat' ? 'co' : 'cat');
   }
-  // 채널 필터만 반영(카테고리 선택과 무관) - "이 시간대 전체 방송 대비 비중" 같은 분모 계산용
-  function inFilteredAllCats() {
-    return inRows.filter(r => inActive.has(r.label));
+  function inRenderModeToggle() {
+    const view = inMode === 'cnt' ? 'cnt' : 'ratio';
+    const wrap = $('inModeToggle');
+    wrap.innerHTML = IN_VIEWS.map(m =>
+      '<button data-view="' + m.key + '"' + (view === m.key ? ' class="active"' : '') + '>' + m.label + '</button>').join('');
+    wrap.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        inSyncMode(btn.dataset.view);
+        if (typeof gaEvent === 'function') gaEvent('filter_click', { filter_group: 'industry_mode', filter_value: inMode });
+        inRenderModeToggle();
+        inRender();
+      });
+    });
+    const sc = $('inDenScope');
+    $('inDenScopeRow').style.display = view === 'cnt' ? 'none' : '';
+    sc.innerHTML = IN_SCOPES.map(m =>
+      '<button data-scope="' + m.key + '"' + (inDenScope === m.key ? ' class="active"' : '') + '>' + m.label + '</button>').join('');
+    sc.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        inDenScope = btn.dataset.scope;
+        inSyncMode('ratio');
+        if (typeof gaEvent === 'function') gaEvent('filter_click', { filter_group: 'industry_den_scope', filter_value: inDenScope });
+        inRenderModeToggle();
+        inRender();
+      });
+    });
+  }
+
+  function inRenderSlicers() {
+    inRenderChannelSlicer();
+    inRenderNumSlicer();
+    inRenderCatSlicer();
+  }
+
+  // ---------- 분자/분모 계산 ----------
+  // 실제 분자 회사 = 분자 선택 ∩ 분모 선택
+  function inNumEff() {
+    return new Set([...inNumSel].filter(l => inActive.has(l)));
+  }
+  // rows(프로그램 구간 × 브랜드 기준) -> { den: [...], num: [...] }
+  //   cat: 분모 = 분모 회사 전체 방송           / 분자 = 그중 분자 회사 × 선택 카테고리
+  //   co : 분모 = 분모 회사 × 선택 카테고리     / 분자 = 그중 분자 회사
+  //   cnt: 분자만 의미 있음 (분자 회사 × 선택 카테고리)
+  function inSplit(rows) {
+    const num = inNumEff();
+    const base = rows.filter(r => inActive.has(r.label));
+    const inCat = base.filter(r => inCatSel.has(r.cat));
+    const den = inMode === 'cat' ? base : inCat;
+    return { den: den, num: inCat.filter(r => num.has(r.label)), all: base, cat: inCat };
   }
 
   // 선택된 카테고리 라벨 문구 (전체 선택이면 빈 문자열)
@@ -10229,12 +10399,64 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     if (inCatSel.size === 0 || inCatSel.size === IN_CATS.length) return '';
     return [...inCatSel].join('·');
   }
+  function inCatText() {
+    return inCatSel.size === IN_CATS.length ? '전체 카테고리' : inCatSel.size ? [...inCatSel].join('·') : '(선택 없음)';
+  }
+  function inSetText(set) {
+    const labels = IN_CHANNELS.map(c => c.label).filter(l => set.has(l));
+    if (labels.length === IN_CHANNELS.length) return '16개사 전체';
+    if (!labels.length) return '(선택 없음)';
+    return labels.join('·');
+  }
+  function inNumText() {
+    const num = inNumEff();
+    if (num.size && num.size === inActive.size) return '분모 회사 전체';
+    return inSetText(num);
+  }
+  const inPct = (n, d) => d ? Math.round(n / d * 1000) / 10 : null;
+  const inPctStr = (n, d) => d ? (n / d * 100).toFixed(n / d >= 0.995 || n === 0 ? 0 : 1).replace(/\.0$/, '') + '%' : '–';
+
+  function inRenderFormula() {
+    const el = $('inFormula');
+    const den = inSetText(inActive), num = inNumText(), cat = inCatText();
+    let html;
+    if (inMode === 'cat') {
+      html = '셀 값 = <b>[' + inEsc(num) + ']의 [' + inEsc(cat) + ']</b> 방송 ÷ <b>[' + inEsc(den) + ']의 전체</b> 방송'
+        + ' <span class="in-muted">· 분모 범위를 \'선택 카테고리 방송만\'으로 바꾸면 카테고리 안 회사 점유율</span>';
+      if (inCatSel.size === IN_CATS.length && inNumEff().size === inActive.size)
+        html += '<br><span class="in-muted">※ 지금은 카테고리·분자 회사가 모두 전체라 모든 칸이 100%예요. 카테고리를 골라 보세요.</span>';
+    } else if (inMode === 'co') {
+      html = '셀 값 = <b>[' + inEsc(num) + ']의 [' + inEsc(cat) + ']</b> 방송 ÷ <b>[' + inEsc(den) + ']의 [' + inEsc(cat) + ']</b> 방송';
+      if (inNumEff().size === inActive.size)
+        html += '<br><span class="in-muted">※ 분자 회사가 분모 회사와 같아 모든 칸이 100%예요. 분자 회사에서 비교할 회사(예: HD)를 골라 보세요.</span>';
+    } else {
+      html = '셀 값 = <b>[' + inEsc(num) + ']의 [' + inEsc(cat) + ']</b> 방송 횟수 (프로그램 구간 × 브랜드 기준)';
+    }
+    html += '<br><span class="in-muted">※ 1회 = 프로그램 구간의 브랜드 하나(상품코드 여러 개는 1회, 카테고리는 그 브랜드 상품 중 최다). 한 구간 브랜드가 4개 이상인 편집숍형 방송은 1회.</span>';
+    el.innerHTML = html;
+  }
 
   function inRender() {
-    const rows = inFiltered();
-    const grid = {}; // 'h|w' -> count
-    rows.forEach(r => { const k = r.h + '|' + r.w; grid[k] = (grid[k] || 0) + 1; });
-    const max = Math.max(1, ...Object.values(grid));
+    inRenderFormula();
+    const { den, num } = inSplit(inPgmRows);
+    const gN = {}, gD = {};
+    num.forEach(r => { const k = r.h + '|' + r.w; gN[k] = (gN[k] || 0) + 1; });
+    den.forEach(r => { const k = r.h + '|' + r.w; gD[k] = (gD[k] || 0) + 1; });
+    const isPct = inMode !== 'cnt';
+
+    // 색 진하기: 비율 모드는 표본이 충분한 칸들 중 최댓값 기준, 횟수 모드는 최대 횟수 기준
+    let max = 0;
+    Object.keys(isPct ? gD : gN).forEach(k => {
+      if (isPct) { if ((gD[k] || 0) >= IN_MIN_DEN) max = Math.max(max, (gN[k] || 0) / gD[k]); }
+      else max = Math.max(max, gN[k] || 0);
+    });
+    if (!max) max = 1;
+
+    const cellTitle = (h, w, n, d) => {
+      const when = IN_DAYS[w] + ' ' + String(h).padStart(2, '0') + '시대 · ';
+      if (!isPct) return when + n + '회';
+      return when + n + '회 / ' + d + '회 = ' + inPctStr(n, d) + (d && d < IN_MIN_DEN ? ' (분모 ' + IN_MIN_DEN + '회 미만, 참고용)' : '');
+    };
 
     let html = '<div class="in-grid"><div></div>';
     IN_DAYS.forEach((d, w) => {
@@ -10244,11 +10466,15 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
       const hSel = inSel && inSel.h === h && inSel.w === null ? ' sel' : '';
       html += '<div class="in-hlabel' + hSel + '" data-h="' + h + '">' + String(h).padStart(2, '0') + '시</div>';
       for (let w = 0; w < 7; w++) {
-        const c = grid[h + '|' + w] || 0;
-        const a = c === 0 ? 0 : 0.08 + 0.87 * (c / max);
-        const style = c === 0 ? '' : ' style="background:rgba(220,38,38,' + a.toFixed(3) + ');color:' + (a > 0.5 ? '#fff' : '#7F1D1D') + '"';
+        const k = h + '|' + w, n = gN[k] || 0, d = gD[k] || 0;
+        const v = isPct ? (d ? n / d : 0) : n;
+        const thin = isPct && d > 0 && d < IN_MIN_DEN;
+        const a = v === 0 ? 0 : 0.08 + 0.87 * Math.min(1, v / max);
+        const style = v === 0 ? '' : ' style="background:rgba(220,38,38,' + a.toFixed(3) + ');color:' + (a > 0.5 ? '#fff' : '#7F1D1D') + '"';
+        const text = isPct ? (d ? Math.round(n / d * 100) : '') : (n || '');
         const isSel = inSel && inSel.h === h && (inSel.w === w || inSel.w === null);
-        html += '<div class="in-cell' + (isSel ? ' sel' : '') + '" data-h="' + h + '" data-w="' + w + '"' + style + '>' + (c || '') + '</div>';
+        html += '<div class="in-cell' + (isSel ? ' sel' : '') + (thin ? ' thin' : '') + '" data-h="' + h + '" data-w="' + w + '"'
+          + ' title="' + inEsc(cellTitle(h, w, n, d)) + '"' + style + '>' + text + '</div>';
       }
     });
     html += '</div>';
@@ -10270,10 +10496,13 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     });
 
     const days = inDiffDays(inStart, inEnd) + 1;
-    const catLabel = inCatLabel();
-    $('inSummary').innerHTML = '조회기간 <b>' + inStart + ' ~ ' + inEnd + '</b> (' + days + '일) · 편성 <b>'
-      + rows.length + '건</b>' + (catLabel ? ' · 카테고리 <b>' + inEsc(catLabel) + '</b>' : '')
-      + (inActive.size === 0 || inCatSel.size === 0 ? ' · <span class="in-muted">선택된 항목이 없습니다</span>' : '');
+    let sum = '조회기간 <b>' + inStart + ' ~ ' + inEnd + '</b> (' + days + '일) · ';
+    if (isPct) sum += '전체 <b>' + num.length + '회 / ' + den.length + '회 = ' + inPctStr(num.length, den.length) + '</b>'
+      + ' · 셀 숫자 단위 % · 흐린 칸 = 분모 ' + IN_MIN_DEN + '회 미만';
+    else sum += '편성 <b>' + num.length + '회</b> (프로그램 구간 × 브랜드 기준)';
+    if (inVerifySkipped) sum += ' · <span title="셀럽PGM에서 프로그램 페이지엔 없고 CJ 편성표에만 있는 상품(상시주문코드 의심)">확인필요 상품 ' + inVerifySkipped + '건 제외</span>';
+    if (inActive.size === 0 || inCatSel.size === 0 || inNumEff().size === 0) sum += ' · <span class="in-muted">선택된 항목이 없습니다</span>';
+    $('inSummary').innerHTML = sum;
 
     inRenderInsight();
   }
@@ -10297,6 +10526,42 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     return parts.join(' · ');
   }
 
+  // 다빈도 브랜드: 분자 회사 방송 중 선택 카테고리 브랜드를 '프로그램 횟수'로 센다
+  // (같은 구간의 같은 브랜드 상품코드 여러 개 = 1회)
+  function inBrandRank(rows) {
+    const num = inNumEff();
+    const m = new Map();
+    let blank = 0;
+    rows.forEach(r => {
+      if (!num.has(r.label)) return;
+      r.brands.forEach(b => {
+        if (!inCatSel.has(b.cat)) return;
+        if (!b.key) { blank++; return; }
+        let x = m.get(b.key);
+        if (!x) m.set(b.key, x = { name: b.name, n: 0, by: {} });
+        x.n++;
+        x.by[r.label] = (x.by[r.label] || 0) + 1;
+      });
+    });
+    return { list: [...m.values()].sort((a, b) => b.n - a.n || a.name.localeCompare(b.name)), blank: blank };
+  }
+  const IN_BRAND_TOP = 10;
+  function inBrandHtml(rows, title) {
+    const { list, blank } = inBrandRank(rows);
+    if (!list.length && !blank) return '';
+    const fmt = x => {
+      const by = Object.entries(x.by).sort((a, b) => b[1] - a[1]).map(([l, n]) => l + ' ' + n + '회').join(', ');
+      return '<li><b>' + inEsc(x.name) + '</b> ' + x.n + '회 <span class="in-muted">(' + by + ')</span></li>';
+    };
+    let html = '<div class="in-brands"><b>🏷️ ' + title + '</b> <span class="in-muted">[' + inEsc(inNumText()) + ' · ' + inEsc(inCatText()) + ']</span>'
+      + '<ol>' + list.slice(0, IN_BRAND_TOP).map(fmt).join('') + '</ol>';
+    if (list.length > IN_BRAND_TOP)
+      html += '<details><summary>나머지 ' + (list.length - IN_BRAND_TOP) + '개 브랜드 보기</summary><ol start="' + (IN_BRAND_TOP + 1) + '">'
+        + list.slice(IN_BRAND_TOP).map(fmt).join('') + '</ol></details>';
+    if (blank) html += '<p class="in-muted in-brand-note">브랜드 미기재 ' + blank + '회는 목록에서 제외</p>';
+    return html + '</div>';
+  }
+
   function inRenderInsight() {
     const box = $('inInsight');
     const period = inPeriodLabel();
@@ -10304,18 +10569,29 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
 
     if (!inSel) {
       let html = '<h4>💡 인사이트</h4>';
-      if (catLabel) {
-        const rows = inFiltered();
-        const grid = {};
-        rows.forEach(r => { const k = r.h + '|' + r.w; grid[k] = (grid[k] || 0) + 1; });
-        const top = Object.entries(grid).sort((a, b) => b[1] - a[1]).slice(0, 3)
-          .map(([k, c]) => { const [h, w] = k.split('|'); return IN_DAYS[w] + ' ' + String(h).padStart(2, '0') + '시 ' + c + '회'; });
-        html += top.length
-          ? '<ul><li>' + period + ' <b>' + inEsc(catLabel) + '</b> 최다 편성: ' + top.join(' · ') + '</li></ul>'
+      const { den, num } = inSplit(inPgmRows);
+      const gN = {}, gD = {};
+      num.forEach(r => { const k = r.h + '|' + r.w; gN[k] = (gN[k] || 0) + 1; });
+      den.forEach(r => { const k = r.h + '|' + r.w; gD[k] = (gD[k] || 0) + 1; });
+      const fmtK = k => { const [h, w] = k.split('|'); return IN_DAYS[w] + ' ' + String(h).padStart(2, '0') + '시'; };
+      if (inMode === 'cnt') {
+        const top = Object.entries(gN).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([k, c]) => fmtK(k) + ' ' + c + '회');
+        html += top.length ? '<ul><li>' + period + ' 최다 편성: ' + top.join(' · ') + '</li></ul>'
           : '<p class="in-muted">이 조건에 해당하는 편성이 없습니다.</p>';
-      } else if (inCatSel.size === 0) {
-        html += '<p class="in-muted">선택된 카테고리가 없습니다. 카테고리 슬라이서에서 항목을 선택해 주세요.</p>';
+      } else {
+        const cells = Object.keys(gD).filter(k => gD[k] >= IN_MIN_DEN)
+          .map(k => [k, (gN[k] || 0) / gD[k], gN[k] || 0, gD[k]]);
+        const fmt = ([k, , n, d]) => fmtK(k) + ' <b>' + inPctStr(n, d) + '</b> <span class="in-muted">(' + n + '/' + d + ')</span>';
+        const hi = [...cells].sort((a, b) => b[1] - a[1] || b[3] - a[3]).slice(0, 3);
+        const lo = [...cells].sort((a, b) => a[1] - b[1] || b[3] - a[3]).slice(0, 3);
+        if (cells.length) {
+          html += '<ul><li>' + period + ' 비율이 가장 높은 시간대: ' + hi.map(fmt).join(' · ') + '</li>'
+            + '<li>가장 낮은 시간대: ' + lo.map(fmt).join(' · ') + '</li></ul>';
+        } else {
+          html += '<p class="in-muted">이 조건에 해당하는 편성이 없습니다.</p>';
+        }
       }
+      html += inBrandHtml(inPgmRows, period + ' 다빈도 브랜드');
       html += '<p class="in-muted">히트맵 셀 또는 시간대(행) 라벨을 클릭하면 상세 인사이트가 표시됩니다.</p>';
       box.innerHTML = html;
       return;
@@ -10330,53 +10606,61 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     inRenderCellInsight(box, h, w, period, catLabel);
   }
 
-  // 시간대(행) 클릭: 그 시간대의 요일별 홈쇼핑 편성 빈도만 표시 (지상파/종편 연계 없음)
+  // 시간대(행) 클릭: 그 시간대의 요일별 값 (지상파/종편 연계 없음)
   function inRenderRowInsight(box, h, period, catLabel) {
     const hh = String(h).padStart(2, '0');
-    const rows = inFiltered().filter(r => r.h === h);
-    const perDay = IN_DAYS.map((d, w) => rows.filter(r => r.w === w).length);
+    const { den, num } = inSplit(inPgmRows.filter(r => r.h === h));
+    const perDay = IN_DAYS.map((d, w) => {
+      const n = num.filter(r => r.w === w).length, dd = den.filter(r => r.w === w).length;
+      return d + ' ' + (inMode === 'cnt' ? n + '회' : '<b>' + inPctStr(n, dd) + '</b> <span class="in-muted">(' + n + '/' + dd + ')</span>');
+    });
 
     let html = '<h4>💡 ' + hh + '시대 요일별 인사이트</h4><ul>';
-    html += '<li>' + period + ' ' + hh + '시대 편성: '
-      + IN_DAYS.map((d, w) => d + ' ' + perDay[w] + '회').join(' · ') + '</li>';
-    const bd = inChannelBreakdown(rows);
-    html += '<li>합계 <b>' + rows.length + '회</b>' + (bd ? ' (' + bd + ')' : '') + (catLabel ? ' · 카테고리 ' + inEsc(catLabel) : '') + '</li>';
+    html += '<li>' + period + ' ' + hh + '시대: ' + perDay.join(' · ') + '</li>';
+    const bd = inChannelBreakdown(num);
+    html += '<li>' + (inMode === 'cnt' ? '합계 <b>' + num.length + '회</b>'
+      : '합계 <b>' + num.length + '회 / ' + den.length + '회 = ' + inPctStr(num.length, den.length) + '</b>')
+      + (bd ? ' (분자: ' + bd + ')' : '') + '</li>';
 
     const byCat = {};
-    rows.forEach(r => { byCat[r.cat] = (byCat[r.cat] || 0) + 1; });
+    den.forEach(r => { byCat[r.cat] = (byCat[r.cat] || 0) + 1; });
     const top = Object.entries(byCat).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([c, n]) => inEsc(c) + ' ' + n + '회');
-    if (top.length) html += '<li>주요 카테고리: ' + top.join(' · ') + '</li>';
+    if (top.length) html += '<li>분모 방송의 주요 카테고리: ' + top.join(' · ') + '</li>';
 
-    html += '</ul>';
+    html += '</ul>' + inBrandHtml(inPgmRows.filter(r => r.h === h), hh + '시대 다빈도 브랜드');
     box.innerHTML = html;
   }
 
-  // 셀(요일+시간대) 클릭: 홈쇼핑 빈도 + 고정/셀럽PGM + 지상파·종편 연계
+  // 셀(요일+시간대) 클릭: 분자/분모 원 횟수 + 세 가지 비율 + 고정/셀럽PGM + 지상파·종편 연계
   function inRenderCellInsight(box, h, w, period, catLabel) {
     const dayName = IN_DAYS[w] + '요일';
     const hh = String(h).padStart(2, '0');
-    const cellAll = inFilteredAllCats().filter(r => r.h === h && r.w === w); // 카테고리 선택과 무관(비중 계산용 분모)
-    const cellCat = inFiltered().filter(r => r.h === h && r.w === w);        // 현재 카테고리 선택 반영
+    const sp = inSplit(inPgmRows.filter(r => r.h === h && r.w === w));
+    const nAll = sp.all.length, nCat = sp.cat.length, nNum = sp.num.length;
+    const den = inSetText(inActive), numT = inNumText(), cat = inCatText();
+    const numSame = inNumEff().size === inActive.size;
 
-    let html = '<h4>💡 ' + dayName + ' ' + hh + '시대 인사이트</h4><ul>';
+    let html = '<h4>💡 ' + dayName + ' ' + hh + '시대 인사이트</h4>';
+    html += '<p style="margin:0 0 4px;">' + period + ' 편성 <span class="in-muted">(프로그램 구간 × 브랜드 기준)</span></p>';
+    html += '<table class="in-ratio-tbl"><tbody>'
+      + '<tr><td>[' + inEsc(den) + '] 전체 방송</td><td>' + nAll + '회</td></tr>'
+      + '<tr><td>└ 그중 [' + inEsc(cat) + ']</td><td>' + nCat + '회</td></tr>'
+      + (numSame ? '' : '<tr><td>&nbsp;&nbsp;&nbsp;└ 그중 [' + inEsc(numT) + ']</td><td>' + nNum + '회</td></tr>')
+      + '</tbody></table>';
 
-    if (inCatSel.size === 0) {
-      html += '<li class="in-muted">선택된 카테고리가 없습니다. 카테고리 슬라이서에서 항목을 선택해 주세요.</li>';
-    } else if (catLabel) {
-      const bd = inChannelBreakdown(cellCat);
-      html += '<li>' + period + ' ' + dayName + ' ' + hh + '시대에 <b>' + inEsc(catLabel) + '</b> <b>'
-        + cellCat.length + '회</b> 편성' + (bd ? ' (' + bd + ')' : '') + '</li>';
-      if (cellCat.length) {
-        const sharePct = cellAll.length ? Math.round(cellCat.length / cellAll.length * 100) : 0;
-        html += '<li>이 시간대 전체 방송 ' + cellAll.length + '회 중 <b>' + inEsc(catLabel) + '</b>이(가) '
-          + cellCat.length + '회 (<b>' + sharePct + '%</b>)</li>';
-      }
-    } else {
-      const bd = inChannelBreakdown(cellAll);
-      html += '<li>' + period + ' ' + dayName + ' ' + hh + '시대에 전체 <b>' + cellAll.length + '회</b> 편성'
-        + (bd ? ' (' + bd + ')' : '') + '</li>';
+    html += '<table class="in-ratio-tbl"><tbody>'
+      + '<tr' + (inMode === 'cat' && numSame ? ' class="on"' : '') + '><td>' + inEsc(cat) + ' ÷ 전체</td><td>' + inPctStr(nCat, nAll) + '</td></tr>'
+      + (numSame ? '' :
+          '<tr' + (inMode === 'co' ? ' class="on"' : '') + '><td>' + inEsc(numT) + ' ÷ ' + inEsc(cat) + ' (분모 범위: 선택 카테고리)</td><td>' + inPctStr(nNum, nCat) + '</td></tr>'
+        + '<tr' + (inMode === 'cat' ? ' class="on"' : '') + '><td>' + inEsc(numT) + '의 ' + inEsc(cat) + ' ÷ 전체 (분모 범위: 전체 방송)</td><td>' + inPctStr(nNum, nAll) + '</td></tr>')
+      + '</tbody></table>';
+
+    html += '<ul>';
+    const bd = inChannelBreakdown(sp.cat);
+    if (bd) html += '<li>[' + inEsc(cat) + '] 채널별: ' + bd + '</li>';
+    if (inCatSel.size === IN_CATS.length) {
       const byCat = {};
-      cellAll.forEach(r => { byCat[r.cat] = (byCat[r.cat] || 0) + 1; });
+      sp.all.forEach(r => { byCat[r.cat] = (byCat[r.cat] || 0) + 1; });
       const top = Object.entries(byCat).sort((a, b) => b[1] - a[1]).slice(0, 3)
         .map(([c, n]) => inEsc(c) + ' ' + n + '회');
       if (top.length) html += '<li>주요 카테고리: ' + top.join(' · ') + '</li>';
@@ -10401,7 +10685,8 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
       }
     });
 
-    html += '</ul><div id="inCrossref"><p class="in-muted" style="font-size:12px;">지상파·종편 편성 확인 중...</p></div>';
+    html += '</ul>' + inBrandHtml(inPgmRows.filter(r => r.h === h && r.w === w), dayName + ' ' + hh + '시대 브랜드');
+    html += '<div id="inCrossref"><p class="in-muted" style="font-size:12px;">지상파·종편 편성 확인 중...</p></div>';
     box.innerHTML = html;
     inLoadCrossref(w, h, inSelToken);
   }
@@ -10925,8 +11210,8 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     inRenderTrkDaySlicer();
     inRenderTrkSlicer();
 
-    inRenderChannelSlicer();
-    inRenderCatSlicer();
+    inRenderModeToggle();
+    inRenderSlicers();
     inQuery();
   };
 })();
