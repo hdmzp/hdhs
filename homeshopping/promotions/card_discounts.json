@@ -1,12 +1,12 @@
 {
-  "collected_at": "2026-11-15T20:31:01+09:00",
+  "collected_at": "2026-11-16T11:18:55+09:00",
   "companies": {
     "HD": {
       "name": "현대홈쇼핑",
       "source": "https://www.hmall.com/md/dpl/index",
       "status": "ok",
       "error": "",
-      "last_success": "2026-11-15T20:31:01+09:00",
+      "last_success": "2026-11-16T11:18:55+09:00",
       "days": {
         "2026-08-02": [
           {
@@ -1096,6 +1096,13 @@
             "type": "즉시할인",
             "rate": 5
           }
+        ],
+        "2026-11-19": [
+          {
+            "card": "삼성카드",
+            "type": "즉시할인",
+            "rate": 5
+          }
         ]
       }
     },
@@ -1104,7 +1111,7 @@
       "source": "https://m.gsshop.com/index.gs",
       "status": "ok",
       "error": "",
-      "last_success": "2026-11-15T20:31:01+09:00",
+      "last_success": "2026-11-16T11:18:55+09:00",
       "days": {
         "2026-08-02": [
           {
@@ -2278,6 +2285,13 @@
             "type": "즉시할인",
             "rate": 5
           }
+        ],
+        "2026-11-19": [
+          {
+            "card": "삼성카드",
+            "type": "즉시할인",
+            "rate": 7
+          }
         ]
       }
     },
@@ -2286,7 +2300,7 @@
       "source": "https://display.cjonstyle.com/p/homeTab/main?hmtabMenuId=H00009",
       "status": "ok",
       "error": "",
-      "last_success": "2026-11-15T20:31:01+09:00",
+      "last_success": "2026-11-16T11:18:55+09:00",
       "days": {
         "2026-08-02": [
           {
@@ -3771,6 +3785,20 @@
             "rate": 7,
             "max": true
           }
+        ],
+        "2026-11-16": [
+          {
+            "card": "카카오페이 KB국민카드",
+            "type": "즉시할인",
+            "rate": 5,
+            "max": true
+          },
+          {
+            "card": "KB국민카드",
+            "type": "즉시할인",
+            "rate": 7,
+            "max": true
+          }
         ]
       }
     },
@@ -3779,7 +3807,7 @@
       "source": "https://www.lotteimall.com/main/viewMain.lotte?dpml_no=1",
       "status": "ok",
       "error": "",
-      "last_success": "2026-11-15T20:31:01+09:00",
+      "last_success": "2026-11-16T11:18:55+09:00",
       "days": {
         "2026-08-02": [
           {
@@ -4791,6 +4819,13 @@
         "2026-11-16": [
           {
             "card": "롯데카드",
+            "type": "청구할인",
+            "rate": 5
+          }
+        ],
+        "2026-11-17": [
+          {
+            "card": "KB국민카드",
             "type": "청구할인",
             "rate": 5
           }
