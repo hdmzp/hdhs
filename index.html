@@ -10382,7 +10382,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
   function inNumEff() {
     return new Set([...inNumSel].filter(l => inActive.has(l)));
   }
-  // rows(프로그램 단위) -> { den: [...], num: [...] }
+  // rows(프로그램 구간 × 브랜드 기준) -> { den: [...], num: [...] }
   //   cat: 분모 = 분모 회사 전체 방송           / 분자 = 그중 분자 회사 × 선택 카테고리
   //   co : 분모 = 분모 회사 × 선택 카테고리     / 분자 = 그중 분자 회사
   //   cnt: 분자만 의미 있음 (분자 회사 × 선택 카테고리)
@@ -10430,7 +10430,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
       if (inNumEff().size === inActive.size)
         html += '<br><span class="in-muted">※ 분자 회사가 분모 회사와 같아 모든 칸이 100%예요. 분자 회사에서 비교할 회사(예: HD)를 골라 보세요.</span>';
     } else {
-      html = '셀 값 = <b>[' + inEsc(num) + ']의 [' + inEsc(cat) + ']</b> 방송 횟수 (프로그램 단위)';
+      html = '셀 값 = <b>[' + inEsc(num) + ']의 [' + inEsc(cat) + ']</b> 방송 횟수 (프로그램 구간 × 브랜드 기준)';
     }
     html += '<br><span class="in-muted">※ 1회 = 프로그램 구간의 브랜드 하나(상품코드 여러 개는 1회, 카테고리는 그 브랜드 상품 중 최다). 한 구간 브랜드가 4개 이상인 편집숍형 방송은 1회.</span>';
     el.innerHTML = html;
@@ -10499,7 +10499,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     let sum = '조회기간 <b>' + inStart + ' ~ ' + inEnd + '</b> (' + days + '일) · ';
     if (isPct) sum += '전체 <b>' + num.length + '회 / ' + den.length + '회 = ' + inPctStr(num.length, den.length) + '</b>'
       + ' · 셀 숫자 단위 % · 흐린 칸 = 분모 ' + IN_MIN_DEN + '회 미만';
-    else sum += '편성 <b>' + num.length + '회</b> (프로그램 단위)';
+    else sum += '편성 <b>' + num.length + '회</b> (프로그램 구간 × 브랜드 기준)';
     if (inVerifySkipped) sum += ' · <span title="셀럽PGM에서 프로그램 페이지엔 없고 CJ 편성표에만 있는 상품(상시주문코드 의심)">확인필요 상품 ' + inVerifySkipped + '건 제외</span>';
     if (inActive.size === 0 || inCatSel.size === 0 || inNumEff().size === 0) sum += ' · <span class="in-muted">선택된 항목이 없습니다</span>';
     $('inSummary').innerHTML = sum;
@@ -10641,7 +10641,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     const numSame = inNumEff().size === inActive.size;
 
     let html = '<h4>💡 ' + dayName + ' ' + hh + '시대 인사이트</h4>';
-    html += '<p style="margin:0 0 4px;">' + period + ' 편성 <span class="in-muted">(프로그램 단위)</span></p>';
+    html += '<p style="margin:0 0 4px;">' + period + ' 편성 <span class="in-muted">(프로그램 구간 × 브랜드 기준)</span></p>';
     html += '<table class="in-ratio-tbl"><tbody>'
       + '<tr><td>[' + inEsc(den) + '] 전체 방송</td><td>' + nAll + '회</td></tr>'
       + '<tr><td>└ 그중 [' + inEsc(cat) + ']</td><td>' + nCat + '회</td></tr>'
