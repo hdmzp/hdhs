@@ -1138,6 +1138,7 @@
   .in-sl-row { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
   .in-sl-label { flex: 0 0 58px; font-size: 11.5px; font-weight: 700; color: var(--ink-soft); padding-top: 9px; }
   .in-sl-row .lv-slicer { flex: 1 1 auto; }
+  .in-sl-row .in-mode { margin-bottom: 0; }
   .in-sl-row .lv-slicer button:disabled { opacity: .35; cursor: not-allowed; }
   #inNumSlicer button.active { background: #DC2626; color: #fff; }
   #inCatSlicer button.active { background: #A9C6F2; color: #173E7C; }
@@ -1150,7 +1151,12 @@
   .in-ratio-tbl td { padding: 4px 6px; border-bottom: 1px solid var(--rule); }
   .in-ratio-tbl td:last-child { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
   .in-ratio-tbl tr.on td { font-weight: 700; color: #B91C1C; }
-  @media (max-width: 600px) { .in-sl-row { flex-direction: column; gap: 2px; } .in-sl-label { padding-top: 0; } }
+  @media (max-width: 600px) {
+    .in-sl-row { flex-direction: column; align-items: stretch; gap: 4px; margin-bottom: 8px; }
+    .in-sl-label { flex: none; padding-top: 0; }
+    .in-sl-row .lv-slicer, .in-sl-row .in-mode { flex: none; align-self: flex-start; }
+    .in-sl-row .lv-slicer { align-self: stretch; }
+  }
   .in-cat-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 4px; vertical-align: 0; }
   .in-cross { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--rule); font-size: 12.5px; color: var(--ink-soft); }
   .in-cross b { color: var(--ink); font-size: 13px; }
@@ -4371,8 +4377,8 @@
       </div>
       <div class="in-heat-content">
         <div class="in-mode" id="inModeToggle"></div>
-        <div class="in-sl-row"><span class="in-sl-label">분자 회사</span><div class="lv-slicer" id="inNumSlicer"></div></div>
-        <div class="in-sl-row"><span class="in-sl-label">분모 회사</span><div class="lv-slicer" id="inChannelSlicer"></div></div>
+        <div class="in-sl-row"><span class="in-sl-label" id="inNumLabel">분자 회사</span><div class="lv-slicer" id="inNumSlicer"></div></div>
+        <div class="in-sl-row" id="inDenRow"><span class="in-sl-label">분모 회사</span><div class="lv-slicer" id="inChannelSlicer"></div></div>
         <div class="in-sl-row" id="inDenScopeRow"><span class="in-sl-label">분모 범위</span><div class="in-mode in-scope" id="inDenScope"></div></div>
         <div class="in-sl-row"><span class="in-sl-label">카테고리</span><div class="lv-slicer" id="inCatSlicer"></div></div>
         <p class="in-formula" id="inFormula"></p>
@@ -10292,7 +10298,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     let html = '<button data-ch="__all__"' + (allActive ? ' class="active"' : '') + '>전체선택</button>';
     IN_CHANNELS.forEach((c, i) => {
       if (IN_GROUP_BREAKS.includes(i)) html += '<span class="lv-slicer-sep"></span>';
-      const off = isNum && !inActive.has(c.label);
+      const off = isNum && inMode !== 'cnt' && !inActive.has(c.label);
       html += '<button data-ch="' + c.label + '"' + (set.has(c.label) && !off ? ' class="active"' : '')
         + (off ? ' disabled title="분모 회사에 없는 회사는 분자로 고를 수 없어요"' : '') + '>' + c.label + '</button>';
     });
@@ -10358,6 +10364,9 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     });
     const sc = $('inDenScope');
     $('inDenScopeRow').style.display = view === 'cnt' ? 'none' : '';
+    $('inDenRow').style.display = view === 'cnt' ? 'none' : '';
+    $('inNumLabel').textContent = view === 'cnt' ? '회사' : '분자 회사';
+    inRenderNumSlicer(); // 편성 횟수에선 분모에 없는 회사도 고를 수 있게 비활성 표시를 갱신
     sc.innerHTML = IN_SCOPES.map(m =>
       '<button data-scope="' + m.key + '"' + (inDenScope === m.key ? ' class="active"' : '') + '>' + m.label + '</button>').join('');
     sc.querySelectorAll('button').forEach(btn => {
@@ -10380,6 +10389,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
   // ---------- 분자/분모 계산 ----------
   // 실제 분자 회사 = 분자 선택 ∩ 분모 선택
   function inNumEff() {
+    if (inMode === 'cnt') return new Set(inNumSel); // 편성 횟수엔 분모가 없다
     return new Set([...inNumSel].filter(l => inActive.has(l)));
   }
   // rows(프로그램 구간 × 브랜드 기준) -> { den: [...], num: [...] }
@@ -10388,7 +10398,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
   //   cnt: 분자만 의미 있음 (분자 회사 × 선택 카테고리)
   function inSplit(rows) {
     const num = inNumEff();
-    const base = rows.filter(r => inActive.has(r.label));
+    const base = inMode === 'cnt' ? rows : rows.filter(r => inActive.has(r.label));
     const inCat = base.filter(r => inCatSel.has(r.cat));
     const den = inMode === 'cat' ? base : inCat;
     return { den: den, num: inCat.filter(r => num.has(r.label)), all: base, cat: inCat };
@@ -10410,6 +10420,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
   }
   function inNumText() {
     const num = inNumEff();
+    if (inMode === 'cnt') return inSetText(num);
     if (num.size && num.size === inActive.size) return '분모 회사 전체';
     return inSetText(num);
   }
