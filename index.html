@@ -1129,6 +1129,11 @@
   .in-insight li { margin-bottom: 7px; }
   .in-insight .in-muted { color: var(--ink-soft); }
   .in-insight .in-pgm { color: var(--brand-blue); font-weight: 600; }
+  .in-brands { margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--rule); font-size: 12.5px; }
+  .in-brands ol { margin: 6px 0 0; padding-left: 22px; }
+  .in-brands li { margin-bottom: 3px; }
+  .in-brands details summary { cursor: pointer; color: var(--brand-blue); font-size: 12px; margin-top: 4px; }
+  .in-brands .in-brand-note { font-size: 11.5px; margin: 4px 0 0; }
   .in-cell.thin { opacity: .45; font-weight: 500; }
   .in-sl-row { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
   .in-sl-label { flex: 0 0 58px; font-size: 11.5px; font-weight: 700; color: var(--ink-soft); padding-top: 9px; }
@@ -10113,6 +10118,32 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     return d + '|' + label + '|' + String(e.start || '') + '|' + name.replace(/\s+/g, ' ');
   };
 
+  // 상품 링크에서 상품코드 추출 (CJ: /p/item/2081410996)
+  const inItemCode = link => { const m = String(link || '').match(/item\/(\d+)/); return m ? m[1] : ''; };
+  // 브랜드 정규화 키: 공백·대소문자 차이를 같은 브랜드로 본다. 비어 있으면 '' (브랜드 미기재)
+  const inBrandKey = b => String(b || '').trim().replace(/\s+/g, '').toLowerCase();
+  let inVerifySkipped = 0;
+  const inVerifyCache = {};
+  // 셀럽PGM 이력(월별)에서 verify=true 상품을 '날짜|상품코드' 집합으로
+  async function inLoadVerify(months) {
+    const set = new Set();
+    await Promise.all([...months].map(async ym => {
+      if (!(ym in inVerifyCache)) {
+        try {
+          const r = await fetch('./homeshopping/representative_programs/history/' + ym + '.json?t=' + Date.now());
+          inVerifyCache[ym] = r.ok ? await r.json() : null;
+        } catch (e) { inVerifyCache[ym] = null; }
+      }
+      ((inVerifyCache[ym] || {}).programs || []).forEach(p => (p.broadcasts || []).forEach(b =>
+        (b.products || []).forEach(pr => {
+          if (!pr.verify) return;
+          const code = inItemCode(pr.link);
+          if (code && b.date) set.add(b.date + '|' + code);
+        })));
+    }));
+    return set;
+  }
+
   async function inLoadRange() {
     const months = new Set();
     for (let d = inStart; d <= inEnd; d = inAddDays(d, 1)) months.add(d.slice(0, 7));
@@ -10120,7 +10151,8 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     IN_CHANNELS.forEach(c => months.forEach(ym => jobs.push(
       inLoadMonth(c.dir, ym).then(data => ({ ch: c, data: data }))
     )));
-    const loaded = await Promise.all(jobs);
+    const [loaded, verify] = await Promise.all([Promise.all(jobs), inLoadVerify(months)]);
+    let skipped = 0;
 
     const byKey = new Map(); // 중복 제거 키 -> 행 (묶인 상품들의 카테고리 분포를 함께 들고 있는다)
     // 히트맵은 '프로그램 횟수'로 센다: 날짜+채널+시작~종료 구간 = 1회 (홈쇼핑 탭의 구간 구분과 같은 기준).
@@ -10135,6 +10167,11 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
         days[d].forEach(e => {
           const h = parseInt(String(e.start || '').slice(0, 2), 10);
           if (isNaN(h) || (h >= 2 && h < 5)) return; // 02~04시 생략
+          // 셀럽PGM '확인필요' 상품(프로그램 페이지엔 없고 CJ 편성표에만 있음 = 상시주문코드 의심)은 제외
+          if (verify.size && ch.dir.startsWith('CJ_')) {
+            const code = inItemCode(e.link);
+            if (code && verify.has(d + '|' + code)) { skipped++; return; }
+          }
           const key = inDedupKey(d, ch.label, e);
           const cat = inCatOf(e);
           let r = byKey.get(key);
@@ -10150,11 +10187,15 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
           const pk = d + '|' + ch.label + '|' + st + '|' + en;
           let p = byPgm.get(pk);
           if (!p) {
-            p = { d: d, w: w, h: h, cat: cat, label: ch.label, main: !!ch.main, st: st, en: en, items: 0, cats: {} };
+            p = { d: d, w: w, h: h, cat: cat, label: ch.label, main: !!ch.main, st: st, en: en, items: 0, cats: {}, brands: {} };
             byPgm.set(pk, p);
           }
           p.items++;
           p.cats[cat] = (p.cats[cat] || 0) + 1;
+          // 브랜드: 같은 구간의 같은 브랜드(상품코드 여러 개)는 1회로. 브랜드별 카테고리는 그 브랜드 상품의 최빈값
+          const bk = inBrandKey(e.brand);
+          const bb = p.brands[bk] || (p.brands[bk] = { name: String(e.brand || '').trim(), cats: {} });
+          bb.cats[cat] = (bb.cats[cat] || 0) + 1;
         });
       }
     });
@@ -10164,8 +10205,12 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     pgms.forEach(p => {
       p.cat = Object.entries(p.cats).sort((a, b) => b[1] - a[1])[0][0];
       delete p.cats;
+      p.brands = Object.entries(p.brands).map(([k, v]) => ({
+        key: k, name: v.name, cat: Object.entries(v.cats).sort((a, b) => b[1] - a[1])[0][0],
+      }));
     });
     inPgmRows = pgms;
+    inVerifySkipped = skipped;
 
     // 한 브랜드 방송에 카테고리가 섞여 있으면(분류모델 편차) 상품 수가 가장 많은 카테고리를 대표로 쓴다
     const rows = [...byKey.values()];
@@ -10422,6 +10467,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     if (isPct) sum += '전체 <b>' + num.length + '회 / ' + den.length + '회 = ' + inPctStr(num.length, den.length) + '</b>'
       + ' · 셀 숫자 단위 % · 흐린 칸 = 분모 ' + IN_MIN_DEN + '회 미만';
     else sum += '편성 <b>' + num.length + '회</b> (프로그램 단위)';
+    if (inVerifySkipped) sum += ' · <span title="셀럽PGM에서 프로그램 페이지엔 없고 CJ 편성표에만 있는 상품(상시주문코드 의심)">확인필요 상품 ' + inVerifySkipped + '건 제외</span>';
     if (inActive.size === 0 || inCatSel.size === 0 || inNumEff().size === 0) sum += ' · <span class="in-muted">선택된 항목이 없습니다</span>';
     $('inSummary').innerHTML = sum;
 
@@ -10445,6 +10491,42 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     const parts = IN_MAIN_LABELS.filter(l => cnt[l]).map(l => l + ' ' + cnt[l] + '회');
     if (etc) parts.push('기타 ' + etc + '회');
     return parts.join(' · ');
+  }
+
+  // 다빈도 브랜드: 분자 회사 방송 중 선택 카테고리 브랜드를 '프로그램 횟수'로 센다
+  // (같은 구간의 같은 브랜드 상품코드 여러 개 = 1회)
+  function inBrandRank(rows) {
+    const num = inNumEff();
+    const m = new Map();
+    let blank = 0;
+    rows.forEach(r => {
+      if (!num.has(r.label)) return;
+      r.brands.forEach(b => {
+        if (!inCatSel.has(b.cat)) return;
+        if (!b.key) { blank++; return; }
+        let x = m.get(b.key);
+        if (!x) m.set(b.key, x = { name: b.name, n: 0, by: {} });
+        x.n++;
+        x.by[r.label] = (x.by[r.label] || 0) + 1;
+      });
+    });
+    return { list: [...m.values()].sort((a, b) => b.n - a.n || a.name.localeCompare(b.name)), blank: blank };
+  }
+  const IN_BRAND_TOP = 10;
+  function inBrandHtml(rows, title) {
+    const { list, blank } = inBrandRank(rows);
+    if (!list.length && !blank) return '';
+    const fmt = x => {
+      const by = Object.entries(x.by).sort((a, b) => b[1] - a[1]).map(([l, n]) => l + ' ' + n + '회').join(', ');
+      return '<li><b>' + inEsc(x.name) + '</b> ' + x.n + '회 <span class="in-muted">(' + by + ')</span></li>';
+    };
+    let html = '<div class="in-brands"><b>🏷️ ' + title + '</b> <span class="in-muted">[' + inEsc(inNumText()) + ' · ' + inEsc(inCatText()) + ']</span>'
+      + '<ol>' + list.slice(0, IN_BRAND_TOP).map(fmt).join('') + '</ol>';
+    if (list.length > IN_BRAND_TOP)
+      html += '<details><summary>나머지 ' + (list.length - IN_BRAND_TOP) + '개 브랜드 보기</summary><ol start="' + (IN_BRAND_TOP + 1) + '">'
+        + list.slice(IN_BRAND_TOP).map(fmt).join('') + '</ol></details>';
+    if (blank) html += '<p class="in-muted in-brand-note">브랜드 미기재 ' + blank + '회는 목록에서 제외</p>';
+    return html + '</div>';
   }
 
   function inRenderInsight() {
@@ -10476,6 +10558,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
           html += '<p class="in-muted">이 조건에 해당하는 편성이 없습니다.</p>';
         }
       }
+      html += inBrandHtml(inPgmRows, period + ' 다빈도 브랜드');
       html += '<p class="in-muted">히트맵 셀 또는 시간대(행) 라벨을 클릭하면 상세 인사이트가 표시됩니다.</p>';
       box.innerHTML = html;
       return;
@@ -10511,7 +10594,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     const top = Object.entries(byCat).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([c, n]) => inEsc(c) + ' ' + n + '회');
     if (top.length) html += '<li>분모 방송의 주요 카테고리: ' + top.join(' · ') + '</li>';
 
-    html += '</ul>';
+    html += '</ul>' + inBrandHtml(inPgmRows.filter(r => r.h === h), hh + '시대 다빈도 브랜드');
     box.innerHTML = html;
   }
 
@@ -10569,7 +10652,8 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
       }
     });
 
-    html += '</ul><div id="inCrossref"><p class="in-muted" style="font-size:12px;">지상파·종편 편성 확인 중...</p></div>';
+    html += '</ul>' + inBrandHtml(inPgmRows.filter(r => r.h === h && r.w === w), dayName + ' ' + hh + '시대 브랜드');
+    html += '<div id="inCrossref"><p class="in-muted" style="font-size:12px;">지상파·종편 편성 확인 중...</p></div>';
     box.innerHTML = html;
     inLoadCrossref(w, h, inSelToken);
   }
