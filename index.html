@@ -4371,8 +4371,9 @@
       </div>
       <div class="in-heat-content">
         <div class="in-mode" id="inModeToggle"></div>
-        <div class="in-sl-row"><span class="in-sl-label">분모 회사</span><div class="lv-slicer" id="inChannelSlicer"></div></div>
         <div class="in-sl-row"><span class="in-sl-label">분자 회사</span><div class="lv-slicer" id="inNumSlicer"></div></div>
+        <div class="in-sl-row"><span class="in-sl-label">분모 회사</span><div class="lv-slicer" id="inChannelSlicer"></div></div>
+        <div class="in-sl-row" id="inDenScopeRow"><span class="in-sl-label">분모 범위</span><div class="in-mode in-scope" id="inDenScope"></div></div>
         <div class="in-sl-row"><span class="in-sl-label">카테고리</span><div class="lv-slicer" id="inCatSlicer"></div></div>
         <p class="in-formula" id="inFormula"></p>
         <p class="lv-summary" id="inSummary"></p>
@@ -4395,7 +4396,7 @@
       <div class="lv-slicer" id="inTrkSlicer" style="margin:4px 0 8px;"></div>
       <div id="inTrkBody"><p class="in-muted" style="font-size:12.5px;">조회 기간의 건강 프로그램 본방 회차마다, 회차 내용 단서와 같은 시간에 시작한 홈쇼핑 건강식품을 보여줍니다. [조회]를 눌러 주세요.</p></div>
     </div>
-    <p class="lv-table-note">집계 기준: 프로그램(편성 구간) 1회 = 1건 · 한 구간에 상품이 여러 개여도 상품 수가 가장 많은 카테고리 하나로 셈 · 방송 시작시각의 시간대 (09:20 시작도 09:45 시작도 09시대) · 카테고리는 자체 분류모델 기준 · 데이터: 2026-06-22부터 (기타 채널은 06-26부터) · 히트맵 셀을 클릭하면 상세 인사이트 표시</p>
+    <p class="lv-table-note">집계 기준: 프로그램(편성 구간) 1회 = 1건 · 한 구간에 여러 카테고리 상품이 실리면 카테고리마다 1회씩(상품코드 수와 무관) · 방송 시작시각의 시간대 (09:20 시작도 09:45 시작도 09시대) · 카테고리는 자체 분류모델 기준 · 데이터: 2026-06-22부터 (기타 채널은 06-26부터) · 히트맵 셀을 클릭하면 상세 인사이트 표시</p>
   </div>
 </div>
 
@@ -10059,6 +10060,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
   // 'co'  회사 점유율:  분모 회사의 [선택 카테고리] 방송 중 [분자 회사]
   // 'cnt' 편성 횟수:    [분자 회사 × 선택 카테고리] 방송 횟수
   let inMode = 'cat';
+  let inDenScope = 'all';              // 비율일 때 분모 범위: 'all' 전체 방송 / 'cat' 선택 카테고리 방송
   const IN_MIN_DEN = 4;                // 분모가 이보다 적은 셀은 흐리게 (표본이 작아 % 가 쉽게 튐)
   let inPgmRows = [];                  // 히트맵용 프로그램(편성 구간) 단위 행: { d, w, h, cat, label, main, st, en, items }
   let inSel = null;                    // 선택 { h, w } (셀 모드) 또는 { h, w:null } (행 모드)
@@ -10200,10 +10202,12 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
       }
     });
 
-    // 구간 대표 카테고리 = 상품 수가 가장 많은 카테고리 (동률이면 먼저 나온 것)
+    // 구간의 카테고리: 상품코드 수와 무관하게 '들어 있는 카테고리마다 1회'
+    //   예) 언더웨어 3개·리빙/주방 5개·일반식품 3개 코드가 실린 구간 = 언더웨어 1회, 리빙/주방 1회, 일반식품 1회
     const pgms = [...byPgm.values()];
     pgms.forEach(p => {
-      p.cat = Object.entries(p.cats).sort((a, b) => b[1] - a[1])[0][0];
+      p.cat = Object.entries(p.cats).sort((a, b) => b[1] - a[1])[0][0]; // 참고용 최다 카테고리
+      p.catSet = Object.keys(p.cats); // 구간에 들어 있는 카테고리 전부 - 카테고리마다 1회씩 센다
       delete p.cats;
       p.brands = Object.entries(p.brands).map(([k, v]) => ({
         key: k, name: v.name, cat: Object.entries(v.cats).sort((a, b) => b[1] - a[1])[0][0],
@@ -10321,19 +10325,36 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     });
   }
 
-  const IN_MODES = [
-    { key: 'cat', label: '카테고리 비중' },
-    { key: 'co',  label: '회사 점유율' },
-    { key: 'cnt', label: '편성 횟수' },
-  ];
+  // 보기: [비율 | 편성 횟수]. 비율은 '분모 범위'에 따라
+  //   전체 방송      -> inMode 'cat' (카테고리 비중: 분자 회사가 분모 회사 전체 방송에서 그 카테고리로 차지하는 몫)
+  //   선택 카테고리  -> inMode 'co'  (회사 점유율: 그 카테고리 방송 안에서 분자 회사 몫)
+  const IN_VIEWS = [{ key: 'ratio', label: '비율' }, { key: 'cnt', label: '편성 횟수' }];
+  const IN_SCOPES = [{ key: 'all', label: '전체 방송' }, { key: 'cat', label: '선택 카테고리 방송만' }];
+  function inSyncMode(view) {
+    inMode = view === 'cnt' ? 'cnt' : (inDenScope === 'cat' ? 'co' : 'cat');
+  }
   function inRenderModeToggle() {
+    const view = inMode === 'cnt' ? 'cnt' : 'ratio';
     const wrap = $('inModeToggle');
-    wrap.innerHTML = IN_MODES.map(m =>
-      '<button data-mode="' + m.key + '"' + (inMode === m.key ? ' class="active"' : '') + '>' + m.label + '</button>').join('');
+    wrap.innerHTML = IN_VIEWS.map(m =>
+      '<button data-view="' + m.key + '"' + (view === m.key ? ' class="active"' : '') + '>' + m.label + '</button>').join('');
     wrap.querySelectorAll('button').forEach(btn => {
       btn.addEventListener('click', () => {
-        inMode = btn.dataset.mode;
+        inSyncMode(btn.dataset.view);
         if (typeof gaEvent === 'function') gaEvent('filter_click', { filter_group: 'industry_mode', filter_value: inMode });
+        inRenderModeToggle();
+        inRender();
+      });
+    });
+    const sc = $('inDenScope');
+    $('inDenScopeRow').style.display = view === 'cnt' ? 'none' : '';
+    sc.innerHTML = IN_SCOPES.map(m =>
+      '<button data-scope="' + m.key + '"' + (inDenScope === m.key ? ' class="active"' : '') + '>' + m.label + '</button>').join('');
+    sc.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        inDenScope = btn.dataset.scope;
+        inSyncMode('ratio');
+        if (typeof gaEvent === 'function') gaEvent('filter_click', { filter_group: 'industry_den_scope', filter_value: inDenScope });
         inRenderModeToggle();
         inRender();
       });
@@ -10358,7 +10379,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
   function inSplit(rows) {
     const num = inNumEff();
     const base = rows.filter(r => inActive.has(r.label));
-    const inCat = base.filter(r => inCatSel.has(r.cat));
+    const inCat = base.filter(r => r.catSet.some(c => inCatSel.has(c))); // 선택 카테고리가 하나라도 실린 구간 = 1회
     const den = inMode === 'cat' ? base : inCat;
     return { den: den, num: inCat.filter(r => num.has(r.label)), all: base, cat: inCat };
   }
@@ -10390,16 +10411,18 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     const den = inSetText(inActive), num = inNumText(), cat = inCatText();
     let html;
     if (inMode === 'cat') {
-      html = '셀 값 = <b>[' + inEsc(num) + ']의 [' + inEsc(cat) + ']</b> 방송 ÷ <b>[' + inEsc(den) + ']의 전체</b> 방송';
+      html = '셀 값 = <b>[' + inEsc(num) + ']의 [' + inEsc(cat) + ']</b> 방송 ÷ <b>[' + inEsc(den) + ']의 전체</b> 방송'
+        + ' <span class="in-muted">· 분모 범위를 \'선택 카테고리 방송만\'으로 바꾸면 카테고리 안 회사 점유율</span>';
       if (inCatSel.size === IN_CATS.length && inNumEff().size === inActive.size)
         html += '<br><span class="in-muted">※ 지금은 카테고리·분자 회사가 모두 전체라 모든 칸이 100%예요. 카테고리를 골라 보세요.</span>';
     } else if (inMode === 'co') {
-      html = '셀 값 = <b>[' + inEsc(num) + ']</b>의 방송 ÷ <b>[' + inEsc(den) + ']의 [' + inEsc(cat) + ']</b> 방송';
+      html = '셀 값 = <b>[' + inEsc(num) + ']의 [' + inEsc(cat) + ']</b> 방송 ÷ <b>[' + inEsc(den) + ']의 [' + inEsc(cat) + ']</b> 방송';
       if (inNumEff().size === inActive.size)
         html += '<br><span class="in-muted">※ 분자 회사가 분모 회사와 같아 모든 칸이 100%예요. 분자 회사에서 비교할 회사(예: HD)를 골라 보세요.</span>';
     } else {
       html = '셀 값 = <b>[' + inEsc(num) + ']의 [' + inEsc(cat) + ']</b> 방송 횟수 (프로그램 단위)';
     }
+    html += '<br><span class="in-muted">※ 한 프로그램에 여러 카테고리 상품이 실리면 카테고리마다 1회씩 셉니다. 여러 카테고리를 함께 고르면 그중 하나라도 실린 프로그램을 1회로 셉니다.</span>';
     el.innerHTML = html;
   }
 
@@ -10590,7 +10613,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
       + (bd ? ' (분자: ' + bd + ')' : '') + '</li>';
 
     const byCat = {};
-    den.forEach(r => { byCat[r.cat] = (byCat[r.cat] || 0) + 1; });
+    den.forEach(r => r.catSet.forEach(c => { byCat[c] = (byCat[c] || 0) + 1; }));
     const top = Object.entries(byCat).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([c, n]) => inEsc(c) + ' ' + n + '회');
     if (top.length) html += '<li>분모 방송의 주요 카테고리: ' + top.join(' · ') + '</li>';
 
@@ -10616,10 +10639,10 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
       + '</tbody></table>';
 
     html += '<table class="in-ratio-tbl"><tbody>'
-      + '<tr' + (inMode === 'cat' && numSame ? ' class="on"' : '') + '><td>카테고리 비중 (' + inEsc(cat) + ' ÷ 전체)</td><td>' + inPctStr(nCat, nAll) + '</td></tr>'
+      + '<tr' + (inMode === 'cat' && numSame ? ' class="on"' : '') + '><td>' + inEsc(cat) + ' ÷ 전체</td><td>' + inPctStr(nCat, nAll) + '</td></tr>'
       + (numSame ? '' :
-          '<tr' + (inMode === 'co' ? ' class="on"' : '') + '><td>회사 점유율 (' + inEsc(numT) + ' ÷ ' + inEsc(cat) + ')</td><td>' + inPctStr(nNum, nCat) + '</td></tr>'
-        + '<tr' + (inMode === 'cat' ? ' class="on"' : '') + '><td>' + inEsc(numT) + '의 ' + inEsc(cat) + ' ÷ 전체</td><td>' + inPctStr(nNum, nAll) + '</td></tr>')
+          '<tr' + (inMode === 'co' ? ' class="on"' : '') + '><td>' + inEsc(numT) + ' ÷ ' + inEsc(cat) + ' (분모 범위: 선택 카테고리)</td><td>' + inPctStr(nNum, nCat) + '</td></tr>'
+        + '<tr' + (inMode === 'cat' ? ' class="on"' : '') + '><td>' + inEsc(numT) + '의 ' + inEsc(cat) + ' ÷ 전체 (분모 범위: 전체 방송)</td><td>' + inPctStr(nNum, nAll) + '</td></tr>')
       + '</tbody></table>';
 
     html += '<ul>';
@@ -10627,7 +10650,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     if (bd) html += '<li>[' + inEsc(cat) + '] 채널별: ' + bd + '</li>';
     if (inCatSel.size === IN_CATS.length) {
       const byCat = {};
-      sp.all.forEach(r => { byCat[r.cat] = (byCat[r.cat] || 0) + 1; });
+      sp.all.forEach(r => r.catSet.forEach(c => { byCat[c] = (byCat[c] || 0) + 1; }));
       const top = Object.entries(byCat).sort((a, b) => b[1] - a[1]).slice(0, 3)
         .map(([c, n]) => inEsc(c) + ' ' + n + '회');
       if (top.length) html += '<li>주요 카테고리: ' + top.join(' · ') + '</li>';
