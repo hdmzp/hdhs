@@ -4396,7 +4396,7 @@
       <div class="lv-slicer" id="inTrkSlicer" style="margin:4px 0 8px;"></div>
       <div id="inTrkBody"><p class="in-muted" style="font-size:12.5px;">조회 기간의 건강 프로그램 본방 회차마다, 회차 내용 단서와 같은 시간에 시작한 홈쇼핑 건강식품을 보여줍니다. [조회]를 눌러 주세요.</p></div>
     </div>
-    <p class="lv-table-note">집계 기준: 프로그램(편성 구간) 1회 = 1건 · 한 구간에 여러 카테고리 상품이 실리면 카테고리마다 1회씩(상품코드 수와 무관) · 방송 시작시각의 시간대 (09:20 시작도 09:45 시작도 09시대) · 카테고리는 자체 분류모델 기준 · 데이터: 2026-06-22부터 (기타 채널은 06-26부터) · 히트맵 셀을 클릭하면 상세 인사이트 표시</p>
+    <p class="lv-table-note">집계 기준: 프로그램 구간 안의 브랜드마다 1회 (같은 브랜드 상품코드 여러 개 = 1회, 카테고리는 그 브랜드 상품 중 최다) · 한 구간 브랜드 4개 이상(편집숍형)은 1회 · 방송 시작시각의 시간대 (09:20 시작도 09:45 시작도 09시대) · 카테고리는 자체 분류모델 기준 · 데이터: 2026-06-22부터 (기타 채널은 06-26부터) · 히트맵 셀을 클릭하면 상세 인사이트 표시</p>
   </div>
 </div>
 
@@ -10061,7 +10061,8 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
   // 'cnt' 편성 횟수:    [분자 회사 × 선택 카테고리] 방송 횟수
   let inMode = 'cat';
   let inDenScope = 'all';              // 비율일 때 분모 범위: 'all' 전체 방송 / 'cat' 선택 카테고리 방송
-  const IN_MIN_DEN = 4;                // 분모가 이보다 적은 셀은 흐리게 (표본이 작아 % 가 쉽게 튐)
+  const IN_MIN_DEN = 4;
+  const IN_MAX_BRANDS_PER_PGM = 3;     // 한 구간 브랜드가 이보다 많으면 편집숍형 1회로 센다                // 분모가 이보다 적은 셀은 흐리게 (표본이 작아 % 가 쉽게 튐)
   let inPgmRows = [];                  // 히트맵용 프로그램(편성 구간) 단위 행: { d, w, h, cat, label, main, st, en, items }
   let inSel = null;                    // 선택 { h, w } (셀 모드) 또는 { h, w:null } (행 모드)
   let inSelToken = 0;                  // 선택이 바뀔 때마다 증가 - 늦게 도착한 지상파 fetch 응답 무시용
@@ -10202,18 +10203,27 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
       }
     });
 
-    // 구간의 카테고리: 상품코드 수와 무관하게 '들어 있는 카테고리마다 1회'
-    //   예) 언더웨어 3개·리빙/주방 5개·일반식품 3개 코드가 실린 구간 = 언더웨어 1회, 리빙/주방 1회, 일반식품 1회
-    const pgms = [...byPgm.values()];
-    pgms.forEach(p => {
-      p.cat = Object.entries(p.cats).sort((a, b) => b[1] - a[1])[0][0]; // 참고용 최다 카테고리
-      p.catSet = Object.keys(p.cats); // 구간에 들어 있는 카테고리 전부 - 카테고리마다 1회씩 센다
-      delete p.cats;
-      p.brands = Object.entries(p.brands).map(([k, v]) => ({
-        key: k, name: v.name, cat: Object.entries(v.cats).sort((a, b) => b[1] - a[1])[0][0],
-      }));
+    // 집계 단위(1회):
+    //   - 같은 구간의 같은 브랜드는 상품코드가 여러 개여도 1회, 카테고리는 그 브랜드 상품 중 최다
+    //     예) 아이그너 의류 13개 + 잡화 2개 = 의류 1회
+    //   - 한 구간에 브랜드가 IN_MAX_BRANDS_PER_PGM(3)개 이하면 브랜드마다 1회
+    //     예) 10:25~12:35 뼈엔MBP + 관절엔 콘드로이친 = 건강식품 2회
+    //   - 4개 이상이면 편집숍형 방송 1개로 보고 1회 (예: 금 22:40 구찌·버버리 등 25개 = 1회)
+    //   - 브랜드 미기재 상품은 구간 안에서 하나의 브랜드처럼 묶는다
+    const topCat = cats => Object.entries(cats).sort((a, b) => b[1] - a[1])[0][0];
+    const units = [];
+    byPgm.forEach(p => {
+      const brands = Object.entries(p.brands).map(([k, v]) => ({ key: k, name: v.name, cat: topCat(v.cats) }));
+      const base = { d: p.d, w: p.w, h: p.h, label: p.label, main: p.main, st: p.st, en: p.en };
+      if (brands.length <= IN_MAX_BRANDS_PER_PGM) {
+        // 브랜드마다 1회 (HD처럼 연달아 붙은 방송 2~3개가 한 구간으로 들어오는 경우)
+        brands.forEach(b => units.push(Object.assign({ cat: b.cat, brands: [b] }, base)));
+      } else {
+        // 편집숍형(한 방송에서 여러 브랜드 판매) = 1회, 카테고리는 구간 상품 중 최다
+        units.push(Object.assign({ cat: topCat(p.cats), brands: brands, multi: true }, base));
+      }
     });
-    inPgmRows = pgms;
+    inPgmRows = units;
     inVerifySkipped = skipped;
 
     // 한 브랜드 방송에 카테고리가 섞여 있으면(분류모델 편차) 상품 수가 가장 많은 카테고리를 대표로 쓴다
@@ -10379,7 +10389,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
   function inSplit(rows) {
     const num = inNumEff();
     const base = rows.filter(r => inActive.has(r.label));
-    const inCat = base.filter(r => r.catSet.some(c => inCatSel.has(c))); // 선택 카테고리가 하나라도 실린 구간 = 1회
+    const inCat = base.filter(r => inCatSel.has(r.cat));
     const den = inMode === 'cat' ? base : inCat;
     return { den: den, num: inCat.filter(r => num.has(r.label)), all: base, cat: inCat };
   }
@@ -10422,7 +10432,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     } else {
       html = '셀 값 = <b>[' + inEsc(num) + ']의 [' + inEsc(cat) + ']</b> 방송 횟수 (프로그램 단위)';
     }
-    html += '<br><span class="in-muted">※ 한 프로그램에 여러 카테고리 상품이 실리면 카테고리마다 1회씩 셉니다. 여러 카테고리를 함께 고르면 그중 하나라도 실린 프로그램을 1회로 셉니다.</span>';
+    html += '<br><span class="in-muted">※ 1회 = 프로그램 구간의 브랜드 하나(상품코드 여러 개는 1회, 카테고리는 그 브랜드 상품 중 최다). 한 구간 브랜드가 4개 이상인 편집숍형 방송은 1회.</span>';
     el.innerHTML = html;
   }
 
@@ -10613,7 +10623,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
       + (bd ? ' (분자: ' + bd + ')' : '') + '</li>';
 
     const byCat = {};
-    den.forEach(r => r.catSet.forEach(c => { byCat[c] = (byCat[c] || 0) + 1; }));
+    den.forEach(r => { byCat[r.cat] = (byCat[r.cat] || 0) + 1; });
     const top = Object.entries(byCat).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([c, n]) => inEsc(c) + ' ' + n + '회');
     if (top.length) html += '<li>분모 방송의 주요 카테고리: ' + top.join(' · ') + '</li>';
 
@@ -10650,7 +10660,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     if (bd) html += '<li>[' + inEsc(cat) + '] 채널별: ' + bd + '</li>';
     if (inCatSel.size === IN_CATS.length) {
       const byCat = {};
-      sp.all.forEach(r => r.catSet.forEach(c => { byCat[c] = (byCat[c] || 0) + 1; }));
+      sp.all.forEach(r => { byCat[r.cat] = (byCat[r.cat] || 0) + 1; });
       const top = Object.entries(byCat).sort((a, b) => b[1] - a[1]).slice(0, 3)
         .map(([c, n]) => inEsc(c) + ' ' + n + '회');
       if (top.length) html += '<li>주요 카테고리: ' + top.join(' · ') + '</li>';
