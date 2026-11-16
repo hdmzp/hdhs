@@ -60,7 +60,7 @@ MAX_TRIES = 3             # 단서를 못 찾은 회차는 며칠에 걸쳐 최�
 MAX_CLUES = 6
 KST = timezone(timedelta(hours=9))
 
-# ---- 건강 프로그램 판정: index.html 건강프로그램 추적(IN_TRK_*)과 같은 규칙 ----
+# ---- 건강 프로그램 판정: index.html 건강방송 × 홈쇼핑 동시간 편성(IN_TRK_*)과 같은 규칙 ----
 KEYWORD = re.compile(r"건강|몸신|명의|닥터|의사|병원|질병|혈당|혈압|관절|면역|노화|장수|백세|영양|한의|한방|약초|보약|다이어트|웰빙|유레카|천기누설|엄지의\s*제왕|처방|수명|몸")
 KEYWORD_EXCL = re.compile(r"드라마|영화|뮤지컬|시네마|무비|극장|월드컵|프로야구|뉴스")
 DRAMA_EXCL = ["닥터x", "하얀마피아"]
@@ -399,7 +399,7 @@ def main():
         with open(os.path.join(OUT_DIR, f"{ym}.json"), "w", encoding="utf-8") as f:
             json.dump(dict(sorted(store.items(), key=lambda kv: (kv[1]["date"], kv[1]["start"]))),
                       f, ensure_ascii=False, indent=1)
-    # 화면(건강프로그램 추적)의 '회차 단서는 MM/DD 방송분부터' 표시용: 수집된 가장 이른 방송일
+    # 화면(건강방송 × 홈쇼핑 동시간 편성)의 '회차 단서는 MM/DD 방송분부터' 표시용: 수집된 가장 이른 방송일
     dates = [v["date"] for fp in glob.glob(os.path.join(OUT_DIR, "????-??.json"))
              for v in json.load(open(fp, encoding="utf-8")).values()]
     if dates:

@@ -4360,7 +4360,7 @@
 
     <div class="in-trk">
       <div class="in-trk-head">
-        <b>📡 건강프로그램 추적</b>
+        <b>📡 건강방송 × 홈쇼핑 동시간 편성</b>
         <button type="button" class="lv-go-btn" id="inTrkBtn">조회</button>
         <input type="search" id="inTrkSearch" class="lv-search-input" placeholder="상품명·브랜드·프로그램 검색" aria-label="상품명·브랜드·프로그램 검색">
       </div>
@@ -10500,7 +10500,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     });
   })();
 
-  // ============ 건강프로그램 추적 ============
+  // ============ 건강방송 × 홈쇼핑 동시간 편성 ============
   // 지상파·종편·케이블 건강 프로그램 본방 회차마다, 그 회차의 내용 단서(네이버 회차정보·검색 제목,
   // episode_clue_scraper.py 수집)와 같은 시간에 시작한 홈쇼핑 건강식품 방송을 나란히 보여준다.
   // PPL 소재는 매주 바뀌므로, 단서에 나온 성분이 상품명에도 있으면 ⭐로 표시한다.
@@ -10678,7 +10678,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
     });
   }
 
-  // 건강프로그램 추적 전용 홈쇼핑사 슬라이서 (히트맵의 상단 슬라이서와 독립)
+  // 건강방송 × 홈쇼핑 동시간 편성 전용 홈쇼핑사 슬라이서 (히트맵의 상단 슬라이서와 독립)
   function inRenderTrkSlicer() {
     const wrap = $('inTrkSlicer');
     if (!wrap) return;
@@ -10936,7 +10936,7 @@ document.getElementById('celGridWrap').addEventListener('click', (e) => {
   <div class="busy-box"><div class="busy-spin"></div><span id="busyLabel">조회 중...</span></div>
 </div>
 <script>
-// 긴 조회(라방바·편성맵·건강프로그램 추적) 동안 화면 중앙에 진행 표시를 띄운다.
+// 긴 조회(라방바·편성맵·건강방송 × 홈쇼핑 동시간 편성) 동안 화면 중앙에 진행 표시를 띄운다.
 // 중첩 호출을 대비해 카운터로 관리한다.
 (function () {
   let busyCount = 0;

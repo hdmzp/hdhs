@@ -102,6 +102,11 @@ BRAND_FORCE_MAP = {
     "쿠쿠전자":"리빙/주방",
     "CUCKOO":"리빙/주방",
     "힐리퍼":"리빙/주방",  # 프랑스 화장품 (유기농 오트크림 - 모델이 일반식품으로 오분류)
+    # 2026-11-16 사람 지정
+    "리놀라":"미용",
+    "뷰앤디":"미용",
+    "로라애슐리":"리빙/주방",
+    "봄부지에":"의류",
     
     # 필요시 추가: "LG디스플레이": "가전", ...
 }
@@ -525,8 +530,9 @@ def _brand_item_split(brand: str, product: str) -> str:
 
 # 의류 브랜드 강제 매핑에서 속옷 품목은 빼고 원래 분류(모델: 언더웨어)에 맡기는 브랜드
 # (2026-11-11 뱅뱅·푸마 지정 시 '푸마 드로즈 패키지'가 언더웨어 -> 의류로 바뀌던 것 방지)
-_UNDERWEAR_SKIP_BRANDS = {"뱅뱅", "푸마", "PUMA"}
-_UNDERWEAR_RE = re.compile(r"드로즈|브리프|트렁크|팬티|브라(?!운)|런닝|내의|내복|속옷|언더웨어|이너웨어")
+# 로라애슐리(리빙/주방 강제)도 라운지웨어는 언더웨어로 둔다 (2026-11-16 사람 지정)
+_UNDERWEAR_SKIP_BRANDS = {"뱅뱅", "푸마", "PUMA", "로라애슐리"}
+_UNDERWEAR_RE = re.compile(r"드로즈|브리프|트렁크|팬티|브라(?!운)|런닝|내의|내복|속옷|언더웨어|이너웨어|라운지\s?웨어")
 
 
 # 쿠쿠는 리빙/주방으로 강제하지만 정수기·렌탈 상품은 일반렌탈로 둔다 (KEYWORD_RULES의 쿠쿠 렌탈 규칙이 처리)
@@ -540,6 +546,9 @@ def _brand_force(brand: str, product: str = "") -> str:
         return ""
     if brand in _RENTAL_SKIP_BRANDS and _RENTAL_RE.search(product or ""):
         return ""
+    # 끌레드벨 바디클렌저에 로라애슐리 양우산을 사은품으로 주는 방송은 브랜드 칸이 로라애슐리로 잡힌다 -> 미용
+    if brand == "로라애슐리" and "끌레드벨" in (product or ""):
+        return "미용"
     return BRAND_FORCE_MAP.get(brand, "")
 
 
