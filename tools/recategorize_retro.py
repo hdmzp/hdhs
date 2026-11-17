@@ -39,7 +39,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 
-from categorize import UNCLASSIFIED, classify_explain  # noqa: E402
+from categorize import SUGAR_FOOD_RE, UNCLASSIFIED, classify_explain  # noqa: E402
 
 # 라방바 분류 -> 우리 분류 중 '맞다'고 볼 수 있는 것들
 LAVANGBA_COMPAT = {
@@ -127,6 +127,9 @@ def decide(brand, product, old, lv):
         return new, "fashion"
     # 사람이 직접 지정한 품목·브랜드 규칙은 라방바 분류보다 우선한다
     if new == "리빙/주방" and PERSON_ITEM_RE.search(text):
+        return new, "person_item"
+    # 당도 표기(13브릭스·당도선별·고당도) = 청과 일반식품 (2026-11-17 사람 지정)
+    if src == "keyword" and new == "일반식품" and SUGAR_FOOD_RE.search(text):
         return new, "person_item"
     if src == "brand_force" and brand in RETRO_TRUST_BRANDS:
         return new, "person_brand"
