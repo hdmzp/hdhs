@@ -4210,6 +4210,7 @@
       <button class="active" data-file="LT_YNH.json">더퍼스트 유난희</button>
       <button class="active" data-file="GS_BJY.json">지금 백지연</button>
       <button class="active" data-file="LT_CYR.json">최유라쇼</button>
+      <button class="active" data-file="CJ_TMC.json">김호영의 투머치쇼</button>
       <button class="active" data-file="CJ_BYL.json">바이림</button>
       <button class="active" data-file="GS_SYJ.json">소유진쇼</button>
       <button class="active" data-file="CJ_SIH.json">소이현 겟잇스타일</button>
@@ -7701,10 +7702,11 @@ document.getElementById('pmMonthPicker').addEventListener('change', (e) => {
 // ※ 동가게(CJ, 목 20:45 / 토 08:20)는 2026-10부터 편입 - 토 08:20 기준으로 왕영은 바로 앞
 // ※ 더퍼스트 유난희(LT, 목 09:25)는 2026-10부터 편입
 // ※ 바이림(CJ, 비정기 - 10월은 10/23(금) 19:35)은 2026-10-28 편입 - 금 19:35 기준으로 소유진쇼 앞
+// ※ 김호영의 투머치쇼(CJ, 목 19:35 - 매주는 아님)는 2026-11-19 편입 - 목 19:35 기준으로 최유라 다음, 바이림 앞
 // ※ 림잇티드(CJ, 10/3 론칭, TV 토 10:20 / TV+ 화 20:45) - 토 10:20 기준으로 왕영은 다음 맨 뒤
 const CEL_FILES = [
   "HD_HJM.json", "CJ_KJE.json", "HD_OGS.json", "CJ_KCO.json", "CJ_KSY.json",
-  "HD_CEK.json", "CJ_CHJ.json", "LT_YNH.json", "GS_BJY.json", "LT_CYR.json", "CJ_BYL.json", "GS_SYJ.json",
+  "HD_CEK.json", "CJ_CHJ.json", "LT_YNH.json", "GS_BJY.json", "LT_CYR.json", "CJ_TMC.json", "CJ_BYL.json", "GS_SYJ.json",
   "CJ_SIH.json", "CJ_DGG.json", "HD_WYE.json", "CJ_LMT.json"
 ];
 // 중간에 편입된 프로그램: 이 달 이전을 조회하면 밴드 자체를 안 그린다
@@ -7717,6 +7719,8 @@ const CEL_START_MONTH = {
   'CJ_LMT.json': '2026-10-26',
   'LT_YNH.json': '2026-10-26',
   'CJ_BYL.json': '2026-10-28',
+  // 11/19부터 수집. 그 전 11월 회차(11/12)는 편성표에서 소급해 채웠다.
+  'CJ_TMC.json': '2026-11-19',
 };
 // 신규 론칭 프로그램 배지. 론칭일 전에는 '론칭예정', 론칭 후
 // CEL_NEW_BADGE_DAYS일 동안 'NEW'를 붙이고 그 뒤엔 저절로 사라진다

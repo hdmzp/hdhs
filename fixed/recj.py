@@ -150,6 +150,12 @@ PROGRAMS = [
     # schedule_raw는 매번 API에서 읽는다. 편입 전 10월 회차는 tools/backfill_celeb_past.py로 소급.
     {"tab_name": "바이림", "program_title": "바이림", "pgm_cd": "100033", "output_file": "CJ_BYL.json",
      "keywords": ("바이림",), "since": "2026-10-01"},
+    # 김호영의 투머치쇼: 2026-11-19 셀럽PGM 편입. TV 목 19:35 (매주는 아님 - 10/22·10/29·11/12 방송, 11/19는 다른 PGM).
+    # 상품은 전문관 코드 100060에서 읽는다 (편성표 pgmCd는 563884 - 같은 상품, 편성 문구엔 시간이 없다).
+    # 편입 전 11월 회차(11/12)는 tools/backfill_celeb_past.py로 소급.
+    {"tab_name": "김호영", "program_title": "김호영의 투머치쇼", "pgm_cd": "100060", "output_file": "CJ_TMC.json",
+     "keywords": ("투머치",), "fallback_schedule": "목 19:35", "since": "2026-11-01",
+     "detail_link": "https://display.cjonstyle.com/m/pgmShop/563884?pgmShopTabType=M"},
 ]
 # ==============================================
 
@@ -777,7 +783,7 @@ def crawl_cj_program(session: requests.Session, config: dict):
         "tab_name": tab_name,
         "program_title": program_title or config["program_title"],
         "schedule_raw": schedule_raw,
-        "detail_link": f"https://display.cjonstyle.com/m/pgmShop/{pgm_cd}",
+        "detail_link": config.get("detail_link") or f"https://display.cjonstyle.com/m/pgmShop/{pgm_cd}",
         "program_image": program_image,
         "products": products,
     }
