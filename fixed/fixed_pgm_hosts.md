@@ -100,6 +100,7 @@
 | 박지완 | CJ T더 지완스 | https://www.instagram.com/gwanspick/ | ✅ (사용자 확인) |
 | 이유리 | LT 요즘 쇼핑 유리네 | https://www.instagram.com/leeyuri007/ | ✅ (사용자 확인) |
 | 이진아 | GS 이진아 셀렉션·더컬렉션 | https://www.instagram.com/lee_jin_ah_showhost/ | ✅ (사용자 확인) |
+| 김호영 | CJ 김호영의 투머치쇼 | https://www.instagram.com/hoyhoyoung/ | ✅ (사용자 제공) |
 | 김지애 | LT 김지애의 쇼핑리스트 | https://www.instagram.com/jiae0514/ | ✅ (사용자 확인) |
 | 김지애의 쇼핑리스트(채널) | LT 김지애의 쇼핑리스트 | https://www.instagram.com/jiaelist/ | ✅ (사용자 제공) |
 | 김우리 | LT L.SHOW | https://www.instagram.com/kwrhome/ | ✅ (사용자 확인) |
