@@ -119,6 +119,9 @@ EXTRA_PROGRAMS = [
     {"pgm_cd": "100082", "title": "림잇티드"},
     # 2026-10-28 모니터링 편입. 편성 문구는 pgmShop API 값을 그대로 쓴다.
     {"pgm_cd": "100033", "title": "바이림"},
+    # 2026-11-17 편입. 김호영의 투머치쇼 - TV 목 19:35 (모바일라이브 목 20:45).
+    # 카테고리가 방송마다 바뀐다 (건강식품·리빙/주방·미용 - 2026-07~10 라방바 실측).
+    {"pgm_cd": "100060", "title": "투머치쇼", "fallback_schedule": "목 19:35"},
 ]
 
 PGM_SHOP_INFO_URL = (
@@ -280,9 +283,11 @@ def fetch_extra_program(session: requests.Session, config: dict) -> dict:
                                 label=f"CJ pgmShop {pgm_cd}")
         info = (resp.json().get("result") or {}).get("pgmShopInfo") or {}
         title = (info.get("pgmNm") or title).strip()
+        # MLC(모바일 라이브) 편성은 TV 방송이 아니라 뺀다
+        # (투머치쇼: TV 목 19:35 / MLC 목 20:45 -> 화면엔 TV만)
         schedule_raw = " / ".join(
             t.get("bdTmCnts", "") for t in (info.get("bdTmCntsList") or [])
-            if t.get("bdTmCnts")
+            if t.get("bdTmCnts") and t.get("channelType") != "MLC"
         )
         thumbnail = to_https(find_first_image_url(info) or "")
     except Exception as e:
