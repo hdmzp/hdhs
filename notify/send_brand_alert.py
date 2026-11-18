@@ -124,11 +124,13 @@ def label(entry):
     return "'%s' 들어간 방송" % entry["v"] if entry.get("t") == "k" else entry["v"]
 
 
-def slot_lines(co, start, items):
-    first = items[0]
+def slot_lines(co, start, items, hit=None):
+    """hit: 관심 브랜드에 걸린 구성상품. 한 방송에 여러 브랜드가 묶이면(현대 19:30 머티리얼랩·올라카일리·다이슨)
+    첫 상품이 아니라 걸린 상품을 대표로 보여 준다 (2026-11-18 '노르딕가든 왜 나옴' 수정)."""
+    first = hit or items[0]
     brand = (first.get("brand") or "").strip()
     product = food.clean_product(first.get("product") or "")
-    others = {food.clean_product(i.get("product") or "") for i in items[1:]} - {product, ""}
+    others = {food.clean_product(i.get("product") or "") for i in items if i is not first} - {product, ""}
     head = "%s [%s] %s" % (start or "??:??", food.COMPANY_NAMES.get(co, co), brand)
     link = (first.get("link") or "").strip()
     body = '<a href="%s">%s</a>' % (esc(link), esc(product)) if link else esc(product)
@@ -153,8 +155,9 @@ def build_for(entries, today, slots, alias, now, weather):
     for co, start, items in slots[today]:
         if not (food.TIME_START <= start <= food.TIME_END):
             continue
-        if any(m(it) for _, m in matchers for it in items):
-            todays.append(slot_lines(co, start, items))
+        hit = next((it for it in items if any(m(it) for _, m in matchers)), None)
+        if hit:
+            todays.append(slot_lines(co, start, items, hit))
     if not todays:
         return None
     lines = food.header_lines(now, weather) + [
