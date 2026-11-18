@@ -166,6 +166,8 @@ _TRAVEL_REGION_DAYS_RE = re.compile(
 # 숫자 없는 '브릭스'(가방 상품명 '브릭스 라이프 토트백')는 걸리지 않는다.
 SUGAR_FOOD_RE = re.compile(r"\d\s*(?:브릭스|brix)|당도\s?선별|고당도", re.I)
 
+SHOWER_FIXTURE_RE = re.compile(r"샤워\s?필터|필터\s?샤워|샤워\s?헤드|샤워기|샤워\s?호스|샤워\s?수전")
+
 KEYWORD_RULES = [
     (_TRAVEL_REGION_DAYS_RE, "여행"),
     (SUGAR_FOOD_RE, "일반식품"),
@@ -191,6 +193,8 @@ KEYWORD_RULES = [
     (re.compile(r"카\s?매트|하이로\s?짤순이"), "리빙/주방"),
     (re.compile(r"육개장"), "일반식품"),
     (re.compile(r"슬리퍼|힐리퍼"), "리빙/주방"),   # 브랜드 상관없이 (2026-11-11 사람 지정)
+    # 샤워기·샤워필터는 리빙/주방 (2026-11-18 사람 지정 - LT 아로스파 샤워필터 헤드가 모델 추정으로 미용)
+    (SHOWER_FIXTURE_RE, "리빙/주방"),
 ]
 
 # 미용 확정 키워드 (2026-11-07 기준 수립)
