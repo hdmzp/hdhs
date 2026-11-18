@@ -107,6 +107,10 @@ BRAND_FORCE_MAP = {
     "뷰앤디":"미용",
     "로라애슐리":"리빙/주방",
     "봄부지에":"의류",
+    # 2026-11-18 사람 지정
+    "키친에이드":"리빙/주방",
+    "KitchenAid":"리빙/주방",
+    "키친에이드(KitchenAid)":"리빙/주방",
     
     # 필요시 추가: "LG디스플레이": "가전", ...
 }
@@ -520,6 +524,56 @@ def _no_brand_product_force(product: str) -> str:
     return ""
 
 
+# ---------------------------------------------------------------------------
+# 브랜드 + 상품명 키워드 조합 규칙 (2026-11-18 사람 지정, 미분류 점검 결과)
+#   브랜드가 정확히 일치하고 상품명(본품)에 키워드가 있을 때만 확정.
+#   키워드가 없으면 빈 문자열 -> 이후 일반 분류 흐름으로 넘어간다.
+# ---------------------------------------------------------------------------
+_COOS_BEAUTY_RE = re.compile(r"밀크\s?크리닝|(?<![A-Za-z])ml(?![A-Za-z])", re.I)
+_PRIMA_GOODS_RE = re.compile(r"보스턴백|가방|백팩|지갑|파우치|벨트|(?<![가-힣])모자")
+_ANSLEY_KITCHEN_RE = re.compile(
+    r"브런치\s?세트|티\s?포트|커[트틀]러리|티팟|찻잔|머그|접시|그릇|식기|보울|트레이|"
+    r"티\s?세트|디너\s?세트|홈\s?카페|테이블웨어|냄비|주전자|컵\s?세트|샐러드"
+)
+
+
+def _brand_key(brand: str) -> str:
+    return extract_core_brand(brand or "").replace(" ", "").upper()
+
+
+def _brand_product_rule(brand: str, product: str) -> str:
+    """브랜드+상품명 키워드 조합 규칙. 해당 없으면 빈 문자열."""
+    key = _brand_key(brand)
+    if not key:
+        return ""
+    main = _beauty_main_text(product)
+    if key == "쿠스":
+        return "미용" if _COOS_BEAUTY_RE.search(main) else ""
+    if key == "LIE317":
+        return "의류" if FASHION_CLOTHES_RE.search(main) else ""
+    if key == "프리마클라쎄":
+        goods = bool(_PRIMA_GOODS_RE.search(main) or FASHION_GOODS_RE.search(main))
+        clothes = bool(FASHION_CLOTHES_RE.search(main))
+        if goods and not clothes:
+            return "잡화/주얼리"
+        if clothes and not goods:
+            return "의류"
+        return ""
+    if key == "앤슬리":
+        return "리빙/주방" if _ANSLEY_KITCHEN_RE.search(main) else ""
+    return ""
+
+
+# 브랜드 칸에 'Made in Italy' 같은 원산지 문구가 들어온 경우 = 브랜드 인식 오류.
+# 브랜드를 비우고 상품명 키워드로 분류한다.
+_MADE_IN_RE = re.compile(r"^\s*(?:made\s*in|메이드\s*인)\s*\S+", re.I)
+
+
+def _sanitize_brand(brand: str) -> str:
+    return "" if brand and _MADE_IN_RE.match(brand) else brand
+
+
+
 def _brand_item_split(brand: str, product: str) -> str:
     """BRAND_ITEM_SPLIT 검사. 브랜드(또는 상품명 앞 [브랜드])가 해당되면 품목에 따라 확정."""
     brand_text = (brand or "").upper()
@@ -570,6 +624,7 @@ def resolve_display_brand(brand: str, product: str) -> str:
     - brand 없으면: infer_brand로 추론 시도
     - 둘 다 실패하면 빈 문자열
     """
+    brand = _sanitize_brand(brand)
     if brand:
         return extract_core_brand(brand)
     inferred = infer_brand(product)
@@ -589,12 +644,18 @@ def classify(brand: str, product: str) -> str:
 def classify_explain(brand: str, product: str):
     """
     (카테고리, 근거) 반환. 근거는 어느 단계에서 정해졌는지:
-      brand_force / brand_split / hair_tool / keyword / beauty / combo /
+      brand_product / brand_force / brand_split / hair_tool / keyword / beauty / combo /
       brand_direct / no_brand_force / model / ""
     소급 재분류(tools/recategorize_retro.py)가 근거별로 바꿀지 말지를 다르게 판단한다.
     """
+    brand = _sanitize_brand(brand)
     if not brand and not product:
         return "", ""
+
+    # 0-0) 브랜드+상품명 키워드 조합 규칙
+    combo_rule = _brand_product_rule(brand, product)
+    if combo_rule:
+        return combo_rule, "brand_product"
 
     # 0) 브랜드 완전일치 강제 매핑
     if brand:
@@ -657,8 +718,14 @@ def classify_batch(items: list) -> list:
     model_texts = []
 
     for i, (brand, product) in enumerate(items):
+        brand = _sanitize_brand(brand)
         if not brand and not product:
             results[i] = ""
+            continue
+
+        bp = _brand_product_rule(brand, product)
+        if bp:
+            results[i] = bp
             continue
 
         # 0) 브랜드 완전일치 강제 매핑 (의류 브랜드의 패션 잡화는 잡화/주얼리)

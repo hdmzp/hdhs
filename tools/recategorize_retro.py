@@ -133,6 +133,9 @@ def decide(brand, product, old, lv):
         return new, "person_item"
     if src == "brand_force" and brand in RETRO_TRUST_BRANDS:
         return new, "person_brand"
+    # 브랜드+상품명 키워드 조합 규칙(쿠스·LIE317·프리마클라쎄·앤슬리, 2026-11-18 사람 지정)
+    if src == "brand_product":
+        return new, "person_brand_product"
     if src in ("brand_force", "brand_split"):
         if old in FASHION and new in FASHION:
             return None, "fashion-internal"   # 예: FILA=의류 규칙이 FILA 운동화까지 의류로
