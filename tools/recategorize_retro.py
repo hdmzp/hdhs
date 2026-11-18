@@ -39,7 +39,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 
-from categorize import UNCLASSIFIED, classify_explain  # noqa: E402
+from categorize import SHOWER_FIXTURE_RE, SUGAR_FOOD_RE, UNCLASSIFIED, classify_explain  # noqa: E402
 
 # 라방바 분류 -> 우리 분류 중 '맞다'고 볼 수 있는 것들
 LAVANGBA_COMPAT = {
@@ -126,10 +126,16 @@ def decide(brand, product, old, lv):
     if src == "fashion" and old == "의류":
         return new, "fashion"
     # 사람이 직접 지정한 품목·브랜드 규칙은 라방바 분류보다 우선한다
-    if new == "리빙/주방" and PERSON_ITEM_RE.search(text):
+    if new == "리빙/주방" and (PERSON_ITEM_RE.search(text) or SHOWER_FIXTURE_RE.search(text)):  # 샤워기: 2026-11-18
+        return new, "person_item"
+    # 당도 표기(13브릭스·당도선별·고당도) = 청과 일반식품 (2026-11-17 사람 지정)
+    if src == "keyword" and new == "일반식품" and SUGAR_FOOD_RE.search(text):
         return new, "person_item"
     if src == "brand_force" and brand in RETRO_TRUST_BRANDS:
         return new, "person_brand"
+    # 브랜드+상품명 키워드 조합 규칙(쿠스·LIE317·프리마클라쎄·앤슬리, 2026-11-18 사람 지정)
+    if src == "brand_product":
+        return new, "person_brand_product"
     if src in ("brand_force", "brand_split"):
         if old in FASHION and new in FASHION:
             return None, "fashion-internal"   # 예: FILA=의류 규칙이 FILA 운동화까지 의류로

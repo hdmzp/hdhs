@@ -150,6 +150,13 @@ PROGRAMS = [
     # schedule_raw는 매번 API에서 읽는다. 편입 전 10월 회차는 tools/backfill_celeb_past.py로 소급.
     {"tab_name": "바이림", "program_title": "바이림", "pgm_cd": "100033", "output_file": "CJ_BYL.json",
      "keywords": ("바이림",), "since": "2026-10-01"},
+    # 김호영의 투머치쇼: 2026-11-19 셀럽PGM 편입. TV 목 19:35 (매주는 아님 - 10/22·10/29·11/12 방송, 11/19는 다른 PGM).
+    # 상품은 전문관 코드 100060에서 읽는다 (편성표 pgmCd는 563884 - 같은 상품, 편성 문구엔 시간이 없다).
+    # 편입 전 11월 회차(11/12)는 tools/backfill_celeb_past.py로 소급.
+    {"tab_name": "김호영", "program_title": "김호영의 투머치쇼", "pgm_cd": "100060", "output_file": "CJ_TMC.json",
+     "keywords": ("투머치",), "fallback_schedule": "목 19:35", "since": "2026-11-01",
+     "tv_only_schedule": True,  # API가 MLC 목 20:45도 줘서 화면에 19:35·20:45가 같이 떴다
+     "detail_link": "https://display.cjonstyle.com/m/pgmShop/563884?pgmShopTabType=M"},
 ]
 # ==============================================
 
@@ -524,8 +531,9 @@ def collect_calendar_slots(modules):
     return out
 
 
-def get_tab_id(session: requests.Session, pgm_cd: str):
-    """1단계: pgmShop 기본정보 API에서 tabId + 편성텍스트 + 프로그램 이미지를 얻는다."""
+def get_tab_id(session: requests.Session, pgm_cd: str, tv_only: bool = False):
+    """1단계: pgmShop 기본정보 API에서 tabId + 편성텍스트 + 프로그램 이미지를 얻는다.
+    tv_only: 편성텍스트에서 MLC(모바일 라이브) 시간을 뺀다 (투머치쇼: TV 목 19:35 / MLC 목 20:45)."""
     url = STEP1_URL_TEMPLATE.format(pgm_cd=pgm_cd)
     data = fetch_json(session, url)
     if not data:
@@ -536,6 +544,7 @@ def get_tab_id(session: requests.Session, pgm_cd: str):
     program_title = pgm_shop_info.get("pgmNm", "")
     schedule_parts = [
         t.get("bdTmCnts", "") for t in (pgm_shop_info.get("bdTmCntsList") or [])
+        if not (tv_only and t.get("channelType") == "MLC")
     ]
     schedule_raw = " / ".join(p for p in schedule_parts if p)
 
@@ -557,7 +566,8 @@ def crawl_cj_program(session: requests.Session, config: dict):
 
     print(f"\n===== [{tab_name}] (pgmCd={pgm_cd}) 수집 시작 =====")
 
-    tab_id, program_title, schedule_raw, program_image = get_tab_id(session, pgm_cd)
+    tab_id, program_title, schedule_raw, program_image = get_tab_id(
+        session, pgm_cd, tv_only=config.get("tv_only_schedule", False))
     if not tab_id:
         print(f"[실패] [{tab_name}] tabId를 못 얻음 (1단계 URL이 아직 안 채워졌을 수 있음)")
         return None
@@ -777,7 +787,7 @@ def crawl_cj_program(session: requests.Session, config: dict):
         "tab_name": tab_name,
         "program_title": program_title or config["program_title"],
         "schedule_raw": schedule_raw,
-        "detail_link": f"https://display.cjonstyle.com/m/pgmShop/{pgm_cd}",
+        "detail_link": config.get("detail_link") or f"https://display.cjonstyle.com/m/pgmShop/{pgm_cd}",
         "program_image": program_image,
         "products": products,
     }

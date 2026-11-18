@@ -111,6 +111,7 @@ TARGET_MODULE_CODES = {"DMTV03"}
 #
 #   fallback_schedule: API 편성 텍스트가 비어 있을 때만 쓰는 임시 편성.
 #                      요일+HH:MM 형태여야 build_fixed_pgm.py 그리드에 올라간다.
+#   link: 화면 바로가기 링크 (없으면 pgmShop/{pgm_cd}).
 EXTRA_PROGRAMS = [
     # 2026-08-18(화) 21:45 론칭. <나혼자산다> 컨셉 식품·리빙 라이프스타일 PGM.
     # 연간 10회 내외 비정기 편성이라 요일·시간대가 상품에 따라 바뀐다.
@@ -119,6 +120,12 @@ EXTRA_PROGRAMS = [
     {"pgm_cd": "100082", "title": "림잇티드"},
     # 2026-10-28 모니터링 편입. 편성 문구는 pgmShop API 값을 그대로 쓴다.
     {"pgm_cd": "100033", "title": "바이림"},
+    # 2026-11-17 편입. 김호영의 투머치쇼 - TV 목 19:35 (모바일라이브 목 20:45).
+    # 카테고리가 방송마다 바뀐다 (건강식품·리빙/주방·미용 - 2026-07~10 라방바 실측).
+    # 같은 프로그램의 TV 코드 563884('김호영의 투머치쇼')는 상품은 같지만 편성 문구에 시간이 없어
+    # (그냥 '김호영의 투머치한 혜택') 데이터는 100060으로 받고 바로가기 링크만 563884로 둔다 (사람 지정).
+    {"pgm_cd": "100060", "title": "투머치쇼", "fallback_schedule": "목 19:35",
+     "link": "https://display.cjonstyle.com/m/pgmShop/563884?pgmShopTabType=M"},
 ]
 
 PGM_SHOP_INFO_URL = (
@@ -280,9 +287,11 @@ def fetch_extra_program(session: requests.Session, config: dict) -> dict:
                                 label=f"CJ pgmShop {pgm_cd}")
         info = (resp.json().get("result") or {}).get("pgmShopInfo") or {}
         title = (info.get("pgmNm") or title).strip()
+        # MLC(모바일 라이브) 편성은 TV 방송이 아니라 뺀다
+        # (투머치쇼: TV 목 19:35 / MLC 목 20:45 -> 화면엔 TV만)
         schedule_raw = " / ".join(
             t.get("bdTmCnts", "") for t in (info.get("bdTmCntsList") or [])
-            if t.get("bdTmCnts")
+            if t.get("bdTmCnts") and t.get("channelType") != "MLC"
         )
         thumbnail = to_https(find_first_image_url(info) or "")
     except Exception as e:
@@ -299,7 +308,7 @@ def fetch_extra_program(session: requests.Session, config: dict) -> dict:
         "title": title,
         "schedule_raw": schedule_raw,
         "thumbnail": thumbnail,
-        "pgmshop_link": f"https://display.cjonstyle.com/m/pgmShop/{pgm_cd}",
+        "pgmshop_link": config.get("link") or f"https://display.cjonstyle.com/m/pgmShop/{pgm_cd}",
         # 기본정보 API에는 모듈처럼 정리된 '다음 방송 소개상품'이 없다.
         # 상품 라인업은 셀럽PGM(fixed/recj.py)이 별도로 수집한다.
         "upcoming_products": [],

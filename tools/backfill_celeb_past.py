@@ -20,6 +20,7 @@
     CJ_BYL  바이림          림잇티드와 같은 방식(라이브만). 비정기라 정규 시각이 없어
                             CJ_live 폴백은 다른 출처로 확인한 회차(live_dates)만 쓴다
                             (10/23(금) 19:35 - 라방바 '[바이림] 레쁠레뜨', CJ_live 같은 시각).
+    CJ_TMC  김호영의 투머치쇼 바이림과 같은 방식. 11/12(목) 19:35 (CJ 편성표 '김호영의 투머치쇼').
     LT_YNH  더퍼스트 유난희  로컬 편성표 homeshopping/LT_live (pgm 표시가 있다).
                             롯데는 한 방송을 상품 구간별로 쪼개 주므로 이어지는
                             구간은 첫 구간 시각의 한 회차로 묶는다.
@@ -68,6 +69,13 @@ TARGETS = {
         "live_dates": (("2026-10-23", "19:35"),),
         "meta": {"tab_name": "바이림", "program_title": "바이림", "schedule_raw": "",
                  "detail_link": "https://display.cjonstyle.com/m/pgmShop/100033"},
+    },
+    "CJ_TMC": {
+        "company": "CJ", "since": "2026-11-01", "names": ("투머치",),
+        # 정규 시각(목 19:35)이어도 매주 방송이 아니라 확인된 회차만 (11/12 - CJ 편성표 '김호영의 투머치쇼')
+        "live_dates": (("2026-11-12", "19:35"),),
+        "meta": {"tab_name": "김호영", "program_title": "투머치쇼", "schedule_raw": "목요일 19:35",
+                 "detail_link": "https://display.cjonstyle.com/m/pgmShop/563884?pgmShopTabType=M"},
     },
     "LT_YNH": {
         "company": "LT", "since": "2026-10-01", "names": ("더퍼스트 유난희", "유난희"),
