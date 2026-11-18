@@ -11,7 +11,12 @@
    비에날씬 프로 다이어트 유산균 플러스 60포 외 1개
 
    📅 다음 방송 (7일 안)
-   [CJ] 11/15(일) 11:15 세포랩 · 시그니처 에센스 ...   <- 등록 브랜드 전체, 방송마다 한 줄 (2026-11 사용자 지정 양식)
+   비에날씬                  <- 등록한 브랜드/키워드별로 묶음, 상품명 없이 (2026-11 사용자 지정 양식)
+   [CJ] 11/17(화) 06:15     <- 채널은 굵게
+   [홈앤] 11/17(화) 10:25
+
+   다이슨
+   [GS] 11/18(수) 09:20
 
   - 등록은 봇 '🔔 브랜드 알림' (worker/telegram-bot.js) - /export 의 users[ID].brands
       {"t": "b", "v": 브랜드명}  편성 브랜드명이 같으면 (notify/brand_alias.json 의 다른 이름도 같은 브랜드로)
@@ -119,11 +124,13 @@ def label(entry):
     return "'%s' 들어간 방송" % entry["v"] if entry.get("t") == "k" else entry["v"]
 
 
-def slot_lines(co, start, items):
-    first = items[0]
+def slot_lines(co, start, items, hit=None):
+    """hit: 관심 브랜드에 걸린 구성상품. 한 방송에 여러 브랜드가 묶이면(현대 19:30 머티리얼랩·올라카일리·다이슨)
+    첫 상품이 아니라 걸린 상품을 대표로 보여 준다 (2026-11-18 '노르딕가든 왜 나옴' 수정)."""
+    first = hit or items[0]
     brand = (first.get("brand") or "").strip()
     product = food.clean_product(first.get("product") or "")
-    others = {food.clean_product(i.get("product") or "") for i in items[1:]} - {product, ""}
+    others = {food.clean_product(i.get("product") or "") for i in items if i is not first} - {product, ""}
     head = "%s [%s] %s" % (start or "??:??", food.COMPANY_NAMES.get(co, co), brand)
     link = (first.get("link") or "").strip()
     body = '<a href="%s">%s</a>' % (esc(link), esc(product)) if link else esc(product)
@@ -148,8 +155,9 @@ def build_for(entries, today, slots, alias, now, weather):
     for co, start, items in slots[today]:
         if not (food.TIME_START <= start <= food.TIME_END):
             continue
-        if any(m(it) for _, m in matchers for it in items):
-            todays.append(slot_lines(co, start, items))
+        hit = next((it for it in items if any(m(it) for _, m in matchers)), None)
+        if hit:
+            todays.append(slot_lines(co, start, items, hit))
     if not todays:
         return None
     lines = food.header_lines(now, weather) + [
@@ -158,27 +166,25 @@ def build_for(entries, today, slots, alias, now, weather):
     for t in todays:
         lines += [t, ""]
     lines.pop()
-    # 다음 방송: 등록 브랜드 전체, 내일부터 7일, 방송마다 한 줄 '[회사] 11/15(일) 22:40 상품명'
-    upcoming = []
-    for d in sorted(slots):
-        if d <= today:
-            continue
-        for co, start, items in slots[d]:
-            hit = next((e for e, m in matchers if any(m(it) for it in items)), None)
-            if not hit:
+    # 다음 방송: 내일부터 7일, 등록한 브랜드/키워드별로 묶고 방송마다 한 줄 '<b>[CJ]</b> 11/17(화) 06:15'
+    # (2026-11 사용자 양식: 상품명은 빼고 키워드만, 홈쇼핑 채널은 굵게. 여러 개에 걸리면 각 묶음에 다 넣는다)
+    groups = []
+    for e, m in matchers:
+        rows = []
+        for d in sorted(slots):
+            if d <= today:
                 continue
-            # '[회사] 11/15(일) 22:40 브랜드 · 상품명' - 편성 브랜드명, 비어 있으면 등록한 이름.
-            # 상품명이 브랜드로 시작하면 브랜드는 생략 (2026-11 사용자 요청: 어느 브랜드인지 보이게)
-            product = food.clean_product(items[0].get("product") or "")
-            brand = next(((i.get("brand") or "").strip() for i in items if (i.get("brand") or "").strip()), "") \
-                or (hit["v"] if hit.get("t") != "k" else "")
-            name = product if not brand or norm(product).startswith(norm(brand)) else "%s · %s" % (brand, product)
-            upcoming.append("[%s] %s %s %s" % (food.COMPANY_NAMES.get(co, co), short_day(d), start, esc(name)))
-    if upcoming:
-        more = len(upcoming) - UPCOMING_MAX
-        lines += ["", "<b>📅 다음 방송 (%d일 안)</b>" % UPCOMING_DAYS] + upcoming[:UPCOMING_MAX]
-        if more > 0:
-            lines.append("외 %d회" % more)
+            for co, start, items in slots[d]:
+                if any(m(it) for it in items):
+                    rows.append("<b>[%s]</b> %s %s" % (esc(food.COMPANY_NAMES.get(co, co)), short_day(d), start))
+        if rows:
+            more = len(rows) - UPCOMING_MAX
+            rows = rows[:UPCOMING_MAX] + (["외 %d회" % more] if more > 0 else [])
+            groups.append([esc(e["v"])] + rows)
+    if groups:
+        lines += ["", "<b>📅 다음 방송 (%d일 안)</b>" % UPCOMING_DAYS]
+        for i, g in enumerate(groups):
+            lines += ([""] if i else []) + g
     lines += ["", "브랜드 바꾸기: /brand"]
     return lines
 
