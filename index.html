@@ -3857,6 +3857,10 @@
     font-size: 12px; font-weight: 700; color: var(--ink-faint);
     background: var(--paper-dim); border-radius: 6px;
   }
+  .cel-next-air-when {
+    display: block; margin-top: 4px;
+    font-size: 11px; font-weight: 600; color: var(--ink-soft, var(--ink-faint));
+  }
   .cel-col-empty {
     font-size: 11px;
     color: var(--ink-faint);
@@ -7722,6 +7726,28 @@ const CEL_START_MONTH = {
   // 격주 목 19:35 (11/12·11/26·12/10). 11/17부터 수집 - 그 전 11/12 회차는 편성표에서 소급해 채웠다.
   'CJ_TMC.json': '2026-11-17',
 };
+// 비정기 프로그램이 그 달 남은 기간에 방송이 없을 때 손으로 적는 안내.
+// month 달을 조회하면 밴드 맨 앞(최신 주 자리)에 '남은 N월 방송 없음 · 다음 방송 …' 칸을 둔다.
+// next 회차가 history에 잡히면(수집되면) 그 달엔 실제 회차가 뜨므로 지울 필요 없다.
+// 텔레그램 일일 알림(notify/send_celeb_daily.py NEXT_AIR)도 같은 날짜를 쓴다.
+const CEL_NEXT_AIR = {
+  'CJ_KSY.json': { month: '2026-11', next: '2026-12-15 19:35' },
+};
+
+function celNextAirHtml(file) {
+  const info = CEL_NEXT_AIR[file];
+  if (!info || info.month !== (celMonth || celThisMonth())) return '';
+  const [d, hm] = info.next.split(' ');
+  const [y, m, dd] = d.split('-').map(Number);
+  const wd = '일월화수목금토'[new Date(y, m - 1, dd).getDay()];
+  const monthNum = parseInt(info.month.slice(5, 7), 10);
+  return `<div class="cel-week cel-next-air">` +
+    `<span class="cel-week-label">${monthNum}월 남은 기간</span>` +
+    `<div class="cel-week-cols"><div class="cel-bcast off-air">` +
+      `<div class="cel-off-air">방송 없음<span class="cel-next-air-when">다음 방송 ${m}/${dd}(${wd}) ${hm || ''}</span></div>` +
+    `</div></div></div>`;
+}
+
 // 신규 론칭 프로그램 배지. 론칭일 전에는 '론칭예정', 론칭 후
 // CEL_NEW_BADGE_DAYS일 동안 'NEW'를 붙이고 그 뒤엔 저절로 사라진다
 // (기간이 지난 뒤 배지를 지우러 다시 손댈 필요가 없게 날짜 기준으로 판단).
@@ -8270,7 +8296,7 @@ function celRenderBand(file) {
   // 브랜드 개수는 안 센다 - GS는 사전·대괄호에 없는 브랜드(키직, 샤크 등)를 못 뽑아
   // 숫자가 실제보다 작게 나온다. 틀린 숫자를 보여주느니 뺀다.
 
-  const bodyHtml = emptyMsg
+  const bodyHtml = celNextAirHtml(file) + (emptyMsg
     ? `<div class="cel-col-empty" style="flex:1;">${emptyMsg}</div>`
     : weeks.map(w => {
         const items = weekMap[w].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
@@ -8290,7 +8316,7 @@ function celRenderBand(file) {
           `<span class="cel-week-label">${w === 0 ? '기타' : monthNum + '월 ' + w + '주차'}</span>` +
           celWeekStatusHtml(items) +
           `<div class="cel-week-cols">${cols}</div></div>`;
-      }).join('');
+      }).join(''));
 
   const coCls = (meta.company || '').toLowerCase();
   // 프로그램 썸네일: 고정PGM 수집분 -> 상세페이지 배너(program_image) -> 최신 방송

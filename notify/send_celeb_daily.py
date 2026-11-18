@@ -83,6 +83,8 @@ MISSING_SKIP = {"CJ_SIH", "CJ_KSY"}
 #   휴방(기록 없음) 안내를 계속 띄운다 (셀럽PGM 탭과 같은 기준).
 # 그중 쉬는 주에 '이번 주 쉬어요 (다음 방송 …)'를 따로 알리는 프로그램 (겟잇스타일은 요일이 수시로 바뀌어 제외)
 REST_NOTICE = {"CJ_KSY"}
+# 다음 회차가 아직 수집 전(다음 달 history에 없음)일 때 손으로 적는 다음 방송 (셀럽PGM 탭 CEL_NEXT_AIR와 같음)
+NEXT_AIR = {"CJ_KSY": "2026-12-15 19:35"}
 # 브랜드 칸에 들어오는 자리표시자 - 브랜드로 안 본다
 PLACEHOLDER_BRANDS = {"", "GS SHOP", "1등급"}
 
@@ -323,11 +325,20 @@ def build_notes(progs, day):
                                 if not b["off_air"] and b["start"] >= day_end), None)
                     when = ("다음 방송 %d/%d %s %s" % (nxt["start"].month, nxt["start"].day,
                                                     WEEKDAY_KO[nxt["wd"]], nxt["hm"] or "시각 미정")
-                            if nxt else "다음 방송 미정")
+                            if nxt else manual_next_air(key, day))
                     notes.append("%s%s 이번 주 쉬어요 (%s)" % (who, josa(title, "은", "는"), when))
                 elif key not in MISSING_SKIP:
                     notes.append("%s 평소 방송일인데 상품 기록이 없어요 (휴방 가능성)" % who)
     return notes
+
+
+def manual_next_air(key, day):
+    s = NEXT_AIR.get(key)
+    if s:
+        at = datetime.strptime(s, "%Y-%m-%d %H:%M")
+        if at.date() > day:
+            return "다음 방송 %d/%d %s %s" % (at.month, at.day, WEEKDAY_KO[at.weekday()], at.strftime("%H:%M"))
+    return "다음 방송 미정"
 
 
 def live_at(company, day, hm):
