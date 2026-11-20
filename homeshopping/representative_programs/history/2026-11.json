@@ -1,6 +1,6 @@
 {
   "month": "2026-11",
-  "updated_at": "2026-11-21T06:24:52.975396+09:00",
+  "updated_at": "2026-11-21T08:15:00.745968+09:00",
   "programs": [
     {
       "program_key": "HD_HJM",
@@ -14,7 +14,7 @@
         {
           "date": "2026-11-23",
           "label": "11/23(월) 19:30 방송",
-          "collected_at": "2026-11-21T06:24:52.934900+09:00",
+          "collected_at": "2026-11-21T08:15:00.714821+09:00",
           "products": [
             {
               "broadcast_date_label": "11/23(월) 19:30 방송",
@@ -221,7 +221,7 @@
         {
           "date": "2026-11-24",
           "label": "11/24(화) 19:30 방송",
-          "collected_at": "2026-11-21T06:24:52.934900+09:00",
+          "collected_at": "2026-11-21T08:15:00.714821+09:00",
           "products": [
             {
               "broadcast_date_label": "11/24(화) 19:30 방송",
@@ -501,7 +501,7 @@
         {
           "date": "2026-11-21",
           "label": "11/21(토) 08:20 방송",
-          "collected_at": "2026-11-21T06:24:52.934900+09:00",
+          "collected_at": "2026-11-21T08:15:00.714821+09:00",
           "products": [
             {
               "broadcast_date_label": "11/21(토) 08:20 방송",
@@ -963,7 +963,7 @@
         {
           "date": "2026-11-26",
           "label": "11/26(목) 20:45 방송",
-          "collected_at": "2026-11-21T06:24:52.934900+09:00",
+          "collected_at": "2026-11-21T08:15:00.714821+09:00",
           "products": [
             {
               "prd_id": "1139404080",
@@ -1371,8 +1371,17 @@
         {
           "date": "2026-11-27",
           "label": "11/27(금) 20:35 방송",
-          "collected_at": "2026-11-21T06:24:52.934900+09:00",
+          "collected_at": "2026-11-21T08:15:00.714821+09:00",
           "products": [
+            {
+              "prd_id": "1104931683",
+              "broadcast_date_label": "11월 27일(금) 20:35 방송",
+              "broadcast_iso": "2026-11-27T20:35:00",
+              "brand": "라오메뜨",
+              "name": "라오메뜨 전설의 패치 프리미엄 준대형 (총 240매)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1104931683"
+            },
             {
               "prd_id": "1061229354",
               "broadcast_date_label": "11월 27일(금) 20:35 방송",
@@ -1426,15 +1435,6 @@
               "name": "비에날씬 프로 다이어트 유산균(3박스)",
               "price": null,
               "link": "https://m.gsshop.com/prd/prd.gs?prdid=1061227328"
-            },
-            {
-              "prd_id": "1104931683",
-              "broadcast_date_label": "11월 27일(금) 20:35 방송",
-              "broadcast_iso": "2026-11-27T20:35:00",
-              "brand": "라오메뜨",
-              "name": "라오메뜨 전설의 패치 프리미엄 준대형 (총 240매)",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1104931683"
             }
           ]
         },
@@ -1995,7 +1995,7 @@
         {
           "date": "2026-11-28",
           "label": "11/28(토) 08:20 방송",
-          "collected_at": "2026-11-21T06:24:52.934900+09:00",
+          "collected_at": "2026-11-21T08:15:00.714821+09:00",
           "products": [
             {
               "broadcast_date_label": "11/28 토요일 08:20",
@@ -2038,7 +2038,7 @@
         {
           "date": "2026-11-26",
           "label": "11/26(목) 20:45 방송",
-          "collected_at": "2026-11-21T06:24:52.934900+09:00",
+          "collected_at": "2026-11-21T08:15:00.714821+09:00",
           "products": [
             {
               "broadcast_date_label": "11/26 목요일 20:45",
@@ -2061,7 +2061,7 @@
         {
           "date": "2026-11-21",
           "label": "11/21(토) 08:20 방송",
-          "collected_at": "2026-11-21T06:24:52.934900+09:00",
+          "collected_at": "2026-11-21T08:15:00.714821+09:00",
           "products": [
             {
               "broadcast_date_label": "11/21 토요일 08:20",
@@ -2356,7 +2356,7 @@
         {
           "date": "2026-11-26",
           "label": "11/26(목) 09:25 방송",
-          "collected_at": "2026-11-21T06:24:52.934900+09:00",
+          "collected_at": "2026-11-21T08:15:00.714821+09:00",
           "products": [
             {
               "broadcast_date_label": "11/26 목요일 09:25",
@@ -2371,7 +2371,7 @@
         {
           "date": "2026-11-24",
           "label": "11/24(화) 08:15 방송",
-          "collected_at": "2026-11-21T06:24:52.934900+09:00",
+          "collected_at": "2026-11-21T08:15:00.714821+09:00",
           "products": [
             {
               "broadcast_date_label": "11/24 화요일 08:15",
@@ -3060,7 +3060,7 @@
         {
           "date": "2026-11-25",
           "label": "11/25(수) 20:45 방송",
-          "collected_at": "2026-11-21T06:24:52.934900+09:00",
+          "collected_at": "2026-11-21T08:15:00.714821+09:00",
           "products": [
             {
               "broadcast_date_label": "11/25(수) 20:45",
@@ -5037,14 +5037,14 @@
         {
           "date": "2026-11-28",
           "label": "11/28(토) 08:20 방송",
-          "collected_at": "2026-11-21T06:24:52.934900+09:00",
+          "collected_at": "2026-11-21T08:15:00.714821+09:00",
           "products": [
             {
               "broadcast_date_label": "11/28(토) 08:20",
               "brand": "로얄코펜하겐",
               "name": "크리스마스 스타 플루디드 디너 파티세트",
               "price": 559000,
-              "image": "https://image.cjonstyle.net/goods_images/20/239/2097485239L.jpg?timestamp=20261121062230",
+              "image": "https://image.cjonstyle.net/goods_images/20/239/2097485239L.jpg?timestamp=20261121081333",
               "link": "https://display.cjonstyle.com/p/item/2097485239"
             },
             {
@@ -5111,14 +5111,14 @@
         {
           "date": "2026-11-26",
           "label": "11/26(목) 20:45 방송",
-          "collected_at": "2026-11-21T06:24:52.934900+09:00",
+          "collected_at": "2026-11-21T08:15:00.714821+09:00",
           "products": [
             {
               "broadcast_date_label": "11/26(목) 20:45",
               "brand": "셀렙샵에디션",
               "name": "[미리주문10%]26FW FAUX 밍크 후드 롱코트",
               "price": 99000,
-              "image": "https://image.cjonstyle.net/goods_images/20/745/2094670745L.jpg?timestamp=20261121062230",
+              "image": "https://image.cjonstyle.net/goods_images/20/745/2094670745L.jpg?timestamp=20261121081333",
               "link": "https://display.cjonstyle.com/p/item/2094670745"
             },
             {
@@ -5230,12 +5230,12 @@
         {
           "date": "2026-11-21",
           "label": "11/21(토) 08:20 방송",
-          "collected_at": "2026-11-21T06:24:52.934900+09:00",
+          "collected_at": "2026-11-21T08:15:00.714821+09:00",
           "products": [
             {
               "broadcast_date_label": "11/21(토) 08:20",
               "brand": "본정심",
-              "name": "[동가게PICK/국내최대함량] 진 흑염소진액 4박스",
+              "name": "[동가게PICK/최대원물함량] 진 흑염소진액 4박스",
               "price": 629000,
               "image": "https://image.cjonstyle.net/goods_images/20/885/2096784885L.jpg?timestamp=20261029111713",
               "link": "https://display.cjonstyle.com/p/item/2096784885?channelCode=30002002"
@@ -5243,7 +5243,7 @@
             {
               "broadcast_date_label": "11/21(토) 08:20",
               "brand": "본정심",
-              "name": "[동가게PICK/국내최대함량] 진 흑염소진액 2박스",
+              "name": "[최고프리미엄]진 흑염소진액 2박스",
               "price": 399000,
               "image": "https://image.cjonstyle.net/goods_images/20/279/2096786279L.jpg?timestamp=20261103200700",
               "link": "https://display.cjonstyle.com/p/item/2096786279?channelCode=30002002"
@@ -5253,7 +5253,7 @@
               "brand": "브레빌",
               "name": "[동가게 09시30분] 바리스타 익스프레스™ 임프레스 실버 BES876",
               "price": 1300000,
-              "image": "https://image.cjonstyle.net/goods_images/20/789/2097274789L.jpg?timestamp=20261117124412",
+              "image": "https://image.cjonstyle.net/goods_images/20/789/2097274789L.jpg?timestamp=20261121070037",
               "link": "https://display.cjonstyle.com/p/item/2097274789?channelCode=30002002"
             },
             {
@@ -5261,7 +5261,7 @@
               "brand": "브레빌",
               "name": "[동가게 09시30분] 바리스타 익스프레스™ 임프레스 화이트 BES876",
               "price": 1300000,
-              "image": "https://image.cjonstyle.net/goods_images/20/242/2097275242L.jpg?timestamp=20261117124517",
+              "image": "https://image.cjonstyle.net/goods_images/20/242/2097275242L.jpg?timestamp=20261121070059",
               "link": "https://display.cjonstyle.com/p/item/2097275242?channelCode=30002002"
             },
             {
@@ -5269,14 +5269,14 @@
               "brand": "브레빌",
               "name": "[동가게 09시30분] 바리스타 익스프레스™ 임프레스 블랙 BES876",
               "price": 1300000,
-              "image": "https://image.cjonstyle.net/goods_images/20/438/2097275438L.jpg?timestamp=20261117124540",
+              "image": "https://image.cjonstyle.net/goods_images/20/438/2097275438L.jpg?timestamp=20261121070118",
               "link": "https://display.cjonstyle.com/p/item/2097275438?channelCode=30002002"
             },
             {
               "broadcast_date_label": "11/21(토) 08:20",
               "brand": "봄부지에",
               "name": "동가게PICK [이태리공식수입] 로마 하프다운 자켓 GW6012",
-              "price": 990000,
+              "price": 790000,
               "image": "https://image.cjonstyle.net/goods_images/20/442/2090038442L.jpg?timestamp=20260818131232",
               "link": "https://display.cjonstyle.com/p/item/2090038442?channelCode=30002002"
             },
@@ -5284,7 +5284,7 @@
               "broadcast_date_label": "11/21(토) 08:20",
               "brand": "봄부지에",
               "name": "동가게PICK [이태리공식수입] 제네바 롱다운 자켓 CW6630",
-              "price": 1090000,
+              "price": 890000,
               "image": "https://image.cjonstyle.net/goods_images/20/158/2090039158L.jpg?timestamp=20261120215254",
               "link": "https://display.cjonstyle.com/p/item/2090039158?channelCode=30002002"
             },
@@ -5292,14 +5292,14 @@
               "broadcast_date_label": "11/21(토) 08:20",
               "brand": "봄부지에",
               "name": "동가게PICK [이태리공식수입] 컬리 퍼자켓 JW9854 DKSH",
-              "price": 890000,
+              "price": 690000,
               "image": "https://image.cjonstyle.net/goods_images/20/307/2090039307L.jpg?timestamp=20260807152831",
               "link": "https://display.cjonstyle.com/p/item/2090039307?channelCode=30002002"
             },
             {
               "broadcast_date_label": "11/21(토) 08:20",
               "brand": "본정심",
-              "name": "[동가게PICK/국내최대함량] 진 흑염소진액 1박스",
+              "name": "[최대원물함량]진 흑염소진액 1박스",
               "price": 279000,
               "image": "goods_images/20/303/2096786303L.jpg?timestamp=20261103200436",
               "link": "https://display.cjonstyle.com/p/item/2096786303?channelCode=30002002",
@@ -6008,14 +6008,14 @@
         {
           "date": "2026-11-28",
           "label": "11/28(토) 10:20 방송",
-          "collected_at": "2026-11-21T06:24:52.934900+09:00",
+          "collected_at": "2026-11-21T08:15:00.714821+09:00",
           "products": [
             {
               "broadcast_date_label": "11/28(토) 10:20",
               "brand": "지스튜디오",
               "name": "[미리주문 5%] 26FW 텍사스 태닝社 리버시블 무스탕 하프코트",
               "price": 1290000,
-              "image": "https://image.cjonstyle.net/goods_images/20/929/2091188929L.jpg?timestamp=20261121062326",
+              "image": "https://image.cjonstyle.net/goods_images/20/929/2091188929L.jpg?timestamp=20261121081325",
               "link": "https://display.cjonstyle.com/p/item/2091188929"
             },
             {
@@ -6031,7 +6031,7 @@
         {
           "date": "2026-11-21",
           "label": "11/21(토) 10:20 방송",
-          "collected_at": "2026-11-21T06:24:52.934900+09:00",
+          "collected_at": "2026-11-21T08:15:00.714821+09:00",
           "products": [
             {
               "broadcast_date_label": "11/21(토) 10:20",
@@ -6559,7 +6559,7 @@
         {
           "date": "2026-11-27",
           "label": "11/27(금) 19:35 방송",
-          "collected_at": "2026-11-21T06:24:52.934900+09:00",
+          "collected_at": "2026-11-21T08:15:00.714821+09:00",
           "products": [
             {
               "broadcast_date_label": "11/27(금) 19:35",
@@ -8923,7 +8923,7 @@
         {
           "date": "2026-11-26",
           "label": "11/26(목) 19:35 방송",
-          "collected_at": "2026-11-21T06:24:52.934900+09:00",
+          "collected_at": "2026-11-21T08:15:00.714821+09:00",
           "products": [
             {
               "broadcast_date_label": "11/26(목) 19:35",
