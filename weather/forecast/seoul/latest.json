@@ -1,14 +1,8 @@
 {
-  "2026-11-21": {
-    "minTa": -3.0,
-    "maxTa": 2.0,
-    "pop_max": 0.0,
-    "source": "kma"
-  },
   "2026-11-22": {
-    "minTa": -4.0,
+    "minTa": -2.0,
     "maxTa": 5.0,
-    "pop_max": 30.0,
+    "pop_max": 20.0,
     "source": "kma"
   },
   "2026-11-23": {
@@ -20,7 +14,13 @@
   "2026-11-24": {
     "minTa": -2.0,
     "maxTa": 3.0,
-    "pop_max": 30.0,
+    "pop_max": 20.0,
+    "source": "kma"
+  },
+  "2026-11-25": {
+    "minTa": -3.0,
+    "maxTa": 8.0,
+    "pop_max": 0.0,
     "source": "kma"
   }
 }
