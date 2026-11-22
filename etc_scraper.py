@@ -349,7 +349,7 @@ def main(argv=None):
             if only and log_label not in only:
                 continue
             if not only and log_label in MANUAL_CHANNELS:
-                print(f"[{log_label}] 수기 채널 - 자동 수집에서 제외 (Claude 예약 작업이 3일마다 갱신)")
+                print(f"[{log_label}] 수기 채널 - 자동 수집에서 제외 (Claude 예약 작업이 2일마다 갱신)")
                 continue
             sub_dir = os.path.join(OUTPUT_DIR, log_label)
             os.makedirs(sub_dir, exist_ok=True)
@@ -401,6 +401,13 @@ def main(argv=None):
                 if not programs and days.get(date_dash):
                     # 이미 편성이 있던 날이 갑자기 0건이면 일시 오류로 보고 기존값 유지
                     print(f"  -> 0개 (기존 {len(days[date_dash])}개 유지)")
+                    time.sleep(REQUEST_DELAY)
+                    continue
+
+                old = days.get(date_dash) or []
+                if old and len(programs) < len(old) * 0.8:
+                    # 새로 받은 게 기존보다 눈에 띄게 비어 있으면(일부만 공개된 경우 등) 기존값 유지
+                    print(f"  -> 새 값 {len(programs)}개 < 기존 {len(old)}개, 기존값 유지")
                     time.sleep(REQUEST_DELAY)
                     continue
 
