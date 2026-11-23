@@ -76,6 +76,7 @@ jobs:
                    homeshopping/GS_live homeshopping/GS_data
           git add -A -- \
                   homeshopping/brand_index.json \
+                  homeshopping/GS_brand_cache.json \
                   homeshopping/HD_live homeshopping/HD_data \
                   homeshopping/LT_live homeshopping/LT_data \
                   homeshopping/CJ_live homeshopping/CJ_data \
