@@ -1,6 +1,6 @@
 {
   "month": "2026-12",
-  "updated_at": "2026-11-23T10:16:05.781825+09:00",
+  "updated_at": "2026-11-23T20:16:32.200813+09:00",
   "programs": [
     {
       "program_key": "GS_BJY",
@@ -14,7 +14,7 @@
         {
           "date": "2026-12-03",
           "label": "12/03(목) 20:45 방송",
-          "collected_at": "2026-11-23T10:16:05.696551+09:00",
+          "collected_at": "2026-11-23T20:16:32.112783+09:00",
           "products": [
             {
               "prd_id": "1140260953",
@@ -48,6 +48,40 @@
       ]
     },
     {
+      "program_key": "LT_CYR",
+      "company": "LT",
+      "tab_name": "최유라",
+      "program_title": "최유라쇼",
+      "schedule_raw": "매주 목 20시 45분/ 토 08시 20분",
+      "detail_link": "https://www.lotteimall.com/contstmpl/viewContsTmplDetail.lotte?conts_no=73",
+      "program_image": "https://image.lotteimall.com/upload/display/conts_tmpl/base/73_11_20260616094539.jpg/dims/resizemc/1200x430/cropcenter/1200x430/optimize",
+      "broadcasts": [
+        {
+          "date": "2026-12-03",
+          "label": "12/03(목) 20:45 방송",
+          "collected_at": "2026-11-23T20:16:32.112783+09:00",
+          "products": [
+            {
+              "broadcast_date_label": "12/03 목요일 20:45",
+              "brand": "한림수협",
+              "name": "[한림수협] 한림수협 제주 참고등어 160g내외 x 16팩 ",
+              "price": 69900,
+              "image": "https://image2.lotteimall.com/goods/33/92/87/12879233_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12879233"
+            },
+            {
+              "broadcast_date_label": "12/03 목요일 20:45",
+              "brand": "보로탈코",
+              "name": "[보로탈코] 롯데단독패키지 벨벳팅 크림 150ml 8통+대용량 250ml 1통+30ml 1통 ",
+              "price": 155000,
+              "image": "https://image2.lotteimall.com/goods/62/71/92/12927162_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12927162"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "program_key": "CJ_KCO",
       "company": "CJ",
       "tab_name": "김창옥",
@@ -59,7 +93,7 @@
         {
           "date": "2026-12-01",
           "label": "12/01(화) 19:35 방송",
-          "collected_at": "2026-11-23T10:16:05.696551+09:00",
+          "collected_at": "2026-11-23T20:16:32.112783+09:00",
           "products": [
             {
               "broadcast_date_label": "12/01(화) 19:35",
@@ -109,14 +143,14 @@
         {
           "date": "2026-12-19",
           "label": "12/19(토) 08:20 방송",
-          "collected_at": "2026-11-23T10:16:05.696551+09:00",
+          "collected_at": "2026-11-23T20:16:32.112783+09:00",
           "products": [
             {
               "broadcast_date_label": "12/19(토) 08:20",
               "brand": "오로라 뉴트라사이언스",
               "name": "[캐나다 직수입]오로라 리포조말 리포좀 비타민C 3박스",
               "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/783/2093831783L.jpg?timestamp=20261123101431",
+              "image": "https://image.cjonstyle.net/goods_images/20/783/2093831783L.jpg?timestamp=20261123201433",
               "link": "https://display.cjonstyle.com/p/item/2093831783"
             }
           ]
@@ -124,14 +158,14 @@
         {
           "date": "2026-12-12",
           "label": "12/12(토) 08:20 방송",
-          "collected_at": "2026-11-23T10:16:05.696551+09:00",
+          "collected_at": "2026-11-23T20:16:32.112783+09:00",
           "products": [
             {
               "broadcast_date_label": "12/12(토) 08:20",
               "brand": "엠오이칼",
               "name": "(동가게pick)무설탕목캔디+베리샷 최초공개",
               "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/732/2055880732L.jpg?timestamp=20261123101431",
+              "image": "https://image.cjonstyle.net/goods_images/20/732/2055880732L.jpg?timestamp=20261123201433",
               "link": "https://display.cjonstyle.com/p/item/2055880732"
             }
           ]
@@ -139,14 +173,14 @@
         {
           "date": "2026-12-05",
           "label": "12/05(토) 08:20 방송",
-          "collected_at": "2026-11-23T10:16:05.696551+09:00",
+          "collected_at": "2026-11-23T20:16:32.112783+09:00",
           "products": [
             {
               "broadcast_date_label": "12/05(토) 08:20",
               "brand": "체코기",
               "name": "목초유 유기농 기버터 180g*3병+퓨어 기버터180g*3병(총6병)",
               "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/755/2098434755L.jpg?timestamp=20261123101431",
+              "image": "https://image.cjonstyle.net/goods_images/20/755/2098434755L.jpg?timestamp=20261123201433",
               "link": "https://display.cjonstyle.com/p/item/2098434755"
             }
           ]
@@ -154,15 +188,55 @@
         {
           "date": "2026-12-03",
           "label": "12/03(목) 20:45 방송",
-          "collected_at": "2026-11-23T10:16:05.696551+09:00",
+          "collected_at": "2026-11-23T20:16:32.112783+09:00",
           "products": [
             {
               "broadcast_date_label": "12/03(목) 20:45",
               "brand": "프라이(FRYE)",
               "name": "[리오더 입고] 26FW 워커 레이스업 부츠",
               "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/835/2095808835L.jpg?timestamp=20261123101431",
+              "image": "https://image.cjonstyle.net/goods_images/20/835/2095808835L.jpg?timestamp=20261123201433",
               "link": "https://display.cjonstyle.com/p/item/2095808835"
+            },
+            {
+              "broadcast_date_label": "12/03(목) 20:45",
+              "brand": "셀렙샵에디션",
+              "name": "[디오브르by셀렙샵]26FW 핸드메이드 카멜100 롱코트",
+              "price": 499000,
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/931/2094664931L.jpg?timestamp=20261112144938",
+              "link": "https://display.cjonstyle.com/p/item/2094664931?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "12/03(목) 20:45",
+              "brand": "셀렙샵에디션",
+              "name": "[디오브르by셀렙샵] 26FW 울실크카멜 프리미엄 팬츠",
+              "price": 119000,
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/780/2092452780L.jpg?timestamp=20260908102046",
+              "link": "https://display.cjonstyle.com/p/item/2092452780?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "12/03(목) 20:45",
+              "brand": "더엣지",
+              "name": "26FW 울실크블렌드 터틀넥 니트 3종",
+              "price": 79900,
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/934/2089149934L.jpg?timestamp=20260807082617",
+              "link": "https://display.cjonstyle.com/p/item/2089149934?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "12/03(목) 20:45",
+              "brand": "더엣지",
+              "name": "26FW 울블렌드 후드 케이블 베스트",
+              "price": 69900,
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/456/2092138456L.jpg?timestamp=20261006125738",
+              "link": "https://display.cjonstyle.com/p/item/2092138456?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "12/03(목) 20:45",
+              "brand": "더엣지",
+              "name": "26FW 기모 벨벳트랙 커브드 데님 2종",
+              "price": 89900,
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/276/2095743276L.jpg?timestamp=20261013152232",
+              "link": "https://display.cjonstyle.com/p/item/2095743276?channelCode=30002002"
             }
           ]
         }
