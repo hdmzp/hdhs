@@ -308,13 +308,23 @@ def fetch_gs_official(date_obj: datetime):
 
     result = {"live": [], "data": []}
     seen = set()
-    for group in soup.select("div.prd-group.typeB[data-broadcast]"):
+    # 2026-11-22경 GS 페이지 구조 변경:
+    #   예전) div.prd-group.typeB[data-broadcast] 안에 [data-broadstartdate]
+    #   지금) div.prd-group-wrap[data-broadcast] > div.prd-group[data-broadstartdate] > article
+    # 둘 다 받는다. 한 방송(타임) = data-broadstartdate 가 붙은 요소 하나.
+    slots = []
+    for group in soup.select("div.prd-group-wrap[data-broadcast], div.prd-group.typeB[data-broadcast]"):
         broadcast = GS_BROADCAST_TYPE.get(group.get("data-broadcast", ""))
         if not broadcast:
             continue
-        slot = group.select_one("[data-broadstartdate]")
-        if not slot:
-            continue
+        found = group.select("[data-broadstartdate]")
+        if group.has_attr("data-broadstartdate"):
+            found = [group]
+        for slot in found:
+            slots.append((broadcast, slot))
+
+    for broadcast, slot in slots:
+        group = slot if slot.select_one("article.prd-item") else slot.parent
         start_raw = slot.get("data-broadstartdate", "")
         end_raw = slot.get("data-broadenddate", "")
         if not start_raw.startswith(date_str):
@@ -326,6 +336,7 @@ def fetch_gs_official(date_obj: datetime):
 
         # 한 방송(타임)의 방송상품 전부 (주상품 + 부상품). 같은 상품명은 한 번만.
         names_seen = set()
+        slot_items = []
         for item in group.select("article.prd-item"):
             b = item.select_one(".brand-name")
             n = item.select_one(".prd-name")
@@ -345,7 +356,7 @@ def fetch_gs_official(date_obj: datetime):
             else:
                 a = item.select_one("a.prd-link[href]")
                 link = a["href"] if a else ""
-            result[broadcast].append({
+            slot_items.append({
                 "start": start,
                 "end": end,
                 "brand": brand,
@@ -356,6 +367,16 @@ def fetch_gs_official(date_obj: datetime):
                 "lavangba_category": "",   # attach_lavangba_meta에서 채움
                 "hsshow_id": "",           # attach_lavangba_meta에서 채움 (매출 수집 매칭 키)
             })
+
+        # 새 구조(2026-11-22~)에선 주상품 카드(card prime)에 브랜드 칸이 없다.
+        # 같은 타임의 부상품 브랜드가 주상품명 안에 들어 있으면 그 브랜드를 쓴다
+        # ('[한창서패키지]프란츠 봉톡신 ...' + 부상품 브랜드 '프란츠' -> 프란츠).
+        # 그래도 비면 add_categories의 상품명 기반 브랜드 추론이 채운다.
+        slot_brands = sorted({x["brand"] for x in slot_items if x["brand"]}, key=len, reverse=True)
+        for x in slot_items:
+            if not x["brand"]:
+                x["brand"] = next((b for b in slot_brands if b in x["product"]), "")
+        result[broadcast].extend(slot_items)
 
     for progs in result.values():
         progs.sort(key=lambda x: x["start"])
