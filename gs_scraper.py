@@ -367,15 +367,6 @@ def fetch_gs_official(date_obj: datetime):
                 "lavangba_category": "",   # attach_lavangba_meta에서 채움
                 "hsshow_id": "",           # attach_lavangba_meta에서 채움 (매출 수집 매칭 키)
             })
-
-        # 새 구조(2026-11-22~)에선 주상품 카드(card prime)에 브랜드 칸이 없다.
-        # 같은 타임의 부상품 브랜드가 주상품명 안에 들어 있으면 그 브랜드를 쓴다
-        # ('[한창서패키지]프란츠 봉톡신 ...' + 부상품 브랜드 '프란츠' -> 프란츠).
-        # 그래도 비면 add_categories의 상품명 기반 브랜드 추론이 채운다.
-        slot_brands = sorted({x["brand"] for x in slot_items if x["brand"]}, key=len, reverse=True)
-        for x in slot_items:
-            if not x["brand"]:
-                x["brand"] = next((b for b in slot_brands if b in x["product"]), "")
         result[broadcast].extend(slot_items)
 
     for progs in result.values():
@@ -384,6 +375,77 @@ def fetch_gs_official(date_obj: datetime):
         print(f"    [GS_공식] {date_str} 편성 0건 (페이지 구조 변경 가능성)")
         return None
     return result
+
+
+# ---- GS 상품 브랜드 (상품 상세페이지 brandNm) ----
+# GS 편성표는 상품명에 브랜드가 이미 들어 있으면 브랜드 칸(.brand-name)을 안 띄운다
+# ('RCB폴로클럽 26FW 패딩', '대웅제약 이지듀 ...' 등 - 하루 50개 남짓).
+# 상품 상세페이지(m.gsshop.com/prd/prd.gs?prdid=)에는 GS가 등록한 브랜드(brandNm)가
+# 있으므로 그 값을 그대로 쓴다 (상품명 추론보다 정확). 상품번호별로 캐시해서
+# 같은 상품은 다시 요청하지 않는다. 보험 등 brandNm이 없는 상품은 ""로 캐시하고
+# add_categories의 상품명 기반 추론으로 넘어간다.
+GS_PRD_URL = "https://m.gsshop.com/prd/prd.gs"
+GS_BRAND_CACHE_JSON = os.path.join(OUTPUT_DIR, "GS_brand_cache.json")
+GS_BRAND_RE = re.compile(r'"brandNm"\s*:\s*"([^"]*)"')
+GS_PRDID_RE = re.compile(r"[?&]prdid=(\d+)")
+GS_BRAND_REQUEST_DELAY = 0.5
+
+
+def load_gs_brand_cache() -> dict:
+    try:
+        with open(GS_BRAND_CACHE_JSON, encoding="utf-8") as f:
+            return json.load(f)
+    except (OSError, json.JSONDecodeError):
+        return {}
+
+
+def save_gs_brand_cache(cache: dict):
+    with open(GS_BRAND_CACHE_JSON, "w", encoding="utf-8") as f:
+        json.dump(dict(sorted(cache.items())), f, ensure_ascii=False, indent=0)
+
+
+def fetch_gs_brand(prdcd: str):
+    """상품 상세페이지의 brandNm. 페이지는 받았는데 brandNm이 없으면 "", 요청 실패면 None
+    (None은 캐시하지 않아 다음 실행에서 다시 시도)."""
+    headers = {"User-Agent": GS_MOBILE_UA, "Referer": "https://m.gsshop.com/index.gs"}
+    try:
+        r = scrape_guard.get(GS_PRD_URL, params={"prdid": prdcd}, headers=headers,
+                             timeout=15, label=f"GS 상품상세 {prdcd}")
+    except scrape_guard.FetchError as e:
+        print(f"    [GS_브랜드] {prdcd} {e}")
+        return None
+    m = GS_BRAND_RE.search(r.text)
+    if m:
+        return m.group(1).strip()
+    # brandNm 이 없어도 정상 상품 페이지(수백KB)면 '브랜드 없음'(보험 등)으로 확정해 캐시.
+    # GS가 가끔 주는 1KB짜리 오류 페이지는 None -> 다음 실행에서 다시 시도.
+    return "" if len(r.text) > 50000 else None
+
+
+def fill_gs_brands(programs: list, cache: dict):
+    """브랜드 칸이 빈 항목을 상세페이지 brandNm 으로 채운다 (캐시 우선)."""
+    fetched = 0
+    for p in programs:
+        if p.get("brand"):
+            continue
+        m = GS_PRDID_RE.search(p.get("link") or "")
+        if not m:
+            continue
+        prdcd = m.group(1)
+        # 보험 상품은 상세페이지가 GS 오류 페이지라 brandNm 을 못 얻는다 -> 요청 생략
+        if prdcd not in cache and re.search(r"보험", p.get("product") or ""):
+            continue
+        if prdcd not in cache:
+            brand = fetch_gs_brand(prdcd)
+            fetched += 1
+            time.sleep(GS_BRAND_REQUEST_DELAY)
+            if brand is None:
+                continue
+            cache[prdcd] = brand
+        if cache[prdcd]:
+            p["brand"] = cache[prdcd]
+    if fetched:
+        print(f"  [GS_브랜드] 상세페이지 조회 {fetched}건")
 
 
 def _to_min(hhmm: str) -> int:
@@ -498,6 +560,7 @@ def main():
     today_str = base.strftime("%Y-%m-%d")
     failures = []  # 수집 실패한 (채널 날짜) - 끝에서 종료코드로 알린다
     official_cache = {}  # {날짜: fetch_gs_official 결과} - live/data 두 채널이 같이 쓴다
+    brand_cache = load_gs_brand_cache()  # {상품번호: 상세페이지 brandNm}
 
     print("[GS_pgm] 고정PGM 방송 예정일시 수집 중...")
     pgm_map = fetch_gs_pgm_broadcasts()
@@ -558,6 +621,7 @@ def main():
                 else:
                     # GS 공식 페이지 수집 실패/미제공 시 기존 뱃지를 같은 시작시각에 이어 붙인다
                     carry_over_pgm(programs, days.get(date_dash) or [])
+            fill_gs_brands(programs, brand_cache)
             programs = add_categories(programs)
 
             if not programs and days.get(date_dash):
@@ -582,6 +646,8 @@ def main():
                     "days": sorted_days,
                 }, f, ensure_ascii=False, indent=2)
             print(f"  저장: {out_path} ({len(sorted_days)}일)")
+
+    save_gs_brand_cache(brand_cache)
 
     if failures:
         # 저장은 끝낸 뒤(살릴 데이터는 살린 뒤) 실패를 종료코드로 드러낸다 -
