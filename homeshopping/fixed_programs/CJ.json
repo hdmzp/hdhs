@@ -1,7 +1,91 @@
 {
   "company": "CJ",
-  "collectedAt": "2026-11-23T09:25:01.501461+09:00",
+  "collectedAt": "2026-11-24T07:28:59.461100+09:00",
   "programs": [
+    {
+      "pgm_cd": "563677",
+      "title": "탑쇼",
+      "schedule_raw": "TOP상품!  TOP혜택!",
+      "thumbnail": "https://image.cjonstyle.net/public/confirm/assets/tdp_cate_cont/202404/01/6492448/f4106c51351576725601bddc03d7d0b0362edaf4.png",
+      "pgmshop_link": "https://display.cjonstyle.com/m/exhibition/exhibitionDetail?plnExhbId=202403265646",
+      "upcoming_products": [
+        {
+          "name": "[탑쇼] [싱글] 화이트2+퍼플2+블루2+네이비2+린+빈탈취제+사쉐",
+          "price": 99900,
+          "image": "https://itemimage.cjonstyle.net/goods_images/20/594/2098544594L.jpg?timestamp=20261123110120",
+          "link": "https://display.cjonstyle.com/m/item/2098544594?channelCode=30002002"
+        },
+        {
+          "name": "WHIFF 악취제거 다용도 탈취제 300g 4개 (화이트)",
+          "price": 53900,
+          "image": "https://itemimage.cjonstyle.net/goods_images/20/690/2073166690L.jpg?timestamp=20261020133459",
+          "link": "https://display.cjonstyle.com/m/item/2073166690?channelCode=30002002"
+        }
+      ]
+    },
+    {
+      "pgm_cd": "562904",
+      "title": "최화정쇼",
+      "schedule_raw": "수요일 밤 8시 45분",
+      "thumbnail": "https://image.cjonstyle.net/public/confirm/assets/tdp_cate_cont/202306/01/5549815/756debea2b4d2a1ec3b9d56f256c67474c4a5d97.png",
+      "pgmshop_link": "https://display.cjonstyle.com/m/pgmShop/100027",
+      "upcoming_products": [
+        {
+          "name": "[최화정쇼픽/최다구성] 10월 최신통관 유기농 올리브오일 4병+미니 6병",
+          "price": 175900,
+          "image": "https://itemimage.cjonstyle.net/goods_images/20/619/2098303619L.jpg?timestamp=20261116163014",
+          "link": "https://display.cjonstyle.com/m/item/2098303619?channelCode=30002002"
+        },
+        {
+          "name": "[고영양 한겹세럼] 이모르뗄 엘릭서 세럼 3병",
+          "price": 169000,
+          "image": "https://itemimage.cjonstyle.net/goods_images/20/348/2098293348L.jpg?timestamp=20261116134004",
+          "link": "https://display.cjonstyle.com/m/item/2098293348?channelCode=30002002"
+        }
+      ]
+    },
+    {
+      "pgm_cd": "563888",
+      "title": "아쇼라",
+      "schedule_raw": "매주 목요일 08시 15분",
+      "thumbnail": "https://image.cjonstyle.net/public/confirm/assets/tdp_cate_cont/202509/29/7093127/90949946be839de3c803b077e38dd1590fe06289.png",
+      "pgmshop_link": "https://display.cjonstyle.com/m/pgmShop/563888",
+      "upcoming_products": [
+        {
+          "name": "겨울 이불 퀸(Q)",
+          "price": 460000,
+          "image": "https://itemimage.cjonstyle.net/goods_images/20/008/2074445008L.jpg?timestamp=20260911112741",
+          "link": "https://display.cjonstyle.com/m/item/2074445008?channelCode=30002002"
+        },
+        {
+          "name": "[미리주문10%][공식정품]26FW 리얼 풀스킨 버클 무스탕 부츠",
+          "price": 239000,
+          "image": "https://itemimage.cjonstyle.net/goods_images/20/451/2097851451L.jpg?timestamp=20261119140438",
+          "link": "https://display.cjonstyle.com/m/item/2097851451?channelCode=30002002"
+        }
+      ]
+    },
+    {
+      "pgm_cd": "563049",
+      "title": "동가게",
+      "schedule_raw": "목20:45 / 토08:20",
+      "thumbnail": "https://image.cjonstyle.net/public/confirm/assets/tdp_cate_cont/202303/15/5549814/4e4dc31abd2c744307eda7f579c43b9b1bfba453.png",
+      "pgmshop_link": "https://display.cjonstyle.com/m/pgmShop/100013",
+      "upcoming_products": [
+        {
+          "name": "[미리주문10%]26FW 클래식 무스탕 숏 부츠",
+          "price": 239000,
+          "image": "https://itemimage.cjonstyle.net/goods_images/20/107/2098359107L.jpg?timestamp=20261118135307",
+          "link": "https://display.cjonstyle.com/m/item/2098359107?channelCode=30002002"
+        },
+        {
+          "name": "약콩 서리태 가득 콩물 두유 6박스",
+          "price": 129900,
+          "image": "https://itemimage.cjonstyle.net/goods_images/20/728/2097746728L.jpg?timestamp=20261120150600",
+          "link": "https://display.cjonstyle.com/m/item/2097746728?channelCode=30002002"
+        }
+      ]
+    },
     {
       "pgm_cd": "563883",
       "title": "T이승연쇼 1부",
@@ -24,90 +108,6 @@
       ]
     },
     {
-      "pgm_cd": "563677",
-      "title": "탑쇼",
-      "schedule_raw": "TOP상품!  TOP혜택!",
-      "thumbnail": "https://image.cjonstyle.net/public/confirm/assets/tdp_cate_cont/202404/01/6492448/f4106c51351576725601bddc03d7d0b0362edaf4.png",
-      "pgmshop_link": "https://display.cjonstyle.com/m/exhibition/exhibitionDetail?plnExhbId=202403265646",
-      "upcoming_products": [
-        {
-          "name": "[정상가 2,590,000원] 킹/수퍼킹_세인트 양털이불+울패드+양털베개커버2 풀세트",
-          "price": 2590000,
-          "image": "https://itemimage.cjonstyle.net/goods_images/20/416/2093645416L.jpg?timestamp=20261026135409",
-          "link": "https://display.cjonstyle.com/m/item/2093645416?channelCode=30002002"
-        },
-        {
-          "name": "[정상가 1,990,000원] 수퍼싱글_세인트양털이불+울패드+양털베개커버1 풀세트",
-          "price": 1990000,
-          "image": "https://itemimage.cjonstyle.net/goods_images/20/083/2093645083L.jpg?timestamp=20261026135345",
-          "link": "https://display.cjonstyle.com/m/item/2093645083?channelCode=30002002"
-        }
-      ]
-    },
-    {
-      "pgm_cd": "562904",
-      "title": "최화정쇼",
-      "schedule_raw": "수요일 밤 8시 45분",
-      "thumbnail": "https://image.cjonstyle.net/public/confirm/assets/tdp_cate_cont/202306/01/5549815/756debea2b4d2a1ec3b9d56f256c67474c4a5d97.png",
-      "pgmshop_link": "https://display.cjonstyle.com/m/pgmShop/100027",
-      "upcoming_products": [
-        {
-          "name": "[최화정쇼픽/최다구성] 10월 최신통관 유기농 올리브오일 4병+미니 6병",
-          "price": 175900,
-          "image": "https://itemimage.cjonstyle.net/goods_images/20/619/2098303619L.jpg?timestamp=20261116163014",
-          "link": "https://display.cjonstyle.com/m/item/2098303619?channelCode=30002002"
-        },
-        {
-          "name": "[결탄력관리/최화정세럼] 이모르뗄 엘릭서 세럼 30ml 3통",
-          "price": 169000,
-          "image": "https://itemimage.cjonstyle.net/goods_images/20/348/2098293348L.jpg?timestamp=20261116134004",
-          "link": "https://display.cjonstyle.com/m/item/2098293348?channelCode=30002002"
-        }
-      ]
-    },
-    {
-      "pgm_cd": "563888",
-      "title": "아쇼라",
-      "schedule_raw": "매주 목요일 08시 15분",
-      "thumbnail": "https://image.cjonstyle.net/public/confirm/assets/tdp_cate_cont/202509/29/7093127/90949946be839de3c803b077e38dd1590fe06289.png",
-      "pgmshop_link": "https://display.cjonstyle.com/m/pgmShop/563888",
-      "upcoming_products": [
-        {
-          "name": "겨울 이불 퀸(Q)",
-          "price": 460000,
-          "image": "https://itemimage.cjonstyle.net/goods_images/20/008/2074445008L.jpg?timestamp=20260911112741",
-          "link": "https://display.cjonstyle.com/m/item/2074445008?channelCode=30002002"
-        },
-        {
-          "name": "[미리주문 쿠폰][공식정품]26FW 리얼 풀스킨 버클 무스탕 부츠",
-          "price": 239000,
-          "image": "https://itemimage.cjonstyle.net/goods_images/20/451/2097851451L.jpg?timestamp=20261119140438",
-          "link": "https://display.cjonstyle.com/m/item/2097851451?channelCode=30002002"
-        }
-      ]
-    },
-    {
-      "pgm_cd": "563049",
-      "title": "동가게",
-      "schedule_raw": "목20:45 / 토08:20",
-      "thumbnail": "https://image.cjonstyle.net/public/confirm/assets/tdp_cate_cont/202303/15/5549814/4e4dc31abd2c744307eda7f579c43b9b1bfba453.png",
-      "pgmshop_link": "https://display.cjonstyle.com/m/pgmShop/100013",
-      "upcoming_products": [
-        {
-          "name": "[미리주문10%]26FW 클래식 무스탕 숏 부츠",
-          "price": 239000,
-          "image": "https://itemimage.cjonstyle.net/goods_images/20/107/2098359107L.jpg?timestamp=20261118135307",
-          "link": "https://display.cjonstyle.com/m/item/2098359107?channelCode=30002002"
-        },
-        {
-          "name": "[미리주문10%]26FW FAUX 밍크 후드 롱코트",
-          "price": 99000,
-          "image": "https://itemimage.cjonstyle.net/goods_images/20/745/2094670745L.jpg?timestamp=20261013131233",
-          "link": "https://item.cjonstyle.com/celebshop/item/2094670745?channelCode=30002002"
-        }
-      ]
-    },
-    {
       "pgm_cd": "563703",
       "title": "건강 슈퍼히어로",
       "schedule_raw": "일요일 오전",
@@ -115,16 +115,16 @@
       "pgmshop_link": "https://display.cjonstyle.com/m/pgmShop/563703",
       "upcoming_products": [
         {
+          "name": "[남궁민모발콜라겐] 모발콜라겐 3270 6박스 24주분+오메가3 1박스",
+          "price": 205000,
+          "image": "https://itemimage.cjonstyle.net/goods_images/20/356/2086573356L.jpg?timestamp=20260611073745",
+          "link": "https://display.cjonstyle.com/m/item/2086573356?channelCode=30002002"
+        },
+        {
           "name": "[TV LIVE] 폴란드직수입 베르도르팜  동결건조 유기농 하스카프 베리 10팩*30g",
           "price": 179000,
           "image": "https://itemimage.cjonstyle.net/goods_images/20/620/2073729620L.jpg?timestamp=20260403163755",
           "link": "https://display.cjonstyle.com/m/item/2073729620?channelCode=30002002"
-        },
-        {
-          "name": "관절엔 콘드로이친1200 4개월분",
-          "price": 268000,
-          "image": "https://itemimage.cjonstyle.net/goods_images/20/115/2010510115L.jpg?timestamp=20250117185643",
-          "link": "https://display.cjonstyle.com/m/item/2010510115?channelCode=30002002"
         }
       ]
     },
@@ -142,10 +142,10 @@
           "link": "https://display.cjonstyle.com/m/item/2093848368?channelCode=30002002"
         },
         {
-          "name": "40%OFF/CJ단독] 김호영 스페셜 패키지 (호호바 오일 50ml 5개 + GIFT. 호호바 모찌베이션 크림 마스크 1개)",
-          "price": 204000,
-          "image": "https://itemimage.cjonstyle.net/goods_images/20/285/2076937285L.jpg?timestamp=20261113192927",
-          "link": "https://display.cjonstyle.com/m/item/2076937285?channelCode=30002002"
+          "name": "[프랑스 직수입 에스테틱 크림]오트 스킨 리뉴잉 크림 JAR 50ml 2통",
+          "price": 125500,
+          "image": "https://itemimage.cjonstyle.net/goods_images/20/939/2093939939L.jpg?timestamp=20260917165004",
+          "link": "https://display.cjonstyle.com/m/item/2093939939?channelCode=30002002"
         }
       ]
     },
@@ -157,16 +157,16 @@
       "pgmshop_link": "https://display.cjonstyle.com/m/pgmShop/562953",
       "upcoming_products": [
         {
+          "name": "동가게PICK [이태리공식수입] 로마 하프다운 자켓 GW6012",
+          "price": 990000,
+          "image": "https://itemimage.cjonstyle.net/goods_images/20/442/2090038442L.jpg?timestamp=20260818131232",
+          "link": "https://display.cjonstyle.com/m/item/2090038442?channelCode=30002002"
+        },
+        {
           "name": "26FW 울블랜드 소프트 웜 팬츠 2종",
           "price": 149900,
           "image": "https://itemimage.cjonstyle.net/goods_images/20/912/2091193912L.jpg?timestamp=20260918175641",
           "link": "https://item.cjonstyle.com/celebshop/item/2091193912?channelCode=30002002"
-        },
-        {
-          "name": "26FW 멜팅 울트라 파인 울100 터틀넥 풀오버",
-          "price": 79900,
-          "image": "https://itemimage.cjonstyle.net/goods_images/20/760/2092074760L.jpg?timestamp=20260918091400",
-          "link": "https://display.cjonstyle.com/m/item/2092074760?channelCode=30002002"
         }
       ]
     },
@@ -241,16 +241,16 @@
       "pgmshop_link": "https://display.cjonstyle.com/m/pgmShop/100061?pgmShopTabType=M",
       "upcoming_products": [
         {
-          "name": "[TV쇼핑최초공개/VVIP패키지] 링클크림 블랙라벨 150ml 3통+브러쉬 1개+(방송에서만) 150ml 1통",
+          "name": "[VIP패키지] 링클크림 150ml 2통+250ml 1통+브러쉬 1개+(전고객) 링클크림 150ml 2통",
           "price": 249000,
-          "image": "https://itemimage.cjonstyle.net/goods_images/20/762/2096931762L.jpg?timestamp=20261029133847",
-          "link": "https://display.cjonstyle.com/m/item/2096931762?channelCode=30002002"
+          "image": "https://itemimage.cjonstyle.net/goods_images/20/895/2093943895L.jpg?timestamp=20260917195630",
+          "link": "https://display.cjonstyle.com/m/item/2093943895?channelCode=30002002"
         },
         {
-          "name": "[단품] 파리 블레미쉬 끄렘므 30g 1개",
-          "price": 105000,
-          "image": "https://itemimage.cjonstyle.net/goods_images/20/379/2040578379L.jpg?timestamp=20240923152534",
-          "link": "https://display.cjonstyle.com/m/item/2040578379?channelCode=30002002"
+          "name": "[기본 패키지] 링클크림 150ml 1통",
+          "price": 149000,
+          "image": "https://itemimage.cjonstyle.net/goods_images/20/744/2079165744L.jpg?timestamp=20260828160103",
+          "link": "https://display.cjonstyle.com/m/item/2079165744?channelCode=30002002"
         }
       ]
     },
