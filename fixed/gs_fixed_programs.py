@@ -123,7 +123,7 @@ def describe_markup(soup) -> None:
     ]
     print(f"  [GS] [진단] pgm/tv 관련 id: {section_ids[:15] or '(없음)'}")
 
-    for sel in (".swiper-slide", ".item-head", "h3.ttl-lg",
+    for sel in (".items-unit", ".swiper-slide", ".item-head", "h3.ttl-lg",
                 "article.ban-item", "article.prd-item"):
         print(f"  [GS] [진단] '{sel}' 개수: {len(soup.select(sel))}")
 
@@ -141,8 +141,11 @@ def parse_programs(html: str) -> list:
               "문서 전체에서 대표프로그램 슬라이드를 찾아봅니다.")
         section = soup
 
-    # 중복된 가짜 슬라이드(swiper-slide-duplicate) 제외하고 진짜 프로그램만
-    slides = section.select(".swiper-slide:not(.swiper-slide-duplicate)")
+    # 중복된 가짜 슬라이드(swiper-slide-duplicate) 제외하고 진짜 프로그램만.
+    # 2026-11 마크업 개편으로 카드 래퍼가 .swiper-slide 에서 .items-unit 으로
+    # 바뀌었다(카드 내부의 .item-head / h3.ttl-lg / article.prd-item 구조는 그대로).
+    # 개편 전 마크업도 계속 동작하도록 두 셀렉터를 모두 허용한다.
+    slides = section.select(".items-unit, .swiper-slide:not(.swiper-slide-duplicate)")
 
     for slide in slides:
         head = slide.select_one(".item-head")
