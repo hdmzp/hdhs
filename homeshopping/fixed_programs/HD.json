@@ -1,6 +1,6 @@
 {
   "company": "HD",
-  "collectedAt": "2026-11-22T08:52:45.905530+09:00",
+  "collectedAt": "2026-11-23T09:24:56.138980+09:00",
   "programs": [
     {
       "title": "왕영은의 톡투게더",
@@ -22,7 +22,20 @@
       "desc": "#눈이 즐거운 쇼핑공간 #톡톡 튀는 셀렉트 샵",
       "thumbnail": "https://image.hmall.com/MH/HM005_SL/20260825/102347/disp3142330085744.png",
       "detail_link": "https://www.hmall.com/md/dpa/pgmComm?sectId=3142330",
-      "upcoming_products": []
+      "upcoming_products": [
+        {
+          "name": "MORAGA모라가 헝가리 구스다운 롱 코트",
+          "price": 299000,
+          "image": "https://image.hmall.com/2258255292_0.jpg",
+          "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2258255292"
+        },
+        {
+          "name": "MORAGA모라가 헝가리 구스다운 후드 점퍼1종",
+          "price": 279000,
+          "image": "https://image.hmall.com/2255138273_0.jpg",
+          "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2255138273"
+        }
+      ]
     },
     {
       "title": "클럽 노블레스",
@@ -116,7 +129,14 @@
       "desc": "#평범하지만 특별한 #우리들의 패션 이야기",
       "thumbnail": "https://image.hmall.com/MH/HM005_SL/20260818/174625/disp3142330172433.png",
       "detail_link": "https://www.hmall.com/md/dpa/pgmComm?sectId=3131034",
-      "upcoming_products": []
+      "upcoming_products": [
+        {
+          "name": "유로컬렉션 26FW 휘메일 풀스킨 밍크 호리젠탈 자켓",
+          "price": 1690000,
+          "image": "https://image.hmall.com/2257836246_0.jpg",
+          "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2257836246"
+        }
+      ]
     }
   ]
 }
