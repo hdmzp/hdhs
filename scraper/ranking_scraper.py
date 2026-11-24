@@ -128,6 +128,41 @@ CATEGORIES = [
 TAG_RE = re.compile(r'<a\b([^>]*)>')
 HREF_ATTR_RE = re.compile(r'href="([^"]+)"')
 
+# 2026-11경 hsmoa가 상세페이지 사이드바에 자기 광고센터 링크(target="_blank" 절대 URL)를
+# 넣었다. 이게 진짜 구매 버튼보다 먼저 나와서 랭킹 링크 대부분이 광고 페이지로 저장됐다.
+#   https://ad.hsmoa.com/?utm_source=datahub&utm_medium=sidebar&utm_campaign=ad_center
+#   https://hsmoa-ad.web.app/?referrer=datahub
+# 호스트에 hsmoa 가 들어가거나 web.app 인 링크는 구매 링크가 아니다.
+AD_HOST_RE = re.compile(r'^https?://[^/?#]*(?:hsmoa|\.web\.app)', re.I)
+
+# 상세페이지에서 구매 링크를 못 찾으면 pdid('{채널}_{상품번호}')로 채널 상품페이지를 직접 만든다.
+# (link_cache.json 의 정상 링크 전부 - GS 보험 8건 제외 - 가 pdid 상품번호와 일치함을 확인)
+DIRECT_LINK_TMPL = {
+    "hmall":      "https://www.hmall.com/md/pda/itemPtc?slitmCd={id}",
+    "cjmall":     "https://display.cjonstyle.com/p/item/{id}",
+    "gsshop":     "https://www.gsshop.com/prd/prd.gs?prdid={id}",
+    "lotteimall": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no={id}",
+    "bshop":      "https://www.skstoa.com/display/goods/{id}",
+    "hnsmall":    "https://m.hnsmall.com/goods/view/{id}",
+    "immall":     "https://www.gongyoungshop.kr/goods/selectGoodsDetail.do?prdId={id}",
+    "kshop":      "https://www.kshop.co.kr/display/ec/product/{id}",
+    "nsmall":     "https://m.nsmall.com/goods/{id}",
+    "shopnt":     "https://m.shoppingntmall.com/display/goods/{id}",
+    "ssgshop":    "https://www.shinsegaetvshopping.com/display/detail/{id}",
+    "wshop":      "https://m.w-shopping.co.kr/display/goods/{id}",
+}
+
+
+def is_ad_link(href: str) -> bool:
+    return bool(href) and bool(AD_HOST_RE.match(href))
+
+
+def direct_link(pdid: str) -> str:
+    """pdid로 채널 상품페이지 URL을 만든다. 모르는 채널이면 빈 문자열."""
+    ch, _, num = (pdid or "").rpartition("_")
+    tmpl = DIRECT_LINK_TMPL.get(ch)
+    return tmpl.format(id=num) if tmpl and num.isdigit() else ""
+
 
 def now_kst() -> datetime:
     return datetime.now(KST)
@@ -213,12 +248,12 @@ def fetch_outbound_link(pdid: str) -> str:
             if not m:
                 continue
             href = m.group(1)
-            if href.startswith("http"):
+            if href.startswith("http") and not is_ad_link(href):
                 return href.replace("&amp;", "&")
-        return ""
+        return direct_link(pdid)  # 페이지에 구매 링크가 없으면 직접 만든 상품페이지
     except Exception as e:
         print(f"      [link] {pdid} 오류: {e}")
-        return ""
+        return direct_link(pdid)
 
 
 def load_previous_snapshot() -> dict:
@@ -297,6 +332,18 @@ def main():
 
     # 2단계: 바로가기 링크 enrichment (캐시 활용)
     link_cache = load_link_cache()
+    # 예전에 광고 링크로 잘못 저장된 캐시는 pdid로 만든 상품페이지로 바꾼다 (재요청 없음)
+    fixed = 0
+    for pdid, link in list(link_cache.items()):
+        if not link or is_ad_link(link):
+            new = direct_link(pdid)
+            if new:
+                link_cache[pdid] = new
+                fixed += 1
+            elif link:
+                del link_cache[pdid]  # 모르는 채널이면 다음에 다시 조회
+    if fixed:
+        print(f"  [link] 광고/빈 링크 캐시 {fixed}개 -> 상품페이지 링크로 교체")
     new_pdids = [p for p in sorted(all_pdids) if p not in link_cache]
     print(f"  [link] 전체 고유 상품 {len(all_pdids)}개 / 신규 조회 {len(new_pdids)}개")
 
