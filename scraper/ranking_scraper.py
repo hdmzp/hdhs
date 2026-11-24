@@ -332,18 +332,11 @@ def main():
 
     # 2단계: 바로가기 링크 enrichment (캐시 활용)
     link_cache = load_link_cache()
-    # 예전에 광고 링크로 잘못 저장된 캐시는 pdid로 만든 상품페이지로 바꾼다 (재요청 없음)
-    fixed = 0
+    # 예전에 광고 링크로 잘못 저장된 상품은 링크 없이 둔다 (2026-11-24 사람 지정:
+    # 화면에서 클릭 안 되는 카드로 표시). 빈 문자열로 캐시돼 있어 다시 조회하지 않는다.
     for pdid, link in list(link_cache.items()):
-        if not link or is_ad_link(link):
-            new = direct_link(pdid)
-            if new:
-                link_cache[pdid] = new
-                fixed += 1
-            elif link:
-                del link_cache[pdid]  # 모르는 채널이면 다음에 다시 조회
-    if fixed:
-        print(f"  [link] 광고/빈 링크 캐시 {fixed}개 -> 상품페이지 링크로 교체")
+        if is_ad_link(link):
+            link_cache[pdid] = ""
     new_pdids = [p for p in sorted(all_pdids) if p not in link_cache]
     print(f"  [link] 전체 고유 상품 {len(all_pdids)}개 / 신규 조회 {len(new_pdids)}개")
 
