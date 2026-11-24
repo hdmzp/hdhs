@@ -1,6 +1,6 @@
 {
   "month": "2026-11",
-  "updated_at": "2026-11-24T10:15:27.314587+09:00",
+  "updated_at": "2026-11-24T20:16:37.478092+09:00",
   "programs": [
     {
       "program_key": "HD_HJM",
@@ -14,7 +14,7 @@
         {
           "date": "2026-11-30",
           "label": "11/30(월) 19:30 방송",
-          "collected_at": "2026-11-24T10:15:27.277152+09:00",
+          "collected_at": "2026-11-24T20:16:37.437475+09:00",
           "products": [
             {
               "broadcast_date_label": "11/30(월) 19:30 방송",
@@ -533,7 +533,7 @@
         {
           "date": "2026-11-28",
           "label": "11/28(토) 08:20 방송",
-          "collected_at": "2026-11-24T10:15:27.277152+09:00",
+          "collected_at": "2026-11-24T20:16:37.437475+09:00",
           "products": [
             {
               "broadcast_date_label": "11/28(토) 08:20 방송",
@@ -542,6 +542,14 @@
               "price": 280000,
               "image": "https://image.hmall.com/2150204598_0.png",
               "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2150204598"
+            },
+            {
+              "broadcast_date_label": "11/28(토) 08:20 방송",
+              "brand": "꾸데끌라",
+              "name": "꾸데끌라 마린 콜라겐 앰플 왕톡 단독 크림 최대용량 특집",
+              "price": 169000,
+              "image": "https://image.hmall.com/2258473610_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2258473610"
             }
           ]
         },
@@ -689,7 +697,7 @@
         {
           "date": "2026-11-25",
           "label": "11/25(수) 19:30 방송",
-          "collected_at": "2026-11-24T10:15:27.277152+09:00",
+          "collected_at": "2026-11-24T20:16:37.437475+09:00",
           "products": [
             {
               "broadcast_date_label": "11/25(수) 19:30 방송",
@@ -1153,7 +1161,7 @@
         {
           "date": "2026-11-26",
           "label": "11/26(목) 20:45 방송",
-          "collected_at": "2026-11-24T10:15:27.277152+09:00",
+          "collected_at": "2026-11-24T20:16:37.437475+09:00",
           "products": [
             {
               "prd_id": "1139404080",
@@ -1163,24 +1171,6 @@
               "name": "[발릴라] 양털 침구세트 SK",
               "price": null,
               "link": "https://m.gsshop.com/prd/prd.gs?prdid=1139404080"
-            },
-            {
-              "prd_id": "1139403933",
-              "broadcast_date_label": "11월 26일(목) 20:45 방송",
-              "broadcast_iso": "2026-11-26T20:45:00",
-              "brand": "발릴라",
-              "name": "[발릴라] 양털 침구세트 Q",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1139403933"
-            },
-            {
-              "prd_id": "1139231253",
-              "broadcast_date_label": "11월 26일(목) 20:45 방송",
-              "broadcast_iso": "2026-11-26T20:45:00",
-              "brand": "발릴라",
-              "name": "[발릴라] 양털 침구세트 SS",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1139231253"
             },
             {
               "prd_id": "1131120574",
@@ -1570,8 +1560,17 @@
         {
           "date": "2026-11-27",
           "label": "11/27(금) 20:35 방송",
-          "collected_at": "2026-11-24T10:15:27.277152+09:00",
+          "collected_at": "2026-11-24T20:16:37.437475+09:00",
           "products": [
+            {
+              "prd_id": "1141417142",
+              "broadcast_date_label": "11월 27일(금) 20:35 방송",
+              "broadcast_iso": "2026-11-27T20:35:00",
+              "brand": "GS SHOP",
+              "name": "[소쇼 단독구성] 전설의 패치 프리미엄 586매 [스포츠60매(대형30매+테이핑형30매)+준대형 240매+그립형 90매+소형 180매]+체험분준대형 16매",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1141417142"
+            },
             {
               "prd_id": "1104931683",
               "broadcast_date_label": "11월 27일(금) 20:35 방송",
@@ -2229,68 +2228,43 @@
       "broadcasts": [
         {
           "date": "2026-11-28",
-          "label": "11/28(토) 10:20 방송",
-          "collected_at": "2026-11-24T10:15:27.277152+09:00",
-          "products": [
-            {
-              "broadcast_date_label": "11/28 토요일 10:20",
-              "brand": "글래드",
-              "name": "[글래드] GLAD 매직백 4종+매직랩 2종 (총 6종 실속 세트)",
-              "price": 39900,
-              "image": "https://image2.lotteimall.com/goods/03/76/85/12857603_2.jpg/dims/resizemc/640x360/optimize",
-              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12857603",
-              "segment_time": "10:20-10:35(15')"
-            },
-            {
-              "broadcast_date_label": "11/28 토요일 10:20",
-              "brand": "글래드",
-              "name": "[글래드] GLAD 매직랩 윈터에디션 일반형 3종 ",
-              "price": 29900,
-              "image": "https://image2.lotteimall.com/goods/24/48/48/5001484824_1.jpg/dims/resizemc/640x360/optimize",
-              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=5001484824101",
-              "segment_time": "10:20-10:35(15')"
-            },
-            {
-              "broadcast_date_label": "11/28 토요일 10:20",
-              "brand": "세포랩",
-              "name": "[세포랩] 세포랩 초기초 시그니처 패키지 세포랩 바이오제닉 에센스 155ml(4)+100ml(1)+30ml(4)+스프레이 ",
-              "price": 289000,
-              "image": "https://image2.lotteimall.com/goods/60/75/90/12907560_1.jpg/dims/resizemc/640x360/optimize",
-              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12907560",
-              "segment_time": "10:35-11:40(65')"
-            },
-            {
-              "broadcast_date_label": "11/28 토요일 10:20",
-              "brand": "세포랩",
-              "name": "[싱글패키지] 세포랩 바이오제닉 에센스 싱글패키지 (155ml*1, 30ml*1) ",
-              "price": 129000,
-              "image": "https://image2.lotteimall.com/goods/34/50/87/12875034_1.jpg/dims/resizemc/640x360/optimize",
-              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12875034",
-              "segment_time": "10:35-11:40(65')"
-            }
-          ]
-        },
-        {
-          "date": "2026-11-28",
           "label": "11/28(토) 08:20 방송",
-          "collected_at": "2026-11-23T10:16:05.696551+09:00",
+          "collected_at": "2026-11-24T20:16:37.437475+09:00",
           "products": [
             {
               "broadcast_date_label": "11/28 토요일 08:20",
               "brand": "덴프스",
-              "name": "[ 최신상 방송에서만 2병 더! ]덴프스 그린프로폴리스 스프레이 8+2병(30ml x 10병)",
+              "name": "[ 최신상 방송에서만 2병 더! ][싱글]덴프스 그린프로폴리스 스프레이 8+2병(30ml x 10병) ",
               "price": 154000,
-              "image": "https://image2.lotteimall.com/goods/26/16/92/12921626_1.jpg/dims/resizemc/640x360/optimize",
-              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12921626",
+              "image": "https://image2.lotteimall.com/goods/26/94/02/5002029426_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=5002029426101",
+              "segment_time": "08:20-09:20(60')"
+            },
+            {
+              "broadcast_date_label": "11/28 토요일 08:20",
+              "brand": "덴프스",
+              "name": "[ 최신상 방송에서만 4병 더! ][더블]덴프스 그린프로폴리스 스프레이 16+4병(30ml x 20병) ",
+              "price": 308000,
+              "image": "https://image2.lotteimall.com/goods/69/32/03/5002033269_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=5002033269101",
               "segment_time": "08:20-09:20(60')"
             },
             {
               "broadcast_date_label": "11/28 토요일 08:20",
               "brand": "글래드",
-              "name": "[글래드] GLAD 매직백 4종+매직랩 2종 (총 6종 실속 세트)",
+              "name": "[글래드] GLAD 매직백 4종+매직랩 2종 (총 6종 실속 세트) ",
               "price": 39900,
               "image": "https://image2.lotteimall.com/goods/03/76/85/12857603_2.jpg/dims/resizemc/640x360/optimize",
               "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12857603",
+              "segment_time": "10:20-10:35(15')"
+            },
+            {
+              "broadcast_date_label": "11/28 토요일 08:20",
+              "brand": "글래드",
+              "name": "[글래드] GLAD 매직랩 윈터에디션 일반형 3종 ",
+              "price": 29900,
+              "image": "https://image2.lotteimall.com/goods/24/48/48/5001484824_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=5001484824101",
               "segment_time": "10:20-10:35(15')"
             },
             {
@@ -2316,7 +2290,7 @@
         {
           "date": "2026-11-26",
           "label": "11/26(목) 20:45 방송",
-          "collected_at": "2026-11-24T10:15:27.277152+09:00",
+          "collected_at": "2026-11-24T20:16:37.437475+09:00",
           "products": [
             {
               "broadcast_date_label": "11/26 목요일 20:45",
@@ -2328,11 +2302,43 @@
             },
             {
               "broadcast_date_label": "11/26 목요일 20:45",
+              "brand": "옥스",
+              "name": "[옥스] 단독 AUX 레이에 스텐 조리도구 4종 풀세트 (대형 멀티집게+강판스푼+계량스쿱+커팅스푼) ",
+              "price": 99000,
+              "image": "https://image2.lotteimall.com/goods/13/29/05/5002052913_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=5002052913101"
+            },
+            {
+              "broadcast_date_label": "11/26 목요일 20:45",
+              "brand": "옥스",
+              "name": "[옥스] 단독 AUX 레이에 스텐 서빙집게 4종 세트 (서빙집게*2 +슬림서빙집게*2) ",
+              "price": 89000,
+              "image": "https://image2.lotteimall.com/goods/93/64/05/5002056493_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=5002056493101"
+            },
+            {
+              "broadcast_date_label": "11/26 목요일 20:45",
               "brand": "맛의명태자",
               "name": "[맛의명태자] 온명란 110gx5팩, 자른명란 100gx5팩, 총10팩 ",
               "price": 59900,
               "image": "https://image2.lotteimall.com/goods/39/71/92/12927139_1.jpg/dims/resizemc/640x360/optimize",
               "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=12927139"
+            },
+            {
+              "broadcast_date_label": "11/26 목요일 20:45",
+              "brand": "미야오",
+              "name": "[미야오](최초공개)일본 인덕션 IH 뚝배기 도나베 중형 ",
+              "price": 99000,
+              "image": "https://image2.lotteimall.com/goods/15/13/09/5001091315_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=5001091315101"
+            },
+            {
+              "broadcast_date_label": "11/26 목요일 20:45",
+              "brand": "미야오",
+              "name": "[미야오](최초공개)일본 인덕션 IH 뚝배기 도나베 대형 ",
+              "price": 189000,
+              "image": "https://image2.lotteimall.com/goods/94/73/47/5001477394_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=5001477394101"
             }
           ]
         },
@@ -2665,7 +2671,7 @@
         {
           "date": "2026-11-26",
           "label": "11/26(목) 09:25 방송",
-          "collected_at": "2026-11-24T10:15:27.277152+09:00",
+          "collected_at": "2026-11-24T20:16:37.437475+09:00",
           "products": [
             {
               "broadcast_date_label": "11/26 목요일 09:25",
@@ -2673,7 +2679,8 @@
               "name": "[뉴온] [방송에서만 전고객] 잇몸탄탄 10개월 + 이중미세모칫솔 16개입 ",
               "price": 299000,
               "image": "https://image2.lotteimall.com/goods/08/68/04/5001046808_1.jpg/dims/resizemc/640x360/optimize",
-              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=5001046808101"
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=5001046808101",
+              "segment_time": "09:25-10:25(60')"
             },
             {
               "broadcast_date_label": "11/26 목요일 09:25",
@@ -2681,7 +2688,62 @@
               "name": "[뉴온] [5개월]잇몸탄탄 5개월 ",
               "price": 209000,
               "image": "https://image2.lotteimall.com/goods/41/72/72/5000727241_1.jpg/dims/resizemc/640x360/optimize",
-              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=5000727241101"
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=5000727241101",
+              "segment_time": "09:25-10:25(60')"
+            },
+            {
+              "broadcast_date_label": "11/26 목요일 09:25",
+              "brand": "포푸스",
+              "name": "[SK] SALE [프랑스 포푸스]프리미엄 호주산 메리노울 침구 풀세트 (총 6종) ",
+              "price": 999000,
+              "image": "https://image2.lotteimall.com/goods/17/83/79/5001798317_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=5001798317101",
+              "segment_time": "10:25~"
+            },
+            {
+              "broadcast_date_label": "11/26 목요일 09:25",
+              "brand": "포푸스",
+              "name": "[Q] SALE [프랑스 포푸스]프리미엄 호주산 메리노울 침구 풀세트 (총 6종) ",
+              "price": 899000,
+              "image": "https://image2.lotteimall.com/goods/55/86/79/5001798655_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=5001798655101",
+              "segment_time": "10:25~"
+            },
+            {
+              "broadcast_date_label": "11/26 목요일 09:25",
+              "brand": "포푸스",
+              "name": "[SS] SALE [프랑스 포푸스]프리미엄 호주산 메리노울 침구 풀세트 (총 5종) ",
+              "price": 799000,
+              "image": "https://image2.lotteimall.com/goods/36/90/79/5001799036_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=5001799036101",
+              "segment_time": "10:25~"
+            },
+            {
+              "broadcast_date_label": "11/26 목요일 09:25",
+              "brand": "포푸스",
+              "name": "[SK/K]프리미엄 호주산 메리노울 양털 패드 ",
+              "price": 690000,
+              "image": "https://image2.lotteimall.com/goods/85/05/05/5002050585_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=5002050585101",
+              "segment_time": "10:25~"
+            },
+            {
+              "broadcast_date_label": "11/26 목요일 09:25",
+              "brand": "포푸스",
+              "name": "[Q]프리미엄 호주산 메리노울 양털 패드 ",
+              "price": 490000,
+              "image": "https://image2.lotteimall.com/goods/79/07/05/5002050779_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=5002050779101",
+              "segment_time": "10:25~"
+            },
+            {
+              "broadcast_date_label": "11/26 목요일 09:25",
+              "brand": "포푸스",
+              "name": "[SS]프리미엄 호주산 메리노울 양털 패드 ",
+              "price": 390000,
+              "image": "https://image2.lotteimall.com/goods/16/11/05/5002051116_1.jpg/dims/resizemc/640x360/optimize",
+              "link": "https://www.lotteimall.com/goods/viewGoodsDetail.lotte?goods_no=5002051116101",
+              "segment_time": "10:25~"
             }
           ]
         },
@@ -3013,15 +3075,40 @@
         {
           "date": "2026-11-30",
           "label": "11/30(월) 19:35 방송",
-          "collected_at": "2026-11-24T10:15:27.277152+09:00",
+          "collected_at": "2026-11-24T20:16:37.437475+09:00",
           "products": [
+            {
+              "broadcast_date_label": "11/30(월) 19:35",
+              "brand": "부가티",
+              "name": "[굿라이프pick]100주년기념 이태리 명품 알레그라 커트러리 4인조 풀세트(26p)",
+              "price": 329000,
+              "image": "https://image.cjonstyle.net/goods_images/20/264/2098770264L.jpg?timestamp=20261124133806",
+              "link": "https://display.cjonstyle.com/p/item/2098770264?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/30(월) 19:35",
+              "brand": "네슬레",
+              "name": "네오 쉐어 커피머신+스타벅스 캡슐 5팩+밀크프로더+텀블러+캡슐보관함",
+              "price": 148000,
+              "image": "https://image.cjonstyle.net/goods_images/20/656/2098528656L.jpg?timestamp=20261124133635",
+              "link": "https://display.cjonstyle.com/p/item/2098528656?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/30(월) 19:35",
+              "brand": "네슬레",
+              "name": "[선택2] 돌체구스토 네오 스타벅스 캡슐 10팩(120캡슐)",
+              "price": 87500,
+              "image": "https://image.cjonstyle.net/goods_images/20/856/2096215856L.jpg?timestamp=20261019142345",
+              "link": "https://display.cjonstyle.com/p/item/2096215856?channelCode=30002002"
+            },
             {
               "broadcast_date_label": "11/30(월) 19:35",
               "brand": "빌레로이앤보흐",
               "name": "매뉴팩처락 사각다용도접시 블랙 1P (2772)",
               "price": 63700,
               "image": "goods_images/20/607/2029315607L.jpg?timestamp=20240319134023",
-              "link": "https://display.cjonstyle.com/p/item/2029315607?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2029315607?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3029,7 +3116,8 @@
               "name": "매뉴팩처락 구오메이접시 블랙 1P",
               "price": 86100,
               "image": "goods_images/20/069/2029326069L.jpg?timestamp=20240319153210",
-              "link": "https://display.cjonstyle.com/p/item/2029326069?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2029326069?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3037,7 +3125,8 @@
               "name": "아우든펌 찬기 2종 (1P선택형)",
               "price": 75600,
               "image": "goods_images/20/660/2029424660L.jpg?timestamp=20240522162340",
-              "link": "https://display.cjonstyle.com/p/item/2029424660?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2029424660?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3045,7 +3134,8 @@
               "name": "아우든 체이스 직사각접시 1P (2225)",
               "price": 147000,
               "image": "goods_images/20/770/2029424770L.jpg?timestamp=20240321140655",
-              "link": "https://display.cjonstyle.com/p/item/2029424770?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2029424770?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3053,7 +3143,8 @@
               "name": "아우든펌 피클접시20cm (3570)",
               "price": 130900,
               "image": "goods_images/20/960/2032408960L.jpg?timestamp=20240509110556",
-              "link": "https://display.cjonstyle.com/p/item/2032408960?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2032408960?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3061,7 +3152,8 @@
               "name": "매뉴팩처락 샴페인프루트 4P세트",
               "price": 113400,
               "image": "goods_images/20/549/2032988549L.jpg?timestamp=20240522130334",
-              "link": "https://display.cjonstyle.com/p/item/2032988549?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2032988549?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3069,7 +3161,8 @@
               "name": "매뉴팩처락 스페셜 2인조세트 (10P)",
               "price": 442650,
               "image": "goods_images/20/223/2033272223L.jpg?timestamp=20250901105336",
-              "link": "https://display.cjonstyle.com/p/item/2033272223?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2033272223?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3077,7 +3170,8 @@
               "name": "바피아노 샐러드볼 2P세트 (578411)",
               "price": 66950,
               "image": "goods_images/20/122/2033338122L.jpg?timestamp=20240528114111",
-              "link": "https://display.cjonstyle.com/p/item/2033338122?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2033338122?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3085,7 +3179,8 @@
               "name": "바피아노 파스타볼 2P세트 (578472)",
               "price": 66950,
               "image": "goods_images/20/126/2033338126L.jpg?timestamp=20240528114111",
-              "link": "https://display.cjonstyle.com/p/item/2033338126?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2033338126?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3093,7 +3188,8 @@
               "name": "바피아노 파스타접시 2P세트 (578476)",
               "price": 66950,
               "image": "goods_images/20/149/2033338149L.jpg?timestamp=20240528114114",
-              "link": "https://display.cjonstyle.com/p/item/2033338149?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2033338149?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3101,7 +3197,8 @@
               "name": "아우든 머그 4P세트",
               "price": 234000,
               "image": "goods_images/20/718/2033543718L.jpg?timestamp=20240531100930",
-              "link": "https://display.cjonstyle.com/p/item/2033543718?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2033543718?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3109,7 +3206,8 @@
               "name": "매뉴팩처락 파스타접시 화이트 1P",
               "price": 67900,
               "image": "goods_images/20/645/2029258645L.jpg?timestamp=20240318151625",
-              "link": "https://display.cjonstyle.com/p/item/2029258645?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2029258645?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3117,7 +3215,8 @@
               "name": "매뉴팩처락 25CM 중접시 쿠페 화이트1P",
               "price": 56000,
               "image": "goods_images/20/652/2029258652L.jpg?timestamp=20240318151625",
-              "link": "https://display.cjonstyle.com/p/item/2029258652?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2029258652?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3125,7 +3224,8 @@
               "name": "매뉴팩처락 파스타접시 블랙 1P",
               "price": 67900,
               "image": "goods_images/20/660/2029258660L.jpg?timestamp=20240318151626",
-              "link": "https://display.cjonstyle.com/p/item/2029258660?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2029258660?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3133,7 +3233,8 @@
               "name": "아우든 밥공기/국공기 (1P선택형)",
               "price": 77000,
               "image": "goods_images/20/553/2029417553L.jpg?timestamp=20240614092531",
-              "link": "https://display.cjonstyle.com/p/item/2029417553?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2029417553?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3141,7 +3242,8 @@
               "name": "아우든체이스 사각접시 4종 (1P선택형)",
               "price": 93100,
               "image": "goods_images/20/933/2029426933L.jpg?timestamp=20240522162334",
-              "link": "https://display.cjonstyle.com/p/item/2029426933?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2029426933?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3149,7 +3251,8 @@
               "name": "아우든 머그 4종 (1P선택형)",
               "price": 63000,
               "image": "goods_images/20/028/2029427028L.jpg?timestamp=20240522162055",
-              "link": "https://display.cjonstyle.com/p/item/2029427028?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2029427028?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3157,7 +3260,8 @@
               "name": "디자인나이프 사이드디쉬 3종 (1P선택형)",
               "price": 67900,
               "image": "goods_images/20/772/2029464772L.jpg?timestamp=20240522161756",
-              "link": "https://display.cjonstyle.com/p/item/2029464772?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2029464772?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3165,7 +3269,8 @@
               "name": "보스톤 워터고블렛 대 1P (컬러선택)",
               "price": 44850,
               "image": "goods_images/20/273/2029556273L.jpg?timestamp=20260908135738",
-              "link": "https://display.cjonstyle.com/p/item/2029556273?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2029556273?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3173,7 +3278,8 @@
               "name": "매뉴팩처락 레드와인고블렛 4P세트",
               "price": 113400,
               "image": "goods_images/20/553/2032988553L.jpg?timestamp=20261104115353",
-              "link": "https://display.cjonstyle.com/p/item/2032988553?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2032988553?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3181,7 +3287,8 @@
               "name": "디자인나이프 한식 2인세트 (12P)",
               "price": 834600,
               "image": "goods_images/20/684/2034034684L.jpg?timestamp=20260907172523",
-              "link": "https://display.cjonstyle.com/p/item/2034034684?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2034034684?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3189,7 +3296,8 @@
               "name": "알라딘 한식기 2인조 선물세트(4p) (색상선택형)",
               "price": 142800,
               "image": "goods_images/20/398/2034199398L.jpg?timestamp=20240614111511",
-              "link": "https://display.cjonstyle.com/p/item/2034199398?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2034199398?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3197,7 +3305,8 @@
               "name": "알라딘 디너 2인조 선물세트(6p) (색상선택형)",
               "price": 156800,
               "image": "goods_images/20/425/2034199425L.jpg?timestamp=20240614111554",
-              "link": "https://display.cjonstyle.com/p/item/2034199425?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2034199425?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3205,7 +3314,8 @@
               "name": "보스톤 와인고블렛 중 화이트 2P 선물세트",
               "price": 61600,
               "image": "goods_images/20/580/2091237580L.jpg?timestamp=20260813105945",
-              "link": "https://display.cjonstyle.com/p/item/2091237580?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2091237580?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3213,7 +3323,8 @@
               "name": "보스톤 고블렛세트 6P",
               "price": 116000,
               "image": "goods_images/20/097/2092556097L.jpg?timestamp=20260901110255",
-              "link": "https://display.cjonstyle.com/p/item/2092556097?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2092556097?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3221,7 +3332,8 @@
               "name": "매뉴팩처락 스페셜 4인조세트 (17P)",
               "price": 812500,
               "image": "goods_images/20/227/2033272227L.jpg?timestamp=20240527105754",
-              "link": "https://display.cjonstyle.com/p/item/2033272227?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2033272227?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3229,7 +3341,8 @@
               "name": "[준성담X매뉴팩처락 4인조 풀세트 화이트&블랙",
               "price": 629000,
               "image": "goods_images/20/588/2095832588L.jpg?timestamp=20261014171042",
-              "link": "https://display.cjonstyle.com/p/item/2095832588?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2095832588?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3237,7 +3350,8 @@
               "name": "리나스 한식숟가락 (1P 선택형)",
               "price": 29400,
               "image": "goods_images/20/954/2029430954L.jpg?timestamp=20240522141053",
-              "link": "https://display.cjonstyle.com/p/item/2029430954?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2029430954?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3245,7 +3359,8 @@
               "name": "[준성담X 클래식 리나스 커트러리 4인조 풀세트 (28p)",
               "price": 439000,
               "image": "goods_images/20/048/2095834048L.jpg?timestamp=20261014173658",
-              "link": "https://display.cjonstyle.com/p/item/2095834048?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2095834048?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3253,7 +3368,8 @@
               "name": "디자인나이프 샌드위치접시1P (웨딩파티)",
               "price": 148400,
               "image": "goods_images/20/986/2029427986L.jpg?timestamp=20240321152118",
-              "link": "https://display.cjonstyle.com/p/item/2029427986?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2029427986?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3261,7 +3377,8 @@
               "name": "매뉴팩처락 인디비쥬얼볼 13cm (색상선택형)",
               "price": 38500,
               "image": "goods_images/20/287/2082615287L.jpg?timestamp=20260409141309",
-              "link": "https://display.cjonstyle.com/p/item/2082615287?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2082615287?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3269,7 +3386,8 @@
               "name": "매뉴팩처락 샐러드볼(깊은접시) 블랙 1P",
               "price": 56000,
               "image": "goods_images/20/848/2029255848L.jpg?timestamp=20240318141453",
-              "link": "https://display.cjonstyle.com/p/item/2029255848?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2029255848?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3277,7 +3395,8 @@
               "name": "옥스포드 한식기 2인조 선물세트(4p) (색상선택형)",
               "price": 142800,
               "image": "goods_images/20/032/2034208032L.jpg?timestamp=20240617094901",
-              "link": "https://display.cjonstyle.com/p/item/2034208032?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2034208032?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3285,7 +3404,8 @@
               "name": "매뉴팩처락 샐러드볼(깊은접시) 화이트 1P",
               "price": 56000,
               "image": "goods_images/20/856/2029255856L.jpg?timestamp=20240318141710",
-              "link": "https://display.cjonstyle.com/p/item/2029255856?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2029255856?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3293,7 +3413,8 @@
               "name": "매뉴팩처락 유니버셜 쿠페접시 블랙 1P",
               "price": 56000,
               "image": "goods_images/20/731/2029258731L.jpg?timestamp=20240318152131",
-              "link": "https://display.cjonstyle.com/p/item/2029258731?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2029258731?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3301,7 +3422,8 @@
               "name": "디자인나이프 찬기 2종 (1P선택형)",
               "price": 64400,
               "image": "goods_images/20/690/2029472690L.jpg?timestamp=20240522161552",
-              "link": "https://display.cjonstyle.com/p/item/2029472690?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2029472690?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3309,7 +3431,8 @@
               "name": "매뉴팩처락 빵버터 15.5CM 소접시 블랙",
               "price": 44800,
               "image": "goods_images/20/813/2028742813L.jpg?timestamp=20240314140053",
-              "link": "https://display.cjonstyle.com/p/item/2028742813?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2028742813?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3317,7 +3440,8 @@
               "name": "아우든 식탁매트 2P선물세트 (택1)",
               "price": 58800,
               "image": "goods_images/20/899/2033289899L.jpg?timestamp=20250314091229",
-              "link": "https://display.cjonstyle.com/p/item/2033289899?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2033289899?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3325,7 +3449,8 @@
               "name": "매뉴팩처락 빵버터 15.5CM 소접시 화이트",
               "price": 44800,
               "image": "goods_images/20/816/2028742816L.jpg?timestamp=20240307152750",
-              "link": "https://display.cjonstyle.com/p/item/2028742816?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2028742816?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3333,7 +3458,8 @@
               "name": "아우든 참볼 / 아우든 꽃볼 25.5cm",
               "price": 141400,
               "image": "goods_images/20/268/2032411268L.jpg?timestamp=20240509112902",
-              "link": "https://display.cjonstyle.com/p/item/2032411268?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2032411268?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3341,7 +3467,8 @@
               "name": "토이딜라이트 평접시 29cm (택1)",
               "price": 61600,
               "image": "goods_images/20/795/2096790795L.jpg?timestamp=20261027164719",
-              "link": "https://display.cjonstyle.com/p/item/2096790795?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2096790795?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3349,7 +3476,8 @@
               "name": "매뉴팩처락 사각평접시 블랙 1P",
               "price": 84700,
               "image": "goods_images/20/146/2029317146L.jpg?timestamp=20240319135728",
-              "link": "https://display.cjonstyle.com/p/item/2029317146?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2029317146?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3357,7 +3485,8 @@
               "name": "돌체구스토 커피머신 지니오 S 베이직(화이트)+스타벅스캡슐1박스+스타벅스블랙머그컵",
               "price": 99000,
               "image": "goods_images/20/511/2030160511L.jpg?timestamp=20261117104025",
-              "link": "https://display.cjonstyle.com/p/item/2030160511?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2030160511?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3365,7 +3494,8 @@
               "name": "매뉴팩처락 사각평접시 화이트 1P",
               "price": 84700,
               "image": "goods_images/20/145/2029317145L.jpg?timestamp=20240319135728",
-              "link": "https://display.cjonstyle.com/p/item/2029317145?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2029317145?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3373,7 +3503,8 @@
               "name": "보스톤 인디비쥬얼볼 컬러5종 (1P선택형)",
               "price": 44850,
               "image": "goods_images/20/002/2033352002L.jpg?timestamp=20240529100314",
-              "link": "https://display.cjonstyle.com/p/item/2033352002?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2033352002?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3381,7 +3512,8 @@
               "name": "돌체구스토 커피머신 지니오 베이직S 그라파이트+스타벅스캡슐1박스+스타벅스블랙머그컵",
               "price": 99000,
               "image": "goods_images/20/754/2083062754L.jpg?timestamp=20261124083846",
-              "link": "https://display.cjonstyle.com/p/item/2083062754?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2083062754?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3389,7 +3521,8 @@
               "name": "매뉴팩처락 딥볼3p",
               "price": 141000,
               "image": "goods_images/20/660/2069146660L.jpg?timestamp=20250917143825",
-              "link": "https://display.cjonstyle.com/p/item/2069146660?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2069146660?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3397,7 +3530,8 @@
               "name": "돌체구스토 네오 카페 캡슐 커피머신",
               "price": 148000,
               "image": "goods_images/20/438/2084411438L.jpg?timestamp=20260918164605",
-              "link": "https://display.cjonstyle.com/p/item/2084411438?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2084411438?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3405,7 +3539,8 @@
               "name": "보스톤 디저트 3P세트 (와인고블렛 2P+샐러드접시 1P)",
               "price": 94900,
               "image": "goods_images/20/050/2066897050L.jpg?timestamp=20250829113623",
-              "link": "https://display.cjonstyle.com/p/item/2066897050?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2066897050?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3413,7 +3548,8 @@
               "name": "매뉴팩처락 밥공기4p",
               "price": 256000,
               "image": "goods_images/20/325/2069141325L.jpg?timestamp=20250917132828",
-              "link": "https://display.cjonstyle.com/p/item/2069141325?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2069141325?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3421,7 +3557,8 @@
               "name": "매뉴팩처락 국공기4p",
               "price": 288000,
               "image": "goods_images/20/459/2069141459L.jpg?timestamp=20250917133510",
-              "link": "https://display.cjonstyle.com/p/item/2069141459?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2069141459?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3429,7 +3566,8 @@
               "name": "리나스 디저트나이프 (1P 선택형)",
               "price": 30800,
               "image": "goods_images/20/532/2029430532L.jpg?timestamp=20240522141057",
-              "link": "https://display.cjonstyle.com/p/item/2029430532?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2029430532?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3437,7 +3575,8 @@
               "name": "[공동구매] 매뉴팩처락 인디비쥬얼볼 13cm",
               "price": 30250,
               "image": "goods_images/20/227/2098372227L.jpg?timestamp=20261117165531",
-              "link": "https://display.cjonstyle.com/p/item/2098372227?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2098372227?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3445,7 +3584,8 @@
               "name": "리나스 디저트포크 (1P 선택형)",
               "price": 29400,
               "image": "goods_images/20/242/2029430242L.jpg?timestamp=20240522141313",
-              "link": "https://display.cjonstyle.com/p/item/2029430242?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2029430242?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3453,7 +3593,8 @@
               "name": "[공동구매] 매뉴팩처락 샐러드볼(깊은접시) 블랙 1P",
               "price": 44000,
               "image": "goods_images/20/679/2098372679L.jpg?timestamp=20261117165605",
-              "link": "https://display.cjonstyle.com/p/item/2098372679?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2098372679?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3461,7 +3602,8 @@
               "name": "옥스포드 톱날스프레더 (1P 선택형)",
               "price": 47600,
               "image": "goods_images/20/195/2025095195L.jpg?timestamp=20240522165419",
-              "link": "https://display.cjonstyle.com/p/item/2025095195?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2025095195?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3469,7 +3611,8 @@
               "name": "리나스 디저트스푼 (1P 선택형)",
               "price": 29400,
               "image": "goods_images/20/429/2029430429L.jpg?timestamp=20240522141100",
-              "link": "https://display.cjonstyle.com/p/item/2029430429?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2029430429?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3477,7 +3620,8 @@
               "name": "[공동구매] 매뉴팩처락 샐러드볼(깊은접시) 화이트 1P",
               "price": 44000,
               "image": "goods_images/20/817/2098372817L.jpg?timestamp=20261117165657",
-              "link": "https://display.cjonstyle.com/p/item/2098372817?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2098372817?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3485,7 +3629,8 @@
               "name": "리나스 케익포크 (1P 선택형)",
               "price": 21700,
               "image": "goods_images/20/469/2029431469L.jpg?timestamp=20240522130909",
-              "link": "https://display.cjonstyle.com/p/item/2029431469?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2029431469?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3493,7 +3638,8 @@
               "name": "[공동구매] 매뉴팩처락 유니버셜 쿠페접시 블랙 1P",
               "price": 44000,
               "image": "goods_images/20/961/2098372961L.jpg?timestamp=20261117165730",
-              "link": "https://display.cjonstyle.com/p/item/2098372961?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2098372961?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3501,7 +3647,8 @@
               "name": "[공동구매] 매뉴팩처락 25CM 중접시 쿠페 화이트1P",
               "price": 44000,
               "image": "goods_images/20/042/2098373042L.jpg?timestamp=20261117165759",
-              "link": "https://display.cjonstyle.com/p/item/2098373042?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2098373042?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3509,7 +3656,8 @@
               "name": "알라딘 젓가락 (1P 선택형)",
               "price": 42700,
               "image": "goods_images/20/315/2024789315L.jpg?timestamp=20240522165358",
-              "link": "https://display.cjonstyle.com/p/item/2024789315?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2024789315?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3517,7 +3665,8 @@
               "name": "[공동구매] 매뉴팩처락 빵버터 15.5CM 소접시 블랙",
               "price": 35200,
               "image": "goods_images/20/093/2098373093L.jpg?timestamp=20261117165840",
-              "link": "https://display.cjonstyle.com/p/item/2098373093?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2098373093?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3525,7 +3674,8 @@
               "name": "[공동구매] 매뉴팩처락 빵버터 15.5CM 소접시 화이트",
               "price": 35200,
               "image": "goods_images/20/143/2098373143L.jpg?timestamp=20261117165916",
-              "link": "https://display.cjonstyle.com/p/item/2098373143?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2098373143?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3533,7 +3683,8 @@
               "name": "[공동구매] 매뉴팩처락 사각다용도접시 블랙 1P (2772)",
               "price": 50050,
               "image": "goods_images/20/248/2098373248L.jpg?timestamp=20261117170006",
-              "link": "https://display.cjonstyle.com/p/item/2098373248?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2098373248?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3541,7 +3692,8 @@
               "name": "옥스포드 디저트나이프 (1P 선택형)",
               "price": 29400,
               "image": "goods_images/20/229/2025095229L.jpg?timestamp=20240522164110",
-              "link": "https://display.cjonstyle.com/p/item/2025095229?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2025095229?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3549,7 +3701,8 @@
               "name": "[공동구매] 매뉴팩처락 사각평접시 블랙 1P",
               "price": 66550,
               "image": "goods_images/20/363/2098373363L.jpg?timestamp=20261117170040",
-              "link": "https://display.cjonstyle.com/p/item/2098373363?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2098373363?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3557,7 +3710,8 @@
               "name": "[공동구매] 매뉴팩처락 사각평접시 화이트 1P",
               "price": 66550,
               "image": "goods_images/20/461/2098373461L.jpg?timestamp=20261117170109",
-              "link": "https://display.cjonstyle.com/p/item/2098373461?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2098373461?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3565,7 +3719,8 @@
               "name": "보스톤 인디비주얼볼 화이트 1P",
               "price": 37700,
               "image": "goods_images/20/005/2033352005L.jpg?timestamp=20240528150123",
-              "link": "https://display.cjonstyle.com/p/item/2033352005?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2033352005?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3573,7 +3728,8 @@
               "name": "[공동구매] 매뉴팩처락 딥볼3p",
               "price": 77550,
               "image": "goods_images/20/507/2098373507L.jpg?timestamp=20261117170141",
-              "link": "https://display.cjonstyle.com/p/item/2098373507?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2098373507?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3581,7 +3737,8 @@
               "name": "[공동구매] 매뉴팩처락 밥공기4p",
               "price": 140800,
               "image": "goods_images/20/528/2098373528L.jpg?timestamp=20261117170211",
-              "link": "https://display.cjonstyle.com/p/item/2098373528?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2098373528?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3589,7 +3746,8 @@
               "name": "[공동구매] 매뉴팩처락 국공기4p",
               "price": 158400,
               "image": "goods_images/20/695/2098373695L.jpg?timestamp=20261117170252",
-              "link": "https://display.cjonstyle.com/p/item/2098373695?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2098373695?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3597,7 +3755,8 @@
               "name": "[공동구매] 리나스 한식숟가락 (1P 선택형)",
               "price": 23100,
               "image": "goods_images/20/027/2098374027L.jpg?timestamp=20261117170723",
-              "link": "https://display.cjonstyle.com/p/item/2098374027?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2098374027?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3605,7 +3764,8 @@
               "name": "[공동구매] 리나스 디저트나이프 (1P 선택형)",
               "price": 24200,
               "image": "goods_images/20/216/2098374216L.jpg?timestamp=20261117171148",
-              "link": "https://display.cjonstyle.com/p/item/2098374216?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2098374216?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3613,7 +3773,8 @@
               "name": "[공동구매] 리나스 디저트포크 (1P 선택형)",
               "price": 23100,
               "image": "goods_images/20/346/2098374346L.jpg?timestamp=20261117171546",
-              "link": "https://display.cjonstyle.com/p/item/2098374346?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2098374346?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3621,7 +3782,8 @@
               "name": "뉴문글라스 화이트와인고블렛 4P세트",
               "price": 113400,
               "image": "goods_images/20/660/2033048660L.jpg?timestamp=20240523145402",
-              "link": "https://display.cjonstyle.com/p/item/2033048660?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2033048660?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3629,7 +3791,8 @@
               "name": "[공동구매] 리나스 디저트스푼 (1P 선택형)",
               "price": 23100,
               "image": "goods_images/20/420/2098374420L.jpg?timestamp=20261117171902",
-              "link": "https://display.cjonstyle.com/p/item/2098374420?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2098374420?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3637,7 +3800,8 @@
               "name": "알라딘 한식숟가락 1P (색상모음)",
               "price": 28700,
               "image": "goods_images/20/313/2024789313L.jpg?timestamp=20240522165131",
-              "link": "https://display.cjonstyle.com/p/item/2024789313?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2024789313?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3645,7 +3809,8 @@
               "name": "[공동구매] 리나스 케익포크 (1P 선택형)",
               "price": 17050,
               "image": "goods_images/20/598/2098374598L.jpg?timestamp=20261117172251",
-              "link": "https://display.cjonstyle.com/p/item/2098374598?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2098374598?channelCode=30002002",
+              "verify": true
             },
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3653,7 +3818,8 @@
               "name": "[공동구매] 리나스 커피스푼 (1P 선택형)",
               "price": 17050,
               "image": "goods_images/20/705/2098374705L.jpg?timestamp=20261117172633",
-              "link": "https://display.cjonstyle.com/p/item/2098374705?channelCode=30002002"
+              "link": "https://display.cjonstyle.com/p/item/2098374705?channelCode=30002002",
+              "verify": true
             }
           ]
         },
@@ -4032,7 +4198,7 @@
         {
           "date": "2026-11-25",
           "label": "11/25(수) 20:45 방송",
-          "collected_at": "2026-11-24T10:15:27.277152+09:00",
+          "collected_at": "2026-11-24T20:16:37.437475+09:00",
           "products": [
             {
               "broadcast_date_label": "11/25(수) 20:45",
@@ -4931,7 +5097,7 @@
         {
           "date": "2026-11-30",
           "label": "11/30(월) 20:00 방송",
-          "collected_at": "2026-11-24T10:15:27.277152+09:00",
+          "collected_at": "2026-11-24T20:16:37.437475+09:00",
           "products": [
             {
               "broadcast_date_label": "11/30(월) 20:00",
@@ -6400,14 +6566,14 @@
         {
           "date": "2026-11-28",
           "label": "11/28(토) 08:20 방송",
-          "collected_at": "2026-11-24T10:15:27.277152+09:00",
+          "collected_at": "2026-11-24T20:16:37.437475+09:00",
           "products": [
             {
               "broadcast_date_label": "11/28(토) 08:20",
               "brand": "로얄코펜하겐",
               "name": "크리스마스 스타 플루디드 디너 파티세트",
               "price": 559000,
-              "image": "https://image.cjonstyle.net/goods_images/20/239/2097485239L.jpg?timestamp=20261124101338",
+              "image": "https://image.cjonstyle.net/goods_images/20/239/2097485239L.jpg?timestamp=20261124201429",
               "link": "https://display.cjonstyle.com/p/item/2097485239"
             },
             {
@@ -6545,8 +6711,24 @@
         {
           "date": "2026-11-26",
           "label": "11/26(목) 20:45 방송",
-          "collected_at": "2026-11-24T10:15:27.277152+09:00",
+          "collected_at": "2026-11-24T20:16:37.437475+09:00",
           "products": [
+            {
+              "broadcast_date_label": "11/26(목) 20:45",
+              "brand": "곡물도감",
+              "name": "약콩 서리태 가득 콩물 두유 6박스",
+              "price": 129900,
+              "image": "https://image.cjonstyle.net/goods_images/20/728/2097746728L.jpg?timestamp=20261120150600",
+              "link": "https://display.cjonstyle.com/p/item/2097746728?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/26(목) 20:45",
+              "brand": "곡물도감",
+              "name": "약콩 서리태 가득 콩물 두유 3박스",
+              "price": 79900,
+              "image": "https://image.cjonstyle.net/goods_images/20/198/2097747198L.jpg?timestamp=20261120150615",
+              "link": "https://display.cjonstyle.com/p/item/2097747198?channelCode=30002002"
+            },
             {
               "broadcast_date_label": "11/26(목) 20:45",
               "brand": "셀렙샵에디션",
@@ -6573,34 +6755,10 @@
             },
             {
               "broadcast_date_label": "11/26(목) 20:45",
-              "brand": "곡물도감",
-              "name": "약콩 서리태 가득 콩물 두유 6박스",
-              "price": 129900,
-              "image": "https://image.cjonstyle.net/goods_images/20/728/2097746728L.jpg?timestamp=20261120150600",
-              "link": "https://display.cjonstyle.com/p/item/2097746728?channelCode=30002002"
-            },
-            {
-              "broadcast_date_label": "11/26(목) 20:45",
-              "brand": "곡물도감",
-              "name": "약콩 서리태 가득 콩물 두유 3박스",
-              "price": 79900,
-              "image": "https://image.cjonstyle.net/goods_images/20/198/2097747198L.jpg?timestamp=20261120150615",
-              "link": "https://display.cjonstyle.com/p/item/2097747198?channelCode=30002002"
-            },
-            {
-              "broadcast_date_label": "11/26(목) 20:45",
-              "brand": "셀렙샵에디션",
-              "name": "[디오브르by셀렙샵]26FW 레이스 자수 카라 2종",
-              "price": 39900,
-              "image": "https://image.cjonstyle.net/goods_images/20/368/2092264368L.jpg?timestamp=20260828094101",
-              "link": "https://display.cjonstyle.com/p/item/2092264368?channelCode=30002002"
-            },
-            {
-              "broadcast_date_label": "11/26(목) 20:45",
               "brand": "프라이(FRYE)",
               "name": "[미리주문10%]26FW 클래식 무스탕 숏 부츠",
               "price": 239000,
-              "image": "https://image.cjonstyle.net/goods_images/20/107/2098359107L.jpg?timestamp=20261118135307",
+              "image": "https://image.cjonstyle.net/goods_images/20/107/2098359107L.jpg?timestamp=20261124195321",
               "link": "https://display.cjonstyle.com/p/item/2098359107?channelCode=30002002"
             },
             {
@@ -6615,8 +6773,8 @@
             {
               "broadcast_date_label": "11/26(목) 20:45",
               "brand": "곡물도감",
-              "name": "곡물도감 말차 서리태 가득 콩물두유",
-              "price": 52900,
+              "name": "말차 서리태 가득 콩물두유",
+              "price": 28900,
               "image": "goods_images/20/232/2058024232L.jpg?timestamp=20250722113415",
               "link": "https://display.cjonstyle.com/p/item/2058024232?channelCode=30002002",
               "verify": true
@@ -6624,8 +6782,8 @@
             {
               "broadcast_date_label": "11/26(목) 20:45",
               "brand": "곡물도감",
-              "name": "곡물도감 식이섬유 가득 비움두유",
-              "price": 57900,
+              "name": "식이섬유 가득 비움두유",
+              "price": 31900,
               "image": "goods_images/20/282/2058111282L.jpg?timestamp=20250722113542",
               "link": "https://display.cjonstyle.com/p/item/2058111282?channelCode=30002002",
               "verify": true
@@ -6633,8 +6791,8 @@
             {
               "broadcast_date_label": "11/26(목) 20:45",
               "brand": "곡물도감",
-              "name": "곡물도감 카무트 귀리 가득 고칼슘두유",
-              "price": 55900,
+              "name": "카무트 귀리 가득 고칼슘두유",
+              "price": 30900,
               "image": "goods_images/20/852/2058112852L.jpg?timestamp=20250722113725",
               "link": "https://display.cjonstyle.com/p/item/2058112852?channelCode=30002002",
               "verify": true
@@ -7465,7 +7623,7 @@
         {
           "date": "2026-11-28",
           "label": "11/28(토) 10:20 방송",
-          "collected_at": "2026-11-24T10:15:27.277152+09:00",
+          "collected_at": "2026-11-24T20:16:37.437475+09:00",
           "products": [
             {
               "broadcast_date_label": "11/28(토) 10:20",
@@ -7477,27 +7635,11 @@
             },
             {
               "broadcast_date_label": "11/28(토) 10:20",
-              "brand": "지스튜디오",
-              "name": "26FW 하이넥 헝가리 구스 다운",
-              "price": 179000,
-              "image": "https://image.cjonstyle.net/goods_images/20/197/2090681197L.jpg?timestamp=20260904170159",
-              "link": "https://display.cjonstyle.com/p/item/2090681197?channelCode=30002002"
-            },
-            {
-              "broadcast_date_label": "11/28(토) 10:20",
               "brand": "애드아보아",
               "name": "26FW 브러쉬드 캐시미어울실크 홀가먼트 판초",
               "price": 119000,
               "image": "https://image.cjonstyle.net/goods_images/20/550/2093846550L.jpg?timestamp=20260923181121",
               "link": "https://display.cjonstyle.com/p/item/2093846550?channelCode=30002002"
-            },
-            {
-              "broadcast_date_label": "11/28(토) 10:20",
-              "brand": "지스튜디오",
-              "name": "소모사 캐시미어울100 와이드팬츠",
-              "price": 159000,
-              "image": "https://image.cjonstyle.net/goods_images/20/889/2061242889L.jpg?timestamp=20251031145747",
-              "link": "https://display.cjonstyle.com/p/item/2061242889?channelCode=30002002"
             },
             {
               "broadcast_date_label": "11/28(토) 10:20",
@@ -7517,6 +7659,134 @@
             },
             {
               "broadcast_date_label": "11/28(토) 10:20",
+              "brand": "애드아보아",
+              "name": "26FW 야크 울 블렌디드 부클 머플러",
+              "price": 139000,
+              "image": "https://image.cjonstyle.net/goods_images/20/846/2095446846L.jpg?timestamp=20261008153219",
+              "link": "https://display.cjonstyle.com/p/item/2095446846?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/28(토) 10:20",
+              "brand": "베라왕",
+              "name": "26FW 양모 퍼 블렌드 트리밍 사파리",
+              "price": 189000,
+              "image": "https://image.cjonstyle.net/goods_images/20/922/2096318922L.jpg?timestamp=20261109143153",
+              "link": "https://display.cjonstyle.com/p/item/2096318922?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/28(토) 10:20",
+              "brand": "베라왕",
+              "name": "26FW 렉싱턴 헝가리구스 다운",
+              "price": 189000,
+              "image": "https://image.cjonstyle.net/goods_images/20/776/2096007776L.jpg?timestamp=20261026132701",
+              "link": "https://display.cjonstyle.com/p/item/2096007776?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/28(토) 10:20",
+              "brand": "베라왕",
+              "name": "26FW 캐시미어울100 샬롯 터틀넥 풀오버",
+              "price": 89900,
+              "image": "https://image.cjonstyle.net/goods_images/20/989/2094034989L.jpg?timestamp=20261030152433",
+              "link": "https://display.cjonstyle.com/p/item/2094034989?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/28(토) 10:20",
+              "brand": "베라왕",
+              "name": "26FW 캐시미어100 맥시 케이프숄",
+              "price": 159000,
+              "image": "https://image.cjonstyle.net/goods_images/20/301/2093112301L.jpg?timestamp=20260915091554",
+              "link": "https://display.cjonstyle.com/p/item/2093112301?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/28(토) 10:20",
+              "brand": "더엣지",
+              "name": "26FW 플러피 퍼넬넥 롱점퍼",
+              "price": 99900,
+              "image": "https://image.cjonstyle.net/goods_images/20/945/2094484945L.jpg?timestamp=20261109150336",
+              "link": "https://display.cjonstyle.com/p/item/2094484945?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/28(토) 10:20",
+              "brand": "더엣지",
+              "name": "26FW 올데이코어 핑거홀 리브드 기모터틀티 4종",
+              "price": 79900,
+              "image": "https://image.cjonstyle.net/goods_images/20/481/2093196481L.jpg?timestamp=20260929083916",
+              "link": "https://display.cjonstyle.com/p/item/2093196481?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/28(토) 10:20",
+              "brand": "더엣지",
+              "name": "[앱3만원]26FW 울블렌디드 윈터 삭스 6종",
+              "price": 69900,
+              "image": "https://image.cjonstyle.net/goods_images/20/527/2093940527L.jpg?timestamp=20261023194810",
+              "link": "https://display.cjonstyle.com/p/item/2093940527?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/28(토) 10:20",
+              "brand": "에르헴",
+              "name": "26FW 캐시미어 100 루즈핏 투웨이넥 풀오버 1종",
+              "price": 139000,
+              "image": "https://image.cjonstyle.net/goods_images/20/172/2091379172L.jpg?timestamp=20260909160103",
+              "link": "https://display.cjonstyle.com/p/item/2091379172?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/28(토) 10:20",
+              "brand": "에르헴",
+              "name": "26FW 캐시미어 100 레이스 위빙 머플러 1종",
+              "price": 109000,
+              "image": "https://image.cjonstyle.net/goods_images/20/112/2095334112L.jpg?timestamp=20261016173332",
+              "link": "https://display.cjonstyle.com/p/item/2095334112?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/28(토) 10:20",
+              "brand": "에르헴",
+              "name": "26FW 캐시미어100 브러쉬 니트 자켓 1종",
+              "price": 399000,
+              "image": "https://image.cjonstyle.net/goods_images/20/993/2093349993L.jpg?timestamp=20261008143916",
+              "link": "https://display.cjonstyle.com/p/item/2093349993?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/28(토) 10:20",
+              "brand": "에르헴",
+              "name": "26FW 캐시미어 100 브러쉬 스트링 모자 1종",
+              "price": 99000,
+              "image": "https://image.cjonstyle.net/goods_images/20/890/2094157890L.jpg?timestamp=20261007133540",
+              "link": "https://display.cjonstyle.com/p/item/2094157890?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/28(토) 10:20",
+              "brand": "에르헴",
+              "name": "26FW 캐시미어 100 브이넥 루즈핏 가디건 남 1종",
+              "price": 249000,
+              "image": "https://image.cjonstyle.net/goods_images/20/082/2093347082L.jpg?timestamp=20260921160827",
+              "link": "https://display.cjonstyle.com/p/item/2093347082?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/28(토) 10:20",
+              "brand": "에르헴",
+              "name": "26FW 캐시미어울 스트라이프 와이드팬츠 1종",
+              "price": 149000,
+              "image": "https://image.cjonstyle.net/goods_images/20/734/2091238734L.jpg?timestamp=20260824115425",
+              "link": "https://display.cjonstyle.com/p/item/2091238734?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/28(토) 10:20",
+              "brand": "지스튜디오",
+              "name": "26FW 하이넥 헝가리 구스 다운",
+              "price": 179000,
+              "image": "https://image.cjonstyle.net/goods_images/20/197/2090681197L.jpg?timestamp=20260904170159",
+              "link": "https://display.cjonstyle.com/p/item/2090681197?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/28(토) 10:20",
+              "brand": "지스튜디오",
+              "name": "소모사 캐시미어울100 와이드팬츠",
+              "price": 159000,
+              "image": "https://image.cjonstyle.net/goods_images/20/889/2061242889L.jpg?timestamp=20251031145747",
+              "link": "https://display.cjonstyle.com/p/item/2061242889?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/28(토) 10:20",
               "brand": "지스튜디오",
               "name": "26FW 캐시미어블렌드 기모 자수풀오버",
               "price": 59900,
@@ -7533,27 +7803,11 @@
             },
             {
               "broadcast_date_label": "11/28(토) 10:20",
-              "brand": "애드아보아",
-              "name": "26FW 야크 울 블렌디드 부클 머플러",
-              "price": 139000,
-              "image": "https://image.cjonstyle.net/goods_images/20/846/2095446846L.jpg?timestamp=20261008153219",
-              "link": "https://display.cjonstyle.com/p/item/2095446846?channelCode=30002002"
-            },
-            {
-              "broadcast_date_label": "11/28(토) 10:20",
               "brand": "지스튜디오",
               "name": "26FW 캐시미어 스팽글 버튼 바라클라바",
               "price": 159000,
               "image": "https://image.cjonstyle.net/goods_images/20/085/2093668085L.jpg?timestamp=20261015104343",
               "link": "https://display.cjonstyle.com/p/item/2093668085?channelCode=30002002"
-            },
-            {
-              "broadcast_date_label": "11/28(토) 10:20",
-              "brand": "지스튜디오",
-              "name": "[미리주문 5%] 26FW 텍사스 태닝社 리버시블 무스탕 하프코트",
-              "price": 1290000,
-              "image": "https://image.cjonstyle.net/goods_images/20/929/2091188929L.jpg?timestamp=20261019161306",
-              "link": "https://display.cjonstyle.com/p/item/2091188929?channelCode=30002002"
             }
           ]
         },
@@ -8096,7 +8350,7 @@
         {
           "date": "2026-11-27",
           "label": "11/27(금) 19:35 방송",
-          "collected_at": "2026-11-24T10:15:27.277152+09:00",
+          "collected_at": "2026-11-24T20:16:37.437475+09:00",
           "products": [
             {
               "broadcast_date_label": "11/27(금) 19:35",
@@ -8105,6 +8359,14 @@
               "price": 1790000,
               "image": "https://image.cjonstyle.net/goods_images/20/528/2093199528L.jpg?timestamp=20261021165650",
               "link": "https://display.cjonstyle.com/p/item/2093199528?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/27(금) 19:35",
+              "brand": "보르고세시아",
+              "name": "26FW 카멜실크100 시그니처 더블 자켓",
+              "price": 249000,
+              "image": "https://image.cjonstyle.net/goods_images/20/499/2093224499L.jpg?timestamp=20260930105156",
+              "link": "https://display.cjonstyle.com/p/item/2093224499?channelCode=30002002"
             },
             {
               "broadcast_date_label": "11/27(금) 19:35",
@@ -8133,22 +8395,6 @@
             {
               "broadcast_date_label": "11/27(금) 19:35",
               "brand": "지스튜디오",
-              "name": "26FW 이태리 델프라토社 알파카 롱코트",
-              "price": 399000,
-              "image": "https://image.cjonstyle.net/goods_images/20/803/2090684803L.jpg?timestamp=20261014181911",
-              "link": "https://display.cjonstyle.com/p/item/2090684803?channelCode=30002002"
-            },
-            {
-              "broadcast_date_label": "11/27(금) 19:35",
-              "brand": "베라왕",
-              "name": "26FW 캐시미어100 홀가먼트 비쥬 가디건",
-              "price": 149000,
-              "image": "https://image.cjonstyle.net/goods_images/20/469/2093114469L.jpg?timestamp=20261117100609",
-              "link": "https://display.cjonstyle.com/p/item/2093114469?channelCode=30002002"
-            },
-            {
-              "broadcast_date_label": "11/27(금) 19:35",
-              "brand": "지스튜디오",
               "name": "26FW 캐시미어100 골지 니트",
               "price": 139000,
               "image": "https://image.cjonstyle.net/goods_images/20/816/2088725816L.jpg?timestamp=20260902122454",
@@ -8161,6 +8407,22 @@
               "price": 159000,
               "image": "https://image.cjonstyle.net/goods_images/20/492/2092231492L.jpg?timestamp=20260910172650",
               "link": "https://display.cjonstyle.com/p/item/2092231492?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/27(금) 19:35",
+              "brand": "지스튜디오",
+              "name": "26FW 이태리 델프라토社 알파카 롱코트",
+              "price": 399000,
+              "image": "https://image.cjonstyle.net/goods_images/20/803/2090684803L.jpg?timestamp=20261014181911",
+              "link": "https://display.cjonstyle.com/p/item/2090684803?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/27(금) 19:35",
+              "brand": "베라왕",
+              "name": "26FW 캐시미어100 홀가먼트 비쥬 가디건",
+              "price": 149000,
+              "image": "https://image.cjonstyle.net/goods_images/20/469/2093114469L.jpg?timestamp=20261117100609",
+              "link": "https://display.cjonstyle.com/p/item/2093114469?channelCode=30002002"
             },
             {
               "broadcast_date_label": "11/27(금) 19:35",
@@ -10663,7 +10925,7 @@
         {
           "date": "2026-11-26",
           "label": "11/26(목) 19:35 방송",
-          "collected_at": "2026-11-24T10:15:27.277152+09:00",
+          "collected_at": "2026-11-24T20:16:37.437475+09:00",
           "products": [
             {
               "broadcast_date_label": "11/26(목) 19:35",
@@ -10688,7 +10950,7 @@
               "brand": "르크루제",
               "name": "[투머치쇼] 대한민국 르크루제 물량 투머치쇼 독점! 무려 63% 할인율!",
               "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/676/2097279676L.jpg?timestamp=20261124101418",
+              "image": "https://image.cjonstyle.net/goods_images/20/676/2097279676L.jpg?timestamp=20261124201527",
               "link": "https://display.cjonstyle.com/p/item/2097279676",
               "segment_time": "20:40~"
             },
@@ -10731,81 +10993,81 @@
             {
               "broadcast_date_label": "11/26(목) 19:35",
               "brand": "르크루제",
-              "name": "홀리 스톤웨어 미니원형냄비 2P세트(빨강&화이트)",
+              "name": "[쇼핑백포함]홀리 스톤웨어 미니원형냄비 2P세트(빨강&화이트)",
               "price": 72590,
-              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/613/2097375613L.jpg?timestamp=20261104180453",
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/613/2097375613L.jpg?timestamp=20261124121157",
               "link": "https://display.cjonstyle.com/p/item/2097375613?channelCode=30002002",
               "segment_time": "20:40~"
             },
             {
               "broadcast_date_label": "11/26(목) 19:35",
               "brand": "르크루제",
-              "name": "홀리 머그컵 350ml 2P세트(빨강&화이트)",
+              "name": "[쇼핑백포함] 홀리 머그컵 350ml 2P세트(빨강&화이트)",
               "price": 65450,
-              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/593/2097375593L.jpg?timestamp=20261104180613",
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/593/2097375593L.jpg?timestamp=20261124131201",
               "link": "https://display.cjonstyle.com/p/item/2097375593?channelCode=30002002",
               "segment_time": "20:40~"
             },
             {
               "broadcast_date_label": "11/26(목) 19:35",
               "brand": "르크루제",
-              "name": "홀리 원형접시19cm 2P세트",
+              "name": "[쇼핑백포함] 홀리 원형접시19cm 2P세트",
               "price": 72590,
-              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/609/2097375609L.jpg?timestamp=20261104180527",
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/609/2097375609L.jpg?timestamp=20261124121230",
               "link": "https://display.cjonstyle.com/p/item/2097375609?channelCode=30002002",
               "segment_time": "20:40~"
             },
             {
               "broadcast_date_label": "11/26(목) 19:35",
               "brand": "르크루제",
-              "name": "스타 접시 20cm 2P세트(빨강&화이트)",
+              "name": "[쇼핑백포함] 스타 접시 20cm 2P세트(빨강&화이트)",
               "price": 85680,
-              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/600/2097375600L.jpg?timestamp=20261104180549",
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/600/2097375600L.jpg?timestamp=20261124131134",
               "link": "https://display.cjonstyle.com/p/item/2097375600?channelCode=30002002",
               "segment_time": "20:40~"
             },
             {
               "broadcast_date_label": "11/26(목) 19:35",
               "brand": "르크루제",
-              "name": "트리 스푼 레스트-뉘",
+              "name": "[쇼핑백포함] 트리 스푼 레스트-뉘",
               "price": 36210,
-              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/802/2097281802L.jpg?timestamp=20261103142058",
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/802/2097281802L.jpg?timestamp=20261124131321",
               "link": "https://display.cjonstyle.com/p/item/2097281802?channelCode=30002002",
               "segment_time": "20:40~"
             },
             {
               "broadcast_date_label": "11/26(목) 19:35",
               "brand": "르크루제",
-              "name": "[NEW/정가77,000원] 비스트로 보트400ml (색상선택)",
+              "name": "[쇼핑백포함] 비스트로 보트400ml (색상선택)",
               "price": 53550,
-              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/484/2088280484L.jpg?timestamp=20261103154642",
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/484/2088280484L.jpg?timestamp=20261124131406",
               "link": "https://display.cjonstyle.com/p/item/2088280484?channelCode=30002002",
               "segment_time": "20:40~"
             },
             {
               "broadcast_date_label": "11/26(목) 19:35",
               "brand": "르크루제",
-              "name": "직사각트레이 36cm-빨강",
+              "name": "[쇼핑백포함] 직사각트레이 36cm-빨강",
               "price": 93160,
-              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/710/2097281710L.jpg?timestamp=20261103141633",
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/710/2097281710L.jpg?timestamp=20261124131350",
               "link": "https://display.cjonstyle.com/p/item/2097281710?channelCode=30002002",
               "segment_time": "20:40~"
             },
             {
               "broadcast_date_label": "11/26(목) 19:35",
               "brand": "르크루제",
-              "name": "티팟 600ml-빨강",
+              "name": "[쇼핑백포함] 티팟 600ml-빨강",
               "price": 59250,
-              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/712/2097281712L.jpg?timestamp=20261103141637",
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/712/2097281712L.jpg?timestamp=20261124131334",
               "link": "https://display.cjonstyle.com/p/item/2097281712?channelCode=30002002",
               "segment_time": "20:40~"
             },
             {
               "broadcast_date_label": "11/26(목) 19:35",
               "brand": "르크루제",
-              "name": "버터디쉬(로즈쿼츠/화이트)",
+              "name": "[쇼핑백포함] 버터디쉬(로즈쿼츠/화이트)",
               "price": 53550,
-              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/148/2078247148L.jpg?timestamp=20261103154430",
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/148/2078247148L.jpg?timestamp=20261124131549",
               "link": "https://display.cjonstyle.com/p/item/2078247148?channelCode=30002002",
               "segment_time": "20:40~"
             },
@@ -10823,7 +11085,7 @@
               "brand": "르크루제",
               "name": "NEW 온더고 여행용머그컵 350ml (색상선택)",
               "price": 43950,
-              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/380/2094744380L.jpg?timestamp=20261105101424",
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/380/2094744380L.jpg?timestamp=20261124105747",
               "link": "https://display.cjonstyle.com/p/item/2094744380?channelCode=30002002",
               "segment_time": "20:40~"
             },
@@ -10841,7 +11103,7 @@
               "brand": "르크루제",
               "name": "온더고 텀블러 500ml (색상선택)",
               "price": 50150,
-              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/010/2069272010L.jpg?timestamp=20261105101104",
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/010/2069272010L.jpg?timestamp=20261124133305",
               "link": "https://display.cjonstyle.com/p/item/2069272010?channelCode=30002002",
               "segment_time": "20:40~"
             },
@@ -10859,7 +11121,7 @@
               "brand": "르크루제",
               "name": "온더고 샐러드박스 900ml (색상선택)",
               "price": 57380,
-              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/932/2086994932L.jpg?timestamp=20261105101212",
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/932/2086994932L.jpg?timestamp=20261124110759",
               "link": "https://display.cjonstyle.com/p/item/2086994932?channelCode=30002002",
               "segment_time": "20:40~"
             },
@@ -10895,7 +11157,7 @@
               "brand": "르크루제",
               "name": "ENSC 직사각에그팬18cm",
               "price": 85000,
-              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/343/2090734343L.jpg?timestamp=20260814092138",
+              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/343/2090734343L.jpg?timestamp=20261124111939",
               "link": "https://display.cjonstyle.com/p/item/2090734343?channelCode=30002002",
               "segment_time": "20:40~"
             },
@@ -11381,6 +11643,146 @@
               "price": 85200,
               "image": "goods_images/20/510/2091661510L.jpg?timestamp=20260928140806",
               "link": "https://display.cjonstyle.com/p/item/2091661510?channelCode=30002002",
+              "verify": true,
+              "segment_time": "19:35-20:45(70')"
+            },
+            {
+              "broadcast_date_label": "11/26(목) 19:35",
+              "brand": "올록담",
+              "name": "올리브 클렌즈 유산균 올리락토A 28포 8박스",
+              "price": 122300,
+              "image": "goods_images/20/444/2093940444L.jpg?timestamp=20261123154759",
+              "link": "https://display.cjonstyle.com/p/item/2093940444?channelCode=30002002",
+              "verify": true,
+              "segment_time": "19:35-20:45(70')"
+            },
+            {
+              "broadcast_date_label": "11/26(목) 19:35",
+              "brand": "올록담",
+              "name": "올리브 클렌즈 유산균 올리락토A 28포 5박스",
+              "price": 82600,
+              "image": "goods_images/20/327/2093940327L.jpg?timestamp=20261123154741",
+              "link": "https://display.cjonstyle.com/p/item/2093940327?channelCode=30002002",
+              "verify": true,
+              "segment_time": "19:35-20:45(70')"
+            },
+            {
+              "broadcast_date_label": "11/26(목) 19:35",
+              "brand": "올록담",
+              "name": "올리브 클렌즈 유산균 올리락토A 28포 3박스",
+              "price": 52400,
+              "image": "goods_images/20/114/2093940114L.jpg?timestamp=20261123154717",
+              "link": "https://display.cjonstyle.com/p/item/2093940114?channelCode=30002002",
+              "verify": true,
+              "segment_time": "19:35-20:45(70')"
+            },
+            {
+              "broadcast_date_label": "11/26(목) 19:35",
+              "brand": "올록담",
+              "name": "올리브 클렌즈 유산균 올리락토A 28포 2박스",
+              "price": 37400,
+              "image": "goods_images/20/112/2093933112L.jpg?timestamp=20261123154632",
+              "link": "https://display.cjonstyle.com/p/item/2093933112?channelCode=30002002",
+              "verify": true,
+              "segment_time": "19:35-20:45(70')"
+            },
+            {
+              "broadcast_date_label": "11/26(목) 19:35",
+              "brand": "올록담",
+              "name": "올리브 클렌즈 유산균 올리락토A 28포 1박스",
+              "price": 20900,
+              "image": "goods_images/20/361/2093939361L.jpg?timestamp=20261123154653",
+              "link": "https://display.cjonstyle.com/p/item/2093939361?channelCode=30002002",
+              "verify": true,
+              "segment_time": "19:35-20:45(70')"
+            },
+            {
+              "broadcast_date_label": "11/26(목) 19:35",
+              "brand": "올록담",
+              "name": "올리락토D 올리브오일 폴리페놀 유산균 28포 8박스",
+              "price": 350700,
+              "image": "goods_images/20/304/2093939304L.jpg?timestamp=20261023150055",
+              "link": "https://display.cjonstyle.com/p/item/2093939304?channelCode=30002002",
+              "verify": true,
+              "segment_time": "19:35-20:45(70')"
+            },
+            {
+              "broadcast_date_label": "11/26(목) 19:35",
+              "brand": "올록담",
+              "name": "올리락토D 올리브오일 폴리페놀 유산균 28포 5박스",
+              "price": 236000,
+              "image": "goods_images/20/764/2093938764L.jpg?timestamp=20261023150022",
+              "link": "https://display.cjonstyle.com/p/item/2093938764?channelCode=30002002",
+              "verify": true,
+              "segment_time": "19:35-20:45(70')"
+            },
+            {
+              "broadcast_date_label": "11/26(목) 19:35",
+              "brand": "올록담",
+              "name": "올리락토D 올리브오일 폴리페놀 유산균 28포 3박스",
+              "price": 152100,
+              "image": "goods_images/20/702/2093938702L.jpg?timestamp=20261023145959",
+              "link": "https://display.cjonstyle.com/p/item/2093938702?channelCode=30002002",
+              "verify": true,
+              "segment_time": "19:35-20:45(70')"
+            },
+            {
+              "broadcast_date_label": "11/26(목) 19:35",
+              "brand": "올록담",
+              "name": "올리락토D 올리브오일 폴리페놀 유산균 28포 2박스",
+              "price": 107000,
+              "image": "goods_images/20/041/2093934041L.jpg?timestamp=20261023145904",
+              "link": "https://display.cjonstyle.com/p/item/2093934041?channelCode=30002002",
+              "verify": true,
+              "segment_time": "19:35-20:45(70')"
+            },
+            {
+              "broadcast_date_label": "11/26(목) 19:35",
+              "brand": "올록담",
+              "name": "올리락토D 올리브오일 폴리페놀 유산균 28포 1박스",
+              "price": 61400,
+              "image": "goods_images/20/310/2093938310L.jpg?timestamp=20261023145939",
+              "link": "https://display.cjonstyle.com/p/item/2093938310?channelCode=30002002",
+              "verify": true,
+              "segment_time": "19:35-20:45(70')"
+            },
+            {
+              "broadcast_date_label": "11/26(목) 19:35",
+              "brand": "올록담",
+              "name": "올레CD 올리브잎 알파CD QDT 츄어블 정제 루틴 28포 1박스",
+              "price": 36200,
+              "image": "goods_images/20/426/2094007426L.jpg?timestamp=20261109164027",
+              "link": "https://display.cjonstyle.com/p/item/2094007426?channelCode=30002002",
+              "verify": true,
+              "segment_time": "19:35-20:45(70')"
+            },
+            {
+              "broadcast_date_label": "11/26(목) 19:35",
+              "brand": "올록담",
+              "name": "올레CD 올리브잎 알파CD QDT 츄어블 정제 루틴 28포 2박스",
+              "price": 62400,
+              "image": "goods_images/20/589/2094007589L.jpg?timestamp=20261109164041",
+              "link": "https://display.cjonstyle.com/p/item/2094007589?channelCode=30002002",
+              "verify": true,
+              "segment_time": "19:35-20:45(70')"
+            },
+            {
+              "broadcast_date_label": "11/26(목) 19:35",
+              "brand": "올록담",
+              "name": "올레CD 올리브잎 알파CD QDT 츄어블 정제 루틴 28포 3박스",
+              "price": 83900,
+              "image": "goods_images/20/734/2094007734L.jpg?timestamp=20261109164055",
+              "link": "https://display.cjonstyle.com/p/item/2094007734?channelCode=30002002",
+              "verify": true,
+              "segment_time": "19:35-20:45(70')"
+            },
+            {
+              "broadcast_date_label": "11/26(목) 19:35",
+              "brand": "올록담",
+              "name": "올레CD 올리브잎 알파CD QDT 츄어블 정제 루틴 28포 5박스 + 지중해카드 (2포) 1개",
+              "price": 125100,
+              "image": "goods_images/20/814/2094007814L.jpg?timestamp=20261120174927",
+              "link": "https://display.cjonstyle.com/p/item/2094007814?channelCode=30002002",
               "verify": true,
               "segment_time": "19:35-20:45(70')"
             },
