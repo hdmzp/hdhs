@@ -153,6 +153,36 @@ DIRECT_LINK_TMPL = {
 }
 
 
+# 채널별 구매 링크로 인정하는 도메인. 상세페이지엔 hsmoa 광고(ad.hsmoa.com,
+# hsmoa-ad.web.app)뿐 아니라 제휴 광고(fitcl.ai 등, 2026-11-24 확인)도 계속 새로 붙어서,
+# 광고 주소를 막는 방식 대신 '그 상품 채널의 도메인'인 링크만 받는다.
+CHANNEL_DOMAINS = {
+    "hmall": ("hmall.com",),
+    "cjmall": ("cjonstyle.com", "cjmall.com"),
+    "gsshop": ("gsshop.com",),
+    "lotteimall": ("lotteimall.com",),
+    "bshop": ("skstoa.com",),
+    "hnsmall": ("hnsmall.com",),
+    "immall": ("gongyoungshop.kr", "immall.co.kr"),
+    "kshop": ("kshop.co.kr",),
+    "nsmall": ("nsmall.com",),
+    "shopnt": ("shoppingntmall.com",),
+    "ssgshop": ("shinsegaetvshopping.com",),
+    "wshop": ("w-shopping.co.kr",),
+}
+HOST_RE = re.compile(r'^https?://([^/?#:]+)', re.I)
+
+
+def is_channel_link(pdid: str, href: str) -> bool:
+    """href 가 pdid 채널의 쇼핑몰 도메인이면 True."""
+    m = HOST_RE.match(href or "")
+    if not m:
+        return False
+    host = m.group(1).lower()
+    domains = CHANNEL_DOMAINS.get((pdid or "").rpartition("_")[0], ())
+    return any(host == d or host.endswith("." + d) for d in domains)
+
+
 def is_ad_link(href: str) -> bool:
     return bool(href) and bool(AD_HOST_RE.match(href))
 
@@ -248,7 +278,7 @@ def fetch_outbound_link(pdid: str) -> str:
             if not m:
                 continue
             href = m.group(1)
-            if href.startswith("http") and not is_ad_link(href):
+            if is_channel_link(pdid, href):
                 return href.replace("&amp;", "&")
         return direct_link(pdid)  # 페이지에 구매 링크가 없으면 직접 만든 상품페이지
     except Exception as e:
