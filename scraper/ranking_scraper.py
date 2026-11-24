@@ -258,32 +258,55 @@ def fetch_ranking(category: str) -> list:
         return []
 
 
-def fetch_outbound_link(pdid: str) -> str:
-    """상품 상세페이지에서 '바로가기' 실제 구매 링크를 추출한다. 실패 시 빈 문자열.
+HSMOA_PRODUCT_URL_TMPL = "https://hsmoa.com/product/{pdid}"
+# hsmoa.com 상품페이지 안 JSON 의 "url":"..." 값 (\u0026 등 이스케이프 포함)
+JSON_URL_RE = re.compile(r'\\?"url\\?"\s*:\s*\\?"(https?:(?:[^"\\]|\\u[0-9a-fA-F]{4}|\\/)*)')
+IMAGE_URL_RE = re.compile(r'\.(?:jpe?g|png|gif|webp|svg)(?:[?#]|$)|^https?://(?:img|image|itemimage|cdn)[^/]*/', re.I)
+USERID_PARAM_RE = re.compile(r'[?&]hsmoa_userid=[^&]*')
 
-    상세페이지에는 target="_blank" 달린 <a> 태그가 여러 개 있다(진짜 구매
-    버튼 1개 + 하단 '관련상품' 카드 여러 개). 관련상품 카드는 href가
-    "/product/{다른pdid}" 같은 사이트 내부 상대경로이고, 진짜 구매 버튼만
-    실채널(cjmall/gsshop/...) 도메인의 절대 URL(http로 시작)이므로 이걸로
-    구분해서 첫 번째로 매치되는 절대 URL을 채택한다."""
-    url = PRODUCT_URL_TMPL.format(pdid=pdid)
-    try:
-        r = requests.get(url, headers=DETAIL_HEADERS, timeout=12)
-        if r.status_code != 200:
-            return ""
-        for attrs in TAG_RE.findall(r.text):
-            if 'target="_blank"' not in attrs:
+
+def _clean_link(href: str) -> str:
+    """이스케이프를 풀고, 접속자별 추적값(hsmoa_userid)을 뗀다."""
+    href = href.replace("\\u0026", "&").replace("\\/", "/").replace("&amp;", "&")
+    href = USERID_PARAM_RE.sub(lambda m: m.group(0)[0] if m.group(0)[0] == "?" else "", href)
+    return href.replace("?&", "?").rstrip("?&")
+
+
+def _pick_channel_link(pdid: str, candidates) -> str:
+    """후보 중 pdid 채널 쇼핑몰 도메인이면서 상품번호가 들어간 첫 링크."""
+    num = (pdid or "").rpartition("_")[2]
+    num_re = re.compile(r"(?<!\d)" + re.escape(num) + r"(?!\d)")
+    for href in candidates:
+        href = _clean_link(href)
+        if IMAGE_URL_RE.search(href):
+            continue  # 상품 이미지 URL (W쇼핑 img.w-shopping.co.kr/... 등)
+        if is_channel_link(pdid, href) and num_re.search(href):
+            return href
+    return ""
+
+
+def fetch_outbound_link(pdid: str) -> str:
+    """랭킹 상품의 실제 구매(쇼핑몰 상품페이지) 링크. 못 찾으면 빈 문자열.
+
+    2026-11 hsmoa 개편 이후 datahub 상세페이지(datahub.hsmoa.com/product/{pdid})에는
+    쇼핑몰 링크가 없고, '홈쇼핑모아에서 구매하기' 버튼이 hsmoa.com/product/{pdid} 로 간다.
+    그 페이지 내장 JSON 의 "url" 값들 중(관련상품 링크도 섞여 있음) 이 상품 채널 도메인이고
+    상품번호가 들어간 링크가 구매 링크다. 예전 구조 대비로 datahub 페이지도 먼저 본다.
+    광고(ad.hsmoa.com, hsmoa-ad.web.app, fitcl.ai ...)는 채널 도메인이 아니라 자연히 걸러진다."""
+    for tmpl, extract in (
+        (HSMOA_PRODUCT_URL_TMPL, lambda t: JSON_URL_RE.findall(t)),
+        (PRODUCT_URL_TMPL, lambda t: HREF_ATTR_RE.findall(t)),
+    ):
+        try:
+            r = requests.get(tmpl.format(pdid=pdid), headers=DETAIL_HEADERS, timeout=12)
+            if r.status_code != 200:
                 continue
-            m = HREF_ATTR_RE.search(attrs)
-            if not m:
-                continue
-            href = m.group(1)
-            if is_channel_link(pdid, href):
-                return href.replace("&amp;", "&")
-        return direct_link(pdid)  # 페이지에 구매 링크가 없으면 직접 만든 상품페이지
-    except Exception as e:
-        print(f"      [link] {pdid} 오류: {e}")
-        return direct_link(pdid)
+            link = _pick_channel_link(pdid, extract(r.text))
+            if link:
+                return link
+        except Exception as e:
+            print(f"      [link] {pdid} 오류: {e}")
+    return ""
 
 
 def load_previous_snapshot() -> dict:
@@ -362,17 +385,19 @@ def main():
 
     # 2단계: 바로가기 링크 enrichment (캐시 활용)
     link_cache = load_link_cache()
-    # 예전에 광고 링크로 잘못 저장된 상품은 링크 없이 둔다 (2026-11-24 사람 지정:
-    # 화면에서 클릭 안 되는 카드로 표시). 빈 문자열로 캐시돼 있어 다시 조회하지 않는다.
+    # 실제 페이지에서 찾은 구매 링크가 아닌 캐시는 지우고 다시 조회한다:
+    # 빈 값, 광고 링크(2026-11 hsmoa 광고 오수집), 채널 도메인이 아니거나 상품번호가 없는 링크,
+    # pdid로 만든 임시 상품페이지 링크(direct_link).
     for pdid, link in list(link_cache.items()):
-        if is_ad_link(link):
-            link_cache[pdid] = ""
+        if not link or link == direct_link(pdid) or not _pick_channel_link(pdid, [link]):
+            del link_cache[pdid]
     new_pdids = [p for p in sorted(all_pdids) if p not in link_cache]
     print(f"  [link] 전체 고유 상품 {len(all_pdids)}개 / 신규 조회 {len(new_pdids)}개")
 
     for i, pdid in enumerate(new_pdids, 1):
         link = fetch_outbound_link(pdid)
-        link_cache[pdid] = link
+        if link:
+            link_cache[pdid] = link   # 실제 페이지에서 찾은 링크만 캐시 (못 찾으면 다음 실행에 재시도)
         if i % 20 == 0:
             print(f"    ... {i}/{len(new_pdids)}")
         time.sleep(DETAIL_REQUEST_DELAY)
@@ -381,7 +406,8 @@ def main():
 
     for cat, items in categories_data.items():
         for it in items:
-            it["link"] = link_cache.get(it["pdid"], "")
+            # 페이지에서 구매 링크를 못 찾은 상품은 pdid로 만든 상품페이지 링크 (캐시 안 함)
+            it["link"] = link_cache.get(it["pdid"]) or direct_link(it["pdid"])
 
     apply_rank_change(categories_data, prev_lookup)
 
