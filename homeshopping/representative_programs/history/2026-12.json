@@ -1,6 +1,6 @@
 {
   "month": "2026-12",
-  "updated_at": "2026-11-25T22:16:58.875925+09:00",
+  "updated_at": "2026-11-26T05:37:28.956683+09:00",
   "programs": [
     {
       "program_key": "HD_WYE",
@@ -14,7 +14,7 @@
         {
           "date": "2026-12-05",
           "label": "12/05(토) 08:20 방송",
-          "collected_at": "2026-11-25T20:16:08.563358+09:00",
+          "collected_at": "2026-11-26T05:37:28.848640+09:00",
           "products": [
             {
               "broadcast_date_label": "12/05(토) 08:20 방송",
@@ -56,7 +56,7 @@
         {
           "date": "2026-12-02",
           "label": "12/02(수) 19:30 방송",
-          "collected_at": "2026-11-25T22:16:58.791192+09:00",
+          "collected_at": "2026-11-26T05:37:28.848640+09:00",
           "products": [
             {
               "broadcast_date_label": "12/02(수) 19:30 방송",
@@ -82,7 +82,7 @@
         {
           "date": "2026-12-03",
           "label": "12/03(목) 20:45 방송",
-          "collected_at": "2026-11-25T22:16:58.791192+09:00",
+          "collected_at": "2026-11-26T05:37:28.848640+09:00",
           "products": [
             {
               "prd_id": "1140260953",
@@ -127,53 +127,8 @@
         {
           "date": "2026-12-04",
           "label": "12/04(금) 20:35 방송",
-          "collected_at": "2026-11-25T22:16:58.791192+09:00",
+          "collected_at": "2026-11-26T05:37:28.848640+09:00",
           "products": [
-            {
-              "prd_id": "1046716715",
-              "broadcast_date_label": "12월 4일(금) 20:35 방송",
-              "broadcast_iso": "2026-12-04T20:35:00",
-              "brand": "막스마라",
-              "name": "[막스마라] 레지나 버진울 코트",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1046716715"
-            },
-            {
-              "prd_id": "1140986079",
-              "broadcast_date_label": "12월 4일(금) 20:35 방송",
-              "broadcast_iso": "2026-12-04T20:35:00",
-              "brand": "막스마라",
-              "name": "[막스마라] NITRA 니트라 스웨터",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1140986079"
-            },
-            {
-              "prd_id": "1071112598",
-              "broadcast_date_label": "12월 4일(금) 20:35 방송",
-              "broadcast_iso": "2026-12-04T20:35:00",
-              "brand": "버버리",
-              "name": "버버리 WITLEY 후드 다운 여성 롱 패딩 점퍼",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1071112598"
-            },
-            {
-              "prd_id": "1141411290",
-              "broadcast_date_label": "12월 4일(금) 20:35 방송",
-              "broadcast_iso": "2026-12-04T20:35:00",
-              "brand": "구찌",
-              "name": "구찌 울실크 머플러",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1141411290"
-            },
-            {
-              "prd_id": "1102810791",
-              "broadcast_date_label": "12월 4일(금) 20:35 방송",
-              "broadcast_iso": "2026-12-04T20:35:00",
-              "brand": "펜디",
-              "name": "펜디 FF 울머플러 JUQ017 ALQU F0QT2",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1102810791"
-            },
             {
               "prd_id": "1141398411",
               "broadcast_date_label": "12월 4일(금) 20:35 방송",
@@ -263,6 +218,51 @@
               "name": "널담 고식이섬유 휘낭시에 총 16개(8가지 맛*2박스)",
               "price": null,
               "link": "https://m.gsshop.com/prd/prd.gs?prdid=1141378637"
+            },
+            {
+              "prd_id": "1046716715",
+              "broadcast_date_label": "12월 4일(금) 20:35 방송",
+              "broadcast_iso": "2026-12-04T20:35:00",
+              "brand": "막스마라",
+              "name": "[막스마라] 레지나 버진울 코트",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1046716715"
+            },
+            {
+              "prd_id": "1140986079",
+              "broadcast_date_label": "12월 4일(금) 20:35 방송",
+              "broadcast_iso": "2026-12-04T20:35:00",
+              "brand": "막스마라",
+              "name": "[막스마라] NITRA 니트라 스웨터",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1140986079"
+            },
+            {
+              "prd_id": "1071112598",
+              "broadcast_date_label": "12월 4일(금) 20:35 방송",
+              "broadcast_iso": "2026-12-04T20:35:00",
+              "brand": "버버리",
+              "name": "버버리 WITLEY 후드 다운 여성 롱 패딩 점퍼",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1071112598"
+            },
+            {
+              "prd_id": "1141411290",
+              "broadcast_date_label": "12월 4일(금) 20:35 방송",
+              "broadcast_iso": "2026-12-04T20:35:00",
+              "brand": "구찌",
+              "name": "구찌 울실크 머플러",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1141411290"
+            },
+            {
+              "prd_id": "1102810791",
+              "broadcast_date_label": "12월 4일(금) 20:35 방송",
+              "broadcast_iso": "2026-12-04T20:35:00",
+              "brand": "펜디",
+              "name": "펜디 FF 울머플러 JUQ017 ALQU F0QT2",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1102810791"
             }
           ]
         }
@@ -280,7 +280,7 @@
         {
           "date": "2026-12-05",
           "label": "12/05(토) 08:20 방송",
-          "collected_at": "2026-11-25T22:16:58.791192+09:00",
+          "collected_at": "2026-11-26T05:37:28.848640+09:00",
           "products": [
             {
               "broadcast_date_label": "12/05 토요일 08:20",
@@ -295,7 +295,7 @@
         {
           "date": "2026-12-03",
           "label": "12/03(목) 20:45 방송",
-          "collected_at": "2026-11-25T22:16:58.791192+09:00",
+          "collected_at": "2026-11-26T05:37:28.848640+09:00",
           "products": [
             {
               "broadcast_date_label": "12/03 목요일 20:45",
@@ -355,22 +355,22 @@
         {
           "date": "2026-12-02",
           "label": "12/02(수) 20:45 방송",
-          "collected_at": "2026-11-25T22:16:58.791192+09:00",
+          "collected_at": "2026-11-26T05:37:28.848640+09:00",
           "products": [
             {
               "broadcast_date_label": "12/02(수) 20:45",
               "brand": "르크루제",
               "name": "[올해마지막][최화정쇼]주물냄비+스톤웨어 연말특집 풀패키지",
-              "price": 699000,
-              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/011/2098304011L.jpg?timestamp=20261123132543",
+              "price": 729000,
+              "image": "https://image.cjonstyle.net/goods_images/20/011/2098304011L.jpg?timestamp=20261123132543",
               "link": "https://display.cjonstyle.com/p/item/2098304011?channelCode=30002002"
             },
             {
               "broadcast_date_label": "12/02(수) 20:45",
               "brand": "르크루제",
               "name": "[쇼핑백포함]U머그(소)-빨강&머랭",
-              "price": 59500,
-              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/862/2098295862L.jpg?timestamp=20261120114212",
+              "price": 70000,
+              "image": "https://image.cjonstyle.net/goods_images/20/862/2098295862L.jpg?timestamp=20261120114212",
               "link": "https://display.cjonstyle.com/p/item/2098295862?channelCode=30002002"
             },
             {
@@ -378,7 +378,7 @@
               "brand": "베리솔",
               "name": "[당류 0%] 베리솔 더 콜라겐 구미 제로 42주분",
               "price": 398000,
-              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/679/2038797679L.jpg?timestamp=20240828145023",
+              "image": "https://image.cjonstyle.net/goods_images/20/679/2038797679L.jpg?timestamp=20240828145023",
               "link": "https://display.cjonstyle.com/p/item/2038797679?channelCode=30002002"
             },
             {
@@ -874,7 +874,7 @@
         {
           "date": "2026-12-01",
           "label": "12/01(화) 19:35 방송",
-          "collected_at": "2026-11-25T22:16:58.791192+09:00",
+          "collected_at": "2026-11-26T05:37:28.848640+09:00",
           "products": [
             {
               "broadcast_date_label": "12/01(화) 19:35",
@@ -950,7 +950,7 @@
         {
           "date": "2026-12-04",
           "label": "12/04(금) 22:45 방송",
-          "collected_at": "2026-11-25T22:16:58.791192+09:00",
+          "collected_at": "2026-11-26T05:37:28.848640+09:00",
           "products": [
             {
               "broadcast_date_label": "12/04(금) 22:45",
@@ -1002,14 +1002,14 @@
         {
           "date": "2026-12-19",
           "label": "12/19(토) 08:20 방송",
-          "collected_at": "2026-11-25T22:16:58.791192+09:00",
+          "collected_at": "2026-11-26T05:37:28.848640+09:00",
           "products": [
             {
               "broadcast_date_label": "12/19(토) 08:20",
               "brand": "오로라 뉴트라사이언스",
               "name": "[캐나다 직수입]리포조말 비타민C 5박스",
               "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/902/2087116902L.jpg?timestamp=20261125221524",
+              "image": "https://image.cjonstyle.net/goods_images/20/902/2087116902L.jpg?timestamp=20261126053326",
               "link": "https://display.cjonstyle.com/p/item/2087116902"
             }
           ]
@@ -1017,14 +1017,14 @@
         {
           "date": "2026-12-12",
           "label": "12/12(토) 08:20 방송",
-          "collected_at": "2026-11-25T22:16:58.791192+09:00",
+          "collected_at": "2026-11-26T05:37:28.848640+09:00",
           "products": [
             {
               "broadcast_date_label": "12/12(토) 08:20",
               "brand": "엠오이칼",
               "name": "(동가게pick)무설탕목캔디+베리샷 최초공개",
               "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/732/2055880732L.jpg?timestamp=20261125221524",
+              "image": "https://image.cjonstyle.net/goods_images/20/732/2055880732L.jpg?timestamp=20261126053326",
               "link": "https://display.cjonstyle.com/p/item/2055880732"
             }
           ]
@@ -1032,14 +1032,14 @@
         {
           "date": "2026-12-05",
           "label": "12/05(토) 08:20 방송",
-          "collected_at": "2026-11-25T22:16:58.791192+09:00",
+          "collected_at": "2026-11-26T05:37:28.848640+09:00",
           "products": [
             {
               "broadcast_date_label": "12/05(토) 08:20",
               "brand": "체코기",
               "name": "목초유 유기농 기버터 180g*3병+퓨어 기버터180g*3병(총6병)",
               "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/755/2098434755L.jpg?timestamp=20261125221524",
+              "image": "https://image.cjonstyle.net/goods_images/20/755/2098434755L.jpg?timestamp=20261126053326",
               "link": "https://display.cjonstyle.com/p/item/2098434755"
             }
           ]
@@ -1047,14 +1047,14 @@
         {
           "date": "2026-12-03",
           "label": "12/03(목) 20:45 방송",
-          "collected_at": "2026-11-25T22:16:58.791192+09:00",
+          "collected_at": "2026-11-26T05:37:28.848640+09:00",
           "products": [
             {
               "broadcast_date_label": "12/03(목) 20:45",
               "brand": "프라이(FRYE)",
               "name": "[리오더 입고] 26FW 워커 레이스업 부츠",
-              "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/835/2095808835L.jpg?timestamp=20261125221524",
+              "price": 199000,
+              "image": "https://image.cjonstyle.net/goods_images/20/835/2095808835L.jpg?timestamp=20261126053326",
               "link": "https://display.cjonstyle.com/p/item/2095808835"
             },
             {
@@ -1080,6 +1080,24 @@
               "price": 79900,
               "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/366/2088364366L.jpg?timestamp=20260807170102",
               "link": "https://display.cjonstyle.com/p/item/2088364366?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "12/03(목) 20:45",
+              "brand": "셀렙샵에디션",
+              "name": "[최초가199,000원]26FW 캐시미어100 브러쉬드 가디건",
+              "price": 159000,
+              "image": "goods_images/20/133/2091069133L.jpg?timestamp=20260922180705",
+              "link": "https://display.cjonstyle.com/p/item/2091069133?channelCode=30002002",
+              "verify": true
+            },
+            {
+              "broadcast_date_label": "12/03(목) 20:45",
+              "brand": "셀렙샵에디션",
+              "name": "[최초가129,000원]26FW 소모 캐시미어100 숄머플러",
+              "price": 99000,
+              "image": "goods_images/20/455/2089799455L.jpg?timestamp=20261013090516",
+              "link": "https://display.cjonstyle.com/p/item/2089799455?channelCode=30002002",
+              "verify": true
             }
           ]
         }
@@ -1097,14 +1115,14 @@
         {
           "date": "2026-12-05",
           "label": "12/05(토) 10:20 방송",
-          "collected_at": "2026-11-25T22:16:58.791192+09:00",
+          "collected_at": "2026-11-26T05:37:28.848640+09:00",
           "products": [
             {
               "broadcast_date_label": "12/05(토) 10:20",
               "brand": "바니스뉴욕",
               "name": "26FW 이태리 레더 스퀘어백",
               "price": null,
-              "image": "https://image.cjonstyle.net/goods_images/20/425/2091042425L.jpg?timestamp=20261125221526",
+              "image": "https://image.cjonstyle.net/goods_images/20/425/2091042425L.jpg?timestamp=20261126053419",
               "link": "https://display.cjonstyle.com/p/item/2091042425"
             },
             {
