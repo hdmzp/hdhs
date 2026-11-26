@@ -1,6 +1,6 @@
 {
   "month": "2026-11",
-  "updated_at": "2026-11-26T20:16:48.674051+09:00",
+  "updated_at": "2026-11-26T22:16:20.684486+09:00",
   "programs": [
     {
       "program_key": "HD_HJM",
@@ -14,7 +14,7 @@
         {
           "date": "2026-11-30",
           "label": "11/30(월) 19:30 방송",
-          "collected_at": "2026-11-26T20:16:48.631349+09:00",
+          "collected_at": "2026-11-26T22:16:20.660367+09:00",
           "products": [
             {
               "broadcast_date_label": "11/30(월) 19:30 방송",
@@ -570,7 +570,7 @@
         {
           "date": "2026-11-28",
           "label": "11/28(토) 08:20 방송",
-          "collected_at": "2026-11-26T20:16:48.631349+09:00",
+          "collected_at": "2026-11-26T22:16:20.660367+09:00",
           "products": [
             {
               "broadcast_date_label": "11/28(토) 08:20 방송",
@@ -1738,8 +1738,26 @@
         {
           "date": "2026-11-27",
           "label": "11/27(금) 20:35 방송",
-          "collected_at": "2026-11-26T20:16:48.631349+09:00",
+          "collected_at": "2026-11-26T22:16:20.660367+09:00",
           "products": [
+            {
+              "prd_id": "1141417142",
+              "broadcast_date_label": "11월 27일(금) 20:35 방송",
+              "broadcast_iso": "2026-11-27T20:35:00",
+              "brand": "GS SHOP",
+              "name": "[소쇼 단독구성] 전설의 패치 프리미엄 586매 [스포츠60매(대형30매+테이핑형30매)+준대형 240매+그립형 90매+소형 180매]+체험분준대형 16매",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1141417142"
+            },
+            {
+              "prd_id": "1104931683",
+              "broadcast_date_label": "11월 27일(금) 20:35 방송",
+              "broadcast_iso": "2026-11-27T20:35:00",
+              "brand": "라오메뜨",
+              "name": "라오메뜨 전설의 패치 프리미엄 준대형 (총 240매)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1104931683"
+            },
             {
               "prd_id": "1141665407",
               "broadcast_date_label": "11월 27일(금) 20:35 방송",
@@ -1829,24 +1847,6 @@
               "name": "비에날퀸 갱년기 다이어트 모유유래 유산균 12주(3개월)",
               "price": null,
               "link": "https://m.gsshop.com/prd/prd.gs?prdid=56289990"
-            },
-            {
-              "prd_id": "1141417142",
-              "broadcast_date_label": "11월 27일(금) 20:35 방송",
-              "broadcast_iso": "2026-11-27T20:35:00",
-              "brand": "GS SHOP",
-              "name": "[소쇼 단독구성] 전설의 패치 프리미엄 586매 [스포츠60매(대형30매+테이핑형30매)+준대형 240매+그립형 90매+소형 180매]+체험분준대형 16매",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1141417142"
-            },
-            {
-              "prd_id": "1104931683",
-              "broadcast_date_label": "11월 27일(금) 20:35 방송",
-              "broadcast_iso": "2026-11-27T20:35:00",
-              "brand": "라오메뜨",
-              "name": "라오메뜨 전설의 패치 프리미엄 준대형 (총 240매)",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1104931683"
             }
           ]
         },
@@ -2407,7 +2407,7 @@
         {
           "date": "2026-11-28",
           "label": "11/28(토) 08:20 방송",
-          "collected_at": "2026-11-26T20:16:48.631349+09:00",
+          "collected_at": "2026-11-26T22:16:20.660367+09:00",
           "products": [
             {
               "broadcast_date_label": "11/28 토요일 08:20",
@@ -3280,7 +3280,7 @@
         {
           "date": "2026-11-30",
           "label": "11/30(월) 19:35 방송",
-          "collected_at": "2026-11-26T20:16:48.631349+09:00",
+          "collected_at": "2026-11-26T22:16:20.660367+09:00",
           "products": [
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -6609,14 +6609,14 @@
         {
           "date": "2026-11-28",
           "label": "11/28(토) 08:20 방송",
-          "collected_at": "2026-11-26T20:16:48.631349+09:00",
+          "collected_at": "2026-11-26T22:16:20.660367+09:00",
           "products": [
             {
               "broadcast_date_label": "11/28(토) 08:20",
               "brand": "로얄코펜하겐",
               "name": "크리스마스 스타 플루디드 디너 파티세트",
               "price": 559000,
-              "image": "https://image.cjonstyle.net/goods_images/20/239/2097485239L.jpg?timestamp=20261126201426",
+              "image": "https://image.cjonstyle.net/goods_images/20/239/2097485239L.jpg?timestamp=20261126221424",
               "link": "https://display.cjonstyle.com/p/item/2097485239"
             },
             {
@@ -6916,12 +6916,12 @@
         {
           "date": "2026-11-26",
           "label": "11/26(목) 20:45 방송",
-          "collected_at": "2026-11-26T20:16:48.631349+09:00",
+          "collected_at": "2026-11-26T22:16:20.660367+09:00",
           "products": [
             {
               "broadcast_date_label": "11/26(목) 20:45",
               "brand": "셀렙샵에디션",
-              "name": "[미리주문10%]26FW FAUX 밍크 후드 롱코트",
+              "name": "26FW FAUX밍크 후드 롱코트",
               "price": 99000,
               "image": "https://image.cjonstyle.net/goods_images/20/745/2094670745L.jpg?timestamp=20261013131233",
               "link": "https://display.cjonstyle.com/p/item/2094670745?channelCode=30002002"
@@ -6929,7 +6929,7 @@
             {
               "broadcast_date_label": "11/26(목) 20:45",
               "brand": "셀렙샵에디션",
-              "name": "[미리주문10%]26FW 브러쉬드 FAUX폭스퍼 하프코트",
+              "name": "26FW 브러쉬드 FAUX폭스퍼 하프코트",
               "price": 99000,
               "image": "https://image.cjonstyle.net/goods_images/20/318/2095754318L.jpg?timestamp=20261023153719",
               "link": "https://display.cjonstyle.com/p/item/2095754318?channelCode=30002002"
@@ -6944,19 +6944,19 @@
             },
             {
               "broadcast_date_label": "11/26(목) 20:45",
-              "brand": "셀렙샵에디션",
-              "name": "[디오브르by셀렙샵]26FW 레이스 자수 카라 2종",
-              "price": 39900,
-              "image": "https://image.cjonstyle.net/goods_images/20/368/2092264368L.jpg?timestamp=20260828094101",
-              "link": "https://display.cjonstyle.com/p/item/2092264368?channelCode=30002002"
-            },
-            {
-              "broadcast_date_label": "11/26(목) 20:45",
               "brand": "프라이(FRYE)",
-              "name": "[미리주문10%]26FW 클래식 무스탕 숏 부츠",
+              "name": "26FW 클래식 무스탕 숏 부츠",
               "price": 239000,
               "image": "https://image.cjonstyle.net/goods_images/20/107/2098359107L.jpg?timestamp=20261126094024",
               "link": "https://display.cjonstyle.com/p/item/2098359107?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/26(목) 20:45",
+              "brand": "더엣지",
+              "name": "[최초가79,900원]26FW 울실크블렌드 터틀넥 니트 3종",
+              "price": 59900,
+              "image": "https://image.cjonstyle.net/goods_images/20/934/2089149934L.jpg?timestamp=20260807082617",
+              "link": "https://display.cjonstyle.com/p/item/2089149934?channelCode=30002002"
             },
             {
               "broadcast_date_label": "11/26(목) 20:45",
@@ -6973,6 +6973,23 @@
               "price": 89900,
               "image": "https://image.cjonstyle.net/goods_images/20/276/2095743276L.jpg?timestamp=20261013152232",
               "link": "https://display.cjonstyle.com/p/item/2095743276?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/26(목) 20:45",
+              "brand": "셀렙샵에디션",
+              "name": "[디오브르by셀렙샵]26FW 레이스 자수 카라 2종",
+              "price": 39900,
+              "image": "goods_images/20/368/2092264368L.jpg?timestamp=20260828094101",
+              "link": "https://display.cjonstyle.com/p/item/2092264368?channelCode=30002002"
+            }
+          ],
+          "reconciled_at": "2026-11-26T22:16:20.660367+09:00",
+          "revisions": [
+            {
+              "at": "2026-11-26T22:16:20.660367+09:00",
+              "added": [
+                "[최초가79,900원]26FW 울실크블렌드 터틀넥 니트 3종"
+              ]
             }
           ]
         },
@@ -7782,7 +7799,7 @@
         {
           "date": "2026-11-28",
           "label": "11/28(토) 10:20 방송",
-          "collected_at": "2026-11-26T20:16:48.631349+09:00",
+          "collected_at": "2026-11-26T22:16:20.660367+09:00",
           "products": [
             {
               "broadcast_date_label": "11/28(토) 10:20",
@@ -8501,7 +8518,7 @@
         {
           "date": "2026-11-27",
           "label": "11/27(금) 19:35 방송",
-          "collected_at": "2026-11-26T20:16:48.631349+09:00",
+          "collected_at": "2026-11-26T22:16:20.660367+09:00",
           "products": [
             {
               "broadcast_date_label": "11/27(금) 19:35",
