@@ -1,18 +1,12 @@
 {
-  "2026-11-25": {
-    "minTa": 4.0,
-    "maxTa": 7.0,
-    "pop_max": 20.0,
-    "source": "kma"
-  },
   "2026-11-26": {
-    "minTa": 5.0,
+    "minTa": 9.0,
     "maxTa": 16.0,
-    "pop_max": 20.0,
+    "pop_max": 0.0,
     "source": "kma"
   },
   "2026-11-27": {
-    "minTa": 8.0,
+    "minTa": 9.0,
     "maxTa": 16.0,
     "pop_max": 60.0,
     "source": "kma"
@@ -21,6 +15,12 @@
     "minTa": 3.0,
     "maxTa": 8.0,
     "pop_max": 30.0,
+    "source": "kma"
+  },
+  "2026-11-29": {
+    "minTa": -2.0,
+    "maxTa": 8.0,
+    "pop_max": 0.0,
     "source": "kma"
   }
 }
