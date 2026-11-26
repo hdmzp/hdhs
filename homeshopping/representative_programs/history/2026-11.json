@@ -1,20 +1,20 @@
 {
   "month": "2026-11",
-  "updated_at": "2026-11-26T22:16:20.684486+09:00",
+  "updated_at": "2026-11-27T05:41:00.917819+09:00",
   "programs": [
     {
       "program_key": "HD_HJM",
       "company": "HD",
       "tab_name": "황정민",
       "program_title": "황정민쇼",
-      "schedule_raw": "매주 월요일 19시 30분",
+      "schedule_raw": "",
       "detail_link": "https://www.hmall.com/md/dpa/pgmComm?sectId=3094173",
       "program_image": "",
       "broadcasts": [
         {
           "date": "2026-11-30",
           "label": "11/30(월) 19:30 방송",
-          "collected_at": "2026-11-26T22:16:20.660367+09:00",
+          "collected_at": "2026-11-27T05:41:00.874776+09:00",
           "products": [
             {
               "broadcast_date_label": "11/30(월) 19:30 방송",
@@ -563,14 +563,14 @@
       "company": "HD",
       "tab_name": "왕영은",
       "program_title": "왕영은의 톡투게더",
-      "schedule_raw": "매주 토요일 08시 20분",
+      "schedule_raw": "",
       "detail_link": "https://www.hmall.com/md/dpa/pgmComm?sectId=2683513",
       "program_image": "",
       "broadcasts": [
         {
           "date": "2026-11-28",
           "label": "11/28(토) 08:20 방송",
-          "collected_at": "2026-11-26T22:16:20.660367+09:00",
+          "collected_at": "2026-11-27T05:41:00.874776+09:00",
           "products": [
             {
               "broadcast_date_label": "11/28(토) 08:20 방송",
@@ -1738,26 +1738,8 @@
         {
           "date": "2026-11-27",
           "label": "11/27(금) 20:35 방송",
-          "collected_at": "2026-11-26T22:16:20.660367+09:00",
+          "collected_at": "2026-11-27T05:41:00.874776+09:00",
           "products": [
-            {
-              "prd_id": "1141417142",
-              "broadcast_date_label": "11월 27일(금) 20:35 방송",
-              "broadcast_iso": "2026-11-27T20:35:00",
-              "brand": "GS SHOP",
-              "name": "[소쇼 단독구성] 전설의 패치 프리미엄 586매 [스포츠60매(대형30매+테이핑형30매)+준대형 240매+그립형 90매+소형 180매]+체험분준대형 16매",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1141417142"
-            },
-            {
-              "prd_id": "1104931683",
-              "broadcast_date_label": "11월 27일(금) 20:35 방송",
-              "broadcast_iso": "2026-11-27T20:35:00",
-              "brand": "라오메뜨",
-              "name": "라오메뜨 전설의 패치 프리미엄 준대형 (총 240매)",
-              "price": null,
-              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1104931683"
-            },
             {
               "prd_id": "1141665407",
               "broadcast_date_label": "11월 27일(금) 20:35 방송",
@@ -1847,6 +1829,24 @@
               "name": "비에날퀸 갱년기 다이어트 모유유래 유산균 12주(3개월)",
               "price": null,
               "link": "https://m.gsshop.com/prd/prd.gs?prdid=56289990"
+            },
+            {
+              "prd_id": "1141417142",
+              "broadcast_date_label": "11월 27일(금) 20:35 방송",
+              "broadcast_iso": "2026-11-27T20:35:00",
+              "brand": "GS SHOP",
+              "name": "[소쇼 단독구성] 전설의 패치 프리미엄 586매 [스포츠60매(대형30매+테이핑형30매)+준대형 240매+그립형 90매+소형 180매]+체험분준대형 16매",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1141417142"
+            },
+            {
+              "prd_id": "1104931683",
+              "broadcast_date_label": "11월 27일(금) 20:35 방송",
+              "broadcast_iso": "2026-11-27T20:35:00",
+              "brand": "라오메뜨",
+              "name": "라오메뜨 전설의 패치 프리미엄 준대형 (총 240매)",
+              "price": null,
+              "link": "https://m.gsshop.com/prd/prd.gs?prdid=1104931683"
             }
           ]
         },
@@ -2407,7 +2407,7 @@
         {
           "date": "2026-11-28",
           "label": "11/28(토) 08:20 방송",
-          "collected_at": "2026-11-26T22:16:20.660367+09:00",
+          "collected_at": "2026-11-27T05:41:00.874776+09:00",
           "products": [
             {
               "broadcast_date_label": "11/28 토요일 08:20",
@@ -3280,7 +3280,7 @@
         {
           "date": "2026-11-30",
           "label": "11/30(월) 19:35 방송",
-          "collected_at": "2026-11-26T22:16:20.660367+09:00",
+          "collected_at": "2026-11-27T05:41:00.874776+09:00",
           "products": [
             {
               "broadcast_date_label": "11/30(월) 19:35",
@@ -3310,7 +3310,7 @@
               "broadcast_date_label": "11/30(월) 19:35",
               "brand": "빌레로이앤보흐",
               "name": "매뉴팩처락 사각다용도접시 블랙 1P (2772)",
-              "price": 63700,
+              "price": 54600,
               "image": "goods_images/20/607/2029315607L.jpg?timestamp=20240319134023",
               "link": "https://display.cjonstyle.com/p/item/2029315607?channelCode=30002002",
               "verify": true
@@ -3319,7 +3319,7 @@
               "broadcast_date_label": "11/30(월) 19:35",
               "brand": "빌레로이앤보흐",
               "name": "매뉴팩처락 구오메이접시 블랙 1P",
-              "price": 86100,
+              "price": 73800,
               "image": "goods_images/20/069/2029326069L.jpg?timestamp=20240319153210",
               "link": "https://display.cjonstyle.com/p/item/2029326069?channelCode=30002002",
               "verify": true
@@ -3328,7 +3328,7 @@
               "broadcast_date_label": "11/30(월) 19:35",
               "brand": "빌레로이앤보흐",
               "name": "아우든펌 찬기 2종 (1P선택형)",
-              "price": 75600,
+              "price": 64800,
               "image": "goods_images/20/660/2029424660L.jpg?timestamp=20240522162340",
               "link": "https://display.cjonstyle.com/p/item/2029424660?channelCode=30002002",
               "verify": true
@@ -3337,7 +3337,7 @@
               "broadcast_date_label": "11/30(월) 19:35",
               "brand": "빌레로이앤보흐",
               "name": "아우든 체이스 직사각접시 1P (2225)",
-              "price": 147000,
+              "price": 126000,
               "image": "goods_images/20/770/2029424770L.jpg?timestamp=20240321140655",
               "link": "https://display.cjonstyle.com/p/item/2029424770?channelCode=30002002",
               "verify": true
@@ -3346,7 +3346,7 @@
               "broadcast_date_label": "11/30(월) 19:35",
               "brand": "빌레로이앤보흐",
               "name": "아우든펌 피클접시20cm (3570)",
-              "price": 130900,
+              "price": 112200,
               "image": "goods_images/20/960/2032408960L.jpg?timestamp=20240509110556",
               "link": "https://display.cjonstyle.com/p/item/2032408960?channelCode=30002002",
               "verify": true
@@ -3355,7 +3355,7 @@
               "broadcast_date_label": "11/30(월) 19:35",
               "brand": "빌레로이앤보흐",
               "name": "매뉴팩처락 샴페인프루트 4P세트",
-              "price": 113400,
+              "price": 97200,
               "image": "goods_images/20/549/2032988549L.jpg?timestamp=20240522130334",
               "link": "https://display.cjonstyle.com/p/item/2032988549?channelCode=30002002",
               "verify": true
@@ -3364,7 +3364,7 @@
               "broadcast_date_label": "11/30(월) 19:35",
               "brand": "빌레로이앤보흐",
               "name": "매뉴팩처락 스페셜 2인조세트 (10P)",
-              "price": 442650,
+              "price": 374550,
               "image": "goods_images/20/223/2033272223L.jpg?timestamp=20250901105336",
               "link": "https://display.cjonstyle.com/p/item/2033272223?channelCode=30002002",
               "verify": true
@@ -3373,7 +3373,7 @@
               "broadcast_date_label": "11/30(월) 19:35",
               "brand": "빌레로이앤보흐",
               "name": "바피아노 샐러드볼 2P세트 (578411)",
-              "price": 66950,
+              "price": 58710,
               "image": "goods_images/20/122/2033338122L.jpg?timestamp=20240528114111",
               "link": "https://display.cjonstyle.com/p/item/2033338122?channelCode=30002002",
               "verify": true
@@ -3382,7 +3382,7 @@
               "broadcast_date_label": "11/30(월) 19:35",
               "brand": "빌레로이앤보흐",
               "name": "바피아노 파스타볼 2P세트 (578472)",
-              "price": 66950,
+              "price": 58710,
               "image": "goods_images/20/126/2033338126L.jpg?timestamp=20240528114111",
               "link": "https://display.cjonstyle.com/p/item/2033338126?channelCode=30002002",
               "verify": true
@@ -3391,7 +3391,7 @@
               "broadcast_date_label": "11/30(월) 19:35",
               "brand": "빌레로이앤보흐",
               "name": "바피아노 파스타접시 2P세트 (578476)",
-              "price": 66950,
+              "price": 58710,
               "image": "goods_images/20/149/2033338149L.jpg?timestamp=20240528114114",
               "link": "https://display.cjonstyle.com/p/item/2033338149?channelCode=30002002",
               "verify": true
@@ -3400,7 +3400,7 @@
               "broadcast_date_label": "11/30(월) 19:35",
               "brand": "빌레로이앤보흐",
               "name": "아우든 머그 4P세트",
-              "price": 234000,
+              "price": 198000,
               "image": "goods_images/20/718/2033543718L.jpg?timestamp=20240531100930",
               "link": "https://display.cjonstyle.com/p/item/2033543718?channelCode=30002002",
               "verify": true
@@ -3409,7 +3409,7 @@
               "broadcast_date_label": "11/30(월) 19:35",
               "brand": "빌레로이앤보흐",
               "name": "매뉴팩처락 파스타접시 화이트 1P",
-              "price": 67900,
+              "price": 58200,
               "image": "goods_images/20/645/2029258645L.jpg?timestamp=20240318151625",
               "link": "https://display.cjonstyle.com/p/item/2029258645?channelCode=30002002",
               "verify": true
@@ -3418,7 +3418,7 @@
               "broadcast_date_label": "11/30(월) 19:35",
               "brand": "빌레로이앤보흐",
               "name": "매뉴팩처락 25CM 중접시 쿠페 화이트1P",
-              "price": 56000,
+              "price": 48000,
               "image": "goods_images/20/652/2029258652L.jpg?timestamp=20240318151625",
               "link": "https://display.cjonstyle.com/p/item/2029258652?channelCode=30002002",
               "verify": true
@@ -3427,7 +3427,7 @@
               "broadcast_date_label": "11/30(월) 19:35",
               "brand": "빌레로이앤보흐",
               "name": "매뉴팩처락 파스타접시 블랙 1P",
-              "price": 67900,
+              "price": 58200,
               "image": "goods_images/20/660/2029258660L.jpg?timestamp=20240318151626",
               "link": "https://display.cjonstyle.com/p/item/2029258660?channelCode=30002002",
               "verify": true
@@ -3436,7 +3436,7 @@
               "broadcast_date_label": "11/30(월) 19:35",
               "brand": "빌레로이앤보흐",
               "name": "아우든 밥공기/국공기 (1P선택형)",
-              "price": 77000,
+              "price": 66000,
               "image": "goods_images/20/553/2029417553L.jpg?timestamp=20240614092531",
               "link": "https://display.cjonstyle.com/p/item/2029417553?channelCode=30002002",
               "verify": true
@@ -3445,7 +3445,7 @@
               "broadcast_date_label": "11/30(월) 19:35",
               "brand": "빌레로이앤보흐",
               "name": "아우든체이스 사각접시 4종 (1P선택형)",
-              "price": 93100,
+              "price": 79800,
               "image": "goods_images/20/933/2029426933L.jpg?timestamp=20240522162334",
               "link": "https://display.cjonstyle.com/p/item/2029426933?channelCode=30002002",
               "verify": true
@@ -3454,7 +3454,7 @@
               "broadcast_date_label": "11/30(월) 19:35",
               "brand": "빌레로이앤보흐",
               "name": "아우든 머그 4종 (1P선택형)",
-              "price": 63000,
+              "price": 51300,
               "image": "goods_images/20/028/2029427028L.jpg?timestamp=20240522162055",
               "link": "https://display.cjonstyle.com/p/item/2029427028?channelCode=30002002",
               "verify": true
@@ -3463,7 +3463,7 @@
               "broadcast_date_label": "11/30(월) 19:35",
               "brand": "빌레로이앤보흐",
               "name": "디자인나이프 사이드디쉬 3종 (1P선택형)",
-              "price": 67900,
+              "price": 58200,
               "image": "goods_images/20/772/2029464772L.jpg?timestamp=20240522161756",
               "link": "https://display.cjonstyle.com/p/item/2029464772?channelCode=30002002",
               "verify": true
@@ -3481,7 +3481,7 @@
               "broadcast_date_label": "11/30(월) 19:35",
               "brand": "빌레로이앤보흐",
               "name": "매뉴팩처락 레드와인고블렛 4P세트",
-              "price": 113400,
+              "price": 97200,
               "image": "goods_images/20/553/2032988553L.jpg?timestamp=20261104115353",
               "link": "https://display.cjonstyle.com/p/item/2032988553?channelCode=30002002",
               "verify": true
@@ -3490,7 +3490,7 @@
               "broadcast_date_label": "11/30(월) 19:35",
               "brand": "빌레로이앤보흐",
               "name": "디자인나이프 한식 2인세트 (12P)",
-              "price": 834600,
+              "price": 706200,
               "image": "goods_images/20/684/2034034684L.jpg?timestamp=20260907172523",
               "link": "https://display.cjonstyle.com/p/item/2034034684?channelCode=30002002",
               "verify": true
@@ -3499,7 +3499,7 @@
               "broadcast_date_label": "11/30(월) 19:35",
               "brand": "부가티",
               "name": "알라딘 한식기 2인조 선물세트(4p) (색상선택형)",
-              "price": 142800,
+              "price": 116280,
               "image": "goods_images/20/398/2034199398L.jpg?timestamp=20240614111511",
               "link": "https://display.cjonstyle.com/p/item/2034199398?channelCode=30002002",
               "verify": true
@@ -3508,7 +3508,7 @@
               "broadcast_date_label": "11/30(월) 19:35",
               "brand": "부가티",
               "name": "알라딘 디너 2인조 선물세트(6p) (색상선택형)",
-              "price": 156800,
+              "price": 127680,
               "image": "goods_images/20/425/2034199425L.jpg?timestamp=20240614111554",
               "link": "https://display.cjonstyle.com/p/item/2034199425?channelCode=30002002",
               "verify": true
@@ -3517,7 +3517,7 @@
               "broadcast_date_label": "11/30(월) 19:35",
               "brand": "빌레로이앤보흐",
               "name": "보스톤 와인고블렛 중 화이트 2P 선물세트",
-              "price": 61600,
+              "price": 57200,
               "image": "goods_images/20/580/2091237580L.jpg?timestamp=20260813105945",
               "link": "https://display.cjonstyle.com/p/item/2091237580?channelCode=30002002",
               "verify": true
@@ -3571,7 +3571,7 @@
               "broadcast_date_label": "11/30(월) 19:35",
               "brand": "빌레로이앤보흐",
               "name": "매뉴팩처락 샐러드볼(깊은접시) 블랙 1P",
-              "price": 56000,
+              "price": 48000,
               "image": "goods_images/20/848/2029255848L.jpg?timestamp=20240318141453",
               "link": "https://display.cjonstyle.com/p/item/2029255848?channelCode=30002002",
               "verify": true
@@ -3589,7 +3589,7 @@
               "broadcast_date_label": "11/30(월) 19:35",
               "brand": "빌레로이앤보흐",
               "name": "매뉴팩처락 샐러드볼(깊은접시) 화이트 1P",
-              "price": 56000,
+              "price": 48000,
               "image": "goods_images/20/856/2029255856L.jpg?timestamp=20240318141710",
               "link": "https://display.cjonstyle.com/p/item/2029255856?channelCode=30002002",
               "verify": true
@@ -3598,7 +3598,7 @@
               "broadcast_date_label": "11/30(월) 19:35",
               "brand": "빌레로이앤보흐",
               "name": "매뉴팩처락 유니버셜 쿠페접시 블랙 1P",
-              "price": 56000,
+              "price": 48000,
               "image": "goods_images/20/731/2029258731L.jpg?timestamp=20240318152131",
               "link": "https://display.cjonstyle.com/p/item/2029258731?channelCode=30002002",
               "verify": true
@@ -3652,7 +3652,7 @@
               "broadcast_date_label": "11/30(월) 19:35",
               "brand": "빌레로이앤보흐",
               "name": "토이딜라이트 평접시 29cm (택1)",
-              "price": 61600,
+              "price": 52800,
               "image": "goods_images/20/795/2096790795L.jpg?timestamp=20261027164719",
               "link": "https://display.cjonstyle.com/p/item/2096790795?channelCode=30002002",
               "verify": true
@@ -3724,7 +3724,7 @@
               "broadcast_date_label": "11/30(월) 19:35",
               "brand": "빌레로이앤보흐",
               "name": "보스톤 디저트 3P세트 (와인고블렛 2P+샐러드접시 1P)",
-              "price": 94900,
+              "price": 80300,
               "image": "goods_images/20/050/2066897050L.jpg?timestamp=20250829113623",
               "link": "https://display.cjonstyle.com/p/item/2066897050?channelCode=30002002",
               "verify": true
@@ -6609,46 +6609,46 @@
         {
           "date": "2026-11-28",
           "label": "11/28(토) 08:20 방송",
-          "collected_at": "2026-11-26T22:16:20.660367+09:00",
+          "collected_at": "2026-11-27T05:41:00.874776+09:00",
           "products": [
-            {
-              "broadcast_date_label": "11/28(토) 08:20",
-              "brand": "로얄코펜하겐",
-              "name": "크리스마스 스타 플루디드 디너 파티세트",
-              "price": 559000,
-              "image": "https://image.cjonstyle.net/goods_images/20/239/2097485239L.jpg?timestamp=20261126221424",
-              "link": "https://display.cjonstyle.com/p/item/2097485239"
-            },
             {
               "broadcast_date_label": "11/28(토) 08:20",
               "brand": "체코기",
               "name": "[체코기] 퓨어 기버터 180g",
               "price": 20000,
-              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/743/2097209743L.jpg?timestamp=20261102100824",
+              "image": "https://image.cjonstyle.net/goods_images/20/743/2097209743L.jpg?timestamp=20261102100824",
               "link": "https://display.cjonstyle.com/p/item/2097209743?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/28(토) 08:20",
+              "brand": "로얄코펜하겐",
+              "name": "크리스마스 스타 플루디드 디너 파티세트",
+              "price": 559000,
+              "image": "https://image.cjonstyle.net/goods_images/20/239/2097485239L.jpg?timestamp=20261105170745",
+              "link": "https://display.cjonstyle.com/p/item/2097485239?channelCode=30002002"
             },
             {
               "broadcast_date_label": "11/28(토) 08:20",
               "brand": "로얄코펜하겐",
               "name": "[동가게] 스타 플루티드 밥국공기 2인조",
               "price": 180000,
-              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/921/2097486921L.jpg?timestamp=20261105175309",
+              "image": "https://image.cjonstyle.net/goods_images/20/921/2097486921L.jpg?timestamp=20261105175309",
               "link": "https://display.cjonstyle.com/p/item/2097486921?channelCode=30002002"
             },
             {
               "broadcast_date_label": "11/28(토) 08:20",
               "brand": "셀렙샵에디션",
               "name": "[미리주문5%]26FW 프리미엄 사가폭스 램스킨 구스다운",
-              "price": 379050,
-              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/968/2096788968L.jpg?timestamp=20261105232955",
+              "price": 399000,
+              "image": "https://image.cjonstyle.net/goods_images/20/968/2096788968L.jpg?timestamp=20261105232955",
               "link": "https://display.cjonstyle.com/p/item/2096788968?channelCode=30002002"
             },
             {
               "broadcast_date_label": "11/28(토) 08:20",
               "brand": "셀렙샵에디션",
               "name": "[디오브르by셀렙샵]26FW 기모폰테 사브리나 텐션팬츠+벨트",
-              "price": 71910,
-              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/710/2093422710L.jpg?timestamp=20260922164544",
+              "price": 79900,
+              "image": "https://image.cjonstyle.net/goods_images/20/710/2093422710L.jpg?timestamp=20260922164544",
               "link": "https://display.cjonstyle.com/p/item/2093422710?channelCode=30002002"
             },
             {
@@ -6656,7 +6656,7 @@
               "brand": "비비안",
               "name": "[26FW 최신상] 히트핏 심리스 브라팬티",
               "price": 109900,
-              "image": "https://thumb.cjonstyle.net/unsafe/fit-in/308x308/image.cjonstyle.net/goods_images/20/528/2097742528L.jpg?timestamp=20261125154609",
+              "image": "https://image.cjonstyle.net/goods_images/20/528/2097742528L.jpg?timestamp=20261125154609",
               "link": "https://display.cjonstyle.com/p/item/2097742528?channelCode=30002002"
             },
             {
@@ -7799,7 +7799,7 @@
         {
           "date": "2026-11-28",
           "label": "11/28(토) 10:20 방송",
-          "collected_at": "2026-11-26T22:16:20.660367+09:00",
+          "collected_at": "2026-11-27T05:41:00.874776+09:00",
           "products": [
             {
               "broadcast_date_label": "11/28(토) 10:20",
@@ -7968,6 +7968,14 @@
               "price": 399000,
               "image": "https://image.cjonstyle.net/goods_images/20/993/2093349993L.jpg?timestamp=20261008143916",
               "link": "https://display.cjonstyle.com/p/item/2093349993?channelCode=30002002"
+            },
+            {
+              "broadcast_date_label": "11/28(토) 10:20",
+              "brand": "에르헴",
+              "name": "26FW 캐시미어 100 브러쉬 스트링 모자 1종",
+              "price": 99000,
+              "image": "https://image.cjonstyle.net/goods_images/20/890/2094157890L.jpg?timestamp=20261007133540",
+              "link": "https://display.cjonstyle.com/p/item/2094157890?channelCode=30002002"
             },
             {
               "broadcast_date_label": "11/28(토) 10:20",
@@ -8518,7 +8526,7 @@
         {
           "date": "2026-11-27",
           "label": "11/27(금) 19:35 방송",
-          "collected_at": "2026-11-26T22:16:20.660367+09:00",
+          "collected_at": "2026-11-27T05:41:00.874776+09:00",
           "products": [
             {
               "broadcast_date_label": "11/27(금) 19:35",
