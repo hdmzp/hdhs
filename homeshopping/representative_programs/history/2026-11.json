@@ -1,6 +1,6 @@
 {
   "month": "2026-11",
-  "updated_at": "2026-11-28T10:16:08.460600+09:00",
+  "updated_at": "2026-11-28T20:16:36.702962+09:00",
   "programs": [
     {
       "program_key": "HD_HJM",
@@ -14,7 +14,7 @@
         {
           "date": "2026-11-30",
           "label": "11/30(월) 19:30 방송",
-          "collected_at": "2026-11-28T10:16:08.426232+09:00",
+          "collected_at": "2026-11-28T20:16:36.669154+09:00",
           "products": [
             {
               "broadcast_date_label": "11/30(월) 19:30 방송",
@@ -570,16 +570,8 @@
         {
           "date": "2026-11-28",
           "label": "11/28(토) 08:20 방송",
-          "collected_at": "2026-11-28T08:16:44.593799+09:00",
+          "collected_at": "2026-11-28T20:16:36.669154+09:00",
           "products": [
-            {
-              "broadcast_date_label": "11/28(토) 08:20 방송",
-              "brand": "타히",
-              "name": "UMF10 타히 마누카허니 6병 2병 스푼2개 스텐텀블러1개 쇼핑백 2장",
-              "price": 359000,
-              "image": "https://image.hmall.com/2258462312_0.jpg",
-              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2258462312&preview=true"
-            },
             {
               "broadcast_date_label": "11/28(토) 08:20 방송",
               "brand": "꾸데끌라",
@@ -590,11 +582,45 @@
             },
             {
               "broadcast_date_label": "11/28(토) 08:20 방송",
+              "brand": "타히",
+              "name": "UMF10 타히 마누카허니 6병 2병 스푼2개 스텐텀블러1개 쇼핑백 2장",
+              "price": 359000,
+              "image": "https://image.hmall.com/2258462312_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2258462312&preview=true"
+            },
+            {
+              "broadcast_date_label": "11/28(토) 08:20 방송",
               "brand": "더 더치",
               "name": "프랑스 프리미엄 크림치즈 스페셜 패키지 총 8팩",
               "price": 64900,
               "image": "https://image.hmall.com/2257838194_0.jpg",
               "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2257838194&preview=true"
+            },
+            {
+              "broadcast_date_label": "11/28(토) 08:20 방송",
+              "brand": "뷰벨",
+              "name": "글레이셜 캡슐 링클 리파이닝 아이크림 2026년 상반기 단한번 구성",
+              "price": 199000,
+              "image": "https://image.hmall.com/2250067761_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2250067761&preview=true"
+            },
+            {
+              "broadcast_date_label": "11/28(토) 08:20 방송",
+              "brand": "꼬땅",
+              "name": "미셀라 뷰티 페이셜 비니거 에센스 스페셜구성",
+              "price": 169000,
+              "image": "https://image.hmall.com/2252425348_0.jpg",
+              "link": "https://www.hmall.com/md/pda/itemPtc?slitmCd=2252425348&preview=true"
+            }
+          ],
+          "reconciled_at": "2026-11-28T20:16:36.669154+09:00",
+          "revisions": [
+            {
+              "at": "2026-11-28T20:16:36.669154+09:00",
+              "added": [
+                "글레이셜 캡슐 링클 리파이닝 아이크림 2026년 상반기 단한번 구성",
+                "미셀라 뷰티 페이셜 비니거 에센스 스페셜구성"
+              ]
             }
           ]
         },
@@ -3280,7 +3306,7 @@
         {
           "date": "2026-11-30",
           "label": "11/30(월) 19:35 방송",
-          "collected_at": "2026-11-28T10:16:08.426232+09:00",
+          "collected_at": "2026-11-28T20:16:36.669154+09:00",
           "products": [
             {
               "broadcast_date_label": "11/30(월) 19:35",
